@@ -1,0 +1,133 @@
+from __future__ import annotations
+
+import argparse
+import os
+from typing import Any
+from anthropic import Anthropic
+
+try:
+    from .permission import check_permission
+    from .tools import TOOL_HANDLERS, TOOLS, get_client
+except ImportError:
+    from permission import check_permission
+    from tools import TOOL_HANDLERS, TOOLS, get_client
+
+
+MODEL = os.environ.get("ANTHROPIC_MODEL", "claude-3-5-sonnet-latest")
+MAX_TOKENS = int(os.environ.get("ANTHROPIC_MAX_TOKENS", "4096"))
+
+SYSTEM_PROMPT = """You are a minimal coding agent.
+
+You can inspect and modify files in the current workspace by using tools.
+Work step by step. Use tools when you need facts from the environment.
+When you are done, explain the result briefly.
+"""
+
+
+def block_to_dict(block: Any) -> dict[str, Any]:
+    if isinstance(block, dict):
+        return block
+    if hasattr(block, "model_dump"):
+        return block.model_dump(exclude_none=True)
+    if hasattr(block, "dict"):
+        return block.dict(exclude_none=True)
+    raise TypeError(f"Unsupported response block: {type(block)!r}")
+
+
+def block_attr(block: Any, name: str, default: Any = None) -> Any:
+    if isinstance(block, dict):
+        return block.get(name, default)
+    return getattr(block, name, default)
+
+
+def response_text(content: list[Any]) -> str:
+    parts: list[str] = []
+    for block in content:
+        if block_attr(block, "type") == "text":
+            parts.append(block_attr(block, "text", ""))
+    return "\n".join(part for part in parts if part)
+
+
+def tool_result(tool_use_id: str, output: str, is_error: bool = False) -> dict[str, Any]:
+    result: dict[str, Any] = {
+        "type": "tool_result",
+        "tool_use_id": tool_use_id,
+        "content": output,
+    }
+    if is_error:
+        result["is_error"] = True
+    return result
+
+
+def run_tool(block: Any) -> dict[str, Any]:
+    name = block_attr(block, "name")
+    tool_input = block_attr(block, "input", {}) or {}
+    tool_use_id = block_attr(block, "id")
+
+    try:
+        check_permission(block)
+        handler = TOOL_HANDLERS[name]
+        output = handler(**tool_input)
+        return tool_result(tool_use_id, output)
+    except Exception as exc:
+        return tool_result(tool_use_id, f"ERROR: {exc}", is_error=True)
+
+
+def run_agent(user_input: str) -> str:
+    client = get_client()
+    messages: list[dict[str, Any]] = [{"role": "user", "content": user_input}]
+
+    while True:
+        response = client.messages.create(
+            model=MODEL,
+            max_tokens=MAX_TOKENS,
+            system=SYSTEM_PROMPT,
+            messages=messages,
+            tools=TOOLS,
+        )
+
+        if response.stop_reason == "end_turn":
+            final_text = response_text(response.content)
+            print(final_text)
+            return final_text
+
+        tool_blocks = [
+            block for block in response.content if block_attr(block, "type") == "tool_use"
+        ]
+        if not tool_blocks:
+            final_text = response_text(response.content)
+            print(final_text)
+            return final_text
+
+        messages.append(
+            {
+                "role": "assistant",
+                "content": [block_to_dict(block) for block in response.content],
+            }
+        )
+        messages.append(
+            {
+                "role": "user",
+                "content": [run_tool(block) for block in tool_blocks],
+            }
+        )
+
+
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(description="Run the v1 minimal Agent Loop.")
+    parser.add_argument("prompt", nargs="*", help="Task prompt. If omitted, read one line.")
+    return parser.parse_args()
+
+
+def main() -> None:
+    args = parse_args()
+    user_input = " ".join(args.prompt).strip()
+    if not user_input:
+        user_input = input("User> ").strip()
+    if not user_input:
+        raise SystemExit("Empty prompt.")
+    run_agent(user_input)
+
+
+if __name__ == "__main__":
+    main()

@@ -1,0 +1,815 @@
+{
+  "agent": "tanxi",
+  "target_domain": "Hepatocellular Carcinoma Formation Mechanisms and Liver Cancer Cell Variation Mechanisms",
+  "thought": "TanXi scanned the PaperGraph for low-density but high-importance method-scenario-benchmark regions, cross-disciplinary unconnected pairs, suspended unresolved problems, and strategic-need alignment.",
+  "action": {
+    "scan_coverage_density": {
+      "target_domain": "Hepatocellular Carcinoma Formation Mechanisms and Liver Cancer Cell Variation Mechanisms"
+    },
+    "find_unconnected_pairs": {
+      "target_domain": "Hepatocellular Carcinoma Formation Mechanisms and Liver Cancer Cell Variation Mechanisms"
+    },
+    "detect_suspended_problems": {
+      "min_citation_threshold": 50
+    },
+    "prioritize_gaps": {
+      "criteria": [
+        "importance",
+        "tractability",
+        "strategic_value"
+      ]
+    },
+    "align_with_strategic_needs": {
+      "strategic_domains": [
+        "health",
+        "AI for Science"
+      ]
+    }
+  },
+  "coverage_analysis": {
+    "target_domain": "Hepatocellular Carcinoma Formation Mechanisms and Liver Cancer Cell Variation Mechanisms",
+    "method_count": 5,
+    "scenario_count": 6,
+    "benchmark_count": 6,
+    "dense_areas": [
+      {
+        "topic": "agent-based model + tumor immune microenvironment",
+        "method": "agent-based model",
+        "scenario": "tumor immune microenvironment",
+        "evidence_count": 1,
+        "benchmark_count": 1,
+        "importance_score": 5
+      },
+      {
+        "topic": "anti-cd19 chimeric antigen receptor t + hepatocellular carcinoma | tumor-associated macrophage heterogeneity | immunosuppressive tumor microenvironment",
+        "method": "anti-cd19 chimeric antigen receptor t",
+        "scenario": "hepatocellular carcinoma | tumor-associated macrophage heterogeneity | immunosuppressive tumor microenvironment",
+        "evidence_count": 1,
+        "benchmark_count": 1,
+        "importance_score": 7
+      },
+      {
+        "topic": "clinical study design + liver cancer immunotherapy response",
+        "method": "clinical study design",
+        "scenario": "liver cancer immunotherapy response",
+        "evidence_count": 1,
+        "benchmark_count": 1,
+        "importance_score": 7
+      },
+      {
+        "topic": "imaging and characterization + pan-cancer tumor microenvironment subtype prediction",
+        "method": "imaging and characterization",
+        "scenario": "pan-cancer tumor microenvironment subtype prediction",
+        "evidence_count": 1,
+        "benchmark_count": 1,
+        "importance_score": 5
+      },
+      {
+        "topic": "omics profiling + cancer diagnosis and therapy",
+        "method": "omics profiling",
+        "scenario": "cancer diagnosis and therapy",
+        "evidence_count": 1,
+        "benchmark_count": 1,
+        "importance_score": 8
+      },
+      {
+        "topic": "omics profiling + single-cell multi-omics integration",
+        "method": "omics profiling",
+        "scenario": "single-cell multi-omics integration",
+        "evidence_count": 1,
+        "benchmark_count": 1,
+        "importance_score": 6
+      }
+    ],
+    "density_holes": [
+      {
+        "topic": "omics profiling + cancer diagnosis and therapy benchmark coverage",
+        "method": "omics profiling",
+        "scenario": "cancer diagnosis and therapy",
+        "importance_score": 8,
+        "current_evidence_level": "medium",
+        "missing_benchmarks": [
+          "biological activity",
+          "classification performance",
+          "performance across 23 cancer types on TCGA dataset",
+          "survival outcome",
+          "tumor proliferation"
+        ],
+        "why_important": "The method-scenario pair has evidence, but benchmark coverage is sparse, so robustness and generalization remain uncertain.",
+        "supporting_references": [
+          "Dipti Bhattacharya et al. (2025) Artificial Intelligence in Cancer Research: Pioneering Biomarker Discovery for Pharmacological Advances doi:10.47583/ijpsrr.2025.v85i5.008"
+        ]
+      },
+      {
+        "topic": "omics profiling + hepatocellular carcinoma | tumor-associated macrophage heterogeneity | immunosuppressive tumor microenvironment",
+        "method": "omics profiling",
+        "scenario": "hepatocellular carcinoma | tumor-associated macrophage heterogeneity | immunosuppressive tumor microenvironment",
+        "importance_score": 8,
+        "current_evidence_level": "none",
+        "missing_benchmarks": [
+          "biological activity",
+          "classification performance",
+          "diagnostic accuracy | AUC-ROC | detection rate | diagnostic variation | survival measures",
+          "performance across 23 cancer types on TCGA dataset",
+          "survival outcome"
+        ],
+        "why_important": "Both the method and scenario are visible in the field map, but this intersection has no recorded validation.",
+        "supporting_references": [
+          "Dipti Bhattacharya et al. (2025) Artificial Intelligence in Cancer Research: Pioneering Biomarker Discovery for Pharmacological Advances doi:10.47583/ijpsrr.2025.v85i5.008",
+          "Junli Wang et al. (2025) Tumor-associated CD19$^+$ macrophages induce immunosuppressive microenvironment in hepatocellular carcinoma arXiv:2503.17738v1",
+          "Zhen Yuan et al. (2025) scMamba: A Scalable Foundation Model for Single-Cell Multi-Omics Integration Beyond Highly Variable Feature Selection arXiv:2506.20697v1"
+        ]
+      },
+      {
+        "topic": "omics profiling + liver cancer immunotherapy response",
+        "method": "omics profiling",
+        "scenario": "liver cancer immunotherapy response",
+        "importance_score": 8,
+        "current_evidence_level": "none",
+        "missing_benchmarks": [
+          "biological activity",
+          "classification performance",
+          "diagnostic accuracy | AUC-ROC | detection rate | diagnostic variation | survival measures",
+          "performance across 23 cancer types on TCGA dataset",
+          "survival outcome"
+        ],
+        "why_important": "Both the method and scenario are visible in the field map, but this intersection has no recorded validation.",
+        "supporting_references": [
+          "Fei-Yu Diao (2021) Single-Cell Landscape of Liver Cancer in Response to Immunotherapy doi:10.4103/apjon.apjon-2165",
+          "Dipti Bhattacharya et al. (2025) Artificial Intelligence in Cancer Research: Pioneering Biomarker Discovery for Pharmacological Advances doi:10.47583/ijpsrr.2025.v85i5.008",
+          "Zhen Yuan et al. (2025) scMamba: A Scalable Foundation Model for Single-Cell Multi-Omics Integration Beyond Highly Variable Feature Selection arXiv:2506.20697v1"
+        ]
+      },
+      {
+        "topic": "anti-cd19 chimeric antigen receptor t + hepatocellular carcinoma | tumor-associated macrophage heterogeneity | immunosuppressive tumor microenvironment benchmark coverage",
+        "method": "anti-cd19 chimeric antigen receptor t",
+        "scenario": "hepatocellular carcinoma | tumor-associated macrophage heterogeneity | immunosuppressive tumor microenvironment",
+        "importance_score": 7,
+        "current_evidence_level": "medium",
+        "missing_benchmarks": [
+          "classification performance",
+          "diagnostic accuracy | AUC-ROC | detection rate | diagnostic variation | survival measures",
+          "performance across 23 cancer types on TCGA dataset",
+          "survival outcome",
+          "tumor proliferation"
+        ],
+        "why_important": "The method-scenario pair has evidence, but benchmark coverage is sparse, so robustness and generalization remain uncertain.",
+        "supporting_references": [
+          "Junli Wang et al. (2025) Tumor-associated CD19$^+$ macrophages induce immunosuppressive microenvironment in hepatocellular carcinoma arXiv:2503.17738v1"
+        ]
+      },
+      {
+        "topic": "clinical study design + liver cancer immunotherapy response benchmark coverage",
+        "method": "clinical study design",
+        "scenario": "liver cancer immunotherapy response",
+        "importance_score": 7,
+        "current_evidence_level": "medium",
+        "missing_benchmarks": [
+          "biological activity",
+          "classification performance",
+          "diagnostic accuracy | AUC-ROC | detection rate | diagnostic variation | survival measures",
+          "performance across 23 cancer types on TCGA dataset",
+          "tumor proliferation"
+        ],
+        "why_important": "The method-scenario pair has evidence, but benchmark coverage is sparse, so robustness and generalization remain uncertain.",
+        "supporting_references": [
+          "Fei-Yu Diao (2021) Single-Cell Landscape of Liver Cancer in Response to Immunotherapy doi:10.4103/apjon.apjon-2165"
+        ]
+      },
+      {
+        "topic": "agent-based model + cancer diagnosis and therapy",
+        "method": "agent-based model",
+        "scenario": "cancer diagnosis and therapy",
+        "importance_score": 7,
+        "current_evidence_level": "none",
+        "missing_benchmarks": [
+          "biological activity",
+          "classification performance",
+          "diagnostic accuracy | AUC-ROC | detection rate | diagnostic variation | survival measures",
+          "performance across 23 cancer types on TCGA dataset",
+          "survival outcome"
+        ],
+        "why_important": "Both the method and scenario are visible in the field map, but this intersection has no recorded validation.",
+        "supporting_references": [
+          "Dipti Bhattacharya et al. (2025) Artificial Intelligence in Cancer Research: Pioneering Biomarker Discovery for Pharmacological Advances doi:10.47583/ijpsrr.2025.v85i5.008",
+          "Mobina Tousian et al. (2024) Immune cells interactions in the tumor microenvironment arXiv:2405.18452v1"
+        ]
+      },
+      {
+        "topic": "agent-based model + hepatocellular carcinoma | tumor-associated macrophage heterogeneity | immunosuppressive tumor microenvironment",
+        "method": "agent-based model",
+        "scenario": "hepatocellular carcinoma | tumor-associated macrophage heterogeneity | immunosuppressive tumor microenvironment",
+        "importance_score": 7,
+        "current_evidence_level": "none",
+        "missing_benchmarks": [
+          "biological activity",
+          "classification performance",
+          "diagnostic accuracy | AUC-ROC | detection rate | diagnostic variation | survival measures",
+          "performance across 23 cancer types on TCGA dataset",
+          "survival outcome"
+        ],
+        "why_important": "Both the method and scenario are visible in the field map, but this intersection has no recorded validation.",
+        "supporting_references": [
+          "Junli Wang et al. (2025) Tumor-associated CD19$^+$ macrophages induce immunosuppressive microenvironment in hepatocellular carcinoma arXiv:2503.17738v1",
+          "Mobina Tousian et al. (2024) Immune cells interactions in the tumor microenvironment arXiv:2405.18452v1"
+        ]
+      },
+      {
+        "topic": "agent-based model + liver cancer immunotherapy response",
+        "method": "agent-based model",
+        "scenario": "liver cancer immunotherapy response",
+        "importance_score": 7,
+        "current_evidence_level": "none",
+        "missing_benchmarks": [
+          "biological activity",
+          "classification performance",
+          "diagnostic accuracy | AUC-ROC | detection rate | diagnostic variation | survival measures",
+          "performance across 23 cancer types on TCGA dataset",
+          "survival outcome"
+        ],
+        "why_important": "Both the method and scenario are visible in the field map, but this intersection has no recorded validation.",
+        "supporting_references": [
+          "Fei-Yu Diao (2021) Single-Cell Landscape of Liver Cancer in Response to Immunotherapy doi:10.4103/apjon.apjon-2165",
+          "Mobina Tousian et al. (2024) Immune cells interactions in the tumor microenvironment arXiv:2405.18452v1"
+        ]
+      },
+      {
+        "topic": "anti-cd19 chimeric antigen receptor t + cancer diagnosis and therapy",
+        "method": "anti-cd19 chimeric antigen receptor t",
+        "scenario": "cancer diagnosis and therapy",
+        "importance_score": 7,
+        "current_evidence_level": "none",
+        "missing_benchmarks": [
+          "biological activity",
+          "classification performance",
+          "diagnostic accuracy | AUC-ROC | detection rate | diagnostic variation | survival measures",
+          "performance across 23 cancer types on TCGA dataset",
+          "survival outcome"
+        ],
+        "why_important": "Both the method and scenario are visible in the field map, but this intersection has no recorded validation.",
+        "supporting_references": [
+          "Dipti Bhattacharya et al. (2025) Artificial Intelligence in Cancer Research: Pioneering Biomarker Discovery for Pharmacological Advances doi:10.47583/ijpsrr.2025.v85i5.008",
+          "Junli Wang et al. (2025) Tumor-associated CD19$^+$ macrophages induce immunosuppressive microenvironment in hepatocellular carcinoma arXiv:2503.17738v1"
+        ]
+      },
+      {
+        "topic": "anti-cd19 chimeric antigen receptor t + liver cancer immunotherapy response",
+        "method": "anti-cd19 chimeric antigen receptor t",
+        "scenario": "liver cancer immunotherapy response",
+        "importance_score": 7,
+        "current_evidence_level": "none",
+        "missing_benchmarks": [
+          "biological activity",
+          "classification performance",
+          "diagnostic accuracy | AUC-ROC | detection rate | diagnostic variation | survival measures",
+          "performance across 23 cancer types on TCGA dataset",
+          "survival outcome"
+        ],
+        "why_important": "Both the method and scenario are visible in the field map, but this intersection has no recorded validation.",
+        "supporting_references": [
+          "Fei-Yu Diao (2021) Single-Cell Landscape of Liver Cancer in Response to Immunotherapy doi:10.4103/apjon.apjon-2165",
+          "Junli Wang et al. (2025) Tumor-associated CD19$^+$ macrophages induce immunosuppressive microenvironment in hepatocellular carcinoma arXiv:2503.17738v1"
+        ]
+      },
+      {
+        "topic": "clinical study design + cancer diagnosis and therapy",
+        "method": "clinical study design",
+        "scenario": "cancer diagnosis and therapy",
+        "importance_score": 7,
+        "current_evidence_level": "none",
+        "missing_benchmarks": [
+          "biological activity",
+          "classification performance",
+          "diagnostic accuracy | AUC-ROC | detection rate | diagnostic variation | survival measures",
+          "performance across 23 cancer types on TCGA dataset",
+          "survival outcome"
+        ],
+        "why_important": "Both the method and scenario are visible in the field map, but this intersection has no recorded validation.",
+        "supporting_references": [
+          "Fei-Yu Diao (2021) Single-Cell Landscape of Liver Cancer in Response to Immunotherapy doi:10.4103/apjon.apjon-2165",
+          "Dipti Bhattacharya et al. (2025) Artificial Intelligence in Cancer Research: Pioneering Biomarker Discovery for Pharmacological Advances doi:10.47583/ijpsrr.2025.v85i5.008"
+        ]
+      },
+      {
+        "topic": "clinical study design + hepatocellular carcinoma | tumor-associated macrophage heterogeneity | immunosuppressive tumor microenvironment",
+        "method": "clinical study design",
+        "scenario": "hepatocellular carcinoma | tumor-associated macrophage heterogeneity | immunosuppressive tumor microenvironment",
+        "importance_score": 7,
+        "current_evidence_level": "none",
+        "missing_benchmarks": [
+          "biological activity",
+          "classification performance",
+          "diagnostic accuracy | AUC-ROC | detection rate | diagnostic variation | survival measures",
+          "performance across 23 cancer types on TCGA dataset",
+          "survival outcome"
+        ],
+        "why_important": "Both the method and scenario are visible in the field map, but this intersection has no recorded validation.",
+        "supporting_references": [
+          "Fei-Yu Diao (2021) Single-Cell Landscape of Liver Cancer in Response to Immunotherapy doi:10.4103/apjon.apjon-2165",
+          "Junli Wang et al. (2025) Tumor-associated CD19$^+$ macrophages induce immunosuppressive microenvironment in hepatocellular carcinoma arXiv:2503.17738v1"
+        ]
+      },
+      {
+        "topic": "imaging and characterization + cancer diagnosis and therapy",
+        "method": "imaging and characterization",
+        "scenario": "cancer diagnosis and therapy",
+        "importance_score": 7,
+        "current_evidence_level": "none",
+        "missing_benchmarks": [
+          "biological activity",
+          "classification performance",
+          "diagnostic accuracy | AUC-ROC | detection rate | diagnostic variation | survival measures",
+          "performance across 23 cancer types on TCGA dataset",
+          "survival outcome"
+        ],
+        "why_important": "Both the method and scenario are visible in the field map, but this intersection has no recorded validation.",
+        "supporting_references": [
+          "Dipti Bhattacharya et al. (2025) Artificial Intelligence in Cancer Research: Pioneering Biomarker Discovery for Pharmacological Advances doi:10.47583/ijpsrr.2025.v85i5.008",
+          "Fangliangzi Meng et al. (2024) Genomics-guided Representation Learning for Pathologic Pan-cancer Tumor Microenvironment Subtype Prediction arXiv:2406.06517v2"
+        ]
+      },
+      {
+        "topic": "imaging and characterization + hepatocellular carcinoma | tumor-associated macrophage heterogeneity | immunosuppressive tumor microenvironment",
+        "method": "imaging and characterization",
+        "scenario": "hepatocellular carcinoma | tumor-associated macrophage heterogeneity | immunosuppressive tumor microenvironment",
+        "importance_score": 7,
+        "current_evidence_level": "none",
+        "missing_benchmarks": [
+          "biological activity",
+          "classification performance",
+          "diagnostic accuracy | AUC-ROC | detection rate | diagnostic variation | survival measures",
+          "performance across 23 cancer types on TCGA dataset",
+          "survival outcome"
+        ],
+        "why_important": "Both the method and scenario are visible in the field map, but this intersection has no recorded validation.",
+        "supporting_references": [
+          "Junli Wang et al. (2025) Tumor-associated CD19$^+$ macrophages induce immunosuppressive microenvironment in hepatocellular carcinoma arXiv:2503.17738v1",
+          "Fangliangzi Meng et al. (2024) Genomics-guided Representation Learning for Pathologic Pan-cancer Tumor Microenvironment Subtype Prediction arXiv:2406.06517v2"
+        ]
+      },
+      {
+        "topic": "imaging and characterization + liver cancer immunotherapy response",
+        "method": "imaging and characterization",
+        "scenario": "liver cancer immunotherapy response",
+        "importance_score": 7,
+        "current_evidence_level": "none",
+        "missing_benchmarks": [
+          "biological activity",
+          "classification performance",
+          "diagnostic accuracy | AUC-ROC | detection rate | diagnostic variation | survival measures",
+          "performance across 23 cancer types on TCGA dataset",
+          "survival outcome"
+        ],
+        "why_important": "Both the method and scenario are visible in the field map, but this intersection has no recorded validation.",
+        "supporting_references": [
+          "Fei-Yu Diao (2021) Single-Cell Landscape of Liver Cancer in Response to Immunotherapy doi:10.4103/apjon.apjon-2165",
+          "Fangliangzi Meng et al. (2024) Genomics-guided Representation Learning for Pathologic Pan-cancer Tumor Microenvironment Subtype Prediction arXiv:2406.06517v2"
+        ]
+      },
+      {
+        "topic": "omics profiling + single-cell multi-omics integration benchmark coverage",
+        "method": "omics profiling",
+        "scenario": "single-cell multi-omics integration",
+        "importance_score": 6,
+        "current_evidence_level": "medium",
+        "missing_benchmarks": [
+          "biological activity",
+          "diagnostic accuracy | AUC-ROC | detection rate | diagnostic variation | survival measures",
+          "performance across 23 cancer types on TCGA dataset",
+          "survival outcome",
+          "tumor proliferation"
+        ],
+        "why_important": "The method-scenario pair has evidence, but benchmark coverage is sparse, so robustness and generalization remain uncertain.",
+        "supporting_references": [
+          "Zhen Yuan et al. (2025) scMamba: A Scalable Foundation Model for Single-Cell Multi-Omics Integration Beyond Highly Variable Feature Selection arXiv:2506.20697v1"
+        ]
+      },
+      {
+        "topic": "omics profiling + pan-cancer tumor microenvironment subtype prediction",
+        "method": "omics profiling",
+        "scenario": "pan-cancer tumor microenvironment subtype prediction",
+        "importance_score": 6,
+        "current_evidence_level": "none",
+        "missing_benchmarks": [
+          "biological activity",
+          "classification performance",
+          "diagnostic accuracy | AUC-ROC | detection rate | diagnostic variation | survival measures",
+          "performance across 23 cancer types on TCGA dataset",
+          "survival outcome"
+        ],
+        "why_important": "Both the method and scenario are visible in the field map, but this intersection has no recorded validation.",
+        "supporting_references": [
+          "Dipti Bhattacharya et al. (2025) Artificial Intelligence in Cancer Research: Pioneering Biomarker Discovery for Pharmacological Advances doi:10.47583/ijpsrr.2025.v85i5.008",
+          "Fangliangzi Meng et al. (2024) Genomics-guided Representation Learning for Pathologic Pan-cancer Tumor Microenvironment Subtype Prediction arXiv:2406.06517v2",
+          "Zhen Yuan et al. (2025) scMamba: A Scalable Foundation Model for Single-Cell Multi-Omics Integration Beyond Highly Variable Feature Selection arXiv:2506.20697v1"
+        ]
+      },
+      {
+        "topic": "omics profiling + tumor immune microenvironment",
+        "method": "omics profiling",
+        "scenario": "tumor immune microenvironment",
+        "importance_score": 6,
+        "current_evidence_level": "none",
+        "missing_benchmarks": [
+          "biological activity",
+          "classification performance",
+          "diagnostic accuracy | AUC-ROC | detection rate | diagnostic variation | survival measures",
+          "performance across 23 cancer types on TCGA dataset",
+          "survival outcome"
+        ],
+        "why_important": "Both the method and scenario are visible in the field map, but this intersection has no recorded validation.",
+        "supporting_references": [
+          "Dipti Bhattacharya et al. (2025) Artificial Intelligence in Cancer Research: Pioneering Biomarker Discovery for Pharmacological Advances doi:10.47583/ijpsrr.2025.v85i5.008",
+          "Mobina Tousian et al. (2024) Immune cells interactions in the tumor microenvironment arXiv:2405.18452v1",
+          "Zhen Yuan et al. (2025) scMamba: A Scalable Foundation Model for Single-Cell Multi-Omics Integration Beyond Highly Variable Feature Selection arXiv:2506.20697v1"
+        ]
+      },
+      {
+        "topic": "agent-based model + tumor immune microenvironment benchmark coverage",
+        "method": "agent-based model",
+        "scenario": "tumor immune microenvironment",
+        "importance_score": 5,
+        "current_evidence_level": "medium",
+        "missing_benchmarks": [
+          "biological activity",
+          "classification performance",
+          "diagnostic accuracy | AUC-ROC | detection rate | diagnostic variation | survival measures",
+          "performance across 23 cancer types on TCGA dataset",
+          "survival outcome"
+        ],
+        "why_important": "The method-scenario pair has evidence, but benchmark coverage is sparse, so robustness and generalization remain uncertain.",
+        "supporting_references": [
+          "Mobina Tousian et al. (2024) Immune cells interactions in the tumor microenvironment arXiv:2405.18452v1"
+        ]
+      },
+      {
+        "topic": "imaging and characterization + pan-cancer tumor microenvironment subtype prediction benchmark coverage",
+        "method": "imaging and characterization",
+        "scenario": "pan-cancer tumor microenvironment subtype prediction",
+        "importance_score": 5,
+        "current_evidence_level": "medium",
+        "missing_benchmarks": [
+          "biological activity",
+          "classification performance",
+          "diagnostic accuracy | AUC-ROC | detection rate | diagnostic variation | survival measures",
+          "survival outcome",
+          "tumor proliferation"
+        ],
+        "why_important": "The method-scenario pair has evidence, but benchmark coverage is sparse, so robustness and generalization remain uncertain.",
+        "supporting_references": [
+          "Fangliangzi Meng et al. (2024) Genomics-guided Representation Learning for Pathologic Pan-cancer Tumor Microenvironment Subtype Prediction arXiv:2406.06517v2"
+        ]
+      }
+    ]
+  },
+  "cross_disciplinary_unconnected_pairs": [
+    {
+      "field_a": "agriculture",
+      "concept_a": "anti-cd19 chimeric antigen receptor t",
+      "field_b": "biology",
+      "concept_b": "imaging and characterization",
+      "potential_synergy": "Testing whether anti-cd19 chimeric antigen receptor t can constrain, evaluate, or operationalize imaging and characterization for Hepatocellular Carcinoma Formation Mechanisms and Liver Cancer Cell Variation Mechanisms may reveal a non-obvious transfer path or boundary condition.",
+      "supporting_references": [
+        "Junli Wang et al. (2025) Tumor-associated CD19$^+$ macrophages induce immunosuppressive microenvironment in hepatocellular carcinoma arXiv:2503.17738v1",
+        "Fangliangzi Meng et al. (2024) Genomics-guided Representation Learning for Pathologic Pan-cancer Tumor Microenvironment Subtype Prediction arXiv:2406.06517v2"
+      ]
+    },
+    {
+      "field_a": "agriculture",
+      "concept_a": "anti-cd19 chimeric antigen receptor t",
+      "field_b": "biology",
+      "concept_b": "pan-cancer tumor microenvironment subtype prediction",
+      "potential_synergy": "Testing whether anti-cd19 chimeric antigen receptor t can constrain, evaluate, or operationalize pan-cancer tumor microenvironment subtype prediction for Hepatocellular Carcinoma Formation Mechanisms and Liver Cancer Cell Variation Mechanisms may reveal a non-obvious transfer path or boundary condition.",
+      "supporting_references": [
+        "Junli Wang et al. (2025) Tumor-associated CD19$^+$ macrophages induce immunosuppressive microenvironment in hepatocellular carcinoma arXiv:2503.17738v1",
+        "Fangliangzi Meng et al. (2024) Genomics-guided Representation Learning for Pathologic Pan-cancer Tumor Microenvironment Subtype Prediction arXiv:2406.06517v2"
+      ]
+    },
+    {
+      "field_a": "agriculture",
+      "concept_a": "anti-cd19 chimeric antigen receptor t",
+      "field_b": "biology",
+      "concept_b": "performance across 23 cancer types on TCGA dataset",
+      "potential_synergy": "Testing whether anti-cd19 chimeric antigen receptor t can constrain, evaluate, or operationalize performance across 23 cancer types on TCGA dataset for Hepatocellular Carcinoma Formation Mechanisms and Liver Cancer Cell Variation Mechanisms may reveal a non-obvious transfer path or boundary condition.",
+      "supporting_references": [
+        "Junli Wang et al. (2025) Tumor-associated CD19$^+$ macrophages induce immunosuppressive microenvironment in hepatocellular carcinoma arXiv:2503.17738v1",
+        "Fangliangzi Meng et al. (2024) Genomics-guided Representation Learning for Pathologic Pan-cancer Tumor Microenvironment Subtype Prediction arXiv:2406.06517v2"
+      ]
+    },
+    {
+      "field_a": "agriculture",
+      "concept_a": "hepatocellular carcinoma | tumor-associated macrophage heterogeneity | immunosuppressive tumor microenvironment",
+      "field_b": "biology",
+      "concept_b": "imaging and characterization",
+      "potential_synergy": "Testing whether hepatocellular carcinoma | tumor-associated macrophage heterogeneity | immunosuppressive tumor microenvironment can constrain, evaluate, or operationalize imaging and characterization for Hepatocellular Carcinoma Formation Mechanisms and Liver Cancer Cell Variation Mechanisms may reveal a non-obvious transfer path or boundary condition.",
+      "supporting_references": [
+        "Junli Wang et al. (2025) Tumor-associated CD19$^+$ macrophages induce immunosuppressive microenvironment in hepatocellular carcinoma arXiv:2503.17738v1",
+        "Fangliangzi Meng et al. (2024) Genomics-guided Representation Learning for Pathologic Pan-cancer Tumor Microenvironment Subtype Prediction arXiv:2406.06517v2"
+      ]
+    },
+    {
+      "field_a": "agriculture",
+      "concept_a": "hepatocellular carcinoma | tumor-associated macrophage heterogeneity | immunosuppressive tumor microenvironment",
+      "field_b": "biology",
+      "concept_b": "pan-cancer tumor microenvironment subtype prediction",
+      "potential_synergy": "Testing whether hepatocellular carcinoma | tumor-associated macrophage heterogeneity | immunosuppressive tumor microenvironment can constrain, evaluate, or operationalize pan-cancer tumor microenvironment subtype prediction for Hepatocellular Carcinoma Formation Mechanisms and Liver Cancer Cell Variation Mechanisms may reveal a non-obvious transfer path or boundary condition.",
+      "supporting_references": [
+        "Junli Wang et al. (2025) Tumor-associated CD19$^+$ macrophages induce immunosuppressive microenvironment in hepatocellular carcinoma arXiv:2503.17738v1",
+        "Fangliangzi Meng et al. (2024) Genomics-guided Representation Learning for Pathologic Pan-cancer Tumor Microenvironment Subtype Prediction arXiv:2406.06517v2"
+      ]
+    },
+    {
+      "field_a": "agriculture",
+      "concept_a": "hepatocellular carcinoma | tumor-associated macrophage heterogeneity | immunosuppressive tumor microenvironment",
+      "field_b": "biology",
+      "concept_b": "performance across 23 cancer types on TCGA dataset",
+      "potential_synergy": "Testing whether hepatocellular carcinoma | tumor-associated macrophage heterogeneity | immunosuppressive tumor microenvironment can constrain, evaluate, or operationalize performance across 23 cancer types on TCGA dataset for Hepatocellular Carcinoma Formation Mechanisms and Liver Cancer Cell Variation Mechanisms may reveal a non-obvious transfer path or boundary condition.",
+      "supporting_references": [
+        "Junli Wang et al. (2025) Tumor-associated CD19$^+$ macrophages induce immunosuppressive microenvironment in hepatocellular carcinoma arXiv:2503.17738v1",
+        "Fangliangzi Meng et al. (2024) Genomics-guided Representation Learning for Pathologic Pan-cancer Tumor Microenvironment Subtype Prediction arXiv:2406.06517v2"
+      ]
+    },
+    {
+      "field_a": "agriculture",
+      "concept_a": "biological activity",
+      "field_b": "biology",
+      "concept_b": "imaging and characterization",
+      "potential_synergy": "Testing whether biological activity can constrain, evaluate, or operationalize imaging and characterization for Hepatocellular Carcinoma Formation Mechanisms and Liver Cancer Cell Variation Mechanisms may reveal a non-obvious transfer path or boundary condition.",
+      "supporting_references": [
+        "Junli Wang et al. (2025) Tumor-associated CD19$^+$ macrophages induce immunosuppressive microenvironment in hepatocellular carcinoma arXiv:2503.17738v1",
+        "Fangliangzi Meng et al. (2024) Genomics-guided Representation Learning for Pathologic Pan-cancer Tumor Microenvironment Subtype Prediction arXiv:2406.06517v2"
+      ]
+    },
+    {
+      "field_a": "agriculture",
+      "concept_a": "biological activity",
+      "field_b": "biology",
+      "concept_b": "pan-cancer tumor microenvironment subtype prediction",
+      "potential_synergy": "Testing whether biological activity can constrain, evaluate, or operationalize pan-cancer tumor microenvironment subtype prediction for Hepatocellular Carcinoma Formation Mechanisms and Liver Cancer Cell Variation Mechanisms may reveal a non-obvious transfer path or boundary condition.",
+      "supporting_references": [
+        "Junli Wang et al. (2025) Tumor-associated CD19$^+$ macrophages induce immunosuppressive microenvironment in hepatocellular carcinoma arXiv:2503.17738v1",
+        "Fangliangzi Meng et al. (2024) Genomics-guided Representation Learning for Pathologic Pan-cancer Tumor Microenvironment Subtype Prediction arXiv:2406.06517v2"
+      ]
+    },
+    {
+      "field_a": "agriculture",
+      "concept_a": "biological activity",
+      "field_b": "biology",
+      "concept_b": "performance across 23 cancer types on TCGA dataset",
+      "potential_synergy": "Testing whether biological activity can constrain, evaluate, or operationalize performance across 23 cancer types on TCGA dataset for Hepatocellular Carcinoma Formation Mechanisms and Liver Cancer Cell Variation Mechanisms may reveal a non-obvious transfer path or boundary condition.",
+      "supporting_references": [
+        "Junli Wang et al. (2025) Tumor-associated CD19$^+$ macrophages induce immunosuppressive microenvironment in hepatocellular carcinoma arXiv:2503.17738v1",
+        "Fangliangzi Meng et al. (2024) Genomics-guided Representation Learning for Pathologic Pan-cancer Tumor Microenvironment Subtype Prediction arXiv:2406.06517v2"
+      ]
+    },
+    {
+      "field_a": "agriculture",
+      "concept_a": "anti-cd19 chimeric antigen receptor t",
+      "field_b": "biomedical",
+      "concept_b": "clinical study design",
+      "potential_synergy": "Testing whether anti-cd19 chimeric antigen receptor t can constrain, evaluate, or operationalize clinical study design for Hepatocellular Carcinoma Formation Mechanisms and Liver Cancer Cell Variation Mechanisms may reveal a non-obvious transfer path or boundary condition.",
+      "supporting_references": [
+        "Junli Wang et al. (2025) Tumor-associated CD19$^+$ macrophages induce immunosuppressive microenvironment in hepatocellular carcinoma arXiv:2503.17738v1",
+        "Fei-Yu Diao (2021) Single-Cell Landscape of Liver Cancer in Response to Immunotherapy doi:10.4103/apjon.apjon-2165"
+      ]
+    }
+  ],
+  "suspended_problems": [
+    {
+      "problem": "Single-Cell Landscape of Liver Cancer in Response to Immunotherapy However, the underlying mechanisms that regulate tumor cell evolution are still unknown.",
+      "years_unresolved": 5,
+      "citation_count": 0,
+      "evidence_level": "unknown",
+      "barrier_to_progress": "mechanistic uncertainty",
+      "supporting_references": [
+        "Fei-Yu Diao (2021) Single-Cell Landscape of Liver Cancer in Response to Immunotherapy doi:10.4103/apjon.apjon-2165"
+      ]
+    },
+    {
+      "problem": "Single-Cell Landscape of Liver Cancer in Response to Immunotherapy Primary liver cancer is the sixth most commonly diagnosed cancer in the world, with 905,677 new cases of liver cancer in 2020, and the third leading cause of cancer death globally. The liver ca...[truncated]",
+      "years_unresolved": 5,
+      "citation_count": 0,
+      "evidence_level": "unknown",
+      "barrier_to_progress": "data or measurement bottleneck",
+      "supporting_references": [
+        "Fei-Yu Diao (2021) Single-Cell Landscape of Liver Cancer in Response to Immunotherapy doi:10.4103/apjon.apjon-2165"
+      ]
+    },
+    {
+      "problem": "Genomics-guided Representation Learning for Pathologic Pan-cancer Tumor Microenvironment Subtype Prediction Full text excerpt: PathoTME, a genomics-guided Siamese representation learning framework for pan-cancer TME subtype prediction using Whole Slide Images...[truncated]",
+      "years_unresolved": 2,
+      "citation_count": 0,
+      "evidence_level": "unknown",
+      "barrier_to_progress": "unspecified conceptual or technical barrier",
+      "supporting_references": [
+        "Fangliangzi Meng et al. (2024) Genomics-guided Representation Learning for Pathologic Pan-cancer Tumor Microenvironment Subtype Prediction arXiv:2406.06517v2"
+      ]
+    },
+    {
+      "problem": "Genomics-guided Representation Learning for Pathologic Pan-cancer Tumor Microenvironment Subtype Prediction The characterization of Tumor MicroEnvironment (TME) is challenging due to its complexity and heterogeneity. Relatively consistent TME characteristics e...[truncated]",
+      "years_unresolved": 2,
+      "citation_count": 0,
+      "evidence_level": "unknown",
+      "barrier_to_progress": "data or measurement bottleneck",
+      "supporting_references": [
+        "Fangliangzi Meng et al. (2024) Genomics-guided Representation Learning for Pathologic Pan-cancer Tumor Microenvironment Subtype Prediction arXiv:2406.06517v2"
+      ]
+    },
+    {
+      "problem": "Immune cells interactions in the tumor microenvironment No explicit limitation extracted.",
+      "years_unresolved": 2,
+      "citation_count": 0,
+      "evidence_level": "unknown",
+      "barrier_to_progress": "unspecified conceptual or technical barrier",
+      "supporting_references": [
+        "Mobina Tousian et al. (2024) Immune cells interactions in the tumor microenvironment arXiv:2405.18452v1"
+      ]
+    },
+    {
+      "problem": "Immune cells interactions in the tumor microenvironment The tumor microenvironment (TME) plays a critical role in cancer cell proliferation, invasion, and resistance to therapy. A principal component of the TME is the tumor immune microenvironment (TIME), whic...[truncated]",
+      "years_unresolved": 2,
+      "citation_count": 0,
+      "evidence_level": "unknown",
+      "barrier_to_progress": "unspecified conceptual or technical barrier",
+      "supporting_references": [
+        "Mobina Tousian et al. (2024) Immune cells interactions in the tumor microenvironment arXiv:2405.18452v1"
+      ]
+    },
+    {
+      "problem": "Artificial Intelligence in Cancer Research: Pioneering Biomarker Discovery for Pharmacological Advances Challenges in standardizing data, model interpretation, and ethical implementation; algorithmic bias and restricted diversity in training datasets risk exac...[truncated]",
+      "years_unresolved": 1,
+      "citation_count": 0,
+      "evidence_level": "unknown",
+      "barrier_to_progress": "data or measurement bottleneck",
+      "supporting_references": [
+        "Dipti Bhattacharya et al. (2025) Artificial Intelligence in Cancer Research: Pioneering Biomarker Discovery for Pharmacological Advances doi:10.47583/ijpsrr.2025.v85i5.008"
+      ]
+    },
+    {
+      "problem": "Artificial Intelligence in Cancer Research: Pioneering Biomarker Discovery for Pharmacological Advances Molecular heterogeneity of cancer and dynamic nature present major challenges to effective therapy establishment, calling for the highest-level strategies t...[truncated]",
+      "years_unresolved": 1,
+      "citation_count": 0,
+      "evidence_level": "unknown",
+      "barrier_to_progress": "data or measurement bottleneck",
+      "supporting_references": [
+        "Dipti Bhattacharya et al. (2025) Artificial Intelligence in Cancer Research: Pioneering Biomarker Discovery for Pharmacological Advances doi:10.47583/ijpsrr.2025.v85i5.008"
+      ]
+    },
+    {
+      "problem": "Tumor-associated CD19$^+$ macrophages induce immunosuppressive microenvironment in hepatocellular carcinoma Abstract: Tumor-associated macrophages are a key component that contributes to the immunosuppressive microenvironment in human cancers. However, therape...[truncated]",
+      "years_unresolved": 1,
+      "citation_count": 0,
+      "evidence_level": "unknown",
+      "barrier_to_progress": "mechanistic uncertainty",
+      "supporting_references": [
+        "Junli Wang et al. (2025) Tumor-associated CD19$^+$ macrophages induce immunosuppressive microenvironment in hepatocellular carcinoma arXiv:2503.17738v1"
+      ]
+    },
+    {
+      "problem": "Tumor-associated CD19$^+$ macrophages induce immunosuppressive microenvironment in hepatocellular carcinoma Tumor-associated macrophages are a key component that contributes to the immunosuppressive microenvironment in human cancers. However, therapeutic targe...[truncated]",
+      "years_unresolved": 1,
+      "citation_count": 0,
+      "evidence_level": "unknown",
+      "barrier_to_progress": "mechanistic uncertainty",
+      "supporting_references": [
+        "Junli Wang et al. (2025) Tumor-associated CD19$^+$ macrophages induce immunosuppressive microenvironment in hepatocellular carcinoma arXiv:2503.17738v1"
+      ]
+    }
+  ],
+  "ranked_gaps": [
+    {
+      "rank": 1,
+      "gap_id": "gap_1783336249557876800",
+      "gap_description": "Cross-disciplinary unconnected pair: 'anti-cd19 chimeric antigen receptor t' from agriculture and 'imaging and characterization' from biology have no recorded bridge in the current PaperGraph.",
+      "gap_type": "migration",
+      "exploration_value_score": 10,
+      "importance": "high",
+      "tractability": "medium",
+      "strategic_alignment": [
+        {
+          "strategic_domain": "AI for Science",
+          "matched_keywords": [
+            "ai"
+          ],
+          "alignment_score": 6
+        }
+      ],
+      "supporting_references": [
+        "Junli Wang et al. (2025) Tumor-associated CD19$^+$ macrophages induce immunosuppressive microenvironment in hepatocellular carcinoma arXiv:2503.17738v1",
+        "Fangliangzi Meng et al. (2024) Genomics-guided Representation Learning for Pathologic Pan-cancer Tumor Microenvironment Subtype Prediction arXiv:2406.06517v2"
+      ],
+      "recommended_approach": "Formulate a transfer hypothesis, audit incompatible assumptions, then run a minimal bridge experiment or benchmark.",
+      "ranking_reason": "novelty=7, refs=2, application=medium, feasibility=medium, type=migration, strategic_matches=1, density_bonus=1"
+    },
+    {
+      "rank": 2,
+      "gap_id": "gap_1783336249587515200",
+      "gap_description": "Cross-disciplinary unconnected pair: 'biological activity' from agriculture and 'imaging and characterization' from biology have no recorded bridge in the current PaperGraph.",
+      "gap_type": "migration",
+      "exploration_value_score": 10,
+      "importance": "high",
+      "tractability": "medium",
+      "strategic_alignment": [
+        {
+          "strategic_domain": "AI for Science",
+          "matched_keywords": [
+            "ai"
+          ],
+          "alignment_score": 6
+        }
+      ],
+      "supporting_references": [
+        "Junli Wang et al. (2025) Tumor-associated CD19$^+$ macrophages induce immunosuppressive microenvironment in hepatocellular carcinoma arXiv:2503.17738v1",
+        "Fangliangzi Meng et al. (2024) Genomics-guided Representation Learning for Pathologic Pan-cancer Tumor Microenvironment Subtype Prediction arXiv:2406.06517v2"
+      ],
+      "recommended_approach": "Formulate a transfer hypothesis, audit incompatible assumptions, then run a minimal bridge experiment or benchmark.",
+      "ranking_reason": "novelty=7, refs=2, application=medium, feasibility=medium, type=migration, strategic_matches=1, density_bonus=1"
+    },
+    {
+      "rank": 3,
+      "gap_id": "gap_1783336249591718600",
+      "gap_description": "Cross-disciplinary unconnected pair: 'biological activity' from agriculture and 'pan-cancer tumor microenvironment subtype prediction' from biology have no recorded bridge in the current PaperGraph.",
+      "gap_type": "migration",
+      "exploration_value_score": 10,
+      "importance": "high",
+      "tractability": "medium",
+      "strategic_alignment": [
+        {
+          "strategic_domain": "AI for Science",
+          "matched_keywords": [
+            "ai"
+          ],
+          "alignment_score": 6
+        }
+      ],
+      "supporting_references": [
+        "Junli Wang et al. (2025) Tumor-associated CD19$^+$ macrophages induce immunosuppressive microenvironment in hepatocellular carcinoma arXiv:2503.17738v1",
+        "Fangliangzi Meng et al. (2024) Genomics-guided Representation Learning for Pathologic Pan-cancer Tumor Microenvironment Subtype Prediction arXiv:2406.06517v2"
+      ],
+      "recommended_approach": "Formulate a transfer hypothesis, audit incompatible assumptions, then run a minimal bridge experiment or benchmark.",
+      "ranking_reason": "novelty=7, refs=2, application=medium, feasibility=medium, type=migration, strategic_matches=1, density_bonus=2"
+    },
+    {
+      "rank": 4,
+      "gap_id": "gap_1783336249572392600",
+      "gap_description": "Cross-disciplinary unconnected pair: 'hepatocellular carcinoma | tumor-associated macrophage heterogeneity | immunosuppressive tumor microenvironment' from agriculture and 'imaging and characterization' from biology have no recorded bridge in the current PaperGraph.",
+      "gap_type": "migration",
+      "exploration_value_score": 10,
+      "importance": "high",
+      "tractability": "medium",
+      "strategic_alignment": [
+        {
+          "strategic_domain": "AI for Science",
+          "matched_keywords": [
+            "ai"
+          ],
+          "alignment_score": 6
+        }
+      ],
+      "supporting_references": [
+        "Junli Wang et al. (2025) Tumor-associated CD19$^+$ macrophages induce immunosuppressive microenvironment in hepatocellular carcinoma arXiv:2503.17738v1",
+        "Fangliangzi Meng et al. (2024) Genomics-guided Representation Learning for Pathologic Pan-cancer Tumor Microenvironment Subtype Prediction arXiv:2406.06517v2"
+      ],
+      "recommended_approach": "Formulate a transfer hypothesis, audit incompatible assumptions, then run a minimal bridge experiment or benchmark.",
+      "ranking_reason": "novelty=7, refs=2, application=medium, feasibility=medium, type=migration, strategic_matches=1, density_bonus=2"
+    },
+    {
+      "rank": 5,
+      "gap_id": "gap_1783336249524350500",
+      "gap_description": "Density hole: 'agent-based model' has no recorded validation in 'cancer diagnosis and therapy'.",
+      "gap_type": "combinatorial",
+      "exploration_value_score": 10,
+      "importance": "high",
+      "tractability": "high",
+      "strategic_alignment": [
+        {
+          "strategic_domain": "health",
+          "matched_keywords": [
+            "therapy",
+            "diagnosis"
+          ],
+          "alignment_score": 8
+        },
+        {
+          "strategic_domain": "AI for Science",
+          "matched_keywords": [
+            "agent",
+            "model"
+          ],
+          "alignment_score": 8
+        }
+      ],
+      "supporting_references": [
+        "Dipti Bhattacharya et al. (2025) Artificial Intelligence in Cancer Research: Pioneering Biomarker Discovery for Pharmacological Advances doi:10.47583/ijpsrr.2025.v85i5.008",
+        "Mobina Tousian et al. (2024) Immune cells interactions in the tumor microenvironment arXiv:2405.18452v1"
+      ],
+      "recommended_approach": "Use the dense neighboring literature as controls, then test the sparse intersection with explicit benchmark coverage.",
+      "ranking_reason": "novelty=4, refs=2, application=medium, feasibility=high, type=combinatorial, strategic_matches=2, density_bonus=2"
+    }
+  ],
+  "constraints_checked": {
+    "requires_supporting_reference": true,
+    "filters_trivial_low_novelty": true,
+    "max_gaps": 5
+  }
+}

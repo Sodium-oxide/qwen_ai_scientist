@@ -1,0 +1,801 @@
+{
+  "project_id": "sci_1783341976698302400",
+  "title": "AI增强化学成像与蛋白质相互作用动态监测验证",
+  "domain": "AI-enhanced chemical imaging methods for dynamic monitoring of protein-protein interactions",
+  "objective": "验证 ZhiZhi → TanXi → MingLi 从文献检索、知识图谱、gap发现到可验证假设生成的闭环。",
+  "strategic_need": "",
+  "phase": "Gap Discovery",
+  "createdAt": 1783341976.6983068,
+  "updatedAt": 1783342377.6129508,
+  "papergraph": [
+    {
+      "paper_id": "paper_1783342291486584700",
+      "unique_key": "doi:10_26434_chemrxiv_2025_lsxpc",
+      "title": "Self-Supervised Deep-Learning Denoising for X-Ray Fluorescence Microscopy with Multi-Element Detectors",
+      "citation": "Rodion Shishkov et al. (2025) Self-Supervised Deep-Learning Denoising for X-Ray Fluorescence Microscopy with Multi-Element Detectors doi:10.26434/chemrxiv-2025-lsxpc",
+      "authors": [
+        "Rodion Shishkov"
+      ],
+      "year": "2025",
+      "venue": "ChemRxiv",
+      "provider": "chemrxiv",
+      "source_type": "crossref_api",
+      "doi": "10.26434/chemrxiv-2025-lsxpc",
+      "arxiv_id": "",
+      "semantic_scholar_id": "",
+      "url": "https://doi.org/10.26434/chemrxiv-2025-lsxpc",
+      "abstract": "Scanning emission-based microscopies, such as X-ray fluorescence (XRF) and energy-dispersive X-ray spectroscopy, offer nanometer-scale chemical maps, but suffer from long acquisition times and radiation damage. Lower-flux and shorter dwell time scans mitigate this problem, but the resulting signal loss can only partially be compensated by adding detector elements, a strategy limited by the instrument’s geometry and cost. We introduce an unsupervised machine learning pipeline that recovers signal by exploiting the intrinsic redundancy in the data captured by multi-element detectors. Inspired by the Noise2Noise approach, we train a deep convolutional neural network directly on the multiple, statistically independent noisy images collected by individual detector elements, without requiring clean training targets. Tested on a resolution target and a cryogenically fixed biological cell, the method markedly improved signal-to-noise ratios over classical filters while preserving spatial resolution and elemental quantification even for small images. To our knowledge, this is the first ML-based denoiser demonstrated for XRF. This approach reduces the dependence of image quality on photon dose and enables rapid, low-dose chemical imaging. It is readily transferable to any modality that records parallel, noise-independent views of the same sample.",
+      "full_text_excerpt": "",
+      "conclusion": "Full text excerpt:",
+      "strengths": [
+        "markedly improved signal-to-noise ratios over classical filters",
+        "preserves spatial resolution and elemental quantification",
+        "first ML-based denoiser demonstrated for XRF",
+        "reduces dependence of image quality on photon dose",
+        "enables rapid, low-dose chemical imaging",
+        "readily transferable to any modality recording parallel, noise-independent views"
+      ],
+      "improvements": [
+        "extend to other modalities recording parallel, noise-independent views"
+      ],
+      "method": "imaging and characterization",
+      "scenario": "X-ray fluorescence (XRF) microscopy with multi-element detectors",
+      "benchmark": "signal-to-noise ratio",
+      "contribution": "First self-supervised deep-learning denoising pipeline for XRF microscopy that improves SNR without clean targets while preserving spatial resolution and elemental quantification.",
+      "limitation": "Strategy of adding detector elements is limited by instrument geometry and cost.",
+      "credibility_score": 0.77,
+      "credibility_reasons": [
+        "base record",
+        "has title and citation",
+        "has DOI",
+        "has URL",
+        "has substantial abstract",
+        "provider recorded",
+        "preprint venue",
+        "has publication year"
+      ],
+      "extraction_quality": {
+        "score": 1.0,
+        "unknown_ratio": 0.0,
+        "unknown_fields": [],
+        "abstract_chars": 1358,
+        "flags": [],
+        "needs_enrichment": false,
+        "needs_llm_retry": false,
+        "requires_human_review": false,
+        "initial": {
+          "score": 0.28,
+          "unknown_ratio": 1.0,
+          "unknown_fields": [
+            "method",
+            "scenario",
+            "benchmark"
+          ],
+          "abstract_chars": 1368,
+          "flags": [
+            "missing_conclusion",
+            "unknown_fields",
+            "unknown_fields_high",
+            "missing_benchmark"
+          ],
+          "needs_enrichment": false,
+          "needs_llm_retry": true,
+          "requires_human_review": true
+        },
+        "llm_retry": {
+          "attempted": true,
+          "succeeded": true,
+          "error": "",
+          "extractor": "qwen_json"
+        }
+      },
+      "enrichment_sources": [],
+      "gap_signals": [
+        {
+          "signal_id": "sig_1783342291484656200",
+          "signal_type": "limitation",
+          "text": "Lower-flux and shorter dwell time scans mitigate this problem, but the resulting signal loss can only partially be compensated by adding detector elements, a strategy limited by the instrument’s geometry and cost.",
+          "evidence_type": "author_opinion",
+          "supporting_reference": "Rodion Shishkov et al. (2025) Self-Supervised Deep-Learning Denoising for X-Ray Fluorescence Microscopy with Multi-Element Detectors doi:10.26434/chemrxiv-2025-lsxpc",
+          "confidence": 0.87
+        },
+        {
+          "signal_id": "sig_1783342291384060100",
+          "signal_type": "limitation",
+          "text": "Adding detector elements is limited by the instrument’s geometry and cost.",
+          "evidence_type": "author_opinion",
+          "supporting_reference": "Rodion Shishkov et al. (2025) Self-Supervised Deep-Learning Denoising for X-Ray Fluorescence Microscopy with Multi-Element Detectors doi:10.26434/chemrxiv-2025-lsxpc",
+          "confidence": 0.82
+        },
+        {
+          "signal_id": "sig_1783342291484847600",
+          "signal_type": "limitation",
+          "text": "Strategy of adding detector elements is limited by instrument geometry and cost.",
+          "evidence_type": "author_opinion",
+          "supporting_reference": "Rodion Shishkov et al. (2025) Self-Supervised Deep-Learning Denoising for X-Ray Fluorescence Microscopy with Multi-Element Detectors doi:10.26434/chemrxiv-2025-lsxpc",
+          "confidence": 0.82
+        },
+        {
+          "signal_id": "sig_1783342291384123300",
+          "signal_type": "future_work",
+          "text": "It is readily transferable to any modality that records parallel, noise-independent views of the same sample.",
+          "evidence_type": "author_opinion",
+          "supporting_reference": "Rodion Shishkov et al. (2025) Self-Supervised Deep-Learning Denoising for X-Ray Fluorescence Microscopy with Multi-Element Detectors doi:10.26434/chemrxiv-2025-lsxpc",
+          "confidence": 0.78
+        }
+      ],
+      "importedAt": 1783342291.4866107
+    },
+    {
+      "paper_id": "paper_1783342315153793600",
+      "unique_key": "doi:10_26434_chemrxiv_2025_w7lbt",
+      "title": "Live-cell imaging analysis of the intracellular behavior of C-type lectin receptor Mincle and its ligand using newly developed fluorescence-labeled molecular probes based on trehalose diester",
+      "citation": "Takanori Matsumaru et al. (2025) Live-cell imaging analysis of the intracellular behavior of C-type lectin receptor Mincle and its ligand using newly developed fluorescence-labeled molecular probes based on trehalose diester doi:10.26434/chemrxiv-2025-w7lbt",
+      "authors": [
+        "Takanori Matsumaru"
+      ],
+      "year": "2025",
+      "venue": "ChemRxiv",
+      "provider": "chemrxiv",
+      "source_type": "crossref_api",
+      "doi": "10.26434/chemrxiv-2025-w7lbt",
+      "arxiv_id": "",
+      "semantic_scholar_id": "",
+      "url": "https://doi.org/10.26434/chemrxiv-2025-w7lbt",
+      "abstract": "Mincle, a member of the C-type lectin receptor (CLR) family, detects various glycolipids and glycerolipids, such as trehalose dimycolate (TDM) from Mycobacterium tuberculosis, leading to the activation of the innate immune system. In this study, we developed new fluorescence-labeled molecular probes, N-NBD-labeled TDE and O-NBD-labeled TDE, based on the structure of trehalose diester to elucidate the intracellular behavior of Mincle and its ligands. N-NBD-labeled TDE was prepared for the ligand analysis, and O-NBD-labeled TDE was specifically designed to label Mincle by Turn-ON fluorescent affinity labeling. Live-cell imaging analysis using these probes revealed that N-NBD-labeled TDE internalizes into the cell in a Mincle-dependent manner. Furthermore, imaging analysis using O-NBD-labeled TDE successfully detected Mincle in cells in a Mincle expression-dependent manner.",
+      "full_text_excerpt": "",
+      "conclusion": "Full text excerpt:",
+      "strengths": [],
+      "improvements": [
+        "No explicit limitation extracted."
+      ],
+      "method": "imaging and characterization",
+      "scenario": "intracellular behavior of C-type lectin receptor Mincle and its ligands",
+      "benchmark": "Mincle-dependent internalization | Mincle expression-dependent detection",
+      "contribution": "Development and application of two novel fluorescence-labeled trehalose diester probes enabling live-cell visualization of Mincle–ligand interactions, with N-NBD-TDE reporting ligand uptake and O-NBD-TDE enabling Turn-ON fluorescent affinity labeling of Mincle.",
+      "limitation": "No explicit limitation extracted.",
+      "credibility_score": 0.77,
+      "credibility_reasons": [
+        "base record",
+        "has title and citation",
+        "has DOI",
+        "has URL",
+        "has substantial abstract",
+        "provider recorded",
+        "preprint venue",
+        "has publication year"
+      ],
+      "extraction_quality": {
+        "score": 1.0,
+        "unknown_ratio": 0.0,
+        "unknown_fields": [],
+        "abstract_chars": 883,
+        "flags": [],
+        "needs_enrichment": false,
+        "needs_llm_retry": false,
+        "requires_human_review": false,
+        "initial": {
+          "score": 0.28,
+          "unknown_ratio": 1.0,
+          "unknown_fields": [
+            "method",
+            "scenario",
+            "benchmark"
+          ],
+          "abstract_chars": 883,
+          "flags": [
+            "missing_conclusion",
+            "unknown_fields",
+            "unknown_fields_high",
+            "missing_benchmark"
+          ],
+          "needs_enrichment": false,
+          "needs_llm_retry": true,
+          "requires_human_review": true
+        },
+        "llm_retry": {
+          "attempted": true,
+          "succeeded": true,
+          "error": "",
+          "extractor": "qwen_json"
+        }
+      },
+      "enrichment_sources": [],
+      "gap_signals": [],
+      "importedAt": 1783342315.1538146
+    },
+    {
+      "paper_id": "paper_1783342337044146100",
+      "unique_key": "doi:10_26434_chemrxiv_2024_kl8mp_v2",
+      "title": "Fluorescence Lifetime Imaging Microscopy (FLIM) as a Tool to Understand Chemical Reactions and Catalysis",
+      "citation": "Pia Lopez et al. (2024) Fluorescence Lifetime Imaging Microscopy (FLIM) as a Tool to Understand Chemical Reactions and Catalysis doi:10.26434/chemrxiv-2024-kl8mp-v2",
+      "authors": [
+        "Pia Lopez"
+      ],
+      "year": "2024",
+      "venue": "ChemRxiv",
+      "provider": "chemrxiv",
+      "source_type": "crossref_api",
+      "doi": "10.26434/chemrxiv-2024-kl8mp-v2",
+      "arxiv_id": "",
+      "semantic_scholar_id": "",
+      "url": "https://doi.org/10.26434/chemrxiv-2024-kl8mp-v2",
+      "abstract": "Fluorescence lifetime imaging microscopy (FLIM) is an emerging tool to characterize ongoing chemical reactions in synthetic chemistry and catalysis. Initially applied to biological systems, FLIM now reveals spatially resolved chemical reaction species and system-wide physiochemical changes that accompany ongoing reactions. FLIM combines the advantage of environmental sensitivity with high signal sensitivity (as sensitive as single molecules) and has the key ability to operate under synthetic conditions (e.g., high concentrations of reagents, in organic solvents, under ambient temperature and pressure, in opaque mixtures, and in multiphasic systems). Chemical reactions inherently induce changes in the reaction medium, neighboring compounds, surface compositions, and/or the bonding structure of the compounds involved, resulting in environmental changes. The FLIM methods recently developed harness and interpret these changes in ways that lead to characterizing compounds and enhancing mechanistic understanding. Here, current advantages and limitations of FLIM method are considered, common factors influencing fluorescence lifetime in chemical systems are discussed in a tutorial format, and seven research case studies are strategically analyzed—chosen to highlight how FLIM provided complementary information to understand chemical reaction mechanisms, intermediates, product distributions, partitioning, roles of reagents, and catalyst behaviors. These data and insights obtained from FLIM assist the rational design and optimization of synthetic and catalytic methods.",
+      "full_text_excerpt": "",
+      "conclusion": "Full text excerpt:",
+      "strengths": [
+        "environmental sensitivity",
+        "high signal sensitivity (as sensitive as single molecules)",
+        "ability to operate under synthetic conditions (e.g., high concentrations of reagents, in organic solvents, under ambient temperature and pressure, in opaque mixtures, and in multiphasic systems)"
+      ],
+      "improvements": [
+        "Abstract: Fluorescence lifetime imaging microscopy (FLIM) is an emerging tool to characterize ongoing chemical reactions in synthetic chemistry and catalysis. Initially applied to biological systems, FLIM now reveals spatially resolved chemical reaction species and system-wide physiochemical changes...[truncated]"
+      ],
+      "method": "Fluorescence lifetime imaging microscopy (FLIM)",
+      "scenario": "chemical reactions and catalysis",
+      "benchmark": "diagnostic performance",
+      "contribution": "FLIM provides complementary information to understand chemical reaction mechanisms, intermediates, product distributions, partitioning, roles of reagents, and catalyst behaviors, assisting rational design and optimization of synthetic and catalytic methods.",
+      "limitation": "Current advantages and limitations of FLIM method are considered.",
+      "credibility_score": 0.77,
+      "credibility_reasons": [
+        "base record",
+        "has title and citation",
+        "has DOI",
+        "has URL",
+        "has substantial abstract",
+        "provider recorded",
+        "preprint venue",
+        "has publication year"
+      ],
+      "extraction_quality": {
+        "score": 1.0,
+        "unknown_ratio": 0.0,
+        "unknown_fields": [],
+        "abstract_chars": 1584,
+        "flags": [],
+        "needs_enrichment": false,
+        "needs_llm_retry": false,
+        "requires_human_review": false,
+        "initial": {
+          "score": 0.28,
+          "unknown_ratio": 1.0,
+          "unknown_fields": [
+            "method",
+            "scenario",
+            "benchmark"
+          ],
+          "abstract_chars": 1584,
+          "flags": [
+            "missing_conclusion",
+            "unknown_fields",
+            "unknown_fields_high",
+            "missing_benchmark"
+          ],
+          "needs_enrichment": false,
+          "needs_llm_retry": true,
+          "requires_human_review": true
+        },
+        "llm_retry": {
+          "attempted": true,
+          "succeeded": true,
+          "error": "",
+          "extractor": "qwen_json"
+        }
+      },
+      "enrichment_sources": [],
+      "gap_signals": [
+        {
+          "signal_id": "sig_1783342336940929500",
+          "signal_type": "limitation",
+          "text": "Current advantages and limitations of FLIM method are considered.",
+          "evidence_type": "author_opinion",
+          "supporting_reference": "Pia Lopez et al. (2024) Fluorescence Lifetime Imaging Microscopy (FLIM) as a Tool to Understand Chemical Reactions and Catalysis doi:10.26434/chemrxiv-2024-kl8mp-v2",
+          "confidence": 0.82
+        },
+        {
+          "signal_id": "sig_1783342337042371400",
+          "signal_type": "limitation",
+          "text": "Here, current advantages and limitations of FLIM method are considered, common factors influencing fluorescence lifetime in chemical systems are discussed in a tutorial format, and seven research case studies are strategically analyzed—chosen to highlight how FLIM provided complementary information to understand chemical reaction mechanisms, intermediates, p...[truncated]",
+          "evidence_type": "author_opinion",
+          "supporting_reference": "Pia Lopez et al. (2024) Fluorescence Lifetime Imaging Microscopy (FLIM) as a Tool to Understand Chemical Reactions and Catalysis doi:10.26434/chemrxiv-2024-kl8mp-v2",
+          "confidence": 0.82
+        }
+      ],
+      "importedAt": 1783342337.044161
+    },
+    {
+      "paper_id": "paper_1783342366221522600",
+      "unique_key": "doi:10_26434_chemrxiv_2024_kl8mp",
+      "title": "Fluorescence Lifetime Imaging Microscopy (FLIM) as a Tool to Understand Chemical Reactions and Catalysis",
+      "citation": "Pia Lopez et al. (2024) Fluorescence Lifetime Imaging Microscopy (FLIM) as a Tool to Understand Chemical Reactions and Catalysis doi:10.26434/chemrxiv-2024-kl8mp",
+      "authors": [
+        "Pia Lopez"
+      ],
+      "year": "2024",
+      "venue": "ChemRxiv",
+      "provider": "chemrxiv",
+      "source_type": "crossref_api",
+      "doi": "10.26434/chemrxiv-2024-kl8mp",
+      "arxiv_id": "",
+      "semantic_scholar_id": "",
+      "url": "https://doi.org/10.26434/chemrxiv-2024-kl8mp",
+      "abstract": "Fluorescence lifetime imaging microscopy (FLIM) is an emerging tool to characterize ongoing chemical reactions in synthetic chemistry and catalysis. Initially applied to biological systems, FLIM now reveals spatially resolved chemical reaction species and system-wide physiochemical changes that accompany ongoing reactions. FLIM combines the advantage of environmental sensitivity with high signal sensitivity (as sensitive as single molecules) and has the key ability to operate under synthetic conditions (e.g., high concentrations of reagents, in organic solvents, under ambient temperature and pressure, in opaque mixtures, and in multiphasic systems). Chemical reactions inherently induce changes in the reaction medium, neighboring compounds, surface compositions, and/or the bonding structure of the compounds involved, resulting in environmental changes. The FLIM methods recently developed harness and interpret these changes in ways that lead to characterizing compounds and enhancing mechanistic understanding. Here, current advantages and limitations of FLIM method are considered, common factors influencing fluorescence lifetime in chemical systems are discussed in a tutorial format, and seven research case studies are strategically analyzed—chosen to highlight how FLIM provided complementary information to understand chemical reaction mechanisms, intermediates, product distributions, partitioning, roles of reagents, and catalyst behaviors. These data and insights obtained from FLIM assist the rational design and optimization of synthetic and catalytic methods.",
+      "full_text_excerpt": "",
+      "conclusion": "Full text excerpt:",
+      "strengths": [
+        "environmental sensitivity",
+        "high signal sensitivity (as sensitive as single molecules)",
+        "ability to operate under synthetic conditions (e.g., high concentrations of reagents, in organic solvents, under ambient temperature and pressure, in opaque mixtures, and in multiphasic systems)"
+      ],
+      "improvements": [
+        "current advantages and limitations of FLIM method are considered",
+        "common factors influencing fluorescence lifetime in chemical systems are discussed in a tutorial format",
+        "seven research case studies are strategically analyzed"
+      ],
+      "method": "Fluorescence Lifetime Imaging Microscopy (FLIM)",
+      "scenario": "chemical reactions and catalysis",
+      "benchmark": "diagnostic performance",
+      "contribution": "FLIM provides complementary information to understand chemical reaction mechanisms, intermediates, product distributions, partitioning, roles of reagents, and catalyst behaviors, assisting rational design and optimization of synthetic and catalytic methods",
+      "limitation": "current advantages and limitations of FLIM method are considered",
+      "credibility_score": 0.77,
+      "credibility_reasons": [
+        "base record",
+        "has title and citation",
+        "has DOI",
+        "has URL",
+        "has substantial abstract",
+        "provider recorded",
+        "preprint venue",
+        "has publication year"
+      ],
+      "extraction_quality": {
+        "score": 1.0,
+        "unknown_ratio": 0.0,
+        "unknown_fields": [],
+        "abstract_chars": 1584,
+        "flags": [],
+        "needs_enrichment": false,
+        "needs_llm_retry": false,
+        "requires_human_review": false,
+        "initial": {
+          "score": 0.28,
+          "unknown_ratio": 1.0,
+          "unknown_fields": [
+            "method",
+            "scenario",
+            "benchmark"
+          ],
+          "abstract_chars": 1584,
+          "flags": [
+            "missing_conclusion",
+            "unknown_fields",
+            "unknown_fields_high",
+            "missing_benchmark"
+          ],
+          "needs_enrichment": false,
+          "needs_llm_retry": true,
+          "requires_human_review": true
+        },
+        "llm_retry": {
+          "attempted": true,
+          "succeeded": true,
+          "error": "",
+          "extractor": "qwen_json"
+        }
+      },
+      "enrichment_sources": [],
+      "gap_signals": [
+        {
+          "signal_id": "sig_1783342366219710600",
+          "signal_type": "limitation",
+          "text": "Full text excerpt: FLIM provides complementary information to understand chemical reaction mechanisms, intermediates, product distributions, partitioning, roles of reagents, and catalyst behaviors, assisting rational design and optimization of synthetic and catalytic methods current advantages and limitations of FLIM method are considered",
+          "evidence_type": "author_opinion",
+          "supporting_reference": "Pia Lopez et al. (2024) Fluorescence Lifetime Imaging Microscopy (FLIM) as a Tool to Understand Chemical Reactions and Catalysis doi:10.26434/chemrxiv-2024-kl8mp",
+          "confidence": 0.82
+        },
+        {
+          "signal_id": "sig_1783342366219595300",
+          "signal_type": "limitation",
+          "text": "Here, current advantages and limitations of FLIM method are considered, common factors influencing fluorescence lifetime in chemical systems are discussed in a tutorial format, and seven research case studies are strategically analyzed—chosen to highlight how FLIM provided complementary information to understand chemical reaction mechanisms, intermediates, p...[truncated]",
+          "evidence_type": "author_opinion",
+          "supporting_reference": "Pia Lopez et al. (2024) Fluorescence Lifetime Imaging Microscopy (FLIM) as a Tool to Understand Chemical Reactions and Catalysis doi:10.26434/chemrxiv-2024-kl8mp",
+          "confidence": 0.82
+        },
+        {
+          "signal_id": "sig_1783342366096921900",
+          "signal_type": "limitation",
+          "text": "current advantages and limitations of FLIM method are considered",
+          "evidence_type": "author_opinion",
+          "supporting_reference": "Pia Lopez et al. (2024) Fluorescence Lifetime Imaging Microscopy (FLIM) as a Tool to Understand Chemical Reactions and Catalysis doi:10.26434/chemrxiv-2024-kl8mp",
+          "confidence": 0.82
+        }
+      ],
+      "importedAt": 1783342366.2215376
+    }
+  ],
+  "evidence": [
+    {
+      "evidence_id": "ev_1783342291486709300",
+      "title": "Self-Supervised Deep-Learning Denoising for X-Ray Fluorescence Microscopy with Multi-Element Detectors",
+      "citation": "Rodion Shishkov et al. (2025) Self-Supervised Deep-Learning Denoising for X-Ray Fluorescence Microscopy with Multi-Element Detectors doi:10.26434/chemrxiv-2025-lsxpc",
+      "method": "imaging and characterization",
+      "scenario": "X-ray fluorescence (XRF) microscopy with multi-element detectors",
+      "benchmark": "signal-to-noise ratio",
+      "contribution": "First self-supervised deep-learning denoising pipeline for XRF microscopy that improves SNR without clean targets while preserving spatial resolution and elemental quantification.",
+      "limitation": "Strategy of adding detector elements is limited by instrument geometry and cost.",
+      "url": "https://doi.org/10.26434/chemrxiv-2025-lsxpc",
+      "createdAt": 1783342291.4867182
+    },
+    {
+      "evidence_id": "ev_1783342315153877900",
+      "title": "Live-cell imaging analysis of the intracellular behavior of C-type lectin receptor Mincle and its ligand using newly developed fluorescence-labeled molecular probes based on trehalose diester",
+      "citation": "Takanori Matsumaru et al. (2025) Live-cell imaging analysis of the intracellular behavior of C-type lectin receptor Mincle and its ligand using newly developed fluorescence-labeled molecular probes based on trehalose diester doi:10.26434/chemrxiv-2025-w7lbt",
+      "method": "imaging and characterization",
+      "scenario": "intracellular behavior of C-type lectin receptor Mincle and its ligands",
+      "benchmark": "Mincle-dependent internalization | Mincle expression-dependent detection",
+      "contribution": "Development and application of two novel fluorescence-labeled trehalose diester probes enabling live-cell visualization of Mincle–ligand interactions, with N-NBD-TDE reporting ligand uptake and O-NBD-TDE enabling Turn-ON fluorescent affinity labeling of Mincle.",
+      "limitation": "No explicit limitation extracted.",
+      "url": "https://doi.org/10.26434/chemrxiv-2025-w7lbt",
+      "createdAt": 1783342315.1538854
+    },
+    {
+      "evidence_id": "ev_1783342337044235800",
+      "title": "Fluorescence Lifetime Imaging Microscopy (FLIM) as a Tool to Understand Chemical Reactions and Catalysis",
+      "citation": "Pia Lopez et al. (2024) Fluorescence Lifetime Imaging Microscopy (FLIM) as a Tool to Understand Chemical Reactions and Catalysis doi:10.26434/chemrxiv-2024-kl8mp-v2",
+      "method": "Fluorescence lifetime imaging microscopy (FLIM)",
+      "scenario": "chemical reactions and catalysis",
+      "benchmark": "diagnostic performance",
+      "contribution": "FLIM provides complementary information to understand chemical reaction mechanisms, intermediates, product distributions, partitioning, roles of reagents, and catalyst behaviors, assisting rational design and optimization of synthetic and catalytic methods.",
+      "limitation": "Current advantages and limitations of FLIM method are considered.",
+      "url": "https://doi.org/10.26434/chemrxiv-2024-kl8mp-v2",
+      "createdAt": 1783342337.0442417
+    },
+    {
+      "evidence_id": "ev_1783342366221623700",
+      "title": "Fluorescence Lifetime Imaging Microscopy (FLIM) as a Tool to Understand Chemical Reactions and Catalysis",
+      "citation": "Pia Lopez et al. (2024) Fluorescence Lifetime Imaging Microscopy (FLIM) as a Tool to Understand Chemical Reactions and Catalysis doi:10.26434/chemrxiv-2024-kl8mp",
+      "method": "Fluorescence Lifetime Imaging Microscopy (FLIM)",
+      "scenario": "chemical reactions and catalysis",
+      "benchmark": "diagnostic performance",
+      "contribution": "FLIM provides complementary information to understand chemical reaction mechanisms, intermediates, product distributions, partitioning, roles of reagents, and catalyst behaviors, assisting rational design and optimization of synthetic and catalytic methods",
+      "limitation": "current advantages and limitations of FLIM method are considered",
+      "url": "https://doi.org/10.26434/chemrxiv-2024-kl8mp",
+      "createdAt": 1783342366.2216296
+    }
+  ],
+  "coverage_matrix": {},
+  "knowledge_gaps": [],
+  "hypotheses": [],
+  "keynotes": [
+    {
+      "keynote_id": "keynote_1783342301910639400",
+      "paper_id": "paper_1783342291486584700",
+      "search_id": "",
+      "result_index": null,
+      "title": "Self-Supervised Deep-Learning Denoising for X-Ray Fluorescence Microscopy with Multi-Element Detectors",
+      "createdAt": 1783342301.9106421,
+      "keynote": {
+        "title": "Self-Supervised Deep-Learning Denoising for X-Ray Fluorescence Microscopy with Multi-Element Detectors",
+        "core_problem": "Long acquisition times and radiation damage in X-ray fluorescence (XRF) microscopy; trade-off between photon dose, signal quality, and spatial/elemental fidelity when using low-flux or short-dwell scans.",
+        "contributions": [
+          "First ML-based denoiser demonstrated for XRF microscopy",
+          "Unsupervised deep-learning pipeline exploiting intrinsic redundancy across multi-element detector outputs",
+          "Noise2Noise-inspired training without clean ground-truth targets",
+          "Demonstrated preservation of spatial resolution and elemental quantification under low-dose conditions",
+          "Enables rapid, low-dose chemical imaging with reduced dependence on photon dose"
+        ],
+        "methods": [
+          "Unsupervised deep convolutional neural network trained on statistically independent noisy images from multiple detector elements",
+          "Inspired by Noise2Noise methodology"
+        ],
+        "experiments_or_evidence": [
+          "Tested on a resolution target",
+          "Tested on a cryogenically fixed biological cell",
+          "Marked improvement in signal-to-noise ratio over classical filters",
+          "Preservation of spatial resolution and elemental quantification even for small images"
+        ],
+        "assumptions": [
+          "Noisy images from different detector elements are statistically independent",
+          "Intrinsic redundancy exists across multi-element detector views of the same sample",
+          "The underlying signal is consistent across detector elements despite independent noise realizations"
+        ],
+        "limitations": [
+          "Strategy of adding detector elements is limited by instrument geometry and cost",
+          "Method relies on availability of multi-element detectors capturing parallel, noise-independent views"
+        ],
+        "gap_signals": [
+          {
+            "signal_id": "sig_1783342301910562300",
+            "signal_type": "limitation",
+            "text": "Method relies on availability of multi-element detectors capturing parallel, noise-independent views",
+            "evidence_type": "author_opinion",
+            "supporting_reference": "",
+            "confidence": 0.82
+          },
+          {
+            "signal_id": "sig_1783342301910532500",
+            "signal_type": "limitation",
+            "text": "Strategy of adding detector elements is limited by instrument geometry and cost",
+            "evidence_type": "author_opinion",
+            "supporting_reference": "",
+            "confidence": 0.82
+          },
+          {
+            "signal_id": "sig_1783342301910444100",
+            "signal_type": "novelty_claim",
+            "text": "To our knowledge, this is the first ML-based denoiser demonstrated for XRF.",
+            "evidence_type": "problem_statement",
+            "supporting_reference": "",
+            "confidence": 0.65
+          },
+          {
+            "signal_id": "sig_1783342301910500200",
+            "signal_type": "transferability_claim",
+            "text": "It is readily transferable to any modality that records parallel, noise-independent views of the same sample.",
+            "evidence_type": "problem_statement",
+            "supporting_reference": "",
+            "confidence": 0.6
+          }
+        ],
+        "datasets_or_materials": [
+          "Resolution target",
+          "Cryogenically fixed biological cell"
+        ],
+        "code_or_implementation": [],
+        "important_claims": [
+          {
+            "claim": "The method markedly improved signal-to-noise ratios over classical filters while preserving spatial resolution and elemental quantification even for small images.",
+            "evidence": "Tested on a resolution target and a cryogenically fixed biological cell."
+          },
+          {
+            "claim": "This approach reduces the dependence of image quality on photon dose and enables rapid, low-dose chemical imaging.",
+            "evidence": "Lower-flux and shorter dwell time scans mitigate radiation damage; method recovers signal without clean targets."
+          }
+        ],
+        "reuse_value_for_research": "High — provides a generalizable unsupervised denoising framework for any parallel, noise-independent multi-view imaging modality; eliminates need for ground-truth data or synthetic noise models.",
+        "extractor": "qwen_keynote"
+      }
+    },
+    {
+      "keynote_id": "keynote_1783342326137347700",
+      "paper_id": "paper_1783342315153793600",
+      "search_id": "",
+      "result_index": null,
+      "title": "Live-cell imaging analysis of the intracellular behavior of C-type lectin receptor Mincle and its ligand using newly developed fluorescence-labeled molecular probes based on trehalose diester",
+      "createdAt": 1783342326.1373503,
+      "keynote": {
+        "title": "Live-cell imaging analysis of the intracellular behavior of C-type lectin receptor Mincle and its ligand using newly developed fluorescence-labeled molecular probes based on trehalose diester",
+        "core_problem": "Lack of tools to dynamically visualize intracellular behavior of Mincle and its ligands in live cells.",
+        "contributions": [
+          "Development of two novel fluorescence-labeled trehalose diester (TDE) probes: N-NBD-labeled TDE for ligand tracking and O-NBD-labeled TDE for Turn-ON fluorescent affinity labeling of Mincle.",
+          "Demonstration of Mincle-dependent internalization of N-NBD-labeled TDE in live cells.",
+          "Successful detection of Mincle expression in live cells using O-NBD-labeled TDE in a Mincle expression-dependent manner."
+        ],
+        "methods": [
+          "Chemical synthesis of N-NBD-labeled TDE and O-NBD-labeled TDE.",
+          "Turn-ON fluorescent affinity labeling strategy using O-NBD-labeled TDE.",
+          "Live-cell fluorescence microscopy imaging.",
+          "Mincle-dependence validation via comparison across cell types with varying Mincle expression levels."
+        ],
+        "experiments_or_evidence": [
+          "Live-cell imaging showing internalization of N-NBD-labeled TDE is abolished or reduced in Mincle-deficient cells.",
+          "Fluorescence signal from O-NBD-labeled TDE correlates with Mincle expression level across tested cell lines."
+        ],
+        "assumptions": [
+          "O-NBD-labeled TDE selectively labels Mincle via specific binding and Turn-ON fluorescence activation.",
+          "N-NBD-labeled TDE behaves as a functional ligand analog retaining Mincle-binding and internalization properties.",
+          "Observed fluorescence signals reflect true subcellular localization and not artifacts (e.g., non-specific binding, probe degradation)."
+        ],
+        "limitations": [],
+        "gap_signals": [
+          {
+            "signal_id": "sig_1783342326137295300",
+            "signal_type": "biological_insight_gap",
+            "text": "Limited understanding of real-time intracellular trafficking and spatial distribution of Mincle–ligand complexes.",
+            "evidence_type": "problem_statement",
+            "supporting_reference": "",
+            "confidence": 0.6
+          },
+          {
+            "signal_id": "sig_1783342326137210100",
+            "signal_type": "methodological_gap",
+            "text": "Prior absence of live-cell-compatible, Mincle-specific fluorescent probes enabling dynamic intracellular tracking.",
+            "evidence_type": "problem_statement",
+            "supporting_reference": "",
+            "confidence": 0.6
+          }
+        ],
+        "datasets_or_materials": [],
+        "code_or_implementation": [],
+        "important_claims": [
+          {
+            "claim": "N-NBD-labeled TDE internalizes into cells in a Mincle-dependent manner.",
+            "evidence": "Live-cell imaging shows internalization is absent or diminished in Mincle-deficient cells."
+          },
+          {
+            "claim": "O-NBD-labeled TDE detects Mincle in a Mincle expression-dependent manner.",
+            "evidence": "Fluorescence signal intensity from O-NBD-labeled TDE scales with Mincle expression level across cell lines."
+          }
+        ],
+        "reuse_value_for_research": "Provides chemically defined, live-cell-compatible probes for studying CLR biology; enables future work on Mincle trafficking, ligand engagement kinetics, and host–pathogen interactions involving trehalose-containing ligands.",
+        "extractor": "qwen_keynote"
+      }
+    },
+    {
+      "keynote_id": "keynote_1783342349961013000",
+      "paper_id": "paper_1783342337044146100",
+      "search_id": "",
+      "result_index": null,
+      "title": "Fluorescence Lifetime Imaging Microscopy (FLIM) as a Tool to Understand Chemical Reactions and Catalysis",
+      "createdAt": 1783342349.961015,
+      "keynote": {
+        "title": "Fluorescence Lifetime Imaging Microscopy (FLIM) as a Tool to Understand Chemical Reactions and Catalysis",
+        "core_problem": "Characterizing ongoing chemical reactions and catalytic processes in situ with spatial resolution, especially under synthetically relevant conditions where conventional analytical tools fail.",
+        "contributions": [
+          "Positioning FLIM as an emerging tool for synthetic chemistry and catalysis beyond its traditional biological applications",
+          "Highlighting FLIM's ability to provide spatially resolved characterization of reaction species and physiochemical changes",
+          "Providing a tutorial on factors influencing fluorescence lifetime in chemical systems",
+          "Analyzing seven case studies demonstrating FLIM's complementary role in elucidating reaction mechanisms, intermediates, product distributions, partitioning, reagent roles, and catalyst behaviors",
+          "Connecting FLIM-derived insights to rational design and optimization of synthetic and catalytic methods"
+        ],
+        "methods": [
+          "Fluorescence lifetime imaging microscopy (FLIM)",
+          "Interpretation of environmental sensitivity of fluorescence lifetime",
+          "Tutorial-style analysis of lifetime-influencing factors (e.g., solvent polarity, viscosity, pH, molecular interactions, quenching)"
+        ],
+        "experiments_or_evidence": [
+          "Seven strategically selected research case studies",
+          "Demonstration of FLIM operation under synthetic conditions: high reagent concentrations, organic solvents, ambient temperature/pressure, opaque mixtures, multiphasic systems"
+        ],
+        "assumptions": [
+          "Fluorescent probes or intrinsic fluorophores report local environmental changes linked to reaction progress",
+          "Fluorescence lifetime changes are interpretable in complex chemical environments",
+          "Spatial lifetime heterogeneity correlates meaningfully with chemical heterogeneity (e.g., phase boundaries, catalyst localization, intermediate accumulation)"
+        ],
+        "limitations": [
+          "Limitations of FLIM method are discussed (but specific limitations not enumerated in provided text)"
+        ],
+        "gap_signals": [
+          {
+            "signal_id": "sig_1783342349960931200",
+            "signal_type": "limitation",
+            "text": "Limitations of FLIM method are discussed (but specific limitations not enumerated in provided text)",
+            "evidence_type": "author_opinion",
+            "supporting_reference": "",
+            "confidence": 0.82
+          },
+          {
+            "signal_id": "sig_1783342349960878200",
+            "signal_type": "capability_gap",
+            "text": "Conventional tools fail in opaque, multiphasic, or high-concentration synthetic conditions — FLIM addresses this by operating under such conditions.",
+            "evidence_type": "problem_statement",
+            "supporting_reference": "",
+            "confidence": 0.6
+          },
+          {
+            "signal_id": "sig_1783342349960814000",
+            "signal_type": "domain_gap",
+            "text": "Originally applied to biological systems, now extended to synthetic chemistry — suggesting cross-domain transfer and unmet needs in chemical reaction monitoring.",
+            "evidence_type": "problem_statement",
+            "supporting_reference": "",
+            "confidence": 0.6
+          },
+          {
+            "signal_id": "sig_1783342349960703100",
+            "signal_type": "methodological_gap",
+            "text": "FLIM is 'an emerging tool' for synthetic chemistry and catalysis — implying limited adoption and methodological standardization in these domains.",
+            "evidence_type": "problem_statement",
+            "supporting_reference": "",
+            "confidence": 0.6
+          }
+        ],
+        "datasets_or_materials": [],
+        "code_or_implementation": [],
+        "important_claims": [
+          {
+            "claim": "FLIM operates under synthetically relevant conditions including high reagent concentrations, organic solvents, ambient temperature and pressure, opaque mixtures, and multiphasic systems.",
+            "evidence": "Stated directly in abstract as a 'key ability'."
+          },
+          {
+            "claim": "Chemical reactions induce environmental changes (in medium, neighboring compounds, surfaces, bonding structures) that FLIM harnesses and interprets.",
+            "evidence": "Explicitly described in abstract as the foundational principle enabling FLIM's application."
+          },
+          {
+            "claim": "FLIM provides complementary information to understand reaction mechanisms, intermediates, product distributions, partitioning, reagent roles, and catalyst behaviors.",
+            "evidence": "Supported by analysis of seven research case studies."
+          }
+        ],
+        "reuse_value_for_research": "High reuse value as a conceptual and methodological bridge between optical microscopy and reaction engineering; enables spatially resolved, label-free (or minimally invasive) monitoring of reactions in challenging chemical environments — applicable to catalyst screening, reaction optimization, and mechanistic validation.",
+        "extractor": "qwen_keynote"
+      }
+    },
+    {
+      "keynote_id": "keynote_1783342377612600600",
+      "paper_id": "paper_1783342366221522600",
+      "search_id": "",
+      "result_index": null,
+      "title": "Fluorescence Lifetime Imaging Microscopy (FLIM) as a Tool to Understand Chemical Reactions and Catalysis",
+      "createdAt": 1783342377.6126027,
+      "keynote": {
+        "title": "Fluorescence Lifetime Imaging Microscopy (FLIM) as a Tool to Understand Chemical Reactions and Catalysis",
+        "core_problem": "Characterizing spatially resolved chemical reaction species and system-wide physiochemical changes during ongoing synthetic chemical reactions and catalysis.",
+        "contributions": [
+          "Demonstrates FLIM as a tool for spatially resolved characterization of chemical reactions under synthetically relevant conditions.",
+          "Provides a tutorial on factors influencing fluorescence lifetime in chemical systems.",
+          "Analyzes seven case studies showing how FLIM delivers complementary mechanistic insights (e.g., intermediates, product distributions, partitioning, catalyst behavior).",
+          "Discusses advantages and limitations of FLIM for chemistry applications."
+        ],
+        "methods": [
+          "Fluorescence lifetime imaging microscopy (FLIM)",
+          "Interpretation of fluorescence lifetime changes induced by environmental perturbations (e.g., polarity, viscosity, pH, binding, quenching)."
+        ],
+        "experiments_or_evidence": [
+          "Seven research case studies illustrating FLIM's utility in synthetic chemistry and catalysis.",
+          "Analysis of FLIM-derived data on reaction mechanisms, intermediates, product distributions, partitioning, reagent roles, and catalyst behaviors."
+        ],
+        "assumptions": [
+          "Fluorescence lifetime is sensitive to local physicochemical environment changes induced by chemical reactions.",
+          "Fluorophores (endogenous or exogenous) are present or can be introduced without perturbing reaction outcomes.",
+          "Lifetime signals can be disentangled from confounding photophysical effects (e.g., photobleaching, scattering) in complex reaction media."
+        ],
+        "limitations": [
+          "Limitations of FLIM method are discussed (exact limitations not specified in provided text)."
+        ],
+        "gap_signals": [
+          {
+            "signal_id": "sig_1783342377612552600",
+            "signal_type": "limitation",
+            "text": "Limitations of FLIM method are discussed (exact limitations not specified in provided text).",
+            "evidence_type": "author_opinion",
+            "supporting_reference": "",
+            "confidence": 0.82
+          },
+          {
+            "signal_id": "sig_1783342377612483600",
+            "signal_type": "application_gap",
+            "text": "Initially applied to biological systems — suggests underutilization in non-biological chemical contexts.",
+            "evidence_type": "problem_statement",
+            "supporting_reference": "",
+            "confidence": 0.6
+          },
+          {
+            "signal_id": "sig_1783342377612520900",
+            "signal_type": "interpretation_gap",
+            "text": "Requires tutorial on lifetime-influencing factors — indicates need for domain-specific photophysical literacy among chemists.",
+            "evidence_type": "problem_statement",
+            "supporting_reference": "",
+            "confidence": 0.6
+          },
+          {
+            "signal_id": "sig_1783342377612418200",
+            "signal_type": "methodological_gap",
+            "text": "FLIM is an emerging tool — implies limited adoption and standardized protocols in synthetic chemistry/catalysis.",
+            "evidence_type": "problem_statement",
+            "supporting_reference": "",
+            "confidence": 0.6
+          }
+        ],
+        "datasets_or_materials": [],
+        "code_or_implementation": [],
+        "important_claims": [
+          {
+            "claim": "FLIM operates under synthetic conditions (e.g., high reagent concentrations, organic solvents, ambient T/P, opaque/multiphasic mixtures).",
+            "evidence": "Stated directly in abstract as a 'key ability'."
+          },
+          {
+            "claim": "FLIM reveals spatially resolved chemical reaction species and system-wide physiochemical changes.",
+            "evidence": "Stated directly in abstract."
+          },
+          {
+            "claim": "FLIM provides complementary information to understand reaction mechanisms, intermediates, product distributions, partitioning, reagent roles, and catalyst behaviors.",
+            "evidence": "Supported by analysis of seven strategically chosen case studies."
+          }
+        ],
+        "reuse_value_for_research": "High — enables spatiotemporal, label-free (or minimally invasive), and environmentally sensitive monitoring of reactions in realistic synthetic environments; supports mechanistic hypothesis generation and rational optimization of catalytic systems.",
+        "extractor": "qwen_keynote"
+      }
+    }
+  ],
+  "mechanism_reports": [],
+  "pipeline_tasks": []
+}

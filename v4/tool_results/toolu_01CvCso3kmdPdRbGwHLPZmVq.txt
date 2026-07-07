@@ -1,0 +1,169 @@
+   1 | from __future__ import annotations
+   2 | 
+   3 | import argparse
+   4 | from typing import Any
+   5 | 
+   6 | try:
+   7 |     from .compact import compact_in_place, compact_messages, emergency_compact, is_prompt_too_long_error
+   8 |     from .config import MAX_TOKENS, MODEL_ID
+   9 |     from .hook import trigger_hook
+  10 |     from .llm import get_client
+  11 |     from .log import log_event
+  12 |     from .skill import build_system
+  13 |     from .tools import TOOL_HANDLERS, TOOLS
+  14 | except ImportError:
+  15 |     from compact import compact_in_place, compact_messages, emergency_compact, is_prompt_too_long_error
+  16 |     from config import MAX_TOKENS, MODEL_ID
+  17 |     from hook import trigger_hook
+  18 |     from llm import get_client
+  19 |     from log import log_event
+  20 |     from skill import build_system
+  21 |     from tools import TOOL_HANDLERS, TOOLS
+  22 | 
+  23 | 
+  24 | def block_to_dict(block: Any) -> dict[str, Any]:
+  25 |     if isinstance(block, dict):
+  26 |         return block
+  27 |     if hasattr(block, "model_dump"):
+  28 |         return block.model_dump(exclude_none=True)
+  29 |     if hasattr(block, "dict"):
+  30 |         return block.dict(exclude_none=True)
+  31 |     raise TypeError(f"Unsupported response block: {type(block)!r}")
+  32 | 
+  33 | 
+  34 | def block_attr(block: Any, name: str, default: Any = None) -> Any:
+  35 |     if isinstance(block, dict):
+  36 |         return block.get(name, default)
+  37 |     return getattr(block, name, default)
+  38 | 
+  39 | 
+  40 | def response_text(content: list[Any]) -> str:
+  41 |     parts: list[str] = []
+  42 |     for block in content:
+  43 |         if block_attr(block, "type") == "text":
+  44 |             parts.append(block_attr(block, "text", ""))
+  45 |     return "\n".join(part for part in parts if part)
+  46 | 
+  47 | 
+  48 | def tool_result(tool_use_id: str, output: str, is_error: bool = False) -> dict[str, Any]:
+  49 |     result: dict[str, Any] = {
+  50 |         "type": "tool_result",
+  51 |         "tool_use_id": tool_use_id,
+  52 |         "content": output,
+  53 |     }
+  54 |     if is_error:
+  55 |         result["is_error"] = True
+  56 |     return result
+  57 | 
+  58 | 
+  59 | def run_tool(block: Any, messages: list[dict[str, Any]]) -> dict[str, Any]:
+  60 |     name = block_attr(block, "name")
+  61 |     tool_input = block_attr(block, "input", {}) or {}
+  62 |     tool_use_id = block_attr(block, "id")
+  63 | 
+  64 |     blocked = trigger_hook("PreToolUse", block)
+  65 |     if blocked is not None:
+  66 |         return tool_result(tool_use_id, blocked, is_error=True)
+  67 | 
+  68 |     try:
+  69 |         if name == "compact":
+  70 |             focus = str(tool_input.get("focus", ""))
+  71 |             compact_in_place(messages, focus=focus, force_l0=True)
+  72 |             output = "Context compacted."
+  73 |         else:
+  74 |             handler = TOOL_HANDLERS[name]
+  75 |             output = handler(**tool_input)
+  76 |     except Exception as exc:
+  77 |         output = f"ERROR: {exc}"
+  78 |         trigger_hook("PostToolUse", block, output)
+  79 |         return tool_result(tool_use_id, output, is_error=True)
+  80 | 
+  81 |     trigger_hook("PostToolUse", block, output)
+  82 |     return tool_result(tool_use_id, output)
+  83 | 
+  84 | 
+  85 | def create_response(client: Any, user_input: str, messages: list[dict[str, Any]]) -> Any:
+  86 |     try:
+  87 |         return client.messages.create(
+  88 |             model=MODEL_ID,
+  89 |             max_tokens=MAX_TOKENS,
+  90 |             system=build_system(user_input),
+  91 |             messages=messages,
+  92 |             tools=TOOLS,
+  93 |         )
+  94 |     except Exception as exc:
+  95 |         if not is_prompt_too_long_error(exc):
+  96 |             raise
+  97 |         log_event("WARN", "prompt_too_long", action="emergency_compact")
+  98 |         messages[:] = emergency_compact(messages, focus=user_input)
+  99 |         return client.messages.create(
+ 100 |             model=MODEL_ID,
+ 101 |             max_tokens=MAX_TOKENS,
+ 102 |             system=build_system(user_input),
+ 103 |             messages=messages,
+ 104 |             tools=TOOLS,
+ 105 |         )
+ 106 | 
+ 107 | 
+ 108 | def run_agent(user_input: str) -> str:
+ 109 |     client = get_client()
+ 110 |     log_event("USER", "prompt", chars=len(user_input))
+ 111 |     injected = trigger_hook("UserPromptSubmit", user_input)
+ 112 |     prompt = injected if injected is not None else user_input
+ 113 |     messages: list[dict[str, Any]] = [{"role": "user", "content": prompt}]
+ 114 | 
+ 115 |     while True:
+ 116 |         messages[:] = compact_messages(messages)
+ 117 |         response = create_response(client, user_input, messages)
+ 118 | 
+ 119 |         if response.stop_reason == "end_turn":
+ 120 |             final_text = response_text(response.content)
+ 121 |             stop_injection = trigger_hook("Stop", final_text)
+ 122 |             if stop_injection is not None:
+ 123 |                 messages.append({"role": "user", "content": stop_injection})
+ 124 |                 continue
+ 125 |             log_event("AGENT", "final", text=final_text)
+ 126 |             return final_text
+ 127 | 
+ 128 |         tool_blocks = [
+ 129 |             block for block in response.content if block_attr(block, "type") == "tool_use"
+ 130 |         ]
+ 131 |         if not tool_blocks:
+ 132 |             final_text = response_text(response.content)
+ 133 |             trigger_hook("Stop", final_text)
+ 134 |             log_event("AGENT", "final", text=final_text)
+ 135 |             return final_text
+ 136 | 
+ 137 |         messages.append(
+ 138 |             {
+ 139 |                 "role": "assistant",
+ 140 |                 "content": [block_to_dict(block) for block in response.content],
+ 141 |             }
+ 142 |         )
+ 143 |         messages.append(
+ 144 |             {
+ 145 |                 "role": "user",
+ 146 |                 "content": [run_tool(block, messages) for block in tool_blocks],
+ 147 |             }
+ 148 |         )
+ 149 |         messages[:] = compact_messages(messages)
+ 150 | 
+ 151 | 
+ 152 | def parse_args() -> argparse.Namespace:
+ 153 |     parser = argparse.ArgumentParser(description="Run the v4 Logs + Compaction loop.")
+ 154 |     parser.add_argument("prompt", nargs="*", help="Task prompt. If omitted, read one line.")
+ 155 |     return parser.parse_args()
+ 156 | 
+ 157 | 
+ 158 | def main() -> None:
+ 159 |     args = parse_args()
+ 160 |     user_input = " ".join(args.prompt).strip()
+ 161 |     if not user_input:
+ 162 |         user_input = input("User> ").strip()
+ 163 |     if not user_input:
+ 164 |         raise SystemExit("Empty prompt.")
+ 165 |     run_agent(user_input)
+ 166 | 
+ 167 | 
+ 168 | if __name__ == "__main__":
+ 169 |     main()

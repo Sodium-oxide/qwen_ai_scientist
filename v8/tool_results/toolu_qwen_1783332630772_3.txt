@@ -1,0 +1,1174 @@
+{
+  "thought": "ZhiZhi retrieved and filtered literature, imported grounded PaperGraph evidence, built a benchmark-aware knowledge map, expanded citation context when available, and generated gaps with novelty/value/feasibility checks.",
+  "action": {
+    "agent": "zhizhi",
+    "query": "high energy physics particle collider detector simulation event reconstruction foundation models anomaly detection",
+    "domain": "High Energy Physics",
+    "years": "last 5 years",
+    "domain_subspace_explorer": {
+      "subspace_map_id": "subspace_1783332684578455200",
+      "coverage_plan": {
+        "total_subspaces": 10,
+        "covered": 2,
+        "missing": 8,
+        "insufficient": 0,
+        "coverage_rate": 0.2,
+        "missing_details": [
+          {
+            "name": "Neutrino Physics",
+            "keywords": [
+              "neutrino mass hierarchy",
+              "Dirac vs Majorana neutrinos",
+              "neutrinoless double beta decay",
+              "PMNS matrix",
+              "matter effects",
+              "sterile neutrinos"
+            ],
+            "suggested_action": "supplemental_search"
+          },
+          {
+            "name": "Heavy Flavor Physics",
+            "keywords": [
+              "B → K*μμ anomalies",
+              "R(K) and R(D*)",
+              "CKM matrix",
+              "CP violation in B mesons",
+              "charm CPV",
+              "semileptonic decays"
+            ],
+            "suggested_action": "supplemental_search"
+          },
+          {
+            "name": "Dark Matter Phenomenology",
+            "keywords": [
+              "WIMP-nucleon cross section",
+              "axion-photon coupling",
+              "dark sector portals",
+              "thermal relic abundance",
+              "co-annihilation",
+              "velocity-dependent scattering"
+            ],
+            "suggested_action": "supplemental_search"
+          },
+          {
+            "name": "Collider Physics Beyond the Standard Model",
+            "keywords": [
+              "resonance searches",
+              "SUSY searches",
+              "long-lived particle triggers",
+              "displaced vertices",
+              "mono-X signatures",
+              "dijet angular distributions"
+            ],
+            "suggested_action": "supplemental_search"
+          },
+          {
+            "name": "Astroparticle Physics",
+            "keywords": [
+              "UHECR composition",
+              "IceCube diffuse astrophysical neutrinos",
+              "Fermi-LAT gamma-ray spectra",
+              "neutrino flavor ratio at Earth",
+              "GZK cutoff",
+              "cosmic ray anisotropy"
+            ],
+            "suggested_action": "supplemental_search"
+          },
+          {
+            "name": "Quantum Field Theory Formalism",
+            "keywords": [
+              "on-shell methods",
+              "double copy",
+              "integrand reduction",
+              "infrared safety",
+              "soft-collinear effective theory",
+              "CFT bootstrap in d>2"
+            ],
+            "suggested_action": "supplemental_search"
+          },
+          {
+            "name": "Heavy-Ion Physics",
+            "keywords": [
+              "quark-gluon plasma",
+              "elliptic flow",
+              "jet quenching",
+              "heavy-flavor suppression",
+              "chiral magnetic effect",
+              "baryon stopping"
+            ],
+            "suggested_action": "supplemental_search"
+          },
+          {
+            "name": "Precision Electroweak Physics",
+            "keywords": [
+              "W boson mass anomaly",
+              "LEP/SLD electroweak fit",
+              "oblique parameters",
+              "S, T, U parameters",
+              "radiative corrections",
+              "top-quark loop contributions"
+            ],
+            "suggested_action": "supplemental_search"
+          }
+        ],
+        "recommendation": "Confirm priority subspaces with the user before running ZhiZhi, then search selected subspaces independently."
+      },
+      "selected_subfields": [
+        "Quantum Chromodynamics",
+        "Particle Detector Simulation",
+        "AI-assisted particle event reconstruction",
+        "Foundation models for detector simulation",
+        "Anomaly Detection in Collider Data"
+      ]
+    },
+    "search_papers_stratified": {
+      "search_id": "search_1783332703910978600",
+      "total_results": 15,
+      "providers": [
+        "semantic_scholar",
+        "arxiv"
+      ],
+      "strategy": "stratified_cascade",
+      "query_plan": [
+        {
+          "branch": "primary",
+          "query": "high energy physics particle collider detector simulation event reconstruction foundation models anomaly detection"
+        },
+        {
+          "branch": "confinement_asymptotic_freedom_parton_distribution_functions_lattice_qcd_jet_que",
+          "query": "high energy physics particle collider detector simulation event reconstruction foundation models anomaly detection confinement asymptotic freedom parton distribution functions lattice QCD jet quenching hadronization perturbative QCD non-perturbative QCD review survey"
+        },
+        {
+          "branch": "foundation_models_for_detector_simulation",
+          "query": "high energy physics particle collider detector simulation event reconstruction foundation models anomaly detection foundation models for detector simulation"
+        },
+        {
+          "branch": "ai_assisted_particle_event_reconstruction",
+          "query": "high energy physics particle collider detector simulation event reconstruction foundation models anomaly detection ai assisted particle event reconstruction"
+        },
+        {
+          "branch": "anomaly_detection_in_collider_data",
+          "query": "high energy physics particle collider detector simulation event reconstruction foundation models anomaly detection anomaly detection in collider data"
+        },
+        {
+          "branch": "particle_detector_simulation",
+          "query": "high energy physics particle collider detector simulation event reconstruction foundation models anomaly detection particle detector simulation"
+        },
+        {
+          "branch": "field_map_reviews",
+          "query": "high energy physics particle collider detector simulation event reconstruction foundation models anomaly detection review survey roadmap progress perspective systematic review",
+          "topic_type": "retrieval_facet"
+        },
+        {
+          "branch": "milestone_foundations",
+          "query": "high energy physics particle collider detector simulation event reconstruction foundation models anomaly detection seminal foundational highly cited landmark theory method mechanism",
+          "topic_type": "retrieval_facet"
+        },
+        {
+          "branch": "methods_and_mechanisms",
+          "query": "high energy physics particle collider detector simulation event reconstruction foundation models anomaly detection method model algorithm mechanism experiment framework",
+          "topic_type": "retrieval_facet"
+        }
+      ],
+      "focus_branches": [
+        "confinement asymptotic freedom parton distribution functions lattice QCD jet quenching hadronization perturbative QCD non-perturbative QCD review survey",
+        "foundation models for detector simulation",
+        "ai assisted particle event reconstruction",
+        "anomaly detection in collider data",
+        "particle detector simulation"
+      ],
+      "strata": [
+        {
+          "layer": "L0_review",
+          "label": "high-impact review / field map",
+          "quota": 1,
+          "query_suffix": "review survey progress perspective tutorial systematic review meta-analysis",
+          "target": 1,
+          "candidate_count": 8,
+          "raw_candidate_count": 16,
+          "selected": 1,
+          "domain_rejected": 0,
+          "recovery_used": "",
+          "carried_to_next": 0
+        },
+        {
+          "layer": "L1_milestone",
+          "label": "milestone / highly cited foundation",
+          "quota": 3,
+          "query_suffix": "seminal foundational highly cited landmark classic influential",
+          "target": 3,
+          "candidate_count": 11,
+          "raw_candidate_count": 14,
+          "selected": 3,
+          "domain_rejected": 0,
+          "recovery_used": "relaxed_milestone_highest_available_citation",
+          "carried_to_next": 0
+        },
+        {
+          "layer": "L2_top_latest",
+          "label": "recent top-venue frontier",
+          "quota": 3,
+          "query_suffix": "latest recent top journal high impact breakthrough advance frontier",
+          "target": 3,
+          "candidate_count": 0,
+          "raw_candidate_count": 0,
+          "selected": 0,
+          "domain_rejected": 0,
+          "recovery_used": "",
+          "carried_to_next": 3
+        },
+        {
+          "layer": "L3_preprint",
+          "label": "latest arXiv preprint frontier",
+          "quota": 3,
+          "query_suffix": "",
+          "target": 6,
+          "candidate_count": 15,
+          "raw_candidate_count": 15,
+          "selected": 6,
+          "domain_rejected": 0,
+          "recovery_used": "",
+          "carried_to_next": 0
+        },
+        {
+          "layer": "L4_regular",
+          "label": "regular journal / supplemental evidence",
+          "quota": 5,
+          "query_suffix": "",
+          "target": 5,
+          "candidate_count": 40,
+          "raw_candidate_count": 40,
+          "selected": 5,
+          "domain_rejected": 0,
+          "recovery_used": "",
+          "carried_to_next": 0
+        }
+      ],
+      "errors": [
+        {
+          "provider": "semantic_scholar",
+          "query": "high energy physics particle collider detector simulation event reconstruction foundation models anomaly detection",
+          "status": "rate_limited_skipped",
+          "note": null,
+          "error": "Semantic Scholar circuit open; retry_after_seconds=19.2",
+          "result_count": 0
+        },
+        {
+          "provider": "semantic_scholar",
+          "query": "high energy physics particle collider detector simulation event reconstruction foundation models anomaly detection confinement asymptotic freedom parton distribution functions lattice QCD jet quenching hadronization perturbative QCD non-perturbative QCD review survey",
+          "status": "rate_limited_skipped",
+          "note": null,
+          "error": "Semantic Scholar circuit open; retry_after_seconds=19.2",
+          "result_count": 0
+        },
+        {
+          "provider": "semantic_scholar",
+          "query": "high energy physics particle collider detector simulation event reconstruction foundation models anomaly detection",
+          "status": "rate_limited_skipped",
+          "note": null,
+          "error": "Semantic Scholar circuit open; retry_after_seconds=13.0",
+          "result_count": 0
+        },
+        {
+          "provider": "semantic_scholar",
+          "query": "high energy physics particle collider detector simulation event reconstruction foundation models anomaly detection confinement asymptotic freedom parton distribution functions lattice QCD jet quenching hadronization perturbative QCD non-perturbative QCD review survey",
+          "status": "rate_limited_skipped",
+          "note": null,
+          "error": "Semantic Scholar circuit open; retry_after_seconds=9.1",
+          "result_count": 0
+        }
+      ]
+    },
+    "domain_coverage_diagnostic": {
+      "profile": "high_energy_physics_high_energy_physics_particle_collider_detector_simulation_ev",
+      "profile_source": "heuristic",
+      "search_id": "search_1783332703910978600",
+      "total_results": 15,
+      "represented_topics": [],
+      "blind_spots": [
+        {
+          "topic": "substantive_subfield_map_missing",
+          "hit_count": 0,
+          "min_hits": 1,
+          "terms": [],
+          "suggested_query": "high energy physics particle collider detector simulation event reconstruction foundation models anomaly detection major subfields review survey",
+          "risk": "Live probe found literature for this missing branch; current PaperGraph may be incomplete, so TanXi should not treat this absence as a true unexplored gap.",
+          "requires_user_or_llm_branch_confirmation": true,
+          "live_probe": {
+            "query": "high energy physics particle collider detector simulation event reconstruction foundation models anomaly detection major subfields review survey",
+            "status": "ok",
+            "total_results": 4,
+            "providers": [
+              {
+                "provider": "semantic_scholar",
+                "status": "ok",
+                "result_count": 1,
+                "top_titles": [
+                  "Study of the high energy cosmic radiation with space-based missions and corresponding detector design and optimization"
+                ],
+                "error": ""
+              },
+              {
+                "provider": "arxiv",
+                "status": "ok",
+                "result_count": 3,
+                "top_titles": [
+                  "The Dark Energy Survey",
+                  "Physics Briefing Book",
+                  "Machine Learning for Anomaly Detection in Particle Physics"
+                ],
+                "error": ""
+              }
+            ]
+          },
+          "false_negative_risk": true
+        }
+      ],
+      "live_validate": true,
+      "live_probe_reports": [
+        {
+          "query": "high energy physics particle collider detector simulation event reconstruction foundation models anomaly detection major subfields review survey",
+          "status": "ok",
+          "total_results": 4,
+          "providers": [
+            {
+              "provider": "semantic_scholar",
+              "status": "ok",
+              "result_count": 1,
+              "top_titles": [
+                "Study of the high energy cosmic radiation with space-based missions and corresponding detector design and optimization"
+              ],
+              "error": ""
+            },
+            {
+              "provider": "arxiv",
+              "status": "ok",
+              "result_count": 3,
+              "top_titles": [
+                "The Dark Energy Survey",
+                "Physics Briefing Book",
+                "Machine Learning for Anomaly Detection in Particle Physics"
+              ],
+              "error": ""
+            }
+          ]
+        }
+      ],
+      "coverage_warning": true,
+      "needs_user_branch_confirmation": true
+    },
+    "user_interaction": {
+      "needed": true,
+      "type": "research_branch_confirmation",
+      "question": "Some major sub-branches appear missing from the current retrieval. Which should be prioritized for a supplemental search before treating gaps as real?",
+      "options": [
+        {
+          "label": "substantive_subfield_map_missing",
+          "suggested_query": "high energy physics particle collider detector simulation event reconstruction foundation models anomaly detection major subfields review survey",
+          "live_evidence_count": 4,
+          "false_negative_risk": true
+        }
+      ],
+      "default_action": "Run supplemental stratified search for options with false_negative_risk=true, or ask the user to pick 2-3 priority branches.",
+      "continue_with": "Pass selected option labels or custom branch keywords as focus_branches to run_zhizhi_literature_analysis/search_papers_stratified."
+    },
+    "select_literature_result": {
+      "result_index": 3,
+      "stratified_layer": "L4_regular",
+      "stratified_label": "regular journal / supplemental evidence",
+      "query_branch": "primary",
+      "retrieval_query": "high energy physics particle collider detector simulation event reconstruction foundation models anomaly detection",
+      "_why_selected": "Selected as regular supplemental paper: Foundation models for high-energy physics; year=2025; venue=arxiv; quality=0.64; relevance=0.2879.",
+      "domain_relevance": {
+        "profile": "high_energy_physics",
+        "score": 0.5577,
+        "query_hits": [
+          "high",
+          "energy",
+          "physics",
+          "particle",
+          "foundation",
+          "models"
+        ],
+        "anchor_hits": [
+          "high",
+          "energy",
+          "physics"
+        ],
+        "topic_hits": [],
+        "noise_hits": [],
+        "flags": [],
+        "is_preprint": true,
+        "verdict": "keep",
+        "requires_human_review": false
+      },
+      "relevance_score": 0.2879,
+      "relevance_components": {
+        "text_score": 0.4062,
+        "recency_score": 1.0,
+        "impact_score": 0.35,
+        "citation_field": "physics",
+        "citation_baseline": 650.0,
+        "venue_score": 0.35,
+        "publication_quality_score": 0.64,
+        "base_score": 0.4498,
+        "text_weight": 0.62,
+        "recency_weight": 0.1,
+        "impact_weight": 0.18,
+        "venue_weight": 0.1
+      },
+      "publication_quality_score": 0.64,
+      "venue_quality": "missing",
+      "journal_quartile": "",
+      "journal_metric_source": "",
+      "inferred_field": "physics",
+      "quality_flags": [
+        "missing_venue",
+        "new_paper_protection"
+      ],
+      "quality_criteria": [
+        "venue metadata is missing",
+        "paper is within 2-year protection window; low citations are not treated as low quality"
+      ],
+      "suspicion_type": "",
+      "is_review_like": true,
+      "pyramid_root_score": 0.8184,
+      "matched_query_terms": [
+        "high",
+        "energy",
+        "physics",
+        "foundation",
+        "models",
+        "particle"
+      ],
+      "title": "Foundation models for high-energy physics",
+      "citation": "Anna Hallin (2025) Foundation models for high-energy physics arXiv:2509.21434v2",
+      "provider": "arxiv",
+      "year": "2025",
+      "citation_count": null,
+      "influential_citation_count": null,
+      "doi": "",
+      "arxiv_id": "2509.21434v2",
+      "url": "http://arxiv.org/abs/2509.21434v2",
+      "relevance_reason": "title=5/13, abstract=6/13, citation=5/13, phrase_bonus=0.0, recency=1.0, impact=0.35, venue=0.35, quality=0.64",
+      "quality_reason": "venue metadata is missing; paper is within 2-year protection window; low citations are not treated as low quality"
+    },
+    "imported_records": 5,
+    "post_retrieval_subspace_coverage": {
+      "total_selected_subspaces": 5,
+      "sufficient": 4,
+      "insufficient": 1,
+      "coverage": [
+        {
+          "subspace": "Quantum Chromodynamics",
+          "branch": "quantum_chromodynamics",
+          "target": 3,
+          "actual": 1,
+          "status": "insufficient",
+          "terms": [
+            "quantum",
+            "chromodynamics",
+            "confinement",
+            "asymptotic",
+            "freedom",
+            "parton",
+            "distribution",
+            "functions",
+            "lattice",
+            "qcd",
+            "jet",
+            "quenching",
+            "hadronization",
+            "perturbative",
+            "non-perturbative",
+            "review"
+          ],
+          "matched_papers": [
+            {
+              "paper_id": "paper_1783332799896859700",
+              "title": "Quantum Generative Adversarial Networks For Anomaly Detection In High Energy Physics",
+              "citation": "Elie Bermot et al. (2023) Quantum Generative Adversarial Networks For Anomaly Detection In High Energy Physics doi:10.11...[truncated]",
+              "method": "quantum generative adversarial network",
+              "scenario": "anomaly detection in high energy physics"
+            }
+          ],
+          "suggested_query": "confinement asymptotic freedom parton distribution functions lattice QCD jet quenching hadronization perturbative QCD non-perturbative QCD review survey",
+          "custom": false
+        },
+        {
+          "subspace": "foundation models for detector simulation",
+          "branch": "foundation_models_for_detector_simulation",
+          "target": 2,
+          "actual": 5,
+          "status": "sufficient",
+          "terms": [
+            "foundation",
+            "models",
+            "detector",
+            "simulation"
+          ],
+          "matched_papers": [
+            {
+              "paper_id": "paper_1783332799896859700",
+              "title": "Quantum Generative Adversarial Networks For Anomaly Detection In High Energy Physics",
+              "citation": "Elie Bermot et al. (2023) Quantum Generative Adversarial Networks For Anomaly Detection In High Energy Physics doi:10.11...[truncated]",
+              "method": "quantum generative adversarial network",
+              "scenario": "anomaly detection in high energy physics"
+            },
+            {
+              "paper_id": "paper_1783332824823772100",
+              "title": "Fine-tuning machine-learned particle-flow reconstruction for new detector geometries in future colliders",
+              "citation": "Farouk Mokhtar et al. (2025) Fine-tuning machine-learned particle-flow reconstruction for new detector geometries in fut...[truncated]",
+              "method": "transfer learning | fine-tuning of machine-learned particle-flow reconstruction model",
+              "scenario": "civil infrastructure"
+            },
+            {
+              "paper_id": "paper_1783332848116318400",
+              "title": "Graph Generative Models for Fast Detector Simulations in High Energy Physics",
+              "citation": "A. Hariri et al. (2021) Graph Generative Models for Fast Detector Simulations in High Energy Physics",
+              "method": "graph generative model",
+              "scenario": "detector simulation | high energy physics | LHC events"
+            },
+            {
+              "paper_id": "paper_1783332858394477900",
+              "title": "Foundation models for high-energy physics",
+              "citation": "Anna Hallin (2025) Foundation models for high-energy physics arXiv:2509.21434v2",
+              "method": "natural language processing",
+              "scenario": "high-energy physics"
+            },
+            {
+              "paper_id": "paper_1783332871280380700",
+              "title": "Zero-Shot Image Anomaly Detection Using Generative Foundation Models",
+              "citation": "Lemar Abdi et al. (2025) Zero-Shot Image Anomaly Detection Using Generative Foundation Models arXiv:2507.22692v1",
+              "method": "microscopy imaging",
+              "scenario": "zero-shot image anomaly detection"
+            }
+          ],
+          "suggested_query": "foundation models for detector simulation",
+          "custom": true
+        },
+        {
+          "subspace": "ai assisted particle event reconstruction",
+          "branch": "ai_assisted_particle_event_reconstruction",
+          "target": 2,
+          "actual": 3,
+          "status": "sufficient",
+          "terms": [
+            "assisted",
+            "particle",
+            "event",
+            "reconstruction"
+          ],
+          "matched_papers": [
+            {
+              "paper_id": "paper_1783332799896859700",
+              "title": "Quantum Generative Adversarial Networks For Anomaly Detection In High Energy Physics",
+              "citation": "Elie Bermot et al. (2023) Quantum Generative Adversarial Networks For Anomaly Detection In High Energy Physics doi:10.11...[truncated]",
+              "method": "quantum generative adversarial network",
+              "scenario": "anomaly detection in high energy physics"
+            },
+            {
+              "paper_id": "paper_1783332824823772100",
+              "title": "Fine-tuning machine-learned particle-flow reconstruction for new detector geometries in future colliders",
+              "citation": "Farouk Mokhtar et al. (2025) Fine-tuning machine-learned particle-flow reconstruction for new detector geometries in fut...[truncated]",
+              "method": "transfer learning | fine-tuning of machine-learned particle-flow reconstruction model",
+              "scenario": "civil infrastructure"
+            },
+            {
+              "paper_id": "paper_1783332848116318400",
+              "title": "Graph Generative Models for Fast Detector Simulations in High Energy Physics",
+              "citation": "A. Hariri et al. (2021) Graph Generative Models for Fast Detector Simulations in High Energy Physics",
+              "method": "graph generative model",
+              "scenario": "detector simulation | high energy physics | LHC events"
+            }
+          ],
+          "suggested_query": "ai assisted particle event reconstruction",
+          "custom": true
+        },
+        {
+          "subspace": "anomaly detection in collider data",
+          "branch": "anomaly_detection_in_collider_data",
+          "target": 2,
+          "actual": 3,
+          "status": "sufficient",
+          "terms": [
+            "anomaly",
+            "detection",
+            "collider",
+            "data"
+          ],
+          "matched_papers": [
+            {
+              "paper_id": "paper_1783332799896859700",
+              "title": "Quantum Generative Adversarial Networks For Anomaly Detection In High Energy Physics",
+              "citation": "Elie Bermot et al. (2023) Quantum Generative Adversarial Networks For Anomaly Detection In High Energy Physics doi:10.11...[truncated]",
+              "method": "quantum generative adversarial network",
+              "scenario": "anomaly detection in high energy physics"
+            },
+            {
+              "paper_id": "paper_1783332824823772100",
+              "title": "Fine-tuning machine-learned particle-flow reconstruction for new detector geometries in future colliders",
+              "citation": "Farouk Mokhtar et al. (2025) Fine-tuning machine-learned particle-flow reconstruction for new detector geometries in fut...[truncated]",
+              "method": "transfer learning | fine-tuning of machine-learned particle-flow reconstruction model",
+              "scenario": "civil infrastructure"
+            },
+            {
+              "paper_id": "paper_1783332871280380700",
+              "title": "Zero-Shot Image Anomaly Detection Using Generative Foundation Models",
+              "citation": "Lemar Abdi et al. (2025) Zero-Shot Image Anomaly Detection Using Generative Foundation Models arXiv:2507.22692v1",
+              "method": "microscopy imaging",
+              "scenario": "zero-shot image anomaly detection"
+            }
+          ],
+          "suggested_query": "anomaly detection in collider data",
+          "custom": true
+        },
+        {
+          "subspace": "particle detector simulation",
+          "branch": "particle_detector_simulation",
+          "target": 2,
+          "actual": 3,
+          "status": "sufficient",
+          "terms": [
+            "particle",
+            "detector",
+            "simulation"
+          ],
+          "matched_papers": [
+            {
+              "paper_id": "paper_1783332799896859700",
+              "title": "Quantum Generative Adversarial Networks For Anomaly Detection In High Energy Physics",
+              "citation": "Elie Bermot et al. (2023) Quantum Generative Adversarial Networks For Anomaly Detection In High Energy Physics doi:10.11...[truncated]",
+              "method": "quantum generative adversarial network",
+              "scenario": "anomaly detection in high energy physics"
+            },
+            {
+              "paper_id": "paper_1783332824823772100",
+              "title": "Fine-tuning machine-learned particle-flow reconstruction for new detector geometries in future colliders",
+              "citation": "Farouk Mokhtar et al. (2025) Fine-tuning machine-learned particle-flow reconstruction for new detector geometries in fut...[truncated]",
+              "method": "transfer learning | fine-tuning of machine-learned particle-flow reconstruction model",
+              "scenario": "civil infrastructure"
+            },
+            {
+              "paper_id": "paper_1783332848116318400",
+              "title": "Graph Generative Models for Fast Detector Simulations in High Energy Physics",
+              "citation": "A. Hariri et al. (2021) Graph Generative Models for Fast Detector Simulations in High Energy Physics",
+              "method": "graph generative model",
+              "scenario": "detector simulation | high energy physics | LHC events"
+            }
+          ],
+          "suggested_query": "particle detector simulation",
+          "custom": true
+        }
+      ],
+      "needs_second_alignment": true,
+      "user_interaction": {
+        "needed": true,
+        "type": "post_retrieval_subspace_alignment",
+        "question": "Some selected subspaces are missing or under-covered after import. Should ZhiZhi run supplemental searches before TanXi treats gaps as real?",
+        "options": [
+          {
+            "label": "Quantum Chromodynamics",
+            "status": "insufficient",
+            "target": 3,
+            "actual": 1,
+            "suggested_query": "confinement asymptotic freedom parton distribution functions lattice QCD jet quenching hadronization perturbative QCD non-perturbative QCD review survey"
+          }
+        ],
+        "actions": [
+          "supplemental_search_selected_subspaces",
+          "adjust_query_terms",
+          "continue_without_supplement"
+        ],
+        "continue_with": "Rerun run_zhizhi_literature_analysis with focus_branches set to the suggested_query values for missing subspaces."
+      }
+    },
+    "post_retrieval_user_interaction": {
+      "needed": true,
+      "type": "post_retrieval_subspace_alignment",
+      "question": "Some selected subspaces are missing or under-covered after import. Should ZhiZhi run supplemental searches before TanXi treats gaps as real?",
+      "options": [
+        {
+          "label": "Quantum Chromodynamics",
+          "status": "insufficient",
+          "target": 3,
+          "actual": 1,
+          "suggested_query": "confinement asymptotic freedom parton distribution functions lattice QCD jet quenching hadronization perturbative QCD non-perturbative QCD review survey"
+        }
+      ],
+      "actions": [
+        "supplemental_search_selected_subspaces",
+        "adjust_query_terms",
+        "continue_without_supplement"
+      ],
+      "continue_with": "Rerun run_zhizhi_literature_analysis with focus_branches set to the suggested_query values for missing subspaces."
+    },
+    "expand_literature_graph": {
+      "graph_search_id": "graph_1783332906211169600",
+      "total_results": 0,
+      "fallback_used": true,
+      "depth": 1
+    },
+    "build_literature_relation_graph": {
+      "relation_graph_id": "relgraph_1783332906227540500",
+      "cluster_count": 0,
+      "edge_summary": {
+        "total_edges": 0,
+        "citation_graph_edges": 0,
+        "artificial_edges": 0,
+        "by_relation": {},
+        "by_depth": {},
+        "fallback_weight_policy": "keyword_fallback/search_result edges are artificial and use very low PageRank weight."
+      },
+      "analysis_confidence": 0.65
+    }
+  },
+  "observation": [
+    "Potential retrieval blind spot: substantive_subfield_map_missing was not represented in retrieved/imported candidates; suggested query: high energy physics particle collider detector simulation event reconstruction foundation models anomaly detection major subfields review survey; live_probe_results=4",
+    "Selected subspace under-covered after import: Quantum Chromodynamics actual=1/target=3; suggested_query=confinement asymptotic freedom parton distribution functions lattice QCD jet quenching hadronization perturbative QCD non-perturbative QCD review survey"
+  ],
+  "knowledge_map_summary": {
+    "main_methods": [
+      "graph generative model",
+      "microscopy imaging",
+      "natural language processing",
+      "quantum generative adversarial network",
+      "transfer learning | fine-tuning of machine-learned particle-flow reconstruction model"
+    ],
+    "method_scenario_coverage": {
+      "quantum generative adversarial network": [
+        "anomaly detection in high energy physics"
+      ],
+      "transfer learning | fine-tuning of machine-learned particle-flow reconstruction model": [
+        "civil infrastructure"
+      ],
+      "graph generative model": [
+        "detector simulation | high energy physics | LHC events"
+      ],
+      "natural language processing": [
+        "high-energy physics"
+      ],
+      "microscopy imaging": [
+        "zero-shot image anomaly detection"
+      ]
+    },
+    "method_scenario_benchmark_triples": [
+      {
+        "method": "quantum generative adversarial network",
+        "scenario": "anomaly detection in high energy physics",
+        "benchmark": "accuracy | model expressivity | training sample efficiency",
+        "references": [
+          "Elie Bermot et al. (2023) Quantum Generative Adversarial Networks For Anomaly Detection In High Energy Physics doi:10.1109/QCE57702.2023.00045"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "quantum generative adversarial network",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "quantum generative adversarial network for unsupervised anomaly detection in high energy physics, achieving comparable accuracy with ten times fewer training samples and improved expressivity versus classical counterpart",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "Abstract: The standard model (SM) of particle physics represents a theoretical paradigm for the description of the fundamental forces of nature. Despite its broad applicability, the SM does not enable the description of all physically possible events. The detection of events that cannot be described...[truncated]",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "Full text excerpt:",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "The additional data complexity motivates the search for unsupervised anomaly detection methods that do not require prior knowledge about the underlying models.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "The method learns the background distribution from SM data and, then, determines whether a given event is characteristic for the learned background distribution.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "We find that the quantum generative techniques using ten times fewer training data samples can yield comparable accuracy to the classical counterpart for the detection of the Graviton and Higgs particles.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "Additionally, we empirically compute the capacity of the quantum model and observe an improved expressivity compared to its classical counterpart.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "Full text excerpt: quantum generative adversarial network for unsupervised anomaly detection in high energy physics, achieving comparable accuracy with ten times fewer training samples and improved expressivity versus classical counterpart Abstract: The standard model (SM) of particle physics repres...[truncated]",
+            "support": "source_sentence"
+          }
+        ]
+      },
+      {
+        "method": "transfer learning | fine-tuning of machine-learned particle-flow reconstruction model",
+        "scenario": "civil infrastructure",
+        "benchmark": "benchmark dataset",
+        "references": [
+          "Farouk Mokhtar et al. (2025) Fine-tuning machine-learned particle-flow reconstruction for new detector geometries in future colliders doi:10.1103/PhysRevD.111.092015"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "transfer learning | fine-tuning of machine-learned particle-flow reconstruction model",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "demonstrates effective cross-detector transfer learning for particle-flow reconstruction, enabling high performance with orders-of-magnitude less simulated data than from-scratch training",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "Full text excerpt: demonstrates effective cross-detector transfer learning for particle-flow reconstruction, enabling high performance with orders-of-magnitude less simulated data than from-scratch training No explicit limitation extracted.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "Full text excerpt:",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "We demonstrate transfer learning capabilities in a machine-learned algorithm trained for particle-flow reconstruction in high energy particle colliders.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "Furthermore, we find that the fine-tuned model achieves comparable performance to the traditional rule-based particle-flow approach on event-level metrics after training on 100,000 CLD events, whereas a model trained from scratch requires at least 1 million CLD events to achieve similar reconstructi...[truncated]",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "Full text excerpt: demonstrates effective cross-detector transfer learning for particle-flow reconstruction, enabling high performance with orders-of-magnitude less simulated data than from-scratch training Full text excerpt: demonstrates effective cross-detector transfer learning for particle-flow...[truncated]",
+            "support": "source_sentence"
+          }
+        ]
+      },
+      {
+        "method": "graph generative model",
+        "scenario": "detector simulation | high energy physics | LHC events",
+        "benchmark": "effective reconstruction",
+        "references": [
+          "A. Hariri et al. (2021) Graph Generative Models for Fast Detector Simulations in High Energy Physics"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "graph generative model",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "provides effective reconstruction of LHC events, paving the way for full detector level fast simulation for HL-LHC",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "Full text excerpt: provides effective reconstruction of LHC events, paving the way for full detector level fast simulation for HL-LHC No explicit limitation extracted.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "Full text excerpt:",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "Full text excerpt: provides effective reconstruction of LHC events, paving the way for full detector level fast simulation for HL-LHC Full text excerpt: provides effective reconstruction of LHC events, paving the way for full detector level fast simulation for HL-LHC No explicit limitation extracted...[truncated]",
+            "support": "source_sentence"
+          }
+        ]
+      },
+      {
+        "method": "natural language processing",
+        "scenario": "high-energy physics",
+        "benchmark": "benchmark dataset",
+        "references": [
+          "Anna Hallin (2025) Foundation models for high-energy physics arXiv:2509.21434v2"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "natural language processing",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "first review on foundation models in high-energy physics",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "No explicit limitation extracted.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "Full text excerpt:",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "Full text excerpt: first review on foundation models in high-energy physics No explicit limitation extracted.",
+            "support": "source_sentence"
+          }
+        ]
+      },
+      {
+        "method": "microscopy imaging",
+        "scenario": "zero-shot image anomaly detection",
+        "benchmark": "out-of-distribution detection performance",
+        "references": [
+          "Lemar Abdi et al. (2025) Zero-Shot Image Anomaly Detection Using Generative Foundation Models arXiv:2507.22692v1"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "microscopy imaging",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "A zero-shot anomaly detection method using pre-trained diffusion models as perceptual templates via Stein score errors and SSIM-amplified denoising trajectories.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "Notable headroom on others",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "Full text excerpt:",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "By analyzing Stein score errors, amplified through the Structural Similarity Index Metric (SSIM), we introduce a novel method for identifying anomalous samples without requiring re-training on each target dataset.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "Our approach improves over state-of-the-art and relies on training a single model on one dataset -- CelebA -- which we find to be an effective base distribution, even outperforming more commonly used datasets like ImageNet in several settings.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "Experimental results show near-perfect performance on some benchmarks, with notable headroom on others, highlighting both the strength and future potential of generative foundation models in anomaly detection.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "Full text excerpt: A zero-shot anomaly detection method using pre-trained diffusion models as perceptual templates via Stein score errors and SSIM-amplified denoising trajectories.",
+            "support": "source_sentence"
+          }
+        ]
+      },
+      {
+        "method": "quantum generative adversarial network",
+        "scenario": "anomaly detection in high energy physics",
+        "benchmark": "accuracy | model expressivity | training sample efficiency",
+        "references": [
+          "Elie Bermot et al. (2023) Quantum Generative Adversarial Networks For Anomaly Detection In High Energy Physics doi:10.1109/QCE57702.2023.00045"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "quantum generative adversarial network",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "quantum generative adversarial network for unsupervised anomaly detection in high energy physics, achieving comparable accuracy with ten times fewer training samples and improved expressivity versus classical counterpart",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "Abstract: The standard model (SM) of particle physics represents a theoretical paradigm for the description of the fundamental forces of nature. Despite its broad applicability, the SM does not enable the description of all physically possible events. The detection of events that cannot be described...[truncated]",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "quantum generative adversarial network for unsupervised anomaly detection in high energy physics, achieving comparable accuracy with ten times fewer training samples and improved expressivity versus classical counterpart Abstract: The standard model (SM) of particle physics represents a theoretical...[truncated]",
+            "support": "source_sentence"
+          }
+        ]
+      },
+      {
+        "method": "transfer learning | fine-tuning of machine-learned particle-flow reconstruction model",
+        "scenario": "civil infrastructure",
+        "benchmark": "benchmark dataset",
+        "references": [
+          "Farouk Mokhtar et al. (2025) Fine-tuning machine-learned particle-flow reconstruction for new detector geometries in future colliders doi:10.1103/PhysRevD.111.092015"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "transfer learning | fine-tuning of machine-learned particle-flow reconstruction model",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "demonstrates effective cross-detector transfer learning for particle-flow reconstruction, enabling high performance with orders-of-magnitude less simulated data than from-scratch training",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "Full text excerpt: demonstrates effective cross-detector transfer learning for particle-flow reconstruction, enabling high performance with orders-of-magnitude less simulated data than from-scratch training No explicit limitation extracted.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "demonstrates effective cross-detector transfer learning for particle-flow reconstruction, enabling high performance with orders-of-magnitude less simulated data than from-scratch training Full text excerpt: demonstrates effective cross-detector transfer learning for particle-flow reconstruction, ena...[truncated]",
+            "support": "source_sentence"
+          }
+        ]
+      },
+      {
+        "method": "graph generative model",
+        "scenario": "detector simulation | high energy physics | LHC events",
+        "benchmark": "effective reconstruction",
+        "references": [
+          "A. Hariri et al. (2021) Graph Generative Models for Fast Detector Simulations in High Energy Physics"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "graph generative model",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "provides effective reconstruction of LHC events, paving the way for full detector level fast simulation for HL-LHC",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "Full text excerpt: provides effective reconstruction of LHC events, paving the way for full detector level fast simulation for HL-LHC No explicit limitation extracted.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "provides effective reconstruction of LHC events, paving the way for full detector level fast simulation for HL-LHC Full text excerpt: provides effective reconstruction of LHC events, paving the way for full detector level fast simulation for HL-LHC No explicit limitation extracted.",
+            "support": "source_sentence"
+          }
+        ]
+      },
+      {
+        "method": "natural language processing",
+        "scenario": "high-energy physics",
+        "benchmark": "benchmark dataset",
+        "references": [
+          "Anna Hallin (2025) Foundation models for high-energy physics arXiv:2509.21434v2"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "natural language processing",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "first review on foundation models in high-energy physics",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "No explicit limitation extracted.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "first review on foundation models in high-energy physics No explicit limitation extracted.",
+            "support": "source_sentence"
+          }
+        ]
+      },
+      {
+        "method": "microscopy imaging",
+        "scenario": "zero-shot image anomaly detection",
+        "benchmark": "out-of-distribution detection performance",
+        "references": [
+          "Lemar Abdi et al. (2025) Zero-Shot Image Anomaly Detection Using Generative Foundation Models arXiv:2507.22692v1"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "microscopy imaging",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "A zero-shot anomaly detection method using pre-trained diffusion models as perceptual templates via Stein score errors and SSIM-amplified denoising trajectories.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "Notable headroom on others",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "A zero-shot anomaly detection method using pre-trained diffusion models as perceptual templates via Stein score errors and SSIM-amplified denoising trajectories.",
+            "support": "source_sentence"
+          }
+        ]
+      }
+    ],
+    "claim_type_counts": {
+      "methodological_description": 17,
+      "empirical_result": 15,
+      "author_opinion": 16,
+      "theoretical_claim": 6
+    }
+  },
+  "knowledge_gaps": [
+    {
+      "gap_id": "gap_1783332913076465300",
+      "gap_type": "combinatorial",
+      "description": "Method 'graph generative model' has no recorded validation in scenario 'civil infrastructure' in the current PaperGraph map.",
+      "supporting_references": [
+        "Farouk Mokhtar et al. (2025) Fine-tuning machine-learned particle-flow reconstruction for new detector geometries in future colliders doi:10.1103/PhysRevD.111.092015",
+        "A. Hariri et al. (2021) Graph Generative Models for Fast Detector Simulations in High Energy Physics"
+      ],
+      "novelty_score": 6,
+      "application_value": "medium",
+      "feasibility": "high",
+      "suggested_research_path": "Run a targeted validation study with explicit benchmarks, baselines, and failure-mode analysis.",
+      "value_argument": "The combination may expose method-scenario boundary conditions rather than simply adding another benchmark.",
+      "overlap_risk": "low",
+      "requires_human_review": false
+    },
+    {
+      "gap_id": "gap_1783332913073748900",
+      "gap_type": "combinatorial",
+      "description": "Method 'graph generative model' has no recorded validation in scenario 'anomaly detection in high energy physics' in the current PaperGraph map.",
+      "supporting_references": [
+        "Elie Bermot et al. (2023) Quantum Generative Adversarial Networks For Anomaly Detection In High Energy Physics doi:10.1109/QCE57702.2023.00045",
+        "A. Hariri et al. (2021) Graph Generative Models for Fast Detector Simulations in High Energy Physics"
+      ],
+      "novelty_score": 5,
+      "application_value": "medium",
+      "feasibility": "high",
+      "suggested_research_path": "Run a targeted validation study with explicit benchmarks, baselines, and failure-mode analysis.",
+      "value_argument": "The combination may expose method-scenario boundary conditions rather than simply adding another benchmark.",
+      "overlap_risk": "medium",
+      "requires_human_review": false
+    }
+  ],
+  "self_reflection": {
+    "top_venue_coverage_checked": true,
+    "pseudo_gap_risk_checked": true,
+    "method_categories_require_literature_support": true,
+    "unsupported_claims_marked_for_review": true
+  }
+}

@@ -1,0 +1,1548 @@
+{
+  "project_id": "sci_1783352188563828200",
+  "title": "offline reasoning smoke",
+  "domain": "astrophysics accretion disk",
+  "objective": "test contradiction and MingLi",
+  "strategic_need": "",
+  "phase": "Hypothesis Generation",
+  "createdAt": 1783352188.5638316,
+  "updatedAt": 1783352188.7346408,
+  "papergraph": [
+    {
+      "paper_id": "paper_1783352188612319000",
+      "unique_key": "text:qpo_precession_model",
+      "title": "QPO precession model",
+      "citation": "A 2020",
+      "authors": [],
+      "year": "2020",
+      "venue": "Astrophysical Journal",
+      "provider": "manual",
+      "source_type": "metadata",
+      "doi": "",
+      "arxiv_id": "",
+      "semantic_scholar_id": "",
+      "url": "",
+      "abstract": "The model supports QPOs from relativistic precession in black hole accretion disks.",
+      "full_text_excerpt": "",
+      "conclusion": "Observed QPOs are consistent with relativistic precession and support the precession explanation.",
+      "strengths": [],
+      "improvements": [],
+      "method": "relativistic precession model",
+      "scenario": "black hole accretion disk QPO",
+      "benchmark": "timing residuals",
+      "contribution": "The model supports QPOs from relativistic precession in black hole accretion disks.",
+      "limitation": "No explicit limitation extracted.",
+      "credibility_score": 0.45,
+      "credibility_reasons": [
+        "base record",
+        "has title and citation",
+        "provider recorded",
+        "has publication year"
+      ],
+      "extraction_quality": {
+        "score": 0.88,
+        "unknown_ratio": 0.0,
+        "unknown_fields": [],
+        "abstract_chars": 83,
+        "flags": [
+          "short_abstract"
+        ],
+        "needs_enrichment": false,
+        "needs_llm_retry": false,
+        "requires_human_review": false,
+        "initial": {
+          "score": 0.88,
+          "unknown_ratio": 0.0,
+          "unknown_fields": [],
+          "abstract_chars": 83,
+          "flags": [
+            "short_abstract"
+          ],
+          "needs_enrichment": false,
+          "needs_llm_retry": false,
+          "requires_human_review": false
+        },
+        "llm_retry": {
+          "attempted": false,
+          "succeeded": false,
+          "error": ""
+        }
+      },
+      "enrichment_sources": [],
+      "gap_signals": [],
+      "importedAt": 1783352188.6123407
+    },
+    {
+      "paper_id": "paper_1783352188666161700",
+      "unique_key": "text:qpo_turbulence_model",
+      "title": "QPO turbulence model",
+      "citation": "B 2021",
+      "authors": [],
+      "year": "2021",
+      "venue": "Monthly Notices of the Royal Astronomical Society",
+      "provider": "manual",
+      "source_type": "metadata",
+      "doi": "",
+      "arxiv_id": "",
+      "semantic_scholar_id": "",
+      "url": "",
+      "abstract": "The data are inconsistent with a pure precession model and indicate accretion-rate turbulence.",
+      "full_text_excerpt": "",
+      "conclusion": "QPOs are inconsistent with relativistic precession alone and challenge the precession explanation.",
+      "strengths": [],
+      "improvements": [
+        "QPOs are inconsistent with relativistic precession alone and challenge the precession explanation."
+      ],
+      "method": "turbulence variability model",
+      "scenario": "black hole accretion disk QPO",
+      "benchmark": "timing residuals",
+      "contribution": "The data are inconsistent with a pure precession model and indicate accretion-rate turbulence.",
+      "limitation": "QPOs are inconsistent with relativistic precession alone and challenge the precession explanation.",
+      "credibility_score": 0.45,
+      "credibility_reasons": [
+        "base record",
+        "has title and citation",
+        "provider recorded",
+        "has publication year"
+      ],
+      "extraction_quality": {
+        "score": 0.88,
+        "unknown_ratio": 0.0,
+        "unknown_fields": [],
+        "abstract_chars": 94,
+        "flags": [
+          "short_abstract"
+        ],
+        "needs_enrichment": false,
+        "needs_llm_retry": false,
+        "requires_human_review": false,
+        "initial": {
+          "score": 0.88,
+          "unknown_ratio": 0.0,
+          "unknown_fields": [],
+          "abstract_chars": 94,
+          "flags": [
+            "short_abstract"
+          ],
+          "needs_enrichment": false,
+          "needs_llm_retry": false,
+          "requires_human_review": false
+        },
+        "llm_retry": {
+          "attempted": false,
+          "succeeded": false,
+          "error": ""
+        }
+      },
+      "enrichment_sources": [],
+      "gap_signals": [
+        {
+          "signal_id": "sig_1783352188663985900",
+          "signal_type": "challenge",
+          "text": "QPOs are inconsistent with relativistic precession alone and challenge the precession explanation.",
+          "evidence_type": "problem_statement",
+          "supporting_reference": "B 2021",
+          "confidence": 0.76
+        }
+      ],
+      "importedAt": 1783352188.6661785
+    }
+  ],
+  "evidence": [
+    {
+      "evidence_id": "ev_1783352188612404800",
+      "title": "QPO precession model",
+      "citation": "A 2020",
+      "method": "relativistic precession model",
+      "scenario": "black hole accretion disk QPO",
+      "benchmark": "timing residuals",
+      "contribution": "The model supports QPOs from relativistic precession in black hole accretion disks.",
+      "limitation": "No explicit limitation extracted.",
+      "url": "",
+      "createdAt": 1783352188.6124127
+    },
+    {
+      "evidence_id": "ev_1783352188666230100",
+      "title": "QPO turbulence model",
+      "citation": "B 2021",
+      "method": "turbulence variability model",
+      "scenario": "black hole accretion disk QPO",
+      "benchmark": "timing residuals",
+      "contribution": "The data are inconsistent with a pure precession model and indicate accretion-rate turbulence.",
+      "limitation": "QPOs are inconsistent with relativistic precession alone and challenge the precession explanation.",
+      "url": "",
+      "createdAt": 1783352188.6662364
+    }
+  ],
+  "coverage_matrix": {
+    "relativistic precession model": {
+      "black hole accretion disk QPO": [
+        "A 2020"
+      ]
+    },
+    "turbulence variability model": {
+      "black hole accretion disk QPO": [
+        "B 2021"
+      ]
+    }
+  },
+  "knowledge_gaps": [
+    {
+      "gap_id": "gap_1783352188684330600",
+      "gap_type": "problem",
+      "description": "Source literature indicates a recognized unresolved problem: The data are inconsistent with a pure precession model and indicate accretion-rate turbulence. QPOs are inconsistent with relativistic precession alone and challenge the precession explanation. QPOs are inconsistent with relativistic precession alone and chall...[truncated]",
+      "supporting_references": [
+        "B 2021"
+      ],
+      "novelty_score": 6,
+      "application_value": "medium",
+      "feasibility": "medium",
+      "suggested_research_path": "Translate the unresolved problem into a falsifiable hypothesis with acceptance criteria and failure diagnostics.",
+      "value_argument": "Problem gaps are grounded in explicit source statements about unresolved mechanisms or practical bottlenecks.",
+      "status": "candidate",
+      "createdAt": 1783352188.6843328,
+      "assessment_dimensions": [
+        "academic novelty",
+        "application value",
+        "implementation feasibility"
+      ],
+      "overlap_risk": "medium",
+      "strongest_overlap": 0.619,
+      "literature_coverage_factor": 0.7333,
+      "assessment_reason": "refs=1, gap_type=problem, strongest_local_overlap=0.619, coverage=0.733, feasibility=medium, application_value=medium",
+      "requires_human_review": false,
+      "dedupe_signature": "a a are data inconsistent precession pure recognized the with",
+      "tanxi_rank": 4,
+      "exploration_value_score": 10,
+      "ranking_reason": "novelty=6, refs=1, application=medium, feasibility=medium, type=problem, strategic_matches=1, density_bonus=2",
+      "strategic_alignment": [
+        {
+          "strategic_domain": "ai for science",
+          "matched_keywords": [
+            "ai",
+            "model"
+          ],
+          "alignment_score": 8
+        }
+      ],
+      "recommended_approach": "Translate the unresolved problem into a falsifiable hypothesis with acceptance criteria and failure diagnostics."
+    },
+    {
+      "gap_id": "gap_1783352188681483500",
+      "gap_type": "anomaly",
+      "description": "Unexplained anomaly or theory-evidence tension reported in the literature: QPOs are inconsistent with relativistic precession alone and challenge the precession explanation.",
+      "supporting_references": [
+        "B 2021"
+      ],
+      "novelty_score": 6,
+      "application_value": "medium",
+      "feasibility": "high",
+      "suggested_research_path": "Turn the anomaly into competing mechanistic explanations, then test which assumptions fail under controlled conditions, ablation, counterexample construction, or independent data.",
+      "value_argument": "Anomaly gaps can drive explanatory progress because they point to observations or results that current mechanisms do not fully account for.",
+      "status": "candidate",
+      "createdAt": 1783352188.6814883,
+      "assessment_dimensions": [
+        "academic novelty",
+        "application value",
+        "implementation feasibility"
+      ],
+      "overlap_risk": "medium",
+      "strongest_overlap": 0.5385,
+      "literature_coverage_factor": 0.6769,
+      "assessment_reason": "refs=1, gap_type=anomaly, strongest_local_overlap=0.538, coverage=0.677, feasibility=high, application_value=medium",
+      "requires_human_review": false,
+      "reasoning_signal": {
+        "type": "theory_evidence_anomaly",
+        "source_field": "general"
+      },
+      "dedupe_signature": "anomaly are in or qpos reported tension the theory-evidence unexplained",
+      "deduped_from": 1
+    },
+    {
+      "gap_id": "gap_1783352188682775100",
+      "gap_type": "anomaly",
+      "description": "Unexplained anomaly or theory-evidence tension reported in the literature: The data are inconsistent with a pure precession model and indicate accretion-rate turbulence.",
+      "supporting_references": [
+        "B 2021"
+      ],
+      "novelty_score": 6,
+      "application_value": "medium",
+      "feasibility": "high",
+      "suggested_research_path": "Turn the anomaly into competing mechanistic explanations, then test which assumptions fail under controlled conditions, ablation, counterexample construction, or independent data.",
+      "value_argument": "Anomaly gaps can drive explanatory progress because they point to observations or results that current mechanisms do not fully account for.",
+      "status": "candidate",
+      "createdAt": 1783352188.6827788,
+      "assessment_dimensions": [
+        "academic novelty",
+        "application value",
+        "implementation feasibility"
+      ],
+      "overlap_risk": "medium",
+      "strongest_overlap": 0.5714,
+      "literature_coverage_factor": 0.7,
+      "assessment_reason": "refs=1, gap_type=anomaly, strongest_local_overlap=0.571, coverage=0.7, feasibility=high, application_value=medium",
+      "requires_human_review": false,
+      "reasoning_signal": {
+        "type": "theory_evidence_anomaly",
+        "source_field": "general"
+      },
+      "dedupe_signature": "anomaly data in or reported tension the the theory-evidence unexplained",
+      "deduped_from": 1
+    },
+    {
+      "gap_id": "gap_1783352188683391800",
+      "gap_type": "improvement",
+      "description": "Recorded limitation worth testing: No explicit limitation extracted.",
+      "supporting_references": [
+        "A 2020"
+      ],
+      "novelty_score": 5,
+      "application_value": "medium",
+      "feasibility": "high",
+      "suggested_research_path": "Formulate a hypothesis that directly attacks the documented limitation and verify it under stress conditions.",
+      "value_argument": "The gap is grounded in an author-reported limitation, so it has stronger evidential support than a bare untried combination.",
+      "status": "candidate",
+      "createdAt": 1783352188.6833947,
+      "assessment_dimensions": [
+        "academic novelty",
+        "application value",
+        "implementation feasibility"
+      ],
+      "overlap_risk": "medium",
+      "strongest_overlap": 0.5,
+      "literature_coverage_factor": 0.5,
+      "assessment_reason": "refs=1, gap_type=improvement, strongest_local_overlap=0.5, coverage=0.5, feasibility=high, application_value=medium",
+      "requires_human_review": false,
+      "dedupe_signature": "explicit extracted limitation limitation no",
+      "deduped_from": 1
+    }
+  ],
+  "hypotheses": [
+    {
+      "hypothesis_id": "hyp_1783352188734271000",
+      "gap_id": "gap_1783352188684330600",
+      "statement": "If relativistic precession model is applied to black hole accretion disk QPO while tracking emerging hotspot 'black hole accretion disk QPO', then timing residuals will improve or reveal a falsifiable boundary condition. The decisive test is constrained to timing residuals under an explicit stress regime.",
+      "mechanism": "The proposed mechanism is that relativistic precession model changes the information, intervention, or representation pathway in black hole accretion disk QPO; because the source gap indicates weak evidence, testing timing residuals can distinguish a real mechanism from a pseudo-gap.",
+      "expected_value": "Problem gaps are grounded in explicit source statements about unresolved mechanisms or practical bottlenecks.",
+      "test_plan": "Build a minimal benchmark for black hole accretion disk QPO; compare relativistic precession model against canonical baselines; measure timing residuals; include negative controls, ablations, and failure-mode analysis. Add a preregistered stress test for timing residuals.",
+      "status": "draft",
+      "createdAt": 1783352188.7342818,
+      "mingli_scores": {
+        "novelty": 0.486,
+        "plausibility": 0.775,
+        "grounding": 0.333,
+        "testability": 0.75,
+        "impact": 1.0,
+        "surprise": 0.247,
+        "strongest_local_overlap": 0.379
+      },
+      "score": 0.6273,
+      "lineage": [
+        {
+          "generation": 0,
+          "operation": "seed",
+          "gap_id": "gap_1783352188684330600",
+          "analogy_used": ""
+        },
+        {
+          "generation": 1,
+          "operation": "constraint_insertion",
+          "parent_candidate_id": "hcand_1783352188719468000"
+        }
+      ],
+      "competition_advantage": "Ranks well because it is traceable to a high-value gap, has an explicit mechanism, passes generic disciplinary plausibility checks, and includes falsifiable validation criteria.",
+      "verification_plan": {
+        "primary_metric": "timing residuals",
+        "baselines": [
+          "nearest dense PaperGraph method",
+          "domain-standard baseline"
+        ],
+        "falsification_condition": "No improvement or mechanistic separation on timing residuals under the stated condition."
+      },
+      "source_gap": {
+        "gap_id": "gap_1783352188684330600",
+        "gap_type": "problem",
+        "description": "Source literature indicates a recognized unresolved problem: The data are inconsistent with a pure precession model and indicate accretion-rate turbulence. QPOs are inconsistent with relativistic precession alone and challenge the precession explanation. QPOs are inconsistent with relativistic precession alone and chall...[truncated]",
+        "supporting_references": [
+          "B 2021"
+        ],
+        "novelty_score": 6,
+        "application_value": "medium",
+        "feasibility": "medium",
+        "suggested_research_path": "Translate the unresolved problem into a falsifiable hypothesis with acceptance criteria and failure diagnostics.",
+        "value_argument": "Problem gaps are grounded in explicit source statements about unresolved mechanisms or practical bottlenecks.",
+        "status": "candidate",
+        "createdAt": 1783352188.6843328,
+        "assessment_dimensions": [
+          "academic novelty",
+          "application value",
+          "implementation feasibility"
+        ],
+        "overlap_risk": "medium",
+        "strongest_overlap": 0.619,
+        "literature_coverage_factor": 0.7333,
+        "assessment_reason": "refs=1, gap_type=problem, strongest_local_overlap=0.619, coverage=0.733, feasibility=medium, application_value=medium",
+        "requires_human_review": false,
+        "dedupe_signature": "a a are data inconsistent precession pure recognized the with",
+        "tanxi_rank": 4,
+        "exploration_value_score": 10,
+        "ranking_reason": "novelty=6, refs=1, application=medium, feasibility=medium, type=problem, strategic_matches=1, density_bonus=2",
+        "strategic_alignment": [
+          {
+            "strategic_domain": "ai for science",
+            "matched_keywords": [
+              "ai",
+              "model"
+            ],
+            "alignment_score": 8
+          }
+        ],
+        "recommended_approach": "Translate the unresolved problem into a falsifiable hypothesis with acceptance criteria and failure diagnostics."
+      },
+      "gap_ids": [
+        "gap_1783352188684330600"
+      ],
+      "tournament_generation": 1
+    },
+    {
+      "hypothesis_id": "hyp_1783352188734307700",
+      "gap_id": "gap_1783352188682775100",
+      "statement": "If relativistic precession model is applied to black hole accretion disk QPO while tracking emerging hotspot 'relativistic precession model', then timing residuals will improve or reveal a falsifiable boundary condition. A crossover variant also tests transfer into black hole accretion disk QPO.",
+      "mechanism": "Mutated method pathway: relativistic precession model is substituted to test whether the mechanism survives a method-level perturbation. The proposed mechanism is that relativistic precession model changes the information, intervention, or representation pathway in black hole accretion disk QPO; because the source gap indicates weak evidence, testing timing residuals can distinguish a real mechanism from a pseudo-gap. Crossover lineage borrows constraints from hcand_1783352188724381900.",
+      "expected_value": "Anomaly gaps can drive explanatory progress because they point to observations or results that current mechanisms do not fully account for.",
+      "test_plan": "Build a minimal benchmark for black hole accretion disk QPO; compare relativistic precession model against canonical baselines; measure timing residuals; include negative controls, ablations, and failure-mode analysis.",
+      "status": "draft",
+      "createdAt": 1783352188.7343132,
+      "mingli_scores": {
+        "novelty": 0.489,
+        "plausibility": 0.775,
+        "grounding": 0.333,
+        "testability": 0.75,
+        "impact": 0.7,
+        "surprise": 0.455,
+        "strongest_local_overlap": 0.37
+      },
+      "score": 0.5984,
+      "lineage": [
+        {
+          "generation": 0,
+          "operation": "seed",
+          "gap_id": "gap_1783352188682775100",
+          "analogy_used": ""
+        },
+        {
+          "generation": 1,
+          "operation": "method_mutation",
+          "parent_candidate_id": "hcand_1783352188719670800"
+        },
+        {
+          "generation": 2,
+          "operation": "scenario_crossover",
+          "parent_candidate_id": "hcand_1783352188724248800"
+        }
+      ],
+      "competition_advantage": "Ranks well because it is traceable to a high-value gap, has an explicit mechanism, passes generic disciplinary plausibility checks, and includes falsifiable validation criteria.",
+      "verification_plan": {
+        "primary_metric": "timing residuals",
+        "baselines": [
+          "nearest dense PaperGraph method",
+          "domain-standard baseline"
+        ],
+        "falsification_condition": "No improvement or mechanistic separation on timing residuals under the stated condition."
+      },
+      "source_gap": {
+        "gap_id": "gap_1783352188682775100",
+        "gap_type": "anomaly",
+        "description": "Unexplained anomaly or theory-evidence tension reported in the literature: The data are inconsistent with a pure precession model and indicate accretion-rate turbulence.",
+        "supporting_references": [
+          "B 2021"
+        ],
+        "novelty_score": 6,
+        "application_value": "medium",
+        "feasibility": "high",
+        "suggested_research_path": "Turn the anomaly into competing mechanistic explanations, then test which assumptions fail under controlled conditions, ablation, counterexample construction, or independent data.",
+        "value_argument": "Anomaly gaps can drive explanatory progress because they point to observations or results that current mechanisms do not fully account for.",
+        "status": "candidate",
+        "createdAt": 1783352188.6827788,
+        "assessment_dimensions": [
+          "academic novelty",
+          "application value",
+          "implementation feasibility"
+        ],
+        "overlap_risk": "medium",
+        "strongest_overlap": 0.5714,
+        "literature_coverage_factor": 0.7,
+        "assessment_reason": "refs=1, gap_type=anomaly, strongest_local_overlap=0.571, coverage=0.7, feasibility=high, application_value=medium",
+        "requires_human_review": false,
+        "reasoning_signal": {
+          "type": "theory_evidence_anomaly",
+          "source_field": "general"
+        },
+        "dedupe_signature": "anomaly data in or reported tension the the theory-evidence unexplained",
+        "deduped_from": 1
+      },
+      "gap_ids": [
+        "gap_1783352188682775100"
+      ],
+      "tournament_generation": 2
+    },
+    {
+      "hypothesis_id": "hyp_1783352188734328800",
+      "gap_id": "gap_1783352188683391800",
+      "statement": "If relativistic precession model is applied to black hole accretion disk QPO while tracking emerging hotspot 'black hole accretion disk QPO', then timing residuals will improve or reveal a falsifiable boundary condition. A cross-gap variant tests whether the mechanism remains valid when the second gap's boundary condition is imposed: If relativistic precession model is applied to black hole accretion disk QPO while tracking emerging hotspot 'black hole accretion disk QPO', then timing residuals will improve or...[truncated]",
+      "mechanism": "The proposed mechanism is that relativistic precession model changes the information, intervention, or representation pathway in black hole accretion disk QPO; because the source gap indicates weak evidence, testing timing residuals can distinguish a real mechanism from a pseudo-gap. Cross-gap crossover combines evidence from gap_1783352188683391800 and gap_1783352188684330600 to test whether one gap resolves or sharpens the other.",
+      "expected_value": "The gap is grounded in an author-reported limitation, so it has stronger evidential support than a bare untried combination.",
+      "test_plan": "Build a minimal benchmark for black hole accretion disk QPO; compare relativistic precession model against canonical baselines; measure timing residuals; include negative controls, ablations, and failure-mode analysis.",
+      "status": "draft",
+      "createdAt": 1783352188.7343316,
+      "mingli_scores": {
+        "novelty": 0.426,
+        "plausibility": 0.775,
+        "grounding": 0.333,
+        "testability": 0.75,
+        "impact": 0.6,
+        "surprise": 0.305,
+        "strongest_local_overlap": 0.294
+      },
+      "score": 0.5616,
+      "lineage": [
+        {
+          "generation": 0,
+          "operation": "seed",
+          "gap_id": "gap_1783352188683391800",
+          "analogy_used": ""
+        },
+        {
+          "generation": 1,
+          "operation": "cross_gap_crossover",
+          "parent_candidate_id": "hcand_1783352188719758500"
+        }
+      ],
+      "competition_advantage": "Ranks well because it is traceable to a high-value gap, has an explicit mechanism, passes generic disciplinary plausibility checks, and includes falsifiable validation criteria.",
+      "verification_plan": {
+        "primary_metric": "timing residuals",
+        "baselines": [
+          "nearest dense PaperGraph method",
+          "domain-standard baseline"
+        ],
+        "falsification_condition": "No improvement or mechanistic separation on timing residuals under the stated condition."
+      },
+      "source_gap": {
+        "gap_id": "gap_1783352188683391800",
+        "gap_type": "improvement",
+        "description": "Recorded limitation worth testing: No explicit limitation extracted.",
+        "supporting_references": [
+          "A 2020"
+        ],
+        "novelty_score": 5,
+        "application_value": "medium",
+        "feasibility": "high",
+        "suggested_research_path": "Formulate a hypothesis that directly attacks the documented limitation and verify it under stress conditions.",
+        "value_argument": "The gap is grounded in an author-reported limitation, so it has stronger evidential support than a bare untried combination.",
+        "status": "candidate",
+        "createdAt": 1783352188.6833947,
+        "assessment_dimensions": [
+          "academic novelty",
+          "application value",
+          "implementation feasibility"
+        ],
+        "overlap_risk": "medium",
+        "strongest_overlap": 0.5,
+        "literature_coverage_factor": 0.5,
+        "assessment_reason": "refs=1, gap_type=improvement, strongest_local_overlap=0.5, coverage=0.5, feasibility=high, application_value=medium",
+        "requires_human_review": false,
+        "dedupe_signature": "explicit extracted limitation limitation no",
+        "deduped_from": 1
+      },
+      "gap_ids": [
+        "gap_1783352188683391800",
+        "gap_1783352188684330600"
+      ],
+      "tournament_generation": 1
+    }
+  ],
+  "keynotes": [],
+  "mechanism_reports": [],
+  "pipeline_tasks": [],
+  "knowledge_map": {
+    "dimension": "method-scenario-benchmark",
+    "main_methods": [
+      "relativistic precession model",
+      "turbulence variability model"
+    ],
+    "main_scenarios": [
+      "black hole accretion disk QPO"
+    ],
+    "main_benchmarks": [
+      "timing residuals"
+    ],
+    "method_scenario_coverage": {
+      "relativistic precession model": [
+        "black hole accretion disk QPO"
+      ],
+      "turbulence variability model": [
+        "black hole accretion disk QPO"
+      ]
+    },
+    "benchmark_index": {
+      "timing residuals": [
+        "A 2020",
+        "B 2021"
+      ]
+    },
+    "method_scenario_benchmark": {
+      "relativistic precession model": {
+        "black hole accretion disk QPO": {
+          "timing residuals": [
+            "A 2020"
+          ]
+        }
+      },
+      "turbulence variability model": {
+        "black hole accretion disk QPO": {
+          "timing residuals": [
+            "B 2021"
+          ]
+        }
+      }
+    },
+    "method_scenario_benchmark_triples": [
+      {
+        "method": "relativistic precession model",
+        "scenario": "black hole accretion disk QPO",
+        "benchmark": "timing residuals",
+        "references": [
+          "A 2020"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "relativistic precession model",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "The model supports QPOs from relativistic precession in black hole accretion disks.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "No explicit limitation extracted.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "Observed QPOs are consistent with relativistic precession and support the precession explanation.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "Observed QPOs are consistent with relativistic precession and support the precession explanation.",
+            "support": "source_sentence"
+          }
+        ]
+      },
+      {
+        "method": "turbulence variability model",
+        "scenario": "black hole accretion disk QPO",
+        "benchmark": "timing residuals",
+        "references": [
+          "B 2021"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "turbulence variability model",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "The data are inconsistent with a pure precession model and indicate accretion-rate turbulence.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "QPOs are inconsistent with relativistic precession alone and challenge the precession explanation.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "QPOs are inconsistent with relativistic precession alone and challenge the precession explanation.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "The data are inconsistent with a pure precession model and indicate accretion-rate turbulence.",
+            "support": "source_sentence"
+          }
+        ]
+      },
+      {
+        "method": "relativistic precession model",
+        "scenario": "black hole accretion disk QPO",
+        "benchmark": "timing residuals",
+        "references": [
+          "A 2020"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "relativistic precession model",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "The model supports QPOs from relativistic precession in black hole accretion disks.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "No explicit limitation extracted.",
+            "support": "structured_field"
+          }
+        ]
+      },
+      {
+        "method": "turbulence variability model",
+        "scenario": "black hole accretion disk QPO",
+        "benchmark": "timing residuals",
+        "references": [
+          "B 2021"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "turbulence variability model",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "The data are inconsistent with a pure precession model and indicate accretion-rate turbulence.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "QPOs are inconsistent with relativistic precession alone and challenge the precession explanation.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "The data are inconsistent with a pure precession model and indicate accretion-rate turbulence.",
+            "support": "source_sentence"
+          }
+        ]
+      }
+    ],
+    "claim_type_counts": {
+      "methodological_description": 4,
+      "empirical_result": 5,
+      "author_opinion": 6,
+      "theoretical_claim": 2
+    },
+    "extraction_repair": {
+      "attempted": 0,
+      "repaired": 0,
+      "still_low_quality": 0,
+      "errors": []
+    },
+    "unknown_summary": {
+      "total_triples": 4,
+      "unknown_triples": 0
+    }
+  },
+  "knowledge_gap_filter": {
+    "min_novelty": 4,
+    "input_count": 5,
+    "rejected_count": 1,
+    "rejected": [
+      {
+        "gap_id": "gap_1783352188683874700",
+        "gap_type": "problem",
+        "novelty_score": 3,
+        "description": "PDF/full-text challenge signal for turbulence variability model in black hole accretion disk QPO: QPOs are inconsistent with relativistic precession alone and challenge the precession explanation.",
+        "reason": "novelty_score below reporting threshold 4"
+      }
+    ]
+  },
+  "tanxi_gap_analysis": {
+    "agent": "tanxi",
+    "target_domain": "astrophysics accretion disk",
+    "thought": "TanXi scanned the PaperGraph for low-density but high-importance method-scenario-benchmark regions, claim contradictions, anomaly/tension signals, cross-disciplinary unconnected pairs, suspended unresolved problems, and strategic-need alignment.",
+    "action": {
+      "scan_coverage_density": {
+        "target_domain": "astrophysics accretion disk"
+      },
+      "detect_reasoning_gaps": {
+        "types": [
+          "claim_contradiction",
+          "theory_evidence_anomaly"
+        ]
+      },
+      "find_unconnected_pairs": {
+        "target_domain": "astrophysics accretion disk"
+      },
+      "detect_suspended_problems": {
+        "min_citation_threshold": 50
+      },
+      "prioritize_gaps": {
+        "criteria": [
+          "importance",
+          "tractability",
+          "strategic_value"
+        ]
+      },
+      "align_with_strategic_needs": {
+        "strategic_domains": [
+          "ai for science",
+          "energy",
+          "health"
+        ]
+      }
+    },
+    "coverage_analysis": {
+      "target_domain": "astrophysics accretion disk",
+      "method_count": 2,
+      "scenario_count": 1,
+      "benchmark_count": 1,
+      "dense_areas": [
+        {
+          "topic": "relativistic precession model + black hole accretion disk QPO",
+          "method": "relativistic precession model",
+          "scenario": "black hole accretion disk QPO",
+          "evidence_count": 1,
+          "benchmark_count": 1,
+          "importance_score": 8
+        },
+        {
+          "topic": "turbulence variability model + black hole accretion disk QPO",
+          "method": "turbulence variability model",
+          "scenario": "black hole accretion disk QPO",
+          "evidence_count": 1,
+          "benchmark_count": 1,
+          "importance_score": 8
+        }
+      ],
+      "density_holes": [
+        {
+          "topic": "relativistic precession model + black hole accretion disk QPO benchmark coverage",
+          "method": "relativistic precession model",
+          "scenario": "black hole accretion disk QPO",
+          "importance_score": 8,
+          "current_evidence_level": "medium",
+          "missing_benchmarks": [],
+          "why_important": "The method-scenario pair has evidence, but benchmark coverage is sparse, so robustness and generalization remain uncertain.",
+          "supporting_references": [
+            "A 2020"
+          ]
+        },
+        {
+          "topic": "turbulence variability model + black hole accretion disk QPO benchmark coverage",
+          "method": "turbulence variability model",
+          "scenario": "black hole accretion disk QPO",
+          "importance_score": 8,
+          "current_evidence_level": "medium",
+          "missing_benchmarks": [],
+          "why_important": "The method-scenario pair has evidence, but benchmark coverage is sparse, so robustness and generalization remain uncertain.",
+          "supporting_references": [
+            "B 2021"
+          ]
+        }
+      ]
+    },
+    "reasoning_gaps": [
+      {
+        "gap_id": "gap_1783352188690384900",
+        "gap_type": "anomaly",
+        "description": "Unexplained anomaly or theory-evidence tension reported in the literature: QPOs are inconsistent with relativistic precession alone and challenge the precession explanation.",
+        "supporting_references": [
+          "B 2021"
+        ],
+        "novelty_score": 6,
+        "application_value": "medium",
+        "feasibility": "high",
+        "suggested_research_path": "Turn the anomaly into competing mechanistic explanations, then test which assumptions fail under controlled conditions, ablation, counterexample construction, or independent data.",
+        "value_argument": "Anomaly gaps can drive explanatory progress because they point to observations or results that current mechanisms do not fully account for.",
+        "status": "candidate",
+        "createdAt": 1783352188.6903882,
+        "assessment_dimensions": [
+          "academic novelty",
+          "application value",
+          "implementation feasibility"
+        ],
+        "overlap_risk": "medium",
+        "strongest_overlap": 0.5385,
+        "literature_coverage_factor": 0.6769,
+        "assessment_reason": "refs=1, gap_type=anomaly, strongest_local_overlap=0.538, coverage=0.677, feasibility=high, application_value=medium",
+        "requires_human_review": false,
+        "reasoning_signal": {
+          "type": "theory_evidence_anomaly",
+          "source_field": "general"
+        },
+        "dedupe_signature": "anomaly are in or qpos reported tension the theory-evidence unexplained"
+      },
+      {
+        "gap_id": "gap_1783352188691585500",
+        "gap_type": "anomaly",
+        "description": "Unexplained anomaly or theory-evidence tension reported in the literature: The data are inconsistent with a pure precession model and indicate accretion-rate turbulence.",
+        "supporting_references": [
+          "B 2021"
+        ],
+        "novelty_score": 6,
+        "application_value": "medium",
+        "feasibility": "high",
+        "suggested_research_path": "Turn the anomaly into competing mechanistic explanations, then test which assumptions fail under controlled conditions, ablation, counterexample construction, or independent data.",
+        "value_argument": "Anomaly gaps can drive explanatory progress because they point to observations or results that current mechanisms do not fully account for.",
+        "status": "candidate",
+        "createdAt": 1783352188.6915886,
+        "assessment_dimensions": [
+          "academic novelty",
+          "application value",
+          "implementation feasibility"
+        ],
+        "overlap_risk": "medium",
+        "strongest_overlap": 0.5714,
+        "literature_coverage_factor": 0.7,
+        "assessment_reason": "refs=1, gap_type=anomaly, strongest_local_overlap=0.571, coverage=0.7, feasibility=high, application_value=medium",
+        "requires_human_review": false,
+        "reasoning_signal": {
+          "type": "theory_evidence_anomaly",
+          "source_field": "general"
+        },
+        "dedupe_signature": "anomaly data in or reported tension the the theory-evidence unexplained"
+      }
+    ],
+    "cross_disciplinary_unconnected_pairs": [
+      {
+        "field_a": "astrophysics",
+        "concept_a": "relativistic precession model",
+        "field_b": "general",
+        "concept_b": "turbulence variability model",
+        "potential_synergy": "Testing whether relativistic precession model can constrain, evaluate, or operationalize turbulence variability model for astrophysics accretion disk may reveal a non-obvious transfer path or boundary condition.",
+        "supporting_references": [
+          "A 2020",
+          "B 2021"
+        ]
+      }
+    ],
+    "suspended_problems": [
+      {
+        "problem": "QPO precession model No explicit limitation extracted.",
+        "years_unresolved": 6,
+        "citation_count": 0,
+        "evidence_level": "unknown",
+        "barrier_to_progress": "unspecified conceptual or technical barrier",
+        "supporting_references": [
+          "A 2020"
+        ]
+      },
+      {
+        "problem": "QPO precession model The model supports QPOs from relativistic precession in black hole accretion disks. Observed QPOs are consistent with relativistic precession and support the precession explanation. No explicit limitation extracted. []",
+        "years_unresolved": 6,
+        "citation_count": 0,
+        "evidence_level": "unknown",
+        "barrier_to_progress": "unspecified conceptual or technical barrier",
+        "supporting_references": [
+          "A 2020"
+        ]
+      },
+      {
+        "problem": "QPO turbulence model QPOs are inconsistent with relativistic precession alone and challenge the precession explanation.",
+        "years_unresolved": 5,
+        "citation_count": 0,
+        "evidence_level": "unknown",
+        "barrier_to_progress": "unspecified conceptual or technical barrier",
+        "supporting_references": [
+          "B 2021"
+        ]
+      },
+      {
+        "problem": "QPO turbulence model The data are inconsistent with a pure precession model and indicate accretion-rate turbulence. QPOs are inconsistent with relativistic precession alone and challenge the precession explanation. QPOs are inconsistent with relativistic prece...[truncated]",
+        "years_unresolved": 5,
+        "citation_count": 0,
+        "evidence_level": "unknown",
+        "barrier_to_progress": "data or measurement bottleneck",
+        "supporting_references": [
+          "B 2021"
+        ]
+      }
+    ],
+    "ranked_gaps": [
+      {
+        "rank": 1,
+        "gap_id": "gap_1783352188692833500",
+        "gap_description": "Cross-disciplinary unconnected pair: 'relativistic precession model' from astrophysics and 'turbulence variability model' from general have no recorded bridge in the current PaperGraph.",
+        "gap_type": "migration",
+        "exploration_value_score": 10,
+        "importance": "high",
+        "tractability": "medium",
+        "strategic_alignment": [
+          {
+            "strategic_domain": "ai for science",
+            "matched_keywords": [
+              "ai",
+              "model"
+            ],
+            "alignment_score": 8
+          }
+        ],
+        "supporting_references": [
+          "A 2020",
+          "B 2021"
+        ],
+        "recommended_approach": "Formulate a transfer hypothesis, audit incompatible assumptions, then run a minimal bridge experiment or benchmark.",
+        "ranking_reason": "novelty=7, refs=2, application=medium, feasibility=medium, type=migration, strategic_matches=1, density_bonus=2"
+      },
+      {
+        "rank": 2,
+        "gap_id": "gap_1783352188692117200",
+        "gap_description": "Density hole: 'relativistic precession model' in 'black hole accretion disk QPO' lacks benchmark coverage for .",
+        "gap_type": "improvement",
+        "exploration_value_score": 10,
+        "importance": "high",
+        "tractability": "high",
+        "strategic_alignment": [
+          {
+            "strategic_domain": "ai for science",
+            "matched_keywords": [
+              "ai",
+              "model"
+            ],
+            "alignment_score": 8
+          }
+        ],
+        "supporting_references": [
+          "A 2020"
+        ],
+        "recommended_approach": "Use the dense neighboring literature as controls, then test the sparse intersection with explicit benchmark coverage.",
+        "ranking_reason": "novelty=2, refs=1, application=medium, feasibility=high, type=improvement, strategic_matches=1, density_bonus=2"
+      },
+      {
+        "rank": 3,
+        "gap_id": "gap_1783352188692486300",
+        "gap_description": "Density hole: 'turbulence variability model' in 'black hole accretion disk QPO' lacks benchmark coverage for .",
+        "gap_type": "improvement",
+        "exploration_value_score": 10,
+        "importance": "high",
+        "tractability": "high",
+        "strategic_alignment": [
+          {
+            "strategic_domain": "ai for science",
+            "matched_keywords": [
+              "ai",
+              "model"
+            ],
+            "alignment_score": 8
+          }
+        ],
+        "supporting_references": [
+          "B 2021"
+        ],
+        "recommended_approach": "Use the dense neighboring literature as controls, then test the sparse intersection with explicit benchmark coverage.",
+        "ranking_reason": "novelty=2, refs=1, application=medium, feasibility=high, type=improvement, strategic_matches=1, density_bonus=2"
+      },
+      {
+        "rank": 4,
+        "gap_id": "gap_1783352188684330600",
+        "gap_description": "Source literature indicates a recognized unresolved problem: The data are inconsistent with a pure precession model and indicate accretion-rate turbulence. QPOs are inconsistent with relativistic precession alone and challenge the precession explanation. QPOs are inconsistent with relativistic precession alone and chall...[truncated]",
+        "gap_type": "problem",
+        "exploration_value_score": 10,
+        "importance": "high",
+        "tractability": "medium",
+        "strategic_alignment": [
+          {
+            "strategic_domain": "ai for science",
+            "matched_keywords": [
+              "ai",
+              "model"
+            ],
+            "alignment_score": 8
+          }
+        ],
+        "supporting_references": [
+          "B 2021"
+        ],
+        "recommended_approach": "Translate the unresolved problem into a falsifiable hypothesis with acceptance criteria and failure diagnostics.",
+        "ranking_reason": "novelty=6, refs=1, application=medium, feasibility=medium, type=problem, strategic_matches=1, density_bonus=2"
+      },
+      {
+        "rank": 5,
+        "gap_id": "gap_1783352188693518300",
+        "gap_description": "Suspended problem: QPO precession model The model supports QPOs from relativistic precession in black hole accretion disks. Observed QPOs are consistent with relativistic precession and support the precession explanation. No explicit limitation extracted. []",
+        "gap_type": "problem",
+        "exploration_value_score": 10,
+        "importance": "high",
+        "tractability": "medium",
+        "strategic_alignment": [
+          {
+            "strategic_domain": "ai for science",
+            "matched_keywords": [
+              "model"
+            ],
+            "alignment_score": 6
+          }
+        ],
+        "supporting_references": [
+          "A 2020"
+        ],
+        "recommended_approach": "Trace the barrier to a concrete scientific question, then test whether a new method or dataset removes the blocker.",
+        "ranking_reason": "novelty=3, refs=1, application=medium, feasibility=medium, type=problem, strategic_matches=1, density_bonus=2"
+      },
+      {
+        "rank": 6,
+        "gap_id": "gap_1783352188693903300",
+        "gap_description": "Suspended problem: QPO turbulence model QPOs are inconsistent with relativistic precession alone and challenge the precession explanation.",
+        "gap_type": "problem",
+        "exploration_value_score": 10,
+        "importance": "high",
+        "tractability": "medium",
+        "strategic_alignment": [
+          {
+            "strategic_domain": "ai for science",
+            "matched_keywords": [
+              "model"
+            ],
+            "alignment_score": 6
+          }
+        ],
+        "supporting_references": [
+          "B 2021"
+        ],
+        "recommended_approach": "Trace the barrier to a concrete scientific question, then test whether a new method or dataset removes the blocker.",
+        "ranking_reason": "novelty=3, refs=1, application=medium, feasibility=medium, type=problem, strategic_matches=1, density_bonus=2"
+      }
+    ],
+    "constraints_checked": {
+      "requires_supporting_reference": true,
+      "filters_trivial_low_novelty": true,
+      "max_gaps": 6
+    }
+  },
+  "temporal_knowledge_graph": {
+    "temporal_kg_id": "tkg_1783352188704813400",
+    "project_id": "sci_1783352188563828200",
+    "createdAt": 1783352188.7048182,
+    "triple_count": 4,
+    "triples": [
+      {
+        "method": "relativistic precession model",
+        "scenario": "black hole accretion disk QPO",
+        "benchmark": "timing residuals",
+        "year": 2020,
+        "citation_count": 0,
+        "reference": "paper_1783352188612319000"
+      },
+      {
+        "method": "turbulence variability model",
+        "scenario": "black hole accretion disk QPO",
+        "benchmark": "timing residuals",
+        "year": 2021,
+        "citation_count": 0,
+        "reference": "paper_1783352188666161700"
+      },
+      {
+        "method": "relativistic precession model",
+        "scenario": "black hole accretion disk QPO",
+        "benchmark": "timing residuals",
+        "year": 2020,
+        "citation_count": 0,
+        "reference": "A 2020"
+      },
+      {
+        "method": "turbulence variability model",
+        "scenario": "black hole accretion disk QPO",
+        "benchmark": "timing residuals",
+        "year": 2021,
+        "citation_count": 0,
+        "reference": "B 2021"
+      }
+    ],
+    "yearly_counts": {
+      "2020": 2,
+      "2021": 2
+    },
+    "method_lifecycles": {
+      "relativistic precession model": {
+        "status": "growing",
+        "yearly_counts": {
+          "2020": 2
+        },
+        "growth_rate": 2.0,
+        "peak_year": "2020",
+        "total": 2
+      },
+      "turbulence variability model": {
+        "status": "growing",
+        "yearly_counts": {
+          "2021": 2
+        },
+        "growth_rate": 2.0,
+        "peak_year": "2021",
+        "total": 2
+      }
+    },
+    "scenario_lifecycles": {
+      "black hole accretion disk QPO": {
+        "status": "emerging",
+        "yearly_counts": {
+          "2020": 2,
+          "2021": 2
+        },
+        "growth_rate": 0.0,
+        "peak_year": "2020",
+        "total": 4
+      }
+    },
+    "hotspot_predictions": [
+      {
+        "concept": "relativistic precession model",
+        "concept_type": "method",
+        "forecast": "likely_hotspot",
+        "hotspot_score": 4.667,
+        "lifecycle": {
+          "status": "growing",
+          "yearly_counts": {
+            "2020": 2
+          },
+          "growth_rate": 2.0,
+          "peak_year": "2020",
+          "total": 2
+        }
+      },
+      {
+        "concept": "turbulence variability model",
+        "concept_type": "method",
+        "forecast": "likely_hotspot",
+        "hotspot_score": 4.667,
+        "lifecycle": {
+          "status": "growing",
+          "yearly_counts": {
+            "2021": 2
+          },
+          "growth_rate": 2.0,
+          "peak_year": "2021",
+          "total": 2
+        }
+      },
+      {
+        "concept": "black hole accretion disk QPO",
+        "concept_type": "scenario",
+        "forecast": "likely_hotspot",
+        "hotspot_score": 3.333,
+        "lifecycle": {
+          "status": "emerging",
+          "yearly_counts": {
+            "2020": 2,
+            "2021": 2
+          },
+          "growth_rate": 0.0,
+          "peak_year": "2020",
+          "total": 4
+        }
+      }
+    ],
+    "next_step": "Use hotspot_predictions as emerging constraints for structural gap detection and MingLi hypothesis generation."
+  },
+  "structural_gap_analysis": {
+    "graph_summary": {
+      "node_count": 4,
+      "edge_count": 5,
+      "components": 1
+    },
+    "items": [],
+    "gaps": []
+  },
+  "structural_analogy_reports": [
+    {
+      "analogy_report_id": "analog_1783352188715984900",
+      "project_id": "sci_1783352188563828200",
+      "target_scenario": "",
+      "threshold": 0.55,
+      "scenario_count": 1,
+      "analogy_transfers": [],
+      "next_step": "Feed high-similarity transfers into MingLi as mutation/crossover material for hypothesis evolution."
+    }
+  ],
+  "mingli_hypothesis_evolution_runs": [
+    {
+      "mingli_run_id": "mingli_1783352188734342400",
+      "project_id": "sci_1783352188563828200",
+      "createdAt": 1783352188.7343438,
+      "gap_ids": [
+        "gap_1783352188684330600",
+        "gap_1783352188681483500",
+        "gap_1783352188682775100",
+        "gap_1783352188683391800"
+      ],
+      "population_size": 8,
+      "generations_completed": 2,
+      "lineage_summary": [
+        {
+          "generation": 0,
+          "population_size": 8,
+          "best_score": 0.6223
+        },
+        {
+          "generation": 1,
+          "population_size": 8,
+          "best_score": 0.6273
+        },
+        {
+          "generation": 2,
+          "population_size": 8,
+          "best_score": 0.6273
+        }
+      ],
+      "top_hypotheses": [
+        {
+          "hypothesis_id": "hyp_1783352188734271000",
+          "gap_id": "gap_1783352188684330600",
+          "statement": "If relativistic precession model is applied to black hole accretion disk QPO while tracking emerging hotspot 'black hole accretion disk QPO', then timing residuals will improve or reveal a falsifiable boundary condition. The decisive test is constrained to timing residuals under an explicit stress regime.",
+          "mechanism": "The proposed mechanism is that relativistic precession model changes the information, intervention, or representation pathway in black hole accretion disk QPO; because the source gap indicates weak evidence, testing timing residuals can distinguish a real mechanism from a pseudo-gap.",
+          "expected_value": "Problem gaps are grounded in explicit source statements about unresolved mechanisms or practical bottlenecks.",
+          "test_plan": "Build a minimal benchmark for black hole accretion disk QPO; compare relativistic precession model against canonical baselines; measure timing residuals; include negative controls, ablations, and failure-mode analysis. Add a preregistered stress test for timing residuals.",
+          "status": "draft",
+          "createdAt": 1783352188.7342818,
+          "mingli_scores": {
+            "novelty": 0.486,
+            "plausibility": 0.775,
+            "grounding": 0.333,
+            "testability": 0.75,
+            "impact": 1.0,
+            "surprise": 0.247,
+            "strongest_local_overlap": 0.379
+          },
+          "score": 0.6273,
+          "lineage": [
+            {
+              "generation": 0,
+              "operation": "seed",
+              "gap_id": "gap_1783352188684330600",
+              "analogy_used": ""
+            },
+            {
+              "generation": 1,
+              "operation": "constraint_insertion",
+              "parent_candidate_id": "hcand_1783352188719468000"
+            }
+          ],
+          "competition_advantage": "Ranks well because it is traceable to a high-value gap, has an explicit mechanism, passes generic disciplinary plausibility checks, and includes falsifiable validation criteria.",
+          "verification_plan": {
+            "primary_metric": "timing residuals",
+            "baselines": [
+              "nearest dense PaperGraph method",
+              "domain-standard baseline"
+            ],
+            "falsification_condition": "No improvement or mechanistic separation on timing residuals under the stated condition."
+          },
+          "source_gap": {
+            "gap_id": "gap_1783352188684330600",
+            "gap_type": "problem",
+            "description": "Source literature indicates a recognized unresolved problem: The data are inconsistent with a pure precession model and indicate accretion-rate turbulence. QPOs are inconsistent with relativistic precession alone and challenge the precession explanation. QPOs are inconsistent with relativistic precession alone and chall...[truncated]",
+            "supporting_references": [
+              "B 2021"
+            ],
+            "novelty_score": 6,
+            "application_value": "medium",
+            "feasibility": "medium",
+            "suggested_research_path": "Translate the unresolved problem into a falsifiable hypothesis with acceptance criteria and failure diagnostics.",
+            "value_argument": "Problem gaps are grounded in explicit source statements about unresolved mechanisms or practical bottlenecks.",
+            "status": "candidate",
+            "createdAt": 1783352188.6843328,
+            "assessment_dimensions": [
+              "academic novelty",
+              "application value",
+              "implementation feasibility"
+            ],
+            "overlap_risk": "medium",
+            "strongest_overlap": 0.619,
+            "literature_coverage_factor": 0.7333,
+            "assessment_reason": "refs=1, gap_type=problem, strongest_local_overlap=0.619, coverage=0.733, feasibility=medium, application_value=medium",
+            "requires_human_review": false,
+            "dedupe_signature": "a a are data inconsistent precession pure recognized the with",
+            "tanxi_rank": 4,
+            "exploration_value_score": 10,
+            "ranking_reason": "novelty=6, refs=1, application=medium, feasibility=medium, type=problem, strategic_matches=1, density_bonus=2",
+            "strategic_alignment": [
+              {
+                "strategic_domain": "ai for science",
+                "matched_keywords": [
+                  "ai",
+                  "model"
+                ],
+                "alignment_score": 8
+              }
+            ],
+            "recommended_approach": "Translate the unresolved problem into a falsifiable hypothesis with acceptance criteria and failure diagnostics."
+          },
+          "gap_ids": [
+            "gap_1783352188684330600"
+          ],
+          "tournament_generation": 1
+        },
+        {
+          "hypothesis_id": "hyp_1783352188734307700",
+          "gap_id": "gap_1783352188682775100",
+          "statement": "If relativistic precession model is applied to black hole accretion disk QPO while tracking emerging hotspot 'relativistic precession model', then timing residuals will improve or reveal a falsifiable boundary condition. A crossover variant also tests transfer into black hole accretion disk QPO.",
+          "mechanism": "Mutated method pathway: relativistic precession model is substituted to test whether the mechanism survives a method-level perturbation. The proposed mechanism is that relativistic precession model changes the information, intervention, or representation pathway in black hole accretion disk QPO; because the source gap indicates weak evidence, testing timing residuals can distinguish a real mechanism from a pseudo-gap. Crossover lineage borrows constraints from hcand_1783352188724381900.",
+          "expected_value": "Anomaly gaps can drive explanatory progress because they point to observations or results that current mechanisms do not fully account for.",
+          "test_plan": "Build a minimal benchmark for black hole accretion disk QPO; compare relativistic precession model against canonical baselines; measure timing residuals; include negative controls, ablations, and failure-mode analysis.",
+          "status": "draft",
+          "createdAt": 1783352188.7343132,
+          "mingli_scores": {
+            "novelty": 0.489,
+            "plausibility": 0.775,
+            "grounding": 0.333,
+            "testability": 0.75,
+            "impact": 0.7,
+            "surprise": 0.455,
+            "strongest_local_overlap": 0.37
+          },
+          "score": 0.5984,
+          "lineage": [
+            {
+              "generation": 0,
+              "operation": "seed",
+              "gap_id": "gap_1783352188682775100",
+              "analogy_used": ""
+            },
+            {
+              "generation": 1,
+              "operation": "method_mutation",
+              "parent_candidate_id": "hcand_1783352188719670800"
+            },
+            {
+              "generation": 2,
+              "operation": "scenario_crossover",
+              "parent_candidate_id": "hcand_1783352188724248800"
+            }
+          ],
+          "competition_advantage": "Ranks well because it is traceable to a high-value gap, has an explicit mechanism, passes generic disciplinary plausibility checks, and includes falsifiable validation criteria.",
+          "verification_plan": {
+            "primary_metric": "timing residuals",
+            "baselines": [
+              "nearest dense PaperGraph method",
+              "domain-standard baseline"
+            ],
+            "falsification_condition": "No improvement or mechanistic separation on timing residuals under the stated condition."
+          },
+          "source_gap": {
+            "gap_id": "gap_1783352188682775100",
+            "gap_type": "anomaly",
+            "description": "Unexplained anomaly or theory-evidence tension reported in the literature: The data are inconsistent with a pure precession model and indicate accretion-rate turbulence.",
+            "supporting_references": [
+              "B 2021"
+            ],
+            "novelty_score": 6,
+            "application_value": "medium",
+            "feasibility": "high",
+            "suggested_research_path": "Turn the anomaly into competing mechanistic explanations, then test which assumptions fail under controlled conditions, ablation, counterexample construction, or independent data.",
+            "value_argument": "Anomaly gaps can drive explanatory progress because they point to observations or results that current mechanisms do not fully account for.",
+            "status": "candidate",
+            "createdAt": 1783352188.6827788,
+            "assessment_dimensions": [
+              "academic novelty",
+              "application value",
+              "implementation feasibility"
+            ],
+            "overlap_risk": "medium",
+            "strongest_overlap": 0.5714,
+            "literature_coverage_factor": 0.7,
+            "assessment_reason": "refs=1, gap_type=anomaly, strongest_local_overlap=0.571, coverage=0.7, feasibility=high, application_value=medium",
+            "requires_human_review": false,
+            "reasoning_signal": {
+              "type": "theory_evidence_anomaly",
+              "source_field": "general"
+            },
+            "dedupe_signature": "anomaly data in or reported tension the the theory-evidence unexplained",
+            "deduped_from": 1
+          },
+          "gap_ids": [
+            "gap_1783352188682775100"
+          ],
+          "tournament_generation": 2
+        },
+        {
+          "hypothesis_id": "hyp_1783352188734328800",
+          "gap_id": "gap_1783352188683391800",
+          "statement": "If relativistic precession model is applied to black hole accretion disk QPO while tracking emerging hotspot 'black hole accretion disk QPO', then timing residuals will improve or reveal a falsifiable boundary condition. A cross-gap variant tests whether the mechanism remains valid when the second gap's boundary condition is imposed: If relativistic precession model is applied to black hole accretion disk QPO while tracking emerging hotspot 'black hole accretion disk QPO', then timing residuals will improve or...[truncated]",
+          "mechanism": "The proposed mechanism is that relativistic precession model changes the information, intervention, or representation pathway in black hole accretion disk QPO; because the source gap indicates weak evidence, testing timing residuals can distinguish a real mechanism from a pseudo-gap. Cross-gap crossover combines evidence from gap_1783352188683391800 and gap_1783352188684330600 to test whether one gap resolves or sharpens the other.",
+          "expected_value": "The gap is grounded in an author-reported limitation, so it has stronger evidential support than a bare untried combination.",
+          "test_plan": "Build a minimal benchmark for black hole accretion disk QPO; compare relativistic precession model against canonical baselines; measure timing residuals; include negative controls, ablations, and failure-mode analysis.",
+          "status": "draft",
+          "createdAt": 1783352188.7343316,
+          "mingli_scores": {
+            "novelty": 0.426,
+            "plausibility": 0.775,
+            "grounding": 0.333,
+            "testability": 0.75,
+            "impact": 0.6,
+            "surprise": 0.305,
+            "strongest_local_overlap": 0.294
+          },
+          "score": 0.5616,
+          "lineage": [
+            {
+              "generation": 0,
+              "operation": "seed",
+              "gap_id": "gap_1783352188683391800",
+              "analogy_used": ""
+            },
+            {
+              "generation": 1,
+              "operation": "cross_gap_crossover",
+              "parent_candidate_id": "hcand_1783352188719758500"
+            }
+          ],
+          "competition_advantage": "Ranks well because it is traceable to a high-value gap, has an explicit mechanism, passes generic disciplinary plausibility checks, and includes falsifiable validation criteria.",
+          "verification_plan": {
+            "primary_metric": "timing residuals",
+            "baselines": [
+              "nearest dense PaperGraph method",
+              "domain-standard baseline"
+            ],
+            "falsification_condition": "No improvement or mechanistic separation on timing residuals under the stated condition."
+          },
+          "source_gap": {
+            "gap_id": "gap_1783352188683391800",
+            "gap_type": "improvement",
+            "description": "Recorded limitation worth testing: No explicit limitation extracted.",
+            "supporting_references": [
+              "A 2020"
+            ],
+            "novelty_score": 5,
+            "application_value": "medium",
+            "feasibility": "high",
+            "suggested_research_path": "Formulate a hypothesis that directly attacks the documented limitation and verify it under stress conditions.",
+            "value_argument": "The gap is grounded in an author-reported limitation, so it has stronger evidential support than a bare untried combination.",
+            "status": "candidate",
+            "createdAt": 1783352188.6833947,
+            "assessment_dimensions": [
+              "academic novelty",
+              "application value",
+              "implementation feasibility"
+            ],
+            "overlap_risk": "medium",
+            "strongest_overlap": 0.5,
+            "literature_coverage_factor": 0.5,
+            "assessment_reason": "refs=1, gap_type=improvement, strongest_local_overlap=0.5, coverage=0.5, feasibility=high, application_value=medium",
+            "requires_human_review": false,
+            "dedupe_signature": "explicit extracted limitation limitation no",
+            "deduped_from": 1
+          },
+          "gap_ids": [
+            "gap_1783352188683391800",
+            "gap_1783352188684330600"
+          ],
+          "tournament_generation": 1
+        }
+      ],
+      "method": "template_seed + tournament_selection + mutation/crossover + structural/temporal/analogy scoring",
+      "constraints_checked": {
+        "traceable_to_gap": true,
+        "papergraph_grounded": true,
+        "testability_scored": true,
+        "novelty_overlap_local": true
+      }
+    }
+  ]
+}

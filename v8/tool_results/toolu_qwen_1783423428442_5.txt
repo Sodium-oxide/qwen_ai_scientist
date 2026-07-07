@@ -1,0 +1,1023 @@
+{
+  "agent": "tanxi",
+  "target_domain": "Power System Simulation / 电力系统仿真",
+  "thought": "TanXi scanned the PaperGraph for low-density but high-importance method-scenario-benchmark regions, claim contradictions, anomaly/tension signals, cross-disciplinary unconnected pairs, suspended unresolved problems, and strategic-need alignment.",
+  "action": {
+    "scan_coverage_density": {
+      "target_domain": "Power System Simulation / 电力系统仿真"
+    },
+    "detect_reasoning_gaps": {
+      "types": [
+        "claim_contradiction",
+        "theory_evidence_anomaly"
+      ]
+    },
+    "find_unconnected_pairs": {
+      "target_domain": "Power System Simulation / 电力系统仿真"
+    },
+    "detect_suspended_problems": {
+      "min_citation_threshold": 50
+    },
+    "prioritize_gaps": {
+      "criteria": [
+        "importance",
+        "tractability",
+        "strategic_value"
+      ]
+    },
+    "align_with_strategic_needs": {
+      "strategic_domains": [
+        "energy",
+        "AI for Science"
+      ]
+    }
+  },
+  "coverage_analysis": {
+    "target_domain": "Power System Simulation / 电力系统仿真",
+    "method_count": 15,
+    "scenario_count": 15,
+    "benchmark_count": 14,
+    "dense_areas": [
+      {
+        "topic": "VLSI-based modeling + power system electromagnetic transient simulation",
+        "method": "VLSI-based modeling",
+        "scenario": "power system electromagnetic transient simulation",
+        "evidence_count": 1,
+        "benchmark_count": 1,
+        "importance_score": 7
+      },
+      {
+        "topic": "XUV transient grating spectroscopy + ultrafast electron and hole dynamics in germanium solid",
+        "method": "XUV transient grating spectroscopy",
+        "scenario": "ultrafast electron and hole dynamics in germanium solid",
+        "evidence_count": 1,
+        "benchmark_count": 1,
+        "importance_score": 5
+      },
+      {
+        "topic": "calibration-free view-robust vision-language-action model + robotic manipulation under varying camera viewpoints",
+        "method": "calibration-free view-robust vision-language-action model",
+        "scenario": "robotic manipulation under varying camera viewpoints",
+        "evidence_count": 1,
+        "benchmark_count": 1,
+        "importance_score": 6
+      },
+      {
+        "topic": "co-simulation plays a key role in enabling collaborative modeling + distributed co-simulation of continuous-time or hybrid systems",
+        "method": "co-simulation plays a key role in enabling collaborative modeling",
+        "scenario": "distributed co-simulation of continuous-time or hybrid systems",
+        "evidence_count": 1,
+        "benchmark_count": 1,
+        "importance_score": 5
+      },
+      {
+        "topic": "integrated circuit modeling and simulation + power system transient stability analysis",
+        "method": "integrated circuit modeling and simulation",
+        "scenario": "power system transient stability analysis",
+        "evidence_count": 1,
+        "benchmark_count": 1,
+        "importance_score": 8
+      },
+      {
+        "topic": "literature review + intelligent intersections",
+        "method": "literature review",
+        "scenario": "intelligent intersections",
+        "evidence_count": 1,
+        "benchmark_count": 1,
+        "importance_score": 5
+      },
+      {
+        "topic": "markerless visuotactile 3D tracking pipeline + deformable object dynamics modeling for robotic manipulation",
+        "method": "markerless visuotactile 3D tracking pipeline",
+        "scenario": "deformable object dynamics modeling for robotic manipulation",
+        "evidence_count": 1,
+        "benchmark_count": 1,
+        "importance_score": 5
+      },
+      {
+        "topic": "numerical modeling + three-dimensional electromagnetic problems with material discontinuities",
+        "method": "numerical modeling",
+        "scenario": "three-dimensional electromagnetic problems with material discontinuities",
+        "evidence_count": 1,
+        "benchmark_count": 1,
+        "importance_score": 5
+      },
+      {
+        "topic": "of electromagnetic transient-transient stability hybrid simulation + electromagnetic transient-transient stability hybrid simulation",
+        "method": "of electromagnetic transient-transient stability hybrid simulation",
+        "scenario": "electromagnetic transient-transient stability hybrid simulation",
+        "evidence_count": 1,
+        "benchmark_count": 1,
+        "importance_score": 8
+      },
+      {
+        "topic": "online recursive least squares (RLS) identification algorithm in z-domain + large power grid",
+        "method": "online recursive least squares (RLS) identification algorithm in z-domain",
+        "scenario": "large power grid",
+        "evidence_count": 1,
+        "benchmark_count": 1,
+        "importance_score": 7
+      }
+    ],
+    "density_holes": [
+      {
+        "topic": "integrated circuit modeling and simulation + power system transient stability analysis benchmark coverage",
+        "method": "integrated circuit modeling and simulation",
+        "scenario": "power system transient stability analysis",
+        "importance_score": 8,
+        "current_evidence_level": "medium",
+        "missing_benchmarks": [
+          "EMT-TS hybrid interface error",
+          "classification performance",
+          "event frequency",
+          "feasibility",
+          "stability | reliability | scalability | accuracy of simulation outcomes"
+        ],
+        "why_important": "The method-scenario pair has evidence, but benchmark coverage is sparse, so robustness and generalization remain uncertain.",
+        "supporting_references": [
+          "Xiang Zhang et al. (2021) Power System Transient Modeling and Simulation using Integrated Circuit arXiv:2106.03254v1"
+        ]
+      },
+      {
+        "topic": "of electromagnetic transient-transient stability hybrid simulation + electromagnetic transient-transient stability hybrid simulation benchmark coverage",
+        "method": "of electromagnetic transient-transient stability hybrid simulation",
+        "scenario": "electromagnetic transient-transient stability hybrid simulation",
+        "importance_score": 8,
+        "current_evidence_level": "medium",
+        "missing_benchmarks": [
+          "classification performance",
+          "event frequency",
+          "feasibility",
+          "simulation accuracy and efficiency",
+          "stability | reliability | scalability | accuracy of simulation outcomes"
+        ],
+        "why_important": "The method-scenario pair has evidence, but benchmark coverage is sparse, so robustness and generalization remain uncertain.",
+        "supporting_references": [
+          "Bin Wang et al. (2026) Quantifying and Improving the Accuracy of Electromagnetic Transient-Transient Stability Hybrid Simulation doi:10.1109/TPWRS.2026.3683988"
+        ]
+      },
+      {
+        "topic": "preconditioned finite difference Newton-GMRES method + power system transient simulation for stability studies benchmark coverage",
+        "method": "preconditioned finite difference Newton-GMRES method",
+        "scenario": "power system transient simulation for stability studies",
+        "importance_score": 8,
+        "current_evidence_level": "medium",
+        "missing_benchmarks": [
+          "EMT-TS hybrid interface error",
+          "classification performance",
+          "event frequency",
+          "feasibility",
+          "simulation accuracy and efficiency"
+        ],
+        "why_important": "The method-scenario pair has evidence, but benchmark coverage is sparse, so robustness and generalization remain uncertain.",
+        "supporting_references": [
+          "Sheng Lei et al. (2020) Initialization Process of a Power System Transient Simulation Scheme for Stability Studies arXiv:2008.13059v1"
+        ]
+      },
+      {
+        "topic": "risk-based transient stability assessment + power system security benchmark coverage",
+        "method": "risk-based transient stability assessment",
+        "scenario": "power system security",
+        "importance_score": 8,
+        "current_evidence_level": "medium",
+        "missing_benchmarks": [
+          "EMT-TS hybrid interface error",
+          "classification performance",
+          "event frequency",
+          "feasibility",
+          "simulation accuracy and efficiency"
+        ],
+        "why_important": "The method-scenario pair has evidence, but benchmark coverage is sparse, so robustness and generalization remain uncertain.",
+        "supporting_references": [
+          "Umair Shahzad (2022) A Comprehensive Review on Power System Risk-Based Transient Stability arXiv:2206.05113v1"
+        ]
+      },
+      {
+        "topic": "scalable communication interface design | real-time data extrapolation method + real-time co-simulation of power systems with high inverter-based resource (IBR) penetration benchmark coverage",
+        "method": "scalable communication interface design | real-time data extrapolation method",
+        "scenario": "real-time co-simulation of power systems with high inverter-based resource (IBR) penetration",
+        "importance_score": 8,
+        "current_evidence_level": "medium",
+        "missing_benchmarks": [
+          "EMT-TS hybrid interface error",
+          "classification performance",
+          "event frequency",
+          "feasibility",
+          "simulation accuracy and efficiency"
+        ],
+        "why_important": "The method-scenario pair has evidence, but benchmark coverage is sparse, so robustness and generalization remain uncertain.",
+        "supporting_references": [
+          "Qi Xiao et al. (2025) Design and Implementation of Scalable Communication Interfaces for Reliable and Stable Real-time Co-Simulation of Power Systems arXiv:2502.07866v1"
+        ]
+      },
+      {
+        "topic": "VLSI-based modeling + electromagnetic transient-transient stability hybrid simulation",
+        "method": "VLSI-based modeling",
+        "scenario": "electromagnetic transient-transient stability hybrid simulation",
+        "importance_score": 8,
+        "current_evidence_level": "none",
+        "missing_benchmarks": [
+          "EMT-TS hybrid interface error",
+          "classification performance",
+          "event frequency",
+          "feasibility",
+          "simulation accuracy and efficiency"
+        ],
+        "why_important": "Both the method and scenario are visible in the field map, but this intersection has no recorded validation.",
+        "supporting_references": [
+          "Bin Wang et al. (2026) Quantifying and Improving the Accuracy of Electromagnetic Transient-Transient Stability Hybrid Simulation doi:10.1109/TPWRS.2026.3683988",
+          "Yijing Liu et al. (2021) Using Terminal Circuit for Power System Electromagnetic Transient Simulation arXiv:2107.00540v1"
+        ]
+      },
+      {
+        "topic": "VLSI-based modeling + power system transient simulation for stability studies",
+        "method": "VLSI-based modeling",
+        "scenario": "power system transient simulation for stability studies",
+        "importance_score": 8,
+        "current_evidence_level": "none",
+        "missing_benchmarks": [
+          "EMT-TS hybrid interface error",
+          "classification performance",
+          "event frequency",
+          "feasibility",
+          "simulation accuracy and efficiency"
+        ],
+        "why_important": "Both the method and scenario are visible in the field map, but this intersection has no recorded validation.",
+        "supporting_references": [
+          "Sheng Lei et al. (2020) Initialization Process of a Power System Transient Simulation Scheme for Stability Studies arXiv:2008.13059v1",
+          "Yijing Liu et al. (2021) Using Terminal Circuit for Power System Electromagnetic Transient Simulation arXiv:2107.00540v1"
+        ]
+      },
+      {
+        "topic": "VLSI-based modeling + power system transient stability analysis",
+        "method": "VLSI-based modeling",
+        "scenario": "power system transient stability analysis",
+        "importance_score": 8,
+        "current_evidence_level": "none",
+        "missing_benchmarks": [
+          "EMT-TS hybrid interface error",
+          "classification performance",
+          "event frequency",
+          "feasibility",
+          "simulation accuracy and efficiency"
+        ],
+        "why_important": "Both the method and scenario are visible in the field map, but this intersection has no recorded validation.",
+        "supporting_references": [
+          "Xiang Zhang et al. (2021) Power System Transient Modeling and Simulation using Integrated Circuit arXiv:2106.03254v1",
+          "Yijing Liu et al. (2021) Using Terminal Circuit for Power System Electromagnetic Transient Simulation arXiv:2107.00540v1"
+        ]
+      },
+      {
+        "topic": "XUV transient grating spectroscopy + electromagnetic transient-transient stability hybrid simulation",
+        "method": "XUV transient grating spectroscopy",
+        "scenario": "electromagnetic transient-transient stability hybrid simulation",
+        "importance_score": 8,
+        "current_evidence_level": "none",
+        "missing_benchmarks": [
+          "EMT-TS hybrid interface error",
+          "classification performance",
+          "event frequency",
+          "feasibility",
+          "simulation accuracy and efficiency"
+        ],
+        "why_important": "Both the method and scenario are visible in the field map, but this intersection has no recorded validation.",
+        "supporting_references": [
+          "Bin Wang et al. (2026) Quantifying and Improving the Accuracy of Electromagnetic Transient-Transient Stability Hybrid Simulation doi:10.1109/TPWRS.2026.3683988",
+          "Vincent Eggers et al. (2026) Background-free Tracking of Ultrafast Hole and Electron Dynamics with XUV Transient Grating Spectroscopy doi:10.1021/acsphotonics.6c00152"
+        ]
+      },
+      {
+        "topic": "XUV transient grating spectroscopy + power system transient simulation for stability studies",
+        "method": "XUV transient grating spectroscopy",
+        "scenario": "power system transient simulation for stability studies",
+        "importance_score": 8,
+        "current_evidence_level": "none",
+        "missing_benchmarks": [
+          "EMT-TS hybrid interface error",
+          "classification performance",
+          "event frequency",
+          "feasibility",
+          "simulation accuracy and efficiency"
+        ],
+        "why_important": "Both the method and scenario are visible in the field map, but this intersection has no recorded validation.",
+        "supporting_references": [
+          "Vincent Eggers et al. (2026) Background-free Tracking of Ultrafast Hole and Electron Dynamics with XUV Transient Grating Spectroscopy doi:10.1021/acsphotonics.6c00152",
+          "Sheng Lei et al. (2020) Initialization Process of a Power System Transient Simulation Scheme for Stability Studies arXiv:2008.13059v1"
+        ]
+      },
+      {
+        "topic": "XUV transient grating spectroscopy + power system transient stability analysis",
+        "method": "XUV transient grating spectroscopy",
+        "scenario": "power system transient stability analysis",
+        "importance_score": 8,
+        "current_evidence_level": "none",
+        "missing_benchmarks": [
+          "EMT-TS hybrid interface error",
+          "classification performance",
+          "event frequency",
+          "feasibility",
+          "simulation accuracy and efficiency"
+        ],
+        "why_important": "Both the method and scenario are visible in the field map, but this intersection has no recorded validation.",
+        "supporting_references": [
+          "Vincent Eggers et al. (2026) Background-free Tracking of Ultrafast Hole and Electron Dynamics with XUV Transient Grating Spectroscopy doi:10.1021/acsphotonics.6c00152",
+          "Xiang Zhang et al. (2021) Power System Transient Modeling and Simulation using Integrated Circuit arXiv:2106.03254v1"
+        ]
+      },
+      {
+        "topic": "calibration-free view-robust vision-language-action model + electromagnetic transient-transient stability hybrid simulation",
+        "method": "calibration-free view-robust vision-language-action model",
+        "scenario": "electromagnetic transient-transient stability hybrid simulation",
+        "importance_score": 8,
+        "current_evidence_level": "none",
+        "missing_benchmarks": [
+          "EMT-TS hybrid interface error",
+          "classification performance",
+          "event frequency",
+          "feasibility",
+          "simulation accuracy and efficiency"
+        ],
+        "why_important": "Both the method and scenario are visible in the field map, but this intersection has no recorded validation.",
+        "supporting_references": [
+          "Bin Wang et al. (2026) Quantifying and Improving the Accuracy of Electromagnetic Transient-Transient Stability Hybrid Simulation doi:10.1109/TPWRS.2026.3683988",
+          "Wenhao Li et al. (2026) From Fixed to Free Cameras: Calibration-Free View-Robust Vision-Language-Action Model arXiv:2607.05396v1"
+        ]
+      },
+      {
+        "topic": "calibration-free view-robust vision-language-action model + large power grid",
+        "method": "calibration-free view-robust vision-language-action model",
+        "scenario": "large power grid",
+        "importance_score": 8,
+        "current_evidence_level": "none",
+        "missing_benchmarks": [
+          "EMT-TS hybrid interface error",
+          "classification performance",
+          "event frequency",
+          "feasibility",
+          "simulation accuracy and efficiency"
+        ],
+        "why_important": "Both the method and scenario are visible in the field map, but this intersection has no recorded validation.",
+        "supporting_references": [
+          "Abilash Thakallapelli et al. (2019) Real-time frequency based reduced order modeling of large power grid doi:10.1109/PESGM.2016.7741877",
+          "Wenhao Li et al. (2026) From Fixed to Free Cameras: Calibration-Free View-Robust Vision-Language-Action Model arXiv:2607.05396v1"
+        ]
+      },
+      {
+        "topic": "calibration-free view-robust vision-language-action model + power system electromagnetic transient simulation",
+        "method": "calibration-free view-robust vision-language-action model",
+        "scenario": "power system electromagnetic transient simulation",
+        "importance_score": 8,
+        "current_evidence_level": "none",
+        "missing_benchmarks": [
+          "EMT-TS hybrid interface error",
+          "classification performance",
+          "event frequency",
+          "feasibility",
+          "simulation accuracy and efficiency"
+        ],
+        "why_important": "Both the method and scenario are visible in the field map, but this intersection has no recorded validation.",
+        "supporting_references": [
+          "Yijing Liu et al. (2021) Using Terminal Circuit for Power System Electromagnetic Transient Simulation arXiv:2107.00540v1",
+          "Wenhao Li et al. (2026) From Fixed to Free Cameras: Calibration-Free View-Robust Vision-Language-Action Model arXiv:2607.05396v1"
+        ]
+      },
+      {
+        "topic": "calibration-free view-robust vision-language-action model + power system security",
+        "method": "calibration-free view-robust vision-language-action model",
+        "scenario": "power system security",
+        "importance_score": 8,
+        "current_evidence_level": "none",
+        "missing_benchmarks": [
+          "EMT-TS hybrid interface error",
+          "classification performance",
+          "event frequency",
+          "feasibility",
+          "simulation accuracy and efficiency"
+        ],
+        "why_important": "Both the method and scenario are visible in the field map, but this intersection has no recorded validation.",
+        "supporting_references": [
+          "Umair Shahzad (2022) A Comprehensive Review on Power System Risk-Based Transient Stability arXiv:2206.05113v1",
+          "Wenhao Li et al. (2026) From Fixed to Free Cameras: Calibration-Free View-Robust Vision-Language-Action Model arXiv:2607.05396v1"
+        ]
+      },
+      {
+        "topic": "calibration-free view-robust vision-language-action model + power system transient simulation for stability studies",
+        "method": "calibration-free view-robust vision-language-action model",
+        "scenario": "power system transient simulation for stability studies",
+        "importance_score": 8,
+        "current_evidence_level": "none",
+        "missing_benchmarks": [
+          "EMT-TS hybrid interface error",
+          "classification performance",
+          "event frequency",
+          "feasibility",
+          "simulation accuracy and efficiency"
+        ],
+        "why_important": "Both the method and scenario are visible in the field map, but this intersection has no recorded validation.",
+        "supporting_references": [
+          "Sheng Lei et al. (2020) Initialization Process of a Power System Transient Simulation Scheme for Stability Studies arXiv:2008.13059v1",
+          "Wenhao Li et al. (2026) From Fixed to Free Cameras: Calibration-Free View-Robust Vision-Language-Action Model arXiv:2607.05396v1"
+        ]
+      },
+      {
+        "topic": "calibration-free view-robust vision-language-action model + power system transient stability analysis",
+        "method": "calibration-free view-robust vision-language-action model",
+        "scenario": "power system transient stability analysis",
+        "importance_score": 8,
+        "current_evidence_level": "none",
+        "missing_benchmarks": [
+          "EMT-TS hybrid interface error",
+          "classification performance",
+          "event frequency",
+          "feasibility",
+          "simulation accuracy and efficiency"
+        ],
+        "why_important": "Both the method and scenario are visible in the field map, but this intersection has no recorded validation.",
+        "supporting_references": [
+          "Xiang Zhang et al. (2021) Power System Transient Modeling and Simulation using Integrated Circuit arXiv:2106.03254v1",
+          "Wenhao Li et al. (2026) From Fixed to Free Cameras: Calibration-Free View-Robust Vision-Language-Action Model arXiv:2607.05396v1"
+        ]
+      },
+      {
+        "topic": "calibration-free view-robust vision-language-action model + real-time co-simulation of power systems with high inverter-based resource (IBR) penetration",
+        "method": "calibration-free view-robust vision-language-action model",
+        "scenario": "real-time co-simulation of power systems with high inverter-based resource (IBR) penetration",
+        "importance_score": 8,
+        "current_evidence_level": "none",
+        "missing_benchmarks": [
+          "EMT-TS hybrid interface error",
+          "classification performance",
+          "event frequency",
+          "feasibility",
+          "simulation accuracy and efficiency"
+        ],
+        "why_important": "Both the method and scenario are visible in the field map, but this intersection has no recorded validation.",
+        "supporting_references": [
+          "Qi Xiao et al. (2025) Design and Implementation of Scalable Communication Interfaces for Reliable and Stable Real-time Co-Simulation of Power Systems arXiv:2502.07866v1",
+          "Wenhao Li et al. (2026) From Fixed to Free Cameras: Calibration-Free View-Robust Vision-Language-Action Model arXiv:2607.05396v1"
+        ]
+      },
+      {
+        "topic": "co-simulation plays a key role in enabling collaborative modeling + electromagnetic transient-transient stability hybrid simulation",
+        "method": "co-simulation plays a key role in enabling collaborative modeling",
+        "scenario": "electromagnetic transient-transient stability hybrid simulation",
+        "importance_score": 8,
+        "current_evidence_level": "none",
+        "missing_benchmarks": [
+          "EMT-TS hybrid interface error",
+          "classification performance",
+          "event frequency",
+          "feasibility",
+          "simulation accuracy and efficiency"
+        ],
+        "why_important": "Both the method and scenario are visible in the field map, but this intersection has no recorded validation.",
+        "supporting_references": [
+          "Bin Wang et al. (2026) Quantifying and Improving the Accuracy of Electromagnetic Transient-Transient Stability Hybrid Simulation doi:10.1109/TPWRS.2026.3683988",
+          "Santiago Gil et al. (2025) FMI-Based Distributed Co-Simulation with Enhanced Security and Intellectual Property Safeguards arXiv:2510.20403v1"
+        ]
+      },
+      {
+        "topic": "co-simulation plays a key role in enabling collaborative modeling + power system transient simulation for stability studies",
+        "method": "co-simulation plays a key role in enabling collaborative modeling",
+        "scenario": "power system transient simulation for stability studies",
+        "importance_score": 8,
+        "current_evidence_level": "none",
+        "missing_benchmarks": [
+          "EMT-TS hybrid interface error",
+          "classification performance",
+          "event frequency",
+          "feasibility",
+          "simulation accuracy and efficiency"
+        ],
+        "why_important": "Both the method and scenario are visible in the field map, but this intersection has no recorded validation.",
+        "supporting_references": [
+          "Sheng Lei et al. (2020) Initialization Process of a Power System Transient Simulation Scheme for Stability Studies arXiv:2008.13059v1",
+          "Santiago Gil et al. (2025) FMI-Based Distributed Co-Simulation with Enhanced Security and Intellectual Property Safeguards arXiv:2510.20403v1"
+        ]
+      }
+    ]
+  },
+  "reasoning_gaps": [
+    {
+      "gap_id": "gap_1783423889544458200",
+      "gap_type": "anomaly",
+      "description": "Unexplained anomaly or theory-evidence tension reported in the literature: To mitigate instability arising from data resolution mismatches in time-sensitive co-simulations, a real-time data extrapolation method is proposed.",
+      "supporting_references": [
+        "Qi Xiao et al. (2025) Design and Implementation of Scalable Communication Interfaces for Reliable and Stable Real-time Co-Simulation of Power Systems arXiv:2502.07866v1"
+      ],
+      "novelty_score": 4,
+      "application_value": "high",
+      "feasibility": "high",
+      "suggested_research_path": "Turn the anomaly into competing mechanistic explanations, then test which assumptions fail under controlled conditions, ablation, counterexample construction, or independent data.",
+      "value_argument": "Anomaly gaps can drive explanatory progress because they point to observations or results that current mechanisms do not fully account for.",
+      "status": "candidate",
+      "createdAt": 1783423889.5444634,
+      "assessment_dimensions": [
+        "academic novelty",
+        "application value",
+        "implementation feasibility"
+      ],
+      "overlap_risk": "high",
+      "strongest_overlap": 0.6667,
+      "literature_coverage_factor": 0.6956,
+      "assessment_reason": "refs=1, gap_type=anomaly, strongest_local_overlap=0.667, coverage=0.696, feasibility=high, application_value=high",
+      "requires_human_review": true,
+      "reasoning_signal": {
+        "type": "theory_evidence_anomaly",
+        "source_field": "multidisciplinary"
+      },
+      "dedupe_signature": "anomaly in mitigate or reported tension the theory-evidence to unexplained"
+    }
+  ],
+  "cross_disciplinary_unconnected_pairs": [
+    {
+      "field_a": "chemistry",
+      "concept_a": "XUV transient grating spectroscopy",
+      "field_b": "computer_science",
+      "concept_b": "numerical modeling",
+      "potential_synergy": "Testing whether XUV transient grating spectroscopy can constrain, evaluate, or operationalize numerical modeling for Power System Simulation / 电力系统仿真 may reveal a non-obvious transfer path or boundary condition.",
+      "supporting_references": [
+        "Vincent Eggers et al. (2026) Background-free Tracking of Ultrafast Hole and Electron Dynamics with XUV Transient Grating Spectroscopy doi:10.1021/acsphotonics.6c00152",
+        "Michel Nohra et al. (2024) Physics-Informed Neural Networks for the Numerical Modeling of Steady-State and Transient Electromagnetic Problems with Discontinuous Media arXiv:2406.04380v1"
+      ]
+    },
+    {
+      "field_a": "chemistry",
+      "concept_a": "XUV transient grating spectroscopy",
+      "field_b": "computer_science",
+      "concept_b": "three-dimensional electromagnetic problems with material discontinuities",
+      "potential_synergy": "Testing whether XUV transient grating spectroscopy can constrain, evaluate, or operationalize three-dimensional electromagnetic problems with material discontinuities for Power System Simulation / 电力系统仿真 may reveal a non-obvious transfer path or boundary condition.",
+      "supporting_references": [
+        "Vincent Eggers et al. (2026) Background-free Tracking of Ultrafast Hole and Electron Dynamics with XUV Transient Grating Spectroscopy doi:10.1021/acsphotonics.6c00152",
+        "Michel Nohra et al. (2024) Physics-Informed Neural Networks for the Numerical Modeling of Steady-State and Transient Electromagnetic Problems with Discontinuous Media arXiv:2406.04380v1"
+      ]
+    },
+    {
+      "field_a": "chemistry",
+      "concept_a": "XUV transient grating spectroscopy",
+      "field_b": "computer_science",
+      "concept_b": "theorem strength",
+      "potential_synergy": "Testing whether XUV transient grating spectroscopy can constrain, evaluate, or operationalize theorem strength for Power System Simulation / 电力系统仿真 may reveal a non-obvious transfer path or boundary condition.",
+      "supporting_references": [
+        "Vincent Eggers et al. (2026) Background-free Tracking of Ultrafast Hole and Electron Dynamics with XUV Transient Grating Spectroscopy doi:10.1021/acsphotonics.6c00152",
+        "Michel Nohra et al. (2024) Physics-Informed Neural Networks for the Numerical Modeling of Steady-State and Transient Electromagnetic Problems with Discontinuous Media arXiv:2406.04380v1"
+      ]
+    },
+    {
+      "field_a": "chemistry",
+      "concept_a": "XUV transient grating spectroscopy",
+      "field_b": "computer_science",
+      "concept_b": "markerless visuotactile 3D tracking pipeline",
+      "potential_synergy": "Testing whether XUV transient grating spectroscopy can constrain, evaluate, or operationalize markerless visuotactile 3D tracking pipeline for Power System Simulation / 电力系统仿真 may reveal a non-obvious transfer path or boundary condition.",
+      "supporting_references": [
+        "Vincent Eggers et al. (2026) Background-free Tracking of Ultrafast Hole and Electron Dynamics with XUV Transient Grating Spectroscopy doi:10.1021/acsphotonics.6c00152",
+        "Hongyu Li et al. (2026) Deform360: A Massive Multi-view Visuotactile Dataset for Deformable World Models arXiv:2607.05390v1"
+      ]
+    },
+    {
+      "field_a": "chemistry",
+      "concept_a": "XUV transient grating spectroscopy",
+      "field_b": "computer_science",
+      "concept_b": "deformable object dynamics modeling for robotic manipulation",
+      "potential_synergy": "Testing whether XUV transient grating spectroscopy can constrain, evaluate, or operationalize deformable object dynamics modeling for robotic manipulation for Power System Simulation / 电力系统仿真 may reveal a non-obvious transfer path or boundary condition.",
+      "supporting_references": [
+        "Vincent Eggers et al. (2026) Background-free Tracking of Ultrafast Hole and Electron Dynamics with XUV Transient Grating Spectroscopy doi:10.1021/acsphotonics.6c00152",
+        "Hongyu Li et al. (2026) Deform360: A Massive Multi-view Visuotactile Dataset for Deformable World Models arXiv:2607.05390v1"
+      ]
+    },
+    {
+      "field_a": "chemistry",
+      "concept_a": "XUV transient grating spectroscopy",
+      "field_b": "computer_science",
+      "concept_b": "world model performance comparison (2D video models vs. 3D particle models)",
+      "potential_synergy": "Testing whether XUV transient grating spectroscopy can constrain, evaluate, or operationalize world model performance comparison (2D video models vs. 3D particle models) for Power System Simulation / 电力系统仿真 may reveal a non-obvious transfer path or boundary condition.",
+      "supporting_references": [
+        "Vincent Eggers et al. (2026) Background-free Tracking of Ultrafast Hole and Electron Dynamics with XUV Transient Grating Spectroscopy doi:10.1021/acsphotonics.6c00152",
+        "Hongyu Li et al. (2026) Deform360: A Massive Multi-view Visuotactile Dataset for Deformable World Models arXiv:2607.05390v1"
+      ]
+    },
+    {
+      "field_a": "chemistry",
+      "concept_a": "ultrafast electron and hole dynamics in germanium solid",
+      "field_b": "computer_science",
+      "concept_b": "numerical modeling",
+      "potential_synergy": "Testing whether ultrafast electron and hole dynamics in germanium solid can constrain, evaluate, or operationalize numerical modeling for Power System Simulation / 电力系统仿真 may reveal a non-obvious transfer path or boundary condition.",
+      "supporting_references": [
+        "Vincent Eggers et al. (2026) Background-free Tracking of Ultrafast Hole and Electron Dynamics with XUV Transient Grating Spectroscopy doi:10.1021/acsphotonics.6c00152",
+        "Michel Nohra et al. (2024) Physics-Informed Neural Networks for the Numerical Modeling of Steady-State and Transient Electromagnetic Problems with Discontinuous Media arXiv:2406.04380v1"
+      ]
+    },
+    {
+      "field_a": "chemistry",
+      "concept_a": "ultrafast electron and hole dynamics in germanium solid",
+      "field_b": "computer_science",
+      "concept_b": "three-dimensional electromagnetic problems with material discontinuities",
+      "potential_synergy": "Testing whether ultrafast electron and hole dynamics in germanium solid can constrain, evaluate, or operationalize three-dimensional electromagnetic problems with material discontinuities for Power System Simulation / 电力系统仿真 may reveal a non-obvious transfer path or boundary condition.",
+      "supporting_references": [
+        "Vincent Eggers et al. (2026) Background-free Tracking of Ultrafast Hole and Electron Dynamics with XUV Transient Grating Spectroscopy doi:10.1021/acsphotonics.6c00152",
+        "Michel Nohra et al. (2024) Physics-Informed Neural Networks for the Numerical Modeling of Steady-State and Transient Electromagnetic Problems with Discontinuous Media arXiv:2406.04380v1"
+      ]
+    },
+    {
+      "field_a": "chemistry",
+      "concept_a": "ultrafast electron and hole dynamics in germanium solid",
+      "field_b": "computer_science",
+      "concept_b": "theorem strength",
+      "potential_synergy": "Testing whether ultrafast electron and hole dynamics in germanium solid can constrain, evaluate, or operationalize theorem strength for Power System Simulation / 电力系统仿真 may reveal a non-obvious transfer path or boundary condition.",
+      "supporting_references": [
+        "Vincent Eggers et al. (2026) Background-free Tracking of Ultrafast Hole and Electron Dynamics with XUV Transient Grating Spectroscopy doi:10.1021/acsphotonics.6c00152",
+        "Michel Nohra et al. (2024) Physics-Informed Neural Networks for the Numerical Modeling of Steady-State and Transient Electromagnetic Problems with Discontinuous Media arXiv:2406.04380v1"
+      ]
+    },
+    {
+      "field_a": "chemistry",
+      "concept_a": "ultrafast electron and hole dynamics in germanium solid",
+      "field_b": "computer_science",
+      "concept_b": "markerless visuotactile 3D tracking pipeline",
+      "potential_synergy": "Testing whether ultrafast electron and hole dynamics in germanium solid can constrain, evaluate, or operationalize markerless visuotactile 3D tracking pipeline for Power System Simulation / 电力系统仿真 may reveal a non-obvious transfer path or boundary condition.",
+      "supporting_references": [
+        "Vincent Eggers et al. (2026) Background-free Tracking of Ultrafast Hole and Electron Dynamics with XUV Transient Grating Spectroscopy doi:10.1021/acsphotonics.6c00152",
+        "Hongyu Li et al. (2026) Deform360: A Massive Multi-view Visuotactile Dataset for Deformable World Models arXiv:2607.05390v1"
+      ]
+    }
+  ],
+  "suspended_problems": [
+    {
+      "problem": "Real-time frequency based reduced order modeling of large power grid Full text excerpt: introduces a method of developing FDNE based on an online recursive least squares (RLS) identification algorithm in z-domain, and modeling of reduced power systems as FDNE...[truncated]",
+      "years_unresolved": 7,
+      "citation_count": 0,
+      "evidence_level": "unknown",
+      "barrier_to_progress": "unspecified conceptual or technical barrier",
+      "supporting_references": [
+        "Abilash Thakallapelli et al. (2019) Real-time frequency based reduced order modeling of large power grid doi:10.1109/PESGM.2016.7741877"
+      ]
+    },
+    {
+      "problem": "Real-time frequency based reduced order modeling of large power grid Large power systems are complex and real-time modeling of the grid for electromagnetic simulation (EMT) studies is impractical. In general, there are methods that reduce large power system in...[truncated]",
+      "years_unresolved": 7,
+      "citation_count": 0,
+      "evidence_level": "unknown",
+      "barrier_to_progress": "scale or computational constraint",
+      "supporting_references": [
+        "Abilash Thakallapelli et al. (2019) Real-time frequency based reduced order modeling of large power grid doi:10.1109/PESGM.2016.7741877"
+      ]
+    },
+    {
+      "problem": "Initialization Process of a Power System Transient Simulation Scheme for Stability Studies No explicit limitation extracted.",
+      "years_unresolved": 6,
+      "citation_count": 0,
+      "evidence_level": "unknown",
+      "barrier_to_progress": "robustness or stability barrier",
+      "supporting_references": [
+        "Sheng Lei et al. (2020) Initialization Process of a Power System Transient Simulation Scheme for Stability Studies arXiv:2008.13059v1"
+      ]
+    },
+    {
+      "problem": "Initialization Process of a Power System Transient Simulation Scheme for Stability Studies The initialization process of a novel power system transient simulation scheme for stability studies is put forward, by further developing a \"time-domain harmonic power-...[truncated]",
+      "years_unresolved": 6,
+      "citation_count": 0,
+      "evidence_level": "unknown",
+      "barrier_to_progress": "robustness or stability barrier",
+      "supporting_references": [
+        "Sheng Lei et al. (2020) Initialization Process of a Power System Transient Simulation Scheme for Stability Studies arXiv:2008.13059v1"
+      ]
+    },
+    {
+      "problem": "Power System Transient Modeling and Simulation using Integrated Circuit No explicit limitation extracted.",
+      "years_unresolved": 5,
+      "citation_count": 0,
+      "evidence_level": "unknown",
+      "barrier_to_progress": "unspecified conceptual or technical barrier",
+      "supporting_references": [
+        "Xiang Zhang et al. (2021) Power System Transient Modeling and Simulation using Integrated Circuit arXiv:2106.03254v1"
+      ]
+    },
+    {
+      "problem": "Power System Transient Modeling and Simulation using Integrated Circuit Transient stability analysis (TSA) plays an important role in power system analysis to investigate the stability of power system. Traditionally, transient stability analysis methods have b...[truncated]",
+      "years_unresolved": 5,
+      "citation_count": 0,
+      "evidence_level": "unknown",
+      "barrier_to_progress": "robustness or stability barrier",
+      "supporting_references": [
+        "Xiang Zhang et al. (2021) Power System Transient Modeling and Simulation using Integrated Circuit arXiv:2106.03254v1"
+      ]
+    },
+    {
+      "problem": "Using Terminal Circuit for Power System Electromagnetic Transient Simulation Full text excerpt: preliminary exploration of modeling power system electromagnetic transients using VLSI to avoid numerical calculation No explicit limitation extracted.",
+      "years_unresolved": 5,
+      "citation_count": 0,
+      "evidence_level": "unknown",
+      "barrier_to_progress": "unspecified conceptual or technical barrier",
+      "supporting_references": [
+        "Yijing Liu et al. (2021) Using Terminal Circuit for Power System Electromagnetic Transient Simulation arXiv:2107.00540v1"
+      ]
+    },
+    {
+      "problem": "Using Terminal Circuit for Power System Electromagnetic Transient Simulation The modern power system is evolving with increasing penetration of power electronics introducing complicated electromagnetic phenomenon. Electromagnetic transient (EMT) simulation is...[truncated]",
+      "years_unresolved": 5,
+      "citation_count": 0,
+      "evidence_level": "unknown",
+      "barrier_to_progress": "mechanistic uncertainty",
+      "supporting_references": [
+        "Yijing Liu et al. (2021) Using Terminal Circuit for Power System Electromagnetic Transient Simulation arXiv:2107.00540v1"
+      ]
+    },
+    {
+      "problem": "A Comprehensive Review on Power System Risk-Based Transient Stability Full text excerpt: comprehensive review of risk-based transient stability in power networks No explicit limitation extracted.",
+      "years_unresolved": 4,
+      "citation_count": 0,
+      "evidence_level": "unknown",
+      "barrier_to_progress": "robustness or stability barrier",
+      "supporting_references": [
+        "Umair Shahzad (2022) A Comprehensive Review on Power System Risk-Based Transient Stability arXiv:2206.05113v1"
+      ]
+    },
+    {
+      "problem": "A Comprehensive Review on Power System Risk-Based Transient Stability Power systems are getting more complex than ever and are consequently operating close to their limit of stability. Moreover, with the increasing demand of renewable wind generation, and the...[truncated]",
+      "years_unresolved": 4,
+      "citation_count": 0,
+      "evidence_level": "unknown",
+      "barrier_to_progress": "robustness or stability barrier",
+      "supporting_references": [
+        "Umair Shahzad (2022) A Comprehensive Review on Power System Risk-Based Transient Stability arXiv:2206.05113v1"
+      ]
+    }
+  ],
+  "ranked_gaps": [
+    {
+      "rank": 1,
+      "gap_id": "gap_1783423889659378200",
+      "gap_description": "Cross-disciplinary unconnected pair: 'XUV transient grating spectroscopy' from chemistry and 'numerical modeling' from computer_science have no recorded bridge in the current PaperGraph.",
+      "gap_type": "migration",
+      "exploration_value_score": 10,
+      "importance": "high",
+      "tractability": "medium",
+      "strategic_alignment": [
+        {
+          "strategic_domain": "energy",
+          "matched_keywords": [
+            "power"
+          ],
+          "alignment_score": 6
+        },
+        {
+          "strategic_domain": "AI for Science",
+          "matched_keywords": [
+            "ai",
+            "model"
+          ],
+          "alignment_score": 8
+        }
+      ],
+      "supporting_references": [
+        "Vincent Eggers et al. (2026) Background-free Tracking of Ultrafast Hole and Electron Dynamics with XUV Transient Grating Spectroscopy doi:10.1021/acsphotonics.6c00152",
+        "Michel Nohra et al. (2024) Physics-Informed Neural Networks for the Numerical Modeling of Steady-State and Transient Electromagnetic Problems with Discontinuous Media arXiv:2406.04380v1",
+        "Hongyu Li et al. (2026) Deform360: A Massive Multi-view Visuotactile Dataset for Deformable World Models arXiv:2607.05390v1"
+      ],
+      "recommended_approach": "Formulate a transfer hypothesis, audit incompatible assumptions, then run a minimal bridge experiment or benchmark.",
+      "ranking_reason": "novelty=7, refs=3, application=medium, feasibility=medium, type=migration, strategic_matches=2, density_bonus=2"
+    },
+    {
+      "rank": 2,
+      "gap_id": "gap_1783423889710320200",
+      "gap_description": "Cross-disciplinary unconnected pair: 'ultrafast electron and hole dynamics in germanium solid' from chemistry and 'numerical modeling' from computer_science have no recorded bridge in the current PaperGraph.",
+      "gap_type": "migration",
+      "exploration_value_score": 10,
+      "importance": "high",
+      "tractability": "medium",
+      "strategic_alignment": [
+        {
+          "strategic_domain": "energy",
+          "matched_keywords": [
+            "power"
+          ],
+          "alignment_score": 6
+        },
+        {
+          "strategic_domain": "AI for Science",
+          "matched_keywords": [
+            "ai",
+            "model"
+          ],
+          "alignment_score": 8
+        }
+      ],
+      "supporting_references": [
+        "Vincent Eggers et al. (2026) Background-free Tracking of Ultrafast Hole and Electron Dynamics with XUV Transient Grating Spectroscopy doi:10.1021/acsphotonics.6c00152",
+        "Michel Nohra et al. (2024) Physics-Informed Neural Networks for the Numerical Modeling of Steady-State and Transient Electromagnetic Problems with Discontinuous Media arXiv:2406.04380v1"
+      ],
+      "recommended_approach": "Formulate a transfer hypothesis, audit incompatible assumptions, then run a minimal bridge experiment or benchmark.",
+      "ranking_reason": "novelty=7, refs=2, application=medium, feasibility=medium, type=migration, strategic_matches=2, density_bonus=2"
+    },
+    {
+      "rank": 3,
+      "gap_id": "gap_1783423889600169600",
+      "gap_description": "Density hole: 'VLSI-based modeling' has no recorded validation in 'electromagnetic transient-transient stability hybrid simulation'.",
+      "gap_type": "combinatorial",
+      "exploration_value_score": 10,
+      "importance": "high",
+      "tractability": "high",
+      "strategic_alignment": [
+        {
+          "strategic_domain": "AI for Science",
+          "matched_keywords": [
+            "model"
+          ],
+          "alignment_score": 6
+        }
+      ],
+      "supporting_references": [
+        "Bin Wang et al. (2026) Quantifying and Improving the Accuracy of Electromagnetic Transient-Transient Stability Hybrid Simulation doi:10.1109/TPWRS.2026.3683988",
+        "Yijing Liu et al. (2021) Using Terminal Circuit for Power System Electromagnetic Transient Simulation arXiv:2107.00540v1"
+      ],
+      "recommended_approach": "Use the dense neighboring literature as controls, then test the sparse intersection with explicit benchmark coverage.",
+      "ranking_reason": "novelty=5, refs=2, application=high, feasibility=high, type=combinatorial, strategic_matches=1, density_bonus=2"
+    },
+    {
+      "rank": 4,
+      "gap_id": "gap_1783423889608323900",
+      "gap_description": "Density hole: 'VLSI-based modeling' has no recorded validation in 'power system transient simulation for stability studies'.",
+      "gap_type": "combinatorial",
+      "exploration_value_score": 10,
+      "importance": "high",
+      "tractability": "high",
+      "strategic_alignment": [
+        {
+          "strategic_domain": "energy",
+          "matched_keywords": [
+            "power"
+          ],
+          "alignment_score": 6
+        },
+        {
+          "strategic_domain": "AI for Science",
+          "matched_keywords": [
+            "model"
+          ],
+          "alignment_score": 6
+        }
+      ],
+      "supporting_references": [
+        "Sheng Lei et al. (2020) Initialization Process of a Power System Transient Simulation Scheme for Stability Studies arXiv:2008.13059v1",
+        "Yijing Liu et al. (2021) Using Terminal Circuit for Power System Electromagnetic Transient Simulation arXiv:2107.00540v1",
+        "Xiang Zhang et al. (2021) Power System Transient Modeling and Simulation using Integrated Circuit arXiv:2106.03254v1"
+      ],
+      "recommended_approach": "Use the dense neighboring literature as controls, then test the sparse intersection with explicit benchmark coverage.",
+      "ranking_reason": "novelty=4, refs=3, application=high, feasibility=high, type=combinatorial, strategic_matches=2, density_bonus=2"
+    },
+    {
+      "rank": 5,
+      "gap_id": "gap_1783423889625372000",
+      "gap_description": "Density hole: 'XUV transient grating spectroscopy' has no recorded validation in 'electromagnetic transient-transient stability hybrid simulation'.",
+      "gap_type": "combinatorial",
+      "exploration_value_score": 10,
+      "importance": "high",
+      "tractability": "high",
+      "strategic_alignment": [],
+      "supporting_references": [
+        "Bin Wang et al. (2026) Quantifying and Improving the Accuracy of Electromagnetic Transient-Transient Stability Hybrid Simulation doi:10.1109/TPWRS.2026.3683988",
+        "Vincent Eggers et al. (2026) Background-free Tracking of Ultrafast Hole and Electron Dynamics with XUV Transient Grating Spectroscopy doi:10.1021/acsphotonics.6c00152"
+      ],
+      "recommended_approach": "Use the dense neighboring literature as controls, then test the sparse intersection with explicit benchmark coverage.",
+      "ranking_reason": "novelty=5, refs=2, application=high, feasibility=high, type=combinatorial, strategic_matches=0, density_bonus=2"
+    },
+    {
+      "rank": 6,
+      "gap_id": "gap_1783423889634259000",
+      "gap_description": "Density hole: 'XUV transient grating spectroscopy' has no recorded validation in 'power system transient simulation for stability studies'.",
+      "gap_type": "combinatorial",
+      "exploration_value_score": 10,
+      "importance": "high",
+      "tractability": "high",
+      "strategic_alignment": [
+        {
+          "strategic_domain": "energy",
+          "matched_keywords": [
+            "power"
+          ],
+          "alignment_score": 6
+        }
+      ],
+      "supporting_references": [
+        "Vincent Eggers et al. (2026) Background-free Tracking of Ultrafast Hole and Electron Dynamics with XUV Transient Grating Spectroscopy doi:10.1021/acsphotonics.6c00152",
+        "Sheng Lei et al. (2020) Initialization Process of a Power System Transient Simulation Scheme for Stability Studies arXiv:2008.13059v1",
+        "Xiang Zhang et al. (2021) Power System Transient Modeling and Simulation using Integrated Circuit arXiv:2106.03254v1"
+      ],
+      "recommended_approach": "Use the dense neighboring literature as controls, then test the sparse intersection with explicit benchmark coverage.",
+      "ranking_reason": "novelty=5, refs=3, application=high, feasibility=high, type=combinatorial, strategic_matches=1, density_bonus=2"
+    },
+    {
+      "rank": 7,
+      "gap_id": "gap_1783423889650513500",
+      "gap_description": "Density hole: 'calibration-free view-robust vision-language-action model' has no recorded validation in 'electromagnetic transient-transient stability hybrid simulation'.",
+      "gap_type": "combinatorial",
+      "exploration_value_score": 10,
+      "importance": "high",
+      "tractability": "high",
+      "strategic_alignment": [
+        {
+          "strategic_domain": "AI for Science",
+          "matched_keywords": [
+            "model"
+          ],
+          "alignment_score": 6
+        }
+      ],
+      "supporting_references": [
+        "Bin Wang et al. (2026) Quantifying and Improving the Accuracy of Electromagnetic Transient-Transient Stability Hybrid Simulation doi:10.1109/TPWRS.2026.3683988",
+        "Wenhao Li et al. (2026) From Fixed to Free Cameras: Calibration-Free View-Robust Vision-Language-Action Model arXiv:2607.05396v1"
+      ],
+      "recommended_approach": "Use the dense neighboring literature as controls, then test the sparse intersection with explicit benchmark coverage.",
+      "ranking_reason": "novelty=5, refs=2, application=high, feasibility=high, type=combinatorial, strategic_matches=1, density_bonus=2"
+    },
+    {
+      "rank": 8,
+      "gap_id": "gap_1783423889561179700",
+      "gap_description": "Density hole: 'integrated circuit modeling and simulation' in 'power system transient stability analysis' lacks benchmark coverage for EMT-TS hybrid interface error, classification performance, event frequency.",
+      "gap_type": "improvement",
+      "exploration_value_score": 10,
+      "importance": "high",
+      "tractability": "high",
+      "strategic_alignment": [
+        {
+          "strategic_domain": "energy",
+          "matched_keywords": [
+            "power"
+          ],
+          "alignment_score": 6
+        },
+        {
+          "strategic_domain": "AI for Science",
+          "matched_keywords": [
+            "ai",
+            "model"
+          ],
+          "alignment_score": 8
+        }
+      ],
+      "supporting_references": [
+        "Xiang Zhang et al. (2021) Power System Transient Modeling and Simulation using Integrated Circuit arXiv:2106.03254v1"
+      ],
+      "recommended_approach": "Use the dense neighboring literature as controls, then test the sparse intersection with explicit benchmark coverage.",
+      "ranking_reason": "novelty=5, refs=1, application=high, feasibility=high, type=improvement, strategic_matches=2, density_bonus=2"
+    },
+    {
+      "rank": 9,
+      "gap_id": "gap_1783423889569031700",
+      "gap_description": "Density hole: 'of electromagnetic transient-transient stability hybrid simulation' in 'electromagnetic transient-transient stability hybrid simulation' lacks benchmark coverage for classification performance, event frequency, feasibility.",
+      "gap_type": "improvement",
+      "exploration_value_score": 10,
+      "importance": "high",
+      "tractability": "high",
+      "strategic_alignment": [
+        {
+          "strategic_domain": "AI for Science",
+          "matched_keywords": [
+            "ai"
+          ],
+          "alignment_score": 6
+        }
+      ],
+      "supporting_references": [
+        "Bin Wang et al. (2026) Quantifying and Improving the Accuracy of Electromagnetic Transient-Transient Stability Hybrid Simulation doi:10.1109/TPWRS.2026.3683988"
+      ],
+      "recommended_approach": "Use the dense neighboring literature as controls, then test the sparse intersection with explicit benchmark coverage.",
+      "ranking_reason": "novelty=5, refs=1, application=high, feasibility=high, type=improvement, strategic_matches=1, density_bonus=2"
+    },
+    {
+      "rank": 10,
+      "gap_id": "gap_1783423889576858100",
+      "gap_description": "Density hole: 'preconditioned finite difference Newton-GMRES method' in 'power system transient simulation for stability studies' lacks benchmark coverage for EMT-TS hybrid interface error, classification performance, event frequency.",
+      "gap_type": "improvement",
+      "exploration_value_score": 10,
+      "importance": "high",
+      "tractability": "high",
+      "strategic_alignment": [
+        {
+          "strategic_domain": "energy",
+          "matched_keywords": [
+            "power"
+          ],
+          "alignment_score": 6
+        },
+        {
+          "strategic_domain": "AI for Science",
+          "matched_keywords": [
+            "ai"
+          ],
+          "alignment_score": 6
+        }
+      ],
+      "supporting_references": [
+        "Sheng Lei et al. (2020) Initialization Process of a Power System Transient Simulation Scheme for Stability Studies arXiv:2008.13059v1"
+      ],
+      "recommended_approach": "Use the dense neighboring literature as controls, then test the sparse intersection with explicit benchmark coverage.",
+      "ranking_reason": "novelty=4, refs=1, application=high, feasibility=high, type=improvement, strategic_matches=2, density_bonus=2"
+    }
+  ],
+  "constraints_checked": {
+    "requires_supporting_reference": true,
+    "filters_trivial_low_novelty": true,
+    "max_gaps": 10
+  }
+}

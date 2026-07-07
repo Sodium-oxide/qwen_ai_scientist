@@ -1,0 +1,937 @@
+{
+  "project_id": "sci_1783341263664657400",
+  "title": "MingLi smoke test 2",
+  "domain": "Hepatocellular carcinoma mechanisms",
+  "objective": "offline smoke test",
+  "strategic_need": "",
+  "phase": "Hypothesis Generation",
+  "createdAt": 1783341263.6646614,
+  "updatedAt": 1783341263.70363,
+  "papergraph": [],
+  "evidence": [
+    {
+      "evidence_id": "ev_1783341263668677600",
+      "title": "Paper A",
+      "citation": "A et al. (2024)",
+      "method": "graph neural network",
+      "scenario": "tumor microenvironment",
+      "benchmark": "prediction accuracy",
+      "contribution": "uses graph learning",
+      "limitation": "limited longitudinal validation",
+      "url": "",
+      "createdAt": 1783341263.6686852
+    },
+    {
+      "evidence_id": "ev_1783341263671947200",
+      "title": "Paper B",
+      "citation": "B et al. (2025)",
+      "method": "single-cell sequencing",
+      "scenario": "clonal evolution",
+      "benchmark": "gene expression",
+      "contribution": "maps clonal states",
+      "limitation": "missing causal perturbation",
+      "url": "",
+      "createdAt": 1783341263.671954
+    }
+  ],
+  "coverage_matrix": {
+    "graph neural network": {
+      "tumor microenvironment": [
+        "A et al. (2024)"
+      ]
+    },
+    "single-cell sequencing": {
+      "clonal evolution": [
+        "B et al. (2025)"
+      ]
+    }
+  },
+  "knowledge_gaps": [
+    {
+      "gap_id": "gap_1783341263681682300",
+      "gap_type": "improvement",
+      "description": "Recorded limitation worth testing: limited longitudinal validation",
+      "supporting_references": [
+        "A et al. (2024)"
+      ],
+      "novelty_score": 7,
+      "application_value": "medium",
+      "feasibility": "high",
+      "suggested_research_path": "Formulate a hypothesis that directly attacks the documented limitation and verify it under stress conditions.",
+      "value_argument": "The gap is grounded in an author-reported limitation, so it has stronger evidential support than a bare untried combination.",
+      "status": "candidate",
+      "createdAt": 1783341263.681686,
+      "assessment_dimensions": [
+        "academic novelty",
+        "application value",
+        "implementation feasibility"
+      ],
+      "overlap_risk": "low",
+      "strongest_overlap": 0.4286,
+      "literature_coverage_factor": 0.4,
+      "assessment_reason": "refs=1, gap_type=improvement, strongest_local_overlap=0.429, coverage=0.4, feasibility=high, application_value=medium",
+      "requires_human_review": false,
+      "dedupe_signature": "limitation limited longitudinal"
+    },
+    {
+      "gap_id": "gap_1783341263681885600",
+      "gap_type": "migration",
+      "description": "Method 'graph neural network' is only recorded in scenario 'tumor microenvironment', but may be transferable to scenario 'clonal evolution'.",
+      "supporting_references": [
+        "A et al. (2024)"
+      ],
+      "novelty_score": 7,
+      "application_value": "medium",
+      "feasibility": "medium",
+      "suggested_research_path": "Audit assumptions of the source scenario, then run a small transfer validation in the target scenario.",
+      "value_argument": "Migration gaps can create useful cross-domain leverage if mechanism assumptions remain valid.",
+      "status": "candidate",
+      "createdAt": 1783341263.6818886,
+      "assessment_dimensions": [
+        "academic novelty",
+        "application value",
+        "implementation feasibility"
+      ],
+      "overlap_risk": "low",
+      "strongest_overlap": 0.3571,
+      "literature_coverage_factor": 0.55,
+      "assessment_reason": "refs=1, gap_type=migration, strongest_local_overlap=0.357, coverage=0.55, feasibility=medium, application_value=medium",
+      "requires_human_review": false,
+      "dedupe_signature": "but graph in is may microenvironment network neural only tumor"
+    },
+    {
+      "gap_id": "gap_1783341263682050800",
+      "gap_type": "migration",
+      "description": "Method 'single-cell sequencing' is only recorded in scenario 'clonal evolution', but may be transferable to scenario 'tumor microenvironment'.",
+      "supporting_references": [
+        "B et al. (2025)"
+      ],
+      "novelty_score": 7,
+      "application_value": "medium",
+      "feasibility": "medium",
+      "suggested_research_path": "Audit assumptions of the source scenario, then run a small transfer validation in the target scenario.",
+      "value_argument": "Migration gaps can create useful cross-domain leverage if mechanism assumptions remain valid.",
+      "status": "candidate",
+      "createdAt": 1783341263.682053,
+      "assessment_dimensions": [
+        "academic novelty",
+        "application value",
+        "implementation feasibility"
+      ],
+      "overlap_risk": "low",
+      "strongest_overlap": 0.3077,
+      "literature_coverage_factor": 0.5231,
+      "assessment_reason": "refs=1, gap_type=migration, strongest_local_overlap=0.308, coverage=0.523, feasibility=medium, application_value=medium",
+      "requires_human_review": false,
+      "dedupe_signature": "be but clonal evolution in is may only sequencing single-cell"
+    },
+    {
+      "gap_id": "gap_1783341263681264800",
+      "gap_type": "combinatorial",
+      "description": "Method 'graph neural network' has no recorded validation in scenario 'clonal evolution' in the current PaperGraph map.",
+      "supporting_references": [
+        "A et al. (2024)",
+        "B et al. (2025)"
+      ],
+      "novelty_score": 6,
+      "application_value": "medium",
+      "feasibility": "high",
+      "suggested_research_path": "Run a targeted validation study with explicit benchmarks, baselines, and failure-mode analysis.",
+      "value_argument": "The combination may expose method-scenario boundary conditions rather than simply adding another benchmark.",
+      "status": "candidate",
+      "createdAt": 1783341263.681274,
+      "assessment_dimensions": [
+        "academic novelty",
+        "application value",
+        "implementation feasibility"
+      ],
+      "overlap_risk": "low",
+      "strongest_overlap": 0.3077,
+      "literature_coverage_factor": 0.5231,
+      "assessment_reason": "refs=2, gap_type=combinatorial, strongest_local_overlap=0.308, coverage=0.523, feasibility=high, application_value=medium",
+      "requires_human_review": false,
+      "dedupe_signature": "clonal evolution graph in in network neural no the"
+    }
+  ],
+  "hypotheses": [
+    {
+      "hypothesis_id": "hyp_1783341263703355900",
+      "gap_id": "gap_1783341263681264800",
+      "statement": "If graph neural network is applied to clonal evolution under explicit failure-mode stress tests, then gene expression will improve or reveal a falsifiable boundary condition. The decisive test is constrained to prediction accuracy under an explicit stress regime.",
+      "mechanism": "The proposed mechanism is that graph neural network changes the information, intervention, or representation pathway in clonal evolution; because the source gap indicates weak evidence, testing gene expression can distinguish a real mechanism from a pseudo-gap.",
+      "expected_value": "The combination may expose method-scenario boundary conditions rather than simply adding another benchmark.",
+      "test_plan": "Build a minimal benchmark for clonal evolution; compare graph neural network against canonical baselines; measure gene expression; include negative controls, ablations, and failure-mode analysis. Add a preregistered stress test for prediction accuracy.",
+      "status": "draft",
+      "createdAt": 1783341263.7033641,
+      "mingli_scores": {
+        "novelty": 0.542,
+        "plausibility": 0.65,
+        "grounding": 0.667,
+        "testability": 0.75,
+        "impact": 0.7,
+        "strongest_local_overlap": 0.192
+      },
+      "score": 0.6539,
+      "lineage": [
+        {
+          "generation": 0,
+          "operation": "seed",
+          "gap_id": "gap_1783341263681264800",
+          "analogy_used": ""
+        },
+        {
+          "generation": 1,
+          "operation": "constraint_insertion",
+          "parent_candidate_id": "hcand_1783341263702432200"
+        }
+      ],
+      "competition_advantage": "Ranks well because it is traceable to a high-value gap, has an explicit mechanism, and includes falsifiable validation criteria.",
+      "verification_plan": {
+        "primary_metric": "gene expression",
+        "baselines": [
+          "nearest dense PaperGraph method",
+          "domain-standard baseline"
+        ],
+        "falsification_condition": "No improvement or mechanistic separation on gene expression under the stated condition."
+      },
+      "source_gap": {
+        "gap_id": "gap_1783341263681264800",
+        "gap_type": "combinatorial",
+        "description": "Method 'graph neural network' has no recorded validation in scenario 'clonal evolution' in the current PaperGraph map.",
+        "supporting_references": [
+          "A et al. (2024)",
+          "B et al. (2025)"
+        ],
+        "novelty_score": 6,
+        "application_value": "medium",
+        "feasibility": "high",
+        "suggested_research_path": "Run a targeted validation study with explicit benchmarks, baselines, and failure-mode analysis.",
+        "value_argument": "The combination may expose method-scenario boundary conditions rather than simply adding another benchmark.",
+        "status": "candidate",
+        "createdAt": 1783341263.681274,
+        "assessment_dimensions": [
+          "academic novelty",
+          "application value",
+          "implementation feasibility"
+        ],
+        "overlap_risk": "low",
+        "strongest_overlap": 0.3077,
+        "literature_coverage_factor": 0.5231,
+        "assessment_reason": "refs=2, gap_type=combinatorial, strongest_local_overlap=0.308, coverage=0.523, feasibility=high, application_value=medium",
+        "requires_human_review": false,
+        "dedupe_signature": "clonal evolution graph in in network neural no the"
+      },
+      "tournament_generation": 1
+    },
+    {
+      "hypothesis_id": "hyp_1783341263703385800",
+      "gap_id": "gap_1783341263681264800",
+      "statement": "If graph neural network is applied to clonal evolution under explicit failure-mode stress tests, then gene expression will improve or reveal a falsifiable boundary condition.",
+      "mechanism": "The proposed mechanism is that graph neural network changes the information, intervention, or representation pathway in clonal evolution; because the source gap indicates weak evidence, testing gene expression can distinguish a real mechanism from a pseudo-gap.",
+      "expected_value": "The combination may expose method-scenario boundary conditions rather than simply adding another benchmark.",
+      "test_plan": "Build a minimal benchmark for clonal evolution; compare graph neural network against canonical baselines; measure gene expression; include negative controls, ablations, and failure-mode analysis.",
+      "status": "draft",
+      "createdAt": 1783341263.7033908,
+      "mingli_scores": {
+        "novelty": 0.54,
+        "plausibility": 0.65,
+        "grounding": 0.667,
+        "testability": 0.75,
+        "impact": 0.7,
+        "strongest_local_overlap": 0.2
+      },
+      "score": 0.6533,
+      "lineage": [
+        {
+          "generation": 0,
+          "operation": "seed",
+          "gap_id": "gap_1783341263681264800",
+          "analogy_used": ""
+        }
+      ],
+      "competition_advantage": "Ranks well because it is traceable to a high-value gap, has an explicit mechanism, and includes falsifiable validation criteria.",
+      "verification_plan": {
+        "primary_metric": "gene expression",
+        "baselines": [
+          "nearest dense PaperGraph method",
+          "domain-standard baseline"
+        ],
+        "falsification_condition": "No improvement or mechanistic separation on gene expression under the stated condition."
+      },
+      "source_gap": {
+        "gap_id": "gap_1783341263681264800",
+        "gap_type": "combinatorial",
+        "description": "Method 'graph neural network' has no recorded validation in scenario 'clonal evolution' in the current PaperGraph map.",
+        "supporting_references": [
+          "A et al. (2024)",
+          "B et al. (2025)"
+        ],
+        "novelty_score": 6,
+        "application_value": "medium",
+        "feasibility": "high",
+        "suggested_research_path": "Run a targeted validation study with explicit benchmarks, baselines, and failure-mode analysis.",
+        "value_argument": "The combination may expose method-scenario boundary conditions rather than simply adding another benchmark.",
+        "status": "candidate",
+        "createdAt": 1783341263.681274,
+        "assessment_dimensions": [
+          "academic novelty",
+          "application value",
+          "implementation feasibility"
+        ],
+        "overlap_risk": "low",
+        "strongest_overlap": 0.3077,
+        "literature_coverage_factor": 0.5231,
+        "assessment_reason": "refs=2, gap_type=combinatorial, strongest_local_overlap=0.308, coverage=0.523, feasibility=high, application_value=medium",
+        "requires_human_review": false,
+        "dedupe_signature": "clonal evolution graph in in network neural no the"
+      },
+      "tournament_generation": 0
+    }
+  ],
+  "keynotes": [],
+  "mechanism_reports": [],
+  "pipeline_tasks": [],
+  "knowledge_map": {
+    "dimension": "method-scenario-benchmark",
+    "main_methods": [
+      "graph neural network",
+      "single-cell sequencing"
+    ],
+    "main_scenarios": [
+      "clonal evolution",
+      "tumor microenvironment"
+    ],
+    "main_benchmarks": [
+      "gene expression",
+      "prediction accuracy"
+    ],
+    "method_scenario_coverage": {
+      "graph neural network": [
+        "tumor microenvironment"
+      ],
+      "single-cell sequencing": [
+        "clonal evolution"
+      ]
+    },
+    "benchmark_index": {
+      "prediction accuracy": [
+        "A et al. (2024)"
+      ],
+      "gene expression": [
+        "B et al. (2025)"
+      ]
+    },
+    "method_scenario_benchmark": {
+      "graph neural network": {
+        "tumor microenvironment": {
+          "prediction accuracy": [
+            "A et al. (2024)"
+          ]
+        }
+      },
+      "single-cell sequencing": {
+        "clonal evolution": {
+          "gene expression": [
+            "B et al. (2025)"
+          ]
+        }
+      }
+    },
+    "method_scenario_benchmark_triples": [
+      {
+        "method": "graph neural network",
+        "scenario": "tumor microenvironment",
+        "benchmark": "prediction accuracy",
+        "references": [
+          "A et al. (2024)"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "graph neural network",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "uses graph learning",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "limited longitudinal validation",
+            "support": "structured_field"
+          }
+        ]
+      },
+      {
+        "method": "single-cell sequencing",
+        "scenario": "clonal evolution",
+        "benchmark": "gene expression",
+        "references": [
+          "B et al. (2025)"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "single-cell sequencing",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "maps clonal states",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "missing causal perturbation",
+            "support": "structured_field"
+          }
+        ]
+      }
+    ],
+    "claim_type_counts": {
+      "methodological_description": 2,
+      "empirical_result": 2,
+      "author_opinion": 2
+    },
+    "extraction_repair": {
+      "attempted": 0,
+      "repaired": 0,
+      "still_low_quality": 0,
+      "errors": []
+    },
+    "unknown_summary": {
+      "total_triples": 2,
+      "unknown_triples": 0
+    }
+  },
+  "knowledge_gap_filter": {
+    "min_novelty": 4,
+    "input_count": 4,
+    "rejected_count": 0,
+    "rejected": []
+  },
+  "tanxi_gap_analysis": {
+    "agent": "tanxi",
+    "target_domain": "Hepatocellular carcinoma mechanisms",
+    "thought": "TanXi scanned the PaperGraph for low-density but high-importance method-scenario-benchmark regions, cross-disciplinary unconnected pairs, suspended unresolved problems, and strategic-need alignment.",
+    "action": {
+      "scan_coverage_density": {
+        "target_domain": "Hepatocellular carcinoma mechanisms"
+      },
+      "find_unconnected_pairs": {
+        "target_domain": "Hepatocellular carcinoma mechanisms"
+      },
+      "detect_suspended_problems": {
+        "min_citation_threshold": 50
+      },
+      "prioritize_gaps": {
+        "criteria": [
+          "importance",
+          "tractability",
+          "strategic_value"
+        ]
+      },
+      "align_with_strategic_needs": {
+        "strategic_domains": [
+          "ai for science",
+          "energy",
+          "health"
+        ]
+      }
+    },
+    "coverage_analysis": {
+      "target_domain": "Hepatocellular carcinoma mechanisms",
+      "method_count": 2,
+      "scenario_count": 2,
+      "benchmark_count": 2,
+      "dense_areas": [
+        {
+          "topic": "graph neural network + tumor microenvironment",
+          "method": "graph neural network",
+          "scenario": "tumor microenvironment",
+          "evidence_count": 1,
+          "benchmark_count": 1,
+          "importance_score": 5
+        },
+        {
+          "topic": "single-cell sequencing + clonal evolution",
+          "method": "single-cell sequencing",
+          "scenario": "clonal evolution",
+          "evidence_count": 1,
+          "benchmark_count": 1,
+          "importance_score": 5
+        }
+      ],
+      "density_holes": [
+        {
+          "topic": "graph neural network + tumor microenvironment benchmark coverage",
+          "method": "graph neural network",
+          "scenario": "tumor microenvironment",
+          "importance_score": 5,
+          "current_evidence_level": "medium",
+          "missing_benchmarks": [
+            "gene expression"
+          ],
+          "why_important": "The method-scenario pair has evidence, but benchmark coverage is sparse, so robustness and generalization remain uncertain.",
+          "supporting_references": [
+            "A et al. (2024)"
+          ]
+        },
+        {
+          "topic": "single-cell sequencing + clonal evolution benchmark coverage",
+          "method": "single-cell sequencing",
+          "scenario": "clonal evolution",
+          "importance_score": 5,
+          "current_evidence_level": "medium",
+          "missing_benchmarks": [
+            "prediction accuracy"
+          ],
+          "why_important": "The method-scenario pair has evidence, but benchmark coverage is sparse, so robustness and generalization remain uncertain.",
+          "supporting_references": [
+            "B et al. (2025)"
+          ]
+        },
+        {
+          "topic": "graph neural network + clonal evolution",
+          "method": "graph neural network",
+          "scenario": "clonal evolution",
+          "importance_score": 5,
+          "current_evidence_level": "none",
+          "missing_benchmarks": [
+            "gene expression",
+            "prediction accuracy"
+          ],
+          "why_important": "Both the method and scenario are visible in the field map, but this intersection has no recorded validation.",
+          "supporting_references": [
+            "A et al. (2024)",
+            "B et al. (2025)"
+          ]
+        },
+        {
+          "topic": "single-cell sequencing + tumor microenvironment",
+          "method": "single-cell sequencing",
+          "scenario": "tumor microenvironment",
+          "importance_score": 5,
+          "current_evidence_level": "none",
+          "missing_benchmarks": [
+            "gene expression",
+            "prediction accuracy"
+          ],
+          "why_important": "Both the method and scenario are visible in the field map, but this intersection has no recorded validation.",
+          "supporting_references": [
+            "A et al. (2024)",
+            "B et al. (2025)"
+          ]
+        }
+      ]
+    },
+    "cross_disciplinary_unconnected_pairs": [],
+    "suspended_problems": [],
+    "ranked_gaps": [
+      {
+        "rank": 1,
+        "gap_id": "gap_1783341263683413200",
+        "gap_description": "Density hole: 'graph neural network' has no recorded validation in 'clonal evolution'.",
+        "gap_type": "combinatorial",
+        "exploration_value_score": 10,
+        "importance": "high",
+        "tractability": "high",
+        "strategic_alignment": [],
+        "supporting_references": [
+          "A et al. (2024)",
+          "B et al. (2025)"
+        ],
+        "recommended_approach": "Use the dense neighboring literature as controls, then test the sparse intersection with explicit benchmark coverage.",
+        "ranking_reason": "novelty=6, refs=2, application=medium, feasibility=high, type=combinatorial, strategic_matches=0, density_bonus=1"
+      },
+      {
+        "rank": 2,
+        "gap_id": "gap_1783341263683116000",
+        "gap_description": "Density hole: 'graph neural network' in 'tumor microenvironment' lacks benchmark coverage for gene expression.",
+        "gap_type": "improvement",
+        "exploration_value_score": 10,
+        "importance": "high",
+        "tractability": "high",
+        "strategic_alignment": [
+          {
+            "strategic_domain": "ai for science",
+            "matched_keywords": [
+              "ai"
+            ],
+            "alignment_score": 6
+          }
+        ],
+        "supporting_references": [
+          "A et al. (2024)"
+        ],
+        "recommended_approach": "Use the dense neighboring literature as controls, then test the sparse intersection with explicit benchmark coverage.",
+        "ranking_reason": "novelty=6, refs=1, application=medium, feasibility=high, type=improvement, strategic_matches=1, density_bonus=1"
+      },
+      {
+        "rank": 3,
+        "gap_id": "gap_1783341263683542600",
+        "gap_description": "Density hole: 'single-cell sequencing' has no recorded validation in 'tumor microenvironment'.",
+        "gap_type": "combinatorial",
+        "exploration_value_score": 10,
+        "importance": "high",
+        "tractability": "high",
+        "strategic_alignment": [],
+        "supporting_references": [
+          "A et al. (2024)",
+          "B et al. (2025)"
+        ],
+        "recommended_approach": "Use the dense neighboring literature as controls, then test the sparse intersection with explicit benchmark coverage.",
+        "ranking_reason": "novelty=6, refs=2, application=medium, feasibility=high, type=combinatorial, strategic_matches=0, density_bonus=1"
+      },
+      {
+        "rank": 4,
+        "gap_id": "gap_1783341263683277000",
+        "gap_description": "Density hole: 'single-cell sequencing' in 'clonal evolution' lacks benchmark coverage for prediction accuracy.",
+        "gap_type": "improvement",
+        "exploration_value_score": 10,
+        "importance": "high",
+        "tractability": "high",
+        "strategic_alignment": [
+          {
+            "strategic_domain": "ai for science",
+            "matched_keywords": [
+              "ai"
+            ],
+            "alignment_score": 6
+          }
+        ],
+        "supporting_references": [
+          "B et al. (2025)"
+        ],
+        "recommended_approach": "Use the dense neighboring literature as controls, then test the sparse intersection with explicit benchmark coverage.",
+        "ranking_reason": "novelty=6, refs=1, application=medium, feasibility=high, type=improvement, strategic_matches=1, density_bonus=1"
+      }
+    ],
+    "constraints_checked": {
+      "requires_supporting_reference": true,
+      "filters_trivial_low_novelty": true,
+      "max_gaps": 4
+    }
+  },
+  "temporal_knowledge_graph": {
+    "temporal_kg_id": "tkg_1783341263690576300",
+    "project_id": "sci_1783341263664657400",
+    "createdAt": 1783341263.690578,
+    "triple_count": 2,
+    "triples": [
+      {
+        "method": "graph neural network",
+        "scenario": "tumor microenvironment",
+        "benchmark": "prediction accuracy",
+        "year": 2024,
+        "citation_count": 0,
+        "reference": "A et al. (2024)"
+      },
+      {
+        "method": "single-cell sequencing",
+        "scenario": "clonal evolution",
+        "benchmark": "gene expression",
+        "year": 2025,
+        "citation_count": 0,
+        "reference": "B et al. (2025)"
+      }
+    ],
+    "yearly_counts": {
+      "2024": 1,
+      "2025": 1
+    },
+    "method_lifecycles": {
+      "graph neural network": {
+        "status": "emerging",
+        "yearly_counts": {
+          "2024": 1
+        },
+        "growth_rate": 1.0,
+        "peak_year": "2024",
+        "total": 1
+      },
+      "single-cell sequencing": {
+        "status": "emerging",
+        "yearly_counts": {
+          "2025": 1
+        },
+        "growth_rate": 1.0,
+        "peak_year": "2025",
+        "total": 1
+      }
+    },
+    "scenario_lifecycles": {
+      "clonal evolution": {
+        "status": "emerging",
+        "yearly_counts": {
+          "2025": 1
+        },
+        "growth_rate": 1.0,
+        "peak_year": "2025",
+        "total": 1
+      },
+      "tumor microenvironment": {
+        "status": "emerging",
+        "yearly_counts": {
+          "2024": 1
+        },
+        "growth_rate": 1.0,
+        "peak_year": "2024",
+        "total": 1
+      }
+    },
+    "hotspot_predictions": [
+      {
+        "concept": "clonal evolution",
+        "concept_type": "scenario",
+        "forecast": "likely_hotspot",
+        "hotspot_score": 3.333,
+        "lifecycle": {
+          "status": "emerging",
+          "yearly_counts": {
+            "2025": 1
+          },
+          "growth_rate": 1.0,
+          "peak_year": "2025",
+          "total": 1
+        }
+      },
+      {
+        "concept": "graph neural network",
+        "concept_type": "method",
+        "forecast": "likely_hotspot",
+        "hotspot_score": 3.333,
+        "lifecycle": {
+          "status": "emerging",
+          "yearly_counts": {
+            "2024": 1
+          },
+          "growth_rate": 1.0,
+          "peak_year": "2024",
+          "total": 1
+        }
+      },
+      {
+        "concept": "single-cell sequencing",
+        "concept_type": "method",
+        "forecast": "likely_hotspot",
+        "hotspot_score": 3.333,
+        "lifecycle": {
+          "status": "emerging",
+          "yearly_counts": {
+            "2025": 1
+          },
+          "growth_rate": 1.0,
+          "peak_year": "2025",
+          "total": 1
+        }
+      },
+      {
+        "concept": "tumor microenvironment",
+        "concept_type": "scenario",
+        "forecast": "likely_hotspot",
+        "hotspot_score": 3.333,
+        "lifecycle": {
+          "status": "emerging",
+          "yearly_counts": {
+            "2024": 1
+          },
+          "growth_rate": 1.0,
+          "peak_year": "2024",
+          "total": 1
+        }
+      }
+    ],
+    "next_step": "Use hotspot_predictions as emerging constraints for structural gap detection and MingLi hypothesis generation."
+  },
+  "structural_gap_analysis": {
+    "graph_summary": {
+      "node_count": 6,
+      "edge_count": 6,
+      "components": 2
+    },
+    "items": [],
+    "gaps": []
+  },
+  "structural_analogy_reports": [
+    {
+      "analogy_report_id": "analog_1783341263699219800",
+      "project_id": "sci_1783341263664657400",
+      "target_scenario": "",
+      "threshold": 0.55,
+      "scenario_count": 2,
+      "analogy_transfers": [],
+      "next_step": "Feed high-similarity transfers into MingLi as mutation/crossover material for hypothesis evolution."
+    }
+  ],
+  "mingli_hypothesis_evolution_runs": [
+    {
+      "mingli_run_id": "mingli_1783341263703404900",
+      "project_id": "sci_1783341263664657400",
+      "createdAt": 1783341263.703406,
+      "gap_ids": [
+        "gap_1783341263681682300",
+        "gap_1783341263681885600",
+        "gap_1783341263682050800",
+        "gap_1783341263681264800"
+      ],
+      "population_size": 4,
+      "generations_completed": 1,
+      "lineage_summary": [
+        {
+          "generation": 0,
+          "population_size": 4,
+          "best_score": 0.6533
+        },
+        {
+          "generation": 1,
+          "population_size": 4,
+          "best_score": 0.6539
+        }
+      ],
+      "top_hypotheses": [
+        {
+          "hypothesis_id": "hyp_1783341263703355900",
+          "gap_id": "gap_1783341263681264800",
+          "statement": "If graph neural network is applied to clonal evolution under explicit failure-mode stress tests, then gene expression will improve or reveal a falsifiable boundary condition. The decisive test is constrained to prediction accuracy under an explicit stress regime.",
+          "mechanism": "The proposed mechanism is that graph neural network changes the information, intervention, or representation pathway in clonal evolution; because the source gap indicates weak evidence, testing gene expression can distinguish a real mechanism from a pseudo-gap.",
+          "expected_value": "The combination may expose method-scenario boundary conditions rather than simply adding another benchmark.",
+          "test_plan": "Build a minimal benchmark for clonal evolution; compare graph neural network against canonical baselines; measure gene expression; include negative controls, ablations, and failure-mode analysis. Add a preregistered stress test for prediction accuracy.",
+          "status": "draft",
+          "createdAt": 1783341263.7033641,
+          "mingli_scores": {
+            "novelty": 0.542,
+            "plausibility": 0.65,
+            "grounding": 0.667,
+            "testability": 0.75,
+            "impact": 0.7,
+            "strongest_local_overlap": 0.192
+          },
+          "score": 0.6539,
+          "lineage": [
+            {
+              "generation": 0,
+              "operation": "seed",
+              "gap_id": "gap_1783341263681264800",
+              "analogy_used": ""
+            },
+            {
+              "generation": 1,
+              "operation": "constraint_insertion",
+              "parent_candidate_id": "hcand_1783341263702432200"
+            }
+          ],
+          "competition_advantage": "Ranks well because it is traceable to a high-value gap, has an explicit mechanism, and includes falsifiable validation criteria.",
+          "verification_plan": {
+            "primary_metric": "gene expression",
+            "baselines": [
+              "nearest dense PaperGraph method",
+              "domain-standard baseline"
+            ],
+            "falsification_condition": "No improvement or mechanistic separation on gene expression under the stated condition."
+          },
+          "source_gap": {
+            "gap_id": "gap_1783341263681264800",
+            "gap_type": "combinatorial",
+            "description": "Method 'graph neural network' has no recorded validation in scenario 'clonal evolution' in the current PaperGraph map.",
+            "supporting_references": [
+              "A et al. (2024)",
+              "B et al. (2025)"
+            ],
+            "novelty_score": 6,
+            "application_value": "medium",
+            "feasibility": "high",
+            "suggested_research_path": "Run a targeted validation study with explicit benchmarks, baselines, and failure-mode analysis.",
+            "value_argument": "The combination may expose method-scenario boundary conditions rather than simply adding another benchmark.",
+            "status": "candidate",
+            "createdAt": 1783341263.681274,
+            "assessment_dimensions": [
+              "academic novelty",
+              "application value",
+              "implementation feasibility"
+            ],
+            "overlap_risk": "low",
+            "strongest_overlap": 0.3077,
+            "literature_coverage_factor": 0.5231,
+            "assessment_reason": "refs=2, gap_type=combinatorial, strongest_local_overlap=0.308, coverage=0.523, feasibility=high, application_value=medium",
+            "requires_human_review": false,
+            "dedupe_signature": "clonal evolution graph in in network neural no the"
+          },
+          "tournament_generation": 1
+        },
+        {
+          "hypothesis_id": "hyp_1783341263703385800",
+          "gap_id": "gap_1783341263681264800",
+          "statement": "If graph neural network is applied to clonal evolution under explicit failure-mode stress tests, then gene expression will improve or reveal a falsifiable boundary condition.",
+          "mechanism": "The proposed mechanism is that graph neural network changes the information, intervention, or representation pathway in clonal evolution; because the source gap indicates weak evidence, testing gene expression can distinguish a real mechanism from a pseudo-gap.",
+          "expected_value": "The combination may expose method-scenario boundary conditions rather than simply adding another benchmark.",
+          "test_plan": "Build a minimal benchmark for clonal evolution; compare graph neural network against canonical baselines; measure gene expression; include negative controls, ablations, and failure-mode analysis.",
+          "status": "draft",
+          "createdAt": 1783341263.7033908,
+          "mingli_scores": {
+            "novelty": 0.54,
+            "plausibility": 0.65,
+            "grounding": 0.667,
+            "testability": 0.75,
+            "impact": 0.7,
+            "strongest_local_overlap": 0.2
+          },
+          "score": 0.6533,
+          "lineage": [
+            {
+              "generation": 0,
+              "operation": "seed",
+              "gap_id": "gap_1783341263681264800",
+              "analogy_used": ""
+            }
+          ],
+          "competition_advantage": "Ranks well because it is traceable to a high-value gap, has an explicit mechanism, and includes falsifiable validation criteria.",
+          "verification_plan": {
+            "primary_metric": "gene expression",
+            "baselines": [
+              "nearest dense PaperGraph method",
+              "domain-standard baseline"
+            ],
+            "falsification_condition": "No improvement or mechanistic separation on gene expression under the stated condition."
+          },
+          "source_gap": {
+            "gap_id": "gap_1783341263681264800",
+            "gap_type": "combinatorial",
+            "description": "Method 'graph neural network' has no recorded validation in scenario 'clonal evolution' in the current PaperGraph map.",
+            "supporting_references": [
+              "A et al. (2024)",
+              "B et al. (2025)"
+            ],
+            "novelty_score": 6,
+            "application_value": "medium",
+            "feasibility": "high",
+            "suggested_research_path": "Run a targeted validation study with explicit benchmarks, baselines, and failure-mode analysis.",
+            "value_argument": "The combination may expose method-scenario boundary conditions rather than simply adding another benchmark.",
+            "status": "candidate",
+            "createdAt": 1783341263.681274,
+            "assessment_dimensions": [
+              "academic novelty",
+              "application value",
+              "implementation feasibility"
+            ],
+            "overlap_risk": "low",
+            "strongest_overlap": 0.3077,
+            "literature_coverage_factor": 0.5231,
+            "assessment_reason": "refs=2, gap_type=combinatorial, strongest_local_overlap=0.308, coverage=0.523, feasibility=high, application_value=medium",
+            "requires_human_review": false,
+            "dedupe_signature": "clonal evolution graph in in network neural no the"
+          },
+          "tournament_generation": 0
+        }
+      ],
+      "method": "template_seed + tournament_selection + mutation/crossover + structural/temporal/analogy scoring",
+      "constraints_checked": {
+        "traceable_to_gap": true,
+        "papergraph_grounded": true,
+        "testability_scored": true,
+        "novelty_overlap_local": true
+      }
+    }
+  ]
+}

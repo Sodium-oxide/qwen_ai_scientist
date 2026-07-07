@@ -1,0 +1,1475 @@
+{
+  "project_id": "sci_1783341140081706000",
+  "title": "MingLi smoke test",
+  "domain": "AI for biomedical mechanisms",
+  "objective": "offline smoke test",
+  "strategic_need": "",
+  "phase": "Hypothesis Generation",
+  "createdAt": 1783341140.0817099,
+  "updatedAt": 1783341140.1411748,
+  "papergraph": [],
+  "evidence": [
+    {
+      "evidence_id": "ev_1783341140086644900",
+      "title": "Paper A",
+      "citation": "A et al. (2024)",
+      "method": "graph neural network",
+      "scenario": "tumor microenvironment",
+      "benchmark": "prediction accuracy",
+      "contribution": "uses graph learning",
+      "limitation": "limited longitudinal validation",
+      "url": "",
+      "createdAt": 1783341140.086654
+    },
+    {
+      "evidence_id": "ev_1783341140089489700",
+      "title": "Paper B",
+      "citation": "B et al. (2025)",
+      "method": "single-cell sequencing",
+      "scenario": "clonal evolution",
+      "benchmark": "gene expression",
+      "contribution": "maps clonal states",
+      "limitation": "missing causal perturbation",
+      "url": "",
+      "createdAt": 1783341140.0894983
+    },
+    {
+      "evidence_id": "ev_1783341140092291600",
+      "title": "Paper C",
+      "citation": "C et al. (2023)",
+      "method": "causal analysis",
+      "scenario": "drug resistance",
+      "benchmark": "survival outcome",
+      "contribution": "tests causal markers",
+      "limitation": "small cohort",
+      "url": "",
+      "createdAt": 1783341140.0922973
+    }
+  ],
+  "coverage_matrix": {
+    "graph neural network": {
+      "tumor microenvironment": [
+        "A et al. (2024)"
+      ]
+    },
+    "single-cell sequencing": {
+      "clonal evolution": [
+        "B et al. (2025)"
+      ]
+    },
+    "causal analysis": {
+      "drug resistance": [
+        "C et al. (2023)"
+      ]
+    }
+  },
+  "knowledge_gaps": [
+    {
+      "gap_id": "gap_1783341140103319200",
+      "gap_type": "improvement",
+      "description": "Recorded limitation worth testing: limited longitudinal validation",
+      "supporting_references": [
+        "A et al. (2024)"
+      ],
+      "novelty_score": 7,
+      "application_value": "medium",
+      "feasibility": "high",
+      "suggested_research_path": "Formulate a hypothesis that directly attacks the documented limitation and verify it under stress conditions.",
+      "value_argument": "The gap is grounded in an author-reported limitation, so it has stronger evidential support than a bare untried combination.",
+      "status": "candidate",
+      "createdAt": 1783341140.103323,
+      "assessment_dimensions": [
+        "academic novelty",
+        "application value",
+        "implementation feasibility"
+      ],
+      "overlap_risk": "low",
+      "strongest_overlap": 0.4286,
+      "literature_coverage_factor": 0.4,
+      "assessment_reason": "refs=1, gap_type=improvement, strongest_local_overlap=0.429, coverage=0.4, feasibility=high, application_value=medium",
+      "requires_human_review": false,
+      "dedupe_signature": "limitation limited longitudinal"
+    },
+    {
+      "gap_id": "gap_1783341140103584800",
+      "gap_type": "migration",
+      "description": "Method 'causal analysis' is only recorded in scenario 'drug resistance', but may be transferable to scenario 'clonal evolution'.",
+      "supporting_references": [
+        "C et al. (2023)",
+        "B et al. (2025)"
+      ],
+      "novelty_score": 7,
+      "application_value": "medium",
+      "feasibility": "medium",
+      "suggested_research_path": "Audit assumptions of the source scenario, then run a small transfer validation in the target scenario.",
+      "value_argument": "Migration gaps can create useful cross-domain leverage if mechanism assumptions remain valid.",
+      "status": "candidate",
+      "createdAt": 1783341140.1035876,
+      "assessment_dimensions": [
+        "academic novelty",
+        "application value",
+        "implementation feasibility"
+      ],
+      "overlap_risk": "low",
+      "strongest_overlap": 0.3077,
+      "literature_coverage_factor": 0.5231,
+      "assessment_reason": "refs=1, gap_type=migration, strongest_local_overlap=0.308, coverage=0.523, feasibility=medium, application_value=medium",
+      "requires_human_review": false,
+      "dedupe_signature": "analysis be but causal drug in is may only resistance",
+      "deduped_from": 1
+    },
+    {
+      "gap_id": "gap_1783341140104372600",
+      "gap_type": "migration",
+      "description": "Method 'graph neural network' is only recorded in scenario 'tumor microenvironment', but may be transferable to scenario 'clonal evolution'.",
+      "supporting_references": [
+        "A et al. (2024)"
+      ],
+      "novelty_score": 7,
+      "application_value": "medium",
+      "feasibility": "medium",
+      "suggested_research_path": "Audit assumptions of the source scenario, then run a small transfer validation in the target scenario.",
+      "value_argument": "Migration gaps can create useful cross-domain leverage if mechanism assumptions remain valid.",
+      "status": "candidate",
+      "createdAt": 1783341140.1043758,
+      "assessment_dimensions": [
+        "academic novelty",
+        "application value",
+        "implementation feasibility"
+      ],
+      "overlap_risk": "low",
+      "strongest_overlap": 0.3571,
+      "literature_coverage_factor": 0.55,
+      "assessment_reason": "refs=1, gap_type=migration, strongest_local_overlap=0.357, coverage=0.55, feasibility=medium, application_value=medium",
+      "requires_human_review": false,
+      "dedupe_signature": "but graph in is may microenvironment network neural only tumor"
+    },
+    {
+      "gap_id": "gap_1783341140102841000",
+      "gap_type": "combinatorial",
+      "description": "Method 'causal analysis' has no recorded validation in scenario 'clonal evolution' in the current PaperGraph map.",
+      "supporting_references": [
+        "B et al. (2025)",
+        "C et al. (2023)"
+      ],
+      "novelty_score": 6,
+      "application_value": "medium",
+      "feasibility": "high",
+      "suggested_research_path": "Run a targeted validation study with explicit benchmarks, baselines, and failure-mode analysis.",
+      "value_argument": "The combination may expose method-scenario boundary conditions rather than simply adding another benchmark.",
+      "status": "candidate",
+      "createdAt": 1783341140.1028502,
+      "assessment_dimensions": [
+        "academic novelty",
+        "application value",
+        "implementation feasibility"
+      ],
+      "overlap_risk": "low",
+      "strongest_overlap": 0.25,
+      "literature_coverage_factor": 0.5917,
+      "assessment_reason": "refs=2, gap_type=combinatorial, strongest_local_overlap=0.25, coverage=0.592, feasibility=high, application_value=medium",
+      "requires_human_review": false,
+      "dedupe_signature": "analysis causal clonal evolution in in no the"
+    }
+  ],
+  "hypotheses": [
+    {
+      "hypothesis_id": "hyp_1783341140140868900",
+      "gap_id": "gap_1783341140103584800",
+      "statement": "If causal analysis is applied to clonal evolution under explicit failure-mode stress tests, then gene expression will improve or reveal a falsifiable boundary condition. The decisive test is constrained to prediction accuracy under an explicit stress regime. The decisive test is constrained to survival outcome under an explicit stress regime.",
+      "mechanism": "The proposed mechanism is that causal analysis changes the information, intervention, or representation pathway in clonal evolution; because the source gap indicates weak evidence, testing gene expression can distinguish a real mechanism from a pseudo-gap.",
+      "expected_value": "Migration gaps can create useful cross-domain leverage if mechanism assumptions remain valid.",
+      "test_plan": "Build a minimal benchmark for clonal evolution; compare causal analysis against canonical baselines; measure gene expression; include negative controls, ablations, and failure-mode analysis. Add a preregistered stress test for prediction accuracy. Add a preregistered stress test for survival outcome.",
+      "status": "draft",
+      "createdAt": 1783341140.1408784,
+      "mingli_scores": {
+        "novelty": 0.635,
+        "plausibility": 0.65,
+        "grounding": 0.667,
+        "testability": 0.75,
+        "impact": 0.8,
+        "strongest_local_overlap": 0.185
+      },
+      "score": 0.6921,
+      "lineage": [
+        {
+          "generation": 0,
+          "operation": "seed",
+          "gap_id": "gap_1783341140103584800",
+          "analogy_used": ""
+        },
+        {
+          "generation": 1,
+          "operation": "constraint_insertion",
+          "parent_candidate_id": "hcand_1783341140138075700"
+        },
+        {
+          "generation": 2,
+          "operation": "constraint_insertion",
+          "parent_candidate_id": "hcand_1783341140139112900"
+        }
+      ],
+      "competition_advantage": "Ranks well because it is traceable to a high-value gap, has an explicit mechanism, and includes falsifiable validation criteria.",
+      "verification_plan": {
+        "primary_metric": "gene expression",
+        "baselines": [
+          "nearest dense PaperGraph method",
+          "domain-standard baseline"
+        ],
+        "falsification_condition": "No improvement or mechanistic separation on gene expression under the stated condition."
+      },
+      "source_gap": {
+        "gap_id": "gap_1783341140103584800",
+        "gap_type": "migration",
+        "description": "Method 'causal analysis' is only recorded in scenario 'drug resistance', but may be transferable to scenario 'clonal evolution'.",
+        "supporting_references": [
+          "C et al. (2023)",
+          "B et al. (2025)"
+        ],
+        "novelty_score": 7,
+        "application_value": "medium",
+        "feasibility": "medium",
+        "suggested_research_path": "Audit assumptions of the source scenario, then run a small transfer validation in the target scenario.",
+        "value_argument": "Migration gaps can create useful cross-domain leverage if mechanism assumptions remain valid.",
+        "status": "candidate",
+        "createdAt": 1783341140.1035876,
+        "assessment_dimensions": [
+          "academic novelty",
+          "application value",
+          "implementation feasibility"
+        ],
+        "overlap_risk": "low",
+        "strongest_overlap": 0.3077,
+        "literature_coverage_factor": 0.5231,
+        "assessment_reason": "refs=1, gap_type=migration, strongest_local_overlap=0.308, coverage=0.523, feasibility=medium, application_value=medium",
+        "requires_human_review": false,
+        "dedupe_signature": "analysis be but causal drug in is may only resistance",
+        "deduped_from": 1
+      },
+      "tournament_generation": 2
+    },
+    {
+      "hypothesis_id": "hyp_1783341140140903400",
+      "gap_id": "gap_1783341140103584800",
+      "statement": "If causal analysis is applied to clonal evolution under explicit failure-mode stress tests, then gene expression will improve or reveal a falsifiable boundary condition. The decisive test is constrained to prediction accuracy under an explicit stress regime.",
+      "mechanism": "The proposed mechanism is that causal analysis changes the information, intervention, or representation pathway in clonal evolution; because the source gap indicates weak evidence, testing gene expression can distinguish a real mechanism from a pseudo-gap.",
+      "expected_value": "Migration gaps can create useful cross-domain leverage if mechanism assumptions remain valid.",
+      "test_plan": "Build a minimal benchmark for clonal evolution; compare causal analysis against canonical baselines; measure gene expression; include negative controls, ablations, and failure-mode analysis. Add a preregistered stress test for prediction accuracy.",
+      "status": "draft",
+      "createdAt": 1783341140.1409082,
+      "mingli_scores": {
+        "novelty": 0.63,
+        "plausibility": 0.65,
+        "grounding": 0.667,
+        "testability": 0.75,
+        "impact": 0.8,
+        "strongest_local_overlap": 0.2
+      },
+      "score": 0.6908,
+      "lineage": [
+        {
+          "generation": 0,
+          "operation": "seed",
+          "gap_id": "gap_1783341140103584800",
+          "analogy_used": ""
+        },
+        {
+          "generation": 1,
+          "operation": "constraint_insertion",
+          "parent_candidate_id": "hcand_1783341140138075700"
+        }
+      ],
+      "competition_advantage": "Ranks well because it is traceable to a high-value gap, has an explicit mechanism, and includes falsifiable validation criteria.",
+      "verification_plan": {
+        "primary_metric": "gene expression",
+        "baselines": [
+          "nearest dense PaperGraph method",
+          "domain-standard baseline"
+        ],
+        "falsification_condition": "No improvement or mechanistic separation on gene expression under the stated condition."
+      },
+      "source_gap": {
+        "gap_id": "gap_1783341140103584800",
+        "gap_type": "migration",
+        "description": "Method 'causal analysis' is only recorded in scenario 'drug resistance', but may be transferable to scenario 'clonal evolution'.",
+        "supporting_references": [
+          "C et al. (2023)",
+          "B et al. (2025)"
+        ],
+        "novelty_score": 7,
+        "application_value": "medium",
+        "feasibility": "medium",
+        "suggested_research_path": "Audit assumptions of the source scenario, then run a small transfer validation in the target scenario.",
+        "value_argument": "Migration gaps can create useful cross-domain leverage if mechanism assumptions remain valid.",
+        "status": "candidate",
+        "createdAt": 1783341140.1035876,
+        "assessment_dimensions": [
+          "academic novelty",
+          "application value",
+          "implementation feasibility"
+        ],
+        "overlap_risk": "low",
+        "strongest_overlap": 0.3077,
+        "literature_coverage_factor": 0.5231,
+        "assessment_reason": "refs=1, gap_type=migration, strongest_local_overlap=0.308, coverage=0.523, feasibility=medium, application_value=medium",
+        "requires_human_review": false,
+        "dedupe_signature": "analysis be but causal drug in is may only resistance",
+        "deduped_from": 1
+      },
+      "tournament_generation": 1
+    },
+    {
+      "hypothesis_id": "hyp_1783341140140922300",
+      "gap_id": "gap_1783341140102841000",
+      "statement": "If causal analysis is applied to clonal evolution while tracking emerging hotspot 'drug resistance', then gene expression will improve or reveal a falsifiable boundary condition.",
+      "mechanism": "The proposed mechanism is that causal analysis changes the information, intervention, or representation pathway in clonal evolution; because the source gap indicates weak evidence, testing gene expression can distinguish a real mechanism from a pseudo-gap.",
+      "expected_value": "The combination may expose method-scenario boundary conditions rather than simply adding another benchmark.",
+      "test_plan": "Build a minimal benchmark for clonal evolution; compare causal analysis against canonical baselines; measure gene expression; include negative controls, ablations, and failure-mode analysis.",
+      "status": "draft",
+      "createdAt": 1783341140.140925,
+      "mingli_scores": {
+        "novelty": 0.525,
+        "plausibility": 0.65,
+        "grounding": 0.667,
+        "testability": 0.75,
+        "impact": 0.7,
+        "strongest_local_overlap": 0.25
+      },
+      "score": 0.6496,
+      "lineage": [
+        {
+          "generation": 0,
+          "operation": "seed",
+          "gap_id": "gap_1783341140102841000",
+          "analogy_used": ""
+        }
+      ],
+      "competition_advantage": "Ranks well because it is traceable to a high-value gap, has an explicit mechanism, and includes falsifiable validation criteria.",
+      "verification_plan": {
+        "primary_metric": "gene expression",
+        "baselines": [
+          "nearest dense PaperGraph method",
+          "domain-standard baseline"
+        ],
+        "falsification_condition": "No improvement or mechanistic separation on gene expression under the stated condition."
+      },
+      "source_gap": {
+        "gap_id": "gap_1783341140102841000",
+        "gap_type": "combinatorial",
+        "description": "Method 'causal analysis' has no recorded validation in scenario 'clonal evolution' in the current PaperGraph map.",
+        "supporting_references": [
+          "B et al. (2025)",
+          "C et al. (2023)"
+        ],
+        "novelty_score": 6,
+        "application_value": "medium",
+        "feasibility": "high",
+        "suggested_research_path": "Run a targeted validation study with explicit benchmarks, baselines, and failure-mode analysis.",
+        "value_argument": "The combination may expose method-scenario boundary conditions rather than simply adding another benchmark.",
+        "status": "candidate",
+        "createdAt": 1783341140.1028502,
+        "assessment_dimensions": [
+          "academic novelty",
+          "application value",
+          "implementation feasibility"
+        ],
+        "overlap_risk": "low",
+        "strongest_overlap": 0.25,
+        "literature_coverage_factor": 0.5917,
+        "assessment_reason": "refs=2, gap_type=combinatorial, strongest_local_overlap=0.25, coverage=0.592, feasibility=high, application_value=medium",
+        "requires_human_review": false,
+        "dedupe_signature": "analysis causal clonal evolution in in no the"
+      },
+      "tournament_generation": 0
+    }
+  ],
+  "keynotes": [],
+  "mechanism_reports": [],
+  "pipeline_tasks": [],
+  "knowledge_map": {
+    "dimension": "method-scenario-benchmark",
+    "main_methods": [
+      "causal analysis",
+      "graph neural network",
+      "single-cell sequencing"
+    ],
+    "main_scenarios": [
+      "clonal evolution",
+      "drug resistance",
+      "tumor microenvironment"
+    ],
+    "main_benchmarks": [
+      "gene expression",
+      "prediction accuracy",
+      "survival outcome"
+    ],
+    "method_scenario_coverage": {
+      "graph neural network": [
+        "tumor microenvironment"
+      ],
+      "single-cell sequencing": [
+        "clonal evolution"
+      ],
+      "causal analysis": [
+        "drug resistance"
+      ]
+    },
+    "benchmark_index": {
+      "prediction accuracy": [
+        "A et al. (2024)"
+      ],
+      "gene expression": [
+        "B et al. (2025)"
+      ],
+      "survival outcome": [
+        "C et al. (2023)"
+      ]
+    },
+    "method_scenario_benchmark": {
+      "graph neural network": {
+        "tumor microenvironment": {
+          "prediction accuracy": [
+            "A et al. (2024)"
+          ]
+        }
+      },
+      "single-cell sequencing": {
+        "clonal evolution": {
+          "gene expression": [
+            "B et al. (2025)"
+          ]
+        }
+      },
+      "causal analysis": {
+        "drug resistance": {
+          "survival outcome": [
+            "C et al. (2023)"
+          ]
+        }
+      }
+    },
+    "method_scenario_benchmark_triples": [
+      {
+        "method": "graph neural network",
+        "scenario": "tumor microenvironment",
+        "benchmark": "prediction accuracy",
+        "references": [
+          "A et al. (2024)"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "graph neural network",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "uses graph learning",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "limited longitudinal validation",
+            "support": "structured_field"
+          }
+        ]
+      },
+      {
+        "method": "single-cell sequencing",
+        "scenario": "clonal evolution",
+        "benchmark": "gene expression",
+        "references": [
+          "B et al. (2025)"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "single-cell sequencing",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "maps clonal states",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "missing causal perturbation",
+            "support": "structured_field"
+          }
+        ]
+      },
+      {
+        "method": "causal analysis",
+        "scenario": "drug resistance",
+        "benchmark": "survival outcome",
+        "references": [
+          "C et al. (2023)"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "causal analysis",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "tests causal markers",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "small cohort",
+            "support": "structured_field"
+          }
+        ]
+      }
+    ],
+    "claim_type_counts": {
+      "methodological_description": 3,
+      "empirical_result": 3,
+      "author_opinion": 3
+    },
+    "extraction_repair": {
+      "attempted": 0,
+      "repaired": 0,
+      "still_low_quality": 0,
+      "errors": []
+    },
+    "unknown_summary": {
+      "total_triples": 3,
+      "unknown_triples": 0
+    }
+  },
+  "knowledge_gap_filter": {
+    "min_novelty": 4,
+    "input_count": 4,
+    "rejected_count": 0,
+    "rejected": []
+  },
+  "tanxi_gap_analysis": {
+    "agent": "tanxi",
+    "target_domain": "AI for biomedical mechanisms",
+    "thought": "TanXi scanned the PaperGraph for low-density but high-importance method-scenario-benchmark regions, cross-disciplinary unconnected pairs, suspended unresolved problems, and strategic-need alignment.",
+    "action": {
+      "scan_coverage_density": {
+        "target_domain": "AI for biomedical mechanisms"
+      },
+      "find_unconnected_pairs": {
+        "target_domain": "AI for biomedical mechanisms"
+      },
+      "detect_suspended_problems": {
+        "min_citation_threshold": 50
+      },
+      "prioritize_gaps": {
+        "criteria": [
+          "importance",
+          "tractability",
+          "strategic_value"
+        ]
+      },
+      "align_with_strategic_needs": {
+        "strategic_domains": [
+          "ai for science"
+        ]
+      }
+    },
+    "coverage_analysis": {
+      "target_domain": "AI for biomedical mechanisms",
+      "method_count": 3,
+      "scenario_count": 3,
+      "benchmark_count": 3,
+      "dense_areas": [
+        {
+          "topic": "causal analysis + drug resistance",
+          "method": "causal analysis",
+          "scenario": "drug resistance",
+          "evidence_count": 1,
+          "benchmark_count": 1,
+          "importance_score": 5
+        },
+        {
+          "topic": "graph neural network + tumor microenvironment",
+          "method": "graph neural network",
+          "scenario": "tumor microenvironment",
+          "evidence_count": 1,
+          "benchmark_count": 1,
+          "importance_score": 5
+        },
+        {
+          "topic": "single-cell sequencing + clonal evolution",
+          "method": "single-cell sequencing",
+          "scenario": "clonal evolution",
+          "evidence_count": 1,
+          "benchmark_count": 1,
+          "importance_score": 5
+        }
+      ],
+      "density_holes": [
+        {
+          "topic": "causal analysis + drug resistance benchmark coverage",
+          "method": "causal analysis",
+          "scenario": "drug resistance",
+          "importance_score": 5,
+          "current_evidence_level": "medium",
+          "missing_benchmarks": [
+            "gene expression",
+            "prediction accuracy"
+          ],
+          "why_important": "The method-scenario pair has evidence, but benchmark coverage is sparse, so robustness and generalization remain uncertain.",
+          "supporting_references": [
+            "C et al. (2023)"
+          ]
+        },
+        {
+          "topic": "graph neural network + tumor microenvironment benchmark coverage",
+          "method": "graph neural network",
+          "scenario": "tumor microenvironment",
+          "importance_score": 5,
+          "current_evidence_level": "medium",
+          "missing_benchmarks": [
+            "gene expression",
+            "survival outcome"
+          ],
+          "why_important": "The method-scenario pair has evidence, but benchmark coverage is sparse, so robustness and generalization remain uncertain.",
+          "supporting_references": [
+            "A et al. (2024)"
+          ]
+        },
+        {
+          "topic": "single-cell sequencing + clonal evolution benchmark coverage",
+          "method": "single-cell sequencing",
+          "scenario": "clonal evolution",
+          "importance_score": 5,
+          "current_evidence_level": "medium",
+          "missing_benchmarks": [
+            "prediction accuracy",
+            "survival outcome"
+          ],
+          "why_important": "The method-scenario pair has evidence, but benchmark coverage is sparse, so robustness and generalization remain uncertain.",
+          "supporting_references": [
+            "B et al. (2025)"
+          ]
+        },
+        {
+          "topic": "causal analysis + clonal evolution",
+          "method": "causal analysis",
+          "scenario": "clonal evolution",
+          "importance_score": 5,
+          "current_evidence_level": "none",
+          "missing_benchmarks": [
+            "gene expression",
+            "prediction accuracy",
+            "survival outcome"
+          ],
+          "why_important": "Both the method and scenario are visible in the field map, but this intersection has no recorded validation.",
+          "supporting_references": [
+            "B et al. (2025)",
+            "C et al. (2023)"
+          ]
+        },
+        {
+          "topic": "causal analysis + tumor microenvironment",
+          "method": "causal analysis",
+          "scenario": "tumor microenvironment",
+          "importance_score": 5,
+          "current_evidence_level": "none",
+          "missing_benchmarks": [
+            "gene expression",
+            "prediction accuracy",
+            "survival outcome"
+          ],
+          "why_important": "Both the method and scenario are visible in the field map, but this intersection has no recorded validation.",
+          "supporting_references": [
+            "A et al. (2024)",
+            "C et al. (2023)"
+          ]
+        },
+        {
+          "topic": "graph neural network + clonal evolution",
+          "method": "graph neural network",
+          "scenario": "clonal evolution",
+          "importance_score": 5,
+          "current_evidence_level": "none",
+          "missing_benchmarks": [
+            "gene expression",
+            "prediction accuracy",
+            "survival outcome"
+          ],
+          "why_important": "Both the method and scenario are visible in the field map, but this intersection has no recorded validation.",
+          "supporting_references": [
+            "A et al. (2024)",
+            "B et al. (2025)"
+          ]
+        },
+        {
+          "topic": "graph neural network + drug resistance",
+          "method": "graph neural network",
+          "scenario": "drug resistance",
+          "importance_score": 5,
+          "current_evidence_level": "none",
+          "missing_benchmarks": [
+            "gene expression",
+            "prediction accuracy",
+            "survival outcome"
+          ],
+          "why_important": "Both the method and scenario are visible in the field map, but this intersection has no recorded validation.",
+          "supporting_references": [
+            "A et al. (2024)",
+            "C et al. (2023)"
+          ]
+        },
+        {
+          "topic": "single-cell sequencing + drug resistance",
+          "method": "single-cell sequencing",
+          "scenario": "drug resistance",
+          "importance_score": 5,
+          "current_evidence_level": "none",
+          "missing_benchmarks": [
+            "gene expression",
+            "prediction accuracy",
+            "survival outcome"
+          ],
+          "why_important": "Both the method and scenario are visible in the field map, but this intersection has no recorded validation.",
+          "supporting_references": [
+            "B et al. (2025)",
+            "C et al. (2023)"
+          ]
+        },
+        {
+          "topic": "single-cell sequencing + tumor microenvironment",
+          "method": "single-cell sequencing",
+          "scenario": "tumor microenvironment",
+          "importance_score": 5,
+          "current_evidence_level": "none",
+          "missing_benchmarks": [
+            "gene expression",
+            "prediction accuracy",
+            "survival outcome"
+          ],
+          "why_important": "Both the method and scenario are visible in the field map, but this intersection has no recorded validation.",
+          "supporting_references": [
+            "A et al. (2024)",
+            "B et al. (2025)"
+          ]
+        }
+      ]
+    },
+    "cross_disciplinary_unconnected_pairs": [],
+    "suspended_problems": [],
+    "ranked_gaps": [
+      {
+        "rank": 1,
+        "gap_id": "gap_1783341140106863300",
+        "gap_description": "Density hole: 'causal analysis' has no recorded validation in 'clonal evolution'.",
+        "gap_type": "combinatorial",
+        "exploration_value_score": 10,
+        "importance": "high",
+        "tractability": "high",
+        "strategic_alignment": [],
+        "supporting_references": [
+          "B et al. (2025)",
+          "C et al. (2023)"
+        ],
+        "recommended_approach": "Use the dense neighboring literature as controls, then test the sparse intersection with explicit benchmark coverage.",
+        "ranking_reason": "novelty=6, refs=2, application=medium, feasibility=high, type=combinatorial, strategic_matches=0, density_bonus=1"
+      },
+      {
+        "rank": 2,
+        "gap_id": "gap_1783341140107033100",
+        "gap_description": "Density hole: 'causal analysis' has no recorded validation in 'tumor microenvironment'.",
+        "gap_type": "combinatorial",
+        "exploration_value_score": 10,
+        "importance": "high",
+        "tractability": "high",
+        "strategic_alignment": [],
+        "supporting_references": [
+          "A et al. (2024)",
+          "C et al. (2023)"
+        ],
+        "recommended_approach": "Use the dense neighboring literature as controls, then test the sparse intersection with explicit benchmark coverage.",
+        "ranking_reason": "novelty=6, refs=2, application=medium, feasibility=high, type=combinatorial, strategic_matches=0, density_bonus=1"
+      },
+      {
+        "rank": 3,
+        "gap_id": "gap_1783341140106273800",
+        "gap_description": "Density hole: 'causal analysis' in 'drug resistance' lacks benchmark coverage for gene expression, prediction accuracy.",
+        "gap_type": "improvement",
+        "exploration_value_score": 10,
+        "importance": "high",
+        "tractability": "high",
+        "strategic_alignment": [
+          {
+            "strategic_domain": "ai for science",
+            "matched_keywords": [
+              "ai"
+            ],
+            "alignment_score": 6
+          }
+        ],
+        "supporting_references": [
+          "C et al. (2023)"
+        ],
+        "recommended_approach": "Use the dense neighboring literature as controls, then test the sparse intersection with explicit benchmark coverage.",
+        "ranking_reason": "novelty=6, refs=1, application=medium, feasibility=high, type=improvement, strategic_matches=1, density_bonus=1"
+      },
+      {
+        "rank": 4,
+        "gap_id": "gap_1783341140107201100",
+        "gap_description": "Density hole: 'graph neural network' has no recorded validation in 'clonal evolution'.",
+        "gap_type": "combinatorial",
+        "exploration_value_score": 10,
+        "importance": "high",
+        "tractability": "high",
+        "strategic_alignment": [],
+        "supporting_references": [
+          "A et al. (2024)",
+          "B et al. (2025)"
+        ],
+        "recommended_approach": "Use the dense neighboring literature as controls, then test the sparse intersection with explicit benchmark coverage.",
+        "ranking_reason": "novelty=6, refs=2, application=medium, feasibility=high, type=combinatorial, strategic_matches=0, density_bonus=1"
+      },
+      {
+        "rank": 5,
+        "gap_id": "gap_1783341140107351600",
+        "gap_description": "Density hole: 'graph neural network' has no recorded validation in 'drug resistance'.",
+        "gap_type": "combinatorial",
+        "exploration_value_score": 10,
+        "importance": "high",
+        "tractability": "high",
+        "strategic_alignment": [],
+        "supporting_references": [
+          "A et al. (2024)",
+          "C et al. (2023)"
+        ],
+        "recommended_approach": "Use the dense neighboring literature as controls, then test the sparse intersection with explicit benchmark coverage.",
+        "ranking_reason": "novelty=6, refs=2, application=medium, feasibility=high, type=combinatorial, strategic_matches=0, density_bonus=1"
+      },
+      {
+        "rank": 6,
+        "gap_id": "gap_1783341140106496300",
+        "gap_description": "Density hole: 'graph neural network' in 'tumor microenvironment' lacks benchmark coverage for gene expression, survival outcome.",
+        "gap_type": "improvement",
+        "exploration_value_score": 10,
+        "importance": "high",
+        "tractability": "high",
+        "strategic_alignment": [
+          {
+            "strategic_domain": "ai for science",
+            "matched_keywords": [
+              "ai"
+            ],
+            "alignment_score": 6
+          }
+        ],
+        "supporting_references": [
+          "A et al. (2024)"
+        ],
+        "recommended_approach": "Use the dense neighboring literature as controls, then test the sparse intersection with explicit benchmark coverage.",
+        "ranking_reason": "novelty=5, refs=1, application=medium, feasibility=high, type=improvement, strategic_matches=1, density_bonus=1"
+      }
+    ],
+    "constraints_checked": {
+      "requires_supporting_reference": true,
+      "filters_trivial_low_novelty": true,
+      "max_gaps": 6
+    }
+  },
+  "subspace_evolution_reports": [
+    {
+      "subspace_evolution_id": "subevo_1783341140121664300",
+      "project_id": "sci_1783341140081706000",
+      "subspace_map_id": "",
+      "createdAt": 1783341140.121667,
+      "summary": {
+        "subspaces": 3,
+        "records_scanned": 3,
+        "actions": 1,
+        "maturity_counts": {
+          "emerging": 1,
+          "unknown": 2
+        }
+      },
+      "metrics": [
+        {
+          "subspace_id": "clonal_evolution",
+          "name": "clonal evolution",
+          "paper_count_total": 1,
+          "paper_count_recent_24m": 1,
+          "growth_delta_per_month": 0.083,
+          "high_impact_ratio": 0.0,
+          "method_diversity": 1,
+          "cross_connection_count": 1,
+          "maturity": "emerging",
+          "top_methods": [
+            "single-cell sequencing"
+          ],
+          "top_terms": [
+            "single-cell",
+            "sequencing",
+            "clonal",
+            "evolution",
+            "gene",
+            "expression",
+            "maps",
+            "states",
+            "missing",
+            "causal"
+          ]
+        },
+        {
+          "subspace_id": "drug_resistance",
+          "name": "drug resistance",
+          "paper_count_total": 1,
+          "paper_count_recent_24m": 0,
+          "growth_delta_per_month": -0.083,
+          "high_impact_ratio": 0.0,
+          "method_diversity": 1,
+          "cross_connection_count": 1,
+          "maturity": "unknown",
+          "top_methods": [
+            "causal analysis"
+          ],
+          "top_terms": [
+            "causal",
+            "drug",
+            "resistance",
+            "survival",
+            "outcome",
+            "tests",
+            "markers",
+            "small",
+            "cohort",
+            "2023"
+          ]
+        },
+        {
+          "subspace_id": "tumor_microenvironment",
+          "name": "tumor microenvironment",
+          "paper_count_total": 1,
+          "paper_count_recent_24m": 0,
+          "growth_delta_per_month": -0.083,
+          "high_impact_ratio": 0.0,
+          "method_diversity": 1,
+          "cross_connection_count": 1,
+          "maturity": "unknown",
+          "top_methods": [
+            "graph neural network"
+          ],
+          "top_terms": [
+            "graph",
+            "neural",
+            "network",
+            "tumor",
+            "microenvironment",
+            "prediction",
+            "accuracy",
+            "uses",
+            "learning",
+            "limited"
+          ]
+        }
+      ],
+      "signals": {
+        "fission": [],
+        "fusion": [],
+        "decline": [],
+        "emergent": [
+          {
+            "action": "new_subspace",
+            "subspace": "causal / graph / neural",
+            "keywords": [
+              "causal",
+              "graph",
+              "neural",
+              "network",
+              "prediction",
+              "accuracy",
+              "uses",
+              "learning"
+            ],
+            "reason": "Frequent project terms are not represented in the current subspace map.",
+            "suggested_parent": "AI for biomedical mechanisms"
+          }
+        ]
+      },
+      "proposed_actions": [
+        {
+          "action": "new_subspace",
+          "subspace": "causal / graph / neural",
+          "keywords": [
+            "causal",
+            "graph",
+            "neural",
+            "network",
+            "prediction",
+            "accuracy",
+            "uses",
+            "learning"
+          ],
+          "reason": "Frequent project terms are not represented in the current subspace map.",
+          "suggested_parent": "AI for biomedical mechanisms"
+        }
+      ],
+      "next_step": "Review proposed_actions. Use selected/fission/fusion/emergent subspaces as focus_branches before MingLi hypothesis evolution."
+    }
+  ],
+  "temporal_knowledge_graph": {
+    "temporal_kg_id": "tkg_1783341140125888000",
+    "project_id": "sci_1783341140081706000",
+    "createdAt": 1783341140.1258903,
+    "triple_count": 3,
+    "triples": [
+      {
+        "method": "graph neural network",
+        "scenario": "tumor microenvironment",
+        "benchmark": "prediction accuracy",
+        "year": 2024,
+        "citation_count": 0,
+        "reference": "A et al. (2024)"
+      },
+      {
+        "method": "single-cell sequencing",
+        "scenario": "clonal evolution",
+        "benchmark": "gene expression",
+        "year": 2025,
+        "citation_count": 0,
+        "reference": "B et al. (2025)"
+      },
+      {
+        "method": "causal analysis",
+        "scenario": "drug resistance",
+        "benchmark": "survival outcome",
+        "year": 2023,
+        "citation_count": 0,
+        "reference": "C et al. (2023)"
+      }
+    ],
+    "yearly_counts": {
+      "2023": 1,
+      "2024": 1,
+      "2025": 1
+    },
+    "method_lifecycles": {
+      "causal analysis": {
+        "status": "emerging",
+        "yearly_counts": {
+          "2023": 1
+        },
+        "growth_rate": 1.0,
+        "peak_year": "2023",
+        "total": 1
+      },
+      "graph neural network": {
+        "status": "emerging",
+        "yearly_counts": {
+          "2024": 1
+        },
+        "growth_rate": 1.0,
+        "peak_year": "2024",
+        "total": 1
+      },
+      "single-cell sequencing": {
+        "status": "emerging",
+        "yearly_counts": {
+          "2025": 1
+        },
+        "growth_rate": 1.0,
+        "peak_year": "2025",
+        "total": 1
+      }
+    },
+    "scenario_lifecycles": {
+      "clonal evolution": {
+        "status": "emerging",
+        "yearly_counts": {
+          "2025": 1
+        },
+        "growth_rate": 1.0,
+        "peak_year": "2025",
+        "total": 1
+      },
+      "drug resistance": {
+        "status": "emerging",
+        "yearly_counts": {
+          "2023": 1
+        },
+        "growth_rate": 1.0,
+        "peak_year": "2023",
+        "total": 1
+      },
+      "tumor microenvironment": {
+        "status": "emerging",
+        "yearly_counts": {
+          "2024": 1
+        },
+        "growth_rate": 1.0,
+        "peak_year": "2024",
+        "total": 1
+      }
+    },
+    "hotspot_predictions": [
+      {
+        "concept": "causal analysis",
+        "concept_type": "method",
+        "forecast": "likely_hotspot",
+        "hotspot_score": 3.333,
+        "lifecycle": {
+          "status": "emerging",
+          "yearly_counts": {
+            "2023": 1
+          },
+          "growth_rate": 1.0,
+          "peak_year": "2023",
+          "total": 1
+        }
+      },
+      {
+        "concept": "clonal evolution",
+        "concept_type": "scenario",
+        "forecast": "likely_hotspot",
+        "hotspot_score": 3.333,
+        "lifecycle": {
+          "status": "emerging",
+          "yearly_counts": {
+            "2025": 1
+          },
+          "growth_rate": 1.0,
+          "peak_year": "2025",
+          "total": 1
+        }
+      },
+      {
+        "concept": "drug resistance",
+        "concept_type": "scenario",
+        "forecast": "likely_hotspot",
+        "hotspot_score": 3.333,
+        "lifecycle": {
+          "status": "emerging",
+          "yearly_counts": {
+            "2023": 1
+          },
+          "growth_rate": 1.0,
+          "peak_year": "2023",
+          "total": 1
+        }
+      },
+      {
+        "concept": "graph neural network",
+        "concept_type": "method",
+        "forecast": "likely_hotspot",
+        "hotspot_score": 3.333,
+        "lifecycle": {
+          "status": "emerging",
+          "yearly_counts": {
+            "2024": 1
+          },
+          "growth_rate": 1.0,
+          "peak_year": "2024",
+          "total": 1
+        }
+      },
+      {
+        "concept": "single-cell sequencing",
+        "concept_type": "method",
+        "forecast": "likely_hotspot",
+        "hotspot_score": 3.333,
+        "lifecycle": {
+          "status": "emerging",
+          "yearly_counts": {
+            "2025": 1
+          },
+          "growth_rate": 1.0,
+          "peak_year": "2025",
+          "total": 1
+        }
+      },
+      {
+        "concept": "tumor microenvironment",
+        "concept_type": "scenario",
+        "forecast": "likely_hotspot",
+        "hotspot_score": 3.333,
+        "lifecycle": {
+          "status": "emerging",
+          "yearly_counts": {
+            "2024": 1
+          },
+          "growth_rate": 1.0,
+          "peak_year": "2024",
+          "total": 1
+        }
+      }
+    ],
+    "next_step": "Use hotspot_predictions as emerging constraints for structural gap detection and MingLi hypothesis generation."
+  },
+  "structural_gap_analysis": {
+    "graph_summary": {
+      "node_count": 9,
+      "edge_count": 9,
+      "components": 3
+    },
+    "items": [],
+    "gaps": []
+  },
+  "structural_analogy_reports": [
+    {
+      "analogy_report_id": "analog_1783341140134387300",
+      "project_id": "sci_1783341140081706000",
+      "target_scenario": "",
+      "threshold": 0.2,
+      "scenario_count": 3,
+      "analogy_transfers": [],
+      "next_step": "Feed high-similarity transfers into MingLi as mutation/crossover material for hypothesis evolution."
+    }
+  ],
+  "mingli_hypothesis_evolution_runs": [
+    {
+      "mingli_run_id": "mingli_1783341140140935100",
+      "project_id": "sci_1783341140081706000",
+      "createdAt": 1783341140.1409361,
+      "gap_ids": [
+        "gap_1783341140103319200",
+        "gap_1783341140103584800",
+        "gap_1783341140104372600",
+        "gap_1783341140102841000"
+      ],
+      "population_size": 8,
+      "generations_completed": 2,
+      "lineage_summary": [
+        {
+          "generation": 0,
+          "population_size": 8,
+          "best_score": 0.6853
+        },
+        {
+          "generation": 1,
+          "population_size": 8,
+          "best_score": 0.6908
+        },
+        {
+          "generation": 2,
+          "population_size": 8,
+          "best_score": 0.6921
+        }
+      ],
+      "top_hypotheses": [
+        {
+          "hypothesis_id": "hyp_1783341140140868900",
+          "gap_id": "gap_1783341140103584800",
+          "statement": "If causal analysis is applied to clonal evolution under explicit failure-mode stress tests, then gene expression will improve or reveal a falsifiable boundary condition. The decisive test is constrained to prediction accuracy under an explicit stress regime. The decisive test is constrained to survival outcome under an explicit stress regime.",
+          "mechanism": "The proposed mechanism is that causal analysis changes the information, intervention, or representation pathway in clonal evolution; because the source gap indicates weak evidence, testing gene expression can distinguish a real mechanism from a pseudo-gap.",
+          "expected_value": "Migration gaps can create useful cross-domain leverage if mechanism assumptions remain valid.",
+          "test_plan": "Build a minimal benchmark for clonal evolution; compare causal analysis against canonical baselines; measure gene expression; include negative controls, ablations, and failure-mode analysis. Add a preregistered stress test for prediction accuracy. Add a preregistered stress test for survival outcome.",
+          "status": "draft",
+          "createdAt": 1783341140.1408784,
+          "mingli_scores": {
+            "novelty": 0.635,
+            "plausibility": 0.65,
+            "grounding": 0.667,
+            "testability": 0.75,
+            "impact": 0.8,
+            "strongest_local_overlap": 0.185
+          },
+          "score": 0.6921,
+          "lineage": [
+            {
+              "generation": 0,
+              "operation": "seed",
+              "gap_id": "gap_1783341140103584800",
+              "analogy_used": ""
+            },
+            {
+              "generation": 1,
+              "operation": "constraint_insertion",
+              "parent_candidate_id": "hcand_1783341140138075700"
+            },
+            {
+              "generation": 2,
+              "operation": "constraint_insertion",
+              "parent_candidate_id": "hcand_1783341140139112900"
+            }
+          ],
+          "competition_advantage": "Ranks well because it is traceable to a high-value gap, has an explicit mechanism, and includes falsifiable validation criteria.",
+          "verification_plan": {
+            "primary_metric": "gene expression",
+            "baselines": [
+              "nearest dense PaperGraph method",
+              "domain-standard baseline"
+            ],
+            "falsification_condition": "No improvement or mechanistic separation on gene expression under the stated condition."
+          },
+          "source_gap": {
+            "gap_id": "gap_1783341140103584800",
+            "gap_type": "migration",
+            "description": "Method 'causal analysis' is only recorded in scenario 'drug resistance', but may be transferable to scenario 'clonal evolution'.",
+            "supporting_references": [
+              "C et al. (2023)",
+              "B et al. (2025)"
+            ],
+            "novelty_score": 7,
+            "application_value": "medium",
+            "feasibility": "medium",
+            "suggested_research_path": "Audit assumptions of the source scenario, then run a small transfer validation in the target scenario.",
+            "value_argument": "Migration gaps can create useful cross-domain leverage if mechanism assumptions remain valid.",
+            "status": "candidate",
+            "createdAt": 1783341140.1035876,
+            "assessment_dimensions": [
+              "academic novelty",
+              "application value",
+              "implementation feasibility"
+            ],
+            "overlap_risk": "low",
+            "strongest_overlap": 0.3077,
+            "literature_coverage_factor": 0.5231,
+            "assessment_reason": "refs=1, gap_type=migration, strongest_local_overlap=0.308, coverage=0.523, feasibility=medium, application_value=medium",
+            "requires_human_review": false,
+            "dedupe_signature": "analysis be but causal drug in is may only resistance",
+            "deduped_from": 1
+          },
+          "tournament_generation": 2
+        },
+        {
+          "hypothesis_id": "hyp_1783341140140903400",
+          "gap_id": "gap_1783341140103584800",
+          "statement": "If causal analysis is applied to clonal evolution under explicit failure-mode stress tests, then gene expression will improve or reveal a falsifiable boundary condition. The decisive test is constrained to prediction accuracy under an explicit stress regime.",
+          "mechanism": "The proposed mechanism is that causal analysis changes the information, intervention, or representation pathway in clonal evolution; because the source gap indicates weak evidence, testing gene expression can distinguish a real mechanism from a pseudo-gap.",
+          "expected_value": "Migration gaps can create useful cross-domain leverage if mechanism assumptions remain valid.",
+          "test_plan": "Build a minimal benchmark for clonal evolution; compare causal analysis against canonical baselines; measure gene expression; include negative controls, ablations, and failure-mode analysis. Add a preregistered stress test for prediction accuracy.",
+          "status": "draft",
+          "createdAt": 1783341140.1409082,
+          "mingli_scores": {
+            "novelty": 0.63,
+            "plausibility": 0.65,
+            "grounding": 0.667,
+            "testability": 0.75,
+            "impact": 0.8,
+            "strongest_local_overlap": 0.2
+          },
+          "score": 0.6908,
+          "lineage": [
+            {
+              "generation": 0,
+              "operation": "seed",
+              "gap_id": "gap_1783341140103584800",
+              "analogy_used": ""
+            },
+            {
+              "generation": 1,
+              "operation": "constraint_insertion",
+              "parent_candidate_id": "hcand_1783341140138075700"
+            }
+          ],
+          "competition_advantage": "Ranks well because it is traceable to a high-value gap, has an explicit mechanism, and includes falsifiable validation criteria.",
+          "verification_plan": {
+            "primary_metric": "gene expression",
+            "baselines": [
+              "nearest dense PaperGraph method",
+              "domain-standard baseline"
+            ],
+            "falsification_condition": "No improvement or mechanistic separation on gene expression under the stated condition."
+          },
+          "source_gap": {
+            "gap_id": "gap_1783341140103584800",
+            "gap_type": "migration",
+            "description": "Method 'causal analysis' is only recorded in scenario 'drug resistance', but may be transferable to scenario 'clonal evolution'.",
+            "supporting_references": [
+              "C et al. (2023)",
+              "B et al. (2025)"
+            ],
+            "novelty_score": 7,
+            "application_value": "medium",
+            "feasibility": "medium",
+            "suggested_research_path": "Audit assumptions of the source scenario, then run a small transfer validation in the target scenario.",
+            "value_argument": "Migration gaps can create useful cross-domain leverage if mechanism assumptions remain valid.",
+            "status": "candidate",
+            "createdAt": 1783341140.1035876,
+            "assessment_dimensions": [
+              "academic novelty",
+              "application value",
+              "implementation feasibility"
+            ],
+            "overlap_risk": "low",
+            "strongest_overlap": 0.3077,
+            "literature_coverage_factor": 0.5231,
+            "assessment_reason": "refs=1, gap_type=migration, strongest_local_overlap=0.308, coverage=0.523, feasibility=medium, application_value=medium",
+            "requires_human_review": false,
+            "dedupe_signature": "analysis be but causal drug in is may only resistance",
+            "deduped_from": 1
+          },
+          "tournament_generation": 1
+        },
+        {
+          "hypothesis_id": "hyp_1783341140140922300",
+          "gap_id": "gap_1783341140102841000",
+          "statement": "If causal analysis is applied to clonal evolution while tracking emerging hotspot 'drug resistance', then gene expression will improve or reveal a falsifiable boundary condition.",
+          "mechanism": "The proposed mechanism is that causal analysis changes the information, intervention, or representation pathway in clonal evolution; because the source gap indicates weak evidence, testing gene expression can distinguish a real mechanism from a pseudo-gap.",
+          "expected_value": "The combination may expose method-scenario boundary conditions rather than simply adding another benchmark.",
+          "test_plan": "Build a minimal benchmark for clonal evolution; compare causal analysis against canonical baselines; measure gene expression; include negative controls, ablations, and failure-mode analysis.",
+          "status": "draft",
+          "createdAt": 1783341140.140925,
+          "mingli_scores": {
+            "novelty": 0.525,
+            "plausibility": 0.65,
+            "grounding": 0.667,
+            "testability": 0.75,
+            "impact": 0.7,
+            "strongest_local_overlap": 0.25
+          },
+          "score": 0.6496,
+          "lineage": [
+            {
+              "generation": 0,
+              "operation": "seed",
+              "gap_id": "gap_1783341140102841000",
+              "analogy_used": ""
+            }
+          ],
+          "competition_advantage": "Ranks well because it is traceable to a high-value gap, has an explicit mechanism, and includes falsifiable validation criteria.",
+          "verification_plan": {
+            "primary_metric": "gene expression",
+            "baselines": [
+              "nearest dense PaperGraph method",
+              "domain-standard baseline"
+            ],
+            "falsification_condition": "No improvement or mechanistic separation on gene expression under the stated condition."
+          },
+          "source_gap": {
+            "gap_id": "gap_1783341140102841000",
+            "gap_type": "combinatorial",
+            "description": "Method 'causal analysis' has no recorded validation in scenario 'clonal evolution' in the current PaperGraph map.",
+            "supporting_references": [
+              "B et al. (2025)",
+              "C et al. (2023)"
+            ],
+            "novelty_score": 6,
+            "application_value": "medium",
+            "feasibility": "high",
+            "suggested_research_path": "Run a targeted validation study with explicit benchmarks, baselines, and failure-mode analysis.",
+            "value_argument": "The combination may expose method-scenario boundary conditions rather than simply adding another benchmark.",
+            "status": "candidate",
+            "createdAt": 1783341140.1028502,
+            "assessment_dimensions": [
+              "academic novelty",
+              "application value",
+              "implementation feasibility"
+            ],
+            "overlap_risk": "low",
+            "strongest_overlap": 0.25,
+            "literature_coverage_factor": 0.5917,
+            "assessment_reason": "refs=2, gap_type=combinatorial, strongest_local_overlap=0.25, coverage=0.592, feasibility=high, application_value=medium",
+            "requires_human_review": false,
+            "dedupe_signature": "analysis causal clonal evolution in in no the"
+          },
+          "tournament_generation": 0
+        }
+      ],
+      "method": "template_seed + tournament_selection + mutation/crossover + structural/temporal/analogy scoring",
+      "constraints_checked": {
+        "traceable_to_gap": true,
+        "papergraph_grounded": true,
+        "testability_scored": true,
+        "novelty_overlap_local": true
+      }
+    }
+  ]
+}

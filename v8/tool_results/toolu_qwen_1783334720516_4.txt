@@ -1,0 +1,1332 @@
+{
+  "thought": "ZhiZhi retrieved and filtered literature, imported grounded PaperGraph evidence, built a benchmark-aware knowledge map, expanded citation context when available, and generated gaps with novelty/value/feasibility checks.",
+  "action": {
+    "agent": "zhizhi",
+    "query": "hepatocellular carcinoma formation mechanism liver cancer cell variation genomic alteration clonal evolution tumor microenvironment immune escape single-cell multi-omics",
+    "domain": "Hepatocellular Carcinoma Formation Mechanisms and Liver Cancer Cell Variation Mechanisms",
+    "years": "last 5 years",
+    "domain_subspace_explorer": {
+      "subspace_map_id": "subspace_1783334712185055700",
+      "coverage_plan": {
+        "total_subspaces": 4,
+        "covered": 2,
+        "missing": 2,
+        "insufficient": 0,
+        "coverage_rate": 0.5,
+        "missing_details": [
+          {
+            "name": "tumor_microenvironment_crosstalk",
+            "keywords": [
+              "angiocrine signaling",
+              "IL-6/STAT3 axis",
+              "PD-L1+ macrophages",
+              "fibrotic niche remodeling"
+            ],
+            "suggested_action": "supplemental_search"
+          },
+          {
+            "name": "cellular_plasticity_and_stemness",
+            "keywords": [
+              "EpCAM+AFP+ cells",
+              "hybrid hepatocyte-cholangiocyte states",
+              "SOX9+ ductular reactions",
+              "partial EMT signatures"
+            ],
+            "suggested_action": "supplemental_search"
+          }
+        ],
+        "recommendation": "Confirm priority subspaces with the user before running ZhiZhi, then search selected subspaces independently."
+      },
+      "selected_subfields": [
+        "HBV/HCV integration and chronic inflammation",
+        "Genomic and epigenomic alterations",
+        "Tumor microenvironment and immune escape",
+        "Clonal evolution and therapy resistance"
+      ]
+    },
+    "search_papers_stratified": {
+      "search_id": "search_1783334742286585200",
+      "total_results": 20,
+      "providers": [
+        "semantic_scholar",
+        "arxiv"
+      ],
+      "strategy": "stratified_cascade",
+      "query_plan": [
+        {
+          "branch": "primary",
+          "query": "hepatocellular carcinoma formation mechanism liver cancer cell variation genomic alteration clonal evolution tumor microenvironment immune escape single-cell multi-omics"
+        },
+        {
+          "branch": "hbvhcv_integration_and_chronic_inflammation",
+          "query": "hepatocellular carcinoma formation mechanism liver cancer cell variation genomic alteration clonal evolution tumor microenvironment immune escape single-cell multi-omics hbvhcv integration and chronic inflammation"
+        },
+        {
+          "branch": "clonal_evolution_and_therapy_resistance",
+          "query": "hepatocellular carcinoma formation mechanism liver cancer cell variation genomic alteration clonal evolution tumor microenvironment immune escape single-cell multi-omics clonal evolution and therapy resistance"
+        },
+        {
+          "branch": "tumor_microenvironment_and_immune_escape",
+          "query": "hepatocellular carcinoma formation mechanism liver cancer cell variation genomic alteration clonal evolution tumor microenvironment immune escape single-cell multi-omics tumor microenvironment and immune escape"
+        },
+        {
+          "branch": "genomic_and_epigenomic_alterations",
+          "query": "hepatocellular carcinoma formation mechanism liver cancer cell variation genomic alteration clonal evolution tumor microenvironment immune escape single-cell multi-omics genomic and epigenomic alterations"
+        },
+        {
+          "branch": "genomic_and_epigenomic_alteration_landscapes",
+          "query": "hepatocellular carcinoma formation mechanism liver cancer cell variation genomic alteration clonal evolution tumor microenvironment immune escape single-cell multi-omics HCC driver mutations epigenetic dysregulation copy number variation whole-genome sequencing",
+          "topic_type": "branch"
+        },
+        {
+          "branch": "clonal_architecture_and_evolutionary_trajectories",
+          "query": "hepatocellular carcinoma formation mechanism liver cancer cell variation genomic alteration clonal evolution tumor microenvironment immune escape single-cell multi-omics HCC intratumoral heterogeneity phylogenetic reconstruction spatial transcriptomics longitudinal sampling",
+          "topic_type": "branch"
+        },
+        {
+          "branch": "single_cell_multi_omics_dissection_of_cellular_states",
+          "query": "hepatocellular carcinoma formation mechanism liver cancer cell variation genomic alteration clonal evolution tumor microenvironment immune escape single-cell multi-omics scRNA-seq scATAC-seq spatial proteomics HCC cell type annotation tumor cell plasticity",
+          "topic_type": "branch"
+        },
+        {
+          "branch": "tumor_microenvironment_and_immune_evasion_mechanisms",
+          "query": "hepatocellular carcinoma formation mechanism liver cancer cell variation genomic alteration clonal evolution tumor microenvironment immune escape single-cell multi-omics HCC immune exclusion TME cellular composition PD-L1 regulation macrophage polarization NK cell dysfunction",
+          "topic_type": "branch"
+        }
+      ],
+      "focus_branches": [
+        "hbvhcv integration and chronic inflammation",
+        "clonal evolution and therapy resistance",
+        "tumor microenvironment and immune escape",
+        "genomic and epigenomic alterations"
+      ],
+      "strata": [
+        {
+          "layer": "L0_review",
+          "label": "high-impact review / field map",
+          "quota": 1,
+          "query_suffix": "review survey progress perspective tutorial systematic review meta-analysis",
+          "target": 1,
+          "candidate_count": 5,
+          "raw_candidate_count": 8,
+          "selected": 1,
+          "domain_rejected": 0,
+          "recovery_used": "",
+          "carried_to_next": 0
+        },
+        {
+          "layer": "L1_milestone",
+          "label": "milestone / highly cited foundation",
+          "quota": 3,
+          "query_suffix": "seminal foundational highly cited landmark classic influential",
+          "target": 3,
+          "candidate_count": 0,
+          "raw_candidate_count": 0,
+          "selected": 0,
+          "domain_rejected": 0,
+          "recovery_used": "",
+          "carried_to_next": 3
+        },
+        {
+          "layer": "L2_top_latest",
+          "label": "recent top-venue frontier",
+          "quota": 3,
+          "query_suffix": "latest recent top journal high impact breakthrough advance frontier",
+          "target": 6,
+          "candidate_count": 0,
+          "raw_candidate_count": 0,
+          "selected": 0,
+          "domain_rejected": 0,
+          "recovery_used": "",
+          "carried_to_next": 6
+        },
+        {
+          "layer": "L3_preprint",
+          "label": "latest arXiv preprint frontier",
+          "quota": 3,
+          "query_suffix": "",
+          "target": 9,
+          "candidate_count": 20,
+          "raw_candidate_count": 20,
+          "selected": 9,
+          "domain_rejected": 0,
+          "recovery_used": "",
+          "carried_to_next": 0
+        },
+        {
+          "layer": "L4_regular",
+          "label": "regular journal / supplemental evidence",
+          "quota": 10,
+          "query_suffix": "",
+          "target": 10,
+          "candidate_count": 26,
+          "raw_candidate_count": 26,
+          "selected": 10,
+          "domain_rejected": 0,
+          "recovery_used": "",
+          "carried_to_next": 0
+        }
+      ],
+      "errors": [
+        {
+          "provider": "semantic_scholar",
+          "query": "hepatocellular carcinoma formation mechanism liver cancer cell variation genomic alteration clonal evolution tumor microenvironment immune escape single-cell multi-omics hbvhcv integration and chronic inflammation review survey progress perspective tutorial systematic review meta-analysis",
+          "status": "rate_limited_skipped",
+          "note": null,
+          "error": "Semantic Scholar circuit open; retry_after_seconds=10.2",
+          "result_count": 0
+        },
+        {
+          "provider": "semantic_scholar",
+          "query": "hepatocellular carcinoma formation mechanism liver cancer cell variation genomic alteration clonal evolution tumor microenvironment immune escape single-cell multi-omics",
+          "status": "rate_limited_skipped",
+          "note": null,
+          "error": "Semantic Scholar circuit open; retry_after_seconds=6.2",
+          "result_count": 0
+        },
+        {
+          "provider": "semantic_scholar",
+          "query": "hepatocellular carcinoma formation mechanism liver cancer cell variation genomic alteration clonal evolution tumor microenvironment immune escape single-cell multi-omics hbvhcv integration and chronic inflammation",
+          "status": "rate_limited_skipped",
+          "note": null,
+          "error": "Semantic Scholar circuit open; retry_after_seconds=6.2",
+          "result_count": 0
+        },
+        {
+          "provider": "semantic_scholar",
+          "query": "hepatocellular carcinoma formation mechanism liver cancer cell variation genomic alteration clonal evolution tumor microenvironment immune escape single-cell multi-omics",
+          "status": "rate_limited_skipped",
+          "note": null,
+          "error": "Semantic Scholar circuit open; retry_after_seconds=6.2",
+          "result_count": 0
+        },
+        {
+          "provider": "semantic_scholar",
+          "query": "hepatocellular carcinoma formation mechanism liver cancer cell variation genomic alteration clonal evolution tumor microenvironment immune escape single-cell multi-omics hbvhcv integration and chronic inflammation",
+          "status": "rate_limited_skipped",
+          "note": null,
+          "error": "Semantic Scholar circuit open; retry_after_seconds=6.2",
+          "result_count": 0
+        }
+      ]
+    },
+    "domain_coverage_diagnostic": {
+      "profile": "biomedical_oncology_molecular_hepatology_cancer_systems_biology",
+      "profile_source": "llm",
+      "search_id": "search_1783334742286585200",
+      "total_results": 20,
+      "represented_topics": [],
+      "blind_spots": [
+        {
+          "topic": "Genomic drivers of hepatocarcinogenesis",
+          "hit_count": 0,
+          "min_hits": 10,
+          "terms": [
+            "tp53 mutation",
+            "tert promoter mutation",
+            "ctnnb1 activation",
+            "chromosomal instability"
+          ],
+          "suggested_query": "hepatocellular carcinoma formation mechanism liver cancer cell variation genomic alteration clonal evolution tumor microenvironment immune escape single-cell multi-omics tp53 mutation tert promoter mutation ctnnb1 activation chromosomal instability",
+          "risk": "Live probe found literature for this missing branch; current PaperGraph may be incomplete, so TanXi should not treat this absence as a true unexplored gap.",
+          "live_probe": {
+            "query": "hepatocellular carcinoma formation mechanism liver cancer cell variation genomic alteration clonal evolution tumor microenvironment immune escape single-cell multi-omics tp53 mutation tert promoter mutation ctnnb1 activation chromosomal instability",
+            "status": "ok",
+            "total_results": 3,
+            "providers": [
+              {
+                "provider": "semantic_scholar",
+                "status": "ok",
+                "result_count": 0,
+                "top_titles": [],
+                "error": ""
+              },
+              {
+                "provider": "arxiv",
+                "status": "ok",
+                "result_count": 3,
+                "top_titles": [
+                  "New Approach for Prediction Pre-cancer via Detecting Mutated in Tumor Protein P53",
+                  "Immune cells interactions in the tumor microenvironment",
+                  "Understanding genomic alterations in cancer genomes using an integrative network approach"
+                ],
+                "error": ""
+              }
+            ]
+          },
+          "false_negative_risk": true
+        },
+        {
+          "topic": "Clonal dynamics in HCC progression",
+          "hit_count": 1,
+          "min_hits": 10,
+          "terms": [
+            "subclonal expansion",
+            "parallel evolution",
+            "metastatic seeding",
+            "therapy-induced selection"
+          ],
+          "suggested_query": "hepatocellular carcinoma formation mechanism liver cancer cell variation genomic alteration clonal evolution tumor microenvironment immune escape single-cell multi-omics subclonal expansion parallel evolution metastatic seeding therapy-induced selection",
+          "risk": "Live probe found literature for this missing branch; current PaperGraph may be incomplete, so TanXi should not treat this absence as a true unexplored gap.",
+          "live_probe": {
+            "query": "hepatocellular carcinoma formation mechanism liver cancer cell variation genomic alteration clonal evolution tumor microenvironment immune escape single-cell multi-omics subclonal expansion parallel evolution metastatic seeding therapy-induced selection",
+            "status": "ok",
+            "total_results": 3,
+            "providers": [
+              {
+                "provider": "semantic_scholar",
+                "status": "rate_limited_skipped",
+                "result_count": 0,
+                "top_titles": [],
+                "error": "Semantic Scholar circuit open; retry_after_seconds=18.3",
+                "rate_limited": true
+              },
+              {
+                "provider": "arxiv",
+                "status": "ok",
+                "result_count": 3,
+                "top_titles": [
+                  "COSINE: A Web Server for Clonal and Subclonal Structure Inference and Evolution in Cancer Genomics",
+                  "Immune cells interactions in the tumor microenvironment",
+                  "Fixation probability of rare nonmutator and evolution of mutation rates"
+                ],
+                "error": ""
+              }
+            ]
+          },
+          "false_negative_risk": true
+        },
+        {
+          "topic": "Single-cell resolution of HCC cellular ecosystems",
+          "hit_count": 0,
+          "min_hits": 10,
+          "terms": [
+            "malignant hepatocyte states",
+            "transdifferentiation",
+            "stromal crosstalk",
+            "multi-modal integration"
+          ],
+          "suggested_query": "hepatocellular carcinoma formation mechanism liver cancer cell variation genomic alteration clonal evolution tumor microenvironment immune escape single-cell multi-omics malignant hepatocyte states transdifferentiation stromal crosstalk multi-modal integration",
+          "risk": "Live probe found literature for this missing branch; current PaperGraph may be incomplete, so TanXi should not treat this absence as a true unexplored gap.",
+          "live_probe": {
+            "query": "hepatocellular carcinoma formation mechanism liver cancer cell variation genomic alteration clonal evolution tumor microenvironment immune escape single-cell multi-omics malignant hepatocyte states transdifferentiation stromal crosstalk multi-modal integration",
+            "status": "ok",
+            "total_results": 3,
+            "providers": [
+              {
+                "provider": "semantic_scholar",
+                "status": "rate_limited_skipped",
+                "result_count": 0,
+                "top_titles": [],
+                "error": "Semantic Scholar circuit open; retry_after_seconds=14.2",
+                "rate_limited": true
+              },
+              {
+                "provider": "arxiv",
+                "status": "ok",
+                "result_count": 3,
+                "top_titles": [
+                  "Immune cells interactions in the tumor microenvironment",
+                  "CellPhoneDB v5: inferring cell-cell communication from single-cell multiomics data",
+                  "Understanding genomic alterations in cancer genomes using an integrative network approach"
+                ],
+                "error": ""
+              }
+            ]
+          },
+          "false_negative_risk": true
+        },
+        {
+          "topic": "Immune-tumor interface in liver cancer",
+          "hit_count": 0,
+          "min_hits": 10,
+          "terms": [
+            "pd-1/pd-l1 axis",
+            "antigen presentation defect",
+            "nk cell dysfunction",
+            "immunosuppressive cytokines"
+          ],
+          "suggested_query": "hepatocellular carcinoma formation mechanism liver cancer cell variation genomic alteration clonal evolution tumor microenvironment immune escape single-cell multi-omics pd-1/pd-l1 axis antigen presentation defect nk cell dysfunction immunosuppressive cytokines",
+          "risk": "Live probe found literature for this missing branch; current PaperGraph may be incomplete, so TanXi should not treat this absence as a true unexplored gap.",
+          "live_probe": {
+            "query": "hepatocellular carcinoma formation mechanism liver cancer cell variation genomic alteration clonal evolution tumor microenvironment immune escape single-cell multi-omics pd-1/pd-l1 axis antigen presentation defect nk cell dysfunction immunosuppressive cytokines",
+            "status": "ok",
+            "total_results": 3,
+            "providers": [
+              {
+                "provider": "semantic_scholar",
+                "status": "rate_limited_skipped",
+                "result_count": 0,
+                "top_titles": [],
+                "error": "Semantic Scholar circuit open; retry_after_seconds=10.1",
+                "rate_limited": true
+              },
+              {
+                "provider": "arxiv",
+                "status": "ok",
+                "result_count": 3,
+                "top_titles": [
+                  "CellPhoneDB v5: inferring cell-cell communication from single-cell multiomics data",
+                  "Tumor-associated CD19$^+$ macrophages induce immunosuppressive microenvironment in hepatocellular carcinoma",
+                  "Immune cells interactions in the tumor microenvironment"
+                ],
+                "error": ""
+              }
+            ]
+          },
+          "false_negative_risk": true
+        }
+      ],
+      "live_validate": true,
+      "live_probe_reports": [
+        {
+          "query": "hepatocellular carcinoma formation mechanism liver cancer cell variation genomic alteration clonal evolution tumor microenvironment immune escape single-cell multi-omics tp53 mutation tert promoter mutation ctnnb1 activation chromosomal instability",
+          "status": "ok",
+          "total_results": 3,
+          "providers": [
+            {
+              "provider": "semantic_scholar",
+              "status": "ok",
+              "result_count": 0,
+              "top_titles": [],
+              "error": ""
+            },
+            {
+              "provider": "arxiv",
+              "status": "ok",
+              "result_count": 3,
+              "top_titles": [
+                "New Approach for Prediction Pre-cancer via Detecting Mutated in Tumor Protein P53",
+                "Immune cells interactions in the tumor microenvironment",
+                "Understanding genomic alterations in cancer genomes using an integrative network approach"
+              ],
+              "error": ""
+            }
+          ]
+        },
+        {
+          "query": "hepatocellular carcinoma formation mechanism liver cancer cell variation genomic alteration clonal evolution tumor microenvironment immune escape single-cell multi-omics subclonal expansion parallel evolution metastatic seeding therapy-induced selection",
+          "status": "ok",
+          "total_results": 3,
+          "providers": [
+            {
+              "provider": "semantic_scholar",
+              "status": "rate_limited_skipped",
+              "result_count": 0,
+              "top_titles": [],
+              "error": "Semantic Scholar circuit open; retry_after_seconds=18.3",
+              "rate_limited": true
+            },
+            {
+              "provider": "arxiv",
+              "status": "ok",
+              "result_count": 3,
+              "top_titles": [
+                "COSINE: A Web Server for Clonal and Subclonal Structure Inference and Evolution in Cancer Genomics",
+                "Immune cells interactions in the tumor microenvironment",
+                "Fixation probability of rare nonmutator and evolution of mutation rates"
+              ],
+              "error": ""
+            }
+          ]
+        },
+        {
+          "query": "hepatocellular carcinoma formation mechanism liver cancer cell variation genomic alteration clonal evolution tumor microenvironment immune escape single-cell multi-omics malignant hepatocyte states transdifferentiation stromal crosstalk multi-modal integration",
+          "status": "ok",
+          "total_results": 3,
+          "providers": [
+            {
+              "provider": "semantic_scholar",
+              "status": "rate_limited_skipped",
+              "result_count": 0,
+              "top_titles": [],
+              "error": "Semantic Scholar circuit open; retry_after_seconds=14.2",
+              "rate_limited": true
+            },
+            {
+              "provider": "arxiv",
+              "status": "ok",
+              "result_count": 3,
+              "top_titles": [
+                "Immune cells interactions in the tumor microenvironment",
+                "CellPhoneDB v5: inferring cell-cell communication from single-cell multiomics data",
+                "Understanding genomic alterations in cancer genomes using an integrative network approach"
+              ],
+              "error": ""
+            }
+          ]
+        },
+        {
+          "query": "hepatocellular carcinoma formation mechanism liver cancer cell variation genomic alteration clonal evolution tumor microenvironment immune escape single-cell multi-omics pd-1/pd-l1 axis antigen presentation defect nk cell dysfunction immunosuppressive cytokines",
+          "status": "ok",
+          "total_results": 3,
+          "providers": [
+            {
+              "provider": "semantic_scholar",
+              "status": "rate_limited_skipped",
+              "result_count": 0,
+              "top_titles": [],
+              "error": "Semantic Scholar circuit open; retry_after_seconds=10.1",
+              "rate_limited": true
+            },
+            {
+              "provider": "arxiv",
+              "status": "ok",
+              "result_count": 3,
+              "top_titles": [
+                "CellPhoneDB v5: inferring cell-cell communication from single-cell multiomics data",
+                "Tumor-associated CD19$^+$ macrophages induce immunosuppressive microenvironment in hepatocellular carcinoma",
+                "Immune cells interactions in the tumor microenvironment"
+              ],
+              "error": ""
+            }
+          ]
+        }
+      ],
+      "coverage_warning": true,
+      "needs_user_branch_confirmation": true
+    },
+    "user_interaction": {
+      "needed": true,
+      "type": "research_branch_confirmation",
+      "question": "Some major sub-branches appear missing from the current retrieval. Which should be prioritized for a supplemental search before treating gaps as real?",
+      "options": [
+        {
+          "label": "Genomic drivers of hepatocarcinogenesis",
+          "suggested_query": "hepatocellular carcinoma formation mechanism liver cancer cell variation genomic alteration clonal evolution tumor microenvironment immune escape single-cell multi-omics tp53 mutation tert promoter mutation ctnnb1 activation chromosomal instability",
+          "live_evidence_count": 3,
+          "false_negative_risk": true
+        },
+        {
+          "label": "Clonal dynamics in HCC progression",
+          "suggested_query": "hepatocellular carcinoma formation mechanism liver cancer cell variation genomic alteration clonal evolution tumor microenvironment immune escape single-cell multi-omics subclonal expansion parallel evolution metastatic seeding therapy-induced selection",
+          "live_evidence_count": 3,
+          "false_negative_risk": true
+        },
+        {
+          "label": "Single-cell resolution of HCC cellular ecosystems",
+          "suggested_query": "hepatocellular carcinoma formation mechanism liver cancer cell variation genomic alteration clonal evolution tumor microenvironment immune escape single-cell multi-omics malignant hepatocyte states transdifferentiation stromal crosstalk multi-modal integration",
+          "live_evidence_count": 3,
+          "false_negative_risk": true
+        },
+        {
+          "label": "Immune-tumor interface in liver cancer",
+          "suggested_query": "hepatocellular carcinoma formation mechanism liver cancer cell variation genomic alteration clonal evolution tumor microenvironment immune escape single-cell multi-omics pd-1/pd-l1 axis antigen presentation defect nk cell dysfunction immunosuppressive cytokines",
+          "live_evidence_count": 3,
+          "false_negative_risk": true
+        }
+      ],
+      "default_action": "Run supplemental stratified search for options with false_negative_risk=true, or ask the user to pick 2-3 priority branches.",
+      "continue_with": "Pass selected option labels or custom branch keywords as focus_branches to run_zhizhi_literature_analysis/search_papers_stratified."
+    },
+    "select_literature_result": {
+      "result_index": 11,
+      "stratified_layer": "L4_regular",
+      "stratified_label": "regular journal / supplemental evidence",
+      "query_branch": "primary",
+      "retrieval_query": "hepatocellular carcinoma formation mechanism liver cancer cell variation genomic alteration clonal evolution tumor microenvironment immune escape single-cell multi-omics",
+      "_why_selected": "Selected as regular supplemental paper: Physics-based tissue simulator to model multicellular systems: A study of liver regeneration and hepatocellular carcinom...[truncated]; year=2022; venue=arxiv; quality=0.48; relevance=0.1306.",
+      "domain_relevance": {
+        "profile": "hepatocellular_carcinoma_formation_mechanisms_and_liver_cancer_cell_variation_me",
+        "score": 0.4187,
+        "query_hits": [
+          "hepatocellular",
+          "carcinoma",
+          "liver",
+          "cancer",
+          "cell",
+          "evolution",
+          "tumor",
+          "microenvironment"
+        ],
+        "anchor_hits": [
+          "hepatocellular",
+          "carcinoma",
+          "liver",
+          "cancer",
+          "cell"
+        ],
+        "topic_hits": [],
+        "noise_hits": [],
+        "flags": [],
+        "is_preprint": true,
+        "verdict": "keep",
+        "requires_human_review": false
+      },
+      "relevance_score": 0.1351,
+      "relevance_components": {
+        "text_score": 0.2844,
+        "recency_score": 0.7,
+        "impact_score": 0.0,
+        "citation_field": "biomedical",
+        "citation_baseline": 1500.0,
+        "venue_score": 0.35,
+        "publication_quality_score": 0.48,
+        "base_score": 0.2814,
+        "text_weight": 0.62,
+        "recency_weight": 0.1,
+        "impact_weight": 0.18,
+        "venue_weight": 0.1
+      },
+      "publication_quality_score": 0.48,
+      "venue_quality": "missing",
+      "journal_quartile": "",
+      "journal_metric_source": "",
+      "inferred_field": "biomedical",
+      "quality_flags": [
+        "missing_venue",
+        "zero_citations_mature_paper"
+      ],
+      "quality_criteria": [
+        "venue metadata is missing",
+        "paper is older than 2 years and has zero Semantic Scholar citations"
+      ],
+      "suspicion_type": "",
+      "is_review_like": false,
+      "pyramid_root_score": 0.2311,
+      "matched_query_terms": [
+        "hepatocellular",
+        "carcinoma",
+        "liver",
+        "cell",
+        "cancer",
+        "evolution",
+        "tumor",
+        "microenvironment"
+      ],
+      "title": "Physics-based tissue simulator to model multicellular systems: A study of liver regeneration and hepatocellular carcinoma recurrence",
+      "citation": "Luciana Melina Luque et al. (2022) Physics-based tissue simulator to model multicellular systems: A study of liver regeneration and hepatocellular carcinoma recurrence arXiv:2202.03512v2",
+      "provider": "arxiv",
+      "year": "2022",
+      "citation_count": null,
+      "influential_citation_count": null,
+      "doi": "",
+      "arxiv_id": "2202.03512v2",
+      "url": "http://arxiv.org/abs/2202.03512v2",
+      "relevance_reason": "title=4/18, abstract=8/18, citation=4/18, phrase_bonus=0.0, recency=0.7, impact=0.0, venue=0.35, quality=0.48",
+      "quality_reason": "venue metadata is missing; paper is older than 2 years and has zero Semantic Scholar citations"
+    },
+    "imported_records": 6,
+    "post_retrieval_subspace_coverage": {
+      "total_selected_subspaces": 4,
+      "sufficient": 2,
+      "insufficient": 2,
+      "coverage": [
+        {
+          "subspace": "hbvhcv integration and chronic inflammation",
+          "branch": "hbvhcv_integration_and_chronic_inflammation",
+          "target": 2,
+          "actual": 0,
+          "status": "missing",
+          "terms": [
+            "hbvhcv",
+            "integration",
+            "chronic",
+            "inflammation"
+          ],
+          "matched_papers": [],
+          "suggested_query": "hbvhcv integration and chronic inflammation",
+          "custom": true
+        },
+        {
+          "subspace": "clonal evolution and therapy resistance",
+          "branch": "clonal_evolution_and_therapy_resistance",
+          "target": 2,
+          "actual": 3,
+          "status": "sufficient",
+          "terms": [
+            "clonal",
+            "evolution",
+            "therapy",
+            "resistance"
+          ],
+          "matched_papers": [
+            {
+              "paper_id": "paper_1783334864589172900",
+              "title": "Single-Cell Landscape of Liver Cancer in Response to Immunotherapy",
+              "citation": "Fei-Yu Diao (2021) Single-Cell Landscape of Liver Cancer in Response to Immunotherapy doi:10.4103/apjon.apjon-2165",
+              "method": "clinical study design",
+              "scenario": "cancer diagnosis and therapy"
+            },
+            {
+              "paper_id": "paper_1783334897992966000",
+              "title": "Artificial Intelligence in Cancer Research: Pioneering Biomarker Discovery for Pharmacological Advances",
+              "citation": "Dipti Bhattacharya et al. (2025) Artificial Intelligence in Cancer Research: Pioneering Biomarker Discovery for Pharmaco...[truncated]",
+              "method": "omics profiling",
+              "scenario": "cancer research, biomarker discovery, pharmacological specificity, therapeutic efficiency"
+            },
+            {
+              "paper_id": "paper_1783334956006068100",
+              "title": "Immune cells interactions in the tumor microenvironment",
+              "citation": "Mobina Tousian et al. (2024) Immune cells interactions in the tumor microenvironment arXiv:2405.18452v1",
+              "method": "agent-based model",
+              "scenario": "tumor immune microenvironment"
+            }
+          ],
+          "suggested_query": "clonal evolution and therapy resistance",
+          "custom": true
+        },
+        {
+          "subspace": "tumor microenvironment and immune escape",
+          "branch": "tumor_microenvironment_and_immune_escape",
+          "target": 2,
+          "actual": 4,
+          "status": "sufficient",
+          "terms": [
+            "tumor",
+            "microenvironment",
+            "immune",
+            "escape"
+          ],
+          "matched_papers": [
+            {
+              "paper_id": "paper_1783334864589172900",
+              "title": "Single-Cell Landscape of Liver Cancer in Response to Immunotherapy",
+              "citation": "Fei-Yu Diao (2021) Single-Cell Landscape of Liver Cancer in Response to Immunotherapy doi:10.4103/apjon.apjon-2165",
+              "method": "clinical study design",
+              "scenario": "cancer diagnosis and therapy"
+            },
+            {
+              "paper_id": "paper_1783334897992966000",
+              "title": "Artificial Intelligence in Cancer Research: Pioneering Biomarker Discovery for Pharmacological Advances",
+              "citation": "Dipti Bhattacharya et al. (2025) Artificial Intelligence in Cancer Research: Pioneering Biomarker Discovery for Pharmaco...[truncated]",
+              "method": "omics profiling",
+              "scenario": "cancer research, biomarker discovery, pharmacological specificity, therapeutic efficiency"
+            },
+            {
+              "paper_id": "paper_1783334926483211500",
+              "title": "Tumor-associated CD19$^+$ macrophages induce immunosuppressive microenvironment in hepatocellular carcinoma",
+              "citation": "Junli Wang et al. (2025) Tumor-associated CD19$^+$ macrophages induce immunosuppressive microenvironment in hepatocellul...[truncated]",
+              "method": "anti-cd19 chimeric antigen receptor t",
+              "scenario": "hepatocellular carcinoma | tumor-associated macrophage subpopulations | immunosuppressive tumor microenvironment"
+            },
+            {
+              "paper_id": "paper_1783334956006068100",
+              "title": "Immune cells interactions in the tumor microenvironment",
+              "citation": "Mobina Tousian et al. (2024) Immune cells interactions in the tumor microenvironment arXiv:2405.18452v1",
+              "method": "agent-based model",
+              "scenario": "tumor immune microenvironment"
+            }
+          ],
+          "suggested_query": "tumor microenvironment and immune escape",
+          "custom": true
+        },
+        {
+          "subspace": "genomic and epigenomic alterations",
+          "branch": "genomic_and_epigenomic_alterations",
+          "target": 2,
+          "actual": 1,
+          "status": "insufficient",
+          "terms": [
+            "genomic",
+            "epigenomic",
+            "alterations"
+          ],
+          "matched_papers": [
+            {
+              "paper_id": "paper_1783334864589172900",
+              "title": "Single-Cell Landscape of Liver Cancer in Response to Immunotherapy",
+              "citation": "Fei-Yu Diao (2021) Single-Cell Landscape of Liver Cancer in Response to Immunotherapy doi:10.4103/apjon.apjon-2165",
+              "method": "clinical study design",
+              "scenario": "cancer diagnosis and therapy"
+            }
+          ],
+          "suggested_query": "genomic and epigenomic alterations",
+          "custom": true
+        }
+      ],
+      "needs_second_alignment": true,
+      "user_interaction": {
+        "needed": true,
+        "type": "post_retrieval_subspace_alignment",
+        "question": "Some selected subspaces are missing or under-covered after import. Should ZhiZhi run supplemental searches before TanXi treats gaps as real?",
+        "options": [
+          {
+            "label": "hbvhcv integration and chronic inflammation",
+            "status": "missing",
+            "target": 2,
+            "actual": 0,
+            "suggested_query": "hbvhcv integration and chronic inflammation"
+          },
+          {
+            "label": "genomic and epigenomic alterations",
+            "status": "insufficient",
+            "target": 2,
+            "actual": 1,
+            "suggested_query": "genomic and epigenomic alterations"
+          }
+        ],
+        "actions": [
+          "supplemental_search_selected_subspaces",
+          "adjust_query_terms",
+          "continue_without_supplement"
+        ],
+        "continue_with": "Rerun run_zhizhi_literature_analysis with focus_branches set to the suggested_query values for missing subspaces."
+      }
+    },
+    "post_retrieval_user_interaction": {
+      "needed": true,
+      "type": "post_retrieval_subspace_alignment",
+      "question": "Some selected subspaces are missing or under-covered after import. Should ZhiZhi run supplemental searches before TanXi treats gaps as real?",
+      "options": [
+        {
+          "label": "hbvhcv integration and chronic inflammation",
+          "status": "missing",
+          "target": 2,
+          "actual": 0,
+          "suggested_query": "hbvhcv integration and chronic inflammation"
+        },
+        {
+          "label": "genomic and epigenomic alterations",
+          "status": "insufficient",
+          "target": 2,
+          "actual": 1,
+          "suggested_query": "genomic and epigenomic alterations"
+        }
+      ],
+      "actions": [
+        "supplemental_search_selected_subspaces",
+        "adjust_query_terms",
+        "continue_without_supplement"
+      ],
+      "continue_with": "Rerun run_zhizhi_literature_analysis with focus_branches set to the suggested_query values for missing subspaces."
+    },
+    "expand_literature_graph": {
+      "graph_search_id": "graph_1783335016633431600",
+      "total_results": 11,
+      "fallback_used": false,
+      "depth": 1
+    },
+    "build_literature_relation_graph": {
+      "relation_graph_id": "relgraph_1783335023548958000",
+      "cluster_count": 8,
+      "edge_summary": {
+        "total_edges": 11,
+        "citation_graph_edges": 11,
+        "artificial_edges": 0,
+        "by_relation": {
+          "citation": 5,
+          "reference": 6
+        },
+        "by_depth": {
+          "1": 11
+        },
+        "fallback_weight_policy": "keyword_fallback/search_result edges are artificial and use very low PageRank weight."
+      },
+      "analysis_confidence": 1.0
+    }
+  },
+  "observation": [
+    "Potential retrieval blind spot: Genomic drivers of hepatocarcinogenesis was not represented in retrieved/imported candidates; suggested query: hepatocellular carcinoma formation mechanism liver cancer cell variation genomic alteration clonal evolution tumor microenvironment immune escape single-cell multi-omics tp53 mutation tert promoter mutation ctnnb1 activation chromosomal instability; live_probe_results=3",
+    "Potential retrieval blind spot: Clonal dynamics in HCC progression was not represented in retrieved/imported candidates; suggested query: hepatocellular carcinoma formation mechanism liver cancer cell variation genomic alteration clonal evolution tumor microenvironment immune escape single-cell multi-omics subclonal expansion parallel evolution metastatic seeding therapy-induced selection; live_probe_results=3",
+    "Potential retrieval blind spot: Single-cell resolution of HCC cellular ecosystems was not represented in retrieved/imported candidates; suggested query: hepatocellular carcinoma formation mechanism liver cancer cell variation genomic alteration clonal evolution tumor microenvironment immune escape single-cell multi-omics malignant hepatocyte states transdifferentiation stromal crosstalk multi-modal integration; live_probe_results=3",
+    "Potential retrieval blind spot: Immune-tumor interface in liver cancer was not represented in retrieved/imported candidates; suggested query: hepatocellular carcinoma formation mechanism liver cancer cell variation genomic alteration clonal evolution tumor microenvironment immune escape single-cell multi-omics pd-1/pd-l1 axis antigen presentation defect nk cell dysfunction immunosuppressive cytokines; live_probe_results=3",
+    "Selected subspace under-covered after import: hbvhcv integration and chronic inflammation actual=0/target=2; suggested_query=hbvhcv integration and chronic inflammation",
+    "Selected subspace under-covered after import: genomic and epigenomic alterations actual=1/target=2; suggested_query=genomic and epigenomic alterations"
+  ],
+  "knowledge_map_summary": {
+    "main_methods": [
+      "agent-based model",
+      "clinical study design",
+      "intra- and inter-omics contrastive learning",
+      "omics profiling",
+      "pax5 functional analysis"
+    ],
+    "method_scenario_coverage": {
+      "clinical study design": [
+        "cancer diagnosis and therapy"
+      ],
+      "omics profiling": [
+        "cancer research, biomarker discovery, pharmacological specificity, therapeutic efficiency",
+        "single-cell multi-omics integration"
+      ],
+      "pax5 functional analysis": [
+        "hepatocellular carcinoma | tumor-associated macrophage heterogeneity | immunosuppressive tumor microenvironment"
+      ],
+      "agent-based model": [
+        "tumor immune microenvironment"
+      ],
+      "intra- and inter-omics contrastive learning": [
+        "single-cell multi-omics data integration"
+      ]
+    },
+    "method_scenario_benchmark_triples": [
+      {
+        "method": "clinical study design",
+        "scenario": "cancer diagnosis and therapy",
+        "benchmark": "survival outcome",
+        "references": [
+          "Fei-Yu Diao (2021) Single-Cell Landscape of Liver Cancer in Response to Immunotherapy doi:10.4103/apjon.apjon-2165"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "clinical study design",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "Title: Single-Cell Landscape of Liver Cancer in Response to Immunotherapy Venue: Asia-Pacific Journal of Oncology Nursing Year: 2021 Citation: Fei-Yu Diao (2021) Single-Cell Landscape of Liver Cancer in Response to Immunotherapy doi:10.4103/apjon.apjon-2165 Abstract: Primary liver cancer is the sixt...[truncated]",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "However, the underlying mechanisms that regulate tumor cell evolution are still unknown.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "Full text excerpt:",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "This may be caused by genomic complexity and the presence of multiple etiological factors.",
+            "support": "source_sentence"
+          }
+        ]
+      },
+      {
+        "method": "omics profiling",
+        "scenario": "cancer research, biomarker discovery, pharmacological specificity, therapeutic efficiency",
+        "benchmark": "classification performance",
+        "references": [
+          "Dipti Bhattacharya et al. (2025) Artificial Intelligence in Cancer Research: Pioneering Biomarker Discovery for Pharmacological Advances doi:10.47583/ijpsrr.2025.v85i5.008"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "omics profiling",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "AI-aided biomarker discovery bridges molecular understanding with clinical application to propel precision pharmacology",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "Challenges in standardizing data, model interpretation, and ethical implementation; algorithmic bias and restricted diversity in training datasets risk exacerbating healthcare disparities",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "Full text excerpt:",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "By merging multi-omics information (genomic, proteomic, transcriptomic) with real-world evidence and clinical records, AI-based algorithms - deep neural networks and ensemble learning models - unveil intricate patterns for anticipating tumor behaviour, drug response, and resistance mechanisms.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "For instance, AI has determined biomarkers such as FCN3 and CLEC1B in hepatocellular carcinoma with 93 – 98% diagnostic accuracy, whereas recurrent neural networks (RNNs) have mapped angiogenesis-related therapeutic targets in pan-cancer research.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "Significant progress is AI-assisted histopathological image analysis to predict molecular phenotypes and immune checkpoint expression, reducing diagnostic variation by 30 – 40% in validation experiments.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "Studies indicate that AI-curated biomarker sets improve detection rates in the early stages by 2% in high-mortality cancers (such as ovarian, pancreatic) and predict responses to immunotherapies with AUC-ROC of up to 0.92.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "Algorithmic bias and restricted diversity in training datasets, however, risk exacerbating healthcare disparities, rendering federated learning and sound validation frameworks critical.",
+            "support": "source_sentence"
+          }
+        ]
+      },
+      {
+        "method": "pax5 functional analysis",
+        "scenario": "hepatocellular carcinoma | tumor-associated macrophage heterogeneity | immunosuppressive tumor microenvironment",
+        "benchmark": "that targeting this population enhances immunotherapy response",
+        "references": [
+          "Junli Wang et al. (2025) Tumor-associated CD19$^+$ macrophages induce immunosuppressive microenvironment in hepatocellular carcinoma arXiv:2503.17738v1"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "pax5 functional analysis",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "Identification of a CD19$^+$ macrophage subpopulation driving immunosuppression in HCC via PAX5-mediated mitochondrial biogenesis, lysosomal deficiency, and accumulation of PD-L1/CD73; demonstration that targeting this population enhances immunotherapy response.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "Abstract: Tumor-associated macrophages are a key component that contributes to the immunosuppressive microenvironment in human cancers. However, therapeutic targeting of macrophages has been a challenge in clinic due to the limited understanding of their heterogeneous subpopulations and distinct fun...[truncated]",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "Full text excerpt:",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "Inhibiting CD73 or mitochondrial oxidation enhanced the efficacy of immune checkpoint blockade therapy in treating HCC, suggesting great promise for CD19$^+$ macrophage-targeting therapeutics.",
+            "support": "source_sentence"
+          }
+        ]
+      },
+      {
+        "method": "agent-based model",
+        "scenario": "tumor immune microenvironment",
+        "benchmark": "tumor proliferation",
+        "references": [
+          "Mobina Tousian et al. (2024) Immune cells interactions in the tumor microenvironment arXiv:2405.18452v1"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "agent-based model",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "Macrophage modulation significantly impacts tumor proliferation; suggests therapeutic strategies targeting macrophages.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "No explicit limitation extracted.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "Full text excerpt:",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "The results highlight the significant impact of macrophage modulation on tumor proliferation and suggest potential therapeutic strategies targeting these immune cells.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "Full text excerpt: Macrophage modulation significantly impacts tumor proliferation; suggests therapeutic strategies targeting macrophages.",
+            "support": "source_sentence"
+          }
+        ]
+      },
+      {
+        "method": "omics profiling",
+        "scenario": "single-cell multi-omics integration",
+        "benchmark": "and improving cross-omics alignment and downstream task performance",
+        "references": [
+          "Zhen Yuan et al. (2025) scMamba: A Scalable Foundation Model for Single-Cell Multi-Omics Integration Beyond Highly Variable Feature Selection arXiv:2506.20697v1"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "omics profiling",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "A scalable foundation model for single-cell multi-omics integration that eliminates reliance on highly variable feature selection while preserving genomic positional information and improving cross-omics alignment and downstream task performance.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "Abstract: The advent of single-cell multi-omics technologies has enabled the simultaneous profiling of diverse omics layers within individual cells. Integrating such multimodal data provides unprecedented insights into cellular identity, regulatory processes, and disease mechanisms. However, it rema...[truncated]",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "Full text excerpt:",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "However, it remains challenging, as current methods often rely on selecting highly variable genes or peaks during preprocessing, which may inadvertently discard crucial biological information.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "Additionally, our novel contrastive learning approach, enhanced with cosine similarity regularization, enables superior alignment across omics layers compared to traditional methods.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "Systematic benchmarking across multiple datasets demonstrates that scMamba significantly outperforms state-of-the-art methods in preserving biological variation, aligning omics layers, and enhancing key downstream tasks such as clustering, cell type annotation, and trajectory inference.",
+            "support": "source_sentence"
+          }
+        ]
+      },
+      {
+        "method": "intra- and inter-omics contrastive learning",
+        "scenario": "single-cell multi-omics data integration",
+        "benchmark": "cross-omics relationship characterization and superior performance",
+        "references": [
+          "Wuchao Liu et al. (2025) scI2CL: Effectively Integrating Single-cell Multi-omics by Intra- and Inter-omics Contrastive Learning arXiv:2508.18304v1"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "intra- and inter-omics contrastive learning",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "scI2CL learns comprehensive and discriminative cellular representations from complementary multi-omics data via intra- and inter-omics contrastive learning, enabling accurate cross-omics relationship characterization and superior performance across multiple downstream tasks.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "Abstract: Single-cell multi-omics data contain huge information of cellular states, and analyzing these data can reveal valuable insights into cellular heterogeneity, diseases, and biological processes. However, as cell differentiation \\& development is a continuous and dynamic process, it remains c...[truncated]",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "Full text excerpt:",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "This paper presents scI2CL, a new single-cell multi-omics fusion framework based on intra- and inter-omics contrastive learning, to learn comprehensive and discriminative cellular representations from complementary multi-omics data for various downstream tasks.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "Extensive experiments of four downstream tasks validate the effectiveness of scI2CL and its superiority over existing peers.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "Concretely, in cell clustering, scI2CL surpasses eight state-of-the-art methods on four widely-used real-world datasets.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "In cell subtyping, scI2CL effectively distinguishes three latent monocyte cell subpopulations, which are not discovered by existing methods.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "Simultaneously, scI2CL is the only method that correctly constructs the cell developmental trajectory from hematopoietic stem and progenitor cells to Memory B cells.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "In addition, scI2CL resolves the misclassification of cell types between two subpopulations of CD4+ T cells, while existing methods fail to precisely distinguish the mixed cells.",
+            "support": "source_sentence"
+          }
+        ]
+      },
+      {
+        "method": "clinical study design",
+        "scenario": "cancer diagnosis and therapy",
+        "benchmark": "survival outcome",
+        "references": [
+          "Fei-Yu Diao (2021) Single-Cell Landscape of Liver Cancer in Response to Immunotherapy doi:10.4103/apjon.apjon-2165"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "clinical study design",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "Title: Single-Cell Landscape of Liver Cancer in Response to Immunotherapy Venue: Asia-Pacific Journal of Oncology Nursing Year: 2021 Citation: Fei-Yu Diao (2021) Single-Cell Landscape of Liver Cancer in Response to Immunotherapy doi:10.4103/apjon.apjon-2165 Abstract: Primary liver cancer is the sixt...[truncated]",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "However, the underlying mechanisms that regulate tumor cell evolution are still unknown.",
+            "support": "structured_field"
+          }
+        ]
+      },
+      {
+        "method": "omics profiling",
+        "scenario": "cancer research, biomarker discovery, pharmacological specificity, therapeutic efficiency",
+        "benchmark": "classification performance",
+        "references": [
+          "Dipti Bhattacharya et al. (2025) Artificial Intelligence in Cancer Research: Pioneering Biomarker Discovery for Pharmacological Advances doi:10.47583/ijpsrr.2025.v85i5.008"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "omics profiling",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "AI-aided biomarker discovery bridges molecular understanding with clinical application to propel precision pharmacology",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "Challenges in standardizing data, model interpretation, and ethical implementation; algorithmic bias and restricted diversity in training datasets risk exacerbating healthcare disparities",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "AI-aided biomarker discovery bridges molecular understanding with clinical application to propel precision pharmacology Challenges in standardizing data, model interpretation, and ethical implementation; algorithmic bias and restricted diversity in training datasets risk exacerbating healthcare disp...[truncated]",
+            "support": "source_sentence"
+          }
+        ]
+      },
+      {
+        "method": "pax5 functional analysis",
+        "scenario": "hepatocellular carcinoma | tumor-associated macrophage heterogeneity | immunosuppressive tumor microenvironment",
+        "benchmark": "that targeting this population enhances immunotherapy response",
+        "references": [
+          "Junli Wang et al. (2025) Tumor-associated CD19$^+$ macrophages induce immunosuppressive microenvironment in hepatocellular carcinoma arXiv:2503.17738v1"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "pax5 functional analysis",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "Identification of a CD19$^+$ macrophage subpopulation driving immunosuppression in HCC via PAX5-mediated mitochondrial biogenesis, lysosomal deficiency, and accumulation of PD-L1/CD73; demonstration that targeting this population enhances immunotherapy response.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "Abstract: Tumor-associated macrophages are a key component that contributes to the immunosuppressive microenvironment in human cancers. However, therapeutic targeting of macrophages has been a challenge in clinic due to the limited understanding of their heterogeneous subpopulations and distinct fun...[truncated]",
+            "support": "structured_field"
+          }
+        ]
+      },
+      {
+        "method": "agent-based model",
+        "scenario": "tumor immune microenvironment",
+        "benchmark": "tumor proliferation",
+        "references": [
+          "Mobina Tousian et al. (2024) Immune cells interactions in the tumor microenvironment arXiv:2405.18452v1"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "agent-based model",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "Macrophage modulation significantly impacts tumor proliferation; suggests therapeutic strategies targeting macrophages.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "No explicit limitation extracted.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "Macrophage modulation significantly impacts tumor proliferation; suggests therapeutic strategies targeting macrophages.",
+            "support": "source_sentence"
+          }
+        ]
+      },
+      {
+        "method": "omics profiling",
+        "scenario": "single-cell multi-omics integration",
+        "benchmark": "and improving cross-omics alignment and downstream task performance",
+        "references": [
+          "Zhen Yuan et al. (2025) scMamba: A Scalable Foundation Model for Single-Cell Multi-Omics Integration Beyond Highly Variable Feature Selection arXiv:2506.20697v1"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "omics profiling",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "A scalable foundation model for single-cell multi-omics integration that eliminates reliance on highly variable feature selection while preserving genomic positional information and improving cross-omics alignment and downstream task performance.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "Abstract: The advent of single-cell multi-omics technologies has enabled the simultaneous profiling of diverse omics layers within individual cells. Integrating such multimodal data provides unprecedented insights into cellular identity, regulatory processes, and disease mechanisms. However, it rema...[truncated]",
+            "support": "structured_field"
+          }
+        ]
+      },
+      {
+        "method": "intra- and inter-omics contrastive learning",
+        "scenario": "single-cell multi-omics data integration",
+        "benchmark": "cross-omics relationship characterization and superior performance",
+        "references": [
+          "Wuchao Liu et al. (2025) scI2CL: Effectively Integrating Single-cell Multi-omics by Intra- and Inter-omics Contrastive Learning arXiv:2508.18304v1"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "intra- and inter-omics contrastive learning",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "scI2CL learns comprehensive and discriminative cellular representations from complementary multi-omics data via intra- and inter-omics contrastive learning, enabling accurate cross-omics relationship characterization and superior performance across multiple downstream tasks.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "Abstract: Single-cell multi-omics data contain huge information of cellular states, and analyzing these data can reveal valuable insights into cellular heterogeneity, diseases, and biological processes. However, as cell differentiation \\& development is a continuous and dynamic process, it remains c...[truncated]",
+            "support": "structured_field"
+          }
+        ]
+      }
+    ],
+    "claim_type_counts": {
+      "methodological_description": 22,
+      "empirical_result": 17,
+      "author_opinion": 16,
+      "theoretical_claim": 7
+    }
+  },
+  "knowledge_gaps": [
+    {
+      "gap_id": "gap_1783335033662874200",
+      "gap_type": "combinatorial",
+      "description": "Method 'agent-based model' has no recorded validation in scenario 'cancer diagnosis and therapy' in the current PaperGraph map.",
+      "supporting_references": [
+        "Fei-Yu Diao (2021) Single-Cell Landscape of Liver Cancer in Response to Immunotherapy doi:10.4103/apjon.apjon-2165",
+        "Mobina Tousian et al. (2024) Immune cells interactions in the tumor microenvironment arXiv:2405.18452v1"
+      ],
+      "novelty_score": 5,
+      "application_value": "medium",
+      "feasibility": "high",
+      "suggested_research_path": "Run a targeted validation study with explicit benchmarks, baselines, and failure-mode analysis.",
+      "value_argument": "The combination may expose method-scenario boundary conditions rather than simply adding another benchmark.",
+      "overlap_risk": "low",
+      "requires_human_review": false
+    },
+    {
+      "gap_id": "gap_1783335033668128600",
+      "gap_type": "combinatorial",
+      "description": "Method 'agent-based model' has no recorded validation in scenario 'cancer research, biomarker discovery, pharmacological specificity, therapeutic efficiency' in the current PaperGraph map.",
+      "supporting_references": [
+        "Dipti Bhattacharya et al. (2025) Artificial Intelligence in Cancer Research: Pioneering Biomarker Discovery for Pharmacological Advances doi:10.47583/ijpsrr.2025.v85i5.008",
+        "Mobina Tousian et al. (2024) Immune cells interactions in the tumor microenvironment arXiv:2405.18452v1"
+      ],
+      "novelty_score": 4,
+      "application_value": "high",
+      "feasibility": "high",
+      "suggested_research_path": "Run a targeted validation study with explicit benchmarks, baselines, and failure-mode analysis.",
+      "value_argument": "The combination may expose method-scenario boundary conditions rather than simply adding another benchmark.",
+      "overlap_risk": "medium",
+      "requires_human_review": false
+    }
+  ],
+  "self_reflection": {
+    "top_venue_coverage_checked": true,
+    "pseudo_gap_risk_checked": true,
+    "method_categories_require_literature_support": true,
+    "unsupported_claims_marked_for_review": true
+  }
+}

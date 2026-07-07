@@ -1,0 +1,535 @@
+{
+  "thought": "ZhiZhi retrieved and filtered literature, imported grounded PaperGraph evidence, built a benchmark-aware knowledge map, expanded citation context when available, and generated gaps with novelty/value/feasibility checks.",
+  "action": {
+    "agent": "zhizhi",
+    "query": "black hole formation mechanisms stellar collapse direct collapse mass gap supermassive black hole seed formation observational constraints",
+    "domain": "black hole formation astrophysics",
+    "years": "last 15 years",
+    "search_papers": {
+      "search_id": "search_1783090930525048200",
+      "total_results": 12,
+      "providers": [
+        "semantic_scholar",
+        "arxiv"
+      ],
+      "errors": [
+        {
+          "provider": "arxiv",
+          "query": "black hole formation mechanisms stellar collapse direct collapse mass gap supermassive black hole seed formation observational constraints",
+          "status": "error",
+          "error": "The read operation timed out",
+          "results": [],
+          "next_step": "Network/API failed. Retry later, configure API keys, or use manual import_literature_text."
+        }
+      ]
+    },
+    "select_literature_result": {
+      "result_index": 0,
+      "relevance_score": 0.4891,
+      "relevance_components": {
+        "text_score": 0.5815,
+        "recency_score": 0.85,
+        "impact_score": 0.6714,
+        "citation_field": "general",
+        "citation_baseline": 800.0,
+        "venue_score": 0.45,
+        "publication_quality_score": 0.8,
+        "base_score": 0.6114,
+        "text_weight": 0.62,
+        "recency_weight": 0.1,
+        "impact_weight": 0.18,
+        "venue_weight": 0.1
+      },
+      "publication_quality_score": 0.8,
+      "venue_quality": "unverified",
+      "journal_quartile": "",
+      "journal_metric_source": "",
+      "inferred_field": "general",
+      "quality_flags": [
+        "unverified_venue",
+        "well_cited"
+      ],
+      "quality_criteria": [
+        "venue did not match suspicious, reputable, preprint, or curated quartile tables",
+        "citation count exceeds medium/high threshold"
+      ],
+      "suspicion_type": "",
+      "matched_query_terms": [
+        "black",
+        "hole",
+        "formation",
+        "collapse",
+        "direct",
+        "mass",
+        "seed",
+        "stellar",
+        "supermassive"
+      ],
+      "title": "First Detection of an Overmassive Black Hole Galaxy UHZ1: Evidence for Heavy Black Hole Seed Formation from Direct Collapse",
+      "citation": "Priyamvada Natarajan et al. (2023) First Detection of an Overmassive Black Hole Galaxy UHZ1: Evidence for Heavy Black Hole Seed Formation from Direct Collapse doi:10.3847/2041-8213/ad0e76",
+      "provider": "semantic_scholar",
+      "year": "2023",
+      "citation_count": 88,
+      "influential_citation_count": 1,
+      "doi": "10.3847/2041-8213/ad0e76",
+      "arxiv_id": "",
+      "url": "https://www.semanticscholar.org/paper/cdcec4262646a52389a18f98654539f641685356",
+      "relevance_reason": "title=7/13, abstract=9/13, citation=7/13, phrase_bonus=0.0, recency=0.85, impact=0.6714, venue=0.45, quality=0.8",
+      "quality_reason": "venue did not match suspicious, reputable, preprint, or curated quartile tables; citation count exceeds medium/high threshold"
+    },
+    "imported_records": 4,
+    "expand_literature_graph": {
+      "graph_search_id": "graph_1783091067575412600",
+      "total_results": 24,
+      "fallback_used": false,
+      "depth": 2
+    },
+    "build_literature_relation_graph": {
+      "relation_graph_id": "relgraph_1783091074202010000",
+      "cluster_count": 8,
+      "edge_summary": {
+        "total_edges": 24,
+        "citation_graph_edges": 24,
+        "artificial_edges": 0,
+        "by_relation": {
+          "citation": 5,
+          "reference": 5,
+          "second_layer_citation": 8,
+          "second_layer_reference": 6
+        },
+        "by_depth": {
+          "1": 10,
+          "2": 14
+        },
+        "fallback_weight_policy": "keyword_fallback/search_result edges are artificial and use very low PageRank weight."
+      },
+      "analysis_confidence": 1.0
+    }
+  },
+  "observation": [],
+  "knowledge_map_summary": {
+    "main_methods": [
+      "X-ray observation",
+      "gravitational-wave detection",
+      "multiwavelength observational analysis (Chandra X-ray + JWST NIRCam/NIRSpec)",
+      "neutrino-driven core-collapse supernova simulations"
+    ],
+    "method_scenario_coverage": {
+      "multiwavelength observational analysis (Chandra X-ray + JWST NIRCam/NIRSpec)": [
+        "high-redshift galaxy (z ≈ 10.1) / early Universe black hole seed formation"
+      ],
+      "neutrino-driven core-collapse supernova simulations": [
+        "stellar-mass black hole formation from massive star collapse"
+      ],
+      "X-ray observation": [
+        "high-redshift gravitationally lensed galaxy"
+      ],
+      "gravitational-wave detection": [
+        "binary black hole merger"
+      ]
+    },
+    "method_scenario_benchmark_triples": [
+      {
+        "method": "multiwavelength observational analysis (Chandra X-ray + JWST NIRCam/NIRSpec)",
+        "scenario": "high-redshift galaxy (z ≈ 10.1) / early Universe black hole seed formation",
+        "benchmark": "reaction yield",
+        "references": [
+          "Priyamvada Natarajan et al. (2023) First Detection of an Overmassive Black Hole Galaxy UHZ1: Evidence for Heavy Black Hole Seed Formation from Direct Collapse doi:10.3847/2041-8213/ad0e76"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "multiwavelength observational analysis (Chandra X-ray + JWST NIRCam/NIRSpec)",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "first detection of an overmassive black hole galaxy candidate UHZ1, providing empirical evidence for heavy black hole seed formation via direct collapse",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "No explicit limitation extracted.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "Full text excerpt:",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "Given the excellent agreement between the observed multiwavelength properties of UHZ1 and theoretical model template predictions, we suggest that UHZ1 is the first detected OBG candidate.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "Our assertion rests on multiple lines of concordant evidence between model predictions and the following observed properties of UHZ1: its X-ray detection and the estimated ratio of the X-ray flux to the IR flux, which is consistent with theoretical expectations for a heavy initial BH seed; its high...[truncated]",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "Full text excerpt: first detection of an overmassive black hole galaxy candidate UHZ1, providing empirical evidence for heavy black hole seed formation via direct collapse No explicit limitation extracted.",
+            "support": "source_sentence"
+          }
+        ]
+      },
+      {
+        "method": "neutrino-driven core-collapse supernova simulations",
+        "scenario": "stellar-mass black hole formation from massive star collapse",
+        "benchmark": "remnant mass distribution",
+        "references": [
+          "Dev Kushangi (2026) Black Hole Formation from Massive Star Collapse: A Review of Physical Mechanisms and Observational Evidence doi:10.70251/hyjr2348.42433438"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "neutrino-driven core-collapse supernova simulations",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "Black holes form along complex regions characterized by 'islands of explodability' and failed-explosion pathways, not above a single mass threshold.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "Significant uncertainties remain regarding the remnant mass distribution, the importance of multidimensional effects, rotation, magnetic fields, and binary evolution.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "Full text excerpt:",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "Collapse of this core can result in either a neutron star or a black hole, depending on a combination of factors such as metallicity, mass loss, rotation, binary interaction, shock revival mechanisms, and fallback accretion.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "Recent neutrino-driven core-collapse supernova simulations indicate that black holes do not occur above a single mass threshold, but instead along complex regions characterized by “islands of explodability” and failed-explosion pathways.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "Black hole formation therefore remains a central problem linking stellar evolution, supernova theory, compact-object demographics, and strong-gravity astrophysics.",
+            "support": "source_sentence"
+          }
+        ]
+      },
+      {
+        "method": "X-ray observation",
+        "scenario": "high-redshift gravitationally lensed galaxy",
+        "benchmark": "bolometric luminosity",
+        "references": [
+          "O. Kovács et al. (2024) A Candidate Supermassive Black Hole in a Gravitationally Lensed Galaxy at Z ≈ 10 doi:10.3847/2041-8213/ad391f"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "X-ray observation",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "Detection of a candidate supermassive black hole at z ≈ 10 suggesting heavy seed origin",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "Abstract: While supermassive black holes (SMBHs) are widely observed in the nearby and distant Universe, their origin remains debated with two viable formation scenarios with light and heavy seeds. In the light seeding model, the seed of the first SMBHs form from the collapse of massive stars with m...[truncated]",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "Full text excerpt:",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "While supermassive black holes (SMBHs) are widely observed in the nearby and distant Universe, their origin remains debated with two viable formation scenarios with light and heavy seeds.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "This extreme mass at such an early cosmic epoch suggests the heavy seed origin for this BH candidate.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "Comparison of this luminosity function with theoretical models indicates an overabundant z ≈ 10 SMBH population, consistent with a higher-than-expected seed formation efficiency.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "Full text excerpt: Detection of a candidate supermassive black hole at z ≈ 10 suggesting heavy seed origin Abstract: While supermassive black holes (SMBHs) are widely observed in the nearby and distant Universe, their origin remains debated with two viable formation scenarios with light and heavy se...[truncated]",
+            "support": "source_sentence"
+          }
+        ]
+      },
+      {
+        "method": "gravitational-wave detection",
+        "scenario": "binary black hole merger",
+        "benchmark": "mass | spin | luminosity distance | redshift | signal-to-noise ratio",
+        "references": [
+          "The Ligo Scientific Collaboration et al. (2025) GW231123: A Binary Black Hole Merger with Total Mass 190–265 M⊙ doi:10.3847/2041-8213/ae0c9c"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "gravitational-wave detection",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "Detection of GW231123, a binary black hole merger with total mass 190–265 M⊙, suggesting formation channels beyond standard stellar collapse and supporting gravitational-wave-driven formation of intermediate-mass black holes.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "Some properties of GW231123 are subject to large systematic uncertainties, as indicated by differences in the inferred parameters between signal models.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "Full text excerpt:",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "The observation of GW231123 therefore suggests the formation of black holes from channels beyond standard stellar collapse and that intermediate-mass black holes of mass ∼200 M⊙ form through gravitational-wave-driven mergers.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "Full text excerpt: Detection of GW231123, a binary black hole merger with total mass 190–265 M⊙, suggesting formation channels beyond standard stellar collapse and supporting gravitational-wave-driven formation of intermediate-mass black holes.",
+            "support": "source_sentence"
+          }
+        ]
+      },
+      {
+        "method": "multiwavelength observational analysis (Chandra X-ray + JWST NIRCam/NIRSpec)",
+        "scenario": "high-redshift galaxy (z ≈ 10.1) / early Universe black hole seed formation",
+        "benchmark": "reaction yield",
+        "references": [
+          "Priyamvada Natarajan et al. (2023) First Detection of an Overmassive Black Hole Galaxy UHZ1: Evidence for Heavy Black Hole Seed Formation from Direct Collapse doi:10.3847/2041-8213/ad0e76"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "multiwavelength observational analysis (Chandra X-ray + JWST NIRCam/NIRSpec)",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "first detection of an overmassive black hole galaxy candidate UHZ1, providing empirical evidence for heavy black hole seed formation via direct collapse",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "No explicit limitation extracted.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "first detection of an overmassive black hole galaxy candidate UHZ1, providing empirical evidence for heavy black hole seed formation via direct collapse No explicit limitation extracted.",
+            "support": "source_sentence"
+          }
+        ]
+      },
+      {
+        "method": "neutrino-driven core-collapse supernova simulations",
+        "scenario": "stellar-mass black hole formation from massive star collapse",
+        "benchmark": "remnant mass distribution",
+        "references": [
+          "Dev Kushangi (2026) Black Hole Formation from Massive Star Collapse: A Review of Physical Mechanisms and Observational Evidence doi:10.70251/hyjr2348.42433438"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "neutrino-driven core-collapse supernova simulations",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "Black holes form along complex regions characterized by 'islands of explodability' and failed-explosion pathways, not above a single mass threshold.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "Significant uncertainties remain regarding the remnant mass distribution, the importance of multidimensional effects, rotation, magnetic fields, and binary evolution.",
+            "support": "structured_field"
+          }
+        ]
+      },
+      {
+        "method": "X-ray observation",
+        "scenario": "high-redshift gravitationally lensed galaxy",
+        "benchmark": "bolometric luminosity",
+        "references": [
+          "O. Kovács et al. (2024) A Candidate Supermassive Black Hole in a Gravitationally Lensed Galaxy at Z ≈ 10 doi:10.3847/2041-8213/ad391f"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "X-ray observation",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "Detection of a candidate supermassive black hole at z ≈ 10 suggesting heavy seed origin",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "Abstract: While supermassive black holes (SMBHs) are widely observed in the nearby and distant Universe, their origin remains debated with two viable formation scenarios with light and heavy seeds. In the light seeding model, the seed of the first SMBHs form from the collapse of massive stars with m...[truncated]",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "Detection of a candidate supermassive black hole at z ≈ 10 suggesting heavy seed origin Abstract: While supermassive black holes (SMBHs) are widely observed in the nearby and distant Universe, their origin remains debated with two viable formation scenarios with light and heavy seeds.",
+            "support": "source_sentence"
+          }
+        ]
+      },
+      {
+        "method": "gravitational-wave detection",
+        "scenario": "binary black hole merger",
+        "benchmark": "mass | spin | luminosity distance | redshift | signal-to-noise ratio",
+        "references": [
+          "The Ligo Scientific Collaboration et al. (2025) GW231123: A Binary Black Hole Merger with Total Mass 190–265 M⊙ doi:10.3847/2041-8213/ae0c9c"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "gravitational-wave detection",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "Detection of GW231123, a binary black hole merger with total mass 190–265 M⊙, suggesting formation channels beyond standard stellar collapse and supporting gravitational-wave-driven formation of intermediate-mass black holes.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "Some properties of GW231123 are subject to large systematic uncertainties, as indicated by differences in the inferred parameters between signal models.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "Detection of GW231123, a binary black hole merger with total mass 190–265 M⊙, suggesting formation channels beyond standard stellar collapse and supporting gravitational-wave-driven formation of intermediate-mass black holes.",
+            "support": "source_sentence"
+          }
+        ]
+      }
+    ],
+    "claim_type_counts": {
+      "methodological_description": 8,
+      "empirical_result": 14,
+      "author_opinion": 16,
+      "theoretical_claim": 5
+    }
+  },
+  "knowledge_gaps": [
+    {
+      "gap_id": "gap_1783091074221002700",
+      "gap_type": "combinatorial",
+      "description": "Method 'X-ray observation' has no recorded validation in scenario 'binary black hole merger' in the current PaperGraph map.",
+      "supporting_references": [
+        "O. Kovács et al. (2024) A Candidate Supermassive Black Hole in a Gravitationally Lensed Galaxy at Z ≈ 10 doi:10.3847/2041-8213/ad391f",
+        "The Ligo Scientific Collaboration et al. (2025) GW231123: A Binary Black Hole Merger with Total Mass 190–265 M⊙ doi:10.3847/2041-8213/ae0c9c"
+      ],
+      "novelty_score": 6,
+      "application_value": "medium",
+      "feasibility": "high",
+      "suggested_research_path": "Run a targeted validation study with explicit benchmarks, baselines, and failure-mode analysis.",
+      "value_argument": "The combination may expose method-scenario boundary conditions rather than simply adding another benchmark.",
+      "overlap_risk": "low",
+      "requires_human_review": false
+    },
+    {
+      "gap_id": "gap_1783091074223372200",
+      "gap_type": "combinatorial",
+      "description": "Method 'X-ray observation' has no recorded validation in scenario 'high-redshift galaxy (z ≈ 10.1) / early Universe black hole seed formation' in the current PaperGraph map.",
+      "supporting_references": [
+        "Priyamvada Natarajan et al. (2023) First Detection of an Overmassive Black Hole Galaxy UHZ1: Evidence for Heavy Black Hole Seed Formation from Direct Collapse doi:10.3847/2041-8213/ad0e76",
+        "O. Kovács et al. (2024) A Candidate Supermassive Black Hole in a Gravitationally Lensed Galaxy at Z ≈ 10 doi:10.3847/2041-8213/ad391f"
+      ],
+      "novelty_score": 5,
+      "application_value": "medium",
+      "feasibility": "high",
+      "suggested_research_path": "Run a targeted validation study with explicit benchmarks, baselines, and failure-mode analysis.",
+      "value_argument": "The combination may expose method-scenario boundary conditions rather than simply adding another benchmark.",
+      "overlap_risk": "medium",
+      "requires_human_review": false
+    },
+    {
+      "gap_id": "gap_1783091074225566600",
+      "gap_type": "improvement",
+      "description": "Recorded limitation worth testing: No explicit limitation extracted.",
+      "supporting_references": [
+        "Priyamvada Natarajan et al. (2023) First Detection of an Overmassive Black Hole Galaxy UHZ1: Evidence for Heavy Black Hole Seed Formation from Direct Collapse doi:10.3847/2041-8213/ad0e76"
+      ],
+      "novelty_score": 6,
+      "application_value": "medium",
+      "feasibility": "high",
+      "suggested_research_path": "Formulate a hypothesis that directly attacks the documented limitation and verify it under stress conditions.",
+      "value_argument": "The gap is grounded in an author-reported limitation, so it has stronger evidential support than a bare untried combination.",
+      "overlap_risk": "medium",
+      "requires_human_review": false
+    },
+    {
+      "gap_id": "gap_1783091074232858300",
+      "gap_type": "migration",
+      "description": "Method 'X-ray observation' is only recorded in scenario 'high-redshift gravitationally lensed galaxy', but may be transferable to scenario 'binary black hole merger'.",
+      "supporting_references": [
+        "O. Kovács et al. (2024) A Candidate Supermassive Black Hole in a Gravitationally Lensed Galaxy at Z ≈ 10 doi:10.3847/2041-8213/ad391f"
+      ],
+      "novelty_score": 5,
+      "application_value": "medium",
+      "feasibility": "medium",
+      "suggested_research_path": "Audit assumptions of the source scenario, then run a small transfer validation in the target scenario.",
+      "value_argument": "Migration gaps can create useful cross-domain leverage if mechanism assumptions remain valid.",
+      "overlap_risk": "medium",
+      "requires_human_review": false
+    },
+    {
+      "gap_id": "gap_1783091074235028700",
+      "gap_type": "migration",
+      "description": "Method 'gravitational-wave detection' is only recorded in scenario 'binary black hole merger', but may be transferable to scenario 'high-redshift galaxy (z ≈ 10.1) / early Universe black hole seed formation'.",
+      "supporting_references": [
+        "The Ligo Scientific Collaboration et al. (2025) GW231123: A Binary Black Hole Merger with Total Mass 190–265 M⊙ doi:10.3847/2041-8213/ae0c9c"
+      ],
+      "novelty_score": 5,
+      "application_value": "medium",
+      "feasibility": "medium",
+      "suggested_research_path": "Audit assumptions of the source scenario, then run a small transfer validation in the target scenario.",
+      "value_argument": "Migration gaps can create useful cross-domain leverage if mechanism assumptions remain valid.",
+      "overlap_risk": "medium",
+      "requires_human_review": false
+    },
+    {
+      "gap_id": "gap_1783091074237189800",
+      "gap_type": "migration",
+      "description": "Method 'multiwavelength observational analysis (Chandra X-ray + JWST NIRCam/NIRSpec)' is only recorded in scenario 'high-redshift galaxy (z ≈ 10.1) / early Universe black hole seed formation', but may be transferable to scenario 'binary black hole merger'.",
+      "supporting_references": [
+        "Priyamvada Natarajan et al. (2023) First Detection of an Overmassive Black Hole Galaxy UHZ1: Evidence for Heavy Black Hole Seed Formation from Direct Collapse doi:10.3847/2041-8213/ad0e76"
+      ],
+      "novelty_score": 5,
+      "application_value": "medium",
+      "feasibility": "medium",
+      "suggested_research_path": "Audit assumptions of the source scenario, then run a small transfer validation in the target scenario.",
+      "value_argument": "Migration gaps can create useful cross-domain leverage if mechanism assumptions remain valid.",
+      "overlap_risk": "medium",
+      "requires_human_review": false
+    }
+  ],
+  "self_reflection": {
+    "top_venue_coverage_checked": true,
+    "pseudo_gap_risk_checked": true,
+    "method_categories_require_literature_support": true,
+    "unsupported_claims_marked_for_review": true
+  }
+}

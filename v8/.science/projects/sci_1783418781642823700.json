@@ -1,0 +1,189 @@
+{
+  "project_id": "sci_1783418781642823700",
+  "title": "Boxue smoke",
+  "domain": "AI for Science",
+  "objective": "offline scheduler smoke",
+  "strategic_need": "",
+  "phase": "Gap Discovery",
+  "createdAt": 1783418781.6428275,
+  "updatedAt": 1783418898.3088322,
+  "papergraph": [],
+  "evidence": [],
+  "coverage_matrix": {},
+  "knowledge_gaps": [],
+  "hypotheses": [],
+  "keynotes": [],
+  "mechanism_reports": [],
+  "pipeline_tasks": [
+    "task_1783418781686_6119",
+    "task_1783418781695_7984"
+  ],
+  "boxue_delegation_plans": [
+    {
+      "boxue_delegation_plan_id": "boxue_1783418781685967100",
+      "project_id": "sci_1783418781642823700",
+      "goal": "smoke test coordinator only",
+      "createdAt": 1783418781.7019625,
+      "prompt_alignment": {
+        "comparison": {
+          "prompt_assign_task": "implemented as persistent create_task DAG entries with assigned agent, phase, dependency, deliverable, priority, and acceptance criteria",
+          "prompt_review_output": "implemented as reviewer_gate plus boxue_final dependency gates; Boxue can add revision tasks via the task system",
+          "prompt_synthesize": "implemented as bianlun_synthesis, paperwriter_draft, and boxue_final synthesis tasks",
+          "prompt_adjust_plan": "implemented operationally by creating additional tasks or new delegation plans after reviewing outputs",
+          "prompt_finalize": "implemented as boxue_final decision task, not as specialist execution"
+        },
+        "stronger_than_old_pipeline_tasks": [
+          "role-specific tasks instead of generic phase tasks",
+          "explicit acceptance criteria",
+          "risk constraints embedded in every task",
+          "dependencies mirror the research lifecycle",
+          "optional teammate spawning for unblocked specialist work"
+        ],
+        "remaining_manual_gate": "Boxue still needs to review outputs and decide whether to create revision tasks; this preserves human/lead control over shared project state."
+      },
+      "coordination_policy": {
+        "boxue_role": "decompose, assign, review, synthesize, adjust, finalize",
+        "specialist_role": "execute only the assigned scientific subtask",
+        "shared_state": "state-changing PaperGraph/project updates should be gated by lead/synthesis tasks",
+        "step_limit": 2
+      },
+      "tasks": [
+        {
+          "task_id": "task_1783418781686_6119",
+          "agent": "zhizhi",
+          "phase": "Gap Discovery",
+          "title": "Build grounded PaperGraph evidence substrate",
+          "blockedBy": [],
+          "priority": "high",
+          "acceptance_criteria": [
+            "At least one verifiable source or an explicit retrieval-failure report",
+            "Method/scenario/benchmark/contribution/limitation fields are populated or flagged unknown",
+            "Unsupported claims are marked for human review"
+          ]
+        },
+        {
+          "task_id": "task_1783418781695_7984",
+          "agent": "tanxi",
+          "phase": "Gap Discovery",
+          "title": "Rank high-value knowledge gaps",
+          "blockedBy": [
+            "task_1783418781686_6119"
+          ],
+          "priority": "high",
+          "acceptance_criteria": [
+            "Every reported gap has supporting references or is flagged as ungrounded",
+            "No more than 10 ranked gaps",
+            "Each gap includes novelty/value/feasibility rationale"
+          ]
+        }
+      ],
+      "spawned_teammates": [],
+      "next_step": "Let unblocked specialist tasks run first. Boxue should review outputs at dependency gates, then adjust or unlock downstream phases."
+    }
+  ],
+  "boxue_research_rounds": [
+    {
+      "round_id": "boxue_round_1783418781704273100",
+      "plan_id": "boxue_1783418781685967100",
+      "goal": "smoke test coordinator only",
+      "createdAt": 1783418781.704275,
+      "completedAt": 1783418781.8098547,
+      "runtime_seconds": 0.106,
+      "spawn_teammates": false,
+      "spawned_teammates": [],
+      "inbox_events": [],
+      "reviews": [],
+      "revisions": [],
+      "task_snapshot": {
+        "total": 2,
+        "counts": {
+          "pending": 2
+        },
+        "tasks": [
+          {
+            "task_id": "task_1783418781686_6119",
+            "subject": "Boxue/zhizhi: Build grounded PaperGraph evidence substrate",
+            "status": "pending",
+            "owner": null,
+            "blockedBy": [],
+            "worktree": null,
+            "updatedAt": 1783418781.6923878
+          },
+          {
+            "task_id": "task_1783418781695_7984",
+            "subject": "Boxue/tanxi: Rank high-value knowledge gaps",
+            "status": "pending",
+            "owner": null,
+            "blockedBy": [
+              "task_1783418781686_6119"
+            ],
+            "worktree": null,
+            "updatedAt": 1783418781.6997292
+          }
+        ]
+      },
+      "final_decision": {
+        "status": "in_progress",
+        "completed_tasks": 0,
+        "total_tasks": 2,
+        "pending_tasks": 2,
+        "in_progress_tasks": 0,
+        "revision_tasks_created": 0,
+        "decision": "Round dispatched available specialists and is waiting for downstream task completion."
+      },
+      "next_step": "Let spawned teammates continue, then run run_boxue_research_round again to monitor and dispatch newly unblocked specialists."
+    },
+    {
+      "round_id": "boxue_round_1783418898160381300",
+      "plan_id": "boxue_1783418781685967100",
+      "reused_existing_plan": true,
+      "goal": "smoke test coordinator only",
+      "createdAt": 1783418898.1603835,
+      "completedAt": 1783418898.3086,
+      "runtime_seconds": 0.148,
+      "spawn_teammates": false,
+      "spawned_teammates": [],
+      "inbox_events": [],
+      "reviews": [],
+      "revisions": [],
+      "task_snapshot": {
+        "total": 2,
+        "counts": {
+          "pending": 2
+        },
+        "tasks": [
+          {
+            "task_id": "task_1783418781686_6119",
+            "subject": "Boxue/zhizhi: Build grounded PaperGraph evidence substrate",
+            "status": "pending",
+            "owner": null,
+            "blockedBy": [],
+            "worktree": null,
+            "updatedAt": 1783418781.6923878
+          },
+          {
+            "task_id": "task_1783418781695_7984",
+            "subject": "Boxue/tanxi: Rank high-value knowledge gaps",
+            "status": "pending",
+            "owner": null,
+            "blockedBy": [
+              "task_1783418781686_6119"
+            ],
+            "worktree": null,
+            "updatedAt": 1783418781.6997292
+          }
+        ]
+      },
+      "final_decision": {
+        "status": "in_progress",
+        "completed_tasks": 0,
+        "total_tasks": 2,
+        "pending_tasks": 2,
+        "in_progress_tasks": 0,
+        "revision_tasks_created": 0,
+        "decision": "Round dispatched available specialists and is waiting for downstream task completion."
+      },
+      "next_step": "Let spawned teammates continue, then run run_boxue_research_round again with the same plan_id to monitor and dispatch newly unblocked specialists."
+    }
+  ]
+}

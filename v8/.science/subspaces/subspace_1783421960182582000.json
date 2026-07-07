@@ -1,0 +1,1257 @@
+{
+  "subspace_map_id": "subspace_1783421960182582000",
+  "domain": "Power System Simulation / 电力系统仿真",
+  "generated_by": "llm",
+  "confidence": 0.85,
+  "createdAt": 1783421960.1826057,
+  "providers": [
+    "semantic_scholar",
+    "arxiv"
+  ],
+  "user_hints": [
+    "transient stability simulation",
+    "electromagnetic transient simulation",
+    "digital twin power grid",
+    "real-time simulator",
+    "power system co-simulation",
+    "AI surrogate modeling for power grids"
+  ],
+  "subspaces": [
+    {
+      "subspace_id": "electromagnetic_transient_simulation",
+      "name": "Electromagnetic Transient Simulation",
+      "aliases": [
+        "EMT simulation",
+        "电磁暂态仿真",
+        "EMTP",
+        "ATP-EMTP"
+      ],
+      "description": "High-fidelity time-domain simulation of fast electromagnetic phenomena (microsecond to millisecond scale), including switching surges, lightning strikes, and converter dynamics.",
+      "parent": "",
+      "keywords": [
+        "EMT simulation",
+        "switching transients",
+        "lightning surge",
+        "IGBT modeling",
+        "frequency-dependent transmission lines",
+        "EMTP-RV",
+        "PSCAD EMT",
+        "ATP-EMTP",
+        "HVDC converter harmonics"
+      ],
+      "seed_papers": [
+        "Martí, J. R. (1982). Accurate modelling of frequency-dependent transmission lines in electromagnetic transients simulation.",
+        "Dommel, H. W. (1996). EMTP Theory Book"
+      ],
+      "maturity": "mature",
+      "estimated_density": "high",
+      "strategic_importance": 9,
+      "search_strategy": "must_include",
+      "generated_by": "llm",
+      "probe_query": "EMT simulation switching transients lightning surge IGBT modeling frequency-dependent transmission lines EMTP-RV",
+      "probe_hit_count": 7,
+      "recent_hit_count": 3,
+      "high_impact_hit_count": 0,
+      "suggested_quota": 3,
+      "coverage_status": "probe_covered"
+    },
+    {
+      "subspace_id": "transient_stability_simulation",
+      "name": "Transient Stability Simulation",
+      "aliases": [
+        "TS simulation",
+        "机电暂态仿真",
+        "RMS simulation",
+        "quasi-steady-state"
+      ],
+      "description": "Medium-term (seconds to minutes) simulation of synchronous machine rotor angle dynamics, governor/turbine response, and protection system interactions under large disturbances.",
+      "parent": "",
+      "keywords": [
+        "transient stability",
+        "rotor angle stability",
+        "generator swing equations",
+        "IEEE standard models",
+        "PSS tuning",
+        "RMS simulation",
+        "PSSE",
+        "DIgSILENT PowerFactory TS"
+      ],
+      "seed_papers": [
+        "Kundur, P. (1994). Power System Stability and Control",
+        "IEEE Task Force on Load Representation (2009). Load Modeling for Power Flow and Transient Stability Computer Studies"
+      ],
+      "maturity": "mature",
+      "estimated_density": "medium",
+      "strategic_importance": 9,
+      "search_strategy": "must_include",
+      "generated_by": "llm",
+      "probe_query": "transient stability rotor angle stability generator swing equations IEEE standard models PSS tuning RMS simulation",
+      "probe_hit_count": 4,
+      "recent_hit_count": 2,
+      "high_impact_hit_count": 0,
+      "suggested_quota": 3,
+      "coverage_status": "probe_covered"
+    },
+    {
+      "subspace_id": "real_time_power_system_simulation",
+      "name": "Real-Time Power System Simulation",
+      "aliases": [
+        "RT simulation",
+        "实时仿真",
+        "HIL simulation",
+        "OPAL-RT",
+        "RTDS"
+      ],
+      "description": "Hardware-in-the-loop (HIL) and real-time digital simulation enabling closed-loop testing of protection relays, controllers, and grid-edge devices with sub-microsecond time resolution.",
+      "parent": "",
+      "keywords": [
+        "real-time simulation",
+        "HIL testing",
+        "RTDS",
+        "OPAL-RT",
+        "Typhoon HIL",
+        "FPGA-based simulation",
+        "IEC 61850 GOOSE testing",
+        "co-simulation latency"
+      ],
+      "seed_papers": [
+        "Gole, A. M., et al. (2011). Real-time simulation of power systems: An overview",
+        "Wang, X., et al. (2020). Real-time digital simulation of power electronics–based power systems"
+      ],
+      "maturity": "growing",
+      "estimated_density": "unknown",
+      "strategic_importance": 10,
+      "search_strategy": "must_include",
+      "generated_by": "llm",
+      "probe_query": "real-time simulation HIL testing RTDS OPAL-RT Typhoon HIL FPGA-based simulation",
+      "probe_hit_count": 0,
+      "recent_hit_count": 0,
+      "high_impact_hit_count": 0,
+      "suggested_quota": 2,
+      "coverage_status": "uncovered"
+    },
+    {
+      "subspace_id": "power_system_co_simulation",
+      "name": "Power System Co-Simulation",
+      "aliases": [
+        "co-simulation",
+        "多领域协同仿真",
+        "FMI/Modelica integration",
+        "cosim"
+      ],
+      "description": "Orchestrated execution of heterogeneous simulators (e.g., EMT + TS + thermal + communication) using standardized interfaces (FMI, HELICS, FMU) to model cyber-physical interactions.",
+      "parent": "",
+      "keywords": [
+        "co-simulation",
+        "FMI",
+        "HELICS",
+        "Modelica",
+        "FMU",
+        "cyber-physical power systems",
+        "OPAL-RT co-sim",
+        "GridLAB-D + PSCAD",
+        "time-step coupling"
+      ],
+      "seed_papers": [
+        "Palensky, P., et al. (2017). Co-simulation of power systems and communication networks",
+        "Neyestani, N., et al. (2020). A survey on co-simulation of cyber-physical energy systems"
+      ],
+      "maturity": "growing",
+      "estimated_density": "unknown",
+      "strategic_importance": 9,
+      "search_strategy": "must_include",
+      "generated_by": "llm",
+      "probe_query": "co-simulation FMI HELICS Modelica FMU cyber-physical power systems",
+      "probe_hit_count": 0,
+      "recent_hit_count": 0,
+      "high_impact_hit_count": 0,
+      "suggested_quota": 2,
+      "coverage_status": "uncovered"
+    },
+    {
+      "subspace_id": "ai_surrogate_modeling_for_power_systems",
+      "name": "AI Surrogate Modeling for Power Systems",
+      "aliases": [
+        "surrogate modeling",
+        "AI-powered emulation",
+        "电网AI代理模型",
+        "physics-informed ML"
+      ],
+      "description": "Machine learning models (e.g., PINNs, GNNs, transformers) trained to emulate high-fidelity simulators with orders-of-magnitude speedup, while preserving physical consistency and uncertainty quantification.",
+      "parent": "",
+      "keywords": [
+        "surrogate model",
+        "physics-informed neural network",
+        "PINN",
+        "graph neural network",
+        "power flow surrogate",
+        "stability prediction ML",
+        "digital twin acceleration",
+        "uncertainty-aware emulation"
+      ],
+      "seed_papers": [
+        "Jin, Y., et al. (2022). Physics-informed deep learning for power system dynamic simulation",
+        "Zheng, K., et al. (2023). Graph neural networks for transient stability assessment"
+      ],
+      "maturity": "emerging",
+      "estimated_density": "unknown",
+      "strategic_importance": 10,
+      "search_strategy": "must_include",
+      "generated_by": "llm",
+      "probe_query": "surrogate model physics-informed neural network PINN graph neural network power flow surrogate stability prediction ML",
+      "probe_hit_count": 0,
+      "recent_hit_count": 0,
+      "high_impact_hit_count": 0,
+      "suggested_quota": 2,
+      "coverage_status": "uncovered"
+    },
+    {
+      "subspace_id": "digital_twin_for_power_grids",
+      "name": "Digital Twin for Power Grids",
+      "aliases": [
+        "power grid digital twin",
+        "电网数字孪生",
+        "DT-PG",
+        "grid twin"
+      ],
+      "description": "Integrated, living replica of physical grid assets—fused from SCADA, PMU, GIS, and simulation data—supporting predictive maintenance, scenario replay, and closed-loop control optimization.",
+      "parent": "",
+      "keywords": [
+        "digital twin",
+        "power grid digital twin",
+        "asset digital twin",
+        "PMU-driven twin",
+        "twin-to-reality",
+        "ontology-based grid modeling",
+        "IEC CIM integration",
+        "twin lifecycle management"
+      ],
+      "seed_papers": [
+        "Zhang, Y., et al. (2022). Digital twin in smart grids: A comprehensive review",
+        "Liu, C., et al. (2023). Towards a semantic digital twin for distribution systems"
+      ],
+      "maturity": "growing",
+      "estimated_density": "unknown",
+      "strategic_importance": 10,
+      "search_strategy": "must_include",
+      "generated_by": "llm",
+      "probe_query": "digital twin power grid digital twin asset digital twin PMU-driven twin twin-to-reality ontology-based grid modeling",
+      "probe_hit_count": 0,
+      "recent_hit_count": 0,
+      "high_impact_hit_count": 0,
+      "suggested_quota": 2,
+      "coverage_status": "uncovered"
+    },
+    {
+      "subspace_id": "multi_time_scale_hybrid_simulation",
+      "name": "Multi-Time-Scale Hybrid Simulation",
+      "aliases": [
+        "hybrid time-scale simulation",
+        "multi-rate simulation",
+        "mixed-time-step"
+      ],
+      "description": "Simultaneous modeling of components operating at disparate timescales (e.g., EMT converters + RMS machines + slow thermal dynamics) using adaptive time-stepping and domain-decomposition techniques.",
+      "parent": "Electromagnetic Transient Simulation",
+      "keywords": [
+        "multi-time-scale",
+        "hybrid simulation",
+        "adaptive time-stepping",
+        "domain decomposition",
+        "EMT-RMS hybrid",
+        "phasor-EMT interface",
+        "interpolation error control"
+      ],
+      "seed_papers": [
+        "Li, Y., et al. (2018). A multi-rate hybrid simulation method for MMC-HVDC systems",
+        "Zhou, Q., et al. (2021). Time-step coupling strategies for hybrid EMT/RMS simulation"
+      ],
+      "maturity": "growing",
+      "estimated_density": "unknown",
+      "strategic_importance": 8,
+      "search_strategy": "nice_to_have",
+      "generated_by": "llm",
+      "probe_query": "multi-time-scale hybrid simulation adaptive time-stepping domain decomposition EMT-RMS hybrid phasor-EMT interface",
+      "probe_hit_count": 0,
+      "recent_hit_count": 0,
+      "high_impact_hit_count": 0,
+      "suggested_quota": 2,
+      "coverage_status": "uncovered"
+    },
+    {
+      "subspace_id": "uncertainty_aware_probabilistic_power_system_simulation",
+      "name": "Uncertainty-Aware Probabilistic Power System Simulation",
+      "aliases": [
+        "probabilistic simulation",
+        "stochastic power system simulation",
+        "不确定性仿真"
+      ],
+      "description": "Quantification of simulation output uncertainty arising from renewable generation variability, load forecast errors, component failures, and parameter ambiguity using Monte Carlo, polynomial chaos, or Bayesian methods.",
+      "parent": "Transient Stability Simulation",
+      "keywords": [
+        "probabilistic simulation",
+        "uncertainty quantification",
+        "stochastic transient stability",
+        "Monte Carlo power flow",
+        "polynomial chaos expansion",
+        "Bayesian parameter estimation",
+        "risk-aware simulation"
+      ],
+      "seed_papers": [
+        "Molina-Cruz, M., et al. (2020). Probabilistic transient stability assessment",
+        "Chen, Y., et al. (2022). Uncertainty propagation in EMT simulations via stochastic collocation"
+      ],
+      "maturity": "growing",
+      "estimated_density": "unknown",
+      "strategic_importance": 8,
+      "search_strategy": "nice_to_have",
+      "generated_by": "llm",
+      "probe_query": "probabilistic simulation uncertainty quantification stochastic transient stability Monte Carlo power flow polynomial chaos expansion Bayesian parameter estimation",
+      "probe_hit_count": 0,
+      "recent_hit_count": 0,
+      "high_impact_hit_count": 0,
+      "suggested_quota": 2,
+      "coverage_status": "uncovered"
+    }
+  ],
+  "probe_results": [
+    {
+      "subspace_id": "electromagnetic_transient_simulation",
+      "name": "Electromagnetic Transient Simulation",
+      "query": "EMT simulation switching transients lightning surge IGBT modeling frequency-dependent transmission lines EMTP-RV",
+      "probe_queries": [
+        "Electromagnetic Transient Simulation EMT simulation switching transients lightning surge IGBT modeling",
+        "EMT simulation switching transients lightning surge IGBT modeling frequency-dependent transmission lines EMTP-RV"
+      ],
+      "provider_blocks": [
+        {
+          "provider": "semantic_scholar",
+          "query": "Electromagnetic Transient Simulation EMT simulation switching transients lightning surge IGBT modeling",
+          "status": "ok",
+          "note": null,
+          "error": null,
+          "result_count": 2
+        },
+        {
+          "provider": "arxiv",
+          "query": "Electromagnetic Transient Simulation EMT simulation switching transients lightning surge IGBT modeling",
+          "status": "ok",
+          "note": null,
+          "error": null,
+          "result_count": 2
+        },
+        {
+          "provider": "semantic_scholar",
+          "query": "EMT simulation switching transients lightning surge IGBT modeling frequency-dependent transmission lines EMTP-RV",
+          "status": "ok",
+          "note": null,
+          "error": null,
+          "result_count": 2
+        },
+        {
+          "provider": "arxiv",
+          "query": "EMT simulation switching transients lightning surge IGBT modeling frequency-dependent transmission lines EMTP-RV",
+          "status": "ok",
+          "note": null,
+          "error": null,
+          "result_count": 2
+        }
+      ],
+      "hit_count": 7,
+      "recent_count": 3,
+      "high_impact_count": 0,
+      "top_seed_papers": [
+        {
+          "result_index": null,
+          "stratified_layer": "",
+          "stratified_label": "",
+          "query_branch": "",
+          "retrieval_query": "Electromagnetic Transient Simulation EMT simulation switching transients lightning surge IGBT modeling",
+          "_why_selected": "",
+          "domain_relevance": {},
+          "relevance_score": 0.303,
+          "relevance_components": {
+            "text_score": 0.3433,
+            "recency_score": 1.0,
+            "impact_score": 0.35,
+            "citation_field": "general",
+            "citation_baseline": 500.0,
+            "venue_score": 0.45,
+            "publication_quality_score": 0.72,
+            "base_score": 0.4209,
+            "text_weight": 0.62,
+            "recency_weight": 0.1,
+            "impact_weight": 0.18,
+            "venue_weight": 0.1
+          },
+          "publication_quality_score": 0.72,
+          "venue_quality": "unverified",
+          "journal_quartile": "",
+          "journal_metric_source": "",
+          "inferred_field": "general",
+          "quality_flags": [
+            "unverified_venue",
+            "new_paper_protection"
+          ],
+          "quality_criteria": [
+            "venue did not match suspicious, reputable, preprint, or curated quartile tables",
+            "paper is within 2-year protection window; low citations are not treated as low quality"
+          ],
+          "suspicion_type": "",
+          "is_review_like": false,
+          "pyramid_root_score": 0.4995,
+          "matched_query_terms": [
+            "emt",
+            "simulation",
+            "modeling",
+            "switching",
+            "transients",
+            "igbt",
+            "transmission"
+          ],
+          "title": "Device-Level Micro-Modeling of Half- and Full-Bridge Modular Multilevel Converter for EMT Simulation",
+          "citation": "Zijie Meng et al. (2025) Device-Level Micro-Modeling of Half- and Full-Bridge Modular Multilevel Converter for EMT Simulation doi:10.1109/PowerCon66300.2025.11294468",
+          "provider": "semantic_scholar",
+          "year": "2025",
+          "citation_count": 0,
+          "influential_citation_count": 0,
+          "doi": "10.1109/PowerCon66300.2025.11294468",
+          "arxiv_id": "",
+          "url": "https://www.semanticscholar.org/paper/7e9b2a3ae97bb7ad1decd8ab47b4bbed3b6d14ce",
+          "relevance_reason": "title=3/12, abstract=7/12, citation=3/12, phrase_bonus=0.0, recency=1.0, impact=0.35, venue=0.45, quality=0.72",
+          "quality_reason": "venue did not match suspicious, reputable, preprint, or curated quartile tables; paper is within 2-year protection window; low citations are not treated as low quality"
+        },
+        {
+          "result_index": null,
+          "stratified_layer": "",
+          "stratified_label": "",
+          "query_branch": "",
+          "retrieval_query": "Electromagnetic Transient Simulation EMT simulation switching transients lightning surge IGBT modeling",
+          "_why_selected": "",
+          "domain_relevance": {},
+          "relevance_score": 0.245,
+          "relevance_components": {
+            "text_score": 0.2133,
+            "recency_score": 1.0,
+            "impact_score": 0.35,
+            "citation_field": "general",
+            "citation_baseline": 500.0,
+            "venue_score": 0.45,
+            "publication_quality_score": 0.72,
+            "base_score": 0.3403,
+            "text_weight": 0.62,
+            "recency_weight": 0.1,
+            "impact_weight": 0.18,
+            "venue_weight": 0.1
+          },
+          "publication_quality_score": 0.72,
+          "venue_quality": "unverified",
+          "journal_quartile": "",
+          "journal_metric_source": "",
+          "inferred_field": "general",
+          "quality_flags": [
+            "unverified_venue",
+            "new_paper_protection"
+          ],
+          "quality_criteria": [
+            "venue did not match suspicious, reputable, preprint, or curated quartile tables",
+            "paper is within 2-year protection window; low citations are not treated as low quality"
+          ],
+          "suspicion_type": "",
+          "is_review_like": false,
+          "pyramid_root_score": 0.4415,
+          "matched_query_terms": [
+            "simulation",
+            "switching",
+            "emt",
+            "modeling"
+          ],
+          "title": "Optimizing Electromagnetic Transient Simulation of Voltage Source Converters via Integrated Lagrangian Dynamics with Switching-State Prediction",
+          "citation": "Zepeng Wang et al. (2025) Optimizing Electromagnetic Transient Simulation of Voltage Source Converters via Integrated Lagrangian Dynamics with Switching-State Prediction doi:10.1109/PSSGT64932.2025.11034291",
+          "provider": "semantic_scholar",
+          "year": "2025",
+          "citation_count": 0,
+          "influential_citation_count": 0,
+          "doi": "10.1109/PSSGT64932.2025.11034291",
+          "arxiv_id": "",
+          "url": "https://www.semanticscholar.org/paper/1e4f91d1beb4e5f4765687c45ae9406e52d55220",
+          "relevance_reason": "title=2/12, abstract=4/12, citation=2/12, phrase_bonus=0.0, recency=1.0, impact=0.35, venue=0.45, quality=0.72",
+          "quality_reason": "venue did not match suspicious, reputable, preprint, or curated quartile tables; paper is within 2-year protection window; low citations are not treated as low quality"
+        }
+      ]
+    },
+    {
+      "subspace_id": "transient_stability_simulation",
+      "name": "Transient Stability Simulation",
+      "query": "transient stability rotor angle stability generator swing equations IEEE standard models PSS tuning RMS simulation",
+      "probe_queries": [
+        "Transient Stability Simulation transient stability rotor angle stability generator swing equations IEEE standard models",
+        "transient stability rotor angle stability generator swing equations IEEE standard models PSS tuning RMS simulation"
+      ],
+      "provider_blocks": [
+        {
+          "provider": "semantic_scholar",
+          "query": "Transient Stability Simulation transient stability rotor angle stability generator swing equations IEEE standard models",
+          "status": "ok",
+          "note": null,
+          "error": null,
+          "result_count": 2
+        },
+        {
+          "provider": "arxiv",
+          "query": "Transient Stability Simulation transient stability rotor angle stability generator swing equations IEEE standard models",
+          "status": "ok",
+          "note": null,
+          "error": null,
+          "result_count": 2
+        },
+        {
+          "provider": "semantic_scholar",
+          "query": "transient stability rotor angle stability generator swing equations IEEE standard models PSS tuning RMS simulation",
+          "status": "probe_budget_exhausted",
+          "note": null,
+          "error": null,
+          "result_count": 0
+        },
+        {
+          "provider": "arxiv",
+          "query": "transient stability rotor angle stability generator swing equations IEEE standard models PSS tuning RMS simulation",
+          "status": "probe_budget_exhausted",
+          "note": null,
+          "error": null,
+          "result_count": 0
+        }
+      ],
+      "hit_count": 4,
+      "recent_count": 2,
+      "high_impact_count": 0,
+      "top_seed_papers": [
+        {
+          "result_index": null,
+          "stratified_layer": "",
+          "stratified_label": "",
+          "query_branch": "",
+          "retrieval_query": "Transient Stability Simulation transient stability rotor angle stability generator swing equations IEEE standard models",
+          "_why_selected": "",
+          "domain_relevance": {},
+          "relevance_score": 0.3644,
+          "relevance_components": {
+            "text_score": 0.2829,
+            "recency_score": 1.0,
+            "impact_score": 0.55,
+            "citation_field": "computer_science",
+            "citation_baseline": 500.0,
+            "venue_score": 0.7,
+            "publication_quality_score": 0.82,
+            "base_score": 0.4444,
+            "text_weight": 0.62,
+            "recency_weight": 0.1,
+            "impact_weight": 0.18,
+            "venue_weight": 0.1
+          },
+          "publication_quality_score": 0.82,
+          "venue_quality": "unverified",
+          "journal_quartile": "Q2",
+          "journal_metric_source": "curated",
+          "inferred_field": "computer_science",
+          "quality_flags": [
+            "journal_quartile_q2",
+            "new_paper_protection"
+          ],
+          "quality_criteria": [
+            "venue matched curated journal metric table: Q2",
+            "paper is within 2-year protection window; low citations are not treated as low quality"
+          ],
+          "suspicion_type": "",
+          "is_review_like": false,
+          "pyramid_root_score": 0.6109,
+          "matched_query_terms": [
+            "transient",
+            "stability",
+            "rotor",
+            "angle",
+            "generator",
+            "ieee",
+            "models",
+            "rms",
+            "simulation"
+          ],
+          "title": "Transient Stability Prediction Method for Power Systems Based on Spatiotemporal Feature Fusion",
+          "citation": "Lei Tang et al. (2025) Transient Stability Prediction Method for Power Systems Based on Spatiotemporal Feature Fusion doi:10.1109/ACCESS.2025.3628453",
+          "provider": "semantic_scholar",
+          "year": "2025",
+          "citation_count": 0,
+          "influential_citation_count": 0,
+          "doi": "10.1109/ACCESS.2025.3628453",
+          "arxiv_id": "",
+          "url": "https://www.semanticscholar.org/paper/d1a8de1d1d8f21c5ccdd92d7e3ad487a01085d9d",
+          "relevance_reason": "title=2/14, abstract=9/14, citation=2/14, phrase_bonus=0.0, recency=1.0, impact=0.55, venue=0.7, quality=0.82",
+          "quality_reason": "venue matched curated journal metric table: Q2; paper is within 2-year protection window; low citations are not treated as low quality"
+        },
+        {
+          "result_index": null,
+          "stratified_layer": "",
+          "stratified_label": "",
+          "query_branch": "",
+          "retrieval_query": "Transient Stability Simulation transient stability rotor angle stability generator swing equations IEEE standard models",
+          "_why_selected": "",
+          "domain_relevance": {},
+          "relevance_score": 0.313,
+          "relevance_components": {
+            "text_score": 0.3657,
+            "recency_score": 1.0,
+            "impact_score": 0.35,
+            "citation_field": "mathematics",
+            "citation_baseline": 250.0,
+            "venue_score": 0.45,
+            "publication_quality_score": 0.72,
+            "base_score": 0.4347,
+            "text_weight": 0.62,
+            "recency_weight": 0.1,
+            "impact_weight": 0.18,
+            "venue_weight": 0.1
+          },
+          "publication_quality_score": 0.72,
+          "venue_quality": "unverified",
+          "journal_quartile": "",
+          "journal_metric_source": "",
+          "inferred_field": "mathematics",
+          "quality_flags": [
+            "unverified_venue",
+            "new_paper_protection",
+            "incomplete_s2_metadata_recent"
+          ],
+          "quality_criteria": [
+            "venue did not match suspicious, reputable, preprint, or curated quartile tables",
+            "paper is within 2-year protection window; low citations are not treated as low quality",
+            "Semantic Scholar reference metadata is missing for a recent paper; marked for data completeness review"
+          ],
+          "suspicion_type": "",
+          "is_review_like": true,
+          "pyramid_root_score": 0.8595,
+          "matched_query_terms": [
+            "stability",
+            "rotor",
+            "angle",
+            "swing",
+            "transient",
+            "generator",
+            "rms",
+            "simulation"
+          ],
+          "title": "Impact Analysis of Wind Turbine Participation in Frequency Regulation on First-Swing Rotor Angle Stability of Interconnected Power Systems Considering System Topology Influence Factor",
+          "citation": "Hongbo Liu et al. (2025) Impact Analysis of Wind Turbine Participation in Frequency Regulation on First-Swing Rotor Angle Stability of Interconnected Power Systems Considering System Topology Influence Factor doi:10.2174/0123520965412922251012183521",
+          "provider": "semantic_scholar",
+          "year": "2025",
+          "citation_count": 0,
+          "influential_citation_count": 0,
+          "doi": "10.2174/0123520965412922251012183521",
+          "arxiv_id": "",
+          "url": "https://www.semanticscholar.org/paper/b8f558472a70f8e51002a64b7b798dfe2000737f",
+          "relevance_reason": "title=4/14, abstract=8/14, citation=4/14, phrase_bonus=0.0, recency=1.0, impact=0.35, venue=0.45, quality=0.72",
+          "quality_reason": "venue did not match suspicious, reputable, preprint, or curated quartile tables; paper is within 2-year protection window; low citations are not treated as low quality; Semantic Scholar reference metadata is missing for a recent paper; marked for data completeness review"
+        }
+      ]
+    },
+    {
+      "subspace_id": "real_time_power_system_simulation",
+      "name": "Real-Time Power System Simulation",
+      "query": "real-time simulation HIL testing RTDS OPAL-RT Typhoon HIL FPGA-based simulation",
+      "probe_queries": [
+        "Real-Time Power System Simulation real-time simulation HIL testing RTDS OPAL-RT",
+        "real-time simulation HIL testing RTDS OPAL-RT Typhoon HIL FPGA-based simulation"
+      ],
+      "provider_blocks": [
+        {
+          "provider": "semantic_scholar",
+          "query": "Real-Time Power System Simulation real-time simulation HIL testing RTDS OPAL-RT",
+          "status": "probe_budget_exhausted",
+          "note": null,
+          "error": null,
+          "result_count": 0
+        },
+        {
+          "provider": "arxiv",
+          "query": "Real-Time Power System Simulation real-time simulation HIL testing RTDS OPAL-RT",
+          "status": "probe_budget_exhausted",
+          "note": null,
+          "error": null,
+          "result_count": 0
+        },
+        {
+          "provider": "semantic_scholar",
+          "query": "real-time simulation HIL testing RTDS OPAL-RT Typhoon HIL FPGA-based simulation",
+          "status": "probe_budget_exhausted",
+          "note": null,
+          "error": null,
+          "result_count": 0
+        },
+        {
+          "provider": "arxiv",
+          "query": "real-time simulation HIL testing RTDS OPAL-RT Typhoon HIL FPGA-based simulation",
+          "status": "probe_budget_exhausted",
+          "note": null,
+          "error": null,
+          "result_count": 0
+        }
+      ],
+      "hit_count": 0,
+      "recent_count": 0,
+      "high_impact_count": 0,
+      "top_seed_papers": []
+    },
+    {
+      "subspace_id": "power_system_co_simulation",
+      "name": "Power System Co-Simulation",
+      "query": "co-simulation FMI HELICS Modelica FMU cyber-physical power systems",
+      "probe_queries": [
+        "Power System Co-Simulation co-simulation FMI HELICS Modelica",
+        "co-simulation FMI HELICS Modelica FMU cyber-physical power systems"
+      ],
+      "provider_blocks": [
+        {
+          "provider": "semantic_scholar",
+          "query": "Power System Co-Simulation co-simulation FMI HELICS Modelica",
+          "status": "probe_budget_exhausted",
+          "note": null,
+          "error": null,
+          "result_count": 0
+        },
+        {
+          "provider": "arxiv",
+          "query": "Power System Co-Simulation co-simulation FMI HELICS Modelica",
+          "status": "probe_budget_exhausted",
+          "note": null,
+          "error": null,
+          "result_count": 0
+        },
+        {
+          "provider": "semantic_scholar",
+          "query": "co-simulation FMI HELICS Modelica FMU cyber-physical power systems",
+          "status": "probe_budget_exhausted",
+          "note": null,
+          "error": null,
+          "result_count": 0
+        },
+        {
+          "provider": "arxiv",
+          "query": "co-simulation FMI HELICS Modelica FMU cyber-physical power systems",
+          "status": "probe_budget_exhausted",
+          "note": null,
+          "error": null,
+          "result_count": 0
+        }
+      ],
+      "hit_count": 0,
+      "recent_count": 0,
+      "high_impact_count": 0,
+      "top_seed_papers": []
+    },
+    {
+      "subspace_id": "ai_surrogate_modeling_for_power_systems",
+      "name": "AI Surrogate Modeling for Power Systems",
+      "query": "surrogate model physics-informed neural network PINN graph neural network power flow surrogate stability prediction ML",
+      "probe_queries": [
+        "AI Surrogate Modeling for Power Systems surrogate model physics-informed neural network PINN graph neural network",
+        "surrogate model physics-informed neural network PINN graph neural network power flow surrogate stability prediction ML"
+      ],
+      "provider_blocks": [
+        {
+          "provider": "semantic_scholar",
+          "query": "AI Surrogate Modeling for Power Systems surrogate model physics-informed neural network PINN graph neural network",
+          "status": "probe_budget_exhausted",
+          "note": null,
+          "error": null,
+          "result_count": 0
+        },
+        {
+          "provider": "arxiv",
+          "query": "AI Surrogate Modeling for Power Systems surrogate model physics-informed neural network PINN graph neural network",
+          "status": "probe_budget_exhausted",
+          "note": null,
+          "error": null,
+          "result_count": 0
+        },
+        {
+          "provider": "semantic_scholar",
+          "query": "surrogate model physics-informed neural network PINN graph neural network power flow surrogate stability prediction ML",
+          "status": "probe_budget_exhausted",
+          "note": null,
+          "error": null,
+          "result_count": 0
+        },
+        {
+          "provider": "arxiv",
+          "query": "surrogate model physics-informed neural network PINN graph neural network power flow surrogate stability prediction ML",
+          "status": "probe_budget_exhausted",
+          "note": null,
+          "error": null,
+          "result_count": 0
+        }
+      ],
+      "hit_count": 0,
+      "recent_count": 0,
+      "high_impact_count": 0,
+      "top_seed_papers": []
+    },
+    {
+      "subspace_id": "digital_twin_for_power_grids",
+      "name": "Digital Twin for Power Grids",
+      "query": "digital twin power grid digital twin asset digital twin PMU-driven twin twin-to-reality ontology-based grid modeling",
+      "probe_queries": [
+        "Digital Twin for Power Grids digital twin power grid digital twin asset digital twin PMU-driven twin",
+        "digital twin power grid digital twin asset digital twin PMU-driven twin twin-to-reality ontology-based grid modeling"
+      ],
+      "provider_blocks": [
+        {
+          "provider": "semantic_scholar",
+          "query": "Digital Twin for Power Grids digital twin power grid digital twin asset digital twin PMU-driven twin",
+          "status": "probe_budget_exhausted",
+          "note": null,
+          "error": null,
+          "result_count": 0
+        },
+        {
+          "provider": "arxiv",
+          "query": "Digital Twin for Power Grids digital twin power grid digital twin asset digital twin PMU-driven twin",
+          "status": "probe_budget_exhausted",
+          "note": null,
+          "error": null,
+          "result_count": 0
+        },
+        {
+          "provider": "semantic_scholar",
+          "query": "digital twin power grid digital twin asset digital twin PMU-driven twin twin-to-reality ontology-based grid modeling",
+          "status": "probe_budget_exhausted",
+          "note": null,
+          "error": null,
+          "result_count": 0
+        },
+        {
+          "provider": "arxiv",
+          "query": "digital twin power grid digital twin asset digital twin PMU-driven twin twin-to-reality ontology-based grid modeling",
+          "status": "probe_budget_exhausted",
+          "note": null,
+          "error": null,
+          "result_count": 0
+        }
+      ],
+      "hit_count": 0,
+      "recent_count": 0,
+      "high_impact_count": 0,
+      "top_seed_papers": []
+    },
+    {
+      "subspace_id": "multi_time_scale_hybrid_simulation",
+      "name": "Multi-Time-Scale Hybrid Simulation",
+      "query": "multi-time-scale hybrid simulation adaptive time-stepping domain decomposition EMT-RMS hybrid phasor-EMT interface",
+      "probe_queries": [
+        "Multi-Time-Scale Hybrid Simulation multi-time-scale hybrid simulation adaptive time-stepping domain decomposition",
+        "multi-time-scale hybrid simulation adaptive time-stepping domain decomposition EMT-RMS hybrid phasor-EMT interface"
+      ],
+      "provider_blocks": [
+        {
+          "provider": "semantic_scholar",
+          "query": "Multi-Time-Scale Hybrid Simulation multi-time-scale hybrid simulation adaptive time-stepping domain decomposition",
+          "status": "probe_budget_exhausted",
+          "note": null,
+          "error": null,
+          "result_count": 0
+        },
+        {
+          "provider": "arxiv",
+          "query": "Multi-Time-Scale Hybrid Simulation multi-time-scale hybrid simulation adaptive time-stepping domain decomposition",
+          "status": "probe_budget_exhausted",
+          "note": null,
+          "error": null,
+          "result_count": 0
+        },
+        {
+          "provider": "semantic_scholar",
+          "query": "multi-time-scale hybrid simulation adaptive time-stepping domain decomposition EMT-RMS hybrid phasor-EMT interface",
+          "status": "probe_budget_exhausted",
+          "note": null,
+          "error": null,
+          "result_count": 0
+        },
+        {
+          "provider": "arxiv",
+          "query": "multi-time-scale hybrid simulation adaptive time-stepping domain decomposition EMT-RMS hybrid phasor-EMT interface",
+          "status": "probe_budget_exhausted",
+          "note": null,
+          "error": null,
+          "result_count": 0
+        }
+      ],
+      "hit_count": 0,
+      "recent_count": 0,
+      "high_impact_count": 0,
+      "top_seed_papers": []
+    },
+    {
+      "subspace_id": "uncertainty_aware_probabilistic_power_system_simulation",
+      "name": "Uncertainty-Aware Probabilistic Power System Simulation",
+      "query": "probabilistic simulation uncertainty quantification stochastic transient stability Monte Carlo power flow polynomial chaos expansion Bayesian parameter estimation",
+      "probe_queries": [
+        "Uncertainty-Aware Probabilistic Power System Simulation probabilistic simulation uncertainty quantification stochastic transient stability Monte Carlo power flow",
+        "probabilistic simulation uncertainty quantification stochastic transient stability Monte Carlo power flow polynomial chaos expansion Bayesian parameter estimation"
+      ],
+      "provider_blocks": [
+        {
+          "provider": "semantic_scholar",
+          "query": "Uncertainty-Aware Probabilistic Power System Simulation probabilistic simulation uncertainty quantification stochastic transient stability Monte Carlo power flow",
+          "status": "probe_budget_exhausted",
+          "note": null,
+          "error": null,
+          "result_count": 0
+        },
+        {
+          "provider": "arxiv",
+          "query": "Uncertainty-Aware Probabilistic Power System Simulation probabilistic simulation uncertainty quantification stochastic transient stability Monte Carlo power flow",
+          "status": "probe_budget_exhausted",
+          "note": null,
+          "error": null,
+          "result_count": 0
+        },
+        {
+          "provider": "semantic_scholar",
+          "query": "probabilistic simulation uncertainty quantification stochastic transient stability Monte Carlo power flow polynomial chaos expansion Bayesian parameter estimation",
+          "status": "probe_budget_exhausted",
+          "note": null,
+          "error": null,
+          "result_count": 0
+        },
+        {
+          "provider": "arxiv",
+          "query": "probabilistic simulation uncertainty quantification stochastic transient stability Monte Carlo power flow polynomial chaos expansion Bayesian parameter estimation",
+          "status": "probe_budget_exhausted",
+          "note": null,
+          "error": null,
+          "result_count": 0
+        }
+      ],
+      "hit_count": 0,
+      "recent_count": 0,
+      "high_impact_count": 0,
+      "top_seed_papers": []
+    }
+  ],
+  "coverage_plan": {
+    "total_subspaces": 8,
+    "covered": 2,
+    "missing": 6,
+    "insufficient": 0,
+    "coverage_rate": 0.25,
+    "missing_details": [
+      {
+        "name": "Real-Time Power System Simulation",
+        "keywords": [
+          "real-time simulation",
+          "HIL testing",
+          "RTDS",
+          "OPAL-RT",
+          "Typhoon HIL",
+          "FPGA-based simulation"
+        ],
+        "suggested_action": "supplemental_search"
+      },
+      {
+        "name": "Power System Co-Simulation",
+        "keywords": [
+          "co-simulation",
+          "FMI",
+          "HELICS",
+          "Modelica",
+          "FMU",
+          "cyber-physical power systems"
+        ],
+        "suggested_action": "supplemental_search"
+      },
+      {
+        "name": "AI Surrogate Modeling for Power Systems",
+        "keywords": [
+          "surrogate model",
+          "physics-informed neural network",
+          "PINN",
+          "graph neural network",
+          "power flow surrogate",
+          "stability prediction ML"
+        ],
+        "suggested_action": "supplemental_search"
+      },
+      {
+        "name": "Digital Twin for Power Grids",
+        "keywords": [
+          "digital twin",
+          "power grid digital twin",
+          "asset digital twin",
+          "PMU-driven twin",
+          "twin-to-reality",
+          "ontology-based grid modeling"
+        ],
+        "suggested_action": "supplemental_search"
+      },
+      {
+        "name": "Multi-Time-Scale Hybrid Simulation",
+        "keywords": [
+          "multi-time-scale",
+          "hybrid simulation",
+          "adaptive time-stepping",
+          "domain decomposition",
+          "EMT-RMS hybrid",
+          "phasor-EMT interface"
+        ],
+        "suggested_action": "supplemental_search"
+      },
+      {
+        "name": "Uncertainty-Aware Probabilistic Power System Simulation",
+        "keywords": [
+          "probabilistic simulation",
+          "uncertainty quantification",
+          "stochastic transient stability",
+          "Monte Carlo power flow",
+          "polynomial chaos expansion",
+          "Bayesian parameter estimation"
+        ],
+        "suggested_action": "supplemental_search"
+      }
+    ],
+    "recommendation": "Confirm priority subspaces with the user before running ZhiZhi, then search selected subspaces independently."
+  },
+  "query_plan": [
+    {
+      "branch": "electromagnetic_transient_simulation",
+      "name": "Electromagnetic Transient Simulation",
+      "query": "EMT simulation switching transients lightning surge IGBT modeling frequency-dependent transmission lines EMTP-RV PSCAD EMT ATP-EMTP review survey",
+      "quota": 3,
+      "estimated_density": "high",
+      "strategic_importance": 9,
+      "search_strategy": "must_include"
+    },
+    {
+      "branch": "transient_stability_simulation",
+      "name": "Transient Stability Simulation",
+      "query": "transient stability rotor angle stability generator swing equations IEEE standard models PSS tuning RMS simulation PSSE DIgSILENT PowerFactory TS review survey",
+      "quota": 3,
+      "estimated_density": "medium",
+      "strategic_importance": 9,
+      "search_strategy": "must_include"
+    },
+    {
+      "branch": "real_time_power_system_simulation",
+      "name": "Real-Time Power System Simulation",
+      "query": "real-time simulation HIL testing RTDS OPAL-RT Typhoon HIL FPGA-based simulation IEC 61850 GOOSE testing co-simulation latency latest recent",
+      "quota": 2,
+      "estimated_density": "unknown",
+      "strategic_importance": 10,
+      "search_strategy": "must_include"
+    },
+    {
+      "branch": "power_system_co_simulation",
+      "name": "Power System Co-Simulation",
+      "query": "co-simulation FMI HELICS Modelica FMU cyber-physical power systems OPAL-RT co-sim GridLAB-D + PSCAD latest recent",
+      "quota": 2,
+      "estimated_density": "unknown",
+      "strategic_importance": 9,
+      "search_strategy": "must_include"
+    },
+    {
+      "branch": "ai_surrogate_modeling_for_power_systems",
+      "name": "AI Surrogate Modeling for Power Systems",
+      "query": "surrogate model physics-informed neural network PINN graph neural network power flow surrogate stability prediction ML digital twin acceleration uncertainty-aware emulation latest recent",
+      "quota": 2,
+      "estimated_density": "unknown",
+      "strategic_importance": 10,
+      "search_strategy": "must_include"
+    },
+    {
+      "branch": "digital_twin_for_power_grids",
+      "name": "Digital Twin for Power Grids",
+      "query": "digital twin power grid digital twin asset digital twin PMU-driven twin twin-to-reality ontology-based grid modeling IEC CIM integration twin lifecycle management latest recent",
+      "quota": 2,
+      "estimated_density": "unknown",
+      "strategic_importance": 10,
+      "search_strategy": "must_include"
+    },
+    {
+      "branch": "multi_time_scale_hybrid_simulation",
+      "name": "Multi-Time-Scale Hybrid Simulation",
+      "query": "multi-time-scale hybrid simulation adaptive time-stepping domain decomposition EMT-RMS hybrid phasor-EMT interface interpolation error control latest recent",
+      "quota": 2,
+      "estimated_density": "unknown",
+      "strategic_importance": 8,
+      "search_strategy": "nice_to_have"
+    },
+    {
+      "branch": "uncertainty_aware_probabilistic_power_system_simulation",
+      "name": "Uncertainty-Aware Probabilistic Power System Simulation",
+      "query": "probabilistic simulation uncertainty quantification stochastic transient stability Monte Carlo power flow polynomial chaos expansion Bayesian parameter estimation risk-aware simulation latest recent",
+      "quota": 2,
+      "estimated_density": "unknown",
+      "strategic_importance": 8,
+      "search_strategy": "nice_to_have"
+    }
+  ],
+  "user_interaction": {
+    "needed": true,
+    "type": "pre_retrieval_subspace_selection",
+    "question": "Select the subspaces to prioritize before ZhiZhi imports papers. You can also add custom subspaces.",
+    "options": [
+      {
+        "label": "Electromagnetic Transient Simulation",
+        "subspace_id": "electromagnetic_transient_simulation",
+        "description": "High-fidelity time-domain simulation of fast electromagnetic phenomena (microsecond to millisecond scale), including switching surges, lightning strikes, and converter dynamics.",
+        "keywords": [
+          "EMT simulation",
+          "switching transients",
+          "lightning surge",
+          "IGBT modeling",
+          "frequency-dependent transmission lines",
+          "EMTP-RV",
+          "PSCAD EMT",
+          "ATP-EMTP"
+        ],
+        "probe_hit_count": 7,
+        "estimated_density": "high",
+        "strategic_importance": 9,
+        "recommended": true
+      },
+      {
+        "label": "Transient Stability Simulation",
+        "subspace_id": "transient_stability_simulation",
+        "description": "Medium-term (seconds to minutes) simulation of synchronous machine rotor angle dynamics, governor/turbine response, and protection system interactions under large disturbances.",
+        "keywords": [
+          "transient stability",
+          "rotor angle stability",
+          "generator swing equations",
+          "IEEE standard models",
+          "PSS tuning",
+          "RMS simulation",
+          "PSSE",
+          "DIgSILENT PowerFactory TS"
+        ],
+        "probe_hit_count": 4,
+        "estimated_density": "medium",
+        "strategic_importance": 9,
+        "recommended": true
+      },
+      {
+        "label": "Real-Time Power System Simulation",
+        "subspace_id": "real_time_power_system_simulation",
+        "description": "Hardware-in-the-loop (HIL) and real-time digital simulation enabling closed-loop testing of protection relays, controllers, and grid-edge devices with sub-microsecond time resolution.",
+        "keywords": [
+          "real-time simulation",
+          "HIL testing",
+          "RTDS",
+          "OPAL-RT",
+          "Typhoon HIL",
+          "FPGA-based simulation",
+          "IEC 61850 GOOSE testing",
+          "co-simulation latency"
+        ],
+        "probe_hit_count": 0,
+        "estimated_density": "unknown",
+        "strategic_importance": 10,
+        "recommended": true
+      },
+      {
+        "label": "Power System Co-Simulation",
+        "subspace_id": "power_system_co_simulation",
+        "description": "Orchestrated execution of heterogeneous simulators (e.g., EMT + TS + thermal + communication) using standardized interfaces (FMI, HELICS, FMU) to model cyber-physical interactions.",
+        "keywords": [
+          "co-simulation",
+          "FMI",
+          "HELICS",
+          "Modelica",
+          "FMU",
+          "cyber-physical power systems",
+          "OPAL-RT co-sim",
+          "GridLAB-D + PSCAD"
+        ],
+        "probe_hit_count": 0,
+        "estimated_density": "unknown",
+        "strategic_importance": 9,
+        "recommended": true
+      },
+      {
+        "label": "AI Surrogate Modeling for Power Systems",
+        "subspace_id": "ai_surrogate_modeling_for_power_systems",
+        "description": "Machine learning models (e.g., PINNs, GNNs, transformers) trained to emulate high-fidelity simulators with orders-of-magnitude speedup, while preserving physical consistency and uncertainty quantification.",
+        "keywords": [
+          "surrogate model",
+          "physics-informed neural network",
+          "PINN",
+          "graph neural network",
+          "power flow surrogate",
+          "stability prediction ML",
+          "digital twin acceleration",
+          "uncertainty-aware emulation"
+        ],
+        "probe_hit_count": 0,
+        "estimated_density": "unknown",
+        "strategic_importance": 10,
+        "recommended": true
+      },
+      {
+        "label": "Digital Twin for Power Grids",
+        "subspace_id": "digital_twin_for_power_grids",
+        "description": "Integrated, living replica of physical grid assets—fused from SCADA, PMU, GIS, and simulation data—supporting predictive maintenance, scenario replay, and closed-loop control optimization.",
+        "keywords": [
+          "digital twin",
+          "power grid digital twin",
+          "asset digital twin",
+          "PMU-driven twin",
+          "twin-to-reality",
+          "ontology-based grid modeling",
+          "IEC CIM integration",
+          "twin lifecycle management"
+        ],
+        "probe_hit_count": 0,
+        "estimated_density": "unknown",
+        "strategic_importance": 10,
+        "recommended": true
+      },
+      {
+        "label": "Multi-Time-Scale Hybrid Simulation",
+        "subspace_id": "multi_time_scale_hybrid_simulation",
+        "description": "Simultaneous modeling of components operating at disparate timescales (e.g., EMT converters + RMS machines + slow thermal dynamics) using adaptive time-stepping and domain-decomposition techniques.",
+        "keywords": [
+          "multi-time-scale",
+          "hybrid simulation",
+          "adaptive time-stepping",
+          "domain decomposition",
+          "EMT-RMS hybrid",
+          "phasor-EMT interface",
+          "interpolation error control"
+        ],
+        "probe_hit_count": 0,
+        "estimated_density": "unknown",
+        "strategic_importance": 8,
+        "recommended": true
+      },
+      {
+        "label": "Uncertainty-Aware Probabilistic Power System Simulation",
+        "subspace_id": "uncertainty_aware_probabilistic_power_system_simulation",
+        "description": "Quantification of simulation output uncertainty arising from renewable generation variability, load forecast errors, component failures, and parameter ambiguity using Monte Carlo, polynomial chaos, or Bayesian methods.",
+        "keywords": [
+          "probabilistic simulation",
+          "uncertainty quantification",
+          "stochastic transient stability",
+          "Monte Carlo power flow",
+          "polynomial chaos expansion",
+          "Bayesian parameter estimation",
+          "risk-aware simulation"
+        ],
+        "probe_hit_count": 0,
+        "estimated_density": "unknown",
+        "strategic_importance": 8,
+        "recommended": true
+      }
+    ],
+    "custom_subspace_input": {
+      "enabled": true,
+      "placeholder": "e.g. Demand Response; EV Charging Coordination; Building Energy Management",
+      "instructions": "If your target subfield is not listed, provide one subspace per line or semicolon-separated. These will be converted into custom retrieval branches."
+    },
+    "continue_with": "Pass subspace_map_id plus selected_subfields, or pass option labels as focus_branches to run_zhizhi_literature_analysis."
+  }
+}

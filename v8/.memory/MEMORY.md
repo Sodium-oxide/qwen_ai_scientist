@@ -1,0 +1,197 @@
+# Memory Index
+
+- [feedback_ai_for_science_coverage_diagnosis_result.md](feedback_ai_for_science_coverage_diagnosis_result.md) - feedback: coverage status after literature retrieval and import
+- [feedback_coverage_status.md](feedback_coverage_status.md) - feedback: All selected subfields achieved sufficient coverage; no missing/weak signals
+- [feedback_custom_subspace_input_enabled.md](feedback_custom_subspace_input_enabled.md) - feedback: Confirms user-defined subspace input was enabled in subspace explorer
+- [feedback_domain_coverage_diagnostic_consistency.md](feedback_domain_coverage_diagnostic_consistency.md) - feedback: 验证发现：safety_constrained_multi_agent_rl 和 real_time_adaptive_stability_boundaries 为低密度高重要性子空间，与历史 domain_coverage_diagnostic_findings 报告一致
+- [feedback_domain_fidelity.md](feedback_domain_fidelity.md) - feedback: confirmation that retrieved content is HCC-specific, not pan-cancer noise
+- [feedback_duplicate_detection_verified.md](feedback_duplicate_detection_verified.md) - feedback: Duplicate import attempt correctly identified and rejected; uniqueness check confirmed existing record.
+- [feedback_duplicate_import_behavior.md](feedback_duplicate_import_behavior.md) - feedback: Idempotent import guarantee
+- [feedback_failed_api_retrieval.md](feedback_failed_api_retrieval.md) - feedback: Both arXiv and Semantic Scholar APIs failed during automated search due to SSL certificate error and rate limiting (HTTP 429).
+- [feedback_fallback_heavily_used.md](feedback_fallback_heavily_used.md) - feedback: Critical technical limitation observed during graph expansion
+- [feedback_gap_detection_artifact.md](feedback_gap_detection_artifact.md) - feedback: Critical false-positive pattern in automated gap generation.
+- [feedback_graph_expansion_failure.md](feedback_graph_expansion_failure.md) - feedback: Confirmed failure of expand_literature_graph due to inaccessible references
+- [feedback_hcc_specific_validation.md](feedback_hcc_specific_validation.md) - feedback: Confirmed absence of pan-cancer noise; all imported papers are HCC-specific
+- [feedback_hcc_specificity_confirmation.md](feedback_hcc_specificity_confirmation.md) - feedback: Validation that retrieved literature is HCC-specific, not pan-cancer noise
+- [feedback_knowledge_gap_confirmed.md](feedback_knowledge_gap_confirmed.md) - feedback: Key conclusion from literature analysis: absence of high-quality, on-topic papers confirms substantial knowledge gap
+- [feedback_knowledge_gap_structure_validation.md](feedback_knowledge_gap_structure_validation.md) - feedback: Output fields confirmed present in ZhiZhi analysis result
+- [feedback_knowledge_map_extraction_limitation.md](feedback_knowledge_map_extraction_limitation.md) - feedback: Persistent structural weakness in automated knowledge mapping.
+- [feedback_literature_retrieval_failure_semantic_scholar.md](feedback_literature_retrieval_failure_semantic_scholar.md) - feedback: Semantic Scholar API检索失败
+- [feedback_literature_search_failure_semantic_scholar.md](feedback_literature_search_failure_semantic_scholar.md) - feedback: Semantic Scholar API rate limit (HTTP 429) prevented retrieval; zero results returned; no paper substitution permitted.
+- [feedback_literature_search_mismatch.md](feedback_literature_search_mismatch.md) - feedback: Critical domain mismatch in retrieved literature
+- [feedback_low_density_subspaces_identified.md](feedback_low_density_subspaces_identified.md) - feedback: DSE敏感性验证的关键发现
+- [feedback_mechanism_check_verdict.md](feedback_mechanism_check_verdict.md) - feedback: final validation outcome for top hypothesis
+- [feedback_missing_subfields.md](feedback_missing_subfields.md) - feedback: gaps identified in coverage analysis requiring supplemental search
+- [feedback_pipeline_integrity_constraints.md](feedback_pipeline_integrity_constraints.md) - feedback: Hard constraints enforced during execution
+- [feedback_quality_flags.md](feedback_quality_flags.md) - feedback: Stable quality indicators from seed paper evaluation
+- [feedback_retrieval_failure_handling.md](feedback_retrieval_failure_handling.md) - feedback: Policy for zero-result searches
+- [feedback_retrieval_failure_semantic_scholar.md](feedback_retrieval_failure_semantic_scholar.md) - feedback: API rate-limiting prevented Semantic Scholar use
+- [feedback_retrieval_honesty_policy.md](feedback_retrieval_honesty_policy.md) - feedback: User expects no fabrication when retrieval fails
+- [feedback_selected_subfields_coverage_status.md](feedback_selected_subfields_coverage_status.md) - feedback: coverage assessment of user-specified subfields; highlights gaps in 'gravitational wave echoes' and 'X-ray reverberation mapping
+- [feedback_semantic_scholar_rate_limit_failure.md](feedback_semantic_scholar_rate_limit_failure.md) - feedback: Literature search failure due to API rate limiting
+- [feedback_top_knowledge_gap.md](feedback_top_knowledge_gap.md) - feedback: Highest-priority combinatorial gap identified by TanXi
+- [feedback_unknown_method_scenario_benchmark.md](feedback_unknown_method_scenario_benchmark.md) - feedback: No unresolved method/scenario/benchmark fields after LLM enrichment
+- [feedback_zhizhi_literature_analysis_output_structure.md](feedback_zhizhi_literature_analysis_output_structure.md) - feedback: Confirmed presence of required top-level fields in ZhiZhi analysis output
+- [project_active_project_challenge_cup_2026.md](project_active_project_challenge_cup_2026.md) - project: Current workspace and project context
+- [project_ai_for_science_dse_zhizhi_tanxi_project_id.md](project_ai_for_science_dse_zhizhi_tanxi_project_id.md) - project: project identifier for the AI for Science DSE-ZhiZhi-TanXi闭环 validation
+- [project_ai_for_science_knowledge_pyramid_validation_failure.md](project_ai_for_science_knowledge_pyramid_validation_failure.md) - project: Verification failed due to missing L0 high-impact review root node; retrieved 'survey' is an unreviewed arXiv preprint, violating root_policy and collapsing pyramid structure
+- [project_ai_for_science_knowledge_pyramid_verification.md](project_ai_for_science_knowledge_pyramid_verification.md) - project: Project to validate knowledge graph construction from high-impact review root in AI for Science domain.
+- [project_ai_for_science_subspace_map_id.md](project_ai_for_science_subspace_map_id.md) - project: subspace mapping ID generated from domain exploration
+- [project_ai_for_science_top_knowledge_gap.md](project_ai_for_science_top_knowledge_gap.md) - project: highest-priority combinatorial gap with novelty_score >= 4
+- [project_analysis_outcomes_summary.md](project_analysis_outcomes_summary.md) - project: Key outcomes from the ZhiZhi analysis run.
+- [project_analysis_results_summary.md](project_analysis_results_summary.md) - project: Key outputs from the ZhiZhi literature analysis.
+- [project_autonomous_agents_scientific_discovery_project.md](project_autonomous_agents_scientific_discovery_project.md) - project: Science project ID sci_1783011342547103500 titled 'Autonomous Agents for Scientific Discovery' in AI domain, objective: accelerate scientific discovery via iterative hypothesis generation and validation.
+- [project_autonomous_grid_control_joint_validation_project.md](project_autonomous_grid_control_joint_validation_project.md) - project: Research project validating ZhiZhi→PaperGraph→TanXi闭环 for Autonomous Grid Control
+- [project_black_hole_formation_literature_validation_project.md](project_black_hole_formation_literature_validation_project.md) - project: Research project validating ZhiZhi's literature analysis capability in astrophysical black hole formation theory
+- [project_boxue_round_elnino.md](project_boxue_round_elnino.md) - project: 首轮 Boxue 研究闭环执行状态
+- [project_coverage_matrix_built.md](project_coverage_matrix_built.md) - project: Coverage matrix successfully constructed from imported paper’s method-scenario mapping.
+- [project_coverage_matrix_sparsity.md](project_coverage_matrix_sparsity.md) - project: Low-signal abstract impact
+- [project_coverage_plan_stratified_cascade.md](project_coverage_plan_stratified_cascade.md) - project: 分层检索策略建议：高重要性+低密度子空间启用 L1+L2+L3 stratified cascade；中密度启用 L2+L3；高密度可跳过或仅 L0 review
+- [project_coverage_status.md](project_coverage_status.md) - project: Coverage assessment across selected subfields
+- [project_cross_domain_noise_identified.md](project_cross_domain_noise_identified.md) - project: 跨域噪音论文及处理依据
+- [project_custom_subfields.md](project_custom_subfields.md) - project: User-defined high-priority extension subfields
+- [project_custom_subspaces.md](project_custom_subspaces.md) - project: user-specified subspaces for focused analysis
+- [project_dark_matter_observation_validation_project.md](project_dark_matter_observation_validation_project.md) - project: Research project validating ZhiZhi's literature analysis capabilities for dark matter detection and astrophysical observation.
+- [project_domain.md](project_domain.md) - project: core research domain
+- [project_domain_coverage_diagnostic_findings.md](project_domain_coverage_diagnostic_findings.md) - project: Key underrepresented subfields identified by live probe reports.
+- [project_domain_subspaces_explored.md](project_domain_subspaces_explored.md) - project: 子空间探测配置与关键输出
+- [project_dse_zhizhi_tanxi_comprehensive_verification_project.md](project_dse_zhizhi_tanxi_comprehensive_verification_project.md) - project: 科学研究项目：DSE-ZhiZhi-TanXi 综合验证，聚焦 Autonomous Grid Control / Smart Grid / AI Control 领域的子空间扫描、意图对齐、文献检索、覆盖诊断与 gap 发现闭环。
+- [project_electric_field_driven_deformation_dynamics_in_metal_nanostructures.md](project_electric_field_driven_deformation_dynamics_in_metal_nanostructures.md) - project: Core research project on electromechanical deformation mechanisms in metallic nanomaterials
+- [project_elnino_closed_loop_project.md](project_elnino_closed_loop_project.md) - project: 厄尔尼诺现象研究与预测闭环验证项目初始化完成
+- [project_elnino_pipeline_validation_failure.md](project_elnino_pipeline_validation_failure.md) - project: Pipeline executed but failed domain validation due to irrelevant literature retrieval
+- [project_enso_climate_knowledge_pyramid_validation.md](project_enso_climate_knowledge_pyramid_validation.md) - project: Research project validating review-rooted knowledge graph construction for ENSO/climate teleconnection; failed due to L0 review root policy violation.
+- [project_execution_mode.md](project_execution_mode.md) - project: Boxue pipeline execution mode
+- [project_gap_analysis_result.md](project_gap_analysis_result.md) - project: Primary knowledge gap identified and assessed
+- [project_gap_assessment_summary.md](project_gap_assessment_summary.md) - project: Key properties of the primary identified knowledge gap.
+- [project_gap_ranking_and_top_gap_analysis.md](project_gap_ranking_and_top_gap_analysis.md) - project: Top-ranked gap and its justification
+- [project_gap_type_distribution.md](project_gap_type_distribution.md) - project: 识别的知识缺口类型与推理属性
+- [project_gap_types_of_interest.md](project_gap_types_of_interest.md) - project: gap categories prioritized in analysis
+- [project_global_warming_drought_literature_validation_project.md](project_global_warming_drought_literature_validation_project.md) - project: Research project validating ZhiZhi's literature analysis capability on climate change-induced drought regime shifts.
+- [project_graph_triviality.md](project_graph_triviality.md) - project: literature graph contains only one node
+- [project_hcc_mechanism_validation_project.md](project_hcc_mechanism_validation_project.md) - project: Research project validating ZhiZhi's literature retrieval, knowledge graph construction, and gap detection capabilities in hepatocellular carcinoma formation and cell variation mechanisms.
+- [project_high_energy_physics_dse_zhizhi_tanxi_project_id.md](project_high_energy_physics_dse_zhizhi_tanxi_project_id.md) - project: Project ID for the closed-loop validation study in high energy physics
+- [project_hook_events.md](project_hook_events.md) - project: Configured hook events available in v4/v8
+- [project_import_top_k.md](project_import_top_k.md) - project: maximum papers imported into PaperGraph
+- [project_imported_papers_count.md](project_imported_papers_count.md) - project: number of papers successfully imported into knowledge graph
+- [project_key_knowledge_gap.md](project_key_knowledge_gap.md) - project: Validated absence in current literature
+- [project_knowledge_gap_confirmation.md](project_knowledge_gap_confirmation.md) - project: Confirmed absence of on-topic literature
+- [project_knowledge_gap_count.md](project_knowledge_gap_count.md) - project: Number of candidate knowledge gaps detected
+- [project_knowledge_gap_detected.md](project_knowledge_gap_detected.md) - project: One candidate knowledge gap extracted from paper’s stated limitation (scalability & experiment design integration).
+- [project_knowledge_gap_filter_threshold.md](project_knowledge_gap_filter_threshold.md) - project: Novelty score threshold applied to gap filtering
+- [project_knowledge_gap_outstanding_limitations.md](project_knowledge_gap_outstanding_limitations.md) - project: Detected high-feasibility knowledge gap centered on addressing 'outstanding limitations in current methodologies' from the imported paper.
+- [project_knowledge_map_fields.md](project_knowledge_map_fields.md) - project: Core extracted conceptual categories from the knowledge map.
+- [project_knowledge_map_structure.md](project_knowledge_map_structure.md) - project: The dimension and content of the generated knowledge map
+- [project_l0_l1_l2_import_compliance.md](project_l0_l1_l2_import_compliance.md) - project: 分层文献导入达标情况
+- [project_literature_graph_id.md](project_literature_graph_id.md) - project: ID of the expanded literature graph with bidirectional connections
+- [project_literature_search_providers.md](project_literature_search_providers.md) - project: Providers used for initial literature retrieval
+- [project_low_density_subspaces_for_gap_analysis.md](project_low_density_subspaces_for_gap_analysis.md) - project: DSE 识别出的低密度子空间，适合作为 TanXi gap 发现重点目标。
+- [project_manual_literature_import.md](project_manual_literature_import.md) - project: Fallback import of 'AI Feynman' paper via abstract text, used to bootstrap pipeline when API search failed.
+- [project_mcp_docs_server.md](project_mcp_docs_server.md) - project: User has access to a 'docs' MCP server with search and fetch capabilities
+- [project_mechanism_cluster_count.md](project_mechanism_cluster_count.md) - project: Number of distinct mechanism-based clusters identified in the relation graph
+- [project_mechanism_clusters.md](project_mechanism_clusters.md) - project: Eight mechanism-based clusters identified at min_quality ≥ 0.55
+- [project_mechanism_verified_hypothesis.md](project_mechanism_verified_hypothesis.md) - project: hypothesis confirmed via full CAWM-style mechanism check
+- [project_migration_gap_characteristics.md](project_migration_gap_characteristics.md) - project: Key attributes of detected knowledge gaps
+- [project_min_quality_threshold.md](project_min_quality_threshold.md) - project: filter applied to literature graph construction
+- [project_min_quality_threshold_used.md](project_min_quality_threshold_used.md) - project: quality filter applied during relation graph construction
+- [project_mock_teammates_behavior.md](project_mock_teammates_behavior.md) - project: Spawned teammates are chat-only
+- [project_objective.md](project_objective.md) - project: primary research objective
+- [project_papergraph_network_test_project.md](project_papergraph_network_test_project.md) - project: Research project created to validate the literature-to-knowledge-gap detection闭环 for AI for Science.
+- [project_papergraph_strict_online_test.md](project_papergraph_strict_online_test.md) - project: Project validating real retrieval-to-gap-detection pipeline with strict no-hallucination policy
+- [project_power_system_simulation_zhizhi_tanxi_mingli_validation.md](project_power_system_simulation_zhizhi_tanxi_mingli_validation.md) - project: 科学研究项目：验证ZhiZhi（分层文献检索）→ TanXi（知识缺口识别）→ MingLi（可验证假设生成）闭环在电力系统仿真领域的有效性
+- [project_primary_knowledge_gap.md](project_primary_knowledge_gap.md) - project: Top-ranked combinatorial gap identified and verified
+- [project_project_conductors_high_voltage_li_battery.md](project_project_conductors_high_voltage_li_battery.md) - project: Research project on conductor materials for stable high-voltage lithium batteries
+- [project_project_dielectrics_high_temp_capacitive_storage.md](project_project_dielectrics_high_temp_capacitive_storage.md) - project: Research project on dielectric materials for capacitive energy storage above 150°C
+- [project_project_dse_pre_scan_validation.md](project_project_dse_pre_scan_validation.md) - project: 科学研究项目：DSE 前置扫描验证，聚焦 Autonomous Grid Control 领域，目标为验证子空间遍历器、用户选择机制与 ZhiZhi 检索衔接
+- [project_project_electric_field_deformation.md](project_project_electric_field_deformation.md) - project: Research project on electric-field-driven deformation dynamics in metal nanostructures, scoped to nanomaterials physics with strategic relevance to NEMS and tunable plasmonics.
+- [project_project_electric_field_deformation_nanostructures.md](project_project_electric_field_deformation_nanostructures.md) - project: 科学研究项目：Electric-Field-Driven Deformation Dynamics in Metal Nanostructures
+- [project_project_id.md](project_project_id.md) - project: unique identifier for the research project
+- [project_project_title.md](project_project_title.md) - project: research project title
+- [project_python_interpreter_path.md](project_python_interpreter_path.md) - project: Python interpreter to use for running tests/scripts
+- [project_relation_graph_id.md](project_relation_graph_id.md) - project: ID of the filtered literature relation graph (min_quality=0.55)
+- [project_repo_structure_claude_code_versions.md](project_repo_structure_claude_code_versions.md) - project: Repo layout: v1-v8 iterative Python versions
+- [project_research_project_id.md](project_research_project_id.md) - project: ID of the created scientific research project on repeating fast radio bursts
+- [project_research_topic_hv_li_battery_conductors.md](project_research_topic_hv_li_battery_conductors.md) - project: Active research project on high-voltage Li battery conductors
+- [project_retrieval_and_import_stats.md](project_retrieval_and_import_stats.md) - project: Quantitative outcomes of the literature analysis workflow.
+- [project_retrieval_parameters.md](project_retrieval_parameters.md) - project: Core search configuration used in the validation
+- [project_retrieval_stats_her_validation.md](project_retrieval_stats_her_validation.md) - project: Quantitative summary of literature retrieval and import outcomes.
+- [project_selected_subfields.md](project_selected_subfields.md) - project: User-aligned core subfields for literature analysis
+- [project_string_utils_contract_eval_targets.md](project_string_utils_contract_eval_targets.md) - project: Contract for v8_eval_targets/string_utils.py
+- [project_structural_knowledge_gap.md](project_structural_knowledge_gap.md) - project: core structural bottleneck identified
+- [project_subspace_map_id.md](project_subspace_map_id.md) - project: identifier for the domain subspace mapping generated during exploration
+- [project_tan_xi_gap_exploration_parameters.md](project_tan_xi_gap_exploration_parameters.md) - project: TanXi gap exploration configuration
+- [project_target_domain.md](project_target_domain.md) - project: canonical domain string used across pipeline stages
+- [project_tool_parameters_used.md](project_tool_parameters_used.md) - project: Exact parameters used for run_zhizhi_literature_analysis
+- [project_top_gaps.md](project_top_gaps.md) - project: list of top 5 knowledge gaps by severity and priority
+- [project_top_hypotheses.md](project_top_hypotheses.md) - project: final generated hypotheses with engineering validity
+- [project_top_hypotheses_count.md](project_top_hypotheses_count.md) - project: number of final hypotheses output
+- [project_top_hypothesis_id.md](project_top_hypothesis_id.md) - project: highest-scoring, mechanism-verified hypothesis
+- [project_top_hypothesis_physical_engineering_validity.md](project_top_hypothesis_physical_engineering_validity.md) - project: Top 3 MingLi假设的工程合理性结论
+- [project_top_knowledge_gaps.md](project_top_knowledge_gaps.md) - project: Top 5 validated, HCC-specific knowledge gaps identified by TanXi
+- [project_total_retrieved_papers.md](project_total_retrieved_papers.md) - project: total literature retrieved in stratified cascade
+- [project_unknown_method_scenario_benchmark_ratio.md](project_unknown_method_scenario_benchmark_ratio.md) - project: fraction of missing method-scenario-benchmark triples
+- [project_v8_eval_target_calc_project.md](project_v8_eval_target_calc_project.md) - project: Python calc project with pytest
+- [project_v8_eval_targets_sandbox.md](project_v8_eval_targets_sandbox.md) - project: Sandbox project for eval tasks (canonical path + style + existing modules)
+- [project_v8_multiagent_protocol.md](project_v8_multiagent_protocol.md) - project: v8 multi-agent MCP tools, worktree layout, and validator behavior
+- [project_validated_capabilities.md](project_validated_capabilities.md) - project: Confirmed functional capabilities demonstrated in the run.
+- [project_validated_closed_loop.md](project_validated_closed_loop.md) - project: Final verification outcome of the DSE-ZhiZhi-TanXi闭环
+- [project_validated_knowledge_map_dimensions.md](project_validated_knowledge_map_dimensions.md) - project: Extracted structure of the PaperGraph knowledge map
+- [project_validation_metrics.md](project_validation_metrics.md) - project: Key evaluation metrics extracted from the analysis run
+- [project_validation_success_criteria.md](project_validation_success_criteria.md) - project: Stable criteria for assessing ZhiZhi Agent 1 performance.
+- [project_wide_domain_retrieval_interaction_validation_project.md](project_wide_domain_retrieval_interaction_validation_project.md) - project: Research project validating Qwen's sub-branch generation, live coverage self-check, user interaction, and L1/L2 recovery in Autonomous Grid Control.
+- [project_windows_shell_environment.md](project_windows_shell_environment.md) - project: Shell environment for commands
+- [project_workspace_path.md](project_workspace_path.md) - project: Local filesystem path for project artifacts and tool outputs
+- [project_workspace_root.md](project_workspace_root.md) - project: Primary project workspace location and key subdirectories
+- [project_zhi_zhi_her_catalyst_validation_project.md](project_zhi_zhi_her_catalyst_validation_project.md) - project: Research project to validate ZhiZhi Agent 1's literature retrieval, quality filtering, structured extraction, and knowledge gap detection capabilities in hydrogen evolution reaction (HER) electrocatalysis.
+- [project_zhi_zhi_offline_validation_project.md](project_zhi_zhi_offline_validation_project.md) - project: Core validation project for Agent 1's reasoning modules in battery materials
+- [project_zhi_zhi_retrieval_parameters.md](project_zhi_zhi_retrieval_parameters.md) - project: ZhiZhi literature analysis configuration
+- [project_zhizhi_build_knowledge_map_duplicate_triples.md](project_zhizhi_build_knowledge_map_duplicate_triples.md) - project: build_knowledge_map emits duplicate triples
+- [project_zhizhi_her_catalyst_validation_project.md](project_zhizhi_her_catalyst_validation_project.md) - project: Research project to validate ZhiZhi Agent 1's literature retrieval, quality filtering, structured extraction, and knowledge gap detection capabilities in hydrogen evolution reaction (HER) electrocatalysis.
+- [project_zhizhi_internet_verification_project.md](project_zhizhi_internet_verification_project.md) - project: Research project created to validate ZhiZhi's end-to-end literature mining capability in battery materials
+- [project_zhizhi_literature_analysis_parameters.md](project_zhizhi_literature_analysis_parameters.md) - project: Parameters used for the ZhiZhi literature analysis run.
+- [project_zhizhi_project_workspace.md](project_zhizhi_project_workspace.md) - project: ZhiZhi project workspace path
+- [project_zhizhi_verify_uniqueness_duplicate_index_bug.md](project_zhizhi_verify_uniqueness_duplicate_index_bug.md) - project: Observed duplicate index bug in verify_uniqueness
+- [project_闭环验证_result.md](project_闭环验证_result.md) - project: Final validation outcome of the DSE-ZhiZhi-TanXi pipeline
+- [reference_arxiv_2510_09901v2_paper.md](reference_arxiv_2510_09901v2_paper.md) - reference: Key literature record imported: arXiv preprint (2025) on LLM-based scientific agents, covering hypothesis generation, experimental design, and result analysis.
+- [reference_bash_background_task_behavior.md](reference_bash_background_task_behavior.md) - reference: bash tool runs commands as background tasks
+- [reference_bash_tool_background_behavior.md](reference_bash_tool_background_behavior.md) - reference: bash tool sometimes backgrounds commands
+- [reference_central_paper.md](reference_central_paper.md) - reference: Highest-centrality paper in literature graph
+- [reference_central_paper_doi.md](reference_central_paper_doi.md) - reference: DOI of the central and highest-PageRank paper in the literature graph
+- [reference_custom_subspaces.md](reference_custom_subspaces.md) - reference: user-specified focus subspaces for literature analysis
+- [reference_docs_mcp_server.md](reference_docs_mcp_server.md) - reference: Docs MCP server tools available in workspace
+- [reference_gap_types_monitored.md](reference_gap_types_monitored.md) - reference: knowledge gap types explicitly tracked
+- [reference_garnet_electrolyte_stability_evidence.md](reference_garnet_electrolyte_stability_evidence.md) - reference: First imported literature evidence
+- [reference_high_energy_physics_subspace_map_id.md](reference_high_energy_physics_subspace_map_id.md) - reference: Subspace map ID generated during domain exploration
+- [reference_knowledge_gap_summary.md](reference_knowledge_gap_summary.md) - reference: Structured summary of two validated knowledge gaps from ZhiZhi analysis
+- [reference_known_infrastructure_issues.md](reference_known_infrastructure_issues.md) - reference: Recurring backend degradations to watch for
+- [reference_normalize_words_pattern.md](reference_normalize_words_pattern.md) - reference: Preferred implementation for whitespace normalization
+- [reference_pagerank_highest_paper.md](reference_pagerank_highest_paper.md) - reference: Highest-PageRank paper in literature graph
+- [reference_pagerank_highest_paper_doi.md](reference_pagerank_highest_paper_doi.md) - reference: most influential paper by PageRank
+- [reference_polymer_electrolyte_safety_evidence.md](reference_polymer_electrolyte_safety_evidence.md) - reference: Second imported literature evidence
+- [reference_pre_final_validation_hook.md](reference_pre_final_validation_hook.md) - reference: Pre-final validation enforces concrete outcomes
+- [reference_seed_paper_arxiv_id.md](reference_seed_paper_arxiv_id.md) - reference: primary literature seed
+- [reference_seed_paper_doi.md](reference_seed_paper_doi.md) - reference: DOI of the highest-quality seed paper selected
+- [reference_seed_paper_title.md](reference_seed_paper_title.md) - reference: title of the central paper
+- [reference_string_utils_contract_multiagent_demo.md](reference_string_utils_contract_multiagent_demo.md) - reference: Reference implementation contract for v8_multiagent_demo/string_utils.py
+- [reference_string_utils_task_ids.md](reference_string_utils_task_ids.md) - reference: Persistent task IDs for string_utils work
+- [reference_subspace_map_id.md](reference_subspace_map_id.md) - reference: identifier for the domain subspace map generated during exploration
+- [reference_subspace_map_id_dse_output.md](reference_subspace_map_id_dse_output.md) - reference: DSE 子空间探测输出标识符及核心元数据。
+- [reference_v8_hook_events.md](reference_v8_hook_events.md) - reference: Available hook events in v4/v8 context
+- [reference_windows_shell_environment.md](reference_windows_shell_environment.md) - reference: Windows cmd shell quirks
+- [reference_workspace_path.md](reference_workspace_path.md) - reference: Local project workspace directory
+- [reference_worktree_knowledge.md](reference_worktree_knowledge.md) - reference: Git worktrees background
+- [reference_zhizhi_literature_analysis_parameters.md](reference_zhizhi_literature_analysis_parameters.md) - reference: Configured parameters for literature analysis tool execution.
+- [reference_zhizhi_tool_pipeline.md](reference_zhizhi_tool_pipeline.md) - reference: Core ZhiZhi tool pipeline
+- [user_ai_for_science_selected_subfields.md](user_ai_for_science_selected_subfields.md) - user: 5 selected subfields: 3 auto-generated + 2 custom
+- [user_custom_subfields.md](user_custom_subfields.md) - user: user-defined extensions to standard subfields
+- [user_one_minute_meeting_reminder.md](user_one_minute_meeting_reminder.md) - user: 用户请求创建一次性1分钟后的开会提醒定时任务，使用非持久化、非重复的cron任务（* * * * *），提示语为'[Scheduled] 该提醒您开会了！'，任务ID为cron_1783151798087_4764
+- [user_pipeline_preferences_literature.md](user_pipeline_preferences_literature.md) - user: Preferred parameters for literature pipeline
+- [user_response_language_chinese.md](user_response_language_chinese.md) - user: User communicates in Chinese
+- [user_selected_subfields.md](user_selected_subfields.md) - user: user-specified subfields prioritized for coverage and analysis
+- [user_spatial_transcriptomics_followup.md](user_spatial_transcriptomics_followup.md) - user: Targeted follow-up search recommended for spatial transcriptomics of liver TME
+- [user_subspace_selection_options.md](user_subspace_selection_options.md) - user: 用户待选的优先检索子空间列表（来自 explore_domain_subspaces 输出）
+- [user_task_worker_workflow.md](user_task_worker_workflow.md) - user: Preferred multi-agent task/worktree delegation pattern
+- [user_tdd_workflow_preference.md](user_tdd_workflow_preference.md) - user: User prefers strict TDD
+- [user_user_selected_subfields.md](user_user_selected_subfields.md) - user: List of 5 selected subfields: 3 auto-generated + 2 custom
+- [user_v8_task_worker_workflow.md](user_v8_task_worker_workflow.md) - user: Preferred multi-agent task delegation pattern
+- [user_valid_alternative_paths.md](user_valid_alternative_paths.md) - user: 可行替代路径
+- [user_workspace_path.md](user_workspace_path.md) - user: User's local workspace root directory for the 2026 Challenge Cup project.

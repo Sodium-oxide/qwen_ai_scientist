@@ -1,0 +1,2913 @@
+{
+  "subspace_map_id": "subspace_1783189424424812400",
+  "domain": "Autonomous Grid Control / Smart Grid / AI Control",
+  "generated_by": "llm",
+  "confidence": 1.0,
+  "createdAt": 1783189424.4248328,
+  "providers": [
+    "semantic_scholar",
+    "arxiv"
+  ],
+  "user_hints": [],
+  "subspaces": [
+    {
+      "subspace_id": "distributed_energy_resource_coordination",
+      "name": "Distributed Energy Resource Coordination",
+      "aliases": [
+        "DER coordination",
+        "分布式能源协同控制",
+        "DER management"
+      ],
+      "description": "Real-time orchestration of heterogeneous distributed energy resources (solar PV, batteries, EVs, flexible loads) to maintain grid stability and optimize local economics.",
+      "parent": "",
+      "keywords": [
+        "distributed energy resources",
+        "inverter-based resource control",
+        "grid-edge coordination",
+        "virtual power plant",
+        "DER aggregation",
+        "flexibility markets",
+        "local balancing"
+      ],
+      "seed_papers": [
+        "IEEE PES Report on DER Integration (2022)",
+        "Kroposki et al., 'Grid-Forming Inverters: A Critical Asset for the Power Grid', IEEE Trans. Smart Grid, 2019"
+      ],
+      "maturity": "growing",
+      "estimated_density": "high",
+      "strategic_importance": 9,
+      "search_strategy": "must_include",
+      "generated_by": "llm",
+      "probe_query": "distributed energy resources inverter-based resource control grid-edge coordination virtual power plant DER aggregation flexibility markets",
+      "probe_hit_count": 10,
+      "recent_hit_count": 6,
+      "high_impact_hit_count": 0,
+      "suggested_quota": 3,
+      "coverage_status": "probe_covered"
+    },
+    {
+      "subspace_id": "grid_forming_control",
+      "name": "Grid-Forming Control",
+      "aliases": [
+        "GFM control",
+        "构网型控制",
+        "inverter-based grid formation"
+      ],
+      "description": "Control paradigm enabling inverter-based resources to autonomously establish voltage and frequency without relying on synchronous machines—foundational for black-start and high-renewables grids.",
+      "parent": "",
+      "keywords": [
+        "grid-forming inverters",
+        "synchronverter",
+        "virtual oscillator control",
+        "droop-free synchronization",
+        "inertia emulation",
+        "stable islanding"
+      ],
+      "seed_papers": [
+        "Ulbig et al., 'Analysis, Modeling, and Validation of Grid-Forming Inverter Dynamics', IEEE Trans. Power Systems, 2021",
+        "Baker et al., 'Grid-Forming Inverters: A Critical Asset for the Power Grid', IEEE Trans. Smart Grid, 2019"
+      ],
+      "maturity": "growing",
+      "estimated_density": "high",
+      "strategic_importance": 10,
+      "search_strategy": "must_include",
+      "generated_by": "llm",
+      "probe_query": "grid-forming inverters synchronverter virtual oscillator control droop-free synchronization inertia emulation stable islanding",
+      "probe_hit_count": 11,
+      "recent_hit_count": 8,
+      "high_impact_hit_count": 0,
+      "suggested_quota": 3,
+      "coverage_status": "probe_covered"
+    },
+    {
+      "subspace_id": "cyber_physical_security_for_grid_control",
+      "name": "Cyber-Physical Security for Grid Control",
+      "aliases": [
+        "CPS security",
+        "电网信息物理安全",
+        "control-layer cybersecurity"
+      ],
+      "description": "Protection of real-time control loops against adversarial manipulation—including false data injection, sensor spoofing, and coordinated attacks targeting AI-driven decision modules.",
+      "parent": "",
+      "keywords": [
+        "false data injection attack",
+        "secure state estimation",
+        "resilient control",
+        "cyber-physical co-simulation",
+        "attack detection in SCADA/EMS",
+        "AI robustness for grid control"
+      ],
+      "seed_papers": [
+        "Liu et al., 'False Data Injection Attacks Against State Estimation in Power Systems', IEEE Trans. Smart Grid, 2011",
+        "Sridhar et al., 'Cyber-Physical Systems Security for the Smart Grid', IEEE Trans. Smart Grid, 2012"
+      ],
+      "maturity": "mature",
+      "estimated_density": "high",
+      "strategic_importance": 9,
+      "search_strategy": "must_include",
+      "generated_by": "llm",
+      "probe_query": "false data injection attack secure state estimation resilient control cyber-physical co-simulation attack detection in SCADA/EMS AI robustness for grid control",
+      "probe_hit_count": 9,
+      "recent_hit_count": 4,
+      "high_impact_hit_count": 0,
+      "suggested_quota": 3,
+      "coverage_status": "probe_covered"
+    },
+    {
+      "subspace_id": "reinforcement_learning_for_real_time_grid_optimization",
+      "name": "Reinforcement Learning for Real-Time Grid Optimization",
+      "aliases": [
+        "RL-based grid control",
+        "强化学习电网优化",
+        "adaptive grid RL"
+      ],
+      "description": "Application of model-free and model-based reinforcement learning to learn optimal dispatch, voltage regulation, and fault recovery policies under stochastic renewable generation and load dynamics.",
+      "parent": "",
+      "keywords": [
+        "reinforcement learning power systems",
+        "online grid optimization",
+        "RL for AC OPF",
+        "adaptive control policy",
+        "multi-agent RL grid",
+        "sample-efficient RL control"
+      ],
+      "seed_papers": [
+        "Zhang et al., 'Deep Reinforcement Learning for Power System Optimization and Control: A Review', IEEE Trans. Smart Grid, 2023",
+        "Meng et al., 'Multi-Agent Reinforcement Learning for Distributed Voltage Control', Nature Energy, 2022"
+      ],
+      "maturity": "growing",
+      "estimated_density": "high",
+      "strategic_importance": 8,
+      "search_strategy": "must_include",
+      "generated_by": "llm",
+      "probe_query": "reinforcement learning power systems online grid optimization RL for AC OPF adaptive control policy multi-agent RL grid sample-efficient RL control",
+      "probe_hit_count": 12,
+      "recent_hit_count": 7,
+      "high_impact_hit_count": 0,
+      "suggested_quota": 3,
+      "coverage_status": "probe_covered"
+    },
+    {
+      "subspace_id": "digital_twin_for_grid_operations",
+      "name": "Digital Twin for Grid Operations",
+      "aliases": [
+        "grid digital twin",
+        "电网数字孪生",
+        "real-time grid replica"
+      ],
+      "description": "High-fidelity, synchronized virtual representation of physical grid assets and dynamics, integrating physics-based models, sensor data, and AI for predictive control, scenario testing, and closed-loop automation.",
+      "parent": "",
+      "keywords": [
+        "digital twin power system",
+        "real-time grid simulation",
+        "co-simulation platform",
+        "model-data fusion",
+        "twin-enabled control",
+        "synchrophasor-integrated twin"
+      ],
+      "seed_papers": [
+        "Wang et al., 'Digital Twin in Power Systems: Architecture, Applications, and Challenges', IEEE Trans. Smart Grid, 2022",
+        "NISTIR 8376: Digital Twins for Smart Grids, 2022"
+      ],
+      "maturity": "growing",
+      "estimated_density": "high",
+      "strategic_importance": 8,
+      "search_strategy": "nice_to_have",
+      "generated_by": "llm",
+      "probe_query": "digital twin power system real-time grid simulation co-simulation platform model-data fusion twin-enabled control synchrophasor-integrated twin",
+      "probe_hit_count": 9,
+      "recent_hit_count": 8,
+      "high_impact_hit_count": 0,
+      "suggested_quota": 3,
+      "coverage_status": "probe_covered"
+    },
+    {
+      "subspace_id": "autonomous_microgrid_operation",
+      "name": "Autonomous Microgrid Operation",
+      "aliases": [
+        "autonomous microgrids",
+        "孤岛微网自主运行",
+        "islanded microgrid control"
+      ],
+      "description": "Self-sufficient operation of microgrids—including island detection, seamless transition, internal stability maintenance, and peer-to-peer energy trading—without centralized utility commands.",
+      "parent": "",
+      "keywords": [
+        "microgrid autonomy",
+        "islanding detection",
+        "plug-and-play control",
+        "peer-to-peer energy trading",
+        "microgrid stability",
+        "hierarchical microgrid control"
+      ],
+      "seed_papers": [
+        "Guerrero et al., 'Hierarchical Control of Droop-Controlled AC and DC Microgrids', IEEE Trans. Smart Grid, 2011",
+        "Zhao et al., 'Autonomous Microgrid Control: From Theory to Practice', IEEE Trans. Power Electronics, 2022"
+      ],
+      "maturity": "mature",
+      "estimated_density": "medium",
+      "strategic_importance": 7,
+      "search_strategy": "must_include",
+      "generated_by": "llm",
+      "probe_query": "microgrid autonomy islanding detection plug-and-play control peer-to-peer energy trading microgrid stability hierarchical microgrid control",
+      "probe_hit_count": 5,
+      "recent_hit_count": 1,
+      "high_impact_hit_count": 0,
+      "suggested_quota": 3,
+      "coverage_status": "probe_covered"
+    },
+    {
+      "subspace_id": "physics_informed_machine_learning_for_grid_dynamics",
+      "name": "Physics-Informed Machine Learning for Grid Dynamics",
+      "aliases": [
+        "PIML grid",
+        "物理信息机器学习",
+        "neural ODE power systems"
+      ],
+      "description": "Integration of first-principles power system models (e.g., swing equations, power flow constraints) into ML architectures to ensure physical consistency, interpretability, and generalization in control and forecasting tasks.",
+      "parent": "",
+      "keywords": [
+        "physics-informed neural networks",
+        "PIML power systems",
+        "constrained neural ODE",
+        "structured deep learning",
+        "embedded differential equations",
+        "learnable power flow"
+      ],
+      "seed_papers": [
+        "Rahhal et al., 'Physics-Informed Neural Networks for Power System Dynamics', IEEE Trans. Power Systems, 2023",
+        "Chen et al., 'Neural Ordinary Differential Equations for Dynamic Power System Modeling', arXiv:2205.04371"
+      ],
+      "maturity": "emerging",
+      "estimated_density": "high",
+      "strategic_importance": 9,
+      "search_strategy": "nice_to_have",
+      "generated_by": "llm",
+      "probe_query": "physics-informed neural networks PIML power systems constrained neural ODE structured deep learning embedded differential equations learnable power flow",
+      "probe_hit_count": 5,
+      "recent_hit_count": 3,
+      "high_impact_hit_count": 0,
+      "suggested_quota": 3,
+      "coverage_status": "probe_covered"
+    },
+    {
+      "subspace_id": "wide_area_adaptive_protection_and_control",
+      "name": "Wide-Area Adaptive Protection and Control",
+      "aliases": [
+        "WAAPC",
+        "广域自适应保护",
+        "synchrophasor-based protection"
+      ],
+      "description": "Protection and control schemes leveraging time-synchronized PMU data across transmission corridors to detect faults, assess system stress, and trigger adaptive corrective actions faster than conventional relay logic.",
+      "parent": "",
+      "keywords": [
+        "wide-area protection",
+        "PMU-based control",
+        "adaptive relaying",
+        "system integrity protection scheme",
+        "fault location using synchrophasors",
+        "dynamic stability assessment"
+      ],
+      "seed_papers": [
+        "Phadke & Thorp, 'Synchronized Phasor Measurements and Their Applications', IEEE Press, 2008",
+        "Jiang et al., 'Wide-Area Adaptive Protection Using Synchrophasor Data', IEEE Trans. Power Delivery, 2019"
+      ],
+      "maturity": "mature",
+      "estimated_density": "high",
+      "strategic_importance": 8,
+      "search_strategy": "must_include",
+      "generated_by": "llm",
+      "probe_query": "wide-area protection PMU-based control adaptive relaying system integrity protection scheme fault location using synchrophasors dynamic stability assessment",
+      "probe_hit_count": 5,
+      "recent_hit_count": 3,
+      "high_impact_hit_count": 0,
+      "suggested_quota": 3,
+      "coverage_status": "probe_covered"
+    },
+    {
+      "subspace_id": "ai_enabled_distribution_system_state_estimation",
+      "name": "AI-Enabled Distribution System State Estimation",
+      "aliases": [
+        "AI-DSE",
+        "人工智能配网状态估计",
+        "distribution-level SE"
+      ],
+      "description": "High-resolution, real-time estimation of voltages, currents, and topology in unobservable low-voltage distribution networks using sparse sensor data, smart meter analytics, and graph neural networks.",
+      "parent": "",
+      "keywords": [
+        "distribution system state estimation",
+        "GNN for DSE",
+        "smart meter data fusion",
+        "topology identification",
+        "unobservable feeder estimation",
+        "probabilistic DSE"
+      ],
+      "seed_papers": [
+        "Huang et al., 'Graph Neural Networks for Distribution System State Estimation', IEEE Trans. Smart Grid, 2022",
+        "Zhou et al., 'Deep Learning-Based Distribution System State Estimation: A Review', IEEE Access, 2023"
+      ],
+      "maturity": "growing",
+      "estimated_density": "medium",
+      "strategic_importance": 8,
+      "search_strategy": "must_include",
+      "generated_by": "llm",
+      "probe_query": "distribution system state estimation GNN for DSE smart meter data fusion topology identification unobservable feeder estimation probabilistic DSE",
+      "probe_hit_count": 5,
+      "recent_hit_count": 1,
+      "high_impact_hit_count": 0,
+      "suggested_quota": 3,
+      "coverage_status": "probe_covered"
+    },
+    {
+      "subspace_id": "resilient_multi_timescale_control_architecture",
+      "name": "Resilient Multi-Timescale Control Architecture",
+      "aliases": [
+        "multi-timescale control",
+        "韧性多时间尺度控制",
+        "hierarchical autonomous control"
+      ],
+      "description": "Integrated control framework spanning sub-second (stability), second-to-minute (dispatch), and minute-to-hour (economic optimization) timescales with cross-layer coordination, failure isolation, and graceful degradation.",
+      "parent": "",
+      "keywords": [
+        "multi-timescale control",
+        "hierarchical grid control",
+        "resilient control architecture",
+        "cross-layer coordination",
+        "failure-aware control",
+        "adaptive time horizon scheduling"
+      ],
+      "seed_papers": [
+        "Ding et al., 'A Resilient Hierarchical Control Architecture for Future Power Grids', IEEE Trans. Smart Grid, 2021",
+        "Chowdhury et al., 'Multi-Timescale Coordinated Control of Renewable-Dominated Power Systems', IEEE Trans. Power Systems, 2023"
+      ],
+      "maturity": "growing",
+      "estimated_density": "medium",
+      "strategic_importance": 9,
+      "search_strategy": "nice_to_have",
+      "generated_by": "llm",
+      "probe_query": "multi-timescale control hierarchical grid control resilient control architecture cross-layer coordination failure-aware control adaptive time horizon scheduling",
+      "probe_hit_count": 4,
+      "recent_hit_count": 1,
+      "high_impact_hit_count": 0,
+      "suggested_quota": 3,
+      "coverage_status": "probe_covered"
+    }
+  ],
+  "probe_results": [
+    {
+      "subspace_id": "distributed_energy_resource_coordination",
+      "name": "Distributed Energy Resource Coordination",
+      "query": "distributed energy resources inverter-based resource control grid-edge coordination virtual power plant DER aggregation flexibility markets",
+      "probe_queries": [
+        "Distributed Energy Resource Coordination distributed energy resources inverter-based resource control grid-edge coordination virtual power plant",
+        "distributed energy resources inverter-based resource control grid-edge coordination virtual power plant DER aggregation flexibility markets"
+      ],
+      "provider_blocks": [
+        {
+          "provider": "semantic_scholar",
+          "query": "Distributed Energy Resource Coordination distributed energy resources inverter-based resource control grid-edge coordination virtual power plant",
+          "status": "ok",
+          "note": null,
+          "error": null,
+          "result_count": 3
+        },
+        {
+          "provider": "arxiv",
+          "query": "Distributed Energy Resource Coordination distributed energy resources inverter-based resource control grid-edge coordination virtual power plant",
+          "status": "ok",
+          "note": null,
+          "error": null,
+          "result_count": 3
+        },
+        {
+          "provider": "semantic_scholar",
+          "query": "distributed energy resources inverter-based resource control grid-edge coordination virtual power plant DER aggregation flexibility markets",
+          "status": "ok",
+          "note": null,
+          "error": null,
+          "result_count": 3
+        },
+        {
+          "provider": "arxiv",
+          "query": "distributed energy resources inverter-based resource control grid-edge coordination virtual power plant DER aggregation flexibility markets",
+          "status": "ok",
+          "note": null,
+          "error": null,
+          "result_count": 3
+        }
+      ],
+      "hit_count": 10,
+      "recent_count": 6,
+      "high_impact_count": 0,
+      "top_seed_papers": [
+        {
+          "result_index": null,
+          "stratified_layer": "",
+          "stratified_label": "",
+          "query_branch": "",
+          "retrieval_query": "Distributed Energy Resource Coordination distributed energy resources inverter-based resource control grid-edge coordination virtual power plant",
+          "_why_selected": "",
+          "domain_relevance": {},
+          "relevance_score": 0.5541,
+          "relevance_components": {
+            "text_score": 0.4187,
+            "recency_score": 0.7,
+            "impact_score": 0.6917,
+            "citation_field": "energy_engineering",
+            "citation_baseline": 700.0,
+            "venue_score": 1.0,
+            "publication_quality_score": 1.0,
+            "base_score": 0.5541,
+            "text_weight": 0.62,
+            "recency_weight": 0.1,
+            "impact_weight": 0.18,
+            "venue_weight": 0.1
+          },
+          "publication_quality_score": 1.0,
+          "venue_quality": "reputable",
+          "journal_quartile": "Q1",
+          "journal_metric_source": "curated_jcr_representative",
+          "inferred_field": "energy_engineering",
+          "quality_flags": [
+            "journal_quartile_q1",
+            "reputable_venue",
+            "well_cited"
+          ],
+          "quality_criteria": [
+            "venue matched curated journal metric table: Q1",
+            "citation count exceeds medium/high threshold"
+          ],
+          "suspicion_type": "",
+          "is_review_like": false,
+          "pyramid_root_score": 0.9379,
+          "matched_query_terms": [
+            "distributed",
+            "energy",
+            "resources",
+            "resource",
+            "control",
+            "coordination",
+            "power",
+            "der"
+          ],
+          "title": "Fair Coordination of Distributed Energy Resources with Volt-Var Control and PV Curtailment",
+          "citation": "Daniel Gebbran et al. (2021) Fair Coordination of Distributed Energy Resources with Volt-Var Control and PV Curtailment doi:10.1016/j.apenergy.2021.116546",
+          "provider": "semantic_scholar",
+          "year": "2021",
+          "citation_count": 92,
+          "influential_citation_count": 7,
+          "doi": "10.1016/j.apenergy.2021.116546",
+          "arxiv_id": "2203.04842",
+          "url": "https://www.semanticscholar.org/paper/b7e3f371e0b6371cdde72af3588c7ff46bcf5b70",
+          "relevance_reason": "title=6/15, abstract=7/15, citation=6/15, phrase_bonus=0.0, recency=0.7, impact=0.6917, venue=1.0, quality=1.0",
+          "quality_reason": "venue matched curated journal metric table: Q1; citation count exceeds medium/high threshold"
+        },
+        {
+          "result_index": null,
+          "stratified_layer": "",
+          "stratified_label": "",
+          "query_branch": "",
+          "retrieval_query": "Distributed Energy Resource Coordination distributed energy resources inverter-based resource control grid-edge coordination virtual power plant",
+          "_why_selected": "",
+          "domain_relevance": {},
+          "relevance_score": 0.4163,
+          "relevance_components": {
+            "text_score": 0.5227,
+            "recency_score": 1.0,
+            "impact_score": 0.4376,
+            "citation_field": "materials_energy",
+            "citation_baseline": 350.0,
+            "venue_score": 0.45,
+            "publication_quality_score": 0.76,
+            "base_score": 0.5478,
+            "text_weight": 0.62,
+            "recency_weight": 0.1,
+            "impact_weight": 0.18,
+            "venue_weight": 0.1
+          },
+          "publication_quality_score": 0.76,
+          "venue_quality": "unverified",
+          "journal_quartile": "",
+          "journal_metric_source": "",
+          "inferred_field": "materials_energy",
+          "quality_flags": [
+            "unverified_venue",
+            "some_citations"
+          ],
+          "quality_criteria": [
+            "venue did not match suspicious, reputable, preprint, or curated quartile tables",
+            "citation count exceeds minimum nontrivial threshold"
+          ],
+          "suspicion_type": "",
+          "is_review_like": false,
+          "pyramid_root_score": 0.6339,
+          "matched_query_terms": [
+            "distributed",
+            "energy",
+            "resources",
+            "resource",
+            "virtual",
+            "power",
+            "plant",
+            "control",
+            "coordination",
+            "der"
+          ],
+          "title": "Stochastic Incentive-Based Demand Response Program for Virtual Power Plant With Distributed Energy Resources",
+          "citation": "Pratik Harsh et al. (2025) Stochastic Incentive-Based Demand Response Program for Virtual Power Plant With Distributed Energy Resources doi:10.1109/TIA.2025.3535847",
+          "provider": "semantic_scholar",
+          "year": "2025",
+          "citation_count": 12,
+          "influential_citation_count": 0,
+          "doi": "10.1109/TIA.2025.3535847",
+          "arxiv_id": "",
+          "url": "https://www.semanticscholar.org/paper/574c50602d76e560c6c2ba14ac091b60e85a8c00",
+          "relevance_reason": "title=7/15, abstract=10/15, citation=7/15, phrase_bonus=0.0, recency=1.0, impact=0.4376, venue=0.45, quality=0.76",
+          "quality_reason": "venue did not match suspicious, reputable, preprint, or curated quartile tables; citation count exceeds minimum nontrivial threshold"
+        },
+        {
+          "result_index": null,
+          "stratified_layer": "",
+          "stratified_label": "",
+          "query_branch": "",
+          "retrieval_query": "distributed energy resources inverter-based resource control grid-edge coordination virtual power plant DER aggregation flexibility markets",
+          "_why_selected": "",
+          "domain_relevance": {},
+          "relevance_score": 0.3772,
+          "relevance_components": {
+            "text_score": 0.5707,
+            "recency_score": 0.85,
+            "impact_score": 0.223,
+            "citation_field": "ecology",
+            "citation_baseline": 500.0,
+            "venue_score": 0.45,
+            "publication_quality_score": 0.72,
+            "base_score": 0.524,
+            "text_weight": 0.62,
+            "recency_weight": 0.1,
+            "impact_weight": 0.18,
+            "venue_weight": 0.1
+          },
+          "publication_quality_score": 0.72,
+          "venue_quality": "unverified",
+          "journal_quartile": "",
+          "journal_metric_source": "",
+          "inferred_field": "ecology",
+          "quality_flags": [
+            "unverified_venue"
+          ],
+          "quality_criteria": [
+            "venue did not match suspicious, reputable, preprint, or curated quartile tables"
+          ],
+          "suspicion_type": "",
+          "is_review_like": false,
+          "pyramid_root_score": 0.5546,
+          "matched_query_terms": [
+            "resources",
+            "resource",
+            "control",
+            "coordination",
+            "virtual",
+            "power",
+            "plant",
+            "der",
+            "distributed",
+            "energy",
+            "aggregation"
+          ],
+          "title": "Coordination of Multiple Flexible Resources Considering Virtual Power Plants and Emergency Frequency Control",
+          "citation": "Jingrun Xue et al. (2023) Coordination of Multiple Flexible Resources Considering Virtual Power Plants and Emergency Frequency Control doi:10.3390/app13116390",
+          "provider": "semantic_scholar",
+          "year": "2023",
+          "citation_count": 3,
+          "influential_citation_count": 1,
+          "doi": "10.3390/app13116390",
+          "arxiv_id": "",
+          "url": "https://www.semanticscholar.org/paper/e7a8d046a2df2d8b500372f0a4f8608c5ff0f416",
+          "relevance_reason": "title=8/15, abstract=10/15, citation=8/15, phrase_bonus=0.0, recency=0.85, impact=0.223, venue=0.45, quality=0.72",
+          "quality_reason": "venue did not match suspicious, reputable, preprint, or curated quartile tables"
+        }
+      ]
+    },
+    {
+      "subspace_id": "grid_forming_control",
+      "name": "Grid-Forming Control",
+      "query": "grid-forming inverters synchronverter virtual oscillator control droop-free synchronization inertia emulation stable islanding",
+      "probe_queries": [
+        "Grid-Forming Control grid-forming inverters synchronverter virtual oscillator control droop-free synchronization",
+        "grid-forming inverters synchronverter virtual oscillator control droop-free synchronization inertia emulation stable islanding"
+      ],
+      "provider_blocks": [
+        {
+          "provider": "semantic_scholar",
+          "query": "Grid-Forming Control grid-forming inverters synchronverter virtual oscillator control droop-free synchronization",
+          "status": "ok",
+          "note": null,
+          "error": null,
+          "result_count": 3
+        },
+        {
+          "provider": "arxiv",
+          "query": "Grid-Forming Control grid-forming inverters synchronverter virtual oscillator control droop-free synchronization",
+          "status": "ok",
+          "note": null,
+          "error": null,
+          "result_count": 3
+        },
+        {
+          "provider": "semantic_scholar",
+          "query": "grid-forming inverters synchronverter virtual oscillator control droop-free synchronization inertia emulation stable islanding",
+          "status": "ok",
+          "note": null,
+          "error": null,
+          "result_count": 3
+        },
+        {
+          "provider": "arxiv",
+          "query": "grid-forming inverters synchronverter virtual oscillator control droop-free synchronization inertia emulation stable islanding",
+          "status": "ok",
+          "note": null,
+          "error": null,
+          "result_count": 3
+        }
+      ],
+      "hit_count": 11,
+      "recent_count": 8,
+      "high_impact_count": 0,
+      "top_seed_papers": [
+        {
+          "result_index": null,
+          "stratified_layer": "",
+          "stratified_label": "",
+          "query_branch": "",
+          "retrieval_query": "Grid-Forming Control grid-forming inverters synchronverter virtual oscillator control droop-free synchronization",
+          "_why_selected": "",
+          "domain_relevance": {},
+          "relevance_score": 0.5261,
+          "relevance_components": {
+            "text_score": 0.44,
+            "recency_score": 1.0,
+            "impact_score": 0.55,
+            "citation_field": "electrical_engineering",
+            "citation_baseline": 600.0,
+            "venue_score": 1.0,
+            "publication_quality_score": 0.92,
+            "base_score": 0.5718,
+            "text_weight": 0.62,
+            "recency_weight": 0.1,
+            "impact_weight": 0.18,
+            "venue_weight": 0.1
+          },
+          "publication_quality_score": 0.92,
+          "venue_quality": "reputable",
+          "journal_quartile": "Q1",
+          "journal_metric_source": "curated_jcr_representative",
+          "inferred_field": "electrical_engineering",
+          "quality_flags": [
+            "journal_quartile_q1",
+            "reputable_venue"
+          ],
+          "quality_criteria": [
+            "venue matched curated journal metric table: Q1"
+          ],
+          "suspicion_type": "",
+          "is_review_like": false,
+          "pyramid_root_score": 0.8726,
+          "matched_query_terms": [
+            "grid-forming",
+            "inverters",
+            "virtual",
+            "oscillator",
+            "control",
+            "inertia"
+          ],
+          "title": "Decentralized Cost-Based Dispatchable Virtual Oscillator Control for Grid-Forming Inverters",
+          "citation": "M. Abdelghany et al. (2026) Decentralized Cost-Based Dispatchable Virtual Oscillator Control for Grid-Forming Inverters doi:10.1109/TSG.2025.3646883",
+          "provider": "semantic_scholar",
+          "year": "2026",
+          "citation_count": 1,
+          "influential_citation_count": 0,
+          "doi": "10.1109/TSG.2025.3646883",
+          "arxiv_id": "",
+          "url": "https://www.semanticscholar.org/paper/408be9d6c04c12347c6fca6d19e5b56783da180e",
+          "relevance_reason": "title=5/12, abstract=6/12, citation=5/12, phrase_bonus=0.0, recency=1.0, impact=0.55, venue=1.0, quality=0.92",
+          "quality_reason": "venue matched curated journal metric table: Q1"
+        },
+        {
+          "result_index": null,
+          "stratified_layer": "",
+          "stratified_label": "",
+          "query_branch": "",
+          "retrieval_query": "Grid-Forming Control grid-forming inverters synchronverter virtual oscillator control droop-free synchronization",
+          "_why_selected": "",
+          "domain_relevance": {},
+          "relevance_score": 0.3711,
+          "relevance_components": {
+            "text_score": 0.44,
+            "recency_score": 0.85,
+            "impact_score": 0.4753,
+            "citation_field": "general",
+            "citation_baseline": 800.0,
+            "venue_score": 0.45,
+            "publication_quality_score": 0.76,
+            "base_score": 0.4884,
+            "text_weight": 0.62,
+            "recency_weight": 0.1,
+            "impact_weight": 0.18,
+            "venue_weight": 0.1
+          },
+          "publication_quality_score": 0.76,
+          "venue_quality": "unverified",
+          "journal_quartile": "",
+          "journal_metric_source": "",
+          "inferred_field": "general",
+          "quality_flags": [
+            "unverified_venue",
+            "some_citations"
+          ],
+          "quality_criteria": [
+            "venue did not match suspicious, reputable, preprint, or curated quartile tables",
+            "citation count exceeds minimum nontrivial threshold"
+          ],
+          "suspicion_type": "",
+          "is_review_like": false,
+          "pyramid_root_score": 0.5944,
+          "matched_query_terms": [
+            "grid-forming",
+            "inverters",
+            "virtual",
+            "oscillator",
+            "inertia",
+            "control",
+            "synchronization"
+          ],
+          "title": "A New Virtual Inertial Strategy for Andronov–Hopf Oscillator Based Grid-Forming Inverters",
+          "citation": "Siyi Luo et al. (2024) A New Virtual Inertial Strategy for Andronov–Hopf Oscillator Based Grid-Forming Inverters doi:10.1109/JESTPE.2024.3370171",
+          "provider": "semantic_scholar",
+          "year": "2024",
+          "citation_count": 23,
+          "influential_citation_count": 2,
+          "doi": "10.1109/JESTPE.2024.3370171",
+          "arxiv_id": "",
+          "url": "https://www.semanticscholar.org/paper/b1fe5cc29717df0c308ece80f78d52035435d39b",
+          "relevance_reason": "title=5/12, abstract=6/12, citation=5/12, phrase_bonus=0.0, recency=0.85, impact=0.4753, venue=0.45, quality=0.76",
+          "quality_reason": "venue did not match suspicious, reputable, preprint, or curated quartile tables; citation count exceeds minimum nontrivial threshold"
+        },
+        {
+          "result_index": null,
+          "stratified_layer": "",
+          "stratified_label": "",
+          "query_branch": "",
+          "retrieval_query": "grid-forming inverters synchronverter virtual oscillator control droop-free synchronization inertia emulation stable islanding",
+          "_why_selected": "",
+          "domain_relevance": {},
+          "relevance_score": 0.3239,
+          "relevance_components": {
+            "text_score": 0.39,
+            "recency_score": 1.0,
+            "impact_score": 0.35,
+            "citation_field": "computer_science",
+            "citation_baseline": 800.0,
+            "venue_score": 0.45,
+            "publication_quality_score": 0.72,
+            "base_score": 0.4498,
+            "text_weight": 0.62,
+            "recency_weight": 0.1,
+            "impact_weight": 0.18,
+            "venue_weight": 0.1
+          },
+          "publication_quality_score": 0.72,
+          "venue_quality": "unverified",
+          "journal_quartile": "",
+          "journal_metric_source": "",
+          "inferred_field": "computer_science",
+          "quality_flags": [
+            "unverified_venue",
+            "new_paper_protection"
+          ],
+          "quality_criteria": [
+            "venue did not match suspicious, reputable, preprint, or curated quartile tables",
+            "paper is within 2-year protection window; low citations are not treated as low quality"
+          ],
+          "suspicion_type": "",
+          "is_review_like": true,
+          "pyramid_root_score": 0.8704,
+          "matched_query_terms": [
+            "grid-forming",
+            "inverters",
+            "control",
+            "synchronverter",
+            "virtual",
+            "oscillator",
+            "synchronization",
+            "inertia",
+            "emulation"
+          ],
+          "title": "Grid-Forming Inverters in Photovoltaic Power Systems: A Comprehensive Review of Modeling, Control, and Stability Perspectives",
+          "citation": "Youness Hakam et al. (2026) Grid-Forming Inverters in Photovoltaic Power Systems: A Comprehensive Review of Modeling, Control, and Stability Perspectives doi:10.3390/en19051244",
+          "provider": "semantic_scholar",
+          "year": "2026",
+          "citation_count": 0,
+          "influential_citation_count": 0,
+          "doi": "10.3390/en19051244",
+          "arxiv_id": "",
+          "url": "https://www.semanticscholar.org/paper/b7cff2518c12f32e8252ed833f988b014c96c3e1",
+          "relevance_reason": "title=3/12, abstract=9/12, citation=3/12, phrase_bonus=0.0, recency=1.0, impact=0.35, venue=0.45, quality=0.72",
+          "quality_reason": "venue did not match suspicious, reputable, preprint, or curated quartile tables; paper is within 2-year protection window; low citations are not treated as low quality"
+        }
+      ]
+    },
+    {
+      "subspace_id": "cyber_physical_security_for_grid_control",
+      "name": "Cyber-Physical Security for Grid Control",
+      "query": "false data injection attack secure state estimation resilient control cyber-physical co-simulation attack detection in SCADA/EMS AI robustness for grid control",
+      "probe_queries": [
+        "Cyber-Physical Security for Grid Control false data injection attack secure state estimation resilient control cyber-physical co-simulation",
+        "false data injection attack secure state estimation resilient control cyber-physical co-simulation attack detection in SCADA/EMS AI robustness for grid control"
+      ],
+      "provider_blocks": [
+        {
+          "provider": "semantic_scholar",
+          "query": "Cyber-Physical Security for Grid Control false data injection attack secure state estimation resilient control cyber-physical co-simulation",
+          "status": "ok",
+          "note": null,
+          "error": null,
+          "result_count": 3
+        },
+        {
+          "provider": "arxiv",
+          "query": "Cyber-Physical Security for Grid Control false data injection attack secure state estimation resilient control cyber-physical co-simulation",
+          "status": "ok",
+          "note": null,
+          "error": null,
+          "result_count": 3
+        },
+        {
+          "provider": "semantic_scholar",
+          "query": "false data injection attack secure state estimation resilient control cyber-physical co-simulation attack detection in SCADA/EMS AI robustness for grid control",
+          "status": "ok",
+          "note": null,
+          "error": null,
+          "result_count": 0
+        },
+        {
+          "provider": "arxiv",
+          "query": "false data injection attack secure state estimation resilient control cyber-physical co-simulation attack detection in SCADA/EMS AI robustness for grid control",
+          "status": "ok",
+          "note": null,
+          "error": null,
+          "result_count": 3
+        }
+      ],
+      "hit_count": 9,
+      "recent_count": 4,
+      "high_impact_count": 0,
+      "top_seed_papers": [
+        {
+          "result_index": null,
+          "stratified_layer": "",
+          "stratified_label": "",
+          "query_branch": "",
+          "retrieval_query": "Cyber-Physical Security for Grid Control false data injection attack secure state estimation resilient control cyber-physical co-simulation",
+          "_why_selected": "",
+          "domain_relevance": {},
+          "relevance_score": 0.4718,
+          "relevance_components": {
+            "text_score": 0.6425,
+            "recency_score": 0.7,
+            "impact_score": 0.5966,
+            "citation_field": "general",
+            "citation_baseline": 800.0,
+            "venue_score": 0.45,
+            "publication_quality_score": 0.76,
+            "base_score": 0.6207,
+            "text_weight": 0.62,
+            "recency_weight": 0.1,
+            "impact_weight": 0.18,
+            "venue_weight": 0.1
+          },
+          "publication_quality_score": 0.76,
+          "venue_quality": "unverified",
+          "journal_quartile": "",
+          "journal_metric_source": "",
+          "inferred_field": "general",
+          "quality_flags": [
+            "unverified_venue",
+            "well_cited",
+            "missing_reference_count"
+          ],
+          "quality_criteria": [
+            "venue did not match suspicious, reputable, preprint, or curated quartile tables",
+            "citation count exceeds medium/high threshold",
+            "Semantic Scholar reports zero references for a non-recent paper"
+          ],
+          "suspicion_type": "",
+          "is_review_like": false,
+          "pyramid_root_score": 0.7133,
+          "matched_query_terms": [
+            "false",
+            "data",
+            "injection",
+            "attack",
+            "state",
+            "estimation",
+            "resilient",
+            "control",
+            "cyber-physical",
+            "ems",
+            "secure",
+            "detection"
+          ],
+          "title": "Resilient State Estimation and Control of Cyber-Physical Systems Against False Data Injection Attacks on Both Actuator and Sensors",
+          "citation": "Guoxi Chen et al. (2022) Resilient State Estimation and Control of Cyber-Physical Systems Against False Data Injection Attacks on Both Actuator and Sensors doi:10.1109/tcns.2021.3113265",
+          "provider": "semantic_scholar",
+          "year": "2022",
+          "citation_count": 53,
+          "influential_citation_count": 2,
+          "doi": "10.1109/tcns.2021.3113265",
+          "arxiv_id": "",
+          "url": "https://www.semanticscholar.org/paper/83662ab5c1acbb89952e1ce9807c68ef6a93e645",
+          "relevance_reason": "title=10/16, abstract=11/16, citation=10/16, phrase_bonus=0.0, recency=0.7, impact=0.5966, venue=0.45, quality=0.76",
+          "quality_reason": "venue did not match suspicious, reputable, preprint, or curated quartile tables; citation count exceeds medium/high threshold; Semantic Scholar reports zero references for a non-recent paper"
+        },
+        {
+          "result_index": null,
+          "stratified_layer": "",
+          "stratified_label": "",
+          "query_branch": "",
+          "retrieval_query": "Cyber-Physical Security for Grid Control false data injection attack secure state estimation resilient control cyber-physical co-simulation",
+          "_why_selected": "",
+          "domain_relevance": {},
+          "relevance_score": 0.3361,
+          "relevance_components": {
+            "text_score": 0.4175,
+            "recency_score": 1.0,
+            "impact_score": 0.35,
+            "citation_field": "general",
+            "citation_baseline": 800.0,
+            "venue_score": 0.45,
+            "publication_quality_score": 0.72,
+            "base_score": 0.4668,
+            "text_weight": 0.62,
+            "recency_weight": 0.1,
+            "impact_weight": 0.18,
+            "venue_weight": 0.1
+          },
+          "publication_quality_score": 0.72,
+          "venue_quality": "unverified",
+          "journal_quartile": "",
+          "journal_metric_source": "",
+          "inferred_field": "general",
+          "quality_flags": [
+            "unverified_venue",
+            "new_paper_protection"
+          ],
+          "quality_criteria": [
+            "venue did not match suspicious, reputable, preprint, or curated quartile tables",
+            "paper is within 2-year protection window; low citations are not treated as low quality"
+          ],
+          "suspicion_type": "",
+          "is_review_like": false,
+          "pyramid_root_score": 0.5326,
+          "matched_query_terms": [
+            "false",
+            "data",
+            "injection",
+            "attack",
+            "cyber-physical",
+            "secure",
+            "resilient",
+            "control",
+            "detection",
+            "ems",
+            "grid"
+          ],
+          "title": "Cyber-Physical System Defense Against Structured False Data Injection Attacks Using an Adaptive Security Framework with Passivity Enhancement",
+          "citation": "R. Gopi et al. (2025) Cyber-Physical System Defense Against Structured False Data Injection Attacks Using an Adaptive Security Framework with Passivity Enhancement doi:10.52783/jisem.v10i43s.8360",
+          "provider": "semantic_scholar",
+          "year": "2025",
+          "citation_count": 0,
+          "influential_citation_count": 0,
+          "doi": "10.52783/jisem.v10i43s.8360",
+          "arxiv_id": "",
+          "url": "https://www.semanticscholar.org/paper/65b84aa81bb0bead8ab23808eb09a633786fc8ce",
+          "relevance_reason": "title=5/16, abstract=11/16, citation=5/16, phrase_bonus=0.0, recency=1.0, impact=0.35, venue=0.45, quality=0.72",
+          "quality_reason": "venue did not match suspicious, reputable, preprint, or curated quartile tables; paper is within 2-year protection window; low citations are not treated as low quality"
+        },
+        {
+          "result_index": null,
+          "stratified_layer": "",
+          "stratified_label": "",
+          "query_branch": "",
+          "retrieval_query": "Cyber-Physical Security for Grid Control false data injection attack secure state estimation resilient control cyber-physical co-simulation",
+          "_why_selected": "",
+          "domain_relevance": {},
+          "relevance_score": 0.2881,
+          "relevance_components": {
+            "text_score": 0.31,
+            "recency_score": 1.0,
+            "impact_score": 0.35,
+            "citation_field": "general",
+            "citation_baseline": 800.0,
+            "venue_score": 0.45,
+            "publication_quality_score": 0.72,
+            "base_score": 0.4002,
+            "text_weight": 0.62,
+            "recency_weight": 0.1,
+            "impact_weight": 0.18,
+            "venue_weight": 0.1
+          },
+          "publication_quality_score": 0.72,
+          "venue_quality": "unverified",
+          "journal_quartile": "",
+          "journal_metric_source": "",
+          "inferred_field": "general",
+          "quality_flags": [
+            "unverified_venue",
+            "new_paper_protection"
+          ],
+          "quality_criteria": [
+            "venue did not match suspicious, reputable, preprint, or curated quartile tables",
+            "paper is within 2-year protection window; low citations are not treated as low quality"
+          ],
+          "suspicion_type": "",
+          "is_review_like": false,
+          "pyramid_root_score": 0.4846,
+          "matched_query_terms": [
+            "state",
+            "estimation",
+            "resilient",
+            "false",
+            "data",
+            "injection",
+            "attack",
+            "secure",
+            "cyber-physical",
+            "ems",
+            "grid"
+          ],
+          "title": "FDI-Resilient State Estimation for Distribution Networks Using Compressive Sensing",
+          "citation": "Hongjian Zhu et al. (2025) FDI-Resilient State Estimation for Distribution Networks Using Compressive Sensing doi:10.1109/EPSIC68233.2025.00020",
+          "provider": "semantic_scholar",
+          "year": "2025",
+          "citation_count": 0,
+          "influential_citation_count": 0,
+          "doi": "10.1109/EPSIC68233.2025.00020",
+          "arxiv_id": "",
+          "url": "https://www.semanticscholar.org/paper/56afe2c5c201a3b2dba357fd476c9f606c2b0a97",
+          "relevance_reason": "title=3/16, abstract=10/16, citation=3/16, phrase_bonus=0.0, recency=1.0, impact=0.35, venue=0.45, quality=0.72",
+          "quality_reason": "venue did not match suspicious, reputable, preprint, or curated quartile tables; paper is within 2-year protection window; low citations are not treated as low quality"
+        }
+      ]
+    },
+    {
+      "subspace_id": "reinforcement_learning_for_real_time_grid_optimization",
+      "name": "Reinforcement Learning for Real-Time Grid Optimization",
+      "query": "reinforcement learning power systems online grid optimization RL for AC OPF adaptive control policy multi-agent RL grid sample-efficient RL control",
+      "probe_queries": [
+        "Reinforcement Learning for Real-Time Grid Optimization reinforcement learning power systems online grid optimization RL for AC OPF adaptive control policy",
+        "reinforcement learning power systems online grid optimization RL for AC OPF adaptive control policy multi-agent RL grid sample-efficient RL control"
+      ],
+      "provider_blocks": [
+        {
+          "provider": "semantic_scholar",
+          "query": "Reinforcement Learning for Real-Time Grid Optimization reinforcement learning power systems online grid optimization RL for AC OPF adaptive control policy",
+          "status": "ok",
+          "note": null,
+          "error": null,
+          "result_count": 3
+        },
+        {
+          "provider": "arxiv",
+          "query": "Reinforcement Learning for Real-Time Grid Optimization reinforcement learning power systems online grid optimization RL for AC OPF adaptive control policy",
+          "status": "ok",
+          "note": null,
+          "error": null,
+          "result_count": 3
+        },
+        {
+          "provider": "semantic_scholar",
+          "query": "reinforcement learning power systems online grid optimization RL for AC OPF adaptive control policy multi-agent RL grid sample-efficient RL control",
+          "status": "ok",
+          "note": null,
+          "error": null,
+          "result_count": 3
+        },
+        {
+          "provider": "arxiv",
+          "query": "reinforcement learning power systems online grid optimization RL for AC OPF adaptive control policy multi-agent RL grid sample-efficient RL control",
+          "status": "ok",
+          "note": null,
+          "error": null,
+          "result_count": 3
+        }
+      ],
+      "hit_count": 12,
+      "recent_count": 7,
+      "high_impact_count": 0,
+      "top_seed_papers": [
+        {
+          "result_index": null,
+          "stratified_layer": "",
+          "stratified_label": "",
+          "query_branch": "",
+          "retrieval_query": "Reinforcement Learning for Real-Time Grid Optimization reinforcement learning power systems online grid optimization RL for AC OPF adaptive control policy",
+          "_why_selected": "",
+          "domain_relevance": {},
+          "relevance_score": 0.4072,
+          "relevance_components": {
+            "text_score": 0.5262,
+            "recency_score": 1.0,
+            "impact_score": 0.3587,
+            "citation_field": "general",
+            "citation_baseline": 800.0,
+            "venue_score": 0.45,
+            "publication_quality_score": 0.76,
+            "base_score": 0.5358,
+            "text_weight": 0.62,
+            "recency_weight": 0.1,
+            "impact_weight": 0.18,
+            "venue_weight": 0.1
+          },
+          "publication_quality_score": 0.76,
+          "venue_quality": "unverified",
+          "journal_quartile": "",
+          "journal_metric_source": "",
+          "inferred_field": "general",
+          "quality_flags": [
+            "unverified_venue",
+            "some_citations"
+          ],
+          "quality_criteria": [
+            "venue did not match suspicious, reputable, preprint, or curated quartile tables",
+            "citation count exceeds minimum nontrivial threshold"
+          ],
+          "suspicion_type": "",
+          "is_review_like": false,
+          "pyramid_root_score": 0.613,
+          "matched_query_terms": [
+            "reinforcement",
+            "learning",
+            "systems",
+            "grid",
+            "adaptive",
+            "control",
+            "power",
+            "online",
+            "optimization"
+          ],
+          "title": "Hybrid PSO–Reinforcement Learning-Based Adaptive Virtual Inertia Control for Frequency Stability in Multi-Microgrid PV Systems",
+          "citation": "Akeem Babatunde Akinwola et al. (2025) Hybrid PSO–Reinforcement Learning-Based Adaptive Virtual Inertia Control for Frequency Stability in Multi-Microgrid PV Systems doi:10.3390/electronics14173349",
+          "provider": "semantic_scholar",
+          "year": "2025",
+          "citation_count": 10,
+          "influential_citation_count": 0,
+          "doi": "10.3390/electronics14173349",
+          "arxiv_id": "",
+          "url": "https://www.semanticscholar.org/paper/ed7c8c1ff5010fe09b9372ca53335fb07f1a0bec",
+          "relevance_reason": "title=6/13, abstract=9/13, citation=6/13, phrase_bonus=0.0, recency=1.0, impact=0.3587, venue=0.45, quality=0.76",
+          "quality_reason": "venue did not match suspicious, reputable, preprint, or curated quartile tables; citation count exceeds minimum nontrivial threshold"
+        },
+        {
+          "result_index": null,
+          "stratified_layer": "",
+          "stratified_label": "",
+          "query_branch": "",
+          "retrieval_query": "reinforcement learning power systems online grid optimization RL for AC OPF adaptive control policy multi-agent RL grid sample-efficient RL control",
+          "_why_selected": "",
+          "domain_relevance": {},
+          "relevance_score": 0.4002,
+          "relevance_components": {
+            "text_score": 0.4923,
+            "recency_score": 1.0,
+            "impact_score": 0.424,
+            "citation_field": "materials_energy",
+            "citation_baseline": 350.0,
+            "venue_score": 0.45,
+            "publication_quality_score": 0.76,
+            "base_score": 0.5266,
+            "text_weight": 0.62,
+            "recency_weight": 0.1,
+            "impact_weight": 0.18,
+            "venue_weight": 0.1
+          },
+          "publication_quality_score": 0.76,
+          "venue_quality": "unverified",
+          "journal_quartile": "",
+          "journal_metric_source": "",
+          "inferred_field": "materials_energy",
+          "quality_flags": [
+            "unverified_venue",
+            "some_citations"
+          ],
+          "quality_criteria": [
+            "venue did not match suspicious, reputable, preprint, or curated quartile tables",
+            "citation count exceeds minimum nontrivial threshold"
+          ],
+          "suspicion_type": "",
+          "is_review_like": false,
+          "pyramid_root_score": 0.6158,
+          "matched_query_terms": [
+            "power",
+            "adaptive",
+            "control",
+            "policy",
+            "multi-agent",
+            "reinforcement",
+            "learning",
+            "systems",
+            "online",
+            "grid",
+            "optimization"
+          ],
+          "title": "Robust Adaptive Fractional-Order PID Controller Design for High-Power DC-DC Dual Active Bridge Converter Enhanced Using Multi-Agent Deep Deterministic Policy Gradient Algorithm for Electric Vehicles",
+          "citation": "S. Ghamari et al. (2025) Robust Adaptive Fractional-Order PID Controller Design for High-Power DC-DC Dual Active Bridge Converter Enhanced Using Multi-Agent Deep Deterministic Policy Gradient Algorithm for Electric Vehicles doi:10.3390/en18123046",
+          "provider": "semantic_scholar",
+          "year": "2025",
+          "citation_count": 11,
+          "influential_citation_count": 0,
+          "doi": "10.3390/en18123046",
+          "arxiv_id": "",
+          "url": "https://www.semanticscholar.org/paper/92376cc074ac4b467784e44a40de9c76811c3156",
+          "relevance_reason": "title=5/13, abstract=10/13, citation=5/13, phrase_bonus=0.0, recency=1.0, impact=0.424, venue=0.45, quality=0.76",
+          "quality_reason": "venue did not match suspicious, reputable, preprint, or curated quartile tables; citation count exceeds minimum nontrivial threshold"
+        },
+        {
+          "result_index": null,
+          "stratified_layer": "",
+          "stratified_label": "",
+          "query_branch": "",
+          "retrieval_query": "reinforcement learning power systems online grid optimization RL for AC OPF adaptive control policy multi-agent RL grid sample-efficient RL control",
+          "_why_selected": "",
+          "domain_relevance": {},
+          "relevance_score": 0.3599,
+          "relevance_components": {
+            "text_score": 0.4708,
+            "recency_score": 1.0,
+            "impact_score": 0.35,
+            "citation_field": "computer_science",
+            "citation_baseline": 800.0,
+            "venue_score": 0.45,
+            "publication_quality_score": 0.72,
+            "base_score": 0.4999,
+            "text_weight": 0.62,
+            "recency_weight": 0.1,
+            "impact_weight": 0.18,
+            "venue_weight": 0.1
+          },
+          "publication_quality_score": 0.72,
+          "venue_quality": "unverified",
+          "journal_quartile": "",
+          "journal_metric_source": "",
+          "inferred_field": "computer_science",
+          "quality_flags": [
+            "unverified_venue",
+            "new_paper_protection"
+          ],
+          "quality_criteria": [
+            "venue did not match suspicious, reputable, preprint, or curated quartile tables",
+            "paper is within 2-year protection window; low citations are not treated as low quality"
+          ],
+          "suspicion_type": "",
+          "is_review_like": false,
+          "pyramid_root_score": 0.5564,
+          "matched_query_terms": [
+            "reinforcement",
+            "learning",
+            "power",
+            "grid",
+            "adaptive",
+            "optimization",
+            "control",
+            "policy",
+            "sample-efficient"
+          ],
+          "title": "Two-Stage Self-Supervised Graph Neural Networks and Reinforcement Learning for Adaptive Power Grid Reconfiguration",
+          "citation": "Veeraiah Thalagondpati et al. (2026) Two-Stage Self-Supervised Graph Neural Networks and Reinforcement Learning for Adaptive Power Grid Reconfiguration doi:10.1109/ACDSA67686.2026.11467977",
+          "provider": "semantic_scholar",
+          "year": "2026",
+          "citation_count": 0,
+          "influential_citation_count": 0,
+          "doi": "10.1109/ACDSA67686.2026.11467977",
+          "arxiv_id": "",
+          "url": "https://www.semanticscholar.org/paper/d10fe737e43d36d1beafdd7c896b96bd29972743",
+          "relevance_reason": "title=5/13, abstract=9/13, citation=5/13, phrase_bonus=0.0, recency=1.0, impact=0.35, venue=0.45, quality=0.72",
+          "quality_reason": "venue did not match suspicious, reputable, preprint, or curated quartile tables; paper is within 2-year protection window; low citations are not treated as low quality"
+        }
+      ]
+    },
+    {
+      "subspace_id": "digital_twin_for_grid_operations",
+      "name": "Digital Twin for Grid Operations",
+      "query": "digital twin power system real-time grid simulation co-simulation platform model-data fusion twin-enabled control synchrophasor-integrated twin",
+      "probe_queries": [
+        "Digital Twin for Grid Operations digital twin power system real-time grid simulation co-simulation platform model-data fusion",
+        "digital twin power system real-time grid simulation co-simulation platform model-data fusion twin-enabled control synchrophasor-integrated twin"
+      ],
+      "provider_blocks": [
+        {
+          "provider": "semantic_scholar",
+          "query": "Digital Twin for Grid Operations digital twin power system real-time grid simulation co-simulation platform model-data fusion",
+          "status": "ok",
+          "note": null,
+          "error": null,
+          "result_count": 3
+        },
+        {
+          "provider": "arxiv",
+          "query": "Digital Twin for Grid Operations digital twin power system real-time grid simulation co-simulation platform model-data fusion",
+          "status": "ok",
+          "note": null,
+          "error": null,
+          "result_count": 3
+        },
+        {
+          "provider": "semantic_scholar",
+          "query": "digital twin power system real-time grid simulation co-simulation platform model-data fusion twin-enabled control synchrophasor-integrated twin",
+          "status": "ok",
+          "note": null,
+          "error": null,
+          "result_count": 3
+        },
+        {
+          "provider": "arxiv",
+          "query": "digital twin power system real-time grid simulation co-simulation platform model-data fusion twin-enabled control synchrophasor-integrated twin",
+          "status": "ok",
+          "note": null,
+          "error": null,
+          "result_count": 3
+        }
+      ],
+      "hit_count": 9,
+      "recent_count": 8,
+      "high_impact_count": 0,
+      "top_seed_papers": [
+        {
+          "result_index": null,
+          "stratified_layer": "",
+          "stratified_label": "",
+          "query_branch": "",
+          "retrieval_query": "digital twin power system real-time grid simulation co-simulation platform model-data fusion twin-enabled control synchrophasor-integrated twin",
+          "_why_selected": "",
+          "domain_relevance": {},
+          "relevance_score": 0.3685,
+          "relevance_components": {
+            "text_score": 0.4886,
+            "recency_score": 1.0,
+            "impact_score": 0.3548,
+            "citation_field": "materials_energy",
+            "citation_baseline": 350.0,
+            "venue_score": 0.45,
+            "publication_quality_score": 0.72,
+            "base_score": 0.5118,
+            "text_weight": 0.62,
+            "recency_weight": 0.1,
+            "impact_weight": 0.18,
+            "venue_weight": 0.1
+          },
+          "publication_quality_score": 0.72,
+          "venue_quality": "unverified",
+          "journal_quartile": "",
+          "journal_metric_source": "",
+          "inferred_field": "materials_energy",
+          "quality_flags": [
+            "unverified_venue"
+          ],
+          "quality_criteria": [
+            "venue did not match suspicious, reputable, preprint, or curated quartile tables"
+          ],
+          "suspicion_type": "",
+          "is_review_like": false,
+          "pyramid_root_score": 0.5657,
+          "matched_query_terms": [
+            "digital",
+            "twin",
+            "power",
+            "grid",
+            "simulation",
+            "co-simulation",
+            "system",
+            "real-time",
+            "control"
+          ],
+          "title": "AI-Powered Digital Twin Co-Simulation Framework for Climate-Adaptive Renewable Energy Grids",
+          "citation": "Kwabena Addo et al. (2025) AI-Powered Digital Twin Co-Simulation Framework for Climate-Adaptive Renewable Energy Grids doi:10.3390/en18215593",
+          "provider": "semantic_scholar",
+          "year": "2025",
+          "citation_count": 7,
+          "influential_citation_count": 0,
+          "doi": "10.3390/en18215593",
+          "arxiv_id": "",
+          "url": "https://www.semanticscholar.org/paper/71d9f99ad10a058017b4fd5aedf2e428d52f7a70",
+          "relevance_reason": "title=6/14, abstract=9/14, citation=6/14, phrase_bonus=0.0, recency=1.0, impact=0.3548, venue=0.45, quality=0.72",
+          "quality_reason": "venue did not match suspicious, reputable, preprint, or curated quartile tables"
+        },
+        {
+          "result_index": null,
+          "stratified_layer": "",
+          "stratified_label": "",
+          "query_branch": "",
+          "retrieval_query": "Digital Twin for Grid Operations digital twin power system real-time grid simulation co-simulation platform model-data fusion",
+          "_why_selected": "",
+          "domain_relevance": {},
+          "relevance_score": 0.361,
+          "relevance_components": {
+            "text_score": 0.4286,
+            "recency_score": 0.85,
+            "impact_score": 0.4404,
+            "citation_field": "general",
+            "citation_baseline": 800.0,
+            "venue_score": 0.45,
+            "publication_quality_score": 0.76,
+            "base_score": 0.475,
+            "text_weight": 0.62,
+            "recency_weight": 0.1,
+            "impact_weight": 0.18,
+            "venue_weight": 0.1
+          },
+          "publication_quality_score": 0.76,
+          "venue_quality": "unverified",
+          "journal_quartile": "",
+          "journal_metric_source": "",
+          "inferred_field": "general",
+          "quality_flags": [
+            "unverified_venue",
+            "some_citations"
+          ],
+          "quality_criteria": [
+            "venue did not match suspicious, reputable, preprint, or curated quartile tables",
+            "citation count exceeds minimum nontrivial threshold"
+          ],
+          "suspicion_type": "",
+          "is_review_like": false,
+          "pyramid_root_score": 0.5791,
+          "matched_query_terms": [
+            "digital",
+            "twin",
+            "power",
+            "system",
+            "real-time",
+            "simulation",
+            "grid"
+          ],
+          "title": "Design and Implementation of a Hierarchical Digital Twin for Power Systems Using Real-Time Simulation",
+          "citation": "Stephan Ruhe et al. (2023) Design and Implementation of a Hierarchical Digital Twin for Power Systems Using Real-Time Simulation doi:10.3390/electronics12122747",
+          "provider": "semantic_scholar",
+          "year": "2023",
+          "citation_count": 18,
+          "influential_citation_count": 1,
+          "doi": "10.3390/electronics12122747",
+          "arxiv_id": "",
+          "url": "https://www.semanticscholar.org/paper/b14758d0c09024fc73668cd5c315009932bd75cc",
+          "relevance_reason": "title=6/14, abstract=6/14, citation=6/14, phrase_bonus=0.0, recency=0.85, impact=0.4404, venue=0.45, quality=0.76",
+          "quality_reason": "venue did not match suspicious, reputable, preprint, or curated quartile tables; citation count exceeds minimum nontrivial threshold"
+        },
+        {
+          "result_index": null,
+          "stratified_layer": "",
+          "stratified_label": "",
+          "query_branch": "",
+          "retrieval_query": "Digital Twin for Grid Operations digital twin power system real-time grid simulation co-simulation platform model-data fusion",
+          "_why_selected": "",
+          "domain_relevance": {},
+          "relevance_score": 0.3449,
+          "relevance_components": {
+            "text_score": 0.4371,
+            "recency_score": 1.0,
+            "impact_score": 0.35,
+            "citation_field": "general",
+            "citation_baseline": 800.0,
+            "venue_score": 0.45,
+            "publication_quality_score": 0.72,
+            "base_score": 0.479,
+            "text_weight": 0.62,
+            "recency_weight": 0.1,
+            "impact_weight": 0.18,
+            "venue_weight": 0.1
+          },
+          "publication_quality_score": 0.72,
+          "venue_quality": "unverified",
+          "journal_quartile": "",
+          "journal_metric_source": "",
+          "inferred_field": "general",
+          "quality_flags": [
+            "unverified_venue",
+            "new_paper_protection"
+          ],
+          "quality_criteria": [
+            "venue did not match suspicious, reputable, preprint, or curated quartile tables",
+            "paper is within 2-year protection window; low citations are not treated as low quality"
+          ],
+          "suspicion_type": "",
+          "is_review_like": false,
+          "pyramid_root_score": 0.5414,
+          "matched_query_terms": [
+            "digital",
+            "twin",
+            "grid",
+            "simulation",
+            "co-simulation",
+            "power",
+            "system",
+            "real-time",
+            "platform",
+            "control"
+          ],
+          "title": "Grid-to-Building Interactions through Digital Twin and OpenDSS Integration: Co-Simulation",
+          "citation": "Muhammad Shahbaz Aziz et al. (2025) Grid-to-Building Interactions through Digital Twin and OpenDSS Integration: Co-Simulation doi:10.1109/SEGE65970.2025.11203704",
+          "provider": "semantic_scholar",
+          "year": "2025",
+          "citation_count": 0,
+          "influential_citation_count": 0,
+          "doi": "10.1109/SEGE65970.2025.11203704",
+          "arxiv_id": "",
+          "url": "https://www.semanticscholar.org/paper/f5d0edacfd52d7bdbe128cca519a5258a9370602",
+          "relevance_reason": "title=5/14, abstract=9/14, citation=5/14, phrase_bonus=0.0, recency=1.0, impact=0.35, venue=0.45, quality=0.72",
+          "quality_reason": "venue did not match suspicious, reputable, preprint, or curated quartile tables; paper is within 2-year protection window; low citations are not treated as low quality"
+        }
+      ]
+    },
+    {
+      "subspace_id": "autonomous_microgrid_operation",
+      "name": "Autonomous Microgrid Operation",
+      "query": "microgrid autonomy islanding detection plug-and-play control peer-to-peer energy trading microgrid stability hierarchical microgrid control",
+      "probe_queries": [
+        "Autonomous Microgrid Operation microgrid autonomy islanding detection plug-and-play control peer-to-peer energy trading",
+        "microgrid autonomy islanding detection plug-and-play control peer-to-peer energy trading microgrid stability hierarchical microgrid control"
+      ],
+      "provider_blocks": [
+        {
+          "provider": "semantic_scholar",
+          "query": "Autonomous Microgrid Operation microgrid autonomy islanding detection plug-and-play control peer-to-peer energy trading",
+          "status": "ok",
+          "note": null,
+          "error": null,
+          "result_count": 0
+        },
+        {
+          "provider": "arxiv",
+          "query": "Autonomous Microgrid Operation microgrid autonomy islanding detection plug-and-play control peer-to-peer energy trading",
+          "status": "ok",
+          "note": null,
+          "error": null,
+          "result_count": 3
+        },
+        {
+          "provider": "semantic_scholar",
+          "query": "microgrid autonomy islanding detection plug-and-play control peer-to-peer energy trading microgrid stability hierarchical microgrid control",
+          "status": "ok",
+          "note": null,
+          "error": null,
+          "result_count": 0
+        },
+        {
+          "provider": "arxiv",
+          "query": "microgrid autonomy islanding detection plug-and-play control peer-to-peer energy trading microgrid stability hierarchical microgrid control",
+          "status": "ok",
+          "note": null,
+          "error": null,
+          "result_count": 3
+        }
+      ],
+      "hit_count": 5,
+      "recent_count": 1,
+      "high_impact_count": 0,
+      "top_seed_papers": [
+        {
+          "result_index": null,
+          "stratified_layer": "",
+          "stratified_label": "",
+          "query_branch": "",
+          "retrieval_query": "Autonomous Microgrid Operation microgrid autonomy islanding detection plug-and-play control peer-to-peer energy trading",
+          "_why_selected": "",
+          "domain_relevance": {},
+          "relevance_score": 0.2349,
+          "relevance_components": {
+            "text_score": 0.2727,
+            "recency_score": 1.0,
+            "impact_score": 0.35,
+            "citation_field": "materials_energy",
+            "citation_baseline": 350.0,
+            "venue_score": 0.35,
+            "publication_quality_score": 0.64,
+            "base_score": 0.3671,
+            "text_weight": 0.62,
+            "recency_weight": 0.1,
+            "impact_weight": 0.18,
+            "venue_weight": 0.1
+          },
+          "publication_quality_score": 0.64,
+          "venue_quality": "missing",
+          "journal_quartile": "",
+          "journal_metric_source": "",
+          "inferred_field": "materials_energy",
+          "quality_flags": [
+            "missing_venue",
+            "new_paper_protection"
+          ],
+          "quality_criteria": [
+            "venue metadata is missing",
+            "paper is within 2-year protection window; low citations are not treated as low quality"
+          ],
+          "suspicion_type": "",
+          "is_review_like": false,
+          "pyramid_root_score": 0.4154,
+          "matched_query_terms": [
+            "peer-to-peer",
+            "energy",
+            "trading"
+          ],
+          "title": "Peer-to-Peer Energy Trading in Dairy Farms using Multi-Agent Reinforcement Learning",
+          "citation": "Mian Ibad Ali Shah et al. (2025) Peer-to-Peer Energy Trading in Dairy Farms using Multi-Agent Reinforcement Learning doi:10.1016/j.apenergy.2025.127041",
+          "provider": "arxiv",
+          "year": "2025",
+          "citation_count": null,
+          "influential_citation_count": null,
+          "doi": "10.1016/j.apenergy.2025.127041",
+          "arxiv_id": "2511.23148v1",
+          "url": "http://arxiv.org/abs/2511.23148v1",
+          "relevance_reason": "title=3/11, abstract=3/11, citation=3/11, phrase_bonus=0.0, recency=1.0, impact=0.35, venue=0.35, quality=0.64",
+          "quality_reason": "venue metadata is missing; paper is within 2-year protection window; low citations are not treated as low quality"
+        },
+        {
+          "result_index": null,
+          "stratified_layer": "",
+          "stratified_label": "",
+          "query_branch": "",
+          "retrieval_query": "microgrid autonomy islanding detection plug-and-play control peer-to-peer energy trading microgrid stability hierarchical microgrid control",
+          "_why_selected": "",
+          "domain_relevance": {},
+          "relevance_score": 0.1271,
+          "relevance_components": {
+            "text_score": 0.2982,
+            "recency_score": 0.45,
+            "impact_score": 0.0,
+            "citation_field": "mathematics",
+            "citation_baseline": 350.0,
+            "venue_score": 0.35,
+            "publication_quality_score": 0.48,
+            "base_score": 0.2649,
+            "text_weight": 0.62,
+            "recency_weight": 0.1,
+            "impact_weight": 0.18,
+            "venue_weight": 0.1
+          },
+          "publication_quality_score": 0.48,
+          "venue_quality": "missing",
+          "journal_quartile": "",
+          "journal_metric_source": "",
+          "inferred_field": "mathematics",
+          "quality_flags": [
+            "missing_venue",
+            "zero_citations_mature_paper"
+          ],
+          "quality_criteria": [
+            "venue metadata is missing",
+            "paper is older than 2 years and has zero Semantic Scholar citations"
+          ],
+          "suspicion_type": "",
+          "is_review_like": false,
+          "pyramid_root_score": 0.2231,
+          "matched_query_terms": [
+            "microgrid",
+            "control",
+            "peer-to-peer",
+            "energy"
+          ],
+          "title": "Peer-to-Peer Control of Microgrids",
+          "citation": "Hamada Almasalma et al. (2017) Peer-to-Peer Control of Microgrids arXiv:1711.04070v1",
+          "provider": "arxiv",
+          "year": "2017",
+          "citation_count": null,
+          "influential_citation_count": null,
+          "doi": "",
+          "arxiv_id": "1711.04070v1",
+          "url": "http://arxiv.org/abs/1711.04070v1",
+          "relevance_reason": "title=3/11, abstract=4/11, citation=3/11, phrase_bonus=0.0, recency=0.45, impact=0.0, venue=0.35, quality=0.48",
+          "quality_reason": "venue metadata is missing; paper is older than 2 years and has zero Semantic Scholar citations"
+        },
+        {
+          "result_index": null,
+          "stratified_layer": "",
+          "stratified_label": "",
+          "query_branch": "",
+          "retrieval_query": "microgrid autonomy islanding detection plug-and-play control peer-to-peer energy trading microgrid stability hierarchical microgrid control",
+          "_why_selected": "",
+          "domain_relevance": {},
+          "relevance_score": 0.1196,
+          "relevance_components": {
+            "text_score": 0.2727,
+            "recency_score": 0.45,
+            "impact_score": 0.0,
+            "citation_field": "electrical_engineering",
+            "citation_baseline": 600.0,
+            "venue_score": 0.35,
+            "publication_quality_score": 0.48,
+            "base_score": 0.2491,
+            "text_weight": 0.62,
+            "recency_weight": 0.1,
+            "impact_weight": 0.18,
+            "venue_weight": 0.1
+          },
+          "publication_quality_score": 0.48,
+          "venue_quality": "missing",
+          "journal_quartile": "",
+          "journal_metric_source": "",
+          "inferred_field": "electrical_engineering",
+          "quality_flags": [
+            "missing_venue",
+            "zero_citations_mature_paper"
+          ],
+          "quality_criteria": [
+            "venue metadata is missing",
+            "paper is older than 2 years and has zero Semantic Scholar citations"
+          ],
+          "suspicion_type": "",
+          "is_review_like": false,
+          "pyramid_root_score": 0.2156,
+          "matched_query_terms": [
+            "microgrid",
+            "control",
+            "stability"
+          ],
+          "title": "Mixed Voltage Angle and Frequency Droop Control for Transient Stability of Interconnected Microgrids with Loss of PMU Measurements",
+          "citation": "S Sivaranjani et al. (2018) Mixed Voltage Angle and Frequency Droop Control for Transient Stability of Interconnected Microgrids with Loss of PMU Measurements doi:10.23919/ACC45564.2020.9147594",
+          "provider": "arxiv",
+          "year": "2018",
+          "citation_count": null,
+          "influential_citation_count": null,
+          "doi": "10.23919/ACC45564.2020.9147594",
+          "arxiv_id": "1803.02918v3",
+          "url": "http://arxiv.org/abs/1803.02918v3",
+          "relevance_reason": "title=3/11, abstract=3/11, citation=3/11, phrase_bonus=0.0, recency=0.45, impact=0.0, venue=0.35, quality=0.48",
+          "quality_reason": "venue metadata is missing; paper is older than 2 years and has zero Semantic Scholar citations"
+        }
+      ]
+    },
+    {
+      "subspace_id": "physics_informed_machine_learning_for_grid_dynamics",
+      "name": "Physics-Informed Machine Learning for Grid Dynamics",
+      "query": "physics-informed neural networks PIML power systems constrained neural ODE structured deep learning embedded differential equations learnable power flow",
+      "probe_queries": [
+        "Physics-Informed Machine Learning for Grid Dynamics physics-informed neural networks PIML power systems constrained neural ODE structured deep learning",
+        "physics-informed neural networks PIML power systems constrained neural ODE structured deep learning embedded differential equations learnable power flow"
+      ],
+      "provider_blocks": [
+        {
+          "provider": "semantic_scholar",
+          "query": "Physics-Informed Machine Learning for Grid Dynamics physics-informed neural networks PIML power systems constrained neural ODE structured deep learning",
+          "status": "error",
+          "note": null,
+          "error": "Semantic Scholar rate limited; circuit opened for 30.0s: HTTP 429: {\"message\": \"Too Many Requests. Please wait and try again or apply for a key for higher rate limits. https://www.semanticscholar.org/product/api#api-key-form\", \"code\": \"429\"}",
+          "result_count": 0
+        },
+        {
+          "provider": "arxiv",
+          "query": "Physics-Informed Machine Learning for Grid Dynamics physics-informed neural networks PIML power systems constrained neural ODE structured deep learning",
+          "status": "ok",
+          "note": null,
+          "error": null,
+          "result_count": 3
+        },
+        {
+          "provider": "semantic_scholar",
+          "query": "physics-informed neural networks PIML power systems constrained neural ODE structured deep learning embedded differential equations learnable power flow",
+          "status": "rate_limited_skipped",
+          "note": null,
+          "error": "Semantic Scholar circuit open; retry_after_seconds=28.1",
+          "result_count": 0
+        },
+        {
+          "provider": "arxiv",
+          "query": "physics-informed neural networks PIML power systems constrained neural ODE structured deep learning embedded differential equations learnable power flow",
+          "status": "ok",
+          "note": null,
+          "error": null,
+          "result_count": 3
+        }
+      ],
+      "hit_count": 5,
+      "recent_count": 3,
+      "high_impact_count": 0,
+      "top_seed_papers": [
+        {
+          "result_index": null,
+          "stratified_layer": "",
+          "stratified_label": "",
+          "query_branch": "",
+          "retrieval_query": "Physics-Informed Machine Learning for Grid Dynamics physics-informed neural networks PIML power systems constrained neural ODE structured deep learning",
+          "_why_selected": "",
+          "domain_relevance": {},
+          "relevance_score": 0.2398,
+          "relevance_components": {
+            "text_score": 0.285,
+            "recency_score": 1.0,
+            "impact_score": 0.35,
+            "citation_field": "computer_science",
+            "citation_baseline": 800.0,
+            "venue_score": 0.35,
+            "publication_quality_score": 0.64,
+            "base_score": 0.3747,
+            "text_weight": 0.62,
+            "recency_weight": 0.1,
+            "impact_weight": 0.18,
+            "venue_weight": 0.1
+          },
+          "publication_quality_score": 0.64,
+          "venue_quality": "missing",
+          "journal_quartile": "",
+          "journal_metric_source": "",
+          "inferred_field": "computer_science",
+          "quality_flags": [
+            "missing_venue",
+            "new_paper_protection"
+          ],
+          "quality_criteria": [
+            "venue metadata is missing",
+            "paper is within 2-year protection window; low citations are not treated as low quality"
+          ],
+          "suspicion_type": "",
+          "is_review_like": false,
+          "pyramid_root_score": 0.4203,
+          "matched_query_terms": [
+            "physics-informed",
+            "neural",
+            "networks",
+            "learning",
+            "power",
+            "ode"
+          ],
+          "title": "Physics-Informed Machine Learning for Transformer Condition Monitoring -- Part II: Physics-Informed Neural Networks and Uncertainty Quantification",
+          "citation": "Jose I. Aizpurua (2025) Physics-Informed Machine Learning for Transformer Condition Monitoring -- Part II: Physics-Informed Neural Networks and Uncertainty Quantification doi:10.23919/ARWtr66130.2025.11261232",
+          "provider": "arxiv",
+          "year": "2025",
+          "citation_count": null,
+          "influential_citation_count": null,
+          "doi": "10.23919/ARWtr66130.2025.11261232",
+          "arxiv_id": "2512.22189v1",
+          "url": "http://arxiv.org/abs/2512.22189v1",
+          "relevance_reason": "title=4/16, abstract=6/16, citation=4/16, phrase_bonus=0.0, recency=1.0, impact=0.35, venue=0.35, quality=0.64",
+          "quality_reason": "venue metadata is missing; paper is within 2-year protection window; low citations are not treated as low quality"
+        },
+        {
+          "result_index": null,
+          "stratified_layer": "",
+          "stratified_label": "",
+          "query_branch": "",
+          "retrieval_query": "physics-informed neural networks PIML power systems constrained neural ODE structured deep learning embedded differential equations learnable power flow",
+          "_why_selected": "",
+          "domain_relevance": {},
+          "relevance_score": 0.1424,
+          "relevance_components": {
+            "text_score": 0.285,
+            "recency_score": 0.85,
+            "impact_score": 0.0,
+            "citation_field": "computer_science",
+            "citation_baseline": 800.0,
+            "venue_score": 0.35,
+            "publication_quality_score": 0.48,
+            "base_score": 0.2967,
+            "text_weight": 0.62,
+            "recency_weight": 0.1,
+            "impact_weight": 0.18,
+            "venue_weight": 0.1
+          },
+          "publication_quality_score": 0.48,
+          "venue_quality": "missing",
+          "journal_quartile": "",
+          "journal_metric_source": "",
+          "inferred_field": "computer_science",
+          "quality_flags": [
+            "missing_venue",
+            "zero_citations_mature_paper"
+          ],
+          "quality_criteria": [
+            "venue metadata is missing",
+            "paper is older than 2 years and has zero Semantic Scholar citations"
+          ],
+          "suspicion_type": "",
+          "is_review_like": false,
+          "pyramid_root_score": 0.2384,
+          "matched_query_terms": [
+            "physics-informed",
+            "neural",
+            "networks",
+            "power",
+            "differential",
+            "equations"
+          ],
+          "title": "PINNSim: A Simulator for Power System Dynamics based on Physics-Informed Neural Networks",
+          "citation": "Jochen Stiasny et al. (2023) PINNSim: A Simulator for Power System Dynamics based on Physics-Informed Neural Networks doi:10.1016/j.epsr.2024.110796",
+          "provider": "arxiv",
+          "year": "2023",
+          "citation_count": null,
+          "influential_citation_count": null,
+          "doi": "10.1016/j.epsr.2024.110796",
+          "arxiv_id": "2303.10256v3",
+          "url": "http://arxiv.org/abs/2303.10256v3",
+          "relevance_reason": "title=4/16, abstract=6/16, citation=4/16, phrase_bonus=0.0, recency=0.85, impact=0.0, venue=0.35, quality=0.48",
+          "quality_reason": "venue metadata is missing; paper is older than 2 years and has zero Semantic Scholar citations"
+        },
+        {
+          "result_index": null,
+          "stratified_layer": "",
+          "stratified_label": "",
+          "query_branch": "",
+          "retrieval_query": "physics-informed neural networks PIML power systems constrained neural ODE structured deep learning embedded differential equations learnable power flow",
+          "_why_selected": "",
+          "domain_relevance": {},
+          "relevance_score": 0.1238,
+          "relevance_components": {
+            "text_score": 0.2225,
+            "recency_score": 0.85,
+            "impact_score": 0.0,
+            "citation_field": "computer_science",
+            "citation_baseline": 800.0,
+            "venue_score": 0.35,
+            "publication_quality_score": 0.48,
+            "base_score": 0.2579,
+            "text_weight": 0.62,
+            "recency_weight": 0.1,
+            "impact_weight": 0.18,
+            "venue_weight": 0.1
+          },
+          "publication_quality_score": 0.48,
+          "venue_quality": "missing",
+          "journal_quartile": "",
+          "journal_metric_source": "",
+          "inferred_field": "computer_science",
+          "quality_flags": [
+            "missing_venue",
+            "zero_citations_mature_paper"
+          ],
+          "quality_criteria": [
+            "venue metadata is missing",
+            "paper is older than 2 years and has zero Semantic Scholar citations"
+          ],
+          "suspicion_type": "",
+          "is_review_like": true,
+          "pyramid_root_score": 0.5698,
+          "matched_query_terms": [
+            "neural",
+            "networks",
+            "deep",
+            "ode",
+            "learning"
+          ],
+          "title": "The Deep Arbitrary Polynomial Chaos Neural Network or how Deep Artificial Neural Networks could benefit from Data-Driven Homogeneous Chaos Theory",
+          "citation": "Sergey Oladyshkin et al. (2023) The Deep Arbitrary Polynomial Chaos Neural Network or how Deep Artificial Neural Networks could benefit from Data-Driven Homogeneous Chaos Theory doi:10.1016/j.neunet.2023.06.036",
+          "provider": "arxiv",
+          "year": "2023",
+          "citation_count": null,
+          "influential_citation_count": null,
+          "doi": "10.1016/j.neunet.2023.06.036",
+          "arxiv_id": "2306.14753v1",
+          "url": "http://arxiv.org/abs/2306.14753v1",
+          "relevance_reason": "title=3/16, abstract=5/16, citation=3/16, phrase_bonus=0.0, recency=0.85, impact=0.0, venue=0.35, quality=0.48",
+          "quality_reason": "venue metadata is missing; paper is older than 2 years and has zero Semantic Scholar citations"
+        }
+      ]
+    },
+    {
+      "subspace_id": "wide_area_adaptive_protection_and_control",
+      "name": "Wide-Area Adaptive Protection and Control",
+      "query": "wide-area protection PMU-based control adaptive relaying system integrity protection scheme fault location using synchrophasors dynamic stability assessment",
+      "probe_queries": [
+        "Wide-Area Adaptive Protection and Control wide-area protection PMU-based control adaptive relaying system integrity protection scheme",
+        "wide-area protection PMU-based control adaptive relaying system integrity protection scheme fault location using synchrophasors dynamic stability assessment"
+      ],
+      "provider_blocks": [
+        {
+          "provider": "semantic_scholar",
+          "query": "Wide-Area Adaptive Protection and Control wide-area protection PMU-based control adaptive relaying system integrity protection scheme",
+          "status": "rate_limited_skipped",
+          "note": null,
+          "error": "Semantic Scholar circuit open; retry_after_seconds=26.0",
+          "result_count": 0
+        },
+        {
+          "provider": "arxiv",
+          "query": "Wide-Area Adaptive Protection and Control wide-area protection PMU-based control adaptive relaying system integrity protection scheme",
+          "status": "ok",
+          "note": null,
+          "error": null,
+          "result_count": 3
+        },
+        {
+          "provider": "semantic_scholar",
+          "query": "wide-area protection PMU-based control adaptive relaying system integrity protection scheme fault location using synchrophasors dynamic stability assessment",
+          "status": "rate_limited_skipped",
+          "note": null,
+          "error": "Semantic Scholar circuit open; retry_after_seconds=24.6",
+          "result_count": 0
+        },
+        {
+          "provider": "arxiv",
+          "query": "wide-area protection PMU-based control adaptive relaying system integrity protection scheme fault location using synchrophasors dynamic stability assessment",
+          "status": "ok",
+          "note": null,
+          "error": null,
+          "result_count": 3
+        }
+      ],
+      "hit_count": 5,
+      "recent_count": 3,
+      "high_impact_count": 0,
+      "top_seed_papers": [
+        {
+          "result_index": null,
+          "stratified_layer": "",
+          "stratified_label": "",
+          "query_branch": "",
+          "retrieval_query": "wide-area protection PMU-based control adaptive relaying system integrity protection scheme fault location using synchrophasors dynamic stability assessment",
+          "_why_selected": "",
+          "domain_relevance": {},
+          "relevance_score": 0.215,
+          "relevance_components": {
+            "text_score": 0.2225,
+            "recency_score": 1.0,
+            "impact_score": 0.35,
+            "citation_field": "computer_science",
+            "citation_baseline": 800.0,
+            "venue_score": 0.35,
+            "publication_quality_score": 0.64,
+            "base_score": 0.3359,
+            "text_weight": 0.62,
+            "recency_weight": 0.1,
+            "impact_weight": 0.18,
+            "venue_weight": 0.1
+          },
+          "publication_quality_score": 0.64,
+          "venue_quality": "missing",
+          "journal_quartile": "",
+          "journal_metric_source": "",
+          "inferred_field": "computer_science",
+          "quality_flags": [
+            "missing_venue",
+            "new_paper_protection"
+          ],
+          "quality_criteria": [
+            "venue metadata is missing",
+            "paper is within 2-year protection window; low citations are not treated as low quality"
+          ],
+          "suspicion_type": "",
+          "is_review_like": false,
+          "pyramid_root_score": 0.3955,
+          "matched_query_terms": [
+            "protection",
+            "system",
+            "fault",
+            "adaptive",
+            "scheme"
+          ],
+          "title": "Robustness Evaluation of Machine Learning Models for Fault Classification and Localization In Power System Protection",
+          "citation": "Julian Oelhaf et al. (2025) Robustness Evaluation of Machine Learning Models for Fault Classification and Localization In Power System Protection arXiv:2512.15385v1",
+          "provider": "arxiv",
+          "year": "2025",
+          "citation_count": null,
+          "influential_citation_count": null,
+          "doi": "",
+          "arxiv_id": "2512.15385v1",
+          "url": "http://arxiv.org/abs/2512.15385v1",
+          "relevance_reason": "title=3/16, abstract=5/16, citation=3/16, phrase_bonus=0.0, recency=1.0, impact=0.35, venue=0.35, quality=0.64",
+          "quality_reason": "venue metadata is missing; paper is within 2-year protection window; low citations are not treated as low quality"
+        },
+        {
+          "result_index": null,
+          "stratified_layer": "",
+          "stratified_label": "",
+          "query_branch": "",
+          "retrieval_query": "wide-area protection PMU-based control adaptive relaying system integrity protection scheme fault location using synchrophasors dynamic stability assessment",
+          "_why_selected": "",
+          "domain_relevance": {},
+          "relevance_score": 0.1833,
+          "relevance_components": {
+            "text_score": 0.1425,
+            "recency_score": 1.0,
+            "impact_score": 0.35,
+            "citation_field": "computer_science",
+            "citation_baseline": 800.0,
+            "venue_score": 0.35,
+            "publication_quality_score": 0.64,
+            "base_score": 0.2863,
+            "text_weight": 0.62,
+            "recency_weight": 0.1,
+            "impact_weight": 0.18,
+            "venue_weight": 0.1
+          },
+          "publication_quality_score": 0.64,
+          "venue_quality": "missing",
+          "journal_quartile": "",
+          "journal_metric_source": "",
+          "inferred_field": "computer_science",
+          "quality_flags": [
+            "missing_venue",
+            "new_paper_protection"
+          ],
+          "quality_criteria": [
+            "venue metadata is missing",
+            "paper is within 2-year protection window; low citations are not treated as low quality"
+          ],
+          "suspicion_type": "",
+          "is_review_like": false,
+          "pyramid_root_score": 0.3638,
+          "matched_query_terms": [
+            "protection",
+            "system",
+            "integrity"
+          ],
+          "title": "Advanced Integration Strategies for ESD Protection and Termination in High-Speed LVDS Systems",
+          "citation": "Kavya Gaddipati (2025) Advanced Integration Strategies for ESD Protection and Termination in High-Speed LVDS Systems doi:10.56726/IJRCAIT.2025.08.01.199",
+          "provider": "arxiv",
+          "year": "2025",
+          "citation_count": null,
+          "influential_citation_count": null,
+          "doi": "10.56726/IJRCAIT.2025.08.01.199",
+          "arxiv_id": "2505.16200v1",
+          "url": "http://arxiv.org/abs/2505.16200v1",
+          "relevance_reason": "title=2/16, abstract=3/16, citation=2/16, phrase_bonus=0.0, recency=1.0, impact=0.35, venue=0.35, quality=0.64",
+          "quality_reason": "venue metadata is missing; paper is within 2-year protection window; low citations are not treated as low quality"
+        },
+        {
+          "result_index": null,
+          "stratified_layer": "",
+          "stratified_label": "",
+          "query_branch": "",
+          "retrieval_query": "Wide-Area Adaptive Protection and Control wide-area protection PMU-based control adaptive relaying system integrity protection scheme",
+          "_why_selected": "",
+          "domain_relevance": {},
+          "relevance_score": 0.1265,
+          "relevance_components": {
+            "text_score": 0.0238,
+            "recency_score": 0.85,
+            "impact_score": 0.35,
+            "citation_field": "physics",
+            "citation_baseline": 650.0,
+            "venue_score": 0.35,
+            "publication_quality_score": 0.64,
+            "base_score": 0.1977,
+            "text_weight": 0.62,
+            "recency_weight": 0.1,
+            "impact_weight": 0.18,
+            "venue_weight": 0.1
+          },
+          "publication_quality_score": 0.64,
+          "venue_quality": "missing",
+          "journal_quartile": "",
+          "journal_metric_source": "",
+          "inferred_field": "physics",
+          "quality_flags": [
+            "missing_venue",
+            "new_paper_protection"
+          ],
+          "quality_criteria": [
+            "venue metadata is missing",
+            "paper is within 2-year protection window; low citations are not treated as low quality"
+          ],
+          "suspicion_type": "",
+          "is_review_like": false,
+          "pyramid_root_score": 0.307,
+          "matched_query_terms": [
+            "location",
+            "protection"
+          ],
+          "title": "Call to Protect the Dark and Quiet Sky from Harmful Interference by Satellite Constellations",
+          "citation": "IAU Centre for the Protection of the Dark et al. (2024) Call to Protect the Dark and Quiet Sky from Harmful Interference by Satellite Constellations arXiv:2412.08244v2",
+          "provider": "arxiv",
+          "year": "2024",
+          "citation_count": null,
+          "influential_citation_count": null,
+          "doi": "",
+          "arxiv_id": "2412.08244v2",
+          "url": "http://arxiv.org/abs/2412.08244v2",
+          "relevance_reason": "title=0/16, abstract=1/16, citation=1/16, phrase_bonus=0.0, recency=0.85, impact=0.35, venue=0.35, quality=0.64",
+          "quality_reason": "venue metadata is missing; paper is within 2-year protection window; low citations are not treated as low quality"
+        }
+      ]
+    },
+    {
+      "subspace_id": "ai_enabled_distribution_system_state_estimation",
+      "name": "AI-Enabled Distribution System State Estimation",
+      "query": "distribution system state estimation GNN for DSE smart meter data fusion topology identification unobservable feeder estimation probabilistic DSE",
+      "probe_queries": [
+        "AI-Enabled Distribution System State Estimation distribution system state estimation GNN for DSE smart meter data fusion topology identification",
+        "distribution system state estimation GNN for DSE smart meter data fusion topology identification unobservable feeder estimation probabilistic DSE"
+      ],
+      "provider_blocks": [
+        {
+          "provider": "semantic_scholar",
+          "query": "AI-Enabled Distribution System State Estimation distribution system state estimation GNN for DSE smart meter data fusion topology identification",
+          "status": "rate_limited_skipped",
+          "note": null,
+          "error": "Semantic Scholar circuit open; retry_after_seconds=23.0",
+          "result_count": 0
+        },
+        {
+          "provider": "arxiv",
+          "query": "AI-Enabled Distribution System State Estimation distribution system state estimation GNN for DSE smart meter data fusion topology identification",
+          "status": "ok",
+          "note": null,
+          "error": null,
+          "result_count": 3
+        },
+        {
+          "provider": "semantic_scholar",
+          "query": "distribution system state estimation GNN for DSE smart meter data fusion topology identification unobservable feeder estimation probabilistic DSE",
+          "status": "rate_limited_skipped",
+          "note": null,
+          "error": "Semantic Scholar circuit open; retry_after_seconds=21.2",
+          "result_count": 0
+        },
+        {
+          "provider": "arxiv",
+          "query": "distribution system state estimation GNN for DSE smart meter data fusion topology identification unobservable feeder estimation probabilistic DSE",
+          "status": "ok",
+          "note": null,
+          "error": null,
+          "result_count": 3
+        }
+      ],
+      "hit_count": 5,
+      "recent_count": 1,
+      "high_impact_count": 0,
+      "top_seed_papers": [
+        {
+          "result_index": null,
+          "stratified_layer": "",
+          "stratified_label": "",
+          "query_branch": "",
+          "retrieval_query": "AI-Enabled Distribution System State Estimation distribution system state estimation GNN for DSE smart meter data fusion topology identification",
+          "_why_selected": "",
+          "domain_relevance": {},
+          "relevance_score": 0.2091,
+          "relevance_components": {
+            "text_score": 0.5333,
+            "recency_score": 0.7,
+            "impact_score": 0.0,
+            "citation_field": "mathematics",
+            "citation_baseline": 350.0,
+            "venue_score": 0.35,
+            "publication_quality_score": 0.48,
+            "base_score": 0.4357,
+            "text_weight": 0.62,
+            "recency_weight": 0.1,
+            "impact_weight": 0.18,
+            "venue_weight": 0.1
+          },
+          "publication_quality_score": 0.48,
+          "venue_quality": "missing",
+          "journal_quartile": "",
+          "journal_metric_source": "",
+          "inferred_field": "mathematics",
+          "quality_flags": [
+            "missing_venue",
+            "zero_citations_mature_paper"
+          ],
+          "quality_criteria": [
+            "venue metadata is missing",
+            "paper is older than 2 years and has zero Semantic Scholar citations"
+          ],
+          "suspicion_type": "",
+          "is_review_like": false,
+          "pyramid_root_score": 0.3051,
+          "matched_query_terms": [
+            "distribution",
+            "system",
+            "state",
+            "estimation",
+            "smart",
+            "meter",
+            "data",
+            "topology"
+          ],
+          "title": "Real-Time Topology Detection and State Estimation in Distribution Systems Using Micro-PMU and Smart Meter Data",
+          "citation": "Zahra Soltani et al. (2021) Real-Time Topology Detection and State Estimation in Distribution Systems Using Micro-PMU and Smart Meter Data doi:10.1109/JSYST.2022.3153449",
+          "provider": "arxiv",
+          "year": "2021",
+          "citation_count": null,
+          "influential_citation_count": null,
+          "doi": "10.1109/JSYST.2022.3153449",
+          "arxiv_id": "2102.09706v1",
+          "url": "http://arxiv.org/abs/2102.09706v1",
+          "relevance_reason": "title=8/15, abstract=8/15, citation=8/15, phrase_bonus=0.0, recency=0.7, impact=0.0, venue=0.35, quality=0.48",
+          "quality_reason": "venue metadata is missing; paper is older than 2 years and has zero Semantic Scholar citations"
+        },
+        {
+          "result_index": null,
+          "stratified_layer": "",
+          "stratified_label": "",
+          "query_branch": "",
+          "retrieval_query": "AI-Enabled Distribution System State Estimation distribution system state estimation GNN for DSE smart meter data fusion topology identification",
+          "_why_selected": "",
+          "domain_relevance": {},
+          "relevance_score": 0.17,
+          "relevance_components": {
+            "text_score": 0.1333,
+            "recency_score": 0.85,
+            "impact_score": 0.35,
+            "citation_field": "mathematics",
+            "citation_baseline": 350.0,
+            "venue_score": 0.35,
+            "publication_quality_score": 0.64,
+            "base_score": 0.2657,
+            "text_weight": 0.62,
+            "recency_weight": 0.1,
+            "impact_weight": 0.18,
+            "venue_weight": 0.1
+          },
+          "publication_quality_score": 0.64,
+          "venue_quality": "missing",
+          "journal_quartile": "",
+          "journal_metric_source": "",
+          "inferred_field": "mathematics",
+          "quality_flags": [
+            "missing_venue",
+            "new_paper_protection"
+          ],
+          "quality_criteria": [
+            "venue metadata is missing",
+            "paper is within 2-year protection window; low citations are not treated as low quality"
+          ],
+          "suspicion_type": "",
+          "is_review_like": false,
+          "pyramid_root_score": 0.3505,
+          "matched_query_terms": [
+            "distribution",
+            "estimation",
+            "data"
+          ],
+          "title": "Distribution Estimation under the Infinity Norm",
+          "citation": "Aryeh Kontorovich et al. (2024) Distribution Estimation under the Infinity Norm arXiv:2402.08422v1",
+          "provider": "arxiv",
+          "year": "2024",
+          "citation_count": null,
+          "influential_citation_count": null,
+          "doi": "",
+          "arxiv_id": "2402.08422v1",
+          "url": "http://arxiv.org/abs/2402.08422v1",
+          "relevance_reason": "title=2/15, abstract=2/15, citation=2/15, phrase_bonus=0.0, recency=0.85, impact=0.35, venue=0.35, quality=0.64",
+          "quality_reason": "venue metadata is missing; paper is within 2-year protection window; low citations are not treated as low quality"
+        },
+        {
+          "result_index": null,
+          "stratified_layer": "",
+          "stratified_label": "",
+          "query_branch": "",
+          "retrieval_query": "distribution system state estimation GNN for DSE smart meter data fusion topology identification unobservable feeder estimation probabilistic DSE",
+          "_why_selected": "",
+          "domain_relevance": {},
+          "relevance_score": 0.14,
+          "relevance_components": {
+            "text_score": 0.3413,
+            "recency_score": 0.45,
+            "impact_score": 0.0,
+            "citation_field": "mathematics",
+            "citation_baseline": 350.0,
+            "venue_score": 0.35,
+            "publication_quality_score": 0.48,
+            "base_score": 0.2916,
+            "text_weight": 0.62,
+            "recency_weight": 0.1,
+            "impact_weight": 0.18,
+            "venue_weight": 0.1
+          },
+          "publication_quality_score": 0.48,
+          "venue_quality": "missing",
+          "journal_quartile": "",
+          "journal_metric_source": "",
+          "inferred_field": "mathematics",
+          "quality_flags": [
+            "missing_venue",
+            "zero_citations_mature_paper"
+          ],
+          "quality_criteria": [
+            "venue metadata is missing",
+            "paper is older than 2 years and has zero Semantic Scholar citations"
+          ],
+          "suspicion_type": "",
+          "is_review_like": false,
+          "pyramid_root_score": 0.236,
+          "matched_query_terms": [
+            "distribution",
+            "smart",
+            "meter",
+            "data",
+            "system",
+            "state",
+            "estimation",
+            "feeder"
+          ],
+          "title": "Enhancing Observability in Distribution Grids using Smart Meter Data",
+          "citation": "Siddharth Bhela et al. (2016) Enhancing Observability in Distribution Grids using Smart Meter Data arXiv:1612.06669v1",
+          "provider": "arxiv",
+          "year": "2016",
+          "citation_count": null,
+          "influential_citation_count": null,
+          "doi": "",
+          "arxiv_id": "1612.06669v1",
+          "url": "http://arxiv.org/abs/1612.06669v1",
+          "relevance_reason": "title=4/15, abstract=8/15, citation=4/15, phrase_bonus=0.0, recency=0.45, impact=0.0, venue=0.35, quality=0.48",
+          "quality_reason": "venue metadata is missing; paper is older than 2 years and has zero Semantic Scholar citations"
+        }
+      ]
+    },
+    {
+      "subspace_id": "resilient_multi_timescale_control_architecture",
+      "name": "Resilient Multi-Timescale Control Architecture",
+      "query": "multi-timescale control hierarchical grid control resilient control architecture cross-layer coordination failure-aware control adaptive time horizon scheduling",
+      "probe_queries": [
+        "Resilient Multi-Timescale Control Architecture multi-timescale control hierarchical grid control resilient control architecture cross-layer coordination",
+        "multi-timescale control hierarchical grid control resilient control architecture cross-layer coordination failure-aware control adaptive time horizon scheduling"
+      ],
+      "provider_blocks": [
+        {
+          "provider": "semantic_scholar",
+          "query": "Resilient Multi-Timescale Control Architecture multi-timescale control hierarchical grid control resilient control architecture cross-layer coordination",
+          "status": "rate_limited_skipped",
+          "note": null,
+          "error": "Semantic Scholar circuit open; retry_after_seconds=19.7",
+          "result_count": 0
+        },
+        {
+          "provider": "arxiv",
+          "query": "Resilient Multi-Timescale Control Architecture multi-timescale control hierarchical grid control resilient control architecture cross-layer coordination",
+          "status": "ok",
+          "note": null,
+          "error": null,
+          "result_count": 3
+        },
+        {
+          "provider": "semantic_scholar",
+          "query": "multi-timescale control hierarchical grid control resilient control architecture cross-layer coordination failure-aware control adaptive time horizon scheduling",
+          "status": "rate_limited_skipped",
+          "note": null,
+          "error": "Semantic Scholar circuit open; retry_after_seconds=18.4",
+          "result_count": 0
+        },
+        {
+          "provider": "arxiv",
+          "query": "multi-timescale control hierarchical grid control resilient control architecture cross-layer coordination failure-aware control adaptive time horizon scheduling",
+          "status": "ok",
+          "note": null,
+          "error": null,
+          "result_count": 3
+        }
+      ],
+      "hit_count": 4,
+      "recent_count": 1,
+      "high_impact_count": 0,
+      "top_seed_papers": [
+        {
+          "result_index": null,
+          "stratified_layer": "",
+          "stratified_label": "",
+          "query_branch": "",
+          "retrieval_query": "multi-timescale control hierarchical grid control resilient control architecture cross-layer coordination failure-aware control adaptive time horizon scheduling",
+          "_why_selected": "",
+          "domain_relevance": {},
+          "relevance_score": 0.1034,
+          "relevance_components": {
+            "text_score": 0.1538,
+            "recency_score": 0.85,
+            "impact_score": 0.0,
+            "citation_field": "electrical_engineering",
+            "citation_baseline": 600.0,
+            "venue_score": 0.35,
+            "publication_quality_score": 0.48,
+            "base_score": 0.2154,
+            "text_weight": 0.62,
+            "recency_weight": 0.1,
+            "impact_weight": 0.18,
+            "venue_weight": 0.1
+          },
+          "publication_quality_score": 0.48,
+          "venue_quality": "missing",
+          "journal_quartile": "",
+          "journal_metric_source": "",
+          "inferred_field": "electrical_engineering",
+          "quality_flags": [
+            "missing_venue",
+            "zero_citations_mature_paper"
+          ],
+          "quality_criteria": [
+            "venue metadata is missing",
+            "paper is older than 2 years and has zero Semantic Scholar citations"
+          ],
+          "suspicion_type": "",
+          "is_review_like": false,
+          "pyramid_root_score": 0.1994,
+          "matched_query_terms": [
+            "control",
+            "time"
+          ],
+          "title": "On $\\ell_2$-performance of weakly-hard real-time control systems",
+          "citation": "Marc Seidel et al. (2023) On $\\ell_2$-performance of weakly-hard real-time control systems doi:10.1016/j.ejcon.2024.101056",
+          "provider": "arxiv",
+          "year": "2023",
+          "citation_count": null,
+          "influential_citation_count": null,
+          "doi": "10.1016/j.ejcon.2024.101056",
+          "arxiv_id": "2305.07875v3",
+          "url": "http://arxiv.org/abs/2305.07875v3",
+          "relevance_reason": "title=2/13, abstract=2/13, citation=2/13, phrase_bonus=0.0, recency=0.85, impact=0.0, venue=0.35, quality=0.48",
+          "quality_reason": "venue metadata is missing; paper is older than 2 years and has zero Semantic Scholar citations"
+        },
+        {
+          "result_index": null,
+          "stratified_layer": "",
+          "stratified_label": "",
+          "query_branch": "",
+          "retrieval_query": "Resilient Multi-Timescale Control Architecture multi-timescale control hierarchical grid control resilient control architecture cross-layer coordination",
+          "_why_selected": "",
+          "domain_relevance": {},
+          "relevance_score": 0.0861,
+          "relevance_components": {
+            "text_score": 0.12,
+            "recency_score": 0.7,
+            "impact_score": 0.0,
+            "citation_field": "mathematics",
+            "citation_baseline": 350.0,
+            "venue_score": 0.35,
+            "publication_quality_score": 0.48,
+            "base_score": 0.1794,
+            "text_weight": 0.62,
+            "recency_weight": 0.1,
+            "impact_weight": 0.18,
+            "venue_weight": 0.1
+          },
+          "publication_quality_score": 0.48,
+          "venue_quality": "missing",
+          "journal_quartile": "",
+          "journal_metric_source": "",
+          "inferred_field": "mathematics",
+          "quality_flags": [
+            "missing_venue",
+            "zero_citations_mature_paper"
+          ],
+          "quality_criteria": [
+            "venue metadata is missing",
+            "paper is older than 2 years and has zero Semantic Scholar citations"
+          ],
+          "suspicion_type": "",
+          "is_review_like": false,
+          "pyramid_root_score": 0.1821,
+          "matched_query_terms": [
+            "control",
+            "adaptive",
+            "time"
+          ],
+          "title": "Safe Control Synthesis via Input Constrained Control Barrier Functions",
+          "citation": "Devansh Agrawal et al. (2021) Safe Control Synthesis via Input Constrained Control Barrier Functions doi:10.1109/CDC45484.2021.9682938",
+          "provider": "arxiv",
+          "year": "2021",
+          "citation_count": null,
+          "influential_citation_count": null,
+          "doi": "10.1109/CDC45484.2021.9682938",
+          "arxiv_id": "2104.01704v1",
+          "url": "http://arxiv.org/abs/2104.01704v1",
+          "relevance_reason": "title=1/13, abstract=3/13, citation=1/13, phrase_bonus=0.0, recency=0.7, impact=0.0, venue=0.35, quality=0.48",
+          "quality_reason": "venue metadata is missing; paper is older than 2 years and has zero Semantic Scholar citations"
+        },
+        {
+          "result_index": null,
+          "stratified_layer": "",
+          "stratified_label": "",
+          "query_branch": "",
+          "retrieval_query": "Resilient Multi-Timescale Control Architecture multi-timescale control hierarchical grid control resilient control architecture cross-layer coordination",
+          "_why_selected": "",
+          "domain_relevance": {},
+          "relevance_score": 0.0677,
+          "relevance_components": {
+            "text_score": 0.0985,
+            "recency_score": 0.45,
+            "impact_score": 0.0,
+            "citation_field": "electrical_engineering",
+            "citation_baseline": 600.0,
+            "venue_score": 0.35,
+            "publication_quality_score": 0.48,
+            "base_score": 0.141,
+            "text_weight": 0.62,
+            "recency_weight": 0.1,
+            "impact_weight": 0.18,
+            "venue_weight": 0.1
+          },
+          "publication_quality_score": 0.48,
+          "venue_quality": "missing",
+          "journal_quartile": "",
+          "journal_metric_source": "",
+          "inferred_field": "electrical_engineering",
+          "quality_flags": [
+            "missing_venue",
+            "zero_citations_mature_paper"
+          ],
+          "quality_criteria": [
+            "venue metadata is missing",
+            "paper is older than 2 years and has zero Semantic Scholar citations"
+          ],
+          "suspicion_type": "",
+          "is_review_like": false,
+          "pyramid_root_score": 0.1637,
+          "matched_query_terms": [
+            "control",
+            "hierarchical"
+          ],
+          "title": "Control of a Rigid Wing Pumping Airborne Wind Energy System in all Operational Phases",
+          "citation": "Davide Todeschini et al. (2020) Control of a Rigid Wing Pumping Airborne Wind Energy System in all Operational Phases doi:10.1016/j.conengprac.2021.104794",
+          "provider": "arxiv",
+          "year": "2020",
+          "citation_count": null,
+          "influential_citation_count": null,
+          "doi": "10.1016/j.conengprac.2021.104794",
+          "arxiv_id": "2006.11141v1",
+          "url": "http://arxiv.org/abs/2006.11141v1",
+          "relevance_reason": "title=1/13, abstract=2/13, citation=1/13, phrase_bonus=0.0, recency=0.45, impact=0.0, venue=0.35, quality=0.48",
+          "quality_reason": "venue metadata is missing; paper is older than 2 years and has zero Semantic Scholar citations"
+        }
+      ]
+    }
+  ],
+  "coverage_plan": {
+    "total_subspaces": 10,
+    "covered": 10,
+    "missing": 0,
+    "insufficient": 0,
+    "coverage_rate": 1.0,
+    "missing_details": [],
+    "recommendation": "Confirm priority subspaces with the user before running ZhiZhi, then search selected subspaces independently."
+  },
+  "query_plan": [
+    {
+      "branch": "distributed_energy_resource_coordination",
+      "name": "Distributed Energy Resource Coordination",
+      "query": "distributed energy resources inverter-based resource control grid-edge coordination virtual power plant DER aggregation flexibility markets local balancing latest recent",
+      "quota": 3,
+      "estimated_density": "high",
+      "strategic_importance": 9,
+      "search_strategy": "must_include"
+    },
+    {
+      "branch": "grid_forming_control",
+      "name": "Grid-Forming Control",
+      "query": "grid-forming inverters synchronverter virtual oscillator control droop-free synchronization inertia emulation stable islanding latest recent",
+      "quota": 3,
+      "estimated_density": "high",
+      "strategic_importance": 10,
+      "search_strategy": "must_include"
+    },
+    {
+      "branch": "cyber_physical_security_for_grid_control",
+      "name": "Cyber-Physical Security for Grid Control",
+      "query": "false data injection attack secure state estimation resilient control cyber-physical co-simulation attack detection in SCADA/EMS AI robustness for grid control review survey",
+      "quota": 3,
+      "estimated_density": "high",
+      "strategic_importance": 9,
+      "search_strategy": "must_include"
+    },
+    {
+      "branch": "reinforcement_learning_for_real_time_grid_optimization",
+      "name": "Reinforcement Learning for Real-Time Grid Optimization",
+      "query": "reinforcement learning power systems online grid optimization RL for AC OPF adaptive control policy multi-agent RL grid sample-efficient RL control latest recent",
+      "quota": 3,
+      "estimated_density": "high",
+      "strategic_importance": 8,
+      "search_strategy": "must_include"
+    },
+    {
+      "branch": "digital_twin_for_grid_operations",
+      "name": "Digital Twin for Grid Operations",
+      "query": "digital twin power system real-time grid simulation co-simulation platform model-data fusion twin-enabled control synchrophasor-integrated twin latest recent",
+      "quota": 3,
+      "estimated_density": "high",
+      "strategic_importance": 8,
+      "search_strategy": "nice_to_have"
+    },
+    {
+      "branch": "autonomous_microgrid_operation",
+      "name": "Autonomous Microgrid Operation",
+      "query": "microgrid autonomy islanding detection plug-and-play control peer-to-peer energy trading microgrid stability hierarchical microgrid control review survey",
+      "quota": 3,
+      "estimated_density": "medium",
+      "strategic_importance": 7,
+      "search_strategy": "must_include"
+    },
+    {
+      "branch": "physics_informed_machine_learning_for_grid_dynamics",
+      "name": "Physics-Informed Machine Learning for Grid Dynamics",
+      "query": "physics-informed neural networks PIML power systems constrained neural ODE structured deep learning embedded differential equations learnable power flow latest recent",
+      "quota": 3,
+      "estimated_density": "high",
+      "strategic_importance": 9,
+      "search_strategy": "nice_to_have"
+    },
+    {
+      "branch": "wide_area_adaptive_protection_and_control",
+      "name": "Wide-Area Adaptive Protection and Control",
+      "query": "wide-area protection PMU-based control adaptive relaying system integrity protection scheme fault location using synchrophasors dynamic stability assessment review survey",
+      "quota": 3,
+      "estimated_density": "high",
+      "strategic_importance": 8,
+      "search_strategy": "must_include"
+    },
+    {
+      "branch": "ai_enabled_distribution_system_state_estimation",
+      "name": "AI-Enabled Distribution System State Estimation",
+      "query": "distribution system state estimation GNN for DSE smart meter data fusion topology identification unobservable feeder estimation probabilistic DSE latest recent",
+      "quota": 3,
+      "estimated_density": "medium",
+      "strategic_importance": 8,
+      "search_strategy": "must_include"
+    },
+    {
+      "branch": "resilient_multi_timescale_control_architecture",
+      "name": "Resilient Multi-Timescale Control Architecture",
+      "query": "multi-timescale control hierarchical grid control resilient control architecture cross-layer coordination failure-aware control adaptive time horizon scheduling latest recent",
+      "quota": 3,
+      "estimated_density": "medium",
+      "strategic_importance": 9,
+      "search_strategy": "nice_to_have"
+    }
+  ],
+  "user_interaction": {
+    "needed": true,
+    "type": "pre_retrieval_subspace_selection",
+    "question": "Select the subspaces to prioritize before ZhiZhi imports papers. You can also add custom subspaces.",
+    "options": [
+      {
+        "label": "Distributed Energy Resource Coordination",
+        "subspace_id": "distributed_energy_resource_coordination",
+        "description": "Real-time orchestration of heterogeneous distributed energy resources (solar PV, batteries, EVs, flexible loads) to maintain grid stability and optimize local economics.",
+        "keywords": [
+          "distributed energy resources",
+          "inverter-based resource control",
+          "grid-edge coordination",
+          "virtual power plant",
+          "DER aggregation",
+          "flexibility markets",
+          "local balancing"
+        ],
+        "probe_hit_count": 10,
+        "estimated_density": "high",
+        "strategic_importance": 9,
+        "recommended": true
+      },
+      {
+        "label": "Grid-Forming Control",
+        "subspace_id": "grid_forming_control",
+        "description": "Control paradigm enabling inverter-based resources to autonomously establish voltage and frequency without relying on synchronous machines—foundational for black-start and high-renewables grids.",
+        "keywords": [
+          "grid-forming inverters",
+          "synchronverter",
+          "virtual oscillator control",
+          "droop-free synchronization",
+          "inertia emulation",
+          "stable islanding"
+        ],
+        "probe_hit_count": 11,
+        "estimated_density": "high",
+        "strategic_importance": 10,
+        "recommended": true
+      },
+      {
+        "label": "Cyber-Physical Security for Grid Control",
+        "subspace_id": "cyber_physical_security_for_grid_control",
+        "description": "Protection of real-time control loops against adversarial manipulation—including false data injection, sensor spoofing, and coordinated attacks targeting AI-driven decision modules.",
+        "keywords": [
+          "false data injection attack",
+          "secure state estimation",
+          "resilient control",
+          "cyber-physical co-simulation",
+          "attack detection in SCADA/EMS",
+          "AI robustness for grid control"
+        ],
+        "probe_hit_count": 9,
+        "estimated_density": "high",
+        "strategic_importance": 9,
+        "recommended": true
+      },
+      {
+        "label": "Reinforcement Learning for Real-Time Grid Optimization",
+        "subspace_id": "reinforcement_learning_for_real_time_grid_optimization",
+        "description": "Application of model-free and model-based reinforcement learning to learn optimal dispatch, voltage regulation, and fault recovery policies under stochastic renewable generation and load dynamics.",
+        "keywords": [
+          "reinforcement learning power systems",
+          "online grid optimization",
+          "RL for AC OPF",
+          "adaptive control policy",
+          "multi-agent RL grid",
+          "sample-efficient RL control"
+        ],
+        "probe_hit_count": 12,
+        "estimated_density": "high",
+        "strategic_importance": 8,
+        "recommended": true
+      },
+      {
+        "label": "Digital Twin for Grid Operations",
+        "subspace_id": "digital_twin_for_grid_operations",
+        "description": "High-fidelity, synchronized virtual representation of physical grid assets and dynamics, integrating physics-based models, sensor data, and AI for predictive control, scenario testing, and closed-loop automation.",
+        "keywords": [
+          "digital twin power system",
+          "real-time grid simulation",
+          "co-simulation platform",
+          "model-data fusion",
+          "twin-enabled control",
+          "synchrophasor-integrated twin"
+        ],
+        "probe_hit_count": 9,
+        "estimated_density": "high",
+        "strategic_importance": 8,
+        "recommended": true
+      },
+      {
+        "label": "Autonomous Microgrid Operation",
+        "subspace_id": "autonomous_microgrid_operation",
+        "description": "Self-sufficient operation of microgrids—including island detection, seamless transition, internal stability maintenance, and peer-to-peer energy trading—without centralized utility commands.",
+        "keywords": [
+          "microgrid autonomy",
+          "islanding detection",
+          "plug-and-play control",
+          "peer-to-peer energy trading",
+          "microgrid stability",
+          "hierarchical microgrid control"
+        ],
+        "probe_hit_count": 5,
+        "estimated_density": "medium",
+        "strategic_importance": 7,
+        "recommended": true
+      },
+      {
+        "label": "Physics-Informed Machine Learning for Grid Dynamics",
+        "subspace_id": "physics_informed_machine_learning_for_grid_dynamics",
+        "description": "Integration of first-principles power system models (e.g., swing equations, power flow constraints) into ML architectures to ensure physical consistency, interpretability, and generalization in control and forecasting tasks.",
+        "keywords": [
+          "physics-informed neural networks",
+          "PIML power systems",
+          "constrained neural ODE",
+          "structured deep learning",
+          "embedded differential equations",
+          "learnable power flow"
+        ],
+        "probe_hit_count": 5,
+        "estimated_density": "high",
+        "strategic_importance": 9,
+        "recommended": true
+      },
+      {
+        "label": "Wide-Area Adaptive Protection and Control",
+        "subspace_id": "wide_area_adaptive_protection_and_control",
+        "description": "Protection and control schemes leveraging time-synchronized PMU data across transmission corridors to detect faults, assess system stress, and trigger adaptive corrective actions faster than conventional relay logic.",
+        "keywords": [
+          "wide-area protection",
+          "PMU-based control",
+          "adaptive relaying",
+          "system integrity protection scheme",
+          "fault location using synchrophasors",
+          "dynamic stability assessment"
+        ],
+        "probe_hit_count": 5,
+        "estimated_density": "high",
+        "strategic_importance": 8,
+        "recommended": true
+      },
+      {
+        "label": "AI-Enabled Distribution System State Estimation",
+        "subspace_id": "ai_enabled_distribution_system_state_estimation",
+        "description": "High-resolution, real-time estimation of voltages, currents, and topology in unobservable low-voltage distribution networks using sparse sensor data, smart meter analytics, and graph neural networks.",
+        "keywords": [
+          "distribution system state estimation",
+          "GNN for DSE",
+          "smart meter data fusion",
+          "topology identification",
+          "unobservable feeder estimation",
+          "probabilistic DSE"
+        ],
+        "probe_hit_count": 5,
+        "estimated_density": "medium",
+        "strategic_importance": 8,
+        "recommended": true
+      },
+      {
+        "label": "Resilient Multi-Timescale Control Architecture",
+        "subspace_id": "resilient_multi_timescale_control_architecture",
+        "description": "Integrated control framework spanning sub-second (stability), second-to-minute (dispatch), and minute-to-hour (economic optimization) timescales with cross-layer coordination, failure isolation, and graceful degradation.",
+        "keywords": [
+          "multi-timescale control",
+          "hierarchical grid control",
+          "resilient control architecture",
+          "cross-layer coordination",
+          "failure-aware control",
+          "adaptive time horizon scheduling"
+        ],
+        "probe_hit_count": 4,
+        "estimated_density": "medium",
+        "strategic_importance": 9,
+        "recommended": true
+      }
+    ],
+    "custom_subspace_input": {
+      "enabled": true,
+      "placeholder": "e.g. Demand Response; EV Charging Coordination; Building Energy Management",
+      "instructions": "If your target subfield is not listed, provide one subspace per line or semicolon-separated. These will be converted into custom retrieval branches."
+    },
+    "continue_with": "Pass subspace_map_id plus selected_subfields, or pass option labels as focus_branches to run_zhizhi_literature_analysis."
+  }
+}

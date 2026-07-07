@@ -1,0 +1,181 @@
+--- v3/hook.py
++++ v4/hook.py
+@@ -1,8 +1,8 @@
+ from __future__ import annotations
+ 
+ import re
++import time
+ from collections import defaultdict
+-from datetime import datetime
+ from typing import Any, Callable
+ 
+ try:
+@@ -10,23 +10,24 @@
+         AUTO_APPROVE,
+         DISABLE_CONTEXT_INJECTION,
+         LARGE_OUTPUT_CHARS,
+-        LOG_PATH,
+         WORKDIR,
+     )
++    from .log import log_event
+     from .tools import path_escapes_workspace
+ except ImportError:
+     from config import (
+         AUTO_APPROVE,
+         DISABLE_CONTEXT_INJECTION,
+         LARGE_OUTPUT_CHARS,
+-        LOG_PATH,
+         WORKDIR,
+     )
++    from log import log_event
+     from tools import path_escapes_workspace
+ 
+ 
+ HookHandler = Callable[..., str | None]
+ HOOKS: dict[str, list[HookHandler]] = defaultdict(list)
++TOOL_STARTS: dict[str, float] = {}
+ 
+ STATS = {
+     "tool_calls": 0,
+@@ -62,7 +63,16 @@
+ 
+ 
+ def trigger_hook(event: str, *args: Any, **kwargs: Any) -> str | None:
+-    """Run handlers in registration order and return the first blocking result."""
++    """Run handlers and return the first non-None result.
++
++    PreToolUse and PostToolUse automatically emit internal OnToolStart and
++    OnToolEnd events, so business code gets structured tool logs for free.
++    """
++    if event == "PreToolUse" and args:
++        trigger_hook("OnToolStart", args[0])
++    elif event == "PostToolUse" and len(args) >= 2:
++        trigger_hook("OnToolEnd", args[0], args[1])
++
+     for handler in HOOKS.get(event, []):
+         result = handler(*args, **kwargs)
+         if result is not None:
+@@ -80,13 +90,6 @@
+     return any(re.search(pattern, command, flags=re.IGNORECASE) for pattern in patterns)
+ 
+ 
+-def append_log(line: str) -> None:
+-    timestamp = datetime.now().isoformat(timespec="seconds")
+-    LOG_PATH.parent.mkdir(parents=True, exist_ok=True)
+-    with LOG_PATH.open("a", encoding="utf-8") as handle:
+-        handle.write(f"{timestamp} {line}\n")
+-
+-
+ def permission_hook(block: Any) -> str | None:
+     name = block_attr(block, "name")
+     tool_input = block_attr(block, "input", {}) or {}
+@@ -95,32 +98,22 @@
+         command = str(tool_input.get("command", ""))
+         if matches_any(command, DENY_PATTERNS):
+             STATS["blocked"] += 1
+-            append_log(f"blocked name=bash reason=deny command={command!r}")
++            log_event("ERROR", "blocked", name="bash", reason="deny", command=command)
+             return f"BLOCKED: dangerous command denied: {command}"
+         if matches_any(command, RISKY_PATTERNS) and not approve(
+             f"Allow risky command? {command}"
+         ):
+             STATS["blocked"] += 1
+-            append_log(f"blocked name=bash reason=user_denied command={command!r}")
++            log_event("WARN", "blocked", name="bash", reason="user_denied", command=command)
+             return f"BLOCKED: user denied command: {command}"
+ 
+     if name in {"write_file", "edit_file", "read_file"}:
+         path = str(tool_input.get("path", ""))
+         if path and path_escapes_workspace(path):
+             STATS["blocked"] += 1
+-            append_log(f"blocked name={name} reason=path_escape path={path!r}")
++            log_event("ERROR", "blocked", name=name, reason="path_escape", path=path)
+             return f"BLOCKED: path escapes workspace: {path}"
+ 
+-    return None
+-
+-
+-def log_hook(block: Any) -> str | None:
+-    name = block_attr(block, "name", "<unknown>")
+-    tool_input = block_attr(block, "input", {}) or {}
+-    STATS["tool_calls"] += 1
+-    if name == "spawn_subagent":
+-        STATS["subagents"] += 1
+-    append_log(f"tool_start name={name} input={compact_input(tool_input)}")
+     return None
+ 
+ 
+@@ -128,8 +121,7 @@
+     name = block_attr(block, "name", "<unknown>")
+     if len(output) > LARGE_OUTPUT_CHARS:
+         STATS["large_outputs"] += 1
+-        append_log(f"large_output name={name} chars={len(output)}")
+-    append_log(f"tool_end name={name} chars={len(output)}")
++        log_event("WARN", "large_output", name=name, chars=len(output))
+     return None
+ 
+ 
+@@ -138,20 +130,44 @@
+         return None
+     return (
+         f"{user_input}\n\n"
+-        f"[v3 context]\n"
++        f"[v4 context]\n"
+         f"- workspace: {WORKDIR}\n"
+         f"- hook events: {', '.join(sorted(HOOKS))}\n"
+     )
+ 
+ 
+ def summary_hook(final_text: str | None = None) -> str | None:
+-    append_log(
+-        "summary "
+-        f"tool_calls={STATS['tool_calls']} "
+-        f"blocked={STATS['blocked']} "
+-        f"large_outputs={STATS['large_outputs']} "
+-        f"subagents={STATS['subagents']}"
++    log_event(
++        "AGENT",
++        "summary",
++        tool_calls=STATS["tool_calls"],
++        blocked=STATS["blocked"],
++        large_outputs=STATS["large_outputs"],
++        subagents=STATS["subagents"],
+     )
++    return None
++
++
++def on_tool_start(block: Any) -> str | None:
++    name = block_attr(block, "name", "<unknown>")
++    tool_id = block_attr(block, "id", "<no-id>")
++    tool_input = block_attr(block, "input", {}) or {}
++    TOOL_STARTS[tool_id] = time.perf_counter()
++    STATS["tool_calls"] += 1
++    if name == "spawn_subagent":
++        STATS["subagents"] += 1
++    category = "SUBAGENT" if name == "spawn_subagent" else "TOOL"
++    log_event(category, "start", name=name, id=tool_id, input=compact_input(tool_input))
++    return None
++
++
++def on_tool_end(block: Any, output: str) -> str | None:
++    name = block_attr(block, "name", "<unknown>")
++    tool_id = block_attr(block, "id", "<no-id>")
++    start = TOOL_STARTS.pop(tool_id, None)
++    elapsed_ms = None if start is None else int((time.perf_counter() - start) * 1000)
++    category = "SUBAGENT" if name == "spawn_subagent" else "TOOL"
++    log_event(category, "end", name=name, id=tool_id, chars=len(output), elapsed_ms=elapsed_ms)
+     return None
+ 
+ 
+@@ -172,9 +188,10 @@
+ def register_default_hooks() -> None:
+     if HOOKS:
+         return
++    register_hook("OnToolStart", on_tool_start)
++    register_hook("OnToolEnd", on_tool_end)
+     register_hook("UserPromptSubmit", context_inject_hook)
+     register_hook("PreToolUse", permission_hook)
+-    register_hook("PreToolUse", log_hook)
+     register_hook("PostToolUse", large_output_hook)
+     register_hook("Stop", summary_hook)
+ 

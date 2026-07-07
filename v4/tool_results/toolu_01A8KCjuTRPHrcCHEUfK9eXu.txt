@@ -1,0 +1,131 @@
+--- v3/main.py
++++ v4/main.py
+@@ -4,15 +4,19 @@
+ from typing import Any
+ 
+ try:
++    from .compact import compact_in_place, compact_messages, emergency_compact, is_prompt_too_long_error
+     from .config import MAX_TOKENS, MODEL_ID
+     from .hook import trigger_hook
+     from .llm import get_client
++    from .log import log_event
+     from .skill import build_system
+     from .tools import TOOL_HANDLERS, TOOLS
+ except ImportError:
++    from compact import compact_in_place, compact_messages, emergency_compact, is_prompt_too_long_error
+     from config import MAX_TOKENS, MODEL_ID
+     from hook import trigger_hook
+     from llm import get_client
++    from log import log_event
+     from skill import build_system
+     from tools import TOOL_HANDLERS, TOOLS
+ 
+@@ -52,7 +56,7 @@
+     return result
+ 
+ 
+-def run_tool(block: Any) -> dict[str, Any]:
++def run_tool(block: Any, messages: list[dict[str, Any]]) -> dict[str, Any]:
+     name = block_attr(block, "name")
+     tool_input = block_attr(block, "input", {}) or {}
+     tool_use_id = block_attr(block, "id")
+@@ -62,8 +66,13 @@
+         return tool_result(tool_use_id, blocked, is_error=True)
+ 
+     try:
+-        handler = TOOL_HANDLERS[name]
+-        output = handler(**tool_input)
++        if name == "compact":
++            focus = str(tool_input.get("focus", ""))
++            compact_in_place(messages, focus=focus, force_l0=True)
++            output = "Context compacted."
++        else:
++            handler = TOOL_HANDLERS[name]
++            output = handler(**tool_input)
+     except Exception as exc:
+         output = f"ERROR: {exc}"
+         trigger_hook("PostToolUse", block, output)
+@@ -73,14 +82,21 @@
+     return tool_result(tool_use_id, output)
+ 
+ 
+-def run_agent(user_input: str) -> str:
+-    client = get_client()
+-    injected = trigger_hook("UserPromptSubmit", user_input)
+-    prompt = injected if injected is not None else user_input
+-    messages: list[dict[str, Any]] = [{"role": "user", "content": prompt}]
+-
+-    while True:
+-        response = client.messages.create(
++def create_response(client: Any, user_input: str, messages: list[dict[str, Any]]) -> Any:
++    try:
++        return client.messages.create(
++            model=MODEL_ID,
++            max_tokens=MAX_TOKENS,
++            system=build_system(user_input),
++            messages=messages,
++            tools=TOOLS,
++        )
++    except Exception as exc:
++        if not is_prompt_too_long_error(exc):
++            raise
++        log_event("WARN", "prompt_too_long", action="emergency_compact")
++        messages[:] = emergency_compact(messages, focus=user_input)
++        return client.messages.create(
+             model=MODEL_ID,
+             max_tokens=MAX_TOKENS,
+             system=build_system(user_input),
+@@ -88,13 +104,25 @@
+             tools=TOOLS,
+         )
+ 
++
++def run_agent(user_input: str) -> str:
++    client = get_client()
++    log_event("USER", "prompt", chars=len(user_input))
++    injected = trigger_hook("UserPromptSubmit", user_input)
++    prompt = injected if injected is not None else user_input
++    messages: list[dict[str, Any]] = [{"role": "user", "content": prompt}]
++
++    while True:
++        messages[:] = compact_messages(messages)
++        response = create_response(client, user_input, messages)
++
+         if response.stop_reason == "end_turn":
+             final_text = response_text(response.content)
+             stop_injection = trigger_hook("Stop", final_text)
+             if stop_injection is not None:
+                 messages.append({"role": "user", "content": stop_injection})
+                 continue
+-            print(final_text)
++            log_event("AGENT", "final", text=final_text)
+             return final_text
+ 
+         tool_blocks = [
+@@ -103,7 +131,7 @@
+         if not tool_blocks:
+             final_text = response_text(response.content)
+             trigger_hook("Stop", final_text)
+-            print(final_text)
++            log_event("AGENT", "final", text=final_text)
+             return final_text
+ 
+         messages.append(
+@@ -115,13 +143,14 @@
+         messages.append(
+             {
+                 "role": "user",
+-                "content": [run_tool(block) for block in tool_blocks],
++                "content": [run_tool(block, messages) for block in tool_blocks],
+             }
+         )
++        messages[:] = compact_messages(messages)
+ 
+ 
+ def parse_args() -> argparse.Namespace:
+-    parser = argparse.ArgumentParser(description="Run the v3 Modular + Sub-agent loop.")
++    parser = argparse.ArgumentParser(description="Run the v4 Logs + Compaction loop.")
+     parser.add_argument("prompt", nargs="*", help="Task prompt. If omitted, read one line.")
+     return parser.parse_args()
+ 
+[exit_code=0]

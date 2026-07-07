@@ -1,0 +1,581 @@
+{
+  "dimension": "method-scenario-benchmark",
+  "main_methods": [
+    "Fluorescence lifetime imaging microscopy (FLIM)",
+    "chemogenetic pH sensing with pHluo-Halo-1 and HaloTag",
+    "imaging and characterization",
+    "live-cell imaging"
+  ],
+  "main_scenarios": [
+    "C-type lectin receptor Mincle and its ligand in immune cells",
+    "X-ray fluorescence (XRF) microscopy with multi-element detectors",
+    "chemical reactions and catalysis",
+    "protein exocytosis"
+  ],
+  "main_benchmarks": [
+    "diagnostic performance",
+    "fluorescence activation | exosome release visualization",
+    "fluorescence activation | exosome visualization",
+    "fluorescence lifetime",
+    "intracellular behavior",
+    "signal-to-noise ratio"
+  ],
+  "method_scenario_coverage": {
+    "imaging and characterization": [
+      "X-ray fluorescence (XRF) microscopy with multi-element detectors"
+    ],
+    "live-cell imaging": [
+      "C-type lectin receptor Mincle and its ligand in immune cells"
+    ],
+    "Fluorescence lifetime imaging microscopy (FLIM)": [
+      "chemical reactions and catalysis"
+    ],
+    "chemogenetic pH sensing with pHluo-Halo-1 and HaloTag": [
+      "protein exocytosis"
+    ]
+  },
+  "benchmark_index": {
+    "signal-to-noise ratio": [
+      "Rodion Shishkov et al. (2025) Self-Supervised Deep-Learning Denoising for X-Ray Fluorescence Microscopy with Multi-Element Detectors doi:10.26434/chemrxiv-2025-lsxpc"
+    ],
+    "intracellular behavior": [
+      "Takanori Matsumaru et al. (2025) Live-cell imaging analysis of the intracellular behavior of C-type lectin receptor Mincle and its ligand using newly developed fluorescence-labeled molecular probes based on trehalose diester doi:10.26434/chemrxiv-2025-w7lbt"
+    ],
+    "fluorescence lifetime": [
+      "Pia Lopez et al. (2024) Fluorescence Lifetime Imaging Microscopy (FLIM) as a Tool to Understand Chemical Reactions and Catalysis doi:10.26434/chemrxiv-2024-kl8mp"
+    ],
+    "diagnostic performance": [
+      "Pia Lopez et al. (2024) Fluorescence Lifetime Imaging Microscopy (FLIM) as a Tool to Understand Chemical Reactions and Catalysis doi:10.26434/chemrxiv-2024-kl8mp-v2"
+    ],
+    "fluorescence activation | exosome visualization": [
+      "Justine Coïs et al. (2024) Locally-Activated Chemogenetic pH Probes for Monitoring Protein Exocytosis doi:10.26434/chemrxiv-2024-rcfzm"
+    ],
+    "fluorescence activation | exosome release visualization": [
+      "Justine Coïs et al. (2024) Locally-Activated Chemogenetic pH Probes for Monitoring Protein Exocytosis doi:10.26434/chemrxiv-2024-rcfzm-v2"
+    ]
+  },
+  "method_scenario_benchmark": {
+    "imaging and characterization": {
+      "X-ray fluorescence (XRF) microscopy with multi-element detectors": {
+        "signal-to-noise ratio": [
+          "Rodion Shishkov et al. (2025) Self-Supervised Deep-Learning Denoising for X-Ray Fluorescence Microscopy with Multi-Element Detectors doi:10.26434/chemrxiv-2025-lsxpc"
+        ]
+      }
+    },
+    "live-cell imaging": {
+      "C-type lectin receptor Mincle and its ligand in immune cells": {
+        "intracellular behavior": [
+          "Takanori Matsumaru et al. (2025) Live-cell imaging analysis of the intracellular behavior of C-type lectin receptor Mincle and its ligand using newly developed fluorescence-labeled molecular probes based on trehalose diester doi:10.26434/chemrxiv-2025-w7lbt"
+        ]
+      }
+    },
+    "Fluorescence lifetime imaging microscopy (FLIM)": {
+      "chemical reactions and catalysis": {
+        "fluorescence lifetime": [
+          "Pia Lopez et al. (2024) Fluorescence Lifetime Imaging Microscopy (FLIM) as a Tool to Understand Chemical Reactions and Catalysis doi:10.26434/chemrxiv-2024-kl8mp"
+        ],
+        "diagnostic performance": [
+          "Pia Lopez et al. (2024) Fluorescence Lifetime Imaging Microscopy (FLIM) as a Tool to Understand Chemical Reactions and Catalysis doi:10.26434/chemrxiv-2024-kl8mp-v2"
+        ]
+      }
+    },
+    "chemogenetic pH sensing with pHluo-Halo-1 and HaloTag": {
+      "protein exocytosis": {
+        "fluorescence activation | exosome visualization": [
+          "Justine Coïs et al. (2024) Locally-Activated Chemogenetic pH Probes for Monitoring Protein Exocytosis doi:10.26434/chemrxiv-2024-rcfzm"
+        ],
+        "fluorescence activation | exosome release visualization": [
+          "Justine Coïs et al. (2024) Locally-Activated Chemogenetic pH Probes for Monitoring Protein Exocytosis doi:10.26434/chemrxiv-2024-rcfzm-v2"
+        ]
+      }
+    }
+  },
+  "method_scenario_benchmark_triples": [
+    {
+      "method": "imaging and characterization",
+      "scenario": "X-ray fluorescence (XRF) microscopy with multi-element detectors",
+      "benchmark": "signal-to-noise ratio",
+      "references": [
+        "Rodion Shishkov et al. (2025) Self-Supervised Deep-Learning Denoising for X-Ray Fluorescence Microscopy with Multi-Element Detectors doi:10.26434/chemrxiv-2025-lsxpc"
+      ],
+      "evidence_type_annotations": [
+        {
+          "claim_type": "methodological_description",
+          "claim": "imaging and characterization",
+          "support": "structured_field"
+        },
+        {
+          "claim_type": "empirical_result",
+          "claim": "First self-supervised deep-learning denoising pipeline for XRF microscopy that operates without clean training targets and preserves spatial resolution and elemental quantification",
+          "support": "structured_field"
+        },
+        {
+          "claim_type": "author_opinion",
+          "claim": "Lower-flux and shorter dwell time scans mitigate this problem, but the resulting signal loss can only partially be compensated by adding detector elements, a strategy limited by the instrument’s geometry and cost.",
+          "support": "structured_field"
+        },
+        {
+          "claim_type": "theoretical_claim",
+          "claim": "Full text excerpt:",
+          "support": "structured_field"
+        },
+        {
+          "claim_type": "empirical_result",
+          "claim": "Lower-flux and shorter dwell time scans mitigate this problem, but the resulting signal loss can only partially be compensated by adding detector elements, a strategy limited by the instrument’s geometry and cost.",
+          "support": "source_sentence"
+        },
+        {
+          "claim_type": "methodological_description",
+          "claim": "Inspired by the Noise2Noise approach, we train a deep convolutional neural network directly on the multiple, statistically independent noisy images collected by individual detector elements, without requiring clean training targets.",
+          "support": "source_sentence"
+        },
+        {
+          "claim_type": "theoretical_claim",
+          "claim": "Tested on a resolution target and a cryogenically fixed biological cell, the method markedly improved signal-to-noise ratios over classical filters while preserving spatial resolution and elemental quantification even for small images.",
+          "support": "source_sentence"
+        },
+        {
+          "claim_type": "methodological_description",
+          "claim": "This approach reduces the dependence of image quality on photon dose and enables rapid, low-dose chemical imaging.",
+          "support": "source_sentence"
+        },
+        {
+          "claim_type": "empirical_result",
+          "claim": "Full text excerpt: First self-supervised deep-learning denoising pipeline for XRF microscopy that operates without clean training targets and preserves spatial resolution and elemental quantification Lower-flux and shorter dwell time scans mitigate this problem, but the resulting signal loss can onl...[truncated]",
+          "support": "source_sentence"
+        }
+      ]
+    },
+    {
+      "method": "live-cell imaging",
+      "scenario": "C-type lectin receptor Mincle and its ligand in immune cells",
+      "benchmark": "intracellular behavior",
+      "references": [
+        "Takanori Matsumaru et al. (2025) Live-cell imaging analysis of the intracellular behavior of C-type lectin receptor Mincle and its ligand using newly developed fluorescence-labeled molecular probes based on trehalose diester doi:10.26434/chemrxiv-2025-w7lbt"
+      ],
+      "evidence_type_annotations": [
+        {
+          "claim_type": "methodological_description",
+          "claim": "live-cell imaging",
+          "support": "structured_field"
+        },
+        {
+          "claim_type": "empirical_result",
+          "claim": "Development of N-NBD-labeled TDE and O-NBD-labeled TDE fluorescence probes enabling Mincle-dependent ligand internalization tracking and Mincle detection via Turn-ON fluorescent affinity labeling.",
+          "support": "structured_field"
+        },
+        {
+          "claim_type": "author_opinion",
+          "claim": "No explicit limitation extracted.",
+          "support": "structured_field"
+        },
+        {
+          "claim_type": "theoretical_claim",
+          "claim": "Full text excerpt:",
+          "support": "structured_field"
+        }
+      ]
+    },
+    {
+      "method": "Fluorescence lifetime imaging microscopy (FLIM)",
+      "scenario": "chemical reactions and catalysis",
+      "benchmark": "fluorescence lifetime",
+      "references": [
+        "Pia Lopez et al. (2024) Fluorescence Lifetime Imaging Microscopy (FLIM) as a Tool to Understand Chemical Reactions and Catalysis doi:10.26434/chemrxiv-2024-kl8mp"
+      ],
+      "evidence_type_annotations": [
+        {
+          "claim_type": "methodological_description",
+          "claim": "Fluorescence lifetime imaging microscopy (FLIM)",
+          "support": "structured_field"
+        },
+        {
+          "claim_type": "empirical_result",
+          "claim": "FLIM provides spatially resolved characterization of chemical reaction species and system-wide physiochemical changes, enabling enhanced mechanistic understanding of reaction mechanisms, intermediates, product distributions, partitioning, roles of reagents, and catalyst behaviors.",
+          "support": "structured_field"
+        },
+        {
+          "claim_type": "author_opinion",
+          "claim": "Current advantages and limitations of FLIM method are considered.",
+          "support": "structured_field"
+        },
+        {
+          "claim_type": "theoretical_claim",
+          "claim": "Full text excerpt:",
+          "support": "structured_field"
+        },
+        {
+          "claim_type": "empirical_result",
+          "claim": "Chemical reactions inherently induce changes in the reaction medium, neighboring compounds, surface compositions, and/or the bonding structure of the compounds involved, resulting in environmental changes.",
+          "support": "source_sentence"
+        },
+        {
+          "claim_type": "methodological_description",
+          "claim": "The FLIM methods recently developed harness and interpret these changes in ways that lead to characterizing compounds and enhancing mechanistic understanding.",
+          "support": "source_sentence"
+        },
+        {
+          "claim_type": "methodological_description",
+          "claim": "Here, current advantages and limitations of FLIM method are considered, common factors influencing fluorescence lifetime in chemical systems are discussed in a tutorial format, and seven research case studies are strategically analyzed—chosen to highlight how FLIM provided complementary information...[truncated]",
+          "support": "source_sentence"
+        },
+        {
+          "claim_type": "methodological_description",
+          "claim": "These data and insights obtained from FLIM assist the rational design and optimization of synthetic and catalytic methods.",
+          "support": "source_sentence"
+        },
+        {
+          "claim_type": "methodological_description",
+          "claim": "Current advantages and limitations of FLIM method are considered.",
+          "support": "source_sentence"
+        }
+      ]
+    },
+    {
+      "method": "Fluorescence lifetime imaging microscopy (FLIM)",
+      "scenario": "chemical reactions and catalysis",
+      "benchmark": "diagnostic performance",
+      "references": [
+        "Pia Lopez et al. (2024) Fluorescence Lifetime Imaging Microscopy (FLIM) as a Tool to Understand Chemical Reactions and Catalysis doi:10.26434/chemrxiv-2024-kl8mp-v2"
+      ],
+      "evidence_type_annotations": [
+        {
+          "claim_type": "methodological_description",
+          "claim": "Fluorescence lifetime imaging microscopy (FLIM)",
+          "support": "structured_field"
+        },
+        {
+          "claim_type": "empirical_result",
+          "claim": "FLIM provides complementary information to understand chemical reaction mechanisms, intermediates, product distributions, partitioning, roles of reagents, and catalyst behaviors, assisting rational design and optimization of synthetic and catalytic methods.",
+          "support": "structured_field"
+        },
+        {
+          "claim_type": "author_opinion",
+          "claim": "Current advantages and limitations of FLIM method are considered.",
+          "support": "structured_field"
+        },
+        {
+          "claim_type": "theoretical_claim",
+          "claim": "Full text excerpt:",
+          "support": "structured_field"
+        },
+        {
+          "claim_type": "empirical_result",
+          "claim": "Chemical reactions inherently induce changes in the reaction medium, neighboring compounds, surface compositions, and/or the bonding structure of the compounds involved, resulting in environmental changes.",
+          "support": "source_sentence"
+        },
+        {
+          "claim_type": "methodological_description",
+          "claim": "The FLIM methods recently developed harness and interpret these changes in ways that lead to characterizing compounds and enhancing mechanistic understanding.",
+          "support": "source_sentence"
+        },
+        {
+          "claim_type": "methodological_description",
+          "claim": "Here, current advantages and limitations of FLIM method are considered, common factors influencing fluorescence lifetime in chemical systems are discussed in a tutorial format, and seven research case studies are strategically analyzed—chosen to highlight how FLIM provided complementary information...[truncated]",
+          "support": "source_sentence"
+        },
+        {
+          "claim_type": "methodological_description",
+          "claim": "These data and insights obtained from FLIM assist the rational design and optimization of synthetic and catalytic methods.",
+          "support": "source_sentence"
+        },
+        {
+          "claim_type": "methodological_description",
+          "claim": "Full text excerpt: FLIM provides complementary information to understand chemical reaction mechanisms, intermediates, product distributions, partitioning, roles of reagents, and catalyst behaviors, assisting rational design and optimization of synthetic and catalytic methods.",
+          "support": "source_sentence"
+        },
+        {
+          "claim_type": "methodological_description",
+          "claim": "Current advantages and limitations of FLIM method are considered.",
+          "support": "source_sentence"
+        }
+      ]
+    },
+    {
+      "method": "chemogenetic pH sensing with pHluo-Halo-1 and HaloTag",
+      "scenario": "protein exocytosis",
+      "benchmark": "fluorescence activation | exosome visualization",
+      "references": [
+        "Justine Coïs et al. (2024) Locally-Activated Chemogenetic pH Probes for Monitoring Protein Exocytosis doi:10.26434/chemrxiv-2024-rcfzm"
+      ],
+      "evidence_type_annotations": [
+        {
+          "claim_type": "methodological_description",
+          "claim": "chemogenetic pH sensing with pHluo-Halo-1 and HaloTag",
+          "support": "structured_field"
+        },
+        {
+          "claim_type": "empirical_result",
+          "claim": "novel fluorogenic and chemogenetic pH sensor enabling wash-free, selective monitoring of protein exocytosis via TIRF microscopy",
+          "support": "structured_field"
+        },
+        {
+          "claim_type": "author_opinion",
+          "claim": "Full text excerpt: novel fluorogenic and chemogenetic pH sensor enabling wash-free, selective monitoring of protein exocytosis via TIRF microscopy No explicit limitation extracted.",
+          "support": "structured_field"
+        },
+        {
+          "claim_type": "theoretical_claim",
+          "claim": "Full text excerpt:",
+          "support": "structured_field"
+        },
+        {
+          "claim_type": "theoretical_claim",
+          "claim": "In particular, pH-sensitive fluorescent proteins such as the GFP-derived superecliptic pHluorin (SEP) or pHuji allow tracking of protein trafficking through acidic and neutral compartments.",
+          "support": "source_sentence"
+        },
+        {
+          "claim_type": "empirical_result",
+          "claim": "Here, we describe a novel fluorogenic and chemogenetic pH sensor consisting of a cell-permeable molecular pH indicator called pHluo-Halo-1 whose fluorescence can be locally activated in cells by reaction with the SLP-tag HaloTag ensuring high signal selectivity in wash-free imaging experiments.",
+          "support": "source_sentence"
+        },
+        {
+          "claim_type": "author_opinion",
+          "claim": "Full text excerpt: novel fluorogenic and chemogenetic pH sensor enabling wash-free, selective monitoring of protein exocytosis via TIRF microscopy Full text excerpt: novel fluorogenic and chemogenetic pH sensor enabling wash-free, selective monitoring of protein exocytosis via TIRF microscopy No exp...[truncated]",
+          "support": "source_sentence"
+        }
+      ]
+    },
+    {
+      "method": "chemogenetic pH sensing with pHluo-Halo-1 and HaloTag",
+      "scenario": "protein exocytosis",
+      "benchmark": "fluorescence activation | exosome release visualization",
+      "references": [
+        "Justine Coïs et al. (2024) Locally-Activated Chemogenetic pH Probes for Monitoring Protein Exocytosis doi:10.26434/chemrxiv-2024-rcfzm-v2"
+      ],
+      "evidence_type_annotations": [
+        {
+          "claim_type": "methodological_description",
+          "claim": "chemogenetic pH sensing with pHluo-Halo-1 and HaloTag",
+          "support": "structured_field"
+        },
+        {
+          "claim_type": "empirical_result",
+          "claim": "novel fluorogenic and chemogenetic pH sensor enabling wash-free, selective imaging of exocytosis via TIRF microscopy",
+          "support": "structured_field"
+        },
+        {
+          "claim_type": "author_opinion",
+          "claim": "Full text excerpt: novel fluorogenic and chemogenetic pH sensor enabling wash-free, selective imaging of exocytosis via TIRF microscopy No explicit limitation extracted.",
+          "support": "structured_field"
+        },
+        {
+          "claim_type": "theoretical_claim",
+          "claim": "Full text excerpt:",
+          "support": "structured_field"
+        },
+        {
+          "claim_type": "theoretical_claim",
+          "claim": "In particular, pH-sensitive fluorescent proteins such as the GFP-derived superecliptic pHluorin (SEP) or pHuji allow tracking of protein trafficking through acidic and neutral compartments.",
+          "support": "source_sentence"
+        },
+        {
+          "claim_type": "empirical_result",
+          "claim": "Here, we describe a novel fluorogenic and chemogenetic pH sensor consisting of a cell-permeable molecular pH indicator called pHluo-Halo-1 whose fluorescence can be locally activated in cells by reaction with the SLP-tag HaloTag ensuring high signal selectivity in wash-free imaging experiments.",
+          "support": "source_sentence"
+        },
+        {
+          "claim_type": "author_opinion",
+          "claim": "Full text excerpt: novel fluorogenic and chemogenetic pH sensor enabling wash-free, selective imaging of exocytosis via TIRF microscopy Full text excerpt: novel fluorogenic and chemogenetic pH sensor enabling wash-free, selective imaging of exocytosis via TIRF microscopy No explicit limitation extra...[truncated]",
+          "support": "source_sentence"
+        }
+      ]
+    },
+    {
+      "method": "imaging and characterization",
+      "scenario": "X-ray fluorescence (XRF) microscopy with multi-element detectors",
+      "benchmark": "signal-to-noise ratio",
+      "references": [
+        "Rodion Shishkov et al. (2025) Self-Supervised Deep-Learning Denoising for X-Ray Fluorescence Microscopy with Multi-Element Detectors doi:10.26434/chemrxiv-2025-lsxpc"
+      ],
+      "evidence_type_annotations": [
+        {
+          "claim_type": "methodological_description",
+          "claim": "imaging and characterization",
+          "support": "structured_field"
+        },
+        {
+          "claim_type": "empirical_result",
+          "claim": "First self-supervised deep-learning denoising pipeline for XRF microscopy that operates without clean training targets and preserves spatial resolution and elemental quantification",
+          "support": "structured_field"
+        },
+        {
+          "claim_type": "author_opinion",
+          "claim": "Lower-flux and shorter dwell time scans mitigate this problem, but the resulting signal loss can only partially be compensated by adding detector elements, a strategy limited by the instrument’s geometry and cost.",
+          "support": "structured_field"
+        },
+        {
+          "claim_type": "empirical_result",
+          "claim": "First self-supervised deep-learning denoising pipeline for XRF microscopy that operates without clean training targets and preserves spatial resolution and elemental quantification Lower-flux and shorter dwell time scans mitigate this problem, but the resulting signal loss can only partially be comp...[truncated]",
+          "support": "source_sentence"
+        }
+      ]
+    },
+    {
+      "method": "live-cell imaging",
+      "scenario": "C-type lectin receptor Mincle and its ligand in immune cells",
+      "benchmark": "intracellular behavior",
+      "references": [
+        "Takanori Matsumaru et al. (2025) Live-cell imaging analysis of the intracellular behavior of C-type lectin receptor Mincle and its ligand using newly developed fluorescence-labeled molecular probes based on trehalose diester doi:10.26434/chemrxiv-2025-w7lbt"
+      ],
+      "evidence_type_annotations": [
+        {
+          "claim_type": "methodological_description",
+          "claim": "live-cell imaging",
+          "support": "structured_field"
+        },
+        {
+          "claim_type": "empirical_result",
+          "claim": "Development of N-NBD-labeled TDE and O-NBD-labeled TDE fluorescence probes enabling Mincle-dependent ligand internalization tracking and Mincle detection via Turn-ON fluorescent affinity labeling.",
+          "support": "structured_field"
+        },
+        {
+          "claim_type": "author_opinion",
+          "claim": "No explicit limitation extracted.",
+          "support": "structured_field"
+        }
+      ]
+    },
+    {
+      "method": "Fluorescence lifetime imaging microscopy (FLIM)",
+      "scenario": "chemical reactions and catalysis",
+      "benchmark": "fluorescence lifetime",
+      "references": [
+        "Pia Lopez et al. (2024) Fluorescence Lifetime Imaging Microscopy (FLIM) as a Tool to Understand Chemical Reactions and Catalysis doi:10.26434/chemrxiv-2024-kl8mp"
+      ],
+      "evidence_type_annotations": [
+        {
+          "claim_type": "methodological_description",
+          "claim": "Fluorescence lifetime imaging microscopy (FLIM)",
+          "support": "structured_field"
+        },
+        {
+          "claim_type": "empirical_result",
+          "claim": "FLIM provides spatially resolved characterization of chemical reaction species and system-wide physiochemical changes, enabling enhanced mechanistic understanding of reaction mechanisms, intermediates, product distributions, partitioning, roles of reagents, and catalyst behaviors.",
+          "support": "structured_field"
+        },
+        {
+          "claim_type": "author_opinion",
+          "claim": "Current advantages and limitations of FLIM method are considered.",
+          "support": "structured_field"
+        },
+        {
+          "claim_type": "methodological_description",
+          "claim": "Current advantages and limitations of FLIM method are considered.",
+          "support": "source_sentence"
+        }
+      ]
+    },
+    {
+      "method": "Fluorescence lifetime imaging microscopy (FLIM)",
+      "scenario": "chemical reactions and catalysis",
+      "benchmark": "diagnostic performance",
+      "references": [
+        "Pia Lopez et al. (2024) Fluorescence Lifetime Imaging Microscopy (FLIM) as a Tool to Understand Chemical Reactions and Catalysis doi:10.26434/chemrxiv-2024-kl8mp-v2"
+      ],
+      "evidence_type_annotations": [
+        {
+          "claim_type": "methodological_description",
+          "claim": "Fluorescence lifetime imaging microscopy (FLIM)",
+          "support": "structured_field"
+        },
+        {
+          "claim_type": "empirical_result",
+          "claim": "FLIM provides complementary information to understand chemical reaction mechanisms, intermediates, product distributions, partitioning, roles of reagents, and catalyst behaviors, assisting rational design and optimization of synthetic and catalytic methods.",
+          "support": "structured_field"
+        },
+        {
+          "claim_type": "author_opinion",
+          "claim": "Current advantages and limitations of FLIM method are considered.",
+          "support": "structured_field"
+        },
+        {
+          "claim_type": "methodological_description",
+          "claim": "FLIM provides complementary information to understand chemical reaction mechanisms, intermediates, product distributions, partitioning, roles of reagents, and catalyst behaviors, assisting rational design and optimization of synthetic and catalytic methods.",
+          "support": "source_sentence"
+        },
+        {
+          "claim_type": "methodological_description",
+          "claim": "Current advantages and limitations of FLIM method are considered.",
+          "support": "source_sentence"
+        }
+      ]
+    },
+    {
+      "method": "chemogenetic pH sensing with pHluo-Halo-1 and HaloTag",
+      "scenario": "protein exocytosis",
+      "benchmark": "fluorescence activation | exosome visualization",
+      "references": [
+        "Justine Coïs et al. (2024) Locally-Activated Chemogenetic pH Probes for Monitoring Protein Exocytosis doi:10.26434/chemrxiv-2024-rcfzm"
+      ],
+      "evidence_type_annotations": [
+        {
+          "claim_type": "methodological_description",
+          "claim": "chemogenetic pH sensing with pHluo-Halo-1 and HaloTag",
+          "support": "structured_field"
+        },
+        {
+          "claim_type": "empirical_result",
+          "claim": "novel fluorogenic and chemogenetic pH sensor enabling wash-free, selective monitoring of protein exocytosis via TIRF microscopy",
+          "support": "structured_field"
+        },
+        {
+          "claim_type": "author_opinion",
+          "claim": "Full text excerpt: novel fluorogenic and chemogenetic pH sensor enabling wash-free, selective monitoring of protein exocytosis via TIRF microscopy No explicit limitation extracted.",
+          "support": "structured_field"
+        },
+        {
+          "claim_type": "author_opinion",
+          "claim": "novel fluorogenic and chemogenetic pH sensor enabling wash-free, selective monitoring of protein exocytosis via TIRF microscopy Full text excerpt: novel fluorogenic and chemogenetic pH sensor enabling wash-free, selective monitoring of protein exocytosis via TIRF microscopy No explicit limitation ex...[truncated]",
+          "support": "source_sentence"
+        }
+      ]
+    },
+    {
+      "method": "chemogenetic pH sensing with pHluo-Halo-1 and HaloTag",
+      "scenario": "protein exocytosis",
+      "benchmark": "fluorescence activation | exosome release visualization",
+      "references": [
+        "Justine Coïs et al. (2024) Locally-Activated Chemogenetic pH Probes for Monitoring Protein Exocytosis doi:10.26434/chemrxiv-2024-rcfzm-v2"
+      ],
+      "evidence_type_annotations": [
+        {
+          "claim_type": "methodological_description",
+          "claim": "chemogenetic pH sensing with pHluo-Halo-1 and HaloTag",
+          "support": "structured_field"
+        },
+        {
+          "claim_type": "empirical_result",
+          "claim": "novel fluorogenic and chemogenetic pH sensor enabling wash-free, selective imaging of exocytosis via TIRF microscopy",
+          "support": "structured_field"
+        },
+        {
+          "claim_type": "author_opinion",
+          "claim": "Full text excerpt: novel fluorogenic and chemogenetic pH sensor enabling wash-free, selective imaging of exocytosis via TIRF microscopy No explicit limitation extracted.",
+          "support": "structured_field"
+        },
+        {
+          "claim_type": "author_opinion",
+          "claim": "novel fluorogenic and chemogenetic pH sensor enabling wash-free, selective imaging of exocytosis via TIRF microscopy Full text excerpt: novel fluorogenic and chemogenetic pH sensor enabling wash-free, selective imaging of exocytosis via TIRF microscopy No explicit limitation extracted.",
+          "support": "source_sentence"
+        }
+      ]
+    }
+  ],
+  "claim_type_counts": {
+    "methodological_description": 26,
+    "empirical_result": 19,
+    "author_opinion": 16,
+    "theoretical_claim": 9
+  },
+  "extraction_repair": {
+    "attempted": 0,
+    "repaired": 0,
+    "still_low_quality": 0,
+    "errors": []
+  },
+  "unknown_summary": {
+    "total_triples": 12,
+    "unknown_triples": 0
+  }
+}

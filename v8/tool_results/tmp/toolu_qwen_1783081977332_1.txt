@@ -1,0 +1,506 @@
+{
+  "thought": "ZhiZhi retrieved and filtered literature, imported grounded PaperGraph evidence, built a benchmark-aware knowledge map, expanded citation context when available, and generated gaps with novelty/value/feasibility checks.",
+  "action": {
+    "agent": "zhizhi",
+    "query": "global warming changing drought characteristics frequency intensity duration ecological impacts",
+    "domain": "climate change drought regime shift",
+    "years": "last 10 years",
+    "search_papers": {
+      "search_id": "search_1783081982774217200",
+      "total_results": 16,
+      "providers": [
+        "semantic_scholar",
+        "arxiv"
+      ],
+      "errors": []
+    },
+    "select_literature_result": {
+      "result_index": 0,
+      "relevance_score": 0.7044,
+      "relevance_components": {
+        "text_score": 0.6,
+        "recency_score": 0.7,
+        "impact_score": 0.9024,
+        "citation_field": "multidisciplinary",
+        "citation_baseline": 1000.0,
+        "venue_score": 1.0,
+        "publication_quality_score": 1.0,
+        "base_score": 0.7044,
+        "text_weight": 0.62,
+        "recency_weight": 0.1,
+        "impact_weight": 0.18,
+        "venue_weight": 0.1
+      },
+      "publication_quality_score": 1.0,
+      "venue_quality": "reputable",
+      "journal_quartile": "Q1",
+      "journal_metric_source": "curated",
+      "inferred_field": "multidisciplinary",
+      "quality_flags": [
+        "journal_quartile_q1",
+        "reputable_venue",
+        "highly_cited"
+      ],
+      "quality_criteria": [
+        "venue matched curated journal metric table: Q1",
+        "citation count exceeds high-impact threshold"
+      ],
+      "suspicion_type": "",
+      "matched_query_terms": [
+        "global",
+        "drought",
+        "frequency",
+        "intensity",
+        "duration",
+        "impacts",
+        "characteristics"
+      ],
+      "title": "Evidence of anthropogenic impacts on global drought frequency, duration, and intensity",
+      "citation": "F. Chiang et al. (2021) Evidence of anthropogenic impacts on global drought frequency, duration, and intensity doi:10.1038/s41467-021-22314-w",
+      "provider": "semantic_scholar",
+      "year": "2021",
+      "citation_count": 509,
+      "influential_citation_count": 10,
+      "doi": "10.1038/s41467-021-22314-w",
+      "arxiv_id": "",
+      "url": "https://www.semanticscholar.org/paper/e9293866464698c4ca466f95c2df6647521e897f",
+      "relevance_reason": "title=6/10, abstract=6/10, citation=6/10, phrase_bonus=0.0, recency=0.7, impact=0.9024, venue=1.0, quality=1.0",
+      "quality_reason": "venue matched curated journal metric table: Q1; citation count exceeds high-impact threshold"
+    },
+    "imported_records": 4,
+    "expand_literature_graph": {
+      "graph_search_id": "graph_1783082135366727600",
+      "total_results": 10,
+      "fallback_used": false,
+      "depth": 1
+    },
+    "build_literature_relation_graph": {
+      "relation_graph_id": "relgraph_1783082141636601300",
+      "cluster_count": 6,
+      "edge_summary": {
+        "total_edges": 10,
+        "citation_graph_edges": 10,
+        "artificial_edges": 0,
+        "by_relation": {
+          "citation": 5,
+          "reference": 5
+        },
+        "by_depth": {
+          "1": 10
+        },
+        "fallback_weight_policy": "keyword_fallback/search_result edges are artificial and use very low PageRank weight."
+      },
+      "analysis_confidence": 1.0
+    }
+  },
+  "observation": [
+    "Knowledge map still contains 4 triples with unknown fields; rerun extraction with use_llm=true for key papers."
+  ],
+  "knowledge_map_summary": {
+    "main_methods": [
+      "Principal component analysis (PCA) applied to drought indices (SPEI-12 and SPI-12); multi-model simulation datasets from CORDEX; model evaluation against CRU observations; correlation analysis (r ≥ 0.7) of simulated vs. observed spatial patterns.",
+      "Using SPI and SPEI indices generated from an ensemble of 9 CMIP6 models (using 3 realizations per model)",
+      "unknown method"
+    ],
+    "method_scenario_coverage": {
+      "Using SPI and SPEI indices generated from an ensemble of 9 CMIP6 models (using 3 realizations per model)": [
+        "anthropogenic forcing"
+      ],
+      "unknown method": [
+        "Changing drought events in China under climate change",
+        "Multidecadal drought assessment in Middle East and North Africa under observed global warming and rainfall deficit (1981–2021), with comparative analysis pre- and post-1998."
+      ],
+      "Principal component analysis (PCA) applied to drought indices (SPEI-12 and SPI-12); multi-model simulation datasets from CORDEX; model evaluation against CRU observations; correlation analysis (r ≥ 0.7) of simulated vs. observed spatial patterns.": [
+        "RCP4.5 and RCP8.5 climate forcing scenarios"
+      ]
+    },
+    "method_scenario_benchmark_triples": [
+      {
+        "method": "Using SPI and SPEI indices generated from an ensemble of 9 CMIP6 models (using 3 realizations per model)",
+        "scenario": "anthropogenic forcing",
+        "benchmark": "electrochemical stability",
+        "references": [
+          "F. Chiang et al. (2021) Evidence of anthropogenic impacts on global drought frequency, duration, and intensity doi:10.1038/s41467-021-22314-w"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "Using SPI and SPEI indices generated from an ensemble of 9 CMIP6 models (using 3 realizations per model)",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "provide evidence that anthropogenic forcing has impacted interrelated meteorological drought characteristics",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "No explicit limitation extracted.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "Full text excerpt:",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "Using individual greenhouse gas and anthropogenic aerosol forcings, we also highlight that regional balances between the two major forcings have contributed to the drying patterns detected in our results.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "Full text excerpt: provide evidence that anthropogenic forcing has impacted interrelated meteorological drought characteristics No explicit limitation extracted.",
+            "support": "source_sentence"
+          }
+        ]
+      },
+      {
+        "method": "unknown method",
+        "scenario": "Multidecadal drought assessment in Middle East and North Africa under observed global warming and rainfall deficit (1981–2021), with comparative analysis pre- and post-1998.",
+        "benchmark": "4.07 datasets to assess changes in drought characteristics (e.g., frequency, intensity, duration, and severity) at the 12-months timescale for the main Koppen-Geiger climate zones in the region.",
+        "references": [
+          "A. Kenawy et al. (2025) A Multidecadal Assessment of Drought Intensification in the Middle East and North Africa: The Role of Global Warming and Rainfall Deficit doi:10.1007/s41748-025-00576-4"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "unknown method",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "Demonstrates that SPEI is more reliable than SPI for drought assessment in warming, water-limited MENA climates; quantifies increased drought frequency and spatial intensification—especially in CWb/BWk zones—driven by rising temperatures; reveals SPI's underestimation of severe-to-extreme droughts i...[truncated]",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "Reliance on gridded observational datasets (CRU TS v. 4.07) with potential uncertainties in sparsely gauged regions; lack of direct incorporation of anthropogenic water use or land-use change impacts; limited representation of sub-seasonal drought dynamics due to 12-month aggregation.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "Full text excerpt:",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "Results indicate a significant shift from wetter conditions before 1998 to more frequent drought occurrences post-1998, particularly in northern MENA, including North Africa, the Levant, and western parts of the Arabian Peninsula, northern Iraq, and western Iran.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "Both the SPI and SPEI indicate significant positive changes in drought frequency across 19.4% of the MENA region during the period 1998–2021, compared to 12.9% in the earlier period of 1981–1997.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "For example, in comparison to the SPI, the SPEI indicated an increase of 15% in the areas affected by severe to very extreme droughts in arid regions (Aw).",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "Our findings indicate that the SPEI can be seen as a more reliable indicator for understanding drought severity in the region in the context of global warming.",
+            "support": "source_sentence"
+          }
+        ]
+      },
+      {
+        "method": "unknown method",
+        "scenario": "Changing drought events in China under climate change",
+        "benchmark": "benchmark dataset",
+        "references": [
+          "Yan‐Yan Ren et al. (2023) Detection and Assessment of Changing Drought Events in China in the Context of Climate Change Based on the Intensity–Area–Duration Algorithm doi:10.3390/land12101820"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "unknown method",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "Identified regional drought events in China using the IAD method considering both temporal continuity and spatial dynamics; analyzed spatiotemporal variations in frequency, intensity, duration, and affected area of drought events across China and its seven subregions",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "No explicit limitation extracted.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "Full text excerpt:",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "Drought can have a significant impact on both society and the economy, resulting in issues such as scarcity of water and shortages of food and energy, as well as elevated health risks.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "Based on the high-precision and high-resolution CN05.1 dataset, this study obtained the monthly Standardized Precipitation Evapotranspiration Index (SPEI) dataset from 1961 to 2020, and then identified regional drought events in China using the Intensity–Area–Duration (IAD) method, which considers b...[truncated]",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "The results showed that the subregions located in the northern region of China generally have lower mean, maximum, and minimum temperatures than those located in the southern region, but the associated interannual change rate of the subregions in the north is higher than that in the south.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "As for the annual total precipitation, results show a clear pattern of decreasing southeast–northwest gradient, with an increasing trend in the northern subregions and a decreasing trend in the southern subregions except for the subregion south China (SC).",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "Full text excerpt: Identified regional drought events in China using the IAD method considering both temporal continuity and spatial dynamics; analyzed spatiotemporal variations in frequency, intensity, duration, and affected area of drought events across China and its seven subregions No explicit l...[truncated]",
+            "support": "source_sentence"
+          }
+        ]
+      },
+      {
+        "method": "Principal component analysis (PCA) applied to drought indices (SPEI-12 and SPI-12); multi-model simulation datasets from CORDEX; model evaluation against CRU observations; correlation analysis (r ≥ 0.7) of simulated vs. observed spatial patterns.",
+        "scenario": "RCP4.5 and RCP8.5 climate forcing scenarios",
+        "benchmark": "Climate Research Unit (CRU) observation data",
+        "references": [
+          "M. Nguvava et al. (2023) Potential impacts of 1.5 °C and 2 °C global warming levels on drought modes over Eastern Africa doi:10.1007/s10584-023-03631-z"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "Principal component analysis (PCA) applied to drought indices (SPEI-12 and SPI-12); multi-model simulation datasets from CORDEX; model evaluation against CRU observations; correlation analysis (r ≥ 0.7) of simulated vs. observed spatial patterns.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "Projects increased SPEI-12 drought intensity and frequency over drought mode hotspots under 1.5°C and 2°C global warming levels, with greater increases at 2°C; identifies increased potential evapotranspiration—not reduced precipitation—as the dominant driver; recommends adaptation focused on reducin...[truncated]",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "No explicit limitation extracted.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "Full text excerpt:",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "Multi-model simulation datasets from the Coordinated Regional Climate Downscaling Experiment (CORDEX) were analysed for the study.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "The skill of the models to reproduce the spatial distribution and frequency of past drought modes over Eastern Africa was examined by comparing the simulated results with the Climate Research Unit (CRU) observation.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "The correlation between the simulated and observed spatial pattern of the drought modes is high ( r ≥ 0.7).",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "Over the hotspot of the drought modes, the observed drought frequency is within the simulated values, and the simulations agree with the observation that the frequency of SPI-12 droughts is less than that of SPEI-12 droughts.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "For both RCP4.5 and RCP8.5 scenarios, the simulation ensemble projects no changes in the spatial structure of the drought modes but suggests an increase in SPEI-12 drought intensity and frequency over the hotspots of the drought modes.",
+            "support": "source_sentence"
+          }
+        ]
+      },
+      {
+        "method": "Using SPI and SPEI indices generated from an ensemble of 9 CMIP6 models (using 3 realizations per model)",
+        "scenario": "anthropogenic forcing",
+        "benchmark": "electrochemical stability",
+        "references": [
+          "F. Chiang et al. (2021) Evidence of anthropogenic impacts on global drought frequency, duration, and intensity doi:10.1038/s41467-021-22314-w"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "Using SPI and SPEI indices generated from an ensemble of 9 CMIP6 models (using 3 realizations per model)",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "provide evidence that anthropogenic forcing has impacted interrelated meteorological drought characteristics",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "No explicit limitation extracted.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "provide evidence that anthropogenic forcing has impacted interrelated meteorological drought characteristics No explicit limitation extracted.",
+            "support": "source_sentence"
+          }
+        ]
+      },
+      {
+        "method": "unknown method",
+        "scenario": "Multidecadal drought assessment in Middle East and North Africa under observed global warming and rainfall deficit (1981–2021), with comparative analysis pre- and post-1998.",
+        "benchmark": "4.07 datasets to assess changes in drought characteristics (e.g., frequency, intensity, duration, and severity) at the 12-months timescale for the main Koppen-Geiger climate zones in the region.",
+        "references": [
+          "A. Kenawy et al. (2025) A Multidecadal Assessment of Drought Intensification in the Middle East and North Africa: The Role of Global Warming and Rainfall Deficit doi:10.1007/s41748-025-00576-4"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "unknown method",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "Demonstrates that SPEI is more reliable than SPI for drought assessment in warming, water-limited MENA climates; quantifies increased drought frequency and spatial intensification—especially in CWb/BWk zones—driven by rising temperatures; reveals SPI's underestimation of severe-to-extreme droughts i...[truncated]",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "Reliance on gridded observational datasets (CRU TS v. 4.07) with potential uncertainties in sparsely gauged regions; lack of direct incorporation of anthropogenic water use or land-use change impacts; limited representation of sub-seasonal drought dynamics due to 12-month aggregation.",
+            "support": "structured_field"
+          }
+        ]
+      },
+      {
+        "method": "unknown method",
+        "scenario": "Changing drought events in China under climate change",
+        "benchmark": "benchmark dataset",
+        "references": [
+          "Yan‐Yan Ren et al. (2023) Detection and Assessment of Changing Drought Events in China in the Context of Climate Change Based on the Intensity–Area–Duration Algorithm doi:10.3390/land12101820"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "unknown method",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "Identified regional drought events in China using the IAD method considering both temporal continuity and spatial dynamics; analyzed spatiotemporal variations in frequency, intensity, duration, and affected area of drought events across China and its seven subregions",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "No explicit limitation extracted.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "Identified regional drought events in China using the IAD method considering both temporal continuity and spatial dynamics; analyzed spatiotemporal variations in frequency, intensity, duration, and affected area of drought events across China and its seven subregions No explicit limitation extracted...[truncated]",
+            "support": "source_sentence"
+          }
+        ]
+      },
+      {
+        "method": "Principal component analysis (PCA) applied to drought indices (SPEI-12 and SPI-12); multi-model simulation datasets from CORDEX; model evaluation against CRU observations; correlation analysis (r ≥ 0.7) of simulated vs. observed spatial patterns.",
+        "scenario": "RCP4.5 and RCP8.5 climate forcing scenarios",
+        "benchmark": "Climate Research Unit (CRU) observation data",
+        "references": [
+          "M. Nguvava et al. (2023) Potential impacts of 1.5 °C and 2 °C global warming levels on drought modes over Eastern Africa doi:10.1007/s10584-023-03631-z"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "Principal component analysis (PCA) applied to drought indices (SPEI-12 and SPI-12); multi-model simulation datasets from CORDEX; model evaluation against CRU observations; correlation analysis (r ≥ 0.7) of simulated vs. observed spatial patterns.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "Projects increased SPEI-12 drought intensity and frequency over drought mode hotspots under 1.5°C and 2°C global warming levels, with greater increases at 2°C; identifies increased potential evapotranspiration—not reduced precipitation—as the dominant driver; recommends adaptation focused on reducin...[truncated]",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "No explicit limitation extracted.",
+            "support": "structured_field"
+          }
+        ]
+      }
+    ],
+    "claim_type_counts": {
+      "methodological_description": 11,
+      "empirical_result": 17,
+      "author_opinion": 14,
+      "theoretical_claim": 4
+    }
+  },
+  "knowledge_gaps": [
+    {
+      "gap_id": "gap_1783082172074359000",
+      "gap_type": "combinatorial",
+      "description": "Method 'Principal component analysis (PCA) applied to drought indices (SPEI-12 and SPI-12); multi-model simulation datasets from CORDEX; model evaluation against CRU observations; correlation analysis (r ≥ 0.7) of simulated vs. observed spatial patterns.' has no recorded validation in scenario 'Changing drought events in China under climate change' in the current PaperGraph map.",
+      "supporting_references": [
+        "Yan‐Yan Ren et al. (2023) Detection and Assessment of Changing Drought Events in China in the Context of Climate Change Based on the Intensity–Area–Duration Algorithm doi:10.3390/land12101820",
+        "M. Nguvava et al. (2023) Potential impacts of 1.5 °C and 2 °C global warming levels on drought modes over Eastern Africa doi:10.1007/s10584-023-03631-z",
+        "A. Kenawy et al. (2025) A Multidecadal Assessment of Drought Intensification in the Middle East and North Africa: The Role of Global Warming and Rainfall Deficit doi:10.1007/s41748-025-00576-4"
+      ],
+      "novelty_score": 2,
+      "application_value": "medium",
+      "feasibility": "high",
+      "suggested_research_path": "Run a targeted validation study with explicit benchmarks, baselines, and failure-mode analysis.",
+      "value_argument": "The combination may expose method-scenario boundary conditions rather than simply adding another benchmark.",
+      "overlap_risk": "high",
+      "requires_human_review": true
+    },
+    {
+      "gap_id": "gap_1783082172081119000",
+      "gap_type": "improvement",
+      "description": "Recorded limitation worth testing: No explicit limitation extracted.",
+      "supporting_references": [
+        "F. Chiang et al. (2021) Evidence of anthropogenic impacts on global drought frequency, duration, and intensity doi:10.1038/s41467-021-22314-w"
+      ],
+      "novelty_score": 5,
+      "application_value": "medium",
+      "feasibility": "high",
+      "suggested_research_path": "Formulate a hypothesis that directly attacks the documented limitation and verify it under stress conditions.",
+      "value_argument": "The gap is grounded in an author-reported limitation, so it has stronger evidential support than a bare untried combination.",
+      "overlap_risk": "medium",
+      "requires_human_review": false
+    },
+    {
+      "gap_id": "gap_1783082172084456400",
+      "gap_type": "improvement",
+      "description": "Recorded limitation worth testing: Reliance on gridded observational datasets (CRU TS v. 4.07) with potential uncertainties in sparsely gauged regions; lack of direct incorporation of anthropogenic water use or land-use change impacts; limited representation of sub-seasonal drought dynamics due to 12-month aggregation.",
+      "supporting_references": [
+        "A. Kenawy et al. (2025) A Multidecadal Assessment of Drought Intensification in the Middle East and North Africa: The Role of Global Warming and Rainfall Deficit doi:10.1007/s41748-025-00576-4"
+      ],
+      "novelty_score": 2,
+      "application_value": "medium",
+      "feasibility": "high",
+      "suggested_research_path": "Formulate a hypothesis that directly attacks the documented limitation and verify it under stress conditions.",
+      "value_argument": "The gap is grounded in an author-reported limitation, so it has stronger evidential support than a bare untried combination.",
+      "overlap_risk": "high",
+      "requires_human_review": true
+    },
+    {
+      "gap_id": "gap_1783082172092401100",
+      "gap_type": "migration",
+      "description": "Method 'Using SPI and SPEI indices generated from an ensemble of 9 CMIP6 models (using 3 realizations per model)' is only recorded in scenario 'anthropogenic forcing', but may be transferable to scenario 'Changing drought events in China under climate change'.",
+      "supporting_references": [
+        "F. Chiang et al. (2021) Evidence of anthropogenic impacts on global drought frequency, duration, and intensity doi:10.1038/s41467-021-22314-w"
+      ],
+      "novelty_score": 5,
+      "application_value": "medium",
+      "feasibility": "medium",
+      "suggested_research_path": "Audit assumptions of the source scenario, then run a small transfer validation in the target scenario.",
+      "value_argument": "Migration gaps can create useful cross-domain leverage if mechanism assumptions remain valid.",
+      "overlap_risk": "medium",
+      "requires_human_review": false
+    }
+  ],
+  "self_reflection": {
+    "top_venue_coverage_checked": true,
+    "pseudo_gap_risk_checked": true,
+    "method_categories_require_literature_support": true,
+    "unsupported_claims_marked_for_review": true
+  }
+}

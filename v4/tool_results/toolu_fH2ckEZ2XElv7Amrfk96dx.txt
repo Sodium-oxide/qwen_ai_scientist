@@ -1,0 +1,55 @@
+   1 | from __future__ import annotations
+   2 | 
+   3 | import os
+   4 | from pathlib import Path
+   5 | 
+   6 | 
+   7 | def _load_dotenv() -> None:
+   8 |     try:
+   9 |         from dotenv import load_dotenv
+  10 |     except ImportError:
+  11 |         return
+  12 |     load_dotenv()
+  13 | 
+  14 | 
+  15 | _load_dotenv()
+  16 | 
+  17 | PACKAGE_DIR = Path(__file__).resolve().parent
+  18 | WORKDIR = Path(os.environ.get("AGENT_WORKDIR", Path.cwd())).resolve()
+  19 | SKILLS_DIR = Path(os.environ.get("SKILLS_DIR", PACKAGE_DIR / "skills")).resolve()
+  20 | LOG_PATH = Path(os.environ.get("AGENT_LOG_PATH", PACKAGE_DIR / "agent.log")).resolve()
+  21 | TOOL_RESULTS_DIR = Path(
+  22 |     os.environ.get("TOOL_RESULTS_DIR", PACKAGE_DIR / "tool_results")
+  23 | ).resolve()
+  24 | TRANSCRIPTS_DIR = Path(
+  25 |     os.environ.get("TRANSCRIPTS_DIR", PACKAGE_DIR / "transcripts")
+  26 | ).resolve()
+  27 | 
+  28 | MODEL_ID = os.environ.get(
+  29 |     "MODEL_ID",
+  30 |     os.environ.get("ANTHROPIC_MODEL", "claude-3-5-sonnet-latest"),
+  31 | )
+  32 | MAX_TOKENS = int(os.environ.get("MAX_TOKENS", os.environ.get("ANTHROPIC_MAX_TOKENS", "8000")))
+  33 | SUB_MAX_TOKENS = int(os.environ.get("SUB_MAX_TOKENS", "4000"))
+  34 | SUB_MAX_TURNS = int(os.environ.get("SUB_MAX_TURNS", "30"))
+  35 | 
+  36 | BASH_TIMEOUT_SECONDS = int(os.environ.get("BASH_TIMEOUT_SECONDS", "120"))
+  37 | MAX_OUTPUT_CHARS = int(os.environ.get("MAX_OUTPUT_CHARS", "50000"))
+  38 | LARGE_OUTPUT_CHARS = int(os.environ.get("LARGE_OUTPUT_CHARS", "20000"))
+  39 | 
+  40 | L3_TOOL_RESULT_BUDGET = int(os.environ.get("L3_TOOL_RESULT_BUDGET", "2048"))
+  41 | L3_SNIPPET_CHARS = int(os.environ.get("L3_SNIPPET_CHARS", "512"))
+  42 | L1_MAX_MESSAGES = int(os.environ.get("L1_MAX_MESSAGES", "20"))
+  43 | L1_KEEP_HEAD = int(os.environ.get("L1_KEEP_HEAD", "10"))
+  44 | L1_KEEP_TAIL = int(os.environ.get("L1_KEEP_TAIL", "10"))
+  45 | L2_KEEP_TOOL_RESULTS = int(os.environ.get("L2_KEEP_TOOL_RESULTS", "5"))
+  46 | L0_SERIALIZED_LIMIT = int(os.environ.get("L0_SERIALIZED_LIMIT", "50000"))
+  47 | L0_SUMMARY_TOKENS = int(os.environ.get("L0_SUMMARY_TOKENS", "1200"))
+  48 | EMERGENCY_KEEP_MESSAGES = int(os.environ.get("EMERGENCY_KEEP_MESSAGES", "5"))
+  49 | 
+  50 | ANTHROPIC_BASE_URL = os.environ.get("ANTHROPIC_BASE_URL")
+  51 | AUTO_APPROVE = os.environ.get("AGENT_AUTO_APPROVE", "").lower() in {"1", "true", "yes"}
+  52 | DISABLE_CONTEXT_INJECTION = bool(os.environ.get("AGENT_DISABLE_CONTEXT_INJECTION"))
+  53 | LOG_COLOR = os.environ.get("AGENT_LOG_COLOR", "1").lower() not in {"0", "false", "no"}
+
+[exit_code=0]

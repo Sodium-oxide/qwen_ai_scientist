@@ -1,0 +1,1652 @@
+{
+  "thought": "ZhiZhi retrieved and filtered literature, imported grounded PaperGraph evidence, built a benchmark-aware knowledge map, expanded citation context when available, and generated gaps with novelty/value/feasibility checks.",
+  "action": {
+    "agent": "zhizhi",
+    "query": "power system simulation transient stability electromagnetic transient digital twin real-time simulator co-simulation AI surrogate modeling",
+    "domain": "Power System Simulation / 电力系统仿真",
+    "years": "last 5 years",
+    "search_papers_stratified": {
+      "search_id": "search_1783412300558445000",
+      "total_results": 25,
+      "requested_max_results": 25,
+      "effective_search_budget": 25,
+      "providers": [
+        "semantic_scholar",
+        "arxiv"
+      ],
+      "strategy": "stratified_cascade",
+      "query_plan": [
+        {
+          "branch": "primary",
+          "query": "power system simulation transient stability electromagnetic transient digital twin real-time simulator co-simulation AI surrogate modeling"
+        },
+        {
+          "branch": "transient_stability_simulation",
+          "query": "power system simulation transient stability electromagnetic transient digital twin real-time simulator co-simulation AI surrogate modeling transient stability simulation"
+        },
+        {
+          "branch": "electromagnetic_transient_simulation",
+          "query": "power system simulation transient stability electromagnetic transient digital twin real-time simulator co-simulation AI surrogate modeling electromagnetic transient simulation"
+        },
+        {
+          "branch": "digital_twin_power_grid",
+          "query": "power system simulation transient stability electromagnetic transient digital twin real-time simulator co-simulation AI surrogate modeling digital twin power grid"
+        },
+        {
+          "branch": "real_time_simulator",
+          "query": "power system simulation transient stability electromagnetic transient digital twin real-time simulator co-simulation AI surrogate modeling real-time simulator"
+        },
+        {
+          "branch": "power_system_co_simulation",
+          "query": "power system simulation transient stability electromagnetic transient digital twin real-time simulator co-simulation AI surrogate modeling power system co-simulation"
+        },
+        {
+          "branch": "ai_surrogate_modeling_for_power_grids",
+          "query": "power system simulation transient stability electromagnetic transient digital twin real-time simulator co-simulation AI surrogate modeling AI surrogate modeling for power grids"
+        },
+        {
+          "branch": "transient_stability_simulation",
+          "query": "power system simulation transient stability electromagnetic transient digital twin real-time simulator co-simulation AI surrogate modeling transient stability simulation power system numerical integration direct method hybrid time-domain",
+          "topic_type": "branch"
+        },
+        {
+          "branch": "electromagnetic_transient_emt_simulation",
+          "query": "power system simulation transient stability electromagnetic transient digital twin real-time simulator co-simulation AI surrogate modeling EMT simulation ATP-EMTP PSCAD RTDS model reduction switching surge",
+          "topic_type": "branch"
+        }
+      ],
+      "focus_branches": [
+        "transient stability simulation",
+        "electromagnetic transient simulation",
+        "digital twin power grid",
+        "real-time simulator",
+        "power system co-simulation",
+        "AI surrogate modeling for power grids"
+      ],
+      "strata": [
+        {
+          "layer": "L0_review",
+          "label": "high-impact review / field map",
+          "quota": 3,
+          "query_suffix": "review survey progress perspective tutorial systematic review meta-analysis",
+          "target": 3,
+          "candidate_count": 6,
+          "raw_candidate_count": 14,
+          "selected": 3,
+          "domain_rejected": 0,
+          "recovery_used": "",
+          "carried_to_next": 0
+        },
+        {
+          "layer": "L1_milestone",
+          "label": "milestone / highly cited foundation",
+          "quota": 4,
+          "query_suffix": "seminal foundational highly cited landmark classic influential",
+          "target": 4,
+          "candidate_count": 0,
+          "raw_candidate_count": 0,
+          "selected": 0,
+          "domain_rejected": 0,
+          "recovery_used": "",
+          "carried_to_next": 4
+        },
+        {
+          "layer": "L2_top_latest",
+          "label": "recent top-venue frontier",
+          "quota": 4,
+          "query_suffix": "latest recent top journal high impact breakthrough advance frontier",
+          "target": 8,
+          "candidate_count": 0,
+          "raw_candidate_count": 0,
+          "selected": 0,
+          "domain_rejected": 0,
+          "recovery_used": "",
+          "carried_to_next": 8
+        },
+        {
+          "layer": "L3_preprint",
+          "label": "latest arXiv preprint frontier",
+          "quota": 1,
+          "query_suffix": "",
+          "target": 9,
+          "candidate_count": 6,
+          "raw_candidate_count": 6,
+          "selected": 5,
+          "domain_rejected": 1,
+          "recovery_used": "",
+          "carried_to_next": 4
+        },
+        {
+          "layer": "L4_regular",
+          "label": "regular journal / supplemental evidence",
+          "quota": 13,
+          "query_suffix": "",
+          "target": 17,
+          "candidate_count": 29,
+          "raw_candidate_count": 29,
+          "selected": 17,
+          "domain_rejected": 0,
+          "recovery_used": "",
+          "carried_to_next": 0
+        }
+      ],
+      "errors": [
+        {
+          "provider": "semantic_scholar",
+          "query": "power system simulation transient stability electromagnetic transient digital twin real-time simulator co-simulation AI surrogate modeling review survey progress perspective tutorial systematic review meta-analysis",
+          "status": "error",
+          "note": null,
+          "error": "Semantic Scholar rate limited; circuit opened for 60.0s: HTTP 429: {\"message\": \"Too Many Requests. Please wait and try again or apply for a key for higher rate limits. https://www.semanticscholar.org/product/api#api-key-form\", \"code\": \"429\"}",
+          "result_count": 0
+        },
+        {
+          "provider": "semantic_scholar",
+          "query": "power system simulation transient stability electromagnetic transient digital twin real-time simulator co-simulation AI surrogate modeling transient stability simulation review survey progress perspective tutorial systematic review meta-analysis",
+          "status": "rate_limited_skipped",
+          "note": null,
+          "error": "Semantic Scholar circuit open; retry_after_seconds=58.2",
+          "result_count": 0
+        },
+        {
+          "provider": "semantic_scholar",
+          "query": "power system simulation transient stability electromagnetic transient digital twin real-time simulator co-simulation AI surrogate modeling electromagnetic transient simulation review survey progress perspective tutorial systematic review meta-analysis",
+          "status": "rate_limited_skipped",
+          "note": null,
+          "error": "Semantic Scholar circuit open; retry_after_seconds=54.5",
+          "result_count": 0
+        },
+        {
+          "provider": "semantic_scholar",
+          "query": "power system simulation transient stability electromagnetic transient digital twin real-time simulator co-simulation AI surrogate modeling",
+          "status": "rate_limited_skipped",
+          "note": null,
+          "error": "Semantic Scholar circuit open; retry_after_seconds=51.0",
+          "result_count": 0
+        },
+        {
+          "provider": "semantic_scholar",
+          "query": "power system simulation transient stability electromagnetic transient digital twin real-time simulator co-simulation AI surrogate modeling transient stability simulation",
+          "status": "rate_limited_skipped",
+          "note": null,
+          "error": "Semantic Scholar circuit open; retry_after_seconds=51.0",
+          "result_count": 0
+        },
+        {
+          "provider": "semantic_scholar",
+          "query": "power system simulation transient stability electromagnetic transient digital twin real-time simulator co-simulation AI surrogate modeling electromagnetic transient simulation",
+          "status": "rate_limited_skipped",
+          "note": null,
+          "error": "Semantic Scholar circuit open; retry_after_seconds=51.0",
+          "result_count": 0
+        },
+        {
+          "provider": "semantic_scholar",
+          "query": "power system simulation transient stability electromagnetic transient digital twin real-time simulator co-simulation AI surrogate modeling",
+          "status": "rate_limited_skipped",
+          "note": null,
+          "error": "Semantic Scholar circuit open; retry_after_seconds=51.0",
+          "result_count": 0
+        },
+        {
+          "provider": "semantic_scholar",
+          "query": "power system simulation transient stability electromagnetic transient digital twin real-time simulator co-simulation AI surrogate modeling transient stability simulation",
+          "status": "rate_limited_skipped",
+          "note": null,
+          "error": "Semantic Scholar circuit open; retry_after_seconds=51.0",
+          "result_count": 0
+        },
+        {
+          "provider": "semantic_scholar",
+          "query": "power system simulation transient stability electromagnetic transient digital twin real-time simulator co-simulation AI surrogate modeling electromagnetic transient simulation",
+          "status": "rate_limited_skipped",
+          "note": null,
+          "error": "Semantic Scholar circuit open; retry_after_seconds=51.0",
+          "result_count": 0
+        },
+        {
+          "provider": "semantic_scholar",
+          "query": "power system simulation transient stability electromagnetic transient digital twin real-time simulator co-simulation AI surrogate modeling",
+          "status": "rate_limited_skipped",
+          "note": null,
+          "error": "Semantic Scholar circuit open; retry_after_seconds=41.2",
+          "result_count": 0
+        },
+        {
+          "provider": "semantic_scholar",
+          "query": "power system simulation transient stability electromagnetic transient digital twin real-time simulator co-simulation AI surrogate modeling transient stability simulation",
+          "status": "rate_limited_skipped",
+          "note": null,
+          "error": "Semantic Scholar circuit open; retry_after_seconds=37.0",
+          "result_count": 0
+        },
+        {
+          "provider": "semantic_scholar",
+          "query": "power system simulation transient stability electromagnetic transient digital twin real-time simulator co-simulation AI surrogate modeling electromagnetic transient simulation",
+          "status": "rate_limited_skipped",
+          "note": null,
+          "error": "Semantic Scholar circuit open; retry_after_seconds=33.3",
+          "result_count": 0
+        }
+      ]
+    },
+    "domain_coverage_diagnostic": {
+      "profile": "power_system_simulation_research_focusing_on_dynamic_modeling_numerical_methods_",
+      "profile_source": "llm",
+      "search_id": "search_1783412300558445000",
+      "total_results": 25,
+      "represented_topics": [
+        {
+          "topic": "AI Surrogate Modeling",
+          "hit_count": 17,
+          "min_hits": 10,
+          "terms": [
+            "surrogate model",
+            "physics-informed neural network",
+            "rom",
+            "neural ode"
+          ]
+        }
+      ],
+      "blind_spots": [
+        {
+          "topic": "EMT Simulation",
+          "hit_count": 5,
+          "min_hits": 10,
+          "terms": [
+            "emt",
+            "electromagnetic transient",
+            "pscad",
+            "emtp",
+            "stiff systems"
+          ],
+          "suggested_query": "power system simulation transient stability electromagnetic transient digital twin real-time simulator co-simulation AI surrogate modeling emt electromagnetic transient pscad emtp",
+          "risk": "Live probe found literature for this missing branch; current PaperGraph may be incomplete, so TanXi should not treat this absence as a true unexplored gap.",
+          "live_probe": {
+            "query": "power system simulation transient stability electromagnetic transient digital twin real-time simulator co-simulation AI surrogate modeling emt electromagnetic transient pscad emtp",
+            "status": "ok",
+            "total_results": 3,
+            "providers": [
+              {
+                "provider": "semantic_scholar",
+                "status": "rate_limited_skipped",
+                "result_count": 0,
+                "top_titles": [],
+                "error": "Semantic Scholar circuit open; retry_after_seconds=16.4",
+                "rate_limited": true
+              },
+              {
+                "provider": "arxiv",
+                "status": "ok",
+                "result_count": 3,
+                "top_titles": [
+                  "Real-time frequency based reduced order modeling of large power grid",
+                  "The JCMT Transient Survey: Single Epoch Transients and Variability of Faint Sources",
+                  "Newtonian Mechanics Based Transient Stability PART V: Inner-group Machine"
+                ],
+                "error": ""
+              }
+            ]
+          },
+          "false_negative_risk": true
+        },
+        {
+          "topic": "Transient Stability",
+          "hit_count": 6,
+          "min_hits": 10,
+          "terms": [
+            "transient stability",
+            "swing equation",
+            "critical clearing time",
+            "generator model"
+          ],
+          "suggested_query": "power system simulation transient stability electromagnetic transient digital twin real-time simulator co-simulation AI surrogate modeling transient stability swing equation critical clearing time generator model",
+          "risk": "Live probe found literature for this missing branch; current PaperGraph may be incomplete, so TanXi should not treat this absence as a true unexplored gap.",
+          "live_probe": {
+            "query": "power system simulation transient stability electromagnetic transient digital twin real-time simulator co-simulation AI surrogate modeling transient stability swing equation critical clearing time generator model",
+            "status": "ok",
+            "total_results": 3,
+            "providers": [
+              {
+                "provider": "semantic_scholar",
+                "status": "rate_limited_skipped",
+                "result_count": 0,
+                "top_titles": [],
+                "error": "Semantic Scholar circuit open; retry_after_seconds=15.0",
+                "rate_limited": true
+              },
+              {
+                "provider": "arxiv",
+                "status": "ok",
+                "result_count": 3,
+                "top_titles": [
+                  "Real-time frequency based reduced order modeling of large power grid",
+                  "Newtonian Mechanics Based Transient Stability PART V: Inner-group Machine",
+                  "The JCMT Transient Survey: Single Epoch Transients and Variability of Faint Sources"
+                ],
+                "error": ""
+              }
+            ]
+          },
+          "false_negative_risk": true
+        },
+        {
+          "topic": "Real-Time Co-Simulation",
+          "hit_count": 9,
+          "min_hits": 10,
+          "terms": [
+            "real-time simulation",
+            "hil",
+            "fmi",
+            "co-simulation",
+            "opal-rt"
+          ],
+          "suggested_query": "power system simulation transient stability electromagnetic transient digital twin real-time simulator co-simulation AI surrogate modeling real-time simulation hil fmi co-simulation",
+          "risk": "Live probe found literature for this missing branch; current PaperGraph may be incomplete, so TanXi should not treat this absence as a true unexplored gap.",
+          "live_probe": {
+            "query": "power system simulation transient stability electromagnetic transient digital twin real-time simulator co-simulation AI surrogate modeling real-time simulation hil fmi co-simulation",
+            "status": "ok",
+            "total_results": 3,
+            "providers": [
+              {
+                "provider": "semantic_scholar",
+                "status": "rate_limited_skipped",
+                "result_count": 0,
+                "top_titles": [],
+                "error": "Semantic Scholar circuit open; retry_after_seconds=10.9",
+                "rate_limited": true
+              },
+              {
+                "provider": "arxiv",
+                "status": "ok",
+                "result_count": 3,
+                "top_titles": [
+                  "Towards an Assisted Simulation Planning for Co-Simulation of Cyber-Physical Energy Systems",
+                  "Real-time frequency based reduced order modeling of large power grid",
+                  "FMI-Based Distributed Co-Simulation with Enhanced Security and Intellectual Property Safeguards"
+                ],
+                "error": ""
+              }
+            ]
+          },
+          "false_negative_risk": true
+        }
+      ],
+      "live_validate": true,
+      "live_probe_reports": [
+        {
+          "query": "power system simulation transient stability electromagnetic transient digital twin real-time simulator co-simulation AI surrogate modeling emt electromagnetic transient pscad emtp",
+          "status": "ok",
+          "total_results": 3,
+          "providers": [
+            {
+              "provider": "semantic_scholar",
+              "status": "rate_limited_skipped",
+              "result_count": 0,
+              "top_titles": [],
+              "error": "Semantic Scholar circuit open; retry_after_seconds=16.4",
+              "rate_limited": true
+            },
+            {
+              "provider": "arxiv",
+              "status": "ok",
+              "result_count": 3,
+              "top_titles": [
+                "Real-time frequency based reduced order modeling of large power grid",
+                "The JCMT Transient Survey: Single Epoch Transients and Variability of Faint Sources",
+                "Newtonian Mechanics Based Transient Stability PART V: Inner-group Machine"
+              ],
+              "error": ""
+            }
+          ]
+        },
+        {
+          "query": "power system simulation transient stability electromagnetic transient digital twin real-time simulator co-simulation AI surrogate modeling transient stability swing equation critical clearing time generator model",
+          "status": "ok",
+          "total_results": 3,
+          "providers": [
+            {
+              "provider": "semantic_scholar",
+              "status": "rate_limited_skipped",
+              "result_count": 0,
+              "top_titles": [],
+              "error": "Semantic Scholar circuit open; retry_after_seconds=15.0",
+              "rate_limited": true
+            },
+            {
+              "provider": "arxiv",
+              "status": "ok",
+              "result_count": 3,
+              "top_titles": [
+                "Real-time frequency based reduced order modeling of large power grid",
+                "Newtonian Mechanics Based Transient Stability PART V: Inner-group Machine",
+                "The JCMT Transient Survey: Single Epoch Transients and Variability of Faint Sources"
+              ],
+              "error": ""
+            }
+          ]
+        },
+        {
+          "query": "power system simulation transient stability electromagnetic transient digital twin real-time simulator co-simulation AI surrogate modeling real-time simulation hil fmi co-simulation",
+          "status": "ok",
+          "total_results": 3,
+          "providers": [
+            {
+              "provider": "semantic_scholar",
+              "status": "rate_limited_skipped",
+              "result_count": 0,
+              "top_titles": [],
+              "error": "Semantic Scholar circuit open; retry_after_seconds=10.9",
+              "rate_limited": true
+            },
+            {
+              "provider": "arxiv",
+              "status": "ok",
+              "result_count": 3,
+              "top_titles": [
+                "Towards an Assisted Simulation Planning for Co-Simulation of Cyber-Physical Energy Systems",
+                "Real-time frequency based reduced order modeling of large power grid",
+                "FMI-Based Distributed Co-Simulation with Enhanced Security and Intellectual Property Safeguards"
+              ],
+              "error": ""
+            }
+          ]
+        }
+      ],
+      "coverage_warning": true,
+      "needs_user_branch_confirmation": true
+    },
+    "user_interaction": {
+      "needed": true,
+      "type": "research_branch_confirmation",
+      "question": "Some major sub-branches appear missing from the current retrieval. Which should be prioritized for a supplemental search before treating gaps as real?",
+      "options": [
+        {
+          "label": "EMT Simulation",
+          "suggested_query": "power system simulation transient stability electromagnetic transient digital twin real-time simulator co-simulation AI surrogate modeling emt electromagnetic transient pscad emtp",
+          "live_evidence_count": 3,
+          "false_negative_risk": true
+        },
+        {
+          "label": "Transient Stability",
+          "suggested_query": "power system simulation transient stability electromagnetic transient digital twin real-time simulator co-simulation AI surrogate modeling transient stability swing equation critical clearing time generator model",
+          "live_evidence_count": 3,
+          "false_negative_risk": true
+        },
+        {
+          "label": "Real-Time Co-Simulation",
+          "suggested_query": "power system simulation transient stability electromagnetic transient digital twin real-time simulator co-simulation AI surrogate modeling real-time simulation hil fmi co-simulation",
+          "live_evidence_count": 3,
+          "false_negative_risk": true
+        }
+      ],
+      "default_action": "Run supplemental stratified search for options with false_negative_risk=true, or ask the user to pick 2-3 priority branches.",
+      "continue_with": "Pass selected option labels or custom branch keywords as focus_branches to run_zhizhi_literature_analysis/search_papers_stratified."
+    },
+    "select_literature_result": {
+      "result_index": 0,
+      "stratified_layer": "L4_regular",
+      "stratified_label": "regular journal / supplemental evidence",
+      "query_branch": "primary",
+      "retrieval_query": "power system simulation transient stability electromagnetic transient digital twin real-time simulator co-simulation AI surrogate modeling",
+      "_why_selected": "Selected as regular supplemental paper: Design and Implementation of Scalable Communication Interfaces for Reliable and Stable Real-time Co-Simulation of Power...[truncated]; year=2025; venue=arxiv; quality=0.64; relevance=0.3221.",
+      "domain_relevance": {
+        "profile": "power_system_simulation",
+        "target_field": "general",
+        "result_field": "automation_control",
+        "score": 0.6962,
+        "query_hits": [
+          "power",
+          "system",
+          "simulation",
+          "transient",
+          "stability",
+          "electromagnetic",
+          "real-time",
+          "simulator",
+          "co-simulation",
+          "modeling"
+        ],
+        "anchor_hits": [
+          "power",
+          "system",
+          "simulation"
+        ],
+        "topic_hits": [],
+        "noise_hits": [],
+        "flags": [],
+        "is_preprint": true,
+        "verdict": "keep",
+        "requires_human_review": false
+      },
+      "relevance_score": 0.3221,
+      "relevance_components": {
+        "text_score": 0.4923,
+        "recency_score": 1.0,
+        "impact_score": 0.35,
+        "citation_field": "automation_control",
+        "citation_baseline": 350.0,
+        "venue_score": 0.35,
+        "publication_quality_score": 0.64,
+        "base_score": 0.5032,
+        "text_weight": 0.62,
+        "recency_weight": 0.1,
+        "impact_weight": 0.18,
+        "venue_weight": 0.1
+      },
+      "publication_quality_score": 0.64,
+      "venue_quality": "missing",
+      "journal_quartile": "",
+      "journal_metric_source": "",
+      "inferred_field": "automation_control",
+      "quality_flags": [
+        "missing_venue",
+        "new_paper_protection"
+      ],
+      "quality_criteria": [
+        "venue metadata is missing",
+        "paper is within 2-year protection window; low citations are not treated as low quality"
+      ],
+      "suspicion_type": "",
+      "is_review_like": false,
+      "pyramid_root_score": 0.5026,
+      "matched_query_terms": [
+        "power",
+        "system",
+        "simulation",
+        "real-time",
+        "co-simulation",
+        "transient",
+        "stability",
+        "electromagnetic",
+        "simulator",
+        "modeling"
+      ],
+      "title": "Design and Implementation of Scalable Communication Interfaces for Reliable and Stable Real-time Co-Simulation of Power Systems",
+      "citation": "Qi Xiao et al. (2025) Design and Implementation of Scalable Communication Interfaces for Reliable and Stable Real-time Co-Simulation of Power Systems arXiv:2502.07866v1",
+      "provider": "arxiv",
+      "year": "2025",
+      "citation_count": null,
+      "influential_citation_count": null,
+      "doi": "",
+      "arxiv_id": "2502.07866v1",
+      "url": "http://arxiv.org/abs/2502.07866v1",
+      "relevance_reason": "title=5/13, abstract=10/13, citation=5/13, phrase_bonus=0.0, recency=1.0, impact=0.35, venue=0.35, quality=0.64",
+      "quality_reason": "venue metadata is missing; paper is within 2-year protection window; low citations are not treated as low quality"
+    },
+    "stratified_import_plan": {
+      "strategy": "layer_minimum_then_score_backfill",
+      "requested_import_top_k": 15,
+      "effective_import_top_k": 15,
+      "min_per_layer": {
+        "L0_review": 2,
+        "L1_milestone": 2,
+        "L2_top_latest": 2,
+        "L3_preprint": 2,
+        "L4_regular": 3
+      },
+      "candidate_counts_by_layer": {
+        "L0_review": 3,
+        "L3_preprint": 5,
+        "L4_regular": 17
+      },
+      "selected_counts_by_layer": {
+        "L0_review": 3,
+        "L3_preprint": 5,
+        "L4_regular": 7
+      },
+      "missing_layers": [
+        {
+          "layer": "L1_milestone",
+          "label": "milestone / highly cited foundation",
+          "target": 2,
+          "selected": 0,
+          "candidates": 0
+        },
+        {
+          "layer": "L2_top_latest",
+          "label": "recent top-venue frontier",
+          "target": 2,
+          "selected": 0,
+          "candidates": 0
+        }
+      ],
+      "selected_result_indexes": [
+        0,
+        2,
+        3,
+        4,
+        8,
+        9,
+        10,
+        1,
+        5,
+        6,
+        7,
+        13,
+        11,
+        12,
+        17
+      ]
+    },
+    "imported_records": 15,
+    "expand_literature_graph": {
+      "graph_search_id": "graph_1783412840546704000",
+      "total_results": 10,
+      "fallback_used": false,
+      "depth": 1
+    },
+    "build_literature_relation_graph": {
+      "relation_graph_id": "relgraph_1783412848203665000",
+      "cluster_count": 8,
+      "edge_summary": {
+        "total_edges": 10,
+        "citation_graph_edges": 10,
+        "artificial_edges": 0,
+        "by_relation": {
+          "reference": 10
+        },
+        "by_depth": {
+          "1": 10
+        },
+        "fallback_weight_policy": "keyword_fallback/search_result edges are artificial and use very low PageRank weight."
+      },
+      "analysis_confidence": 1.0
+    }
+  },
+  "observation": [
+    "Potential retrieval blind spot: EMT Simulation was not represented in retrieved/imported candidates; suggested query: power system simulation transient stability electromagnetic transient digital twin real-time simulator co-simulation AI surrogate modeling emt electromagnetic transient pscad emtp; live_probe_results=3",
+    "Potential retrieval blind spot: Transient Stability was not represented in retrieved/imported candidates; suggested query: power system simulation transient stability electromagnetic transient digital twin real-time simulator co-simulation AI surrogate modeling transient stability swing equation critical clearing time generator model; live_probe_results=3",
+    "Potential retrieval blind spot: Real-Time Co-Simulation was not represented in retrieved/imported candidates; suggested query: power system simulation transient stability electromagnetic transient digital twin real-time simulator co-simulation AI surrogate modeling real-time simulation hil fmi co-simulation; live_probe_results=3",
+    "Layer import target not met: L1_milestone selected=0/target=2 from candidates=0. This indicates retrieval/candidate scarcity rather than top-K truncation.",
+    "Layer import target not met: L2_top_latest selected=0/target=2 from candidates=0. This indicates retrieval/candidate scarcity rather than top-K truncation."
+  ],
+  "knowledge_map_summary": {
+    "main_methods": [
+      "Adomian Decomposition Method",
+      "VLSI-based modeling",
+      "XUV transient grating spectroscopy",
+      "co-simulation plays a key role in enabling collaborative modeling",
+      "contraction analysis",
+      "integrated circuit simulation",
+      "literature review",
+      "numerical modeling",
+      "of electromagnetic transient-transient stability hybrid simulation",
+      "online recursive least squares (RLS) identification algorithm in z-domain",
+      "preconditioned finite difference Newton-GMRES method",
+      "risk-based transient stability assessment",
+      "scalable communication interface design | real-time data extrapolation method",
+      "simulation-based education approach",
+      "towards an assisted simulation"
+    ],
+    "method_scenario_coverage": {
+      "scalable communication interface design | real-time data extrapolation method": [
+        "real-time co-simulation of power systems with high inverter-based resource (IBR) penetration"
+      ],
+      "of electromagnetic transient-transient stability hybrid simulation": [
+        "power grid simulation with inverter-based resources"
+      ],
+      "towards an assisted simulation": [
+        "co-simulation of cyber-physical energy systems"
+      ],
+      "literature review": [
+        "intelligent intersections | smart urban traffic systems"
+      ],
+      "VLSI-based modeling": [
+        "power system electromagnetic transient simulation"
+      ],
+      "simulation-based education approach": [
+        "power system transient and stability education"
+      ],
+      "XUV transient grating spectroscopy": [
+        "ultrafast carrier dynamics in germanium solid"
+      ],
+      "contraction analysis": [
+        "power system electromagnetic transient stability"
+      ],
+      "numerical modeling": [
+        "three-dimensional electromagnetic problems with material discontinuities | steady-state and transient regimes"
+      ],
+      "co-simulation plays a key role in enabling collaborative modeling": [
+        "collaborative modeling and simulation of continuous-time or hybrid systems"
+      ],
+      "integrated circuit simulation": [
+        "power system transient stability analysis"
+      ],
+      "risk-based transient stability assessment": [
+        "power system security | transient stability under uncertainty"
+      ],
+      "preconditioned finite difference Newton-GMRES method": [
+        "power system transient simulation for stability studies"
+      ],
+      "online recursive least squares (RLS) identification algorithm in z-domain": [
+        "large power grid"
+      ],
+      "Adomian Decomposition Method": [
+        "power system transient stability simulation"
+      ]
+    },
+    "method_scenario_benchmark_triples": [
+      {
+        "method": "scalable communication interface design | real-time data extrapolation method",
+        "scenario": "real-time co-simulation of power systems with high inverter-based resource (IBR) penetration",
+        "benchmark": "stability | reliability | scalability | accuracy of simulation outcomes",
+        "references": [
+          "Qi Xiao et al. (2025) Design and Implementation of Scalable Communication Interfaces for Reliable and Stable Real-time Co-Simulation of Power Systems arXiv:2502.07866v1"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "scalable communication interface design | real-time data extrapolation method",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "A scalable communication interface design (local and remote) and a real-time data extrapolation method to improve stability and reliability in real-time co-simulation of power systems with high IBR penetration",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "Challenges specific to real-time co-simulation applications, including instability from data resolution mismatches",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "Full text excerpt:",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "Co-simulation offers an integrated approach for modeling the large-scale integration of inverter-based resources (IBRs) into transmission and distribution grids.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "In local scenarios, where subsystems are connected within a single local area network (LAN), low-latency communication facilitates the seamless integration of electromagnetic transient (EMT) and phasor-domain models, enabling efficient interactions with power and energy management algorithms.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "The performance of both methods is evaluated using OPAL-RT as a real-time simulator, demonstrating scalability, effectiveness, and challenges specific to real-time co-simulation applications.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "To mitigate instability arising from data resolution mismatches in time-sensitive co-simulations, a real-time data extrapolation method is proposed.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "This approach significantly enhances stability and reliability, ensuring more accurate simulation outcomes.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "Full text excerpt: A scalable communication interface design (local and remote) and a real-time data extrapolation method to improve stability and reliability in real-time co-simulation of power systems with high IBR penetration Challenges specific to real-time co-simulation applications, including...[truncated]",
+            "support": "source_sentence"
+          }
+        ]
+      },
+      {
+        "method": "of electromagnetic transient-transient stability hybrid simulation",
+        "scenario": "power grid simulation with inverter-based resources",
+        "benchmark": "EMT-TS hybrid interface error",
+        "references": [
+          "Bin Wang et al. (2026) Quantifying and Improving the Accuracy of Electromagnetic Transient-Transient Stability Hybrid Simulation doi:10.1109/TPWRS.2026.3683988"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "of electromagnetic transient-transient stability hybrid simulation",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "Introduces an error index to quantify EMT-TS hybrid interface errors, identifies conditions causing inaccuracy, proposes EMT region expansion and a three-sequence hybrid interface model to improve accuracy under unbalanced conditions.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "Abstract: The increasing penetration of inverter-based resources introduces new dynamic challenges to modern power grids, such as sub- and super-synchronous oscillations and other faster dynamics. These dynamics are typically fast in nature and are difficult to accurately model and analyze using sta...[truncated]",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "Full text excerpt:",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "These dynamics are typically fast in nature and are difficult to accurately model and analyze using standard transient stability (TS) methods, necessitating the need for electromagnetic transient (EMT) analysis.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "However, EMT simulations are notoriously slow for large-scale grids due to both equation formulations and computational limitations.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "To overcome this challenge, EMT-TS hybrid simulation is often used, since it offers a balanced trade-off between accuracy and speed, making it feasible to perform EMT analysis on large systems.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "One open question about EMT-TS hybrid simulation is the accuracy of the EMT-TS boundary or interface.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "This paper introduces an error index to quantify EMT-TS hybrid interface errors, identifies conditions where the hybrid simulation approach may become inaccurate, and suggests EMT region expansions to improve the simulation accuracy.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "Full text excerpt: Introduces an error index to quantify EMT-TS hybrid interface errors, identifies conditions causing inaccuracy, proposes EMT region expansion and a three-sequence hybrid interface model to improve accuracy under unbalanced conditions.",
+            "support": "source_sentence"
+          }
+        ]
+      },
+      {
+        "method": "towards an assisted simulation",
+        "scenario": "co-simulation of cyber-physical energy systems",
+        "benchmark": "usability of co-simulation",
+        "references": [
+          "Jan Sören Schwarz et al. (2024) Towards an Assisted Simulation Planning for Co-Simulation of Cyber-Physical Energy Systems doi:10.1109/MSCPES.2019.8738788"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "towards an assisted simulation",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "An assisted simulation planning approach that supports high-level modeling, component recommendation, and validation of co-simulation scenarios using Semantic Web technologies and an information model.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "No explicit limitation extracted.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "Full text excerpt:",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "Increasing complexity in the power system and the transformation towards a smart grid lead to the necessity of new tools and methods for the development and testing of new technologies.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "One testing method is co-simulation, which allows coupling simulation components from different domains to test their interaction.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "Because the manual configuration of complex large-scale co-simulation scenarios can be error-prone, we propose an approach for assisting the user in the development of co-simulation scenarios.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "Our approach uses an information model, a component catalog implemented in a Semantic Media Wiki, and Semantic Web technologies to assist the high-level modeling of co-simulation scenarios, recommend suitable simulation components, and validate co-simulation scenarios.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "This assistance aims to improve the usability of co-simulation in the development of interdisciplinary, large-scale scenarios.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "Full text excerpt: An assisted simulation planning approach that supports high-level modeling, component recommendation, and validation of co-simulation scenarios using Semantic Web technologies and an information model.",
+            "support": "source_sentence"
+          }
+        ]
+      },
+      {
+        "method": "literature review",
+        "scenario": "intelligent intersections | smart urban traffic systems",
+        "benchmark": "uncertainty",
+        "references": [
+          "Alben Rome Bagabaldo et al. (2025) Digital Twins for Intelligent Intersections: A Literature Review arXiv:2510.05374v1"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "literature review",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "systematic thematic categorization of digital twin research for intelligent intersections across five domains: architectures/frameworks, data processing/simulation, AI/ML for adaptive control, vulnerable road user safety, and citywide scaling",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "interoperability of diverse data sources, scalability of digital twins for extensive traffic networks, and managing uncertainty within dynamic urban environments",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "Full text excerpt:",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "The review systematically categorizes existing research into five key thematic areas: (i) Digital Twin Architectures and Frameworks; (ii) Data Processing and Simulation Techniques; (iii) Artificial Intelligence and Machine Learning for Adaptive Traffic Control; (iv) Safety and Protection of Vulnerab...[truncated]",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "Advanced simulation techniques combined with sophisticated AI/ML algorithms demonstrate notable improvements in real-time responsiveness and predictive accuracy for traffic management.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "Full text excerpt: systematic thematic categorization of digital twin research for intelligent intersections across five domains: architectures/frameworks, data processing/simulation, AI/ML for adaptive control, vulnerable road user safety, and citywide scaling interoperability of diverse data sourc...[truncated]",
+            "support": "source_sentence"
+          }
+        ]
+      },
+      {
+        "method": "VLSI-based modeling",
+        "scenario": "power system electromagnetic transient simulation",
+        "benchmark": "feasibility",
+        "references": [
+          "Yijing Liu et al. (2021) Using Terminal Circuit for Power System Electromagnetic Transient Simulation arXiv:2107.00540v1"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "VLSI-based modeling",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "preliminary exploration of modeling power system electromagnetic transients using VLSI to avoid numerical calculation",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "Full text excerpt: preliminary exploration of modeling power system electromagnetic transients using VLSI to avoid numerical calculation No explicit limitation extracted.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "Full text excerpt:",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "To improve the electromagnetic transient simulation efficiency while keeping the simulation accuracy, this paper proposes to model and simulate power system electromagnetic transients by very large-scale integrated circuit (VLSI) as a preliminary exploration to eventually represent power system by V...[truncated]",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "To proof the concept, a simple 5 bus system is modeled and simulated to verify the feasibility of the proposed approach.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "Full text excerpt: preliminary exploration of modeling power system electromagnetic transients using VLSI to avoid numerical calculation Full text excerpt: preliminary exploration of modeling power system electromagnetic transients using VLSI to avoid numerical calculation No explicit limitation ext...[truncated]",
+            "support": "source_sentence"
+          }
+        ]
+      },
+      {
+        "method": "simulation-based education approach",
+        "scenario": "power system transient and stability education",
+        "benchmark": "three models of varying complexity to simultaneously",
+        "references": [
+          "Abdulelah Alharbi et al. (2020) A Simulation-based Education Approach for the Electromagnetic and Electromechanical Transient Waves in Power Systems arXiv:2010.12379v2"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "simulation-based education approach",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "a simulation-based education approach using three models of varying complexity to simultaneously visualize electromagnetic and electromechanical transient waves in the time domain, supporting student learning and enabling investigation of waveforms, propagation speed factors, and wave interactions",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "Full text excerpt: a simulation-based education approach using three models of varying complexity to simultaneously visualize electromagnetic and electromechanical transient waves in the time domain, supporting student learning and enabling investigation of waveforms, propagation speed factors, and...[truncated]",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "Full text excerpt:",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "This paper presents a simulation-based approach to comprehensively study the two types of transient waves, constituting the experimental part of the power system transient and stability course.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "In this approach, three models with different levels of complexity are developed to simultaneously show the two types of transient waves in the time domain.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "In addition, a theory-to-practice engineering research process is demonstrated through developing a power system event-location application, which is inspired by electromechanical wave propagation study.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "Full text excerpt: a simulation-based education approach using three models of varying complexity to simultaneously visualize electromagnetic and electromechanical transient waves in the time domain, supporting student learning and enabling investigation of waveforms, propagation speed factors, and...[truncated]",
+            "support": "source_sentence"
+          }
+        ]
+      },
+      {
+        "method": "XUV transient grating spectroscopy",
+        "scenario": "ultrafast carrier dynamics in germanium solid",
+        "benchmark": "we extract the evolution of the complex refractive index",
+        "references": [
+          "Vincent Eggers et al. (2026) Background-free Tracking of Ultrafast Hole and Electron Dynamics with XUV Transient Grating Spectroscopy doi:10.1021/acsphotonics.6c00152"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "XUV transient grating spectroscopy",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "Background-free tracking of separate ultrafast electron and hole dynamics using XUV-TGS; extraction of complex refractive index without Kramers-Kronig reconstruction",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "Full text excerpt: Background-free tracking of separate ultrafast electron and hole dynamics using XUV-TGS; extraction of complex refractive index without Kramers-Kronig reconstruction No explicit limitation extracted.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "Full text excerpt:",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "We find reflectivity changes of up to 34% via the real part of ñ, whereas changes in the imaginary part only result in a variation in reflectivity of around 0.5%.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "Full text excerpt: Background-free tracking of separate ultrafast electron and hole dynamics using XUV-TGS; extraction of complex refractive index without Kramers-Kronig reconstruction Full text excerpt: Background-free tracking of separate ultrafast electron and hole dynamics using XUV-TGS; extract...[truncated]",
+            "support": "source_sentence"
+          }
+        ]
+      },
+      {
+        "method": "contraction analysis",
+        "scenario": "power system electromagnetic transient stability",
+        "benchmark": "global stability of synchronized steady state",
+        "references": [
+          "Xinyuan Jiang et al. (2025) Power System Electromagnetic Transient Stability: an Analysis Based on Convergent Hamiltonian arXiv:2502.09695v1"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "contraction analysis",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "The synchronized steady state of the power system is globally stable if it exists, under port-Hamiltonian modeling with constant damping matrix and strictly convex Hamiltonian.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "No explicit limitation extracted.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "Full text excerpt:",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "Using contraction analysis, we prove that this property holds for a large class of time-varying port-Hamiltonian systems with (i) constant damping matrix and (ii) strictly convex Hamiltonian.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "This result provides new insights into the reliable operation of power systems.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "The proposed theory is illustrated in the simulation results of a two-machine system.",
+            "support": "source_sentence"
+          }
+        ]
+      },
+      {
+        "method": "numerical modeling",
+        "scenario": "three-dimensional electromagnetic problems with material discontinuities | steady-state and transient regimes",
+        "benchmark": "theorem strength",
+        "references": [
+          "Michel Nohra et al. (2024) Physics-Informed Neural Networks for the Numerical Modeling of Steady-State and Transient Electromagnetic Problems with Discontinuous Media arXiv:2406.04380v1"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "numerical modeling",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "Replacing discontinuous material properties with a continuous approximation eliminates the need to directly enforce interface conditions; first-order formulation of Maxwell's equations is shown via NTK analysis to be more suitable for interface problems; PINN-based decomposition on overlapping domai...[truncated]",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "No explicit limitation extracted.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "Full text excerpt:",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "Physics-informed neural networks (PINNs) have emerged as a promising numerical method based on deep learning for modeling boundary value problems, showcasing promising results in various fields.",
+            "support": "source_sentence"
+          }
+        ]
+      },
+      {
+        "method": "co-simulation plays a key role in enabling collaborative modeling",
+        "scenario": "collaborative modeling and simulation of continuous-time or hybrid systems",
+        "benchmark": "trade-off between IP-protected distribution and performance efficiency",
+        "references": [
+          "Santiago Gil et al. (2025) FMI-Based Distributed Co-Simulation with Enhanced Security and Intellectual Property Safeguards arXiv:2510.20403v1"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "co-simulation plays a key role in enabling collaborative modeling",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "an approach for distributed co-simulation with enhanced cybersecurity and IP protection mechanisms ensuring client-initiated connection and model/binary residency on trusted platforms",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "no consensus in the guidelines to conduct distributed co-simulation of continuous-time or hybrid systems with no exposure to potential hacking attacks",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "Full text excerpt:",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "We propose an approach for distributed co-simulation on top of UniFMU with enhanced cybersecurity and IP protection mechanisms, ensuring that the connection is initiated by the client and the models and binaries live on trusted platforms.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "We showcase the functionality of this approach using two co-simulation demos in four different network settings and analyze the trade-off between IP-protected distribution and performance efficiency in these settings.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "Full text excerpt: an approach for distributed co-simulation with enhanced cybersecurity and IP protection mechanisms ensuring client-initiated connection and model/binary residency on trusted platforms no consensus in the guidelines to conduct distributed co-simulation of continuous-time or hybrid...[truncated]",
+            "support": "source_sentence"
+          }
+        ]
+      },
+      {
+        "method": "integrated circuit simulation",
+        "scenario": "power system transient stability analysis",
+        "benchmark": "simulation accuracy | simulation efficiency",
+        "references": [
+          "Xiang Zhang et al. (2021) Power System Transient Modeling and Simulation using Integrated Circuit arXiv:2106.03254v1"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "integrated circuit simulation",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "modeling power systems as an integrated circuit and simulating dynamic behavior using an integrated circuit simulator",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "Full text excerpt: modeling power systems as an integrated circuit and simulating dynamic behavior using an integrated circuit simulator No explicit limitation extracted.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "Full text excerpt:",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "Traditionally, transient stability analysis methods have been developed using time domain simulation by means of numerical integration method.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "In this paper, a new approach is proposed to model power systems as an integrated circuit and simulate the power system dynamic behavior by integrated circuit simulator.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "The proposed method modeled power grid, generator, governor, and exciter with high fidelity.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "The power system dynamic simulation accuracy and efficiency of the proposed approach are verified and demonstrated by case study on an IEEE standard system.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "Full text excerpt: modeling power systems as an integrated circuit and simulating dynamic behavior using an integrated circuit simulator Full text excerpt: modeling power systems as an integrated circuit and simulating dynamic behavior using an integrated circuit simulator No explicit limitation ext...[truncated]",
+            "support": "source_sentence"
+          }
+        ]
+      },
+      {
+        "method": "risk-based transient stability assessment",
+        "scenario": "power system security | transient stability under uncertainty",
+        "benchmark": "uncertainty",
+        "references": [
+          "Umair Shahzad (2022) A Comprehensive Review on Power System Risk-Based Transient Stability arXiv:2206.05113v1"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "risk-based transient stability assessment",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "comprehensive review of risk-based transient stability in power networks",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "Full text excerpt: comprehensive review of risk-based transient stability in power networks No explicit limitation extracted.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "Full text excerpt:",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "Considering its significance in power system security, it is important to suggest a different methodology for enhancing the transient stability, considering uncertainties.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "These approaches typically provide a cautious principle and can result in high-priced expansion projects or operational limits.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "Further, increasing sources of uncertainty in forecast state and in the reaction to faults highly implies the implementation of risk-based approach in assessing transient stability.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "Full text excerpt: comprehensive review of risk-based transient stability in power networks Full text excerpt: comprehensive review of risk-based transient stability in power networks No explicit limitation extracted.",
+            "support": "source_sentence"
+          }
+        ]
+      },
+      {
+        "method": "preconditioned finite difference Newton-GMRES method",
+        "scenario": "power system transient simulation for stability studies",
+        "benchmark": "validity and efficiency",
+        "references": [
+          "Sheng Lei et al. (2020) Initialization Process of a Power System Transient Simulation Scheme for Stability Studies arXiv:2008.13059v1"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "preconditioned finite difference Newton-GMRES method",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "A general-purpose initialization process formulated as an algebraic problem to ensure steady-state initial conditions at a specified operating point for transient stability simulations.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "No explicit limitation extracted.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "Full text excerpt:",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "The initialization process of a novel power system transient simulation scheme for stability studies is put forward, by further developing a \"time-domain harmonic power-flow algorithm\".",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "The algebraic problem is then solved efficiently by a preconditioned finite difference Newton-GMRES method.",
+            "support": "source_sentence"
+          }
+        ]
+      },
+      {
+        "method": "online recursive least squares (RLS) identification algorithm in z-domain",
+        "scenario": "large power grid",
+        "benchmark": "event frequency",
+        "references": [
+          "Abilash Thakallapelli et al. (2019) Real-time frequency based reduced order modeling of large power grid doi:10.1109/PESGM.2016.7741877"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "online recursive least squares (RLS) identification algorithm in z-domain",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "introduces a method of developing Frequency Dependent Network Equivalent (FDNE) based on online RLS identification in z-domain, and modeling reduced power systems as FDNE or as combination of TSA and FDNE using real-time digital simulators",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "Full text excerpt: introduces a method of developing Frequency Dependent Network Equivalent (FDNE) based on online RLS identification in z-domain, and modeling reduced power systems as FDNE or as combination of TSA and FDNE using real-time digital simulators No explicit limitation extracted.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "Full text excerpt:",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "In general, there are methods that reduce large power system into an equivalent network that requires less computational resource, while preserving electromechanical (low frequency) and high frequency behavior of the original system.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "To this effect, this paper introduces a method of developing FDNE based on an online recursive least squares (RLS) identification algorithm in z-domain, and modeling of reduced power systems as FDNE and as a combination of TSA and FDNE using real-time digital simulators.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "Full text excerpt: introduces a method of developing Frequency Dependent Network Equivalent (FDNE) based on online RLS identification in z-domain, and modeling reduced power systems as FDNE or as combination of TSA and FDNE using real-time digital simulators Full text excerpt: introduces a method of...[truncated]",
+            "support": "source_sentence"
+          }
+        ]
+      },
+      {
+        "method": "Adomian Decomposition Method",
+        "scenario": "power system transient stability simulation",
+        "benchmark": "simulation accuracy | time window length | divergence indicator",
+        "references": [
+          "Nan Duan et al. (2014) Finding Semi-Analytic Solutions of Power System Differential-Algebraic Equations for Fast Transient Stability Simulation arXiv:1412.0904v2"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "Adomian Decomposition Method",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "A two-stage SAS-based approach for fast transient stability simulation that uses Adomian Decomposition offline to derive semi-analytic solutions and online evaluation over adaptive time windows, reducing reliance on numerical integration.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "No explicit limitation extracted.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "Full text excerpt:",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "A two-stage SAS-based approach for fast transient stability simulation is proposed, which offline derives the SAS by the Adomian Decomposition Method and online evaluates the SAS for each of sequential time windows until making up a desired simulation period.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "When applied to fault simulation, the new approach employs numerical integration only for the fault-on period to determine the post-disturbance initial state of the SAS.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "The paper further analyzes the maximum length of a time window for a SAS to keep its accuracy, and accordingly, introduces a divergence indicator for adaptive time windows.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "The proposed SAS-based new approach is validated on the IEEE 10-machine, 39-bus system.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "Full text excerpt: A two-stage SAS-based approach for fast transient stability simulation that uses Adomian Decomposition offline to derive semi-analytic solutions and online evaluation over adaptive time windows, reducing reliance on numerical integration.",
+            "support": "source_sentence"
+          }
+        ]
+      },
+      {
+        "method": "scalable communication interface design | real-time data extrapolation method",
+        "scenario": "real-time co-simulation of power systems with high inverter-based resource (IBR) penetration",
+        "benchmark": "stability | reliability | scalability | accuracy of simulation outcomes",
+        "references": [
+          "Qi Xiao et al. (2025) Design and Implementation of Scalable Communication Interfaces for Reliable and Stable Real-time Co-Simulation of Power Systems arXiv:2502.07866v1"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "scalable communication interface design | real-time data extrapolation method",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "A scalable communication interface design (local and remote) and a real-time data extrapolation method to improve stability and reliability in real-time co-simulation of power systems with high IBR penetration",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "Challenges specific to real-time co-simulation applications, including instability from data resolution mismatches",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "A scalable communication interface design (local and remote) and a real-time data extrapolation method to improve stability and reliability in real-time co-simulation of power systems with high IBR penetration Challenges specific to real-time co-simulation applications, including instability from da...[truncated]",
+            "support": "source_sentence"
+          }
+        ]
+      },
+      {
+        "method": "of electromagnetic transient-transient stability hybrid simulation",
+        "scenario": "power grid simulation with inverter-based resources",
+        "benchmark": "EMT-TS hybrid interface error",
+        "references": [
+          "Bin Wang et al. (2026) Quantifying and Improving the Accuracy of Electromagnetic Transient-Transient Stability Hybrid Simulation doi:10.1109/TPWRS.2026.3683988"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "of electromagnetic transient-transient stability hybrid simulation",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "Introduces an error index to quantify EMT-TS hybrid interface errors, identifies conditions causing inaccuracy, proposes EMT region expansion and a three-sequence hybrid interface model to improve accuracy under unbalanced conditions.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "Abstract: The increasing penetration of inverter-based resources introduces new dynamic challenges to modern power grids, such as sub- and super-synchronous oscillations and other faster dynamics. These dynamics are typically fast in nature and are difficult to accurately model and analyze using sta...[truncated]",
+            "support": "structured_field"
+          }
+        ]
+      },
+      {
+        "method": "towards an assisted simulation",
+        "scenario": "co-simulation of cyber-physical energy systems",
+        "benchmark": "usability of co-simulation",
+        "references": [
+          "Jan Sören Schwarz et al. (2024) Towards an Assisted Simulation Planning for Co-Simulation of Cyber-Physical Energy Systems doi:10.1109/MSCPES.2019.8738788"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "towards an assisted simulation",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "An assisted simulation planning approach that supports high-level modeling, component recommendation, and validation of co-simulation scenarios using Semantic Web technologies and an information model.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "No explicit limitation extracted.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "An assisted simulation planning approach that supports high-level modeling, component recommendation, and validation of co-simulation scenarios using Semantic Web technologies and an information model.",
+            "support": "source_sentence"
+          }
+        ]
+      },
+      {
+        "method": "literature review",
+        "scenario": "intelligent intersections | smart urban traffic systems",
+        "benchmark": "uncertainty",
+        "references": [
+          "Alben Rome Bagabaldo et al. (2025) Digital Twins for Intelligent Intersections: A Literature Review arXiv:2510.05374v1"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "literature review",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "systematic thematic categorization of digital twin research for intelligent intersections across five domains: architectures/frameworks, data processing/simulation, AI/ML for adaptive control, vulnerable road user safety, and citywide scaling",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "interoperability of diverse data sources, scalability of digital twins for extensive traffic networks, and managing uncertainty within dynamic urban environments",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "systematic thematic categorization of digital twin research for intelligent intersections across five domains: architectures/frameworks, data processing/simulation, AI/ML for adaptive control, vulnerable road user safety, and citywide scaling interoperability of diverse data sources, scalability of...[truncated]",
+            "support": "source_sentence"
+          }
+        ]
+      },
+      {
+        "method": "VLSI-based modeling",
+        "scenario": "power system electromagnetic transient simulation",
+        "benchmark": "feasibility",
+        "references": [
+          "Yijing Liu et al. (2021) Using Terminal Circuit for Power System Electromagnetic Transient Simulation arXiv:2107.00540v1"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "VLSI-based modeling",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "preliminary exploration of modeling power system electromagnetic transients using VLSI to avoid numerical calculation",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "Full text excerpt: preliminary exploration of modeling power system electromagnetic transients using VLSI to avoid numerical calculation No explicit limitation extracted.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "preliminary exploration of modeling power system electromagnetic transients using VLSI to avoid numerical calculation Full text excerpt: preliminary exploration of modeling power system electromagnetic transients using VLSI to avoid numerical calculation No explicit limitation extracted.",
+            "support": "source_sentence"
+          }
+        ]
+      }
+    ],
+    "claim_type_counts": {
+      "methodological_description": 66,
+      "empirical_result": 44,
+      "author_opinion": 39,
+      "theoretical_claim": 23
+    }
+  },
+  "knowledge_gaps": [
+    {
+      "gap_id": "gap_1783412848300976000",
+      "gap_type": "combinatorial",
+      "description": "Method 'Adomian Decomposition Method' has no recorded validation in scenario 'co-simulation of cyber-physical energy systems' in the current PaperGraph map.",
+      "supporting_references": [
+        "Jan Sören Schwarz et al. (2024) Towards an Assisted Simulation Planning for Co-Simulation of Cyber-Physical Energy Systems doi:10.1109/MSCPES.2019.8738788",
+        "Nan Duan et al. (2014) Finding Semi-Analytic Solutions of Power System Differential-Algebraic Equations for Fast Transient Stability Simulation arXiv:1412.0904v2"
+      ],
+      "novelty_score": 6,
+      "application_value": "medium",
+      "feasibility": "high",
+      "suggested_research_path": "Run a targeted validation study with explicit benchmarks, baselines, and failure-mode analysis.",
+      "value_argument": "The combination may expose method-scenario boundary conditions rather than simply adding another benchmark.",
+      "overlap_risk": "low",
+      "requires_human_review": false
+    },
+    {
+      "gap_id": "gap_1783412848296580000",
+      "gap_type": "contradiction",
+      "description": "Potential conclusion conflict: power system electromagnetic transient stability contains opposing claims: Full text excerpt: The synchronized steady state of the power system is globally stable if it exists, under port-Hamiltonian modeling with constant damping matrix and strictly conv...[truncated] vs Moreover, with the increasing demand of renewable wind generation, and the requirement to maintain a secure power system, the importance of transient stability cannot be overestima...[truncated].",
+      "supporting_references": [
+        "Xinyuan Jiang et al. (2025) Power System Electromagnetic Transient Stability: an Analysis Based on Convergent Hamiltonian arXiv:2502.09695v1",
+        "Umair Shahzad (2022) A Comprehensive Review on Power System Risk-Based Transient Stability arXiv:2206.05113v1"
+      ],
+      "novelty_score": 5,
+      "application_value": "high",
+      "feasibility": "high",
+      "suggested_research_path": "Extract the exact claim sentences, verify citation contexts/full text, then design a discriminating experiment, simulation, benchmark, or theoretical derivation that can separate the competing explanations.",
+      "value_argument": "Contradiction gaps are high-value because resolving them can update mechanism understanding, not merely fill a sparse method-scenario cell.",
+      "overlap_risk": "medium",
+      "requires_human_review": false
+    }
+  ],
+  "self_reflection": {
+    "top_venue_coverage_checked": true,
+    "pseudo_gap_risk_checked": true,
+    "method_categories_require_literature_support": true,
+    "unsupported_claims_marked_for_review": true
+  }
+}

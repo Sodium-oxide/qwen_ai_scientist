@@ -1,0 +1,95 @@
+from __future__ import annotations
+
+from dataclasses import dataclass
+from pathlib import Path
+
+try:
+    from .tools import WORKDIR
+except ImportError:
+    from tools import WORKDIR
+
+
+SKILLS_DIR = Path(__file__).with_name("skills")
+
+
+@dataclass(frozen=True)
+class Skill:
+    name: str
+    description: str
+    body: str
+    path: Path
+
+
+BASE_SYSTEM_PROMPT = """You are a minimal coding agent.
+
+You can inspect and modify files in the current workspace by using tools.
+Work step by step. Use tools when you need facts from the environment.
+When you are done, explain the result briefly.
+"""
+
+
+def scan_skills(skills_dir: Path = SKILLS_DIR) -> list[Skill]:
+    skills: list[Skill] = []
+    if not skills_dir.exists():
+        return skills
+
+    for skill_file in sorted(skills_dir.glob("*/SKILL.md")):
+        text = skill_file.read_text(encoding="utf-8")
+        meta, body = parse_frontmatter(text)
+        name = meta.get("name") or skill_file.parent.name
+        description = meta.get("description") or "No description."
+        skills.append(
+            Skill(name=name, description=description, body=body.strip(), path=skill_file)
+        )
+    return skills
+
+
+def parse_frontmatter(text: str) -> tuple[dict[str, str], str]:
+    if not text.startswith("---\n"):
+        return {}, text
+
+    parts = text.split("---\n", 2)
+    if len(parts) < 3:
+        return {}, text
+
+    meta_text = parts[1]
+    body = parts[2]
+    meta: dict[str, str] = {}
+    for raw_line in meta_text.splitlines():
+        line = raw_line.strip()
+        if not line or line.startswith("#") or ":" not in line:
+            continue
+        key, value = line.split(":", 1)
+        meta[key.strip()] = value.strip().strip("\"'")
+    return meta, body
+
+
+def build_system(user_input: str = "") -> str:
+    skills = scan_skills()
+    sections = [BASE_SYSTEM_PROMPT.strip(), f"Workspace: {WORKDIR}"]
+
+    if skills:
+        catalog = "\n".join(
+            f"- {skill.name}: {skill.description}" for skill in skills
+        )
+        sections.append(
+            "Available skills:\n"
+            f"{catalog}\n\n"
+            "Use a skill when the user request matches its description. "
+            "If the user explicitly names a skill, follow that skill's instructions."
+        )
+
+        active = active_skill_sections(user_input, skills)
+        if active:
+            sections.append("Active skill instructions:\n" + "\n\n".join(active))
+
+    return "\n\n".join(sections)
+
+
+def active_skill_sections(user_input: str, skills: list[Skill]) -> list[str]:
+    lowered = user_input.lower()
+    active: list[str] = []
+    for skill in skills:
+        if skill.name.lower() in lowered:
+            active.append(f"## {skill.name}\n{skill.body}")
+    return active

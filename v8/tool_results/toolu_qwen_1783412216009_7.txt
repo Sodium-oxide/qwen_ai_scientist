@@ -1,0 +1,1026 @@
+{
+  "agent": "tanxi",
+  "target_domain": "Power System Simulation / 电力系统仿真",
+  "thought": "TanXi scanned the PaperGraph for low-density but high-importance method-scenario-benchmark regions, claim contradictions, anomaly/tension signals, cross-disciplinary unconnected pairs, suspended unresolved problems, and strategic-need alignment.",
+  "action": {
+    "scan_coverage_density": {
+      "target_domain": "Power System Simulation / 电力系统仿真"
+    },
+    "detect_reasoning_gaps": {
+      "types": [
+        "claim_contradiction",
+        "theory_evidence_anomaly"
+      ]
+    },
+    "find_unconnected_pairs": {
+      "target_domain": "Power System Simulation / 电力系统仿真"
+    },
+    "detect_suspended_problems": {
+      "min_citation_threshold": 50
+    },
+    "prioritize_gaps": {
+      "criteria": [
+        "importance",
+        "tractability",
+        "strategic_value"
+      ]
+    },
+    "align_with_strategic_needs": {
+      "strategic_domains": [
+        "energy"
+      ]
+    }
+  },
+  "coverage_analysis": {
+    "target_domain": "Power System Simulation / 电力系统仿真",
+    "method_count": 15,
+    "scenario_count": 15,
+    "benchmark_count": 14,
+    "dense_areas": [
+      {
+        "topic": "Adomian Decomposition Method + power system transient stability simulation",
+        "method": "Adomian Decomposition Method",
+        "scenario": "power system transient stability simulation",
+        "evidence_count": 1,
+        "benchmark_count": 1,
+        "importance_score": 8
+      },
+      {
+        "topic": "VLSI-based modeling + power system electromagnetic transient simulation",
+        "method": "VLSI-based modeling",
+        "scenario": "power system electromagnetic transient simulation",
+        "evidence_count": 1,
+        "benchmark_count": 1,
+        "importance_score": 7
+      },
+      {
+        "topic": "XUV transient grating spectroscopy + ultrafast carrier dynamics in germanium solid",
+        "method": "XUV transient grating spectroscopy",
+        "scenario": "ultrafast carrier dynamics in germanium solid",
+        "evidence_count": 1,
+        "benchmark_count": 1,
+        "importance_score": 5
+      },
+      {
+        "topic": "co-simulation plays a key role in enabling collaborative modeling + collaborative modeling and simulation of continuous-time or hybrid systems",
+        "method": "co-simulation plays a key role in enabling collaborative modeling",
+        "scenario": "collaborative modeling and simulation of continuous-time or hybrid systems",
+        "evidence_count": 1,
+        "benchmark_count": 1,
+        "importance_score": 7
+      },
+      {
+        "topic": "contraction analysis + power system electromagnetic transient stability",
+        "method": "contraction analysis",
+        "scenario": "power system electromagnetic transient stability",
+        "evidence_count": 1,
+        "benchmark_count": 1,
+        "importance_score": 8
+      },
+      {
+        "topic": "integrated circuit simulation + power system transient stability analysis",
+        "method": "integrated circuit simulation",
+        "scenario": "power system transient stability analysis",
+        "evidence_count": 1,
+        "benchmark_count": 1,
+        "importance_score": 8
+      },
+      {
+        "topic": "literature review + intelligent intersections | smart urban traffic systems",
+        "method": "literature review",
+        "scenario": "intelligent intersections | smart urban traffic systems",
+        "evidence_count": 1,
+        "benchmark_count": 1,
+        "importance_score": 5
+      },
+      {
+        "topic": "numerical modeling + three-dimensional electromagnetic problems with material discontinuities | steady-state and transient regimes",
+        "method": "numerical modeling",
+        "scenario": "three-dimensional electromagnetic problems with material discontinuities | steady-state and transient regimes",
+        "evidence_count": 1,
+        "benchmark_count": 1,
+        "importance_score": 5
+      },
+      {
+        "topic": "of electromagnetic transient-transient stability hybrid simulation + power grid simulation with inverter-based resources",
+        "method": "of electromagnetic transient-transient stability hybrid simulation",
+        "scenario": "power grid simulation with inverter-based resources",
+        "evidence_count": 1,
+        "benchmark_count": 1,
+        "importance_score": 8
+      },
+      {
+        "topic": "online recursive least squares (RLS) identification algorithm in z-domain + large power grid",
+        "method": "online recursive least squares (RLS) identification algorithm in z-domain",
+        "scenario": "large power grid",
+        "evidence_count": 1,
+        "benchmark_count": 1,
+        "importance_score": 7
+      }
+    ],
+    "density_holes": [
+      {
+        "topic": "Adomian Decomposition Method + power system transient stability simulation benchmark coverage",
+        "method": "Adomian Decomposition Method",
+        "scenario": "power system transient stability simulation",
+        "importance_score": 8,
+        "current_evidence_level": "medium",
+        "missing_benchmarks": [
+          "EMT-TS hybrid interface error",
+          "event frequency",
+          "feasibility",
+          "global stability of synchronized steady state",
+          "simulation accuracy | simulation efficiency"
+        ],
+        "why_important": "The method-scenario pair has evidence, but benchmark coverage is sparse, so robustness and generalization remain uncertain.",
+        "supporting_references": [
+          "Nan Duan et al. (2014) Finding Semi-Analytic Solutions of Power System Differential-Algebraic Equations for Fast Transient Stability Simulation arXiv:1412.0904v2"
+        ]
+      },
+      {
+        "topic": "contraction analysis + power system electromagnetic transient stability benchmark coverage",
+        "method": "contraction analysis",
+        "scenario": "power system electromagnetic transient stability",
+        "importance_score": 8,
+        "current_evidence_level": "medium",
+        "missing_benchmarks": [
+          "EMT-TS hybrid interface error",
+          "event frequency",
+          "feasibility",
+          "simulation accuracy | simulation efficiency",
+          "simulation accuracy | time window length | divergence indicator"
+        ],
+        "why_important": "The method-scenario pair has evidence, but benchmark coverage is sparse, so robustness and generalization remain uncertain.",
+        "supporting_references": [
+          "Xinyuan Jiang et al. (2025) Power System Electromagnetic Transient Stability: an Analysis Based on Convergent Hamiltonian arXiv:2502.09695v1"
+        ]
+      },
+      {
+        "topic": "integrated circuit simulation + power system transient stability analysis benchmark coverage",
+        "method": "integrated circuit simulation",
+        "scenario": "power system transient stability analysis",
+        "importance_score": 8,
+        "current_evidence_level": "medium",
+        "missing_benchmarks": [
+          "EMT-TS hybrid interface error",
+          "event frequency",
+          "feasibility",
+          "global stability of synchronized steady state",
+          "simulation accuracy | time window length | divergence indicator"
+        ],
+        "why_important": "The method-scenario pair has evidence, but benchmark coverage is sparse, so robustness and generalization remain uncertain.",
+        "supporting_references": [
+          "Xiang Zhang et al. (2021) Power System Transient Modeling and Simulation using Integrated Circuit arXiv:2106.03254v1"
+        ]
+      },
+      {
+        "topic": "of electromagnetic transient-transient stability hybrid simulation + power grid simulation with inverter-based resources benchmark coverage",
+        "method": "of electromagnetic transient-transient stability hybrid simulation",
+        "scenario": "power grid simulation with inverter-based resources",
+        "importance_score": 8,
+        "current_evidence_level": "medium",
+        "missing_benchmarks": [
+          "event frequency",
+          "feasibility",
+          "global stability of synchronized steady state",
+          "simulation accuracy | simulation efficiency",
+          "simulation accuracy | time window length | divergence indicator"
+        ],
+        "why_important": "The method-scenario pair has evidence, but benchmark coverage is sparse, so robustness and generalization remain uncertain.",
+        "supporting_references": [
+          "Bin Wang et al. (2026) Quantifying and Improving the Accuracy of Electromagnetic Transient-Transient Stability Hybrid Simulation doi:10.1109/TPWRS.2026.3683988"
+        ]
+      },
+      {
+        "topic": "preconditioned finite difference Newton-GMRES method + power system transient simulation for stability studies benchmark coverage",
+        "method": "preconditioned finite difference Newton-GMRES method",
+        "scenario": "power system transient simulation for stability studies",
+        "importance_score": 8,
+        "current_evidence_level": "medium",
+        "missing_benchmarks": [
+          "EMT-TS hybrid interface error",
+          "event frequency",
+          "feasibility",
+          "global stability of synchronized steady state",
+          "simulation accuracy | simulation efficiency"
+        ],
+        "why_important": "The method-scenario pair has evidence, but benchmark coverage is sparse, so robustness and generalization remain uncertain.",
+        "supporting_references": [
+          "Sheng Lei et al. (2020) Initialization Process of a Power System Transient Simulation Scheme for Stability Studies arXiv:2008.13059v1"
+        ]
+      },
+      {
+        "topic": "risk-based transient stability assessment + power system security | transient stability under uncertainty benchmark coverage",
+        "method": "risk-based transient stability assessment",
+        "scenario": "power system security | transient stability under uncertainty",
+        "importance_score": 8,
+        "current_evidence_level": "medium",
+        "missing_benchmarks": [
+          "EMT-TS hybrid interface error",
+          "event frequency",
+          "feasibility",
+          "global stability of synchronized steady state",
+          "simulation accuracy | simulation efficiency"
+        ],
+        "why_important": "The method-scenario pair has evidence, but benchmark coverage is sparse, so robustness and generalization remain uncertain.",
+        "supporting_references": [
+          "Umair Shahzad (2022) A Comprehensive Review on Power System Risk-Based Transient Stability arXiv:2206.05113v1"
+        ]
+      },
+      {
+        "topic": "scalable communication interface design | real-time data extrapolation method + real-time co-simulation of power systems with high inverter-based resource (IBR) penetration benchmark coverage",
+        "method": "scalable communication interface design | real-time data extrapolation method",
+        "scenario": "real-time co-simulation of power systems with high inverter-based resource (IBR) penetration",
+        "importance_score": 8,
+        "current_evidence_level": "medium",
+        "missing_benchmarks": [
+          "EMT-TS hybrid interface error",
+          "event frequency",
+          "feasibility",
+          "global stability of synchronized steady state",
+          "simulation accuracy | simulation efficiency"
+        ],
+        "why_important": "The method-scenario pair has evidence, but benchmark coverage is sparse, so robustness and generalization remain uncertain.",
+        "supporting_references": [
+          "Qi Xiao et al. (2025) Design and Implementation of Scalable Communication Interfaces for Reliable and Stable Real-time Co-Simulation of Power Systems arXiv:2502.07866v1"
+        ]
+      },
+      {
+        "topic": "simulation-based education approach + power system transient and stability education benchmark coverage",
+        "method": "simulation-based education approach",
+        "scenario": "power system transient and stability education",
+        "importance_score": 8,
+        "current_evidence_level": "medium",
+        "missing_benchmarks": [
+          "EMT-TS hybrid interface error",
+          "event frequency",
+          "feasibility",
+          "global stability of synchronized steady state",
+          "simulation accuracy | simulation efficiency"
+        ],
+        "why_important": "The method-scenario pair has evidence, but benchmark coverage is sparse, so robustness and generalization remain uncertain.",
+        "supporting_references": [
+          "Abdulelah Alharbi et al. (2020) A Simulation-based Education Approach for the Electromagnetic and Electromechanical Transient Waves in Power Systems arXiv:2010.12379v2"
+        ]
+      },
+      {
+        "topic": "Adomian Decomposition Method + power system electromagnetic transient stability",
+        "method": "Adomian Decomposition Method",
+        "scenario": "power system electromagnetic transient stability",
+        "importance_score": 8,
+        "current_evidence_level": "none",
+        "missing_benchmarks": [
+          "EMT-TS hybrid interface error",
+          "event frequency",
+          "feasibility",
+          "global stability of synchronized steady state",
+          "simulation accuracy | simulation efficiency"
+        ],
+        "why_important": "Both the method and scenario are visible in the field map, but this intersection has no recorded validation.",
+        "supporting_references": [
+          "Xinyuan Jiang et al. (2025) Power System Electromagnetic Transient Stability: an Analysis Based on Convergent Hamiltonian arXiv:2502.09695v1",
+          "Nan Duan et al. (2014) Finding Semi-Analytic Solutions of Power System Differential-Algebraic Equations for Fast Transient Stability Simulation arXiv:1412.0904v2"
+        ]
+      },
+      {
+        "topic": "Adomian Decomposition Method + power system security | transient stability under uncertainty",
+        "method": "Adomian Decomposition Method",
+        "scenario": "power system security | transient stability under uncertainty",
+        "importance_score": 8,
+        "current_evidence_level": "none",
+        "missing_benchmarks": [
+          "EMT-TS hybrid interface error",
+          "event frequency",
+          "feasibility",
+          "global stability of synchronized steady state",
+          "simulation accuracy | simulation efficiency"
+        ],
+        "why_important": "Both the method and scenario are visible in the field map, but this intersection has no recorded validation.",
+        "supporting_references": [
+          "Umair Shahzad (2022) A Comprehensive Review on Power System Risk-Based Transient Stability arXiv:2206.05113v1",
+          "Nan Duan et al. (2014) Finding Semi-Analytic Solutions of Power System Differential-Algebraic Equations for Fast Transient Stability Simulation arXiv:1412.0904v2"
+        ]
+      },
+      {
+        "topic": "Adomian Decomposition Method + power system transient and stability education",
+        "method": "Adomian Decomposition Method",
+        "scenario": "power system transient and stability education",
+        "importance_score": 8,
+        "current_evidence_level": "none",
+        "missing_benchmarks": [
+          "EMT-TS hybrid interface error",
+          "event frequency",
+          "feasibility",
+          "global stability of synchronized steady state",
+          "simulation accuracy | simulation efficiency"
+        ],
+        "why_important": "Both the method and scenario are visible in the field map, but this intersection has no recorded validation.",
+        "supporting_references": [
+          "Abdulelah Alharbi et al. (2020) A Simulation-based Education Approach for the Electromagnetic and Electromechanical Transient Waves in Power Systems arXiv:2010.12379v2",
+          "Nan Duan et al. (2014) Finding Semi-Analytic Solutions of Power System Differential-Algebraic Equations for Fast Transient Stability Simulation arXiv:1412.0904v2"
+        ]
+      },
+      {
+        "topic": "Adomian Decomposition Method + power system transient simulation for stability studies",
+        "method": "Adomian Decomposition Method",
+        "scenario": "power system transient simulation for stability studies",
+        "importance_score": 8,
+        "current_evidence_level": "none",
+        "missing_benchmarks": [
+          "EMT-TS hybrid interface error",
+          "event frequency",
+          "feasibility",
+          "global stability of synchronized steady state",
+          "simulation accuracy | simulation efficiency"
+        ],
+        "why_important": "Both the method and scenario are visible in the field map, but this intersection has no recorded validation.",
+        "supporting_references": [
+          "Sheng Lei et al. (2020) Initialization Process of a Power System Transient Simulation Scheme for Stability Studies arXiv:2008.13059v1",
+          "Nan Duan et al. (2014) Finding Semi-Analytic Solutions of Power System Differential-Algebraic Equations for Fast Transient Stability Simulation arXiv:1412.0904v2"
+        ]
+      },
+      {
+        "topic": "Adomian Decomposition Method + power system transient stability analysis",
+        "method": "Adomian Decomposition Method",
+        "scenario": "power system transient stability analysis",
+        "importance_score": 8,
+        "current_evidence_level": "none",
+        "missing_benchmarks": [
+          "EMT-TS hybrid interface error",
+          "event frequency",
+          "feasibility",
+          "global stability of synchronized steady state",
+          "simulation accuracy | simulation efficiency"
+        ],
+        "why_important": "Both the method and scenario are visible in the field map, but this intersection has no recorded validation.",
+        "supporting_references": [
+          "Xiang Zhang et al. (2021) Power System Transient Modeling and Simulation using Integrated Circuit arXiv:2106.03254v1",
+          "Nan Duan et al. (2014) Finding Semi-Analytic Solutions of Power System Differential-Algebraic Equations for Fast Transient Stability Simulation arXiv:1412.0904v2"
+        ]
+      },
+      {
+        "topic": "VLSI-based modeling + power system electromagnetic transient stability",
+        "method": "VLSI-based modeling",
+        "scenario": "power system electromagnetic transient stability",
+        "importance_score": 8,
+        "current_evidence_level": "none",
+        "missing_benchmarks": [
+          "EMT-TS hybrid interface error",
+          "event frequency",
+          "feasibility",
+          "global stability of synchronized steady state",
+          "simulation accuracy | simulation efficiency"
+        ],
+        "why_important": "Both the method and scenario are visible in the field map, but this intersection has no recorded validation.",
+        "supporting_references": [
+          "Yijing Liu et al. (2021) Using Terminal Circuit for Power System Electromagnetic Transient Simulation arXiv:2107.00540v1",
+          "Xinyuan Jiang et al. (2025) Power System Electromagnetic Transient Stability: an Analysis Based on Convergent Hamiltonian arXiv:2502.09695v1"
+        ]
+      },
+      {
+        "topic": "VLSI-based modeling + power system security | transient stability under uncertainty",
+        "method": "VLSI-based modeling",
+        "scenario": "power system security | transient stability under uncertainty",
+        "importance_score": 8,
+        "current_evidence_level": "none",
+        "missing_benchmarks": [
+          "EMT-TS hybrid interface error",
+          "event frequency",
+          "feasibility",
+          "global stability of synchronized steady state",
+          "simulation accuracy | simulation efficiency"
+        ],
+        "why_important": "Both the method and scenario are visible in the field map, but this intersection has no recorded validation.",
+        "supporting_references": [
+          "Yijing Liu et al. (2021) Using Terminal Circuit for Power System Electromagnetic Transient Simulation arXiv:2107.00540v1",
+          "Umair Shahzad (2022) A Comprehensive Review on Power System Risk-Based Transient Stability arXiv:2206.05113v1"
+        ]
+      },
+      {
+        "topic": "VLSI-based modeling + power system transient and stability education",
+        "method": "VLSI-based modeling",
+        "scenario": "power system transient and stability education",
+        "importance_score": 8,
+        "current_evidence_level": "none",
+        "missing_benchmarks": [
+          "EMT-TS hybrid interface error",
+          "event frequency",
+          "feasibility",
+          "global stability of synchronized steady state",
+          "simulation accuracy | simulation efficiency"
+        ],
+        "why_important": "Both the method and scenario are visible in the field map, but this intersection has no recorded validation.",
+        "supporting_references": [
+          "Yijing Liu et al. (2021) Using Terminal Circuit for Power System Electromagnetic Transient Simulation arXiv:2107.00540v1",
+          "Abdulelah Alharbi et al. (2020) A Simulation-based Education Approach for the Electromagnetic and Electromechanical Transient Waves in Power Systems arXiv:2010.12379v2"
+        ]
+      },
+      {
+        "topic": "VLSI-based modeling + power system transient simulation for stability studies",
+        "method": "VLSI-based modeling",
+        "scenario": "power system transient simulation for stability studies",
+        "importance_score": 8,
+        "current_evidence_level": "none",
+        "missing_benchmarks": [
+          "EMT-TS hybrid interface error",
+          "event frequency",
+          "feasibility",
+          "global stability of synchronized steady state",
+          "simulation accuracy | simulation efficiency"
+        ],
+        "why_important": "Both the method and scenario are visible in the field map, but this intersection has no recorded validation.",
+        "supporting_references": [
+          "Yijing Liu et al. (2021) Using Terminal Circuit for Power System Electromagnetic Transient Simulation arXiv:2107.00540v1",
+          "Sheng Lei et al. (2020) Initialization Process of a Power System Transient Simulation Scheme for Stability Studies arXiv:2008.13059v1"
+        ]
+      },
+      {
+        "topic": "VLSI-based modeling + power system transient stability analysis",
+        "method": "VLSI-based modeling",
+        "scenario": "power system transient stability analysis",
+        "importance_score": 8,
+        "current_evidence_level": "none",
+        "missing_benchmarks": [
+          "EMT-TS hybrid interface error",
+          "event frequency",
+          "feasibility",
+          "global stability of synchronized steady state",
+          "simulation accuracy | simulation efficiency"
+        ],
+        "why_important": "Both the method and scenario are visible in the field map, but this intersection has no recorded validation.",
+        "supporting_references": [
+          "Yijing Liu et al. (2021) Using Terminal Circuit for Power System Electromagnetic Transient Simulation arXiv:2107.00540v1",
+          "Xiang Zhang et al. (2021) Power System Transient Modeling and Simulation using Integrated Circuit arXiv:2106.03254v1"
+        ]
+      },
+      {
+        "topic": "VLSI-based modeling + power system transient stability simulation",
+        "method": "VLSI-based modeling",
+        "scenario": "power system transient stability simulation",
+        "importance_score": 8,
+        "current_evidence_level": "none",
+        "missing_benchmarks": [
+          "EMT-TS hybrid interface error",
+          "event frequency",
+          "feasibility",
+          "global stability of synchronized steady state",
+          "simulation accuracy | simulation efficiency"
+        ],
+        "why_important": "Both the method and scenario are visible in the field map, but this intersection has no recorded validation.",
+        "supporting_references": [
+          "Yijing Liu et al. (2021) Using Terminal Circuit for Power System Electromagnetic Transient Simulation arXiv:2107.00540v1",
+          "Nan Duan et al. (2014) Finding Semi-Analytic Solutions of Power System Differential-Algebraic Equations for Fast Transient Stability Simulation arXiv:1412.0904v2"
+        ]
+      },
+      {
+        "topic": "XUV transient grating spectroscopy + power system electromagnetic transient stability",
+        "method": "XUV transient grating spectroscopy",
+        "scenario": "power system electromagnetic transient stability",
+        "importance_score": 8,
+        "current_evidence_level": "none",
+        "missing_benchmarks": [
+          "EMT-TS hybrid interface error",
+          "event frequency",
+          "feasibility",
+          "global stability of synchronized steady state",
+          "simulation accuracy | simulation efficiency"
+        ],
+        "why_important": "Both the method and scenario are visible in the field map, but this intersection has no recorded validation.",
+        "supporting_references": [
+          "Vincent Eggers et al. (2026) Background-free Tracking of Ultrafast Hole and Electron Dynamics with XUV Transient Grating Spectroscopy doi:10.1021/acsphotonics.6c00152",
+          "Xinyuan Jiang et al. (2025) Power System Electromagnetic Transient Stability: an Analysis Based on Convergent Hamiltonian arXiv:2502.09695v1"
+        ]
+      }
+    ]
+  },
+  "reasoning_gaps": [
+    {
+      "gap_id": "gap_1783412894086158000",
+      "gap_type": "contradiction",
+      "description": "Potential conclusion conflict: power system electromagnetic transient stability contains opposing claims: Full text excerpt: The synchronized steady state of the power system is globally stable if it exists, under port-Hamiltonian modeling with constant damping matrix and strictly conv...[truncated] vs Moreover, with the increasing demand of renewable wind generation, and the requirement to maintain a secure power system, the importance of transient stability cannot be overestima...[truncated].",
+      "supporting_references": [
+        "Xinyuan Jiang et al. (2025) Power System Electromagnetic Transient Stability: an Analysis Based on Convergent Hamiltonian arXiv:2502.09695v1",
+        "Umair Shahzad (2022) A Comprehensive Review on Power System Risk-Based Transient Stability arXiv:2206.05113v1"
+      ],
+      "novelty_score": 5,
+      "application_value": "high",
+      "feasibility": "high",
+      "suggested_research_path": "Extract the exact claim sentences, verify citation contexts/full text, then design a discriminating experiment, simulation, benchmark, or theoretical derivation that can separate the competing explanations.",
+      "value_argument": "Contradiction gaps are high-value because resolving them can update mechanism understanding, not merely fill a sparse method-scenario cell.",
+      "status": "candidate",
+      "createdAt": 1783412894.08616,
+      "assessment_dimensions": [
+        "academic novelty",
+        "application value",
+        "implementation feasibility"
+      ],
+      "overlap_risk": "medium",
+      "strongest_overlap": 0.4878,
+      "literature_coverage_factor": 0.8705,
+      "assessment_reason": "refs=2, gap_type=contradiction, strongest_local_overlap=0.488, coverage=0.871, feasibility=high, application_value=high",
+      "requires_human_review": false,
+      "reasoning_signal": {
+        "type": "claim_contradiction",
+        "shared_context": "power system electromagnetic transient stability",
+        "left_polarity": "positive",
+        "right_polarity": "negative"
+      },
+      "dedupe_signature": "conclusion conflict contains electromagnetic opposing potential power stability system transient",
+      "deduped_from": 1
+    },
+    {
+      "gap_id": "gap_1783412894119027000",
+      "gap_type": "anomaly",
+      "description": "Unexplained anomaly or theory-evidence tension reported in the literature: Full text excerpt: A scalable communication interface design (local and remote) and a real-time data extrapolation method to improve stability and reliability in real-time co-simulation of power systems with high IBR penetration Challenges specific to real-tim...[truncated]",
+      "supporting_references": [
+        "Qi Xiao et al. (2025) Design and Implementation of Scalable Communication Interfaces for Reliable and Stable Real-time Co-Simulation of Power Systems arXiv:2502.07866v1"
+      ],
+      "novelty_score": 3,
+      "application_value": "high",
+      "feasibility": "high",
+      "suggested_research_path": "Turn the anomaly into competing mechanistic explanations, then test which assumptions fail under controlled conditions, ablation, counterexample construction, or independent data.",
+      "value_argument": "Anomaly gaps can drive explanatory progress because they point to observations or results that current mechanisms do not fully account for.",
+      "status": "candidate",
+      "createdAt": 1783412894.1190279,
+      "assessment_dimensions": [
+        "academic novelty",
+        "application value",
+        "implementation feasibility"
+      ],
+      "overlap_risk": "high",
+      "strongest_overlap": 0.6562,
+      "literature_coverage_factor": 0.8687,
+      "assessment_reason": "refs=1, gap_type=anomaly, strongest_local_overlap=0.656, coverage=0.869, feasibility=high, application_value=high",
+      "requires_human_review": true,
+      "reasoning_signal": {
+        "type": "theory_evidence_anomaly",
+        "source_field": "multidisciplinary"
+      },
+      "dedupe_signature": "anomaly full in or reported tension text the theory-evidence unexplained",
+      "deduped_from": 1
+    }
+  ],
+  "cross_disciplinary_unconnected_pairs": [
+    {
+      "field_a": "chemistry",
+      "concept_a": "XUV transient grating spectroscopy",
+      "field_b": "computer_science",
+      "concept_b": "numerical modeling",
+      "potential_synergy": "Testing whether XUV transient grating spectroscopy can constrain, evaluate, or operationalize numerical modeling for Power System Simulation / 电力系统仿真 may reveal a non-obvious transfer path or boundary condition.",
+      "supporting_references": [
+        "Vincent Eggers et al. (2026) Background-free Tracking of Ultrafast Hole and Electron Dynamics with XUV Transient Grating Spectroscopy doi:10.1021/acsphotonics.6c00152",
+        "Michel Nohra et al. (2024) Physics-Informed Neural Networks for the Numerical Modeling of Steady-State and Transient Electromagnetic Problems with Discontinuous Media arXiv:2406.04380v1"
+      ]
+    },
+    {
+      "field_a": "chemistry",
+      "concept_a": "XUV transient grating spectroscopy",
+      "field_b": "computer_science",
+      "concept_b": "three-dimensional electromagnetic problems with material discontinuities | steady-state and transient regimes",
+      "potential_synergy": "Testing whether XUV transient grating spectroscopy can constrain, evaluate, or operationalize three-dimensional electromagnetic problems with material discontinuities | steady-state and transient regimes for Power System Simulation / 电力系统仿真 may reveal a non-obvious transfer path or boundary condition.",
+      "supporting_references": [
+        "Vincent Eggers et al. (2026) Background-free Tracking of Ultrafast Hole and Electron Dynamics with XUV Transient Grating Spectroscopy doi:10.1021/acsphotonics.6c00152",
+        "Michel Nohra et al. (2024) Physics-Informed Neural Networks for the Numerical Modeling of Steady-State and Transient Electromagnetic Problems with Discontinuous Media arXiv:2406.04380v1"
+      ]
+    },
+    {
+      "field_a": "chemistry",
+      "concept_a": "XUV transient grating spectroscopy",
+      "field_b": "computer_science",
+      "concept_b": "theorem strength",
+      "potential_synergy": "Testing whether XUV transient grating spectroscopy can constrain, evaluate, or operationalize theorem strength for Power System Simulation / 电力系统仿真 may reveal a non-obvious transfer path or boundary condition.",
+      "supporting_references": [
+        "Vincent Eggers et al. (2026) Background-free Tracking of Ultrafast Hole and Electron Dynamics with XUV Transient Grating Spectroscopy doi:10.1021/acsphotonics.6c00152",
+        "Michel Nohra et al. (2024) Physics-Informed Neural Networks for the Numerical Modeling of Steady-State and Transient Electromagnetic Problems with Discontinuous Media arXiv:2406.04380v1"
+      ]
+    },
+    {
+      "field_a": "chemistry",
+      "concept_a": "ultrafast carrier dynamics in germanium solid",
+      "field_b": "computer_science",
+      "concept_b": "numerical modeling",
+      "potential_synergy": "Testing whether ultrafast carrier dynamics in germanium solid can constrain, evaluate, or operationalize numerical modeling for Power System Simulation / 电力系统仿真 may reveal a non-obvious transfer path or boundary condition.",
+      "supporting_references": [
+        "Vincent Eggers et al. (2026) Background-free Tracking of Ultrafast Hole and Electron Dynamics with XUV Transient Grating Spectroscopy doi:10.1021/acsphotonics.6c00152",
+        "Michel Nohra et al. (2024) Physics-Informed Neural Networks for the Numerical Modeling of Steady-State and Transient Electromagnetic Problems with Discontinuous Media arXiv:2406.04380v1"
+      ]
+    },
+    {
+      "field_a": "chemistry",
+      "concept_a": "ultrafast carrier dynamics in germanium solid",
+      "field_b": "computer_science",
+      "concept_b": "three-dimensional electromagnetic problems with material discontinuities | steady-state and transient regimes",
+      "potential_synergy": "Testing whether ultrafast carrier dynamics in germanium solid can constrain, evaluate, or operationalize three-dimensional electromagnetic problems with material discontinuities | steady-state and transient regimes for Power System Simulation / 电力系统仿真 may reveal a non-obvious transfer path or boundary condition.",
+      "supporting_references": [
+        "Vincent Eggers et al. (2026) Background-free Tracking of Ultrafast Hole and Electron Dynamics with XUV Transient Grating Spectroscopy doi:10.1021/acsphotonics.6c00152",
+        "Michel Nohra et al. (2024) Physics-Informed Neural Networks for the Numerical Modeling of Steady-State and Transient Electromagnetic Problems with Discontinuous Media arXiv:2406.04380v1"
+      ]
+    },
+    {
+      "field_a": "chemistry",
+      "concept_a": "ultrafast carrier dynamics in germanium solid",
+      "field_b": "computer_science",
+      "concept_b": "theorem strength",
+      "potential_synergy": "Testing whether ultrafast carrier dynamics in germanium solid can constrain, evaluate, or operationalize theorem strength for Power System Simulation / 电力系统仿真 may reveal a non-obvious transfer path or boundary condition.",
+      "supporting_references": [
+        "Vincent Eggers et al. (2026) Background-free Tracking of Ultrafast Hole and Electron Dynamics with XUV Transient Grating Spectroscopy doi:10.1021/acsphotonics.6c00152",
+        "Michel Nohra et al. (2024) Physics-Informed Neural Networks for the Numerical Modeling of Steady-State and Transient Electromagnetic Problems with Discontinuous Media arXiv:2406.04380v1"
+      ]
+    },
+    {
+      "field_a": "chemistry",
+      "concept_a": "we extract the evolution of the complex refractive index",
+      "field_b": "computer_science",
+      "concept_b": "numerical modeling",
+      "potential_synergy": "Testing whether we extract the evolution of the complex refractive index can constrain, evaluate, or operationalize numerical modeling for Power System Simulation / 电力系统仿真 may reveal a non-obvious transfer path or boundary condition.",
+      "supporting_references": [
+        "Vincent Eggers et al. (2026) Background-free Tracking of Ultrafast Hole and Electron Dynamics with XUV Transient Grating Spectroscopy doi:10.1021/acsphotonics.6c00152",
+        "Michel Nohra et al. (2024) Physics-Informed Neural Networks for the Numerical Modeling of Steady-State and Transient Electromagnetic Problems with Discontinuous Media arXiv:2406.04380v1"
+      ]
+    },
+    {
+      "field_a": "chemistry",
+      "concept_a": "we extract the evolution of the complex refractive index",
+      "field_b": "computer_science",
+      "concept_b": "three-dimensional electromagnetic problems with material discontinuities | steady-state and transient regimes",
+      "potential_synergy": "Testing whether we extract the evolution of the complex refractive index can constrain, evaluate, or operationalize three-dimensional electromagnetic problems with material discontinuities | steady-state and transient regimes for Power System Simulation / 电力系统仿真 may reveal a non-obvious transfer path or boundary condition.",
+      "supporting_references": [
+        "Vincent Eggers et al. (2026) Background-free Tracking of Ultrafast Hole and Electron Dynamics with XUV Transient Grating Spectroscopy doi:10.1021/acsphotonics.6c00152",
+        "Michel Nohra et al. (2024) Physics-Informed Neural Networks for the Numerical Modeling of Steady-State and Transient Electromagnetic Problems with Discontinuous Media arXiv:2406.04380v1"
+      ]
+    },
+    {
+      "field_a": "chemistry",
+      "concept_a": "we extract the evolution of the complex refractive index",
+      "field_b": "computer_science",
+      "concept_b": "theorem strength",
+      "potential_synergy": "Testing whether we extract the evolution of the complex refractive index can constrain, evaluate, or operationalize theorem strength for Power System Simulation / 电力系统仿真 may reveal a non-obvious transfer path or boundary condition.",
+      "supporting_references": [
+        "Vincent Eggers et al. (2026) Background-free Tracking of Ultrafast Hole and Electron Dynamics with XUV Transient Grating Spectroscopy doi:10.1021/acsphotonics.6c00152",
+        "Michel Nohra et al. (2024) Physics-Informed Neural Networks for the Numerical Modeling of Steady-State and Transient Electromagnetic Problems with Discontinuous Media arXiv:2406.04380v1"
+      ]
+    },
+    {
+      "field_a": "chemistry",
+      "concept_a": "XUV transient grating spectroscopy",
+      "field_b": "general",
+      "concept_b": "scalable communication interface design | real-time data extrapolation method",
+      "potential_synergy": "Testing whether XUV transient grating spectroscopy can constrain, evaluate, or operationalize scalable communication interface design | real-time data extrapolation method for Power System Simulation / 电力系统仿真 may reveal a non-obvious transfer path or boundary condition.",
+      "supporting_references": [
+        "Vincent Eggers et al. (2026) Background-free Tracking of Ultrafast Hole and Electron Dynamics with XUV Transient Grating Spectroscopy doi:10.1021/acsphotonics.6c00152",
+        "Qi Xiao et al. (2025) Design and Implementation of Scalable Communication Interfaces for Reliable and Stable Real-time Co-Simulation of Power Systems arXiv:2502.07866v1"
+      ]
+    }
+  ],
+  "suspended_problems": [
+    {
+      "problem": "Finding Semi-Analytic Solutions of Power System Differential-Algebraic Equations for Fast Transient Stability Simulation No explicit limitation extracted.",
+      "years_unresolved": 12,
+      "citation_count": 0,
+      "evidence_level": "unknown",
+      "barrier_to_progress": "robustness or stability barrier",
+      "supporting_references": [
+        "Nan Duan et al. (2014) Finding Semi-Analytic Solutions of Power System Differential-Algebraic Equations for Fast Transient Stability Simulation arXiv:1412.0904v2"
+      ]
+    },
+    {
+      "problem": "Finding Semi-Analytic Solutions of Power System Differential-Algebraic Equations for Fast Transient Stability Simulation This paper studies the semi-analytic solution (SAS) of a power system's differential-algebraic equation. A SAS is a closed-form function of...[truncated]",
+      "years_unresolved": 12,
+      "citation_count": 0,
+      "evidence_level": "unknown",
+      "barrier_to_progress": "robustness or stability barrier",
+      "supporting_references": [
+        "Nan Duan et al. (2014) Finding Semi-Analytic Solutions of Power System Differential-Algebraic Equations for Fast Transient Stability Simulation arXiv:1412.0904v2"
+      ]
+    },
+    {
+      "problem": "Real-time frequency based reduced order modeling of large power grid Full text excerpt: introduces a method of developing Frequency Dependent Network Equivalent (FDNE) based on online RLS identification in z-domain, and modeling reduced power systems as FDNE o...[truncated]",
+      "years_unresolved": 7,
+      "citation_count": 0,
+      "evidence_level": "unknown",
+      "barrier_to_progress": "unspecified conceptual or technical barrier",
+      "supporting_references": [
+        "Abilash Thakallapelli et al. (2019) Real-time frequency based reduced order modeling of large power grid doi:10.1109/PESGM.2016.7741877"
+      ]
+    },
+    {
+      "problem": "Real-time frequency based reduced order modeling of large power grid Large power systems are complex and real-time modeling of the grid for electromagnetic simulation (EMT) studies is impractical. In general, there are methods that reduce large power system in...[truncated]",
+      "years_unresolved": 7,
+      "citation_count": 0,
+      "evidence_level": "unknown",
+      "barrier_to_progress": "scale or computational constraint",
+      "supporting_references": [
+        "Abilash Thakallapelli et al. (2019) Real-time frequency based reduced order modeling of large power grid doi:10.1109/PESGM.2016.7741877"
+      ]
+    },
+    {
+      "problem": "A Simulation-based Education Approach for the Electromagnetic and Electromechanical Transient Waves in Power Systems Full text excerpt: a simulation-based education approach using three models of varying complexity to simultaneously visualize electromagnetic a...[truncated]",
+      "years_unresolved": 6,
+      "citation_count": 0,
+      "evidence_level": "unknown",
+      "barrier_to_progress": "unspecified conceptual or technical barrier",
+      "supporting_references": [
+        "Abdulelah Alharbi et al. (2020) A Simulation-based Education Approach for the Electromagnetic and Electromechanical Transient Waves in Power Systems arXiv:2010.12379v2"
+      ]
+    },
+    {
+      "problem": "A Simulation-based Education Approach for the Electromagnetic and Electromechanical Transient Waves in Power Systems Power systems usually go through electromagnetic and electromechanical transient processes after different disturbances. Learning the character...[truncated]",
+      "years_unresolved": 6,
+      "citation_count": 0,
+      "evidence_level": "unknown",
+      "barrier_to_progress": "robustness or stability barrier",
+      "supporting_references": [
+        "Abdulelah Alharbi et al. (2020) A Simulation-based Education Approach for the Electromagnetic and Electromechanical Transient Waves in Power Systems arXiv:2010.12379v2"
+      ]
+    },
+    {
+      "problem": "Initialization Process of a Power System Transient Simulation Scheme for Stability Studies No explicit limitation extracted.",
+      "years_unresolved": 6,
+      "citation_count": 0,
+      "evidence_level": "unknown",
+      "barrier_to_progress": "robustness or stability barrier",
+      "supporting_references": [
+        "Sheng Lei et al. (2020) Initialization Process of a Power System Transient Simulation Scheme for Stability Studies arXiv:2008.13059v1"
+      ]
+    },
+    {
+      "problem": "Initialization Process of a Power System Transient Simulation Scheme for Stability Studies The initialization process of a novel power system transient simulation scheme for stability studies is put forward, by further developing a \"time-domain harmonic power-...[truncated]",
+      "years_unresolved": 6,
+      "citation_count": 0,
+      "evidence_level": "unknown",
+      "barrier_to_progress": "robustness or stability barrier",
+      "supporting_references": [
+        "Sheng Lei et al. (2020) Initialization Process of a Power System Transient Simulation Scheme for Stability Studies arXiv:2008.13059v1"
+      ]
+    },
+    {
+      "problem": "Power System Transient Modeling and Simulation using Integrated Circuit Full text excerpt: modeling power systems as an integrated circuit and simulating dynamic behavior using an integrated circuit simulator No explicit limitation extracted.",
+      "years_unresolved": 5,
+      "citation_count": 0,
+      "evidence_level": "unknown",
+      "barrier_to_progress": "unspecified conceptual or technical barrier",
+      "supporting_references": [
+        "Xiang Zhang et al. (2021) Power System Transient Modeling and Simulation using Integrated Circuit arXiv:2106.03254v1"
+      ]
+    },
+    {
+      "problem": "Power System Transient Modeling and Simulation using Integrated Circuit Transient stability analysis (TSA) plays an important role in power system analysis to investigate the stability of power system. Traditionally, transient stability analysis methods have b...[truncated]",
+      "years_unresolved": 5,
+      "citation_count": 0,
+      "evidence_level": "unknown",
+      "barrier_to_progress": "robustness or stability barrier",
+      "supporting_references": [
+        "Xiang Zhang et al. (2021) Power System Transient Modeling and Simulation using Integrated Circuit arXiv:2106.03254v1"
+      ]
+    }
+  ],
+  "ranked_gaps": [
+    {
+      "rank": 1,
+      "gap_id": "gap_1783412894147276000",
+      "gap_description": "Cross-disciplinary unconnected pair: 'XUV transient grating spectroscopy' from chemistry and 'numerical modeling' from computer_science have no recorded bridge in the current PaperGraph.",
+      "gap_type": "migration",
+      "exploration_value_score": 10,
+      "importance": "high",
+      "tractability": "medium",
+      "strategic_alignment": [
+        {
+          "strategic_domain": "energy",
+          "matched_keywords": [
+            "power"
+          ],
+          "alignment_score": 6
+        }
+      ],
+      "supporting_references": [
+        "Vincent Eggers et al. (2026) Background-free Tracking of Ultrafast Hole and Electron Dynamics with XUV Transient Grating Spectroscopy doi:10.1021/acsphotonics.6c00152",
+        "Michel Nohra et al. (2024) Physics-Informed Neural Networks for the Numerical Modeling of Steady-State and Transient Electromagnetic Problems with Discontinuous Media arXiv:2406.04380v1"
+      ],
+      "recommended_approach": "Formulate a transfer hypothesis, audit incompatible assumptions, then run a minimal bridge experiment or benchmark.",
+      "ranking_reason": "novelty=7, refs=2, application=medium, feasibility=medium, type=migration, strategic_matches=1, density_bonus=2"
+    },
+    {
+      "rank": 2,
+      "gap_id": "gap_1783412894152613000",
+      "gap_description": "Cross-disciplinary unconnected pair: 'ultrafast carrier dynamics in germanium solid' from chemistry and 'numerical modeling' from computer_science have no recorded bridge in the current PaperGraph.",
+      "gap_type": "migration",
+      "exploration_value_score": 10,
+      "importance": "high",
+      "tractability": "medium",
+      "strategic_alignment": [
+        {
+          "strategic_domain": "energy",
+          "matched_keywords": [
+            "power"
+          ],
+          "alignment_score": 6
+        }
+      ],
+      "supporting_references": [
+        "Vincent Eggers et al. (2026) Background-free Tracking of Ultrafast Hole and Electron Dynamics with XUV Transient Grating Spectroscopy doi:10.1021/acsphotonics.6c00152",
+        "Michel Nohra et al. (2024) Physics-Informed Neural Networks for the Numerical Modeling of Steady-State and Transient Electromagnetic Problems with Discontinuous Media arXiv:2406.04380v1"
+      ],
+      "recommended_approach": "Formulate a transfer hypothesis, audit incompatible assumptions, then run a minimal bridge experiment or benchmark.",
+      "ranking_reason": "novelty=7, refs=2, application=medium, feasibility=medium, type=migration, strategic_matches=1, density_bonus=2"
+    },
+    {
+      "rank": 3,
+      "gap_id": "gap_1783412894157956000",
+      "gap_description": "Cross-disciplinary unconnected pair: 'we extract the evolution of the complex refractive index' from chemistry and 'numerical modeling' from computer_science have no recorded bridge in the current PaperGraph.",
+      "gap_type": "migration",
+      "exploration_value_score": 10,
+      "importance": "high",
+      "tractability": "medium",
+      "strategic_alignment": [
+        {
+          "strategic_domain": "energy",
+          "matched_keywords": [
+            "power"
+          ],
+          "alignment_score": 6
+        }
+      ],
+      "supporting_references": [
+        "Vincent Eggers et al. (2026) Background-free Tracking of Ultrafast Hole and Electron Dynamics with XUV Transient Grating Spectroscopy doi:10.1021/acsphotonics.6c00152",
+        "Michel Nohra et al. (2024) Physics-Informed Neural Networks for the Numerical Modeling of Steady-State and Transient Electromagnetic Problems with Discontinuous Media arXiv:2406.04380v1"
+      ],
+      "recommended_approach": "Formulate a transfer hypothesis, audit incompatible assumptions, then run a minimal bridge experiment or benchmark.",
+      "ranking_reason": "novelty=7, refs=2, application=medium, feasibility=medium, type=migration, strategic_matches=1, density_bonus=2"
+    },
+    {
+      "rank": 4,
+      "gap_id": "gap_1783412894140074000",
+      "gap_description": "Density hole: 'Adomian Decomposition Method' has no recorded validation in 'power system electromagnetic transient stability'.",
+      "gap_type": "combinatorial",
+      "exploration_value_score": 10,
+      "importance": "high",
+      "tractability": "high",
+      "strategic_alignment": [
+        {
+          "strategic_domain": "energy",
+          "matched_keywords": [
+            "power"
+          ],
+          "alignment_score": 6
+        }
+      ],
+      "supporting_references": [
+        "Xinyuan Jiang et al. (2025) Power System Electromagnetic Transient Stability: an Analysis Based on Convergent Hamiltonian arXiv:2502.09695v1",
+        "Nan Duan et al. (2014) Finding Semi-Analytic Solutions of Power System Differential-Algebraic Equations for Fast Transient Stability Simulation arXiv:1412.0904v2",
+        "Umair Shahzad (2022) A Comprehensive Review on Power System Risk-Based Transient Stability arXiv:2206.05113v1",
+        "Abdulelah Alharbi et al. (2020) A Simulation-based Education Approach for the Electromagnetic and Electromechanical Transient Waves in Power Systems arXiv:2010.12379v2",
+        "Sheng Lei et al. (2020) Initialization Process of a Power System Transient Simulation Scheme for Stability Studies arXiv:2008.13059v1"
+      ],
+      "recommended_approach": "Use the dense neighboring literature as controls, then test the sparse intersection with explicit benchmark coverage.",
+      "ranking_reason": "novelty=4, refs=5, application=high, feasibility=high, type=combinatorial, strategic_matches=1, density_bonus=2"
+    },
+    {
+      "rank": 5,
+      "gap_id": "gap_1783412894125491000",
+      "gap_description": "Density hole: 'Adomian Decomposition Method' in 'power system transient stability simulation' lacks benchmark coverage for EMT-TS hybrid interface error, event frequency, feasibility.",
+      "gap_type": "improvement",
+      "exploration_value_score": 10,
+      "importance": "high",
+      "tractability": "high",
+      "strategic_alignment": [
+        {
+          "strategic_domain": "energy",
+          "matched_keywords": [
+            "power"
+          ],
+          "alignment_score": 6
+        }
+      ],
+      "supporting_references": [
+        "Nan Duan et al. (2014) Finding Semi-Analytic Solutions of Power System Differential-Algebraic Equations for Fast Transient Stability Simulation arXiv:1412.0904v2",
+        "Xiang Zhang et al. (2021) Power System Transient Modeling and Simulation using Integrated Circuit arXiv:2106.03254v1",
+        "Sheng Lei et al. (2020) Initialization Process of a Power System Transient Simulation Scheme for Stability Studies arXiv:2008.13059v1"
+      ],
+      "recommended_approach": "Use the dense neighboring literature as controls, then test the sparse intersection with explicit benchmark coverage.",
+      "ranking_reason": "novelty=5, refs=3, application=high, feasibility=high, type=improvement, strategic_matches=1, density_bonus=2"
+    },
+    {
+      "rank": 6,
+      "gap_id": "gap_1783412894127364000",
+      "gap_description": "Density hole: 'contraction analysis' in 'power system electromagnetic transient stability' lacks benchmark coverage for EMT-TS hybrid interface error, event frequency, feasibility.",
+      "gap_type": "improvement",
+      "exploration_value_score": 10,
+      "importance": "high",
+      "tractability": "high",
+      "strategic_alignment": [
+        {
+          "strategic_domain": "energy",
+          "matched_keywords": [
+            "power"
+          ],
+          "alignment_score": 6
+        }
+      ],
+      "supporting_references": [
+        "Xinyuan Jiang et al. (2025) Power System Electromagnetic Transient Stability: an Analysis Based on Convergent Hamiltonian arXiv:2502.09695v1",
+        "Abdulelah Alharbi et al. (2020) A Simulation-based Education Approach for the Electromagnetic and Electromechanical Transient Waves in Power Systems arXiv:2010.12379v2"
+      ],
+      "recommended_approach": "Use the dense neighboring literature as controls, then test the sparse intersection with explicit benchmark coverage.",
+      "ranking_reason": "novelty=5, refs=2, application=high, feasibility=high, type=improvement, strategic_matches=1, density_bonus=2"
+    },
+    {
+      "rank": 7,
+      "gap_id": "gap_1783412894131012000",
+      "gap_description": "Density hole: 'of electromagnetic transient-transient stability hybrid simulation' in 'power grid simulation with inverter-based resources' lacks benchmark coverage for event frequency, feasibility, global stability of synchronized steady state.",
+      "gap_type": "improvement",
+      "exploration_value_score": 10,
+      "importance": "high",
+      "tractability": "high",
+      "strategic_alignment": [
+        {
+          "strategic_domain": "energy",
+          "matched_keywords": [
+            "power",
+            "grid"
+          ],
+          "alignment_score": 8
+        }
+      ],
+      "supporting_references": [
+        "Bin Wang et al. (2026) Quantifying and Improving the Accuracy of Electromagnetic Transient-Transient Stability Hybrid Simulation doi:10.1109/TPWRS.2026.3683988"
+      ],
+      "recommended_approach": "Use the dense neighboring literature as controls, then test the sparse intersection with explicit benchmark coverage.",
+      "ranking_reason": "novelty=5, refs=1, application=high, feasibility=high, type=improvement, strategic_matches=1, density_bonus=2"
+    },
+    {
+      "rank": 8,
+      "gap_id": "gap_1783412894134647000",
+      "gap_description": "Density hole: 'risk-based transient stability assessment' in 'power system security | transient stability under uncertainty' lacks benchmark coverage for EMT-TS hybrid interface error, event frequency, feasibility.",
+      "gap_type": "improvement",
+      "exploration_value_score": 10,
+      "importance": "high",
+      "tractability": "high",
+      "strategic_alignment": [
+        {
+          "strategic_domain": "energy",
+          "matched_keywords": [
+            "power"
+          ],
+          "alignment_score": 6
+        }
+      ],
+      "supporting_references": [
+        "Umair Shahzad (2022) A Comprehensive Review on Power System Risk-Based Transient Stability arXiv:2206.05113v1"
+      ],
+      "recommended_approach": "Use the dense neighboring literature as controls, then test the sparse intersection with explicit benchmark coverage.",
+      "ranking_reason": "novelty=5, refs=1, application=high, feasibility=high, type=improvement, strategic_matches=1, density_bonus=2"
+    },
+    {
+      "rank": 9,
+      "gap_id": "gap_1783412894136451000",
+      "gap_description": "Density hole: 'scalable communication interface design | real-time data extrapolation method' in 'real-time co-simulation of power systems with high inverter-based resource (IBR) penetration' lacks benchmark coverage for EMT-TS hybrid interface error, event frequency, feasibility.",
+      "gap_type": "improvement",
+      "exploration_value_score": 10,
+      "importance": "high",
+      "tractability": "high",
+      "strategic_alignment": [
+        {
+          "strategic_domain": "energy",
+          "matched_keywords": [
+            "power"
+          ],
+          "alignment_score": 6
+        }
+      ],
+      "supporting_references": [
+        "Qi Xiao et al. (2025) Design and Implementation of Scalable Communication Interfaces for Reliable and Stable Real-time Co-Simulation of Power Systems arXiv:2502.07866v1"
+      ],
+      "recommended_approach": "Use the dense neighboring literature as controls, then test the sparse intersection with explicit benchmark coverage.",
+      "ranking_reason": "novelty=4, refs=1, application=high, feasibility=high, type=improvement, strategic_matches=1, density_bonus=2"
+    },
+    {
+      "rank": 10,
+      "gap_id": "gap_1783412881718809000",
+      "gap_description": "Method 'Adomian Decomposition Method' has no recorded validation in scenario 'co-simulation of cyber-physical energy systems' in the current PaperGraph map.",
+      "gap_type": "combinatorial",
+      "exploration_value_score": 10,
+      "importance": "high",
+      "tractability": "high",
+      "strategic_alignment": [
+        {
+          "strategic_domain": "energy",
+          "matched_keywords": [
+            "energy"
+          ],
+          "alignment_score": 6
+        }
+      ],
+      "supporting_references": [
+        "Jan Sören Schwarz et al. (2024) Towards an Assisted Simulation Planning for Co-Simulation of Cyber-Physical Energy Systems doi:10.1109/MSCPES.2019.8738788",
+        "Nan Duan et al. (2014) Finding Semi-Analytic Solutions of Power System Differential-Algebraic Equations for Fast Transient Stability Simulation arXiv:1412.0904v2"
+      ],
+      "recommended_approach": "Run a targeted validation study with explicit benchmarks, baselines, and failure-mode analysis.",
+      "ranking_reason": "novelty=6, refs=2, application=medium, feasibility=high, type=combinatorial, strategic_matches=1, density_bonus=2"
+    }
+  ],
+  "constraints_checked": {
+    "requires_supporting_reference": true,
+    "filters_trivial_low_novelty": true,
+    "max_gaps": 10
+  }
+}

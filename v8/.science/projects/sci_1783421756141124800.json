@@ -1,0 +1,142 @@
+{
+  "project_id": "sci_1783421756141124800",
+  "title": "电力系统仿真 ZhiZhi-TanXi-MingLi 验证",
+  "domain": "Power System Simulation / 电力系统仿真",
+  "objective": "验证从方向子空间确立、分层文献检索、经典/综述/顶刊论文导入、知识图谱构建、gap识别到可验证假设生成的闭环。",
+  "strategic_need": "",
+  "phase": "Gap Discovery",
+  "createdAt": 1783421756.1411288,
+  "updatedAt": 1783421898.333766,
+  "papergraph": [
+    {
+      "paper_id": "paper_1783421898333210800",
+      "unique_key": "arxiv:2502_07866v1",
+      "title": "Design and Implementation of Scalable Communication Interfaces for Reliable and Stable Real-time Co-Simulation of Power Systems",
+      "citation": "Qi Xiao et al. (2025) Design and Implementation of Scalable Communication Interfaces for Reliable and Stable Real-time Co-Simulation of Power Systems arXiv:2502.07866v1",
+      "authors": [
+        "Qi Xiao"
+      ],
+      "year": "2025",
+      "venue": "arXiv",
+      "provider": "arxiv",
+      "source_type": "api",
+      "doi": "",
+      "arxiv_id": "2502.07866v1",
+      "semantic_scholar_id": "",
+      "url": "http://arxiv.org/abs/2502.07866v1",
+      "abstract": "Co-simulation offers an integrated approach for modeling the large-scale integration of inverter-based resources (IBRs) into transmission and distribution grids. This paper presents a scalable communication interface design and implementation to enable reliable and stable real-time co-simulation of power systems with high IBR penetration. The communication interface is categorized into two types: local and remote. In local scenarios, where subsystems are connected within a single local area network (LAN), low-latency communication facilitates the seamless integration of electromagnetic transient (EMT) and phasor-domain models, enabling efficient interactions with power and energy management algorithms. For remote scenarios, data exchange is achieved via internet-based file sharing or VPN-enabled communication. The performance of both methods is evaluated using OPAL-RT as a real-time simulator, demonstrating scalability, effectiveness, and challenges specific to real-time co-simulation applications. To mitigate instability arising from data resolution mismatches in time-sensitive co-simulations, a real-time data extrapolation method is proposed. This approach significantly enhances stability and reliability, ensuring more accurate simulation outcomes. The implementation code is available on GitHub, providing researchers the tools to replicate and expand upon this work.",
+      "full_text_excerpt": "",
+      "conclusion": "Full text excerpt:",
+      "strengths": [],
+      "improvements": [
+        "Abstract: Co-simulation offers an integrated approach for modeling the large-scale integration of inverter-based resources (IBRs) into transmission and distribution grids. This paper presents a scalable communication interface design and implementation to enable reliable and stable real-time co-simu...[truncated]"
+      ],
+      "method": "scalable communication interface design | real-time data extrapolation method",
+      "scenario": "real-time co-simulation of power systems with high inverter-based resource (IBR) penetration",
+      "benchmark": "stability | reliability | scalability | accuracy of simulation outcomes",
+      "contribution": "A scalable communication interface design and a real-time data extrapolation method that enhance stability and reliability in real-time co-simulation of power systems with high IBR penetration.",
+      "limitation": "Challenges specific to real-time co-simulation applications, including instability from data resolution mismatches.",
+      "credibility_score": 0.75,
+      "credibility_reasons": [
+        "base record",
+        "has title and citation",
+        "has scholarly identifier",
+        "has URL",
+        "has substantial abstract",
+        "provider recorded",
+        "has publication year"
+      ],
+      "extraction_quality": {
+        "score": 1.0,
+        "unknown_ratio": 0.0,
+        "unknown_fields": [],
+        "abstract_chars": 1390,
+        "flags": [],
+        "needs_enrichment": false,
+        "needs_llm_retry": false,
+        "requires_human_review": false,
+        "initial": {
+          "score": 0.28,
+          "unknown_ratio": 1.0,
+          "unknown_fields": [
+            "method",
+            "scenario",
+            "benchmark"
+          ],
+          "abstract_chars": 1390,
+          "flags": [
+            "missing_conclusion",
+            "unknown_fields",
+            "unknown_fields_high",
+            "missing_benchmark"
+          ],
+          "needs_enrichment": false,
+          "needs_llm_retry": true,
+          "requires_human_review": true
+        },
+        "llm_retry": {
+          "attempted": true,
+          "succeeded": true,
+          "error": "",
+          "extractor": "qwen_json"
+        }
+      },
+      "enrichment_sources": [],
+      "gap_signals": [
+        {
+          "signal_id": "sig_1783421898211114100",
+          "signal_type": "limitation",
+          "text": "instability arising from data resolution mismatches in time-sensitive co-simulations",
+          "evidence_type": "author_opinion",
+          "supporting_reference": "Qi Xiao et al. (2025) Design and Implementation of Scalable Communication Interfaces for Reliable and Stable Real-time Co-Simulation of Power Systems arXiv:2502.07866v1",
+          "confidence": 0.82
+        },
+        {
+          "signal_id": "sig_1783421898332692000",
+          "signal_type": "challenge",
+          "text": "Challenges specific to real-time co-simulation applications, including instability from data resolution mismatches.",
+          "evidence_type": "problem_statement",
+          "supporting_reference": "Qi Xiao et al. (2025) Design and Implementation of Scalable Communication Interfaces for Reliable and Stable Real-time Co-Simulation of Power Systems arXiv:2502.07866v1",
+          "confidence": 0.76
+        },
+        {
+          "signal_id": "sig_1783421898332596400",
+          "signal_type": "challenge",
+          "text": "The performance of both methods is evaluated using OPAL-RT as a real-time simulator, demonstrating scalability, effectiveness, and challenges specific to real-time co-simulation applications.",
+          "evidence_type": "problem_statement",
+          "supporting_reference": "Qi Xiao et al. (2025) Design and Implementation of Scalable Communication Interfaces for Reliable and Stable Real-time Co-Simulation of Power Systems arXiv:2502.07866v1",
+          "confidence": 0.76
+        },
+        {
+          "signal_id": "sig_1783421898211038300",
+          "signal_type": "challenge",
+          "text": "challenges specific to real-time co-simulation applications",
+          "evidence_type": "problem_statement",
+          "supporting_reference": "Qi Xiao et al. (2025) Design and Implementation of Scalable Communication Interfaces for Reliable and Stable Real-time Co-Simulation of Power Systems arXiv:2502.07866v1",
+          "confidence": 0.76
+        }
+      ],
+      "importedAt": 1783421898.3332386
+    }
+  ],
+  "evidence": [
+    {
+      "evidence_id": "ev_1783421898333342200",
+      "title": "Design and Implementation of Scalable Communication Interfaces for Reliable and Stable Real-time Co-Simulation of Power Systems",
+      "citation": "Qi Xiao et al. (2025) Design and Implementation of Scalable Communication Interfaces for Reliable and Stable Real-time Co-Simulation of Power Systems arXiv:2502.07866v1",
+      "method": "scalable communication interface design | real-time data extrapolation method",
+      "scenario": "real-time co-simulation of power systems with high inverter-based resource (IBR) penetration",
+      "benchmark": "stability | reliability | scalability | accuracy of simulation outcomes",
+      "contribution": "A scalable communication interface design and a real-time data extrapolation method that enhance stability and reliability in real-time co-simulation of power systems with high IBR penetration.",
+      "limitation": "Challenges specific to real-time co-simulation applications, including instability from data resolution mismatches.",
+      "url": "http://arxiv.org/abs/2502.07866v1",
+      "createdAt": 1783421898.3333514
+    }
+  ],
+  "coverage_matrix": {},
+  "knowledge_gaps": [],
+  "hypotheses": [],
+  "keynotes": [],
+  "mechanism_reports": [],
+  "pipeline_tasks": []
+}

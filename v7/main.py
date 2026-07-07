@@ -1,0 +1,232 @@
+from __future__ import annotations
+
+import argparse
+from typing import Any
+
+try:
+    from .compact import compact_in_place, compact_messages
+    from .hook import trigger_hook
+    from .llm import get_client
+    from .log import log_event
+    from .memory import extract_memories
+    from .recovery import RecoveryState, create_response_with_recovery
+    from .skill import build_system
+    from .agent_teams import consume_lead_inbox
+    from .task_system import collect_background_notifications, should_run_background, start_background_task, strip_control_args
+    from .tools import TOOL_HANDLERS, TOOLS
+except ImportError:
+    from compact import compact_in_place, compact_messages
+    from hook import trigger_hook
+    from llm import get_client
+    from log import log_event
+    from memory import extract_memories
+    from recovery import RecoveryState, create_response_with_recovery
+    from skill import build_system
+    from agent_teams import consume_lead_inbox
+    from task_system import collect_background_notifications, should_run_background, start_background_task, strip_control_args
+    from tools import TOOL_HANDLERS, TOOLS
+
+
+def block_to_dict(block: Any) -> dict[str, Any]:
+    if isinstance(block, dict):
+        return block
+    if hasattr(block, "model_dump"):
+        return block.model_dump(exclude_none=True)
+    if hasattr(block, "dict"):
+        return block.dict(exclude_none=True)
+    raise TypeError(f"Unsupported response block: {type(block)!r}")
+
+
+def block_attr(block: Any, name: str, default: Any = None) -> Any:
+    if isinstance(block, dict):
+        return block.get(name, default)
+    return getattr(block, name, default)
+
+
+def response_text(content: list[Any]) -> str:
+    parts: list[str] = []
+    for block in content:
+        if block_attr(block, "type") == "text":
+            parts.append(block_attr(block, "text", ""))
+    return "\n".join(part for part in parts if part)
+
+
+def tool_result(tool_use_id: str, output: str, is_error: bool = False) -> dict[str, Any]:
+    result: dict[str, Any] = {
+        "type": "tool_result",
+        "tool_use_id": tool_use_id,
+        "content": output,
+    }
+    if is_error:
+        result["is_error"] = True
+    return result
+
+
+def run_tool(block: Any, messages: list[dict[str, Any]]) -> dict[str, Any]:
+    name = normalize_tool_name(block_attr(block, "name"))
+    tool_input = block_attr(block, "input", {}) or {}
+    tool_use_id = block_attr(block, "id")
+
+    blocked = trigger_hook("PreToolUse", block)
+    if blocked is not None:
+        return tool_result(tool_use_id, blocked, is_error=True)
+
+    try:
+        if name == "compact":
+            focus = str(tool_input.get("focus", ""))
+            compact_in_place(messages, focus=focus, force_l0=False)
+            output = "Context compacted."
+        else:
+            handler = TOOL_HANDLERS[name]
+            if should_run_background(block):
+                output = start_background_task(block, handler, strip_control_args(tool_input))
+            else:
+                output = handler(**strip_control_args(tool_input))
+    except Exception as exc:
+        output = f"ERROR: {exc}"
+        trigger_hook("PostToolUse", block, output)
+        return tool_result(tool_use_id, output, is_error=True)
+
+    trigger_hook("PostToolUse", block, output)
+    return tool_result(tool_use_id, output)
+
+
+def normalize_tool_name(name: Any) -> str:
+    raw = str(name)
+    aliases = {
+        "bash": "bash",
+        "read": "read_file",
+        "readfile": "read_file",
+        "read_file": "read_file",
+        "write": "write_file",
+        "writefile": "write_file",
+        "write_file": "write_file",
+        "edit": "edit_file",
+        "editfile": "edit_file",
+        "edit_file": "edit_file",
+        "glob": "glob",
+        "compact": "compact",
+        "spawnsubagent": "spawn_subagent",
+        "spawn_subagent": "spawn_subagent",
+        "createtask": "create_task",
+        "create_task": "create_task",
+        "listtasks": "list_tasks",
+        "list_tasks": "list_tasks",
+        "gettask": "get_task",
+        "get_task": "get_task",
+        "claimtask": "claim_task",
+        "claim_task": "claim_task",
+        "completetask": "complete_task",
+        "complete_task": "complete_task",
+        "spawnteammate": "spawn_teammate",
+        "spawn_teammate": "spawn_teammate",
+        "sendmessage": "send_message",
+        "send_message": "send_message",
+        "messageactiongateway": "send_message",
+        "message_action_gateway": "send_message",
+        "checkinbox": "check_inbox",
+        "check_inbox": "check_inbox",
+        "requestshutdown": "request_shutdown",
+        "request_shutdown": "request_shutdown",
+        "requestplan": "request_plan",
+        "request_plan": "request_plan",
+        "reviewplan": "review_plan",
+        "review_plan": "review_plan",
+    }
+    key = raw.replace("-", "_").replace(" ", "_").lower()
+    compact_key = key.replace("_", "")
+    return aliases.get(key) or aliases.get(compact_key) or key
+
+
+def create_response(
+    client: Any,
+    user_input: str,
+    messages: list[dict[str, Any]],
+    recovery_state: RecoveryState,
+) -> Any:
+    return create_response_with_recovery(
+        client,
+        system=build_system(user_input),
+        messages=messages,
+        tools=TOOLS,
+        state=recovery_state,
+        focus=user_input,
+    )
+
+
+def run_agent(user_input: str) -> str:
+    client = get_client()
+    recovery_state = RecoveryState()
+    log_event("USER", "prompt", chars=len(user_input))
+    injected = trigger_hook("UserPromptSubmit", user_input)
+    prompt = injected if injected is not None else user_input
+    messages: list[dict[str, Any]] = [{"role": "user", "content": prompt}]
+
+    while True:
+        team_messages = consume_lead_inbox()
+        if team_messages:
+            messages.append(
+                {
+                    "role": "user",
+                    "content": "<team_inbox>\n" + "\n\n".join(team_messages) + "\n</team_inbox>",
+                }
+            )
+        notifications = collect_background_notifications()
+        if notifications:
+            messages.append({"role": "user", "content": "\n\n".join(notifications)})
+        messages[:] = compact_messages(messages)
+        response = create_response(client, user_input, messages, recovery_state)
+
+        if response.stop_reason == "end_turn":
+            final_text = response_text(response.content)
+            stop_injection = trigger_hook("Stop", final_text)
+            if stop_injection is not None:
+                messages.append({"role": "user", "content": stop_injection})
+                continue
+            extract_memories(messages, final_text)
+            log_event("AGENT", "final", text=final_text)
+            return final_text
+
+        tool_blocks = [
+            block for block in response.content if block_attr(block, "type") == "tool_use"
+        ]
+        if not tool_blocks:
+            final_text = response_text(response.content)
+            trigger_hook("Stop", final_text)
+            extract_memories(messages, final_text)
+            log_event("AGENT", "final", text=final_text)
+            return final_text
+
+        messages.append(
+            {
+                "role": "assistant",
+                "content": [block_to_dict(block) for block in response.content],
+            }
+        )
+        messages.append(
+            {
+                "role": "user",
+                "content": [run_tool(block, messages) for block in tool_blocks],
+            }
+        )
+        messages[:] = compact_messages(messages)
+
+
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(description="Run the v7 multi-agent collaboration loop.")
+    parser.add_argument("prompt", nargs="*", help="Task prompt. If omitted, read one line.")
+    return parser.parse_args()
+
+
+def main() -> None:
+    args = parse_args()
+    user_input = " ".join(args.prompt).strip()
+    if not user_input:
+        user_input = input("User> ").strip()
+    if not user_input:
+        raise SystemExit("Empty prompt.")
+    run_agent(user_input)
+
+
+if __name__ == "__main__":
+    main()

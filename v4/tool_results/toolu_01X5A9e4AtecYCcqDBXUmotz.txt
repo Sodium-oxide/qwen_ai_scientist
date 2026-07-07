@@ -1,0 +1,92 @@
+   1 | from __future__ import annotations
+   2 | 
+   3 | import os
+   4 | from pathlib import Path
+   5 | 
+   6 | 
+   7 | def _load_dotenv() -> None:
+   8 |     try:
+   9 |         from dotenv import load_dotenv
+  10 |     except ImportError:
+  11 |         return
+  12 |     load_dotenv()
+  13 | 
+  14 | 
+  15 | _load_dotenv()
+  16 | 
+  17 | PACKAGE_DIR = Path(__file__).resolve().parent
+  18 | WORKDIR = Path(os.environ.get("AGENT_WORKDIR", Path.cwd())).resolve()
+  19 | SKILLS_DIR = Path(os.environ.get("SKILLS_DIR", PACKAGE_DIR / "skills")).resolve()
+  20 | LOG_PATH = Path(os.environ.get("AGENT_LOG_PATH", PACKAGE_DIR / "agent.log")).resolve()
+  21 | 
+  22 | MODEL_ID = os.environ.get(
+  23 |     "MODEL_ID",
+  24 |     os.environ.get("ANTHROPIC_MODEL", "claude-3-5-sonnet-latest"),
+  25 | )
+  26 | MAX_TOKENS = int(os.environ.get("MAX_TOKENS", os.environ.get("ANTHROPIC_MAX_TOKENS", "8000")))
+  27 | SUB_MAX_TOKENS = int(os.environ.get("SUB_MAX_TOKENS", "4000"))
+  28 | SUB_MAX_TURNS = int(os.environ.get("SUB_MAX_TURNS", "30"))
+  29 | 
+  30 | BASH_TIMEOUT_SECONDS = int(os.environ.get("BASH_TIMEOUT_SECONDS", "120"))
+  31 | MAX_OUTPUT_CHARS = int(os.environ.get("MAX_OUTPUT_CHARS", "50000"))
+  32 | LARGE_OUTPUT_CHARS = int(os.environ.get("LARGE_OUTPUT_CHARS", "20000"))
+  33 | 
+  34 | ANTHROPIC_BASE_URL = os.environ.get("ANTHROPIC_BASE_URL")
+  35 | AUTO_APPROVE = os.environ.get("AGENT_AUTO_APPROVE", "").lower() in {"1", "true", "yes"}
+  36 | DISABLE_CONTEXT_INJECTION = bool(os.environ.get("AGENT_DISABLE_CONTEXT_INJECTION"))
+  37 | ============== 
+  38 | from __future__ import annotations
+  39 | 
+  40 | import os
+  41 | from pathlib import Path
+  42 | 
+  43 | 
+  44 | def _load_dotenv() -> None:
+  45 |     try:
+  46 |         from dotenv import load_dotenv
+  47 |     except ImportError:
+  48 |         return
+  49 |     load_dotenv()
+  50 | 
+  51 | 
+  52 | _load_dotenv()
+  53 | 
+  54 | PACKAGE_DIR = Path(__file__).resolve().parent
+  55 | WORKDIR = Path(os.environ.get("AGENT_WORKDIR", Path.cwd())).resolve()
+  56 | SKILLS_DIR = Path(os.environ.get("SKILLS_DIR", PACKAGE_DIR / "skills")).resolve()
+  57 | LOG_PATH = Path(os.environ.get("AGENT_LOG_PATH", PACKAGE_DIR / "agent.log")).resolve()
+  58 | TOOL_RESULTS_DIR = Path(
+  59 |     os.environ.get("TOOL_RESULTS_DIR", PACKAGE_DIR / "tool_results")
+  60 | ).resolve()
+  61 | TRANSCRIPTS_DIR = Path(
+  62 |     os.environ.get("TRANSCRIPTS_DIR", PACKAGE_DIR / "transcripts")
+  63 | ).resolve()
+  64 | 
+  65 | MODEL_ID = os.environ.get(
+  66 |     "MODEL_ID",
+  67 |     os.environ.get("ANTHROPIC_MODEL", "claude-3-5-sonnet-latest"),
+  68 | )
+  69 | MAX_TOKENS = int(os.environ.get("MAX_TOKENS", os.environ.get("ANTHROPIC_MAX_TOKENS", "8000")))
+  70 | SUB_MAX_TOKENS = int(os.environ.get("SUB_MAX_TOKENS", "4000"))
+  71 | SUB_MAX_TURNS = int(os.environ.get("SUB_MAX_TURNS", "30"))
+  72 | 
+  73 | BASH_TIMEOUT_SECONDS = int(os.environ.get("BASH_TIMEOUT_SECONDS", "120"))
+  74 | MAX_OUTPUT_CHARS = int(os.environ.get("MAX_OUTPUT_CHARS", "50000"))
+  75 | LARGE_OUTPUT_CHARS = int(os.environ.get("LARGE_OUTPUT_CHARS", "20000"))
+  76 | 
+  77 | L3_TOOL_RESULT_BUDGET = int(os.environ.get("L3_TOOL_RESULT_BUDGET", "2048"))
+  78 | L3_SNIPPET_CHARS = int(os.environ.get("L3_SNIPPET_CHARS", "512"))
+  79 | L1_MAX_MESSAGES = int(os.environ.get("L1_MAX_MESSAGES", "20"))
+  80 | L1_KEEP_HEAD = int(os.environ.get("L1_KEEP_HEAD", "10"))
+  81 | L1_KEEP_TAIL = int(os.environ.get("L1_KEEP_TAIL", "10"))
+  82 | L2_KEEP_TOOL_RESULTS = int(os.environ.get("L2_KEEP_TOOL_RESULTS", "5"))
+  83 | L0_SERIALIZED_LIMIT = int(os.environ.get("L0_SERIALIZED_LIMIT", "50000"))
+  84 | L0_SUMMARY_TOKENS = int(os.environ.get("L0_SUMMARY_TOKENS", "1200"))
+  85 | EMERGENCY_KEEP_MESSAGES = int(os.environ.get("EMERGENCY_KEEP_MESSAGES", "5"))
+  86 | 
+  87 | ANTHROPIC_BASE_URL = os.environ.get("ANTHROPIC_BASE_URL")
+  88 | AUTO_APPROVE = os.environ.get("AGENT_AUTO_APPROVE", "").lower() in {"1", "true", "yes"}
+  89 | DISABLE_CONTEXT_INJECTION = bool(os.environ.get("AGENT_DISABLE_CONTEXT_INJECTION"))
+  90 | LOG_COLOR = os.environ.get("AGENT_LOG_COLOR", "1").lower() not in {"0", "false", "no"}
+  91 | 
+  92 | [exit_code=0]

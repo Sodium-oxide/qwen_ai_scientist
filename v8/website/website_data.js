@@ -1,0 +1,2655 @@
+window.SCIENCE_WEBSITE_DATA = {
+  "meta": {
+    "projectId": "sci_1783097294298979800",
+    "title": "AI for Science 分层知识金字塔综合验证",
+    "domain": "AI for Science",
+    "objective": "验证从高影响综述根节点出发构建知识图谱的完整闭环",
+    "strategicNeed": "",
+    "phase": "Gap Discovery",
+    "createdAt": "2026-07-04 01:48:14",
+    "updatedAt": "2026-07-04 01:53:43",
+    "sourceProject": "C:\\Users\\31390\\Desktop\\2026挑战杯\\claude-code\\v8\\.science\\projects\\tmp\\sci_1783097294298979800.json",
+    "sourceSubspace": "C:\\Users\\31390\\Desktop\\2026挑战杯\\claude-code\\v8\\.science\\subspaces\\subspace_1783189738564365800.json"
+  },
+  "stats": {
+    "totalPapers": 15,
+    "totalSubspaces": 10,
+    "totalGaps": 3,
+    "totalTriples": 30,
+    "avgCredibility": 0.807
+  },
+  "subspaces": [
+    {
+      "id": "distributed_energy_resource_coordination",
+      "name": "Distributed Energy Resource Coordination",
+      "description": "Real-time scheduling, forecasting, and closed-loop control of heterogeneous distributed energy resources (solar PV, batteries, EVs, controllable loads) to maintain grid stability and optimize local economics.",
+      "keywords": [
+        "distributed energy resources",
+        "inverter-based resource control",
+        "grid-edge optimization",
+        "virtual power plant",
+        "DER aggregation",
+        "local balancing authority"
+      ],
+      "importance": 10,
+      "maturity": "growing",
+      "density": "high",
+      "hitCount": 12,
+      "recentHitCount": 5,
+      "highImpactHitCount": 0,
+      "suggestedQuota": 3,
+      "strategy": "must_include",
+      "selected": true
+    },
+    {
+      "id": "physics_informed_reinforcement_learning_for_grid_control",
+      "name": "Physics-Informed Reinforcement Learning for Grid Control",
+      "description": "Integration of power system physics (e.g., power flow equations, stability constraints) as hard or soft constraints, priors, or hybrid loss terms into reinforcement learning agents for safe, interpretable, and sample-efficient control policy learning.",
+      "keywords": [
+        "physics-informed RL",
+        "safe reinforcement learning",
+        "power flow constraints",
+        "differentiable power flow",
+        "hybrid model-free/model-based control"
+      ],
+      "importance": 9,
+      "maturity": "emerging",
+      "density": "high",
+      "hitCount": 10,
+      "recentHitCount": 7,
+      "highImpactHitCount": 0,
+      "suggestedQuota": 3,
+      "strategy": "must_include",
+      "selected": true
+    },
+    {
+      "id": "cyber_physical_security_of_grid_control_systems",
+      "name": "Cyber-Physical Security of Grid Control Systems",
+      "description": "Design and validation of resilient control architectures that detect, isolate, and mitigate cyber attacks targeting sensor networks, communication channels, or actuator commands in real-time grid control loops.",
+      "keywords": [
+        "false data injection attack",
+        "resilient state estimation",
+        "secure consensus control",
+        "grid cyber-physical attack detection",
+        "control-theoretic security"
+      ],
+      "importance": 9,
+      "maturity": "growing",
+      "density": "high",
+      "hitCount": 9,
+      "recentHitCount": 4,
+      "highImpactHitCount": 0,
+      "suggestedQuota": 3,
+      "strategy": "must_include",
+      "selected": true
+    },
+    {
+      "id": "multi_time_scale_hierarchical_control",
+      "name": "Multi-Time-Scale Hierarchical Control",
+      "description": "Architectures integrating millisecond-level protection, second-minute AGC/AVC, and hour-ahead economic dispatch via interoperable layers with consistent models, interfaces, and coordination protocols (e.g., ISO–TSP–DNO interfaces).",
+      "keywords": [
+        "hierarchical control architecture",
+        "time-scale decoupling",
+        "grid control layering",
+        "ISO-TSO-DNO coordination",
+        "model-predictive hierarchical control"
+      ],
+      "importance": 8,
+      "maturity": "mature",
+      "density": "high",
+      "hitCount": 9,
+      "recentHitCount": 4,
+      "highImpactHitCount": 0,
+      "suggestedQuota": 3,
+      "strategy": "must_include",
+      "selected": true
+    },
+    {
+      "id": "digital_twin_enabled_grid_control",
+      "name": "Digital Twin–Enabled Grid Control",
+      "description": "Live-synchronized, high-fidelity virtual replicas of physical grid assets and dynamics used for predictive control, scenario stress-testing, operator training, and closed-loop control validation under uncertainty.",
+      "keywords": [
+        "digital twin power system",
+        "real-time grid emulation",
+        "twin-to-control",
+        "cyber-physical synchronization",
+        "model fidelity calibration"
+      ],
+      "importance": 8,
+      "maturity": "emerging",
+      "density": "high",
+      "hitCount": 10,
+      "recentHitCount": 6,
+      "highImpactHitCount": 0,
+      "suggestedQuota": 3,
+      "strategy": "nice_to_have",
+      "selected": true
+    },
+    {
+      "id": "wide_area_adaptive_protection_and_control",
+      "name": "Wide-Area Adaptive Protection and Control",
+      "description": "Distributed, communication-enabled protection schemes using synchronized phasor measurements (PMUs) and adaptive logic to reconfigure relay settings, zone boundaries, and tripping logic dynamically under topology changes or DER penetration.",
+      "keywords": [
+        "wide-area protection",
+        "adaptive relaying",
+        "PMU-based fault detection",
+        "self-healing protection",
+        "dynamic zone coordination"
+      ],
+      "importance": 7,
+      "maturity": "growing",
+      "density": "high",
+      "hitCount": 8,
+      "recentHitCount": 2,
+      "highImpactHitCount": 0,
+      "suggestedQuota": 3,
+      "strategy": "must_include",
+      "selected": true
+    },
+    {
+      "id": "explainable_ai_for_grid_decision_support",
+      "name": "Explainable AI for Grid Decision Support",
+      "description": "Development and deployment of post-hoc and intrinsic explainability methods tailored to grid control decisions—e.g., attribution of voltage violations to specific DER actions, counterfactual generation for contingency mitigation, and regulatory-compliant audit trails.",
+      "keywords": [
+        "explainable AI power systems",
+        "SHAP for grid control",
+        "counterfactual explanation",
+        "regulatory XAI",
+        "human-in-the-loop decision support"
+      ],
+      "importance": 8,
+      "maturity": "emerging",
+      "density": "medium",
+      "hitCount": 4,
+      "recentHitCount": 3,
+      "highImpactHitCount": 0,
+      "suggestedQuota": 3,
+      "strategy": "nice_to_have",
+      "selected": true
+    },
+    {
+      "id": "autonomous_microgrid_islanding_and_reconnection",
+      "name": "Autonomous Microgrid Islanding and Reconnection",
+      "description": "Fully decentralized, plug-and-play control strategies enabling seamless transition between grid-connected and islanded modes—including black-start capability, droop-based stabilization, and synchro-check–free reconnection—without central SCADA or human intervention.",
+      "keywords": [
+        "microgrid autonomous operation",
+        "plug-and-play microgrid",
+        "islanding detection",
+        "reconnection synchronization",
+        "decentralized microgrid control"
+      ],
+      "importance": 7,
+      "maturity": "growing",
+      "density": "medium",
+      "hitCount": 5,
+      "recentHitCount": 0,
+      "highImpactHitCount": 0,
+      "suggestedQuota": 3,
+      "strategy": "must_include",
+      "selected": true
+    },
+    {
+      "id": "data_driven_dynamic_stability_assessment",
+      "name": "Data-Driven Dynamic Stability Assessment",
+      "description": "Machine learning–based surrogate models (e.g., graph neural nets, Koopman operators) trained on simulation or PMU data to predict transient, small-signal, or voltage stability margins in real time—bypassing full nonlinear time-domain simulations.",
+      "keywords": [
+        "transient stability prediction",
+        "GNN for stability",
+        "Koopman-based stability",
+        "data-driven stability assessment",
+        "surrogate modeling power systems"
+      ],
+      "importance": 8,
+      "maturity": "growing",
+      "density": "medium",
+      "hitCount": 4,
+      "recentHitCount": 2,
+      "highImpactHitCount": 0,
+      "suggestedQuota": 3,
+      "strategy": "nice_to_have",
+      "selected": true
+    },
+    {
+      "id": "standardized_interoperable_control_interfaces",
+      "name": "Standardized Interoperable Control Interfaces",
+      "description": "Formalized, vendor-agnostic communication protocols and data models (e.g., extensions to IEC 61850-10, IEEE 2030.5, OpenFMB) enabling plug-and-play integration of AI controllers, DERs, and legacy protection devices across vendor stacks.",
+      "keywords": [
+        "IEC 61850-10 control",
+        "OpenFMB control profile",
+        "grid control API",
+        "interoperable automation",
+        "standardized control messaging"
+      ],
+      "importance": 9,
+      "maturity": "growing",
+      "density": "medium",
+      "hitCount": 3,
+      "recentHitCount": 0,
+      "highImpactHitCount": 0,
+      "suggestedQuota": 3,
+      "strategy": "must_include",
+      "selected": true
+    }
+  ],
+  "papers": [
+    {
+      "id": "paper_1783097354394656800",
+      "title": "From AI for Science to Agentic Science: A Survey on Autonomous Scientific Discovery",
+      "citation": "Jiaqi Wei et al. (2025) From AI for Science to Agentic Science: A Survey on Autonomous Scientific Discovery arXiv:2508.14111v2",
+      "authors": [
+        "Jiaqi Wei"
+      ],
+      "year": "2025",
+      "venue": "arXiv",
+      "provider": "arxiv",
+      "url": "http://arxiv.org/abs/2508.14111v2",
+      "doi": "",
+      "method": "survey",
+      "scenario": "autonomous scientific discovery",
+      "benchmark": "benchmark dataset",
+      "credibility": 0.75,
+      "abstract": "Artificial intelligence (AI) is reshaping scientific discovery, evolving from specialized computational tools into autonomous research partners. We position Agentic Science as a pivotal stage within the broader AI for Science paradigm, where AI systems progress from partial assistance to full scientific agency. Enabled by large language models (LLMs), multimodal systems, and integrated research platforms, agentic AI shows capabilities in hypothesis generation, experimental design, execution, analysis, and iterat...",
+      "contribution": "unification of process-oriented, autonomy-oriented, and mechanism-oriented perspectives into a comprehensive framework for Agentic Science; domain-oriented synthesis across life sciences, chemistry, materials science, and physics",
+      "limitation": "Abstract: Artificial intelligence (AI) is reshaping scientific discovery, evolving from specialized computational tools into autonomous research partners. We position Agentic Science as a pivotal stage within the broader AI for Science paradigm, where AI systems progress from partial assistance to f...[truncated]",
+      "strengths": [],
+      "improvements": [
+        "Abstract: Artificial intelligence (AI) is reshaping scientific discovery, evolving from specialized computational tools into autonomous research partners. We position Agentic Science as a pivotal stage within the broader AI for Science paradigm, where AI systems progress from partial assistance to f...[truncated]"
+      ],
+      "quality": {
+        "score": 1.0,
+        "unknown_ratio": 0.0,
+        "unknown_fields": [],
+        "abstract_chars": 1448,
+        "flags": [],
+        "needs_enrichment": false,
+        "needs_llm_retry": false,
+        "requires_human_review": false,
+        "initial": {
+          "score": 0.76,
+          "unknown_ratio": 0.333,
+          "unknown_fields": [
+            "benchmark"
+          ],
+          "abstract_chars": 1448,
+          "flags": [
+            "unknown_fields",
+            "missing_benchmark"
+          ],
+          "needs_enrichment": false,
+          "needs_llm_retry": true,
+          "requires_human_review": false
+        },
+        "llm_retry": {
+          "attempted": true,
+          "succeeded": true,
+          "error": "",
+          "extractor": "qwen_json"
+        }
+      }
+    },
+    {
+      "id": "paper_1783097369328639900",
+      "title": "Embodied.cpp: A Portable Inference Runtime of Embodied AI Models on Heterogeneous Robots",
+      "citation": "Ling Xu et al. (2026) Embodied.cpp: A Portable Inference Runtime of Embodied AI Models on Heterogeneous Robots arXiv:2607.02501v1",
+      "authors": [
+        "Ling Xu"
+      ],
+      "year": "2026",
+      "venue": "arXiv",
+      "provider": "arxiv",
+      "url": "http://arxiv.org/abs/2607.02501v1",
+      "doi": "",
+      "method": "C++ inference runtime",
+      "scenario": "embodied AI models on heterogeneous robots",
+      "benchmark": "[\"task success rate\", \"block memory\"]",
+      "credibility": 0.75,
+      "abstract": "Embodied AI models now span vision-language-action (VLA) models and world-action models (WAMs), but practical deployment remains fragmented across model-specific Python stacks, backend assumptions, and robot-side glue code, especially on heterogeneous edge devices. Existing inference runtimes are designed mainly for request-response serving and therefore do not satisfy the runtime contract of embodied deployment: multi-rate execution inside closed-loop control, latency-first batch-1 inference on heterogeneous ha...",
+      "contribution": "A portable C++ inference runtime that enables deployment of vision-language-action and world-action models across heterogeneous robots and simulators via a unified backend abstraction.",
+      "limitation": "Abstract: Embodied AI models now span vision-language-action (VLA) models and world-action models (WAMs), but practical deployment remains fragmented across model-specific Python stacks, backend assumptions, and robot-side glue code, especially on heterogeneous edge devices. Existing inference runti...[truncated]",
+      "strengths": [
+        "modular multi-rate execution",
+        "latency-first fused inference",
+        "extensible operator and I/O support"
+      ],
+      "improvements": [
+        "deployment across heterogeneous devices, robots, and simulators through one backend abstraction"
+      ],
+      "quality": {
+        "score": 1.0,
+        "unknown_ratio": 0.0,
+        "unknown_fields": [],
+        "abstract_chars": 1603,
+        "flags": [],
+        "needs_enrichment": false,
+        "needs_llm_retry": false,
+        "requires_human_review": false
+      }
+    },
+    {
+      "id": "paper_1783097389077723000",
+      "title": "G-RRM: Guiding Symbolic Solvers with Recurrent Reasoning Models",
+      "citation": "Timo Bertram et al. (2026) G-RRM: Guiding Symbolic Solvers with Recurrent Reasoning Models arXiv:2607.02491v1",
+      "authors": [
+        "Timo Bertram"
+      ],
+      "year": "2026",
+      "venue": "arXiv",
+      "provider": "arxiv",
+      "url": "http://arxiv.org/abs/2607.02491v1",
+      "doi": "",
+      "method": "recurrent reasoning models",
+      "scenario": "constraint satisfaction problems",
+      "benchmark": "wall-clock speedup",
+      "credibility": 0.75,
+      "abstract": "In this work, we focus on SE-RRMs, a symbol-equivariant instantiation of RRMs that exhibits improved extrapolation to larger problem sizes. We propose a neuro-symbolic approach, ``Guiding with Recurrent Reasoning Models'' (G-RRM), which integrates SE-RRMs with symbolic solvers for constraint satisfaction problems. SE-RRMs act as neural solvers that generate full solution proposals and guide classical symbolic solvers, such as backtracking or SAT-based methods like Glucose 4.1 and CaDiCaL 3.0.0, that produce glob...",
+      "contribution": "delineates regimes in which neural guidance translates into practical speedups for symbolic solvers",
+      "limitation": "CaDiCaL 3.0.0 shows no significant speedup and even a small significant mean slowdown due to overhead-dominated runtime and inability to overwrite injected branching hints",
+      "strengths": [
+        "improved extrapolation to larger problem sizes",
+        "drives median conflict counts to zero",
+        "yields significant wall-clock speedups"
+      ],
+      "improvements": [
+        "solver architecture must support dynamic overwriting of branching choices",
+        "problem instances must have expansive combinatorial search space"
+      ],
+      "quality": {
+        "score": 1.0,
+        "unknown_ratio": 0.0,
+        "unknown_fields": [],
+        "abstract_chars": 1732,
+        "flags": [],
+        "needs_enrichment": false,
+        "needs_llm_retry": false,
+        "requires_human_review": false
+      }
+    },
+    {
+      "id": "paper_1783097402172012700",
+      "title": "Visually Grounded Self-Reflection for Vision-Language Models via Reinforcement Learning",
+      "citation": "Liyan Tang et al. (2026) Visually Grounded Self-Reflection for Vision-Language Models via Reinforcement Learning arXiv:2607.02490v1",
+      "authors": [
+        "Liyan Tang"
+      ],
+      "year": "2026",
+      "venue": "arXiv",
+      "provider": "arxiv",
+      "url": "http://arxiv.org/abs/2607.02490v1",
+      "doi": "",
+      "method": "reinforcement learning",
+      "scenario": "vision-language models",
+      "benchmark": "out-of-distribution accuracy",
+      "credibility": 0.75,
+      "abstract": "Large vision-language models can reason over multimodal inputs by generating textual chains of thought (CoT). A key capability exhibited in CoT reasoning is self-reflection: revisiting earlier decisions and correcting previous errors. However, existing LVLMs often fail to properly attend to visual inputs during reflection, limiting their ability to translate feedback into grounded corrections, especially for out-of-distribution images. To address this issue, we propose a novel reinforcement learning training fra...",
+      "contribution": "VRRL framework enabling visually grounded self-reflection through masked trajectory prefixes and buffered roll-ins from experience replay",
+      "limitation": "No explicit limitation extracted.",
+      "strengths": [
+        "Abstract: Large vision-language models can reason over multimodal inputs by generating textual chains of thought (CoT). A key capability exhibited in CoT reasoning is self-reflection: revisiting earlier decisions and correcting previous errors. However, existing LVLMs often fail to properly attend t...[truncated]"
+      ],
+      "improvements": [
+        "No explicit limitation extracted."
+      ],
+      "quality": {
+        "score": 1.0,
+        "unknown_ratio": 0.0,
+        "unknown_fields": [],
+        "abstract_chars": 1319,
+        "flags": [],
+        "needs_enrichment": false,
+        "needs_llm_retry": false,
+        "requires_human_review": false
+      }
+    },
+    {
+      "id": "paper_1783097419102989100",
+      "title": "Towards Robustness against Typographic Attack with Training-free Concept Localization",
+      "citation": "Bohan Liu et al. (2026) Towards Robustness against Typographic Attack with Training-free Concept Localization arXiv:2607.02494v1",
+      "authors": [
+        "Bohan Liu"
+      ],
+      "year": "2026",
+      "venue": "arXiv",
+      "provider": "arxiv",
+      "url": "http://arxiv.org/abs/2607.02494v1",
+      "doi": "",
+      "method": "sampling-based interpretability | probabilistic analysis | circuit mining",
+      "scenario": "Typographic Attack on CLIP-based vision encoders",
+      "benchmark": "Visual Question Answering accuracy on RIO-Bench",
+      "credibility": 0.75,
+      "abstract": "Models trained via Contrastive Language-Image Pretraining (CLIP) serve as the foundational vision encoders for most modern Large Vision Language Models (LVLMs). Despite their widespread adoption, CLIP models exhibit a critical yet underexplored failure mode: irrelevant text appearing within images confounds visual representations, biasing them toward lexical meaning rather than true visual semantics. This robustness issue, commonly described as a Typographic Attack (TA), exposes a vulnerability that poses a sign...",
+      "contribution": "A training-free mechanistic interpretability method that identifies and intervenes on ViT components encoding lexical information to improve robustness against Typographic Attacks.",
+      "limitation": "No explicit limitation extracted.",
+      "strengths": [
+        "training-free",
+        "mechanistic interpretability",
+        "generalizable across LVLMs"
+      ],
+      "improvements": [
+        "selective adjustment of attention weights",
+        "circuit-level intervention"
+      ],
+      "quality": {
+        "score": 1.0,
+        "unknown_ratio": 0.0,
+        "unknown_fields": [],
+        "abstract_chars": 1849,
+        "flags": [],
+        "needs_enrichment": false,
+        "needs_llm_retry": false,
+        "requires_human_review": false
+      }
+    },
+    {
+      "id": "paper_1783097436372222100",
+      "title": "Distributed Attacks in Persistent-State AI Control",
+      "citation": "Josh Hills et al. (2026) Distributed Attacks in Persistent-State AI Control arXiv:2607.02514v1",
+      "authors": [
+        "Josh Hills"
+      ],
+      "year": "2026",
+      "venue": "arXiv",
+      "provider": "arxiv",
+      "url": "http://arxiv.org/abs/2607.02514v1",
+      "doi": "",
+      "method": "Iterative VibeCoding",
+      "scenario": "AI control in persistent-state coding agents",
+      "benchmark": "evasion rate",
+      "credibility": 0.75,
+      "abstract": "As AI coding agents become more autonomous, they increasingly ship code iteratively, with the codebase persisting across sessions. This persistence creates a new attack surface: a misaligned or prompt-injected agent can distribute attacks across pull requests (PRs) and time its payload for the PR with the best natural cover. To study the resulting dynamics, we introduce Iterative VibeCoding, a setting for AI control, the study of safely deploying capable but potentially untrusted AI. In Iterative VibeCoding, a c...",
+      "contribution": "Identifies and characterizes distributed attacks across pull requests in persistent-state AI coding agents, and introduces a stateful link-tracker monitor effective against gradual attacks",
+      "limitation": "Abstract: As AI coding agents become more autonomous, they increasingly ship code iteratively, with the codebase persisting across sessions. This persistence creates a new attack surface: a misaligned or prompt-injected agent can distribute attacks across pull requests (PRs) and time its payload for...[truncated]",
+      "strengths": [
+        "High evasion generalizes across attack agent backends",
+        "Stateful link-tracker monitor outperforms diff monitors on gradual attacks",
+        "Four-monitor ensemble reduces gradual-attack evasion significantly"
+      ],
+      "improvements": [
+        "Defender cannot close both gradual and non-gradual attack vectors with a single monitor",
+        "Gap between gradual and non-gradual evasion widens for more capable models"
+      ],
+      "quality": {
+        "score": 1.0,
+        "unknown_ratio": 0.0,
+        "unknown_fields": [],
+        "abstract_chars": 1916,
+        "flags": [],
+        "needs_enrichment": false,
+        "needs_llm_retry": false,
+        "requires_human_review": false
+      }
+    },
+    {
+      "id": "paper_1783097451688692600",
+      "title": "DemoPSD: Disagreement-Modulated Policy Self-Distillation",
+      "citation": "Yunhe Li et al. (2026) DemoPSD: Disagreement-Modulated Policy Self-Distillation arXiv:2607.02502v1",
+      "authors": [
+        "Yunhe Li"
+      ],
+      "year": "2026",
+      "venue": "arXiv",
+      "provider": "arxiv",
+      "url": "http://arxiv.org/abs/2607.02502v1",
+      "doi": "",
+      "method": "reverse-KL barycenter target with disagreement-modulated adaptive blending",
+      "scenario": "on-policy self-distillation for large language models",
+      "benchmark": "generalization performance",
+      "credibility": 0.75,
+      "abstract": "On-policy self-distillation (OPSD) has emerged as a practical method for training large language models (LLMs) to reason, where a single model acts as both the teacher and the student with different levels of information access. However, recent studies have found that the teacher's dense token-level supervision, conditioned on privileged information, can lead to overfitting to in-domain patterns, suppress exploration, and hurt cross-domain generalization, while also introducing a more fundamental issue: *privile...",
+      "contribution": "DemoPSD mitigates privileged information leakage and preserves exploration capacity under dense token-level distillation via disagreement-modulated policy self-distillation.",
+      "limitation": "No explicit limitation extracted.",
+      "strengths": [
+        "leakage attenuation",
+        "exploration preservation"
+      ],
+      "improvements": [
+        "selective adoption of teacher guidance",
+        "adaptive blending via distribution discrepancy"
+      ],
+      "quality": {
+        "score": 1.0,
+        "unknown_ratio": 0.0,
+        "unknown_fields": [],
+        "abstract_chars": 1678,
+        "flags": [],
+        "needs_enrichment": false,
+        "needs_llm_retry": false,
+        "requires_human_review": false
+      }
+    },
+    {
+      "id": "paper_1783097468395091700",
+      "title": "Beyond Adam: SOAP and Muon for Faster, Label-Efficient Training of Machine Learning Interatomic Potentials",
+      "citation": "Gil Harari et al. (2026) Beyond Adam: SOAP and Muon for Faster, Label-Efficient Training of Machine Learning Interatomic Potentials arXiv:2607.02499v1",
+      "authors": [
+        "Gil Harari"
+      ],
+      "year": "2026",
+      "venue": "arXiv",
+      "provider": "arxiv",
+      "url": "http://arxiv.org/abs/2607.02499v1",
+      "doi": "",
+      "method": "matrix-structured optimization",
+      "scenario": "training machine learning interatomic potentials",
+      "benchmark": "convergence speed, final accuracy",
+      "credibility": 0.75,
+      "abstract": "Machine learning interatomic potentials (MLIPs) have become a hallmark of AI for scientific simulation. While efforts on new architectures and datasets have led to increasingly accurate and general models, the choice of optimizer for training has largely remained unexplored, defaulting to Adam and its variants in the community. Here, we implement and systematically compare a class of recently proposed matrix-structured optimizers, including Muon, SOAP, and the hybrid SOAP-Muon, for training NequIP and Allegro ML...",
+      "contribution": "Optimizer choice is an overlooked yet impactful design axis for MLIPs; SOAP and SOAP-Muon substantially outperform Adam in convergence speed and final accuracy, especially under partial force supervision.",
+      "limitation": "Abstract: Machine learning interatomic potentials (MLIPs) have become a hallmark of AI for scientific simulation. While efforts on new architectures and datasets have led to increasingly accurate and general models, the choice of optimizer for training has largely remained unexplored, defaulting to...[truncated]",
+      "strengths": [
+        "faster convergence",
+        "higher final accuracy",
+        "robustness under partial force supervision"
+      ],
+      "improvements": [
+        "adopt matrix-structured optimizers over Adam",
+        "explore optimizer choice as a key design axis for MLIPs"
+      ],
+      "quality": {
+        "score": 1.0,
+        "unknown_ratio": 0.0,
+        "unknown_fields": [],
+        "abstract_chars": 938,
+        "flags": [],
+        "needs_enrichment": false,
+        "needs_llm_retry": false,
+        "requires_human_review": false
+      }
+    },
+    {
+      "id": "paper_1783097484136397000",
+      "title": "Controllable Sim Agents with Behavior Latents",
+      "citation": "Juanwu Lu et al. (2026) Controllable Sim Agents with Behavior Latents arXiv:2607.02496v1",
+      "authors": [
+        "Juanwu Lu"
+      ],
+      "year": "2026",
+      "venue": "arXiv",
+      "provider": "arxiv",
+      "url": "http://arxiv.org/abs/2607.02496v1",
+      "doi": "",
+      "method": "agent workflow",
+      "scenario": "traffic simulation",
+      "benchmark": "realism on Waymo Open Motion Dataset",
+      "credibility": 0.75,
+      "abstract": "Realistic traffic simulation requires agents that imitate logged behavior and can also be steered along interpretable axes. Such controllability enables engineers to isolate variables, reproduce specific edge cases, and test autonomous systems without real-world risk. We introduce Controllable Neural Variational Agents (CNeVA), a controllable simulated-agent framework that learns to infer a per-agent Gaussian behavior latent from per-channel discounted returns via a closed-form conjugate variational update, cond...",
+      "contribution": "A controllable simulated-agent framework enabling interpretable, per-channel steering of agent behavior while maintaining physical plausibility and avoiding reward hacking",
+      "limitation": "Steering metrics must be read alongside physical-plausibility guardrails to avoid reward-hacking confounds",
+      "strengths": [
+        "per-channel controllability",
+        "monotone speed- and acceleration-based steering",
+        "monotone and substantial safety controllability",
+        "steerable map compliance under context-residual return measure"
+      ],
+      "improvements": [
+        "introduce soft eligibility gates to preserve gradient signal for near-threshold agents",
+        "use mixed channel-mask curriculum for classifier-free guidance",
+        "apply closed-form conjugate variational update for behavior latent inference"
+      ],
+      "quality": {
+        "score": 1.0,
+        "unknown_ratio": 0.0,
+        "unknown_fields": [],
+        "abstract_chars": 1447,
+        "flags": [],
+        "needs_enrichment": false,
+        "needs_llm_retry": false,
+        "requires_human_review": false
+      }
+    },
+    {
+      "id": "paper_1783097498422765900",
+      "title": "WorldDirector: Building Controllable World Simulators with Persistent Dynamic Memory",
+      "citation": "Hanlin Wang et al. (2026) WorldDirector: Building Controllable World Simulators with Persistent Dynamic Memory arXiv:2607.02517v1",
+      "authors": [
+        "Hanlin Wang"
+      ],
+      "year": "2026",
+      "venue": "arXiv",
+      "provider": "arxiv",
+      "url": "http://arxiv.org/abs/2607.02517v1",
+      "doi": "",
+      "method": "machine learning model",
+      "scenario": "video world modeling",
+      "benchmark": "our approach ensures strict physical logic and appearance stability",
+      "credibility": 0.75,
+      "abstract": "We present WorldDirector, a highly controllable video world model framework designed for persistent dynamic object memory and unrestricted viewpoint exploration. Unlike existing world models that entangle physical dynamics with pixel rendering and rely on continuous visual observation to sustain motion, our framework explicitly decouples semantic motion orchestration from visual generation. By leveraging an LLM to coordinate 3D trajectories with camera movements and subsequently employing these orchestrated traj...",
+      "contribution": "Explicit decoupling of semantic motion orchestration from visual generation to enable persistent dynamic object memory and unrestricted viewpoint exploration in video world models",
+      "limitation": "No explicit limitation extracted.",
+      "strengths": [],
+      "improvements": [
+        "No explicit limitation extracted."
+      ],
+      "quality": {
+        "score": 1.0,
+        "unknown_ratio": 0.0,
+        "unknown_fields": [],
+        "abstract_chars": 1001,
+        "flags": [],
+        "needs_enrichment": false,
+        "needs_llm_retry": false,
+        "requires_human_review": false
+      }
+    },
+    {
+      "id": "paper_1783097511659181500",
+      "title": "From Automation to Autonomy: A Survey on Large Language Models in Scientific Discovery",
+      "citation": "Tianshi ZHENG et al. (2025) From Automation to Autonomy: A Survey on Large Language Models in Scientific Discovery doi:10.48550/arXiv.2505.13259",
+      "authors": [
+        "Tianshi ZHENG"
+      ],
+      "year": "2025",
+      "venue": "Conference on Empirical Methods in Natural Language Processing",
+      "provider": "semantic_scholar",
+      "url": "https://www.semanticscholar.org/paper/591f5644aede42a2447e48eedb112c70e80089af",
+      "doi": "10.48550/arXiv.2505.13259",
+      "method": "survey",
+      "scenario": "large language models in scientific discovery",
+      "benchmark": "benchmark dataset",
+      "credibility": 0.95,
+      "abstract": "Large Language Models (LLMs) are catalyzing a paradigm shift in scientific discovery, evolving from task-specific automation tools into increasingly autonomous agents and fundamentally redefining research processes and human-AI collaboration. This survey systematically charts this burgeoning field, placing a central focus on the changing roles and escalating capabilities of LLMs in science. Through the lens of the scientific method, we introduce a foundational three-level taxonomy-Tool, Analyst, and Scientist-to...",
+      "contribution": "introduces a three-level taxonomy (Tool, Analyst, Scientist) to characterize escalating autonomy of LLMs in the scientific research lifecycle",
+      "limitation": "Abstract: Large Language Models (LLMs) are catalyzing a paradigm shift in scientific discovery, evolving from task-specific automation tools into increasingly autonomous agents and fundamentally redefining research processes and human-AI collaboration. This survey systematically charts this burgeoni...[truncated]",
+      "strengths": [
+        "Abstract: Large Language Models (LLMs) are catalyzing a paradigm shift in scientific discovery, evolving from task-specific automation tools into increasingly autonomous agents and fundamentally redefining research processes and human-AI collaboration. This survey systematically charts this burgeoni...[truncated]"
+      ],
+      "improvements": [
+        "Abstract: Large Language Models (LLMs) are catalyzing a paradigm shift in scientific discovery, evolving from task-specific automation tools into increasingly autonomous agents and fundamentally redefining research processes and human-AI collaboration. This survey systematically charts this burgeoni...[truncated]"
+      ],
+      "quality": {
+        "score": 1.0,
+        "unknown_ratio": 0.0,
+        "unknown_fields": [],
+        "abstract_chars": 1052,
+        "flags": [],
+        "needs_enrichment": false,
+        "needs_llm_retry": false,
+        "requires_human_review": false,
+        "initial": {
+          "score": 0.76,
+          "unknown_ratio": 0.333,
+          "unknown_fields": [
+            "benchmark"
+          ],
+          "abstract_chars": 1052,
+          "flags": [
+            "unknown_fields",
+            "missing_benchmark"
+          ],
+          "needs_enrichment": false,
+          "needs_llm_retry": true,
+          "requires_human_review": false
+        },
+        "llm_retry": {
+          "attempted": true,
+          "succeeded": true,
+          "error": "",
+          "extractor": "qwen_json"
+        }
+      }
+    },
+    {
+      "id": "paper_1783097525457882400",
+      "title": "Toward self-driving laboratory 2.0 for chemistry and materials discovery.",
+      "citation": "Heeseung Lee et al. (2026) Toward self-driving laboratory 2.0 for chemistry and materials discovery. doi:10.1039/d5mh01984b",
+      "authors": [
+        "Heeseung Lee"
+      ],
+      "year": "2026",
+      "venue": "Materials Horizons",
+      "provider": "semantic_scholar",
+      "url": "https://www.semanticscholar.org/paper/dd06f9d0459da9d8166a2be24a2aaf6a1d108c2b",
+      "doi": "10.1039/d5mh01984b",
+      "method": "Bayesian optimization, computer vision, large language models",
+      "scenario": "chemistry and materials science",
+      "benchmark": "protein binding affinity",
+      "credibility": 1.0,
+      "abstract": "The convergence of laboratory automation, artificial intelligence (AI), and data-driven science has catalyzed the emergence of self-driving laboratories (SDLs), autonomous platforms capable of designing, executing, and analyzing experiments with minimal human input. While early SDLs (SDL 1.0) demonstrated the feasibility of closed-loop discovery, their impact has been constrained by limited scope, poor interoperability, and reliance on human-curated heuristics. This review outlines the vision of SDL 2.0: a new g...",
+      "contribution": "Proposes six defining characteristics for SDL 2.0: interoperable, collaborative, generalizable, orchestrated, safe, and creative",
+      "limitation": "No explicit limitation extracted.",
+      "strengths": [],
+      "improvements": [
+        "No explicit limitation extracted."
+      ],
+      "quality": {
+        "score": 1.0,
+        "unknown_ratio": 0.0,
+        "unknown_fields": [],
+        "abstract_chars": 1486,
+        "flags": [],
+        "needs_enrichment": false,
+        "needs_llm_retry": false,
+        "requires_human_review": false
+      }
+    },
+    {
+      "id": "paper_1783097543843677900",
+      "title": "Foundation Artificial Intelligence Models in Animal Biotechnology: From Protein Structure Prediction to Genomic Language Models and Autonomous Laboratory Systems",
+      "citation": "A. Zhernakova et al. (2026) Foundation Artificial Intelligence Models in Animal Biotechnology: From Protein Structure Prediction to Genomic Language Models and Autonomous Laboratory Systems doi:10.14741/ijab/v.16.1.1",
+      "authors": [
+        "A. Zhernakova"
+      ],
+      "year": "2026",
+      "venue": "International journal of animal biotechnology",
+      "provider": "semantic_scholar",
+      "url": "https://www.semanticscholar.org/paper/f475462fd319f797322f509fcffdf1efd0007d22",
+      "doi": "10.14741/ijab/v.16.1.1",
+      "method": "foundation AI models",
+      "scenario": "animal biotechnology",
+      "benchmark": "gene expression",
+      "credibility": 0.95,
+      "abstract": "Foundation artificial intelligence models — large neural networks pre- trained on vast, diverse biological datasets that can be fine- tuned or prompted for a wide range of downstream tasks — are transforming the pace and scope of discovery and application across all domains of biological science. In the period 2021–2026, the introduction of AlphaFold2, AlphaFold3, ESM-2, the Evo genomic language model, the Nucleotide Transformer, and numerous protein design models (RFdiffusion, Genie2, ProteinMPNN) has provided...",
+      "contribution": "review of transformative impact of foundation AI models on animal biotechnology, especially in livestock species",
+      "limitation": "training data for livestock species remain substantially less abundant than for human biomedical applications",
+      "strengths": [],
+      "improvements": [
+        "Abstract: Foundation artificial intelligence models — large neural networks pre- trained on vast, diverse biological datasets that can be fine- tuned or prompted for a wide range of downstream tasks — are transforming the pace and scope of discovery and application across all domains of biological s...[truncated]"
+      ],
+      "quality": {
+        "score": 1.0,
+        "unknown_ratio": 0.0,
+        "unknown_fields": [],
+        "abstract_chars": 2239,
+        "flags": [],
+        "needs_enrichment": false,
+        "needs_llm_retry": false,
+        "requires_human_review": false
+      }
+    },
+    {
+      "id": "paper_1783097559414892800",
+      "title": "SCP: Accelerating Discovery with a Global Web of Autonomous Scientific Agents",
+      "citation": "Yankai Jiang et al. (2025) SCP: Accelerating Discovery with a Global Web of Autonomous Scientific Agents doi:10.48550/arXiv.2512.24189",
+      "authors": [
+        "Yankai Jiang"
+      ],
+      "year": "2025",
+      "venue": "arXiv.org",
+      "provider": "semantic_scholar",
+      "url": "https://www.semanticscholar.org/paper/7fe7c83eaadad40d8eb5a446cfbd77b0efd52693",
+      "doi": "10.48550/arXiv.2512.24189",
+      "method": "Science Context Protocol (SCP)",
+      "scenario": "autonomous scientific agents",
+      "benchmark": "integration overhead",
+      "credibility": 0.95,
+      "abstract": "We introduce SCP: the Science Context Protocol, an open-source standard designed to accelerate discovery by enabling a global network of autonomous scientific agents. SCP is built on two foundational pillars: (1) Unified Resource Integration: At its core, SCP provides a universal specification for describing and invoking scientific resources, spanning software tools, models, datasets, and physical instruments. This protocol-level standardization enables AI agents and applications to discover, call, and compose c...",
+      "contribution": "protocol-level standardization for scientific resource description, invocation, and experiment lifecycle management enabling scalable, multi-institution, agent-driven science",
+      "limitation": "No explicit limitation extracted.",
+      "strengths": [
+        "enables seamless discovery and composition of scientific resources across platforms",
+        "supports traceable, end-to-end workflows bridging computational and physical labs",
+        "reduces integration overhead and enhances reproducibility"
+      ],
+      "improvements": [
+        "extend protocol support to additional instrument classes",
+        "improve cross-domain interoperability with legacy scientific software"
+      ],
+      "quality": {
+        "score": 1.0,
+        "unknown_ratio": 0.0,
+        "unknown_fields": [],
+        "abstract_chars": 1607,
+        "flags": [],
+        "needs_enrichment": false,
+        "needs_llm_retry": false,
+        "requires_human_review": false
+      }
+    },
+    {
+      "id": "paper_1783097573589177000",
+      "title": "Perspective on Utilizing Foundation Models for Laboratory Automation in Materials Research",
+      "citation": "Kan Hatakeyama-Sato et al. (2025) Perspective on Utilizing Foundation Models for Laboratory Automation in Materials Research arXiv:2506.12312v1",
+      "authors": [
+        "Kan Hatakeyama-Sato"
+      ],
+      "year": "2025",
+      "venue": "arXiv",
+      "provider": "arxiv",
+      "url": "http://arxiv.org/abs/2506.12312v1",
+      "doi": "",
+      "method": "foundation models",
+      "scenario": "laboratory automation in materials and chemical sciences",
+      "benchmark": "operational safety",
+      "credibility": 0.75,
+      "abstract": "This review explores the potential of foundation models to advance laboratory automation in the materials and chemical sciences. It emphasizes the dual roles of these models: cognitive functions for experimental planning and data analysis, and physical functions for hardware operations. While traditional laboratory automation has relied heavily on specialized, rigid systems, foundation models offer adaptability through their general-purpose intelligence and multimodal capabilities. Recent advancements have demon...",
+      "contribution": "outlines a roadmap for realizing fully autonomous experimental laboratories through interdisciplinary collaboration, benchmark establishment, and human-AI integration",
+      "limitation": "precision manipulation of hardware, integration of multimodal data, and ensuring operational safety",
+      "strengths": [],
+      "improvements": [
+        "Abstract: This review explores the potential of foundation models to advance laboratory automation in the materials and chemical sciences. It emphasizes the dual roles of these models: cognitive functions for experimental planning and data analysis, and physical functions for hardware operations. Wh...[truncated]"
+      ],
+      "quality": {
+        "score": 1.0,
+        "unknown_ratio": 0.0,
+        "unknown_fields": [],
+        "abstract_chars": 1039,
+        "flags": [],
+        "needs_enrichment": false,
+        "needs_llm_retry": false,
+        "requires_human_review": false
+      }
+    }
+  ],
+  "triples": [
+    {
+      "method": "survey",
+      "scenario": "autonomous scientific discovery",
+      "benchmark": "benchmark dataset",
+      "references": [
+        "Jiaqi Wei et al. (2025) From AI for Science to Agentic Science: A Survey on Autonomous Scientific Discovery arXiv:2508.14111v2"
+      ],
+      "evidenceTypes": [
+        {
+          "claim_type": "methodological_description",
+          "claim": "survey",
+          "support": "structured_field"
+        },
+        {
+          "claim_type": "empirical_result",
+          "claim": "unification of process-oriented, autonomy-oriented, and mechanism-oriented perspectives into a comprehensive framework for Agentic Science; domain-oriented synthesis across life sciences, chemistry, materials science, and physics",
+          "support": "structured_field"
+        },
+        {
+          "claim_type": "author_opinion",
+          "claim": "Abstract: Artificial intelligence (AI) is reshaping scientific discovery, evolving from specialized computational tools into autonomous research partners. We position Agentic Science as a pivotal stage within the broader AI for Science paradigm, where AI systems progress from partial assistance to f...[truncated]",
+          "support": "structured_field"
+        },
+        {
+          "claim_type": "theoretical_claim",
+          "claim": "Full text excerpt:",
+          "support": "structured_field"
+        },
+        {
+          "claim_type": "empirical_result",
+          "claim": "Enabled by large language models (LLMs), multimodal systems, and integrated research platforms, agentic AI shows capabilities in hypothesis generation, experimental design, execution, analysis, and iterative refinement -- behaviors once regarded as uniquely human.",
+          "support": "source_sentence"
+        },
+        {
+          "claim_type": "methodological_description",
+          "claim": "We unify three previously fragmented perspectives -- process-oriented, autonomy-oriented, and mechanism-oriented -- through a comprehensive framework that connects foundational capabilities, core processes, and domain-specific realizations.",
+          "support": "source_sentence"
+        },
+        {
+          "claim_type": "methodological_description",
+          "claim": "Building on this framework, we (i) trace the evolution of AI for Science, (ii) identify five core capabilities underpinning scientific agency, (iii) model discovery as a dynamic four-stage workflow, (iv) review applications across the above domains, and (v) synthesize key challenges and future oppor...[truncated]",
+          "support": "source_sentence"
+        },
+        {
+          "claim_type": "methodological_description",
+          "claim": "Full text excerpt: unification of process-oriented, autonomy-oriented, and mechanism-oriented perspectives into a comprehensive framework for Agentic Science; domain-oriented synthesis across life sciences, chemistry, materials science, and physics Abstract: Artificial intelligence (AI) is reshaping...[truncated]",
+          "support": "source_sentence"
+        }
+      ]
+    },
+    {
+      "method": "C++ inference runtime",
+      "scenario": "embodied AI models on heterogeneous robots",
+      "benchmark": "[\"task success rate\", \"block memory\"]",
+      "references": [
+        "Ling Xu et al. (2026) Embodied.cpp: A Portable Inference Runtime of Embodied AI Models on Heterogeneous Robots arXiv:2607.02501v1"
+      ],
+      "evidenceTypes": [
+        {
+          "claim_type": "methodological_description",
+          "claim": "C++ inference runtime",
+          "support": "structured_field"
+        },
+        {
+          "claim_type": "empirical_result",
+          "claim": "A portable C++ inference runtime that enables deployment of vision-language-action and world-action models across heterogeneous robots and simulators via a unified backend abstraction.",
+          "support": "structured_field"
+        },
+        {
+          "claim_type": "author_opinion",
+          "claim": "Abstract: Embodied AI models now span vision-language-action (VLA) models and world-action models (WAMs), but practical deployment remains fragmented across model-specific Python stacks, backend assumptions, and robot-side glue code, especially on heterogeneous edge devices. Existing inference runti...[truncated]",
+          "support": "structured_field"
+        },
+        {
+          "claim_type": "theoretical_claim",
+          "claim": "Full text excerpt:",
+          "support": "structured_field"
+        },
+        {
+          "claim_type": "empirical_result",
+          "claim": "These results show that Embodied.cpp improves deployment efficiency while preserving high accuracy across diverse embodied model architectures.",
+          "support": "source_sentence"
+        }
+      ]
+    },
+    {
+      "method": "recurrent reasoning models",
+      "scenario": "constraint satisfaction problems",
+      "benchmark": "wall-clock speedup",
+      "references": [
+        "Timo Bertram et al. (2026) G-RRM: Guiding Symbolic Solvers with Recurrent Reasoning Models arXiv:2607.02491v1"
+      ],
+      "evidenceTypes": [
+        {
+          "claim_type": "methodological_description",
+          "claim": "recurrent reasoning models",
+          "support": "structured_field"
+        },
+        {
+          "claim_type": "empirical_result",
+          "claim": "delineates regimes in which neural guidance translates into practical speedups for symbolic solvers",
+          "support": "structured_field"
+        },
+        {
+          "claim_type": "author_opinion",
+          "claim": "CaDiCaL 3.0.0 shows no significant speedup and even a small significant mean slowdown due to overhead-dominated runtime and inability to overwrite injected branching hints",
+          "support": "structured_field"
+        },
+        {
+          "claim_type": "theoretical_claim",
+          "claim": "Full text excerpt:",
+          "support": "structured_field"
+        },
+        {
+          "claim_type": "theoretical_claim",
+          "claim": "In this work, we focus on SE-RRMs, a symbol-equivariant instantiation of RRMs that exhibits improved extrapolation to larger problem sizes.",
+          "support": "source_sentence"
+        },
+        {
+          "claim_type": "methodological_description",
+          "claim": "We propose a neuro-symbolic approach, ``Guiding with Recurrent Reasoning Models'' (G-RRM), which integrates SE-RRMs with symbolic solvers for constraint satisfaction problems.",
+          "support": "source_sentence"
+        },
+        {
+          "claim_type": "methodological_description",
+          "claim": "SE-RRMs act as neural solvers that generate full solution proposals and guide classical symbolic solvers, such as backtracking or SAT-based methods like Glucose 4.1 and CaDiCaL 3.0.0, that produce globally correct solutions.",
+          "support": "source_sentence"
+        },
+        {
+          "claim_type": "theoretical_claim",
+          "claim": "Centrally, we investigate when neural guidance with G-RRM improves the search efficiency of symbolic solvers.",
+          "support": "source_sentence"
+        },
+        {
+          "claim_type": "empirical_result",
+          "claim": "% Our experiments show that the efficacy of G-RRM depends on two conditions: first, the problem instances must have an expansive combinatorial search space to expose potential gains, and second, the solver architecture must be capable of dynamically overwriting its branching choices to recover when...[truncated]",
+          "support": "source_sentence"
+        },
+        {
+          "claim_type": "empirical_result",
+          "claim": "These results delineate the regimes in which neural guidance translates into practical speedups.",
+          "support": "source_sentence"
+        }
+      ]
+    },
+    {
+      "method": "reinforcement learning",
+      "scenario": "vision-language models",
+      "benchmark": "out-of-distribution accuracy",
+      "references": [
+        "Liyan Tang et al. (2026) Visually Grounded Self-Reflection for Vision-Language Models via Reinforcement Learning arXiv:2607.02490v1"
+      ],
+      "evidenceTypes": [
+        {
+          "claim_type": "methodological_description",
+          "claim": "reinforcement learning",
+          "support": "structured_field"
+        },
+        {
+          "claim_type": "empirical_result",
+          "claim": "VRRL framework enabling visually grounded self-reflection through masked trajectory prefixes and buffered roll-ins from experience replay",
+          "support": "structured_field"
+        },
+        {
+          "claim_type": "author_opinion",
+          "claim": "No explicit limitation extracted.",
+          "support": "structured_field"
+        },
+        {
+          "claim_type": "theoretical_claim",
+          "claim": "Full text excerpt:",
+          "support": "structured_field"
+        },
+        {
+          "claim_type": "methodological_description",
+          "claim": "To address this issue, we propose a novel reinforcement learning training framework VRRL, with two components explicitly designed to elicit visually grounded self-reflection.",
+          "support": "source_sentence"
+        },
+        {
+          "claim_type": "methodological_description",
+          "claim": "We evaluate our approach on visual grounding tasks involving tables and charts, as well as spatial navigation benchmarks.",
+          "support": "source_sentence"
+        },
+        {
+          "claim_type": "empirical_result",
+          "claim": "While off-the-shelf and conventionally fine-tuned models degrade substantially under distribution shift, our method substantially improves average out-of-distribution accuracy over standard RL and reflection-oriented fine-tuning baselines by using self-reflection effectively.",
+          "support": "source_sentence"
+        },
+        {
+          "claim_type": "methodological_description",
+          "claim": "Full text excerpt: VRRL framework enabling visually grounded self-reflection through masked trajectory prefixes and buffered roll-ins from experience replay No explicit limitation extracted.",
+          "support": "source_sentence"
+        }
+      ]
+    },
+    {
+      "method": "sampling-based interpretability | probabilistic analysis | circuit mining",
+      "scenario": "Typographic Attack on CLIP-based vision encoders",
+      "benchmark": "Visual Question Answering accuracy on RIO-Bench",
+      "references": [
+        "Bohan Liu et al. (2026) Towards Robustness against Typographic Attack with Training-free Concept Localization arXiv:2607.02494v1"
+      ],
+      "evidenceTypes": [
+        {
+          "claim_type": "methodological_description",
+          "claim": "sampling-based interpretability | probabilistic analysis | circuit mining",
+          "support": "structured_field"
+        },
+        {
+          "claim_type": "empirical_result",
+          "claim": "A training-free mechanistic interpretability method that identifies and intervenes on ViT components encoding lexical information to improve robustness against Typographic Attacks.",
+          "support": "structured_field"
+        },
+        {
+          "claim_type": "author_opinion",
+          "claim": "No explicit limitation extracted.",
+          "support": "structured_field"
+        },
+        {
+          "claim_type": "theoretical_claim",
+          "claim": "Full text excerpt:",
+          "support": "structured_field"
+        },
+        {
+          "claim_type": "methodological_description",
+          "claim": "To achieve interpretable and effective robustness against TA, we propose a novel, training-free mechanistic interpretability method.",
+          "support": "source_sentence"
+        },
+        {
+          "claim_type": "methodological_description",
+          "claim": "Our method provides sampling-based interpretations of hidden state representations and quantitatively attributes semantic versus lexical focus to individual attention heads.",
+          "support": "source_sentence"
+        },
+        {
+          "claim_type": "theoretical_claim",
+          "claim": "We further show that simple interventions applied directly to the identified circuits, without any additional training, can substantially improve robustness against Typographic Attacks in object classification.",
+          "support": "source_sentence"
+        },
+        {
+          "claim_type": "empirical_result",
+          "claim": "These interventions, such as selective adjustment of attention weights, also outperform both supervised and training-free defense methods.",
+          "support": "source_sentence"
+        },
+        {
+          "claim_type": "empirical_result",
+          "claim": "Our experiments demonstrate that applying the proposed intervention to the vision encoders of several state-of-the-art LVLMs yields substantial gains in Visual Question Answering accuracy under Typographic Attack interference on RIO-Bench.",
+          "support": "source_sentence"
+        },
+        {
+          "claim_type": "empirical_result",
+          "claim": "These results confirm both the efficacy and the generalizability of our mechanistic approach.",
+          "support": "source_sentence"
+        },
+        {
+          "claim_type": "theoretical_claim",
+          "claim": "Full text excerpt: A training-free mechanistic interpretability method that identifies and intervenes on ViT components encoding lexical information to improve robustness against Typographic Attacks.",
+          "support": "source_sentence"
+        }
+      ]
+    },
+    {
+      "method": "Iterative VibeCoding",
+      "scenario": "AI control in persistent-state coding agents",
+      "benchmark": "evasion rate",
+      "references": [
+        "Josh Hills et al. (2026) Distributed Attacks in Persistent-State AI Control arXiv:2607.02514v1"
+      ],
+      "evidenceTypes": [
+        {
+          "claim_type": "methodological_description",
+          "claim": "Iterative VibeCoding",
+          "support": "structured_field"
+        },
+        {
+          "claim_type": "empirical_result",
+          "claim": "Identifies and characterizes distributed attacks across pull requests in persistent-state AI coding agents, and introduces a stateful link-tracker monitor effective against gradual attacks",
+          "support": "structured_field"
+        },
+        {
+          "claim_type": "author_opinion",
+          "claim": "Abstract: As AI coding agents become more autonomous, they increasingly ship code iteratively, with the codebase persisting across sessions. This persistence creates a new attack surface: a misaligned or prompt-injected agent can distribute attacks across pull requests (PRs) and time its payload for...[truncated]",
+          "support": "structured_field"
+        },
+        {
+          "claim_type": "theoretical_claim",
+          "claim": "Full text excerpt:",
+          "support": "structured_field"
+        },
+        {
+          "claim_type": "empirical_result",
+          "claim": "To study the resulting dynamics, we introduce Iterative VibeCoding, a setting for AI control, the study of safely deploying capable but potentially untrusted AI.",
+          "support": "source_sentence"
+        }
+      ]
+    },
+    {
+      "method": "reverse-KL barycenter target with disagreement-modulated adaptive blending",
+      "scenario": "on-policy self-distillation for large language models",
+      "benchmark": "generalization performance",
+      "references": [
+        "Yunhe Li et al. (2026) DemoPSD: Disagreement-Modulated Policy Self-Distillation arXiv:2607.02502v1"
+      ],
+      "evidenceTypes": [
+        {
+          "claim_type": "methodological_description",
+          "claim": "reverse-KL barycenter target with disagreement-modulated adaptive blending",
+          "support": "structured_field"
+        },
+        {
+          "claim_type": "empirical_result",
+          "claim": "DemoPSD mitigates privileged information leakage and preserves exploration capacity under dense token-level distillation via disagreement-modulated policy self-distillation.",
+          "support": "structured_field"
+        },
+        {
+          "claim_type": "author_opinion",
+          "claim": "No explicit limitation extracted.",
+          "support": "structured_field"
+        },
+        {
+          "claim_type": "theoretical_claim",
+          "claim": "Full text excerpt:",
+          "support": "structured_field"
+        },
+        {
+          "claim_type": "methodological_description",
+          "claim": "On-policy self-distillation (OPSD) has emerged as a practical method for training large language models (LLMs) to reason, where a single model acts as both the teacher and the student with different levels of information access.",
+          "support": "source_sentence"
+        },
+        {
+          "claim_type": "methodological_description",
+          "claim": "We introduce **DemoPSD**, a novel framework that resolves such problems through the idea of *selective adoption of teacher guidance*.",
+          "support": "source_sentence"
+        },
+        {
+          "claim_type": "empirical_result",
+          "claim": "Extensive experiments on SciKnowEval across four scientific fields show that DemoPSD outperforms both GRPO and SDPO while maintaining higher training entropy and robustly generalizing to out-of-distribution GPQA benchmarks.",
+          "support": "source_sentence"
+        }
+      ]
+    },
+    {
+      "method": "matrix-structured optimization",
+      "scenario": "training machine learning interatomic potentials",
+      "benchmark": "convergence speed, final accuracy",
+      "references": [
+        "Gil Harari et al. (2026) Beyond Adam: SOAP and Muon for Faster, Label-Efficient Training of Machine Learning Interatomic Potentials arXiv:2607.02499v1"
+      ],
+      "evidenceTypes": [
+        {
+          "claim_type": "methodological_description",
+          "claim": "matrix-structured optimization",
+          "support": "structured_field"
+        },
+        {
+          "claim_type": "empirical_result",
+          "claim": "Optimizer choice is an overlooked yet impactful design axis for MLIPs; SOAP and SOAP-Muon substantially outperform Adam in convergence speed and final accuracy, especially under partial force supervision.",
+          "support": "structured_field"
+        },
+        {
+          "claim_type": "author_opinion",
+          "claim": "Abstract: Machine learning interatomic potentials (MLIPs) have become a hallmark of AI for scientific simulation. While efforts on new architectures and datasets have led to increasingly accurate and general models, the choice of optimizer for training has largely remained unexplored, defaulting to....[truncated]",
+          "support": "structured_field"
+        },
+        {
+          "claim_type": "theoretical_claim",
+          "claim": "Full text excerpt:",
+          "support": "structured_field"
+        },
+        {
+          "claim_type": "empirical_result",
+          "claim": "We find that these optimizers can substantially outperform Adam in both convergence speed and final accuracy.",
+          "support": "source_sentence"
+        },
+        {
+          "claim_type": "methodological_description",
+          "claim": "SOAP and SOAP-Muon emerge as robust and consistently strong methods, while Muon only provides partial gains relative to Adam.",
+          "support": "source_sentence"
+        },
+        {
+          "claim_type": "theoretical_claim",
+          "claim": "The improvements are particularly pronounced under partial force supervision.",
+          "support": "source_sentence"
+        },
+        {
+          "claim_type": "empirical_result",
+          "claim": "Our results indicate that optimizer choice is an overlooked yet impactful design axis for MLIPs.",
+          "support": "source_sentence"
+        },
+        {
+          "claim_type": "empirical_result",
+          "claim": "Full text excerpt: Optimizer choice is an overlooked yet impactful design axis for MLIPs; SOAP and SOAP-Muon substantially outperform Adam in convergence speed and final accuracy, especially under partial force supervision.",
+          "support": "source_sentence"
+        }
+      ]
+    },
+    {
+      "method": "agent workflow",
+      "scenario": "traffic simulation",
+      "benchmark": "realism on Waymo Open Motion Dataset",
+      "references": [
+        "Juanwu Lu et al. (2026) Controllable Sim Agents with Behavior Latents arXiv:2607.02496v1"
+      ],
+      "evidenceTypes": [
+        {
+          "claim_type": "methodological_description",
+          "claim": "agent workflow",
+          "support": "structured_field"
+        },
+        {
+          "claim_type": "empirical_result",
+          "claim": "A controllable simulated-agent framework enabling interpretable, per-channel steering of agent behavior while maintaining physical plausibility and avoiding reward hacking",
+          "support": "structured_field"
+        },
+        {
+          "claim_type": "author_opinion",
+          "claim": "Steering metrics must be read alongside physical-plausibility guardrails to avoid reward-hacking confounds",
+          "support": "structured_field"
+        },
+        {
+          "claim_type": "theoretical_claim",
+          "claim": "Full text excerpt:",
+          "support": "structured_field"
+        },
+        {
+          "claim_type": "methodological_description",
+          "claim": "We introduce Controllable Neural Variational Agents (CNeVA), a controllable simulated-agent framework that learns to infer a per-agent Gaussian behavior latent from per-channel discounted returns via a closed-form conjugate variational update, conditioning a rectified-flow trajectory generator train...[truncated]",
+          "support": "source_sentence"
+        },
+        {
+          "claim_type": "methodological_description",
+          "claim": "To tackle scarcity in reward signals, we propose soft eligibility gates that replace hard binary thresholds with smooth exponential decay, preserving the gradient signal for near-threshold agents.",
+          "support": "source_sentence"
+        },
+        {
+          "claim_type": "empirical_result",
+          "claim": "Furthermore, our experiment demonstrates that steering metrics must be read alongside physical-plausibility guardrails to avoid reward-hacking confounds.",
+          "support": "source_sentence"
+        },
+        {
+          "claim_type": "methodological_description",
+          "claim": "Full text excerpt: A controllable simulated-agent framework enabling interpretable, per-channel steering of agent behavior while maintaining physical plausibility and avoiding reward hacking Steering metrics must be read alongside physical-plausibility guardrails to avoid reward-hacking confounds",
+          "support": "source_sentence"
+        }
+      ]
+    },
+    {
+      "method": "machine learning model",
+      "scenario": "video world modeling",
+      "benchmark": "our approach ensures strict physical logic and appearance stability",
+      "references": [
+        "Hanlin Wang et al. (2026) WorldDirector: Building Controllable World Simulators with Persistent Dynamic Memory arXiv:2607.02517v1"
+      ],
+      "evidenceTypes": [
+        {
+          "claim_type": "methodological_description",
+          "claim": "machine learning model",
+          "support": "structured_field"
+        },
+        {
+          "claim_type": "empirical_result",
+          "claim": "Explicit decoupling of semantic motion orchestration from visual generation to enable persistent dynamic object memory and unrestricted viewpoint exploration in video world models",
+          "support": "structured_field"
+        },
+        {
+          "claim_type": "author_opinion",
+          "claim": "No explicit limitation extracted.",
+          "support": "structured_field"
+        },
+        {
+          "claim_type": "theoretical_claim",
+          "claim": "Full text excerpt:",
+          "support": "structured_field"
+        },
+        {
+          "claim_type": "methodological_description",
+          "claim": "We present WorldDirector, a highly controllable video world model framework designed for persistent dynamic object memory and unrestricted viewpoint exploration.",
+          "support": "source_sentence"
+        },
+        {
+          "claim_type": "methodological_description",
+          "claim": "Unlike existing world models that entangle physical dynamics with pixel rendering and rely on continuous visual observation to sustain motion, our framework explicitly decouples semantic motion orchestration from visual generation.",
+          "support": "source_sentence"
+        },
+        {
+          "claim_type": "methodological_description",
+          "claim": "By leveraging an LLM to coordinate 3D trajectories with camera movements and subsequently employing these orchestrated trajectories as control signals for video generation, our approach ensures strict physical logic and appearance stability, successfully preserving the exact visual identities of dyn...[truncated]",
+          "support": "source_sentence"
+        },
+        {
+          "claim_type": "empirical_result",
+          "claim": "Experimental results demonstrate that our method supports the synthesis of complex and extended events with unprecedented controllability and persistent dynamic object memory.",
+          "support": "source_sentence"
+        },
+        {
+          "claim_type": "author_opinion",
+          "claim": "Project Page: https://worlddirector.github.io/ Full text excerpt: Explicit decoupling of semantic motion orchestration from visual generation to enable persistent dynamic object memory and unrestricted viewpoint exploration in video world models No explicit limitation extracted.",
+          "support": "source_sentence"
+        }
+      ]
+    },
+    {
+      "method": "survey",
+      "scenario": "large language models in scientific discovery",
+      "benchmark": "benchmark dataset",
+      "references": [
+        "Tianshi ZHENG et al. (2025) From Automation to Autonomy: A Survey on Large Language Models in Scientific Discovery doi:10.48550/arXiv.2505.13259"
+      ],
+      "evidenceTypes": [
+        {
+          "claim_type": "methodological_description",
+          "claim": "survey",
+          "support": "structured_field"
+        },
+        {
+          "claim_type": "empirical_result",
+          "claim": "introduces a three-level taxonomy (Tool, Analyst, Scientist) to characterize escalating autonomy of LLMs in the scientific research lifecycle",
+          "support": "structured_field"
+        },
+        {
+          "claim_type": "author_opinion",
+          "claim": "Abstract: Large Language Models (LLMs) are catalyzing a paradigm shift in scientific discovery, evolving from task-specific automation tools into increasingly autonomous agents and fundamentally redefining research processes and human-AI collaboration. This survey systematically charts this burgeoni...[truncated]",
+          "support": "structured_field"
+        },
+        {
+          "claim_type": "theoretical_claim",
+          "claim": "Full text excerpt:",
+          "support": "structured_field"
+        },
+        {
+          "claim_type": "methodological_description",
+          "claim": "Through the lens of the scientific method, we introduce a foundational three-level taxonomy-Tool, Analyst, and Scientist-to delineate their escalating autonomy and evolving responsibilities within the research lifecycle.",
+          "support": "source_sentence"
+        },
+        {
+          "claim_type": "theoretical_claim",
+          "claim": "We further identify pivotal challenges and future research trajectories such as robotic automation, self-improvement, and ethical governance.",
+          "support": "source_sentence"
+        }
+      ]
+    },
+    {
+      "method": "Bayesian optimization, computer vision, large language models",
+      "scenario": "chemistry and materials science",
+      "benchmark": "protein binding affinity",
+      "references": [
+        "Heeseung Lee et al. (2026) Toward self-driving laboratory 2.0 for chemistry and materials discovery. doi:10.1039/d5mh01984b"
+      ],
+      "evidenceTypes": [
+        {
+          "claim_type": "methodological_description",
+          "claim": "Bayesian optimization, computer vision, large language models",
+          "support": "structured_field"
+        },
+        {
+          "claim_type": "empirical_result",
+          "claim": "Proposes six defining characteristics for SDL 2.0: interoperable, collaborative, generalizable, orchestrated, safe, and creative",
+          "support": "structured_field"
+        },
+        {
+          "claim_type": "author_opinion",
+          "claim": "No explicit limitation extracted.",
+          "support": "structured_field"
+        },
+        {
+          "claim_type": "theoretical_claim",
+          "claim": "Full text excerpt:",
+          "support": "structured_field"
+        },
+        {
+          "claim_type": "empirical_result",
+          "claim": "The convergence of laboratory automation, artificial intelligence (AI), and data-driven science has catalyzed the emergence of self-driving laboratories (SDLs), autonomous platforms capable of designing, executing, and analyzing experiments with minimal human input.",
+          "support": "source_sentence"
+        },
+        {
+          "claim_type": "methodological_description",
+          "claim": "Building on these foundations, we propose six defining characteristics for SDL 2.0: interoperable, collaborative, generalizable, orchestrated, safe, and creative.",
+          "support": "source_sentence"
+        },
+        {
+          "claim_type": "empirical_result",
+          "claim": "Together, these features establish SDLs as globally networked platforms, enabling reproducible experimentation, accelerated innovation, and democratized access to advanced research infrastructure.",
+          "support": "source_sentence"
+        },
+        {
+          "claim_type": "empirical_result",
+          "claim": "By embedding modularity, AI reasoning, and community-driven standards into their core, SDLs 2.0 promise to transform not only how experiments are conducted, but also who can participate in and benefit from the accelerating pace of scientific discovery.",
+          "support": "source_sentence"
+        },
+        {
+          "claim_type": "author_opinion",
+          "claim": "Full text excerpt: Proposes six defining characteristics for SDL 2.0: interoperable, collaborative, generalizable, orchestrated, safe, and creative No explicit limitation extracted.",
+          "support": "source_sentence"
+        }
+      ]
+    },
+    {
+      "method": "foundation AI models",
+      "scenario": "animal biotechnology",
+      "benchmark": "gene expression",
+      "references": [
+        "A. Zhernakova et al. (2026) Foundation Artificial Intelligence Models in Animal Biotechnology: From Protein Structure Prediction to Genomic Language Models and Autonomous Laboratory Systems doi:10.14741/ijab/v.16.1.1"
+      ],
+      "evidenceTypes": [
+        {
+          "claim_type": "methodological_description",
+          "claim": "foundation AI models",
+          "support": "structured_field"
+        },
+        {
+          "claim_type": "empirical_result",
+          "claim": "review of transformative impact of foundation AI models on animal biotechnology, especially in livestock species",
+          "support": "structured_field"
+        },
+        {
+          "claim_type": "author_opinion",
+          "claim": "training data for livestock species remain substantially less abundant than for human biomedical applications",
+          "support": "structured_field"
+        },
+        {
+          "claim_type": "theoretical_claim",
+          "claim": "Full text excerpt:",
+          "support": "structured_field"
+        },
+        {
+          "claim_type": "author_opinion",
+          "claim": "The review critically evaluates the current capabilities and limitations of foundation AI models in livestock biotechnology contexts, where training data for livestock species remain substantially less abundant than for human biomedical applications, addressing strategies for data augmentation, cros...[truncated]",
+          "support": "source_sentence"
+        },
+        {
+          "claim_type": "methodological_description",
+          "claim": "Emerging regulatory and biosafety frameworks for AI- designed biological entities (AI- designed vaccines, gene circuits, engineered proteins) are reviewed, along with the research infrastructure and skills development investments needed to realise the full potential of AI- driven animal biotechnolog...[truncated]",
+          "support": "source_sentence"
+        }
+      ]
+    },
+    {
+      "method": "Science Context Protocol (SCP)",
+      "scenario": "autonomous scientific agents",
+      "benchmark": "integration overhead",
+      "references": [
+        "Yankai Jiang et al. (2025) SCP: Accelerating Discovery with a Global Web of Autonomous Scientific Agents doi:10.48550/arXiv.2512.24189"
+      ],
+      "evidenceTypes": [
+        {
+          "claim_type": "methodological_description",
+          "claim": "Science Context Protocol (SCP)",
+          "support": "structured_field"
+        },
+        {
+          "claim_type": "empirical_result",
+          "claim": "protocol-level standardization for scientific resource description, invocation, and experiment lifecycle management enabling scalable, multi-institution, agent-driven science",
+          "support": "structured_field"
+        },
+        {
+          "claim_type": "author_opinion",
+          "claim": "No explicit limitation extracted.",
+          "support": "structured_field"
+        },
+        {
+          "claim_type": "theoretical_claim",
+          "claim": "Full text excerpt:",
+          "support": "structured_field"
+        },
+        {
+          "claim_type": "empirical_result",
+          "claim": "(2) Orchestrated Experiment Lifecycle Management: SCP complements the protocol with a secure service architecture, which comprises a centralized SCP Hub and federated SCP Servers.",
+          "support": "source_sentence"
+        },
+        {
+          "claim_type": "empirical_result",
+          "claim": "This architecture manages the complete experiment lifecycle (registration, planning, execution, monitoring, and archival), enforces fine-grained authentication and authorization, and orchestrates traceable, end-to-end workflows that bridge computational and physical laboratories.",
+          "support": "source_sentence"
+        },
+        {
+          "claim_type": "empirical_result",
+          "claim": "Full text excerpt: protocol-level standardization for scientific resource description, invocation, and experiment lifecycle management enabling scalable, multi-institution, agent-driven science No explicit limitation extracted.",
+          "support": "source_sentence"
+        }
+      ]
+    },
+    {
+      "method": "foundation models",
+      "scenario": "laboratory automation in materials and chemical sciences",
+      "benchmark": "operational safety",
+      "references": [
+        "Kan Hatakeyama-Sato et al. (2025) Perspective on Utilizing Foundation Models for Laboratory Automation in Materials Research arXiv:2506.12312v1"
+      ],
+      "evidenceTypes": [
+        {
+          "claim_type": "methodological_description",
+          "claim": "foundation models",
+          "support": "structured_field"
+        },
+        {
+          "claim_type": "empirical_result",
+          "claim": "outlines a roadmap for realizing fully autonomous experimental laboratories through interdisciplinary collaboration, benchmark establishment, and human-AI integration",
+          "support": "structured_field"
+        },
+        {
+          "claim_type": "author_opinion",
+          "claim": "precision manipulation of hardware, integration of multimodal data, and ensuring operational safety",
+          "support": "structured_field"
+        },
+        {
+          "claim_type": "theoretical_claim",
+          "claim": "Full text excerpt:",
+          "support": "structured_field"
+        },
+        {
+          "claim_type": "empirical_result",
+          "claim": "It emphasizes the dual roles of these models: cognitive functions for experimental planning and data analysis, and physical functions for hardware operations.",
+          "support": "source_sentence"
+        },
+        {
+          "claim_type": "empirical_result",
+          "claim": "This paper outlines a roadmap highlighting future directions, advocating for close interdisciplinary collaboration, benchmark establishment, and strategic human-AI integration to realize fully autonomous experimental laboratories.",
+          "support": "source_sentence"
+        },
+        {
+          "claim_type": "empirical_result",
+          "claim": "Full text excerpt: outlines a roadmap for realizing fully autonomous experimental laboratories through interdisciplinary collaboration, benchmark establishment, and human-AI integration precision manipulation of hardware, integration of multimodal data, and ensuring operational safety",
+          "support": "source_sentence"
+        }
+      ]
+    },
+    {
+      "method": "survey",
+      "scenario": "autonomous scientific discovery",
+      "benchmark": "benchmark dataset",
+      "references": [
+        "Jiaqi Wei et al. (2025) From AI for Science to Agentic Science: A Survey on Autonomous Scientific Discovery arXiv:2508.14111v2"
+      ],
+      "evidenceTypes": [
+        {
+          "claim_type": "methodological_description",
+          "claim": "survey",
+          "support": "structured_field"
+        },
+        {
+          "claim_type": "empirical_result",
+          "claim": "unification of process-oriented, autonomy-oriented, and mechanism-oriented perspectives into a comprehensive framework for Agentic Science; domain-oriented synthesis across life sciences, chemistry, materials science, and physics",
+          "support": "structured_field"
+        },
+        {
+          "claim_type": "author_opinion",
+          "claim": "Abstract: Artificial intelligence (AI) is reshaping scientific discovery, evolving from specialized computational tools into autonomous research partners. We position Agentic Science as a pivotal stage within the broader AI for Science paradigm, where AI systems progress from partial assistance to f...[truncated]",
+          "support": "structured_field"
+        },
+        {
+          "claim_type": "methodological_description",
+          "claim": "unification of process-oriented, autonomy-oriented, and mechanism-oriented perspectives into a comprehensive framework for Agentic Science; domain-oriented synthesis across life sciences, chemistry, materials science, and physics Abstract: Artificial intelligence (AI) is reshaping scientific discove...[truncated]",
+          "support": "source_sentence"
+        }
+      ]
+    },
+    {
+      "method": "C++ inference runtime",
+      "scenario": "embodied AI models on heterogeneous robots",
+      "benchmark": "[\"task success rate\", \"block memory\"]",
+      "references": [
+        "Ling Xu et al. (2026) Embodied.cpp: A Portable Inference Runtime of Embodied AI Models on Heterogeneous Robots arXiv:2607.02501v1"
+      ],
+      "evidenceTypes": [
+        {
+          "claim_type": "methodological_description",
+          "claim": "C++ inference runtime",
+          "support": "structured_field"
+        },
+        {
+          "claim_type": "empirical_result",
+          "claim": "A portable C++ inference runtime that enables deployment of vision-language-action and world-action models across heterogeneous robots and simulators via a unified backend abstraction.",
+          "support": "structured_field"
+        },
+        {
+          "claim_type": "author_opinion",
+          "claim": "Abstract: Embodied AI models now span vision-language-action (VLA) models and world-action models (WAMs), but practical deployment remains fragmented across model-specific Python stacks, backend assumptions, and robot-side glue code, especially on heterogeneous edge devices. Existing inference runti...[truncated]",
+          "support": "structured_field"
+        }
+      ]
+    },
+    {
+      "method": "recurrent reasoning models",
+      "scenario": "constraint satisfaction problems",
+      "benchmark": "wall-clock speedup",
+      "references": [
+        "Timo Bertram et al. (2026) G-RRM: Guiding Symbolic Solvers with Recurrent Reasoning Models arXiv:2607.02491v1"
+      ],
+      "evidenceTypes": [
+        {
+          "claim_type": "methodological_description",
+          "claim": "recurrent reasoning models",
+          "support": "structured_field"
+        },
+        {
+          "claim_type": "empirical_result",
+          "claim": "delineates regimes in which neural guidance translates into practical speedups for symbolic solvers",
+          "support": "structured_field"
+        },
+        {
+          "claim_type": "author_opinion",
+          "claim": "CaDiCaL 3.0.0 shows no significant speedup and even a small significant mean slowdown due to overhead-dominated runtime and inability to overwrite injected branching hints",
+          "support": "structured_field"
+        }
+      ]
+    },
+    {
+      "method": "reinforcement learning",
+      "scenario": "vision-language models",
+      "benchmark": "out-of-distribution accuracy",
+      "references": [
+        "Liyan Tang et al. (2026) Visually Grounded Self-Reflection for Vision-Language Models via Reinforcement Learning arXiv:2607.02490v1"
+      ],
+      "evidenceTypes": [
+        {
+          "claim_type": "methodological_description",
+          "claim": "reinforcement learning",
+          "support": "structured_field"
+        },
+        {
+          "claim_type": "empirical_result",
+          "claim": "VRRL framework enabling visually grounded self-reflection through masked trajectory prefixes and buffered roll-ins from experience replay",
+          "support": "structured_field"
+        },
+        {
+          "claim_type": "author_opinion",
+          "claim": "No explicit limitation extracted.",
+          "support": "structured_field"
+        },
+        {
+          "claim_type": "methodological_description",
+          "claim": "VRRL framework enabling visually grounded self-reflection through masked trajectory prefixes and buffered roll-ins from experience replay No explicit limitation extracted.",
+          "support": "source_sentence"
+        }
+      ]
+    },
+    {
+      "method": "sampling-based interpretability | probabilistic analysis | circuit mining",
+      "scenario": "Typographic Attack on CLIP-based vision encoders",
+      "benchmark": "Visual Question Answering accuracy on RIO-Bench",
+      "references": [
+        "Bohan Liu et al. (2026) Towards Robustness against Typographic Attack with Training-free Concept Localization arXiv:2607.02494v1"
+      ],
+      "evidenceTypes": [
+        {
+          "claim_type": "methodological_description",
+          "claim": "sampling-based interpretability | probabilistic analysis | circuit mining",
+          "support": "structured_field"
+        },
+        {
+          "claim_type": "empirical_result",
+          "claim": "A training-free mechanistic interpretability method that identifies and intervenes on ViT components encoding lexical information to improve robustness against Typographic Attacks.",
+          "support": "structured_field"
+        },
+        {
+          "claim_type": "author_opinion",
+          "claim": "No explicit limitation extracted.",
+          "support": "structured_field"
+        },
+        {
+          "claim_type": "theoretical_claim",
+          "claim": "A training-free mechanistic interpretability method that identifies and intervenes on ViT components encoding lexical information to improve robustness against Typographic Attacks.",
+          "support": "source_sentence"
+        }
+      ]
+    },
+    {
+      "method": "Iterative VibeCoding",
+      "scenario": "AI control in persistent-state coding agents",
+      "benchmark": "evasion rate",
+      "references": [
+        "Josh Hills et al. (2026) Distributed Attacks in Persistent-State AI Control arXiv:2607.02514v1"
+      ],
+      "evidenceTypes": [
+        {
+          "claim_type": "methodological_description",
+          "claim": "Iterative VibeCoding",
+          "support": "structured_field"
+        },
+        {
+          "claim_type": "empirical_result",
+          "claim": "Identifies and characterizes distributed attacks across pull requests in persistent-state AI coding agents, and introduces a stateful link-tracker monitor effective against gradual attacks",
+          "support": "structured_field"
+        },
+        {
+          "claim_type": "author_opinion",
+          "claim": "Abstract: As AI coding agents become more autonomous, they increasingly ship code iteratively, with the codebase persisting across sessions. This persistence creates a new attack surface: a misaligned or prompt-injected agent can distribute attacks across pull requests (PRs) and time its payload for...[truncated]",
+          "support": "structured_field"
+        }
+      ]
+    },
+    {
+      "method": "reverse-KL barycenter target with disagreement-modulated adaptive blending",
+      "scenario": "on-policy self-distillation for large language models",
+      "benchmark": "generalization performance",
+      "references": [
+        "Yunhe Li et al. (2026) DemoPSD: Disagreement-Modulated Policy Self-Distillation arXiv:2607.02502v1"
+      ],
+      "evidenceTypes": [
+        {
+          "claim_type": "methodological_description",
+          "claim": "reverse-KL barycenter target with disagreement-modulated adaptive blending",
+          "support": "structured_field"
+        },
+        {
+          "claim_type": "empirical_result",
+          "claim": "DemoPSD mitigates privileged information leakage and preserves exploration capacity under dense token-level distillation via disagreement-modulated policy self-distillation.",
+          "support": "structured_field"
+        },
+        {
+          "claim_type": "author_opinion",
+          "claim": "No explicit limitation extracted.",
+          "support": "structured_field"
+        }
+      ]
+    },
+    {
+      "method": "matrix-structured optimization",
+      "scenario": "training machine learning interatomic potentials",
+      "benchmark": "convergence speed, final accuracy",
+      "references": [
+        "Gil Harari et al. (2026) Beyond Adam: SOAP and Muon for Faster, Label-Efficient Training of Machine Learning Interatomic Potentials arXiv:2607.02499v1"
+      ],
+      "evidenceTypes": [
+        {
+          "claim_type": "methodological_description",
+          "claim": "matrix-structured optimization",
+          "support": "structured_field"
+        },
+        {
+          "claim_type": "empirical_result",
+          "claim": "Optimizer choice is an overlooked yet impactful design axis for MLIPs; SOAP and SOAP-Muon substantially outperform Adam in convergence speed and final accuracy, especially under partial force supervision.",
+          "support": "structured_field"
+        },
+        {
+          "claim_type": "author_opinion",
+          "claim": "Abstract: Machine learning interatomic potentials (MLIPs) have become a hallmark of AI for scientific simulation. While efforts on new architectures and datasets have led to increasingly accurate and general models, the choice of optimizer for training has largely remained unexplored, defaulting to....[truncated]",
+          "support": "structured_field"
+        }
+      ]
+    },
+    {
+      "method": "agent workflow",
+      "scenario": "traffic simulation",
+      "benchmark": "realism on Waymo Open Motion Dataset",
+      "references": [
+        "Juanwu Lu et al. (2026) Controllable Sim Agents with Behavior Latents arXiv:2607.02496v1"
+      ],
+      "evidenceTypes": [
+        {
+          "claim_type": "methodological_description",
+          "claim": "agent workflow",
+          "support": "structured_field"
+        },
+        {
+          "claim_type": "empirical_result",
+          "claim": "A controllable simulated-agent framework enabling interpretable, per-channel steering of agent behavior while maintaining physical plausibility and avoiding reward hacking",
+          "support": "structured_field"
+        },
+        {
+          "claim_type": "author_opinion",
+          "claim": "Steering metrics must be read alongside physical-plausibility guardrails to avoid reward-hacking confounds",
+          "support": "structured_field"
+        },
+        {
+          "claim_type": "methodological_description",
+          "claim": "A controllable simulated-agent framework enabling interpretable, per-channel steering of agent behavior while maintaining physical plausibility and avoiding reward hacking Steering metrics must be read alongside physical-plausibility guardrails to avoid reward-hacking confounds",
+          "support": "source_sentence"
+        }
+      ]
+    },
+    {
+      "method": "machine learning model",
+      "scenario": "video world modeling",
+      "benchmark": "our approach ensures strict physical logic and appearance stability",
+      "references": [
+        "Hanlin Wang et al. (2026) WorldDirector: Building Controllable World Simulators with Persistent Dynamic Memory arXiv:2607.02517v1"
+      ],
+      "evidenceTypes": [
+        {
+          "claim_type": "methodological_description",
+          "claim": "machine learning model",
+          "support": "structured_field"
+        },
+        {
+          "claim_type": "empirical_result",
+          "claim": "Explicit decoupling of semantic motion orchestration from visual generation to enable persistent dynamic object memory and unrestricted viewpoint exploration in video world models",
+          "support": "structured_field"
+        },
+        {
+          "claim_type": "author_opinion",
+          "claim": "No explicit limitation extracted.",
+          "support": "structured_field"
+        },
+        {
+          "claim_type": "author_opinion",
+          "claim": "Explicit decoupling of semantic motion orchestration from visual generation to enable persistent dynamic object memory and unrestricted viewpoint exploration in video world models No explicit limitation extracted.",
+          "support": "source_sentence"
+        }
+      ]
+    },
+    {
+      "method": "survey",
+      "scenario": "large language models in scientific discovery",
+      "benchmark": "benchmark dataset",
+      "references": [
+        "Tianshi ZHENG et al. (2025) From Automation to Autonomy: A Survey on Large Language Models in Scientific Discovery doi:10.48550/arXiv.2505.13259"
+      ],
+      "evidenceTypes": [
+        {
+          "claim_type": "methodological_description",
+          "claim": "survey",
+          "support": "structured_field"
+        },
+        {
+          "claim_type": "empirical_result",
+          "claim": "introduces a three-level taxonomy (Tool, Analyst, Scientist) to characterize escalating autonomy of LLMs in the scientific research lifecycle",
+          "support": "structured_field"
+        },
+        {
+          "claim_type": "author_opinion",
+          "claim": "Abstract: Large Language Models (LLMs) are catalyzing a paradigm shift in scientific discovery, evolving from task-specific automation tools into increasingly autonomous agents and fundamentally redefining research processes and human-AI collaboration. This survey systematically charts this burgeoni...[truncated]",
+          "support": "structured_field"
+        }
+      ]
+    },
+    {
+      "method": "Bayesian optimization, computer vision, large language models",
+      "scenario": "chemistry and materials science",
+      "benchmark": "protein binding affinity",
+      "references": [
+        "Heeseung Lee et al. (2026) Toward self-driving laboratory 2.0 for chemistry and materials discovery. doi:10.1039/d5mh01984b"
+      ],
+      "evidenceTypes": [
+        {
+          "claim_type": "methodological_description",
+          "claim": "Bayesian optimization, computer vision, large language models",
+          "support": "structured_field"
+        },
+        {
+          "claim_type": "empirical_result",
+          "claim": "Proposes six defining characteristics for SDL 2.0: interoperable, collaborative, generalizable, orchestrated, safe, and creative",
+          "support": "structured_field"
+        },
+        {
+          "claim_type": "author_opinion",
+          "claim": "No explicit limitation extracted.",
+          "support": "structured_field"
+        },
+        {
+          "claim_type": "author_opinion",
+          "claim": "Proposes six defining characteristics for SDL 2.0: interoperable, collaborative, generalizable, orchestrated, safe, and creative No explicit limitation extracted.",
+          "support": "source_sentence"
+        }
+      ]
+    },
+    {
+      "method": "foundation AI models",
+      "scenario": "animal biotechnology",
+      "benchmark": "gene expression",
+      "references": [
+        "A. Zhernakova et al. (2026) Foundation Artificial Intelligence Models in Animal Biotechnology: From Protein Structure Prediction to Genomic Language Models and Autonomous Laboratory Systems doi:10.14741/ijab/v.16.1.1"
+      ],
+      "evidenceTypes": [
+        {
+          "claim_type": "methodological_description",
+          "claim": "foundation AI models",
+          "support": "structured_field"
+        },
+        {
+          "claim_type": "empirical_result",
+          "claim": "review of transformative impact of foundation AI models on animal biotechnology, especially in livestock species",
+          "support": "structured_field"
+        },
+        {
+          "claim_type": "author_opinion",
+          "claim": "training data for livestock species remain substantially less abundant than for human biomedical applications",
+          "support": "structured_field"
+        }
+      ]
+    },
+    {
+      "method": "Science Context Protocol (SCP)",
+      "scenario": "autonomous scientific agents",
+      "benchmark": "integration overhead",
+      "references": [
+        "Yankai Jiang et al. (2025) SCP: Accelerating Discovery with a Global Web of Autonomous Scientific Agents doi:10.48550/arXiv.2512.24189"
+      ],
+      "evidenceTypes": [
+        {
+          "claim_type": "methodological_description",
+          "claim": "Science Context Protocol (SCP)",
+          "support": "structured_field"
+        },
+        {
+          "claim_type": "empirical_result",
+          "claim": "protocol-level standardization for scientific resource description, invocation, and experiment lifecycle management enabling scalable, multi-institution, agent-driven science",
+          "support": "structured_field"
+        },
+        {
+          "claim_type": "author_opinion",
+          "claim": "No explicit limitation extracted.",
+          "support": "structured_field"
+        },
+        {
+          "claim_type": "empirical_result",
+          "claim": "protocol-level standardization for scientific resource description, invocation, and experiment lifecycle management enabling scalable, multi-institution, agent-driven science No explicit limitation extracted.",
+          "support": "source_sentence"
+        }
+      ]
+    },
+    {
+      "method": "foundation models",
+      "scenario": "laboratory automation in materials and chemical sciences",
+      "benchmark": "operational safety",
+      "references": [
+        "Kan Hatakeyama-Sato et al. (2025) Perspective on Utilizing Foundation Models for Laboratory Automation in Materials Research arXiv:2506.12312v1"
+      ],
+      "evidenceTypes": [
+        {
+          "claim_type": "methodological_description",
+          "claim": "foundation models",
+          "support": "structured_field"
+        },
+        {
+          "claim_type": "empirical_result",
+          "claim": "outlines a roadmap for realizing fully autonomous experimental laboratories through interdisciplinary collaboration, benchmark establishment, and human-AI integration",
+          "support": "structured_field"
+        },
+        {
+          "claim_type": "author_opinion",
+          "claim": "precision manipulation of hardware, integration of multimodal data, and ensuring operational safety",
+          "support": "structured_field"
+        },
+        {
+          "claim_type": "empirical_result",
+          "claim": "outlines a roadmap for realizing fully autonomous experimental laboratories through interdisciplinary collaboration, benchmark establishment, and human-AI integration precision manipulation of hardware, integration of multimodal data, and ensuring operational safety",
+          "support": "source_sentence"
+        }
+      ]
+    }
+  ],
+  "gaps": [
+    {
+      "id": "gap_1783097623919415400",
+      "rank": 1,
+      "type": "combinatorial",
+      "description": "Method 'Bayesian optimization, computer vision, large language models' has no recorded validation in scenario 'AI control in persistent-state coding agents' in the current PaperGraph map.",
+      "novelty": 5,
+      "application": "medium",
+      "feasibility": "high",
+      "status": "candidate",
+      "recommendedApproach": "Run a targeted validation study with explicit benchmarks, baselines, and failure-mode analysis.",
+      "valueArgument": "The combination may expose method-scenario boundary conditions rather than simply adding another benchmark.",
+      "supportingReferences": [
+        "Josh Hills et al. (2026) Distributed Attacks in Persistent-State AI Control arXiv:2607.02514v1",
+        "Heeseung Lee et al. (2026) Toward self-driving laboratory 2.0 for chemistry and materials discovery. doi:10.1039/d5mh01984b"
+      ],
+      "requiresHumanReview": false,
+      "overlapRisk": "low",
+      "assessmentReason": "refs=2, gap_type=combinatorial, strongest_local_overlap=0.421, coverage=0.843, feasibility=high, application_value=medium"
+    },
+    {
+      "id": "gap_1783097623941786900",
+      "rank": 2,
+      "type": "migration",
+      "description": "Method 'Bayesian optimization, computer vision, large language models' is only recorded in scenario 'chemistry and materials science', but may be transferable to scenario 'AI control in persistent-state coding agents'.",
+      "novelty": 5,
+      "application": "medium",
+      "feasibility": "medium",
+      "status": "candidate",
+      "recommendedApproach": "Audit assumptions of the source scenario, then run a small transfer validation in the target scenario.",
+      "valueArgument": "Migration gaps can create useful cross-domain leverage if mechanism assumptions remain valid.",
+      "supportingReferences": [
+        "Heeseung Lee et al. (2026) Toward self-driving laboratory 2.0 for chemistry and materials discovery. doi:10.1039/d5mh01984b"
+      ],
+      "requiresHumanReview": false,
+      "overlapRisk": "medium",
+      "assessmentReason": "refs=1, gap_type=migration, strongest_local_overlap=0.571, coverage=0.867, feasibility=medium, application_value=medium"
+    },
+    {
+      "id": "gap_1783097623948938500",
+      "rank": 3,
+      "type": "migration",
+      "description": "Method 'C++ inference runtime' is only recorded in scenario 'embodied AI models on heterogeneous robots', but may be transferable to scenario 'AI control in persistent-state coding agents'.",
+      "novelty": 5,
+      "application": "medium",
+      "feasibility": "medium",
+      "status": "candidate",
+      "recommendedApproach": "Audit assumptions of the source scenario, then run a small transfer validation in the target scenario.",
+      "valueArgument": "Migration gaps can create useful cross-domain leverage if mechanism assumptions remain valid.",
+      "supportingReferences": [
+        "Ling Xu et al. (2026) Embodied.cpp: A Portable Inference Runtime of Embodied AI Models on Heterogeneous Robots arXiv:2607.02501v1"
+      ],
+      "requiresHumanReview": false,
+      "overlapRisk": "medium",
+      "assessmentReason": "refs=1, gap_type=migration, strongest_local_overlap=0.471, coverage=0.825, feasibility=medium, application_value=medium"
+    }
+  ],
+  "graph": {
+    "nodes": [
+      {
+        "id": "method:survey",
+        "label": "survey",
+        "kind": "method",
+        "degree": 4
+      },
+      {
+        "id": "scenario:autonomous scientific discovery",
+        "label": "autonomous scientific discovery",
+        "kind": "scenario",
+        "degree": 4
+      },
+      {
+        "id": "benchmark:benchmark dataset",
+        "label": "benchmark dataset",
+        "kind": "benchmark",
+        "degree": 4
+      },
+      {
+        "id": "method:c++ inference runtime",
+        "label": "C++ inference runtime",
+        "kind": "method",
+        "degree": 2
+      },
+      {
+        "id": "scenario:embodied ai models on heterogeneous robots",
+        "label": "embodied AI models on heterogeneous robots",
+        "kind": "scenario",
+        "degree": 4
+      },
+      {
+        "id": "benchmark:[\"task success rate\", \"block memory\"]",
+        "label": "[\"task success rate\", \"block memory\"]",
+        "kind": "benchmark",
+        "degree": 2
+      },
+      {
+        "id": "method:recurrent reasoning models",
+        "label": "recurrent reasoning models",
+        "kind": "method",
+        "degree": 2
+      },
+      {
+        "id": "scenario:constraint satisfaction problems",
+        "label": "constraint satisfaction problems",
+        "kind": "scenario",
+        "degree": 4
+      },
+      {
+        "id": "benchmark:wall-clock speedup",
+        "label": "wall-clock speedup",
+        "kind": "benchmark",
+        "degree": 2
+      },
+      {
+        "id": "method:reinforcement learning",
+        "label": "reinforcement learning",
+        "kind": "method",
+        "degree": 2
+      },
+      {
+        "id": "scenario:vision-language models",
+        "label": "vision-language models",
+        "kind": "scenario",
+        "degree": 4
+      },
+      {
+        "id": "benchmark:out-of-distribution accuracy",
+        "label": "out-of-distribution accuracy",
+        "kind": "benchmark",
+        "degree": 2
+      },
+      {
+        "id": "method:sampling-based interpretability | probabilistic analysis | circuit mining",
+        "label": "sampling-based interpretability | probabilistic analysis | circuit mining",
+        "kind": "method",
+        "degree": 2
+      },
+      {
+        "id": "scenario:typographic attack on clip-based vision encoders",
+        "label": "Typographic Attack on CLIP-based vision encoders",
+        "kind": "scenario",
+        "degree": 4
+      },
+      {
+        "id": "benchmark:visual question answering accuracy on rio-bench",
+        "label": "Visual Question Answering accuracy on RIO-Bench",
+        "kind": "benchmark",
+        "degree": 2
+      },
+      {
+        "id": "method:iterative vibecoding",
+        "label": "Iterative VibeCoding",
+        "kind": "method",
+        "degree": 2
+      },
+      {
+        "id": "scenario:ai control in persistent-state coding agents",
+        "label": "AI control in persistent-state coding agents",
+        "kind": "scenario",
+        "degree": 4
+      },
+      {
+        "id": "benchmark:evasion rate",
+        "label": "evasion rate",
+        "kind": "benchmark",
+        "degree": 2
+      },
+      {
+        "id": "method:reverse-kl barycenter target with disagreement-modulated adaptive blending",
+        "label": "reverse-KL barycenter target with disagreement-modulated adaptive blending",
+        "kind": "method",
+        "degree": 2
+      },
+      {
+        "id": "scenario:on-policy self-distillation for large language models",
+        "label": "on-policy self-distillation for large language models",
+        "kind": "scenario",
+        "degree": 4
+      },
+      {
+        "id": "benchmark:generalization performance",
+        "label": "generalization performance",
+        "kind": "benchmark",
+        "degree": 2
+      },
+      {
+        "id": "method:matrix-structured optimization",
+        "label": "matrix-structured optimization",
+        "kind": "method",
+        "degree": 2
+      },
+      {
+        "id": "scenario:training machine learning interatomic potentials",
+        "label": "training machine learning interatomic potentials",
+        "kind": "scenario",
+        "degree": 4
+      },
+      {
+        "id": "benchmark:convergence speed, final accuracy",
+        "label": "convergence speed, final accuracy",
+        "kind": "benchmark",
+        "degree": 2
+      },
+      {
+        "id": "method:agent workflow",
+        "label": "agent workflow",
+        "kind": "method",
+        "degree": 2
+      },
+      {
+        "id": "scenario:traffic simulation",
+        "label": "traffic simulation",
+        "kind": "scenario",
+        "degree": 4
+      },
+      {
+        "id": "benchmark:realism on waymo open motion dataset",
+        "label": "realism on Waymo Open Motion Dataset",
+        "kind": "benchmark",
+        "degree": 2
+      },
+      {
+        "id": "method:machine learning model",
+        "label": "machine learning model",
+        "kind": "method",
+        "degree": 2
+      },
+      {
+        "id": "scenario:video world modeling",
+        "label": "video world modeling",
+        "kind": "scenario",
+        "degree": 4
+      },
+      {
+        "id": "benchmark:our approach ensures strict physical logic and appearance stability",
+        "label": "our approach ensures strict physical logic and appearance stability",
+        "kind": "benchmark",
+        "degree": 2
+      },
+      {
+        "id": "scenario:large language models in scientific discovery",
+        "label": "large language models in scientific discovery",
+        "kind": "scenario",
+        "degree": 4
+      },
+      {
+        "id": "method:bayesian optimization, computer vision, large language models",
+        "label": "Bayesian optimization, computer vision, large language models",
+        "kind": "method",
+        "degree": 2
+      },
+      {
+        "id": "scenario:chemistry and materials science",
+        "label": "chemistry and materials science",
+        "kind": "scenario",
+        "degree": 4
+      },
+      {
+        "id": "benchmark:protein binding affinity",
+        "label": "protein binding affinity",
+        "kind": "benchmark",
+        "degree": 2
+      },
+      {
+        "id": "method:foundation ai models",
+        "label": "foundation AI models",
+        "kind": "method",
+        "degree": 2
+      },
+      {
+        "id": "scenario:animal biotechnology",
+        "label": "animal biotechnology",
+        "kind": "scenario",
+        "degree": 4
+      },
+      {
+        "id": "benchmark:gene expression",
+        "label": "gene expression",
+        "kind": "benchmark",
+        "degree": 2
+      },
+      {
+        "id": "method:science context protocol (scp)",
+        "label": "Science Context Protocol (SCP)",
+        "kind": "method",
+        "degree": 2
+      },
+      {
+        "id": "scenario:autonomous scientific agents",
+        "label": "autonomous scientific agents",
+        "kind": "scenario",
+        "degree": 4
+      },
+      {
+        "id": "benchmark:integration overhead",
+        "label": "integration overhead",
+        "kind": "benchmark",
+        "degree": 2
+      },
+      {
+        "id": "method:foundation models",
+        "label": "foundation models",
+        "kind": "method",
+        "degree": 2
+      },
+      {
+        "id": "scenario:laboratory automation in materials and chemical sciences",
+        "label": "laboratory automation in materials and chemical sciences",
+        "kind": "scenario",
+        "degree": 4
+      },
+      {
+        "id": "benchmark:operational safety",
+        "label": "operational safety",
+        "kind": "benchmark",
+        "degree": 2
+      }
+    ],
+    "links": [
+      {
+        "source": "method:survey",
+        "target": "scenario:autonomous scientific discovery",
+        "kind": "validated_in",
+        "weight": 1
+      },
+      {
+        "source": "scenario:autonomous scientific discovery",
+        "target": "benchmark:benchmark dataset",
+        "kind": "measured_by",
+        "weight": 1
+      },
+      {
+        "source": "method:c++ inference runtime",
+        "target": "scenario:embodied ai models on heterogeneous robots",
+        "kind": "validated_in",
+        "weight": 1
+      },
+      {
+        "source": "scenario:embodied ai models on heterogeneous robots",
+        "target": "benchmark:[\"task success rate\", \"block memory\"]",
+        "kind": "measured_by",
+        "weight": 1
+      },
+      {
+        "source": "method:recurrent reasoning models",
+        "target": "scenario:constraint satisfaction problems",
+        "kind": "validated_in",
+        "weight": 1
+      },
+      {
+        "source": "scenario:constraint satisfaction problems",
+        "target": "benchmark:wall-clock speedup",
+        "kind": "measured_by",
+        "weight": 1
+      },
+      {
+        "source": "method:reinforcement learning",
+        "target": "scenario:vision-language models",
+        "kind": "validated_in",
+        "weight": 1
+      },
+      {
+        "source": "scenario:vision-language models",
+        "target": "benchmark:out-of-distribution accuracy",
+        "kind": "measured_by",
+        "weight": 1
+      },
+      {
+        "source": "method:sampling-based interpretability | probabilistic analysis | circuit mining",
+        "target": "scenario:typographic attack on clip-based vision encoders",
+        "kind": "validated_in",
+        "weight": 1
+      },
+      {
+        "source": "scenario:typographic attack on clip-based vision encoders",
+        "target": "benchmark:visual question answering accuracy on rio-bench",
+        "kind": "measured_by",
+        "weight": 1
+      },
+      {
+        "source": "method:iterative vibecoding",
+        "target": "scenario:ai control in persistent-state coding agents",
+        "kind": "validated_in",
+        "weight": 1
+      },
+      {
+        "source": "scenario:ai control in persistent-state coding agents",
+        "target": "benchmark:evasion rate",
+        "kind": "measured_by",
+        "weight": 1
+      },
+      {
+        "source": "method:reverse-kl barycenter target with disagreement-modulated adaptive blending",
+        "target": "scenario:on-policy self-distillation for large language models",
+        "kind": "validated_in",
+        "weight": 1
+      },
+      {
+        "source": "scenario:on-policy self-distillation for large language models",
+        "target": "benchmark:generalization performance",
+        "kind": "measured_by",
+        "weight": 1
+      },
+      {
+        "source": "method:matrix-structured optimization",
+        "target": "scenario:training machine learning interatomic potentials",
+        "kind": "validated_in",
+        "weight": 1
+      },
+      {
+        "source": "scenario:training machine learning interatomic potentials",
+        "target": "benchmark:convergence speed, final accuracy",
+        "kind": "measured_by",
+        "weight": 1
+      },
+      {
+        "source": "method:agent workflow",
+        "target": "scenario:traffic simulation",
+        "kind": "validated_in",
+        "weight": 1
+      },
+      {
+        "source": "scenario:traffic simulation",
+        "target": "benchmark:realism on waymo open motion dataset",
+        "kind": "measured_by",
+        "weight": 1
+      },
+      {
+        "source": "method:machine learning model",
+        "target": "scenario:video world modeling",
+        "kind": "validated_in",
+        "weight": 1
+      },
+      {
+        "source": "scenario:video world modeling",
+        "target": "benchmark:our approach ensures strict physical logic and appearance stability",
+        "kind": "measured_by",
+        "weight": 1
+      },
+      {
+        "source": "method:survey",
+        "target": "scenario:large language models in scientific discovery",
+        "kind": "validated_in",
+        "weight": 1
+      },
+      {
+        "source": "scenario:large language models in scientific discovery",
+        "target": "benchmark:benchmark dataset",
+        "kind": "measured_by",
+        "weight": 1
+      },
+      {
+        "source": "method:bayesian optimization, computer vision, large language models",
+        "target": "scenario:chemistry and materials science",
+        "kind": "validated_in",
+        "weight": 1
+      },
+      {
+        "source": "scenario:chemistry and materials science",
+        "target": "benchmark:protein binding affinity",
+        "kind": "measured_by",
+        "weight": 1
+      },
+      {
+        "source": "method:foundation ai models",
+        "target": "scenario:animal biotechnology",
+        "kind": "validated_in",
+        "weight": 1
+      },
+      {
+        "source": "scenario:animal biotechnology",
+        "target": "benchmark:gene expression",
+        "kind": "measured_by",
+        "weight": 1
+      },
+      {
+        "source": "method:science context protocol (scp)",
+        "target": "scenario:autonomous scientific agents",
+        "kind": "validated_in",
+        "weight": 1
+      },
+      {
+        "source": "scenario:autonomous scientific agents",
+        "target": "benchmark:integration overhead",
+        "kind": "measured_by",
+        "weight": 1
+      },
+      {
+        "source": "method:foundation models",
+        "target": "scenario:laboratory automation in materials and chemical sciences",
+        "kind": "validated_in",
+        "weight": 1
+      },
+      {
+        "source": "scenario:laboratory automation in materials and chemical sciences",
+        "target": "benchmark:operational safety",
+        "kind": "measured_by",
+        "weight": 1
+      },
+      {
+        "source": "method:survey",
+        "target": "scenario:autonomous scientific discovery",
+        "kind": "validated_in",
+        "weight": 1
+      },
+      {
+        "source": "scenario:autonomous scientific discovery",
+        "target": "benchmark:benchmark dataset",
+        "kind": "measured_by",
+        "weight": 1
+      },
+      {
+        "source": "method:c++ inference runtime",
+        "target": "scenario:embodied ai models on heterogeneous robots",
+        "kind": "validated_in",
+        "weight": 1
+      },
+      {
+        "source": "scenario:embodied ai models on heterogeneous robots",
+        "target": "benchmark:[\"task success rate\", \"block memory\"]",
+        "kind": "measured_by",
+        "weight": 1
+      },
+      {
+        "source": "method:recurrent reasoning models",
+        "target": "scenario:constraint satisfaction problems",
+        "kind": "validated_in",
+        "weight": 1
+      },
+      {
+        "source": "scenario:constraint satisfaction problems",
+        "target": "benchmark:wall-clock speedup",
+        "kind": "measured_by",
+        "weight": 1
+      },
+      {
+        "source": "method:reinforcement learning",
+        "target": "scenario:vision-language models",
+        "kind": "validated_in",
+        "weight": 1
+      },
+      {
+        "source": "scenario:vision-language models",
+        "target": "benchmark:out-of-distribution accuracy",
+        "kind": "measured_by",
+        "weight": 1
+      },
+      {
+        "source": "method:sampling-based interpretability | probabilistic analysis | circuit mining",
+        "target": "scenario:typographic attack on clip-based vision encoders",
+        "kind": "validated_in",
+        "weight": 1
+      },
+      {
+        "source": "scenario:typographic attack on clip-based vision encoders",
+        "target": "benchmark:visual question answering accuracy on rio-bench",
+        "kind": "measured_by",
+        "weight": 1
+      },
+      {
+        "source": "method:iterative vibecoding",
+        "target": "scenario:ai control in persistent-state coding agents",
+        "kind": "validated_in",
+        "weight": 1
+      },
+      {
+        "source": "scenario:ai control in persistent-state coding agents",
+        "target": "benchmark:evasion rate",
+        "kind": "measured_by",
+        "weight": 1
+      },
+      {
+        "source": "method:reverse-kl barycenter target with disagreement-modulated adaptive blending",
+        "target": "scenario:on-policy self-distillation for large language models",
+        "kind": "validated_in",
+        "weight": 1
+      },
+      {
+        "source": "scenario:on-policy self-distillation for large language models",
+        "target": "benchmark:generalization performance",
+        "kind": "measured_by",
+        "weight": 1
+      },
+      {
+        "source": "method:matrix-structured optimization",
+        "target": "scenario:training machine learning interatomic potentials",
+        "kind": "validated_in",
+        "weight": 1
+      },
+      {
+        "source": "scenario:training machine learning interatomic potentials",
+        "target": "benchmark:convergence speed, final accuracy",
+        "kind": "measured_by",
+        "weight": 1
+      },
+      {
+        "source": "method:agent workflow",
+        "target": "scenario:traffic simulation",
+        "kind": "validated_in",
+        "weight": 1
+      },
+      {
+        "source": "scenario:traffic simulation",
+        "target": "benchmark:realism on waymo open motion dataset",
+        "kind": "measured_by",
+        "weight": 1
+      },
+      {
+        "source": "method:machine learning model",
+        "target": "scenario:video world modeling",
+        "kind": "validated_in",
+        "weight": 1
+      },
+      {
+        "source": "scenario:video world modeling",
+        "target": "benchmark:our approach ensures strict physical logic and appearance stability",
+        "kind": "measured_by",
+        "weight": 1
+      },
+      {
+        "source": "method:survey",
+        "target": "scenario:large language models in scientific discovery",
+        "kind": "validated_in",
+        "weight": 1
+      },
+      {
+        "source": "scenario:large language models in scientific discovery",
+        "target": "benchmark:benchmark dataset",
+        "kind": "measured_by",
+        "weight": 1
+      },
+      {
+        "source": "method:bayesian optimization, computer vision, large language models",
+        "target": "scenario:chemistry and materials science",
+        "kind": "validated_in",
+        "weight": 1
+      },
+      {
+        "source": "scenario:chemistry and materials science",
+        "target": "benchmark:protein binding affinity",
+        "kind": "measured_by",
+        "weight": 1
+      },
+      {
+        "source": "method:foundation ai models",
+        "target": "scenario:animal biotechnology",
+        "kind": "validated_in",
+        "weight": 1
+      },
+      {
+        "source": "scenario:animal biotechnology",
+        "target": "benchmark:gene expression",
+        "kind": "measured_by",
+        "weight": 1
+      },
+      {
+        "source": "method:science context protocol (scp)",
+        "target": "scenario:autonomous scientific agents",
+        "kind": "validated_in",
+        "weight": 1
+      },
+      {
+        "source": "scenario:autonomous scientific agents",
+        "target": "benchmark:integration overhead",
+        "kind": "measured_by",
+        "weight": 1
+      },
+      {
+        "source": "method:foundation models",
+        "target": "scenario:laboratory automation in materials and chemical sciences",
+        "kind": "validated_in",
+        "weight": 1
+      },
+      {
+        "source": "scenario:laboratory automation in materials and chemical sciences",
+        "target": "benchmark:operational safety",
+        "kind": "measured_by",
+        "weight": 1
+      }
+    ]
+  }
+};

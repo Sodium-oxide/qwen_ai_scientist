@@ -1,0 +1,360 @@
+   1 | {
+   2 |   "thought": "ZhiZhi retrieved and filtered literature, imported grounded PaperGraph evidence, built a benchmark-aware knowledge map, expanded citation context when available, and generated gaps with novelty/value/feasibility checks.",
+   3 |   "action": {
+   4 |     "agent": "zhizhi",
+   5 |     "query": "conductors for stable high-voltage lithium battery",
+   6 |     "domain": "battery materials",
+   7 |     "years": "last 5 years",
+   8 |     "search_papers": {
+   9 |       "search_id": "search_1783072654254069700",
+  10 |       "total_results": 5,
+  11 |       "providers": [
+  12 |         "semantic_scholar",
+  13 |         "arxiv"
+  14 |       ],
+  15 |       "errors": [
+  16 |         {
+  17 |           "provider": "semantic_scholar",
+  18 |           "query": "conductors for stable high-voltage lithium battery",
+  19 |           "status": "error",
+  20 |           "error": "Semantic Scholar rate limit persisted after 4 attempts: HTTP 429: {\"message\": \"Too Many Requests. Please wait and try again or apply for a key for higher rate limits. https://www.semanticscholar.org/product/api#api-key-form\", \"code\": \"429\"}",
+  21 |           "results": [],
+  22 |           "next_step": "Network/API failed. Retry later, configure API keys, or use manual import_literature_text."
+  23 |         }
+  24 |       ]
+  25 |     },
+  26 |     "select_literature_result": {
+  27 |       "result_index": 0,
+  28 |       "relevance_score": 0.333,
+  29 |       "relevance_components": {
+  30 |         "text_score": 0.544,
+  31 |         "recency_score": 0.85,
+  32 |         "impact_score": 0.35,
+  33 |         "citation_field": "materials_energy",
+  34 |         "citation_baseline": 350.0,
+  35 |         "venue_score": 0.35,
+  36 |         "publication_quality_score": 0.64,
+  37 |         "base_score": 0.5203,
+  38 |         "text_weight": 0.62,
+  39 |         "recency_weight": 0.1,
+  40 |         "impact_weight": 0.18,
+  41 |         "venue_weight": 0.1
+  42 |       },
+  43 |       "publication_quality_score": 0.64,
+  44 |       "venue_quality": "missing",
+  45 |       "journal_quartile": "",
+  46 |       "journal_metric_source": "",
+  47 |       "inferred_field": "materials_energy",
+  48 |       "quality_flags": [
+  49 |         "missing_venue",
+  50 |         "new_paper_protection"
+  51 |       ],
+  52 |       "quality_criteria": [
+  53 |         "venue metadata is missing",
+  54 |         "paper is within 2-year protection window; low citations are not treated as low quality"
+  55 |       ],
+  56 |       "suspicion_type": "",
+  57 |       "matched_query_terms": [
+  58 |         "high-voltage",
+  59 |         "lithium",
+  60 |         "battery"
+  61 |       ],
+  62 |       "title": "Highly Antioxidative Lithium Salt Enables High-Voltage Ether Electrolyte for Lithium Metal Battery",
+  63 |       "citation": "Jian He et al. (2024) Highly Antioxidative Lithium Salt Enables High-Voltage Ether Electrolyte for Lithium Metal Battery arXiv:2409.18344v1",
+  64 |       "provider": "arxiv",
+  65 |       "year": "2024",
+  66 |       "citation_count": null,
+  67 |       "influential_citation_count": null,
+  68 |       "doi": "",
+  69 |       "arxiv_id": "2409.18344v1",
+  70 |       "url": "http://arxiv.org/abs/2409.18344v1",
+  71 |       "relevance_reason": "title=3/5, abstract=2/5, citation=3/5, phrase_bonus=0.0, recency=0.85, impact=0.35, venue=0.35, quality=0.64",
+  72 |       "quality_reason": "venue metadata is missing; paper is within 2-year protection window; low citations are not treated as low quality"
+  73 |     },
+  74 |     "imported_records": 2,
+  75 |     "expand_literature_graph": {
+  76 |       "graph_search_id": "graph_1783072748869845500",
+  77 |       "total_results": 0,
+  78 |       "fallback_used": true,
+  79 |       "depth": 1
+  80 |     },
+  81 |     "build_literature_relation_graph": {
+  82 |       "relation_graph_id": "relgraph_1783072748876283700",
+  83 |       "cluster_count": 0,
+  84 |       "edge_summary": {
+  85 |         "total_edges": 0,
+  86 |         "citation_graph_edges": 0,
+  87 |         "artificial_edges": 0,
+  88 |         "by_relation": {},
+  89 |         "by_depth": {},
+  90 |         "fallback_weight_policy": "keyword_fallback/search_result edges are artificial and use very low PageRank weight."
+  91 |       },
+  92 |       "analysis_confidence": 0.65
+  93 |     }
+  94 |   },
+  95 |   "observation": [
+  96 |     "use_llm=false: ontology fallback is enabled, but key papers should be rerun with use_llm=true for fewer unknown method/scenario fields."
+  97 |   ],
+  98 |   "knowledge_map_summary": {
+  99 |     "main_methods": [
+ 100 |       "A comprehensive 3D simulation approach was used to analyze the effects of inlet and outlet configurations, airflow dynamics, and PCM phase transition behavior.",
+ 101 |       "interface engineering"
+ 102 |     ],
+ 103 |     "method_scenario_coverage": {
+ 104 |       "interface engineering": [
+ 105 |         "high-voltage lithium battery"
+ 106 |       ],
+ 107 |       "A comprehensive 3D simulation approach was used to analyze the effects of inlet and outlet configurations, airflow dynamics, and PCM phase transition behavior.": [
+ 108 |         "This study provides a foundation for designing efficient cooling strategies tailored to lightweight applications such as drones and portable energy storage systems."
+ 109 |       ]
+ 110 |     },
+ 111 |     "method_scenario_benchmark_triples": [
+ 112 |       {
+ 113 |         "method": "interface engineering",
+ 114 |         "scenario": "high-voltage lithium battery",
+ 115 |         "benchmark": "benchmark dataset",
+ 116 |         "references": [
+ 117 |           "Jian He et al. (2024) Highly Antioxidative Lithium Salt Enables High-Voltage Ether Electrolyte for Lithium Metal Battery arXiv:2409.18344v1"
+ 118 |         ],
+ 119 |         "evidence_type_annotations": [
+ 120 |           {
+ 121 |             "claim_type": "methodological_description",
+ 122 |             "claim": "interface engineering",
+ 123 |             "support": "structured_field"
+ 124 |           },
+ 125 |           {
+ 126 |             "claim_type": "empirical_result",
+ 127 |             "claim": "Ether-based electrolytes exhibit excellent compatibility with Li metal anodes, but their instability at high voltages limits their use in high-voltage Li metal batteries.",
+ 128 |             "support": "structured_field"
+ 129 |           },
+ 130 |           {
+ 131 |             "claim_type": "author_opinion",
+ 132 |             "claim": "No explicit limitation extracted.",
+ 133 |             "support": "structured_field"
+ 134 |           },
+ 135 |           {
+ 136 |             "claim_type": "theoretical_claim",
+ 137 |             "claim": "We demonstrate that LiPFBS helps maintain DME's compatibility in SEI formation. Additionally, a durable CEI layer derived from PFBS$^{-}$ enhances the performance of the cell at high voltages by forming a robust, inorganic-dominant CEI layer. A PFBS$^{-}$-derived CEI significantly enhances the overa...[truncated]",
+ 138 |             "support": "structured_field"
+ 139 |           },
+ 140 |           {
+ 141 |             "claim_type": "theoretical_claim",
+ 142 |             "claim": "Additionally, a durable CEI layer derived from PFBS$^{-}$ enhances the performance of the cell at high voltages by forming a robust, inorganic-dominant CEI layer.",
+ 143 |             "support": "source_sentence"
+ 144 |           },
+ 145 |           {
+ 146 |             "claim_type": "theoretical_claim",
+ 147 |             "claim": "A PFBS$^{-}$-derived CEI significantly enhances the overall performance of the full cell under high voltage conditions.",
+ 148 |             "support": "source_sentence"
+ 149 |           }
+ 150 |         ]
+ 151 |       },
+ 152 |       {
+ 153 |         "method": "A comprehensive 3D simulation approach was used to analyze the effects of inlet and outlet configurations, airflow dynamics, and PCM phase transition behavior.",
+ 154 |         "scenario": "This study provides a foundation for designing efficient cooling strategies tailored to lightweight applications such as drones and portable energy storage systems.",
+ 155 |         "benchmark": "benchmark dataset",
+ 156 |         "references": [
+ 157 |           "Xuguang Zhang et al. (2025) Comprehensive Analysis of Thermal Dissipation in Lithium-Ion Battery Packs arXiv:2502.07070v1"
+ 158 |         ],
+ 159 |         "evidence_type_annotations": [
+ 160 |           {
+ 161 |             "claim_type": "methodological_description",
+ 162 |             "claim": "A comprehensive 3D simulation approach was used to analyze the effects of inlet and outlet configurations, airflow dynamics, and PCM phase transition behavior.",
+ 163 |             "support": "structured_field"
+ 164 |           },
+ 165 |           {
+ 166 |             "claim_type": "empirical_result",
+ 167 |             "claim": "Effective thermal management is critical for lithium-ion battery packs' safe and efficient operations, particularly in applications such as drones, where compact designs and varying airflow conditions present unique challenges.",
+ 168 |             "support": "structured_field"
+ 169 |           },
+ 170 |           {
+ 171 |             "claim_type": "author_opinion",
+ 172 |             "claim": "Effective thermal management is critical for lithium-ion battery packs' safe and efficient operations, particularly in applications such as drones, where compact designs and varying airflow conditions present unique challenges. This study investigates the thermal performance of a 16-cell lithium-ion...[truncated]",
+ 173 |             "support": "structured_field"
+ 174 |           },
+ 175 |           {
+ 176 |             "claim_type": "theoretical_claim",
+ 177 |             "claim": "PCM integration further stabilized thermal behavior, with phase change durations extending to 12.5 min under tested conditions. These findings highlight the importance of geometric optimization and material integration in advancing compact and reliable thermal management systems for energy-dense bat...[truncated]",
+ 178 |             "support": "structured_field"
+ 179 |           },
+ 180 |           {
+ 181 |             "claim_type": "empirical_result",
+ 182 |             "claim": "Results indicate that the trapezoidal (wide-base) configuration, paired with a 5-inlet and 1-outlet setup, achieves the most balanced performance, effectively maintaining optimal operating temperatures across low and high-speed airflow conditions.",
+ 183 |             "support": "source_sentence"
+ 184 |           }
+ 185 |         ]
+ 186 |       },
+ 187 |       {
+ 188 |         "method": "interface engineering",
+ 189 |         "scenario": "high-voltage lithium battery",
+ 190 |         "benchmark": "benchmark dataset",
+ 191 |         "references": [
+ 192 |           "Jian He et al. (2024) Highly Antioxidative Lithium Salt Enables High-Voltage Ether Electrolyte for Lithium Metal Battery arXiv:2409.18344v1"
+ 193 |         ],
+ 194 |         "evidence_type_annotations": [
+ 195 |           {
+ 196 |             "claim_type": "methodological_description",
+ 197 |             "claim": "interface engineering",
+ 198 |             "support": "structured_field"
+ 199 |           },
+ 200 |           {
+ 201 |             "claim_type": "empirical_result",
+ 202 |             "claim": "Ether-based electrolytes exhibit excellent compatibility with Li metal anodes, but their instability at high voltages limits their use in high-voltage Li metal batteries.",
+ 203 |             "support": "structured_field"
+ 204 |           },
+ 205 |           {
+ 206 |             "claim_type": "author_opinion",
+ 207 |             "claim": "No explicit limitation extracted.",
+ 208 |             "support": "structured_field"
+ 209 |           }
+ 210 |         ]
+ 211 |       },
+ 212 |       {
+ 213 |         "method": "A comprehensive 3D simulation approach was used to analyze the effects of inlet and outlet configurations, airflow dynamics, and PCM phase transition behavior.",
+ 214 |         "scenario": "This study provides a foundation for designing efficient cooling strategies tailored to lightweight applications such as drones and portable energy storage systems.",
+ 215 |         "benchmark": "benchmark dataset",
+ 216 |         "references": [
+ 217 |           "Xuguang Zhang et al. (2025) Comprehensive Analysis of Thermal Dissipation in Lithium-Ion Battery Packs arXiv:2502.07070v1"
+ 218 |         ],
+ 219 |         "evidence_type_annotations": [
+ 220 |           {
+ 221 |             "claim_type": "methodological_description",
+ 222 |             "claim": "A comprehensive 3D simulation approach was used to analyze the effects of inlet and outlet configurations, airflow dynamics, and PCM phase transition behavior.",
+ 223 |             "support": "structured_field"
+ 224 |           },
+ 225 |           {
+ 226 |             "claim_type": "empirical_result",
+ 227 |             "claim": "Effective thermal management is critical for lithium-ion battery packs' safe and efficient operations, particularly in applications such as drones, where compact designs and varying airflow conditions present unique challenges.",
+ 228 |             "support": "structured_field"
+ 229 |           },
+ 230 |           {
+ 231 |             "claim_type": "author_opinion",
+ 232 |             "claim": "Effective thermal management is critical for lithium-ion battery packs' safe and efficient operations, particularly in applications such as drones, where compact designs and varying airflow conditions present unique challenges. This study investigates the thermal performance of a 16-cell lithium-ion...[truncated]",
+ 233 |             "support": "structured_field"
+ 234 |           }
+ 235 |         ]
+ 236 |       }
+ 237 |     ],
+ 238 |     "claim_type_counts": {
+ 239 |       "methodological_description": 4,
+ 240 |       "empirical_result": 5,
+ 241 |       "author_opinion": 4,
+ 242 |       "theoretical_claim": 4
+ 243 |     }
+ 244 |   },
+ 245 |   "knowledge_gaps": [
+ 246 |     {
+ 247 |       "gap_id": "gap_1783072748885435300",
+ 248 |       "gap_type": "combinatorial",
+ 249 |       "description": "Method 'A comprehensive 3D simulation approach was used to analyze the effects of inlet and outlet configurations, airflow dynamics, and PCM phase transition behavior.' has no recorded validation in scenario 'high-voltage lithium battery' in the current PaperGraph map.",
+ 250 |       "supporting_references": [
+ 251 |         "Jian He et al. (2024) Highly Antioxidative Lithium Salt Enables High-Voltage Ether Electrolyte for Lithium Metal Battery arXiv:2409.18344v1",
+ 252 |         "Xuguang Zhang et al. (2025) Comprehensive Analysis of Thermal Dissipation in Lithium-Ion Battery Packs arXiv:2502.07070v1"
+ 253 |       ],
+ 254 |       "novelty_score": 4,
+ 255 |       "application_value": "high",
+ 256 |       "feasibility": "high",
+ 257 |       "suggested_research_path": "Run a targeted validation study with explicit benchmarks, baselines, and failure-mode analysis.",
+ 258 |       "value_argument": "The combination may expose method-scenario boundary conditions rather than simply adding another benchmark.",
+ 259 |       "overlap_risk": "medium",
+ 260 |       "requires_human_review": false
+ 261 |     },
+ 262 |     {
+ 263 |       "gap_id": "gap_1783072748886678300",
+ 264 |       "gap_type": "combinatorial",
+ 265 |       "description": "Method 'interface engineering' has no recorded validation in scenario 'This study provides a foundation for designing efficient cooling strategies tailored to lightweight applications such as drones and portable energy storage systems.' in the current PaperGraph map.",
+ 266 |       "supporting_references": [
+ 267 |         "Jian He et al. (2024) Highly Antioxidative Lithium Salt Enables High-Voltage Ether Electrolyte for Lithium Metal Battery arXiv:2409.18344v1",
+ 268 |         "Xuguang Zhang et al. (2025) Comprehensive Analysis of Thermal Dissipation in Lithium-Ion Battery Packs arXiv:2502.07070v1"
+ 269 |       ],
+ 270 |       "novelty_score": 4,
+ 271 |       "application_value": "medium",
+ 272 |       "feasibility": "high",
+ 273 |       "suggested_research_path": "Run a targeted validation study with explicit benchmarks, baselines, and failure-mode analysis.",
+ 274 |       "value_argument": "The combination may expose method-scenario boundary conditions rather than simply adding another benchmark.",
+ 275 |       "overlap_risk": "medium",
+ 276 |       "requires_human_review": false
+ 277 |     },
+ 278 |     {
+ 279 |       "gap_id": "gap_1783072748887760700",
+ 280 |       "gap_type": "improvement",
+ 281 |       "description": "Recorded limitation worth testing: No explicit limitation extracted.",
+ 282 |       "supporting_references": [
+ 283 |         "Jian He et al. (2024) Highly Antioxidative Lithium Salt Enables High-Voltage Ether Electrolyte for Lithium Metal Battery arXiv:2409.18344v1"
+ 284 |       ],
+ 285 |       "novelty_score": 5,
+ 286 |       "application_value": "medium",
+ 287 |       "feasibility": "high",
+ 288 |       "suggested_research_path": "Formulate a hypothesis that directly attacks the documented limitation and verify it under stress conditions.",
+ 289 |       "value_argument": "The gap is grounded in an author-reported limitation, so it has stronger evidential support than a bare untried combination.",
+ 290 |       "overlap_risk": "medium",
+ 291 |       "requires_human_review": false
+ 292 |     },
+ 293 |     {
+ 294 |       "gap_id": "gap_1783072748888741000",
+ 295 |       "gap_type": "improvement",
+ 296 |       "description": "Recorded limitation worth testing: Effective thermal management is critical for lithium-ion battery packs' safe and efficient operations, particularly in applications such as drones, where compact designs and varying airflow conditions present unique challenges. This study investigates the thermal performance of a 16-cell lithium-ion...[truncated]",
+ 297 |       "supporting_references": [
+ 298 |         "Xuguang Zhang et al. (2025) Comprehensive Analysis of Thermal Dissipation in Lithium-Ion Battery Packs arXiv:2502.07070v1"
+ 299 |       ],
+ 300 |       "novelty_score": 2,
+ 301 |       "application_value": "medium",
+ 302 |       "feasibility": "high",
+ 303 |       "suggested_research_path": "Formulate a hypothesis that directly attacks the documented limitation and verify it under stress conditions.",
+ 304 |       "value_argument": "The gap is grounded in an author-reported limitation, so it has stronger evidential support than a bare untried combination.",
+ 305 |       "overlap_risk": "high",
+ 306 |       "requires_human_review": true
+ 307 |     },
+ 308 |     {
+ 309 |       "gap_id": "gap_1783072748889975300",
+ 310 |       "gap_type": "problem",
+ 311 |       "description": "Source literature indicates a recognized unresolved problem: Ether-based electrolytes exhibit excellent compatibility with Li metal anodes, but their instability at high voltages limits their use in high-voltage Li metal batteries. To address this issue, we introduce an alternative perfluorobutane sulfonate (LiPFBS) / d...[truncated]",
+ 312 |       "supporting_references": [
+ 313 |         "Jian He et al. (2024) Highly Antioxidative Lithium Salt Enables High-Voltage Ether Electrolyte for Lithium Metal Battery arXiv:2409.18344v1"
+ 314 |       ],
+ 315 |       "novelty_score": 3,
+ 316 |       "application_value": "high",
+ 317 |       "feasibility": "medium",
+ 318 |       "suggested_research_path": "Translate the unresolved problem into a falsifiable hypothesis with acceptance criteria and failure diagnostics.",
+ 319 |       "value_argument": "Problem gaps are grounded in explicit source statements about unresolved mechanisms or practical bottlenecks.",
+ 320 |       "overlap_risk": "high",
+ 321 |       "requires_human_review": true
+ 322 |     },
+ 323 |     {
+ 324 |       "gap_id": "gap_1783072748891241500",
+ 325 |       "gap_type": "problem",
+ 326 |       "description": "Source literature indicates a recognized unresolved problem: Effective thermal management is critical for lithium-ion battery packs' safe and efficient operations, particularly in applications such as drones, where compact designs and varying airflow conditions present unique challenges. This study investigates the ther...[truncated]",
+ 327 |       "supporting_references": [
+ 328 |         "Xuguang Zhang et al. (2025) Comprehensive Analysis of Thermal Dissipation in Lithium-Ion Battery Packs arXiv:2502.07070v1"
+ 329 |       ],
+ 330 |       "novelty_score": 3,
+ 331 |       "application_value": "medium",
+ 332 |       "feasibility": "medium",
+ 333 |       "suggested_research_path": "Translate the unresolved problem into a falsifiable hypothesis with acceptance criteria and failure diagnostics.",
+ 334 |       "value_argument": "Problem gaps are grounded in explicit source statements about unresolved mechanisms or practical bottlenecks.",
+ 335 |       "overlap_risk": "high",
+ 336 |       "requires_human_review": true
+ 337 |     },
+ 338 |     {
+ 339 |       "gap_id": "gap_1783072748893380400",
+ 340 |       "gap_type": "migration",
+ 341 |       "description": "Method 'interface engineering' is only recorded in scenario 'high-voltage lithium battery', but may be transferable to scenario 'This study provides a foundation for designing efficient cooling strategies tailored to lightweight applications such as drones and portable energy storage systems.'.",
+ 342 |       "supporting_references": [
+ 343 |         "Jian He et al. (2024) Highly Antioxidative Lithium Salt Enables High-Voltage Ether Electrolyte for Lithium Metal Battery arXiv:2409.18344v1"
+ 344 |       ],
+ 345 |       "novelty_score": 5,
+ 346 |       "application_value": "high",
+ 347 |       "feasibility": "medium",
+ 348 |       "suggested_research_path": "Audit assumptions of the source scenario, then run a small transfer validation in the target scenario.",
+ 349 |       "value_argument": "Migration gaps can create useful cross-domain leverage if mechanism assumptions remain valid.",
+ 350 |       "overlap_risk": "medium",
+ 351 |       "requires_human_review": false
+ 352 |     }
+ 353 |   ],
+ 354 |   "self_reflection": {
+ 355 |     "top_venue_coverage_checked": true,
+ 356 |     "pseudo_gap_risk_checked": true,
+ 357 |     "method_categories_require_literature_support": true,
+ 358 |     "unsupported_claims_marked_for_review": true
+ 359 |   }
+ 360 | }

@@ -1,0 +1,466 @@
+{
+  "search_id": "relgraph_1783061770612566700",
+  "kind": "paper_relation_graph",
+  "source_search_id": "graph_1783061770606192400",
+  "query": "battery conductor",
+  "createdAt": 1783061770.612569,
+  "node_count": 3,
+  "edge_count": 2,
+  "cluster_count": 2,
+  "max_clusters": 8,
+  "fallback_used": false,
+  "analysis_confidence": 1.0,
+  "edge_summary": {
+    "total_edges": 2,
+    "citation_graph_edges": 2,
+    "artificial_edges": 0,
+    "by_relation": {
+      "reference": 1,
+      "second_layer_reference": 1
+    },
+    "by_depth": {
+      "1": 1,
+      "2": 1
+    },
+    "fallback_weight_policy": "keyword_fallback/search_result edges are artificial and use very low PageRank weight."
+  },
+  "nodes": [
+    {
+      "node_id": "s2p1",
+      "role": "paper",
+      "result_index": 0,
+      "title": "Layer one garnet electrolyte",
+      "year": "2023",
+      "venue": "Advanced Energy Materials",
+      "field": "materials_energy",
+      "mechanism_terms": [
+        "electrolyte",
+        "conductor",
+        "garnet",
+        "layer",
+        "advanced",
+        "energy"
+      ],
+      "mechanism_cluster_key": "materials_energy:electrolyte",
+      "relevance_score": 0.3622,
+      "publication_quality_score": 0.96,
+      "venue_quality": "reputable",
+      "journal_quartile": "Q1",
+      "citation_count": 30.0,
+      "influential_citation_count": 0.0,
+      "quality_flags": [
+        "journal_quartile_q1",
+        "reputable_venue",
+        "some_citations"
+      ],
+      "doi": "",
+      "arxiv_id": "",
+      "semantic_scholar_id": "p1",
+      "url": "",
+      "pagerank": 0.341171,
+      "degree_centrality": 1.0,
+      "centrality_score": 0.53882
+    },
+    {
+      "node_id": "s2p2",
+      "role": "paper",
+      "result_index": 1,
+      "title": "Layer two oxide interface",
+      "year": "2022",
+      "venue": "Nature Energy",
+      "field": "materials_energy",
+      "mechanism_terms": [
+        "interface",
+        "oxide",
+        "stability",
+        "layer",
+        "nature",
+        "energy"
+      ],
+      "mechanism_cluster_key": "materials_energy:interface",
+      "relevance_score": 0.0748,
+      "publication_quality_score": 1.0,
+      "venue_quality": "reputable",
+      "journal_quartile": "Q1",
+      "citation_count": 50.0,
+      "influential_citation_count": 0.0,
+      "quality_flags": [
+        "journal_quartile_q1",
+        "reputable_venue",
+        "well_cited"
+      ],
+      "doi": "",
+      "arxiv_id": "",
+      "semantic_scholar_id": "p2",
+      "url": "",
+      "pagerank": 0.474412,
+      "degree_centrality": 0.393939,
+      "centrality_score": 0.45027
+    },
+    {
+      "node_id": "s2seed",
+      "role": "seed",
+      "result_index": 0,
+      "title": "Seed conductor",
+      "year": null,
+      "venue": "Nature Communications",
+      "field": "materials_energy",
+      "mechanism_terms": [
+        "battery",
+        "conductor",
+        "seed",
+        "nature",
+        "communications"
+      ],
+      "mechanism_cluster_key": "materials_energy:battery",
+      "relevance_score": 0.0,
+      "publication_quality_score": 0.88,
+      "venue_quality": "reputable",
+      "journal_quartile": "Q1",
+      "citation_count": 0.0,
+      "influential_citation_count": 0.0,
+      "quality_flags": [
+        "journal_quartile_q1",
+        "reputable_venue",
+        "zero_citations_recent_or_unknown"
+      ],
+      "doi": null,
+      "arxiv_id": null,
+      "semantic_scholar_id": "seed",
+      "url": null,
+      "pagerank": 0.184417,
+      "degree_centrality": 0.606061,
+      "centrality_score": 0.31091
+    }
+  ],
+  "edges": [
+    {
+      "source": "s2seed",
+      "target": "s2p1",
+      "relation": "reference",
+      "base_relation": "reference",
+      "edge_type": "citation_graph",
+      "expanded_depth": 1,
+      "weight": 1.0,
+      "citation_contexts": [
+        "seed cites p1"
+      ],
+      "citation_intents": [],
+      "is_influential": false,
+      "parent_title": "",
+      "manual_connection": false
+    },
+    {
+      "source": "s2p1",
+      "target": "s2p2",
+      "relation": "second_layer_reference",
+      "base_relation": "reference",
+      "edge_type": "citation_graph",
+      "expanded_depth": 2,
+      "weight": 0.65,
+      "citation_contexts": [
+        "p1 cites p2"
+      ],
+      "citation_intents": [],
+      "is_influential": false,
+      "parent_title": "Layer one garnet electrolyte",
+      "manual_connection": false
+    }
+  ],
+  "clusters": [
+    {
+      "cluster_id": "materials_energyinterface",
+      "field": "materials_energy",
+      "mechanism": "interface",
+      "size": 1,
+      "merged_singletons": false,
+      "artificial_connection_count": 0,
+      "connection_confidence": 1.0,
+      "avg_quality": 1.0,
+      "avg_relevance": 0.0748,
+      "quality_flags": [
+        "journal_quartile_q1",
+        "reputable_venue",
+        "well_cited"
+      ],
+      "representative_papers": [
+        {
+          "node_id": "s2p2",
+          "title": "Layer two oxide interface",
+          "year": "2022",
+          "venue": "Nature Energy",
+          "field": "materials_energy",
+          "mechanism_terms": [
+            "interface",
+            "oxide",
+            "stability",
+            "layer",
+            "nature",
+            "energy"
+          ],
+          "pagerank": null,
+          "degree_centrality": null,
+          "centrality_score": null,
+          "publication_quality_score": 1.0,
+          "relevance_score": 0.0748,
+          "quality_flags": [
+            "journal_quartile_q1",
+            "reputable_venue",
+            "well_cited"
+          ]
+        }
+      ]
+    },
+    {
+      "cluster_id": "materials_energyelectrolyte",
+      "field": "materials_energy",
+      "mechanism": "electrolyte",
+      "size": 1,
+      "merged_singletons": false,
+      "artificial_connection_count": 0,
+      "connection_confidence": 1.0,
+      "avg_quality": 0.96,
+      "avg_relevance": 0.3622,
+      "quality_flags": [
+        "journal_quartile_q1",
+        "reputable_venue",
+        "some_citations"
+      ],
+      "representative_papers": [
+        {
+          "node_id": "s2p1",
+          "title": "Layer one garnet electrolyte",
+          "year": "2023",
+          "venue": "Advanced Energy Materials",
+          "field": "materials_energy",
+          "mechanism_terms": [
+            "electrolyte",
+            "conductor",
+            "garnet",
+            "layer",
+            "advanced",
+            "energy"
+          ],
+          "pagerank": null,
+          "degree_centrality": null,
+          "centrality_score": null,
+          "publication_quality_score": 0.96,
+          "relevance_score": 0.3622,
+          "quality_flags": [
+            "journal_quartile_q1",
+            "reputable_venue",
+            "some_citations"
+          ]
+        }
+      ]
+    }
+  ],
+  "central_papers": [
+    {
+      "node_id": "s2p1",
+      "title": "Layer one garnet electrolyte",
+      "year": "2023",
+      "venue": "Advanced Energy Materials",
+      "field": "materials_energy",
+      "mechanism_terms": [
+        "electrolyte",
+        "conductor",
+        "garnet",
+        "layer",
+        "advanced",
+        "energy"
+      ],
+      "pagerank": 0.341171,
+      "degree_centrality": 1.0,
+      "centrality_score": 0.53882,
+      "publication_quality_score": 0.96,
+      "relevance_score": 0.3622,
+      "quality_flags": [
+        "journal_quartile_q1",
+        "reputable_venue",
+        "some_citations"
+      ]
+    },
+    {
+      "node_id": "s2p2",
+      "title": "Layer two oxide interface",
+      "year": "2022",
+      "venue": "Nature Energy",
+      "field": "materials_energy",
+      "mechanism_terms": [
+        "interface",
+        "oxide",
+        "stability",
+        "layer",
+        "nature",
+        "energy"
+      ],
+      "pagerank": 0.474412,
+      "degree_centrality": 0.393939,
+      "centrality_score": 0.45027,
+      "publication_quality_score": 1.0,
+      "relevance_score": 0.0748,
+      "quality_flags": [
+        "journal_quartile_q1",
+        "reputable_venue",
+        "well_cited"
+      ]
+    },
+    {
+      "node_id": "s2seed",
+      "title": "Seed conductor",
+      "year": null,
+      "venue": "Nature Communications",
+      "field": "materials_energy",
+      "mechanism_terms": [
+        "battery",
+        "conductor",
+        "seed",
+        "nature",
+        "communications"
+      ],
+      "pagerank": 0.184417,
+      "degree_centrality": 0.606061,
+      "centrality_score": 0.31091,
+      "publication_quality_score": 0.88,
+      "relevance_score": 0.0,
+      "quality_flags": [
+        "journal_quartile_q1",
+        "reputable_venue",
+        "zero_citations_recent_or_unknown"
+      ]
+    }
+  ],
+  "mechanism_lineage": [
+    {
+      "mechanism": "interface",
+      "field": "materials_energy",
+      "paper_count": 1,
+      "avg_quality": 1.0,
+      "representative_titles": [
+        "Layer two oxide interface"
+      ],
+      "interpretation": "materials_energy lineage centered on interface with 1 papers; inspect representative_papers before importing claims."
+    },
+    {
+      "mechanism": "electrolyte",
+      "field": "materials_energy",
+      "paper_count": 1,
+      "avg_quality": 0.96,
+      "representative_titles": [
+        "Layer one garnet electrolyte"
+      ],
+      "interpretation": "materials_energy lineage centered on electrolyte with 1 papers; inspect representative_papers before importing claims."
+    }
+  ],
+  "total_results": 3,
+  "results": [
+    {
+      "node_id": "s2p1",
+      "role": "paper",
+      "result_index": 0,
+      "title": "Layer one garnet electrolyte",
+      "year": "2023",
+      "venue": "Advanced Energy Materials",
+      "field": "materials_energy",
+      "mechanism_terms": [
+        "electrolyte",
+        "conductor",
+        "garnet",
+        "layer",
+        "advanced",
+        "energy"
+      ],
+      "mechanism_cluster_key": "materials_energy:electrolyte",
+      "relevance_score": 0.3622,
+      "publication_quality_score": 0.96,
+      "venue_quality": "reputable",
+      "journal_quartile": "Q1",
+      "citation_count": 30.0,
+      "influential_citation_count": 0.0,
+      "quality_flags": [
+        "journal_quartile_q1",
+        "reputable_venue",
+        "some_citations"
+      ],
+      "doi": "",
+      "arxiv_id": "",
+      "semantic_scholar_id": "p1",
+      "url": "",
+      "pagerank": 0.341171,
+      "degree_centrality": 1.0,
+      "centrality_score": 0.53882
+    },
+    {
+      "node_id": "s2p2",
+      "role": "paper",
+      "result_index": 1,
+      "title": "Layer two oxide interface",
+      "year": "2022",
+      "venue": "Nature Energy",
+      "field": "materials_energy",
+      "mechanism_terms": [
+        "interface",
+        "oxide",
+        "stability",
+        "layer",
+        "nature",
+        "energy"
+      ],
+      "mechanism_cluster_key": "materials_energy:interface",
+      "relevance_score": 0.0748,
+      "publication_quality_score": 1.0,
+      "venue_quality": "reputable",
+      "journal_quartile": "Q1",
+      "citation_count": 50.0,
+      "influential_citation_count": 0.0,
+      "quality_flags": [
+        "journal_quartile_q1",
+        "reputable_venue",
+        "well_cited"
+      ],
+      "doi": "",
+      "arxiv_id": "",
+      "semantic_scholar_id": "p2",
+      "url": "",
+      "pagerank": 0.474412,
+      "degree_centrality": 0.393939,
+      "centrality_score": 0.45027
+    },
+    {
+      "node_id": "s2seed",
+      "role": "seed",
+      "result_index": 0,
+      "title": "Seed conductor",
+      "year": null,
+      "venue": "Nature Communications",
+      "field": "materials_energy",
+      "mechanism_terms": [
+        "battery",
+        "conductor",
+        "seed",
+        "nature",
+        "communications"
+      ],
+      "mechanism_cluster_key": "materials_energy:battery",
+      "relevance_score": 0.0,
+      "publication_quality_score": 0.88,
+      "venue_quality": "reputable",
+      "journal_quartile": "Q1",
+      "citation_count": 0.0,
+      "influential_citation_count": 0.0,
+      "quality_flags": [
+        "journal_quartile_q1",
+        "reputable_venue",
+        "zero_citations_recent_or_unknown"
+      ],
+      "doi": null,
+      "arxiv_id": null,
+      "semantic_scholar_id": "seed",
+      "url": null,
+      "pagerank": 0.184417,
+      "degree_centrality": 0.606061,
+      "centrality_score": 0.31091
+    }
+  ]
+}

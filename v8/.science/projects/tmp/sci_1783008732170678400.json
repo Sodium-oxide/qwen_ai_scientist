@@ -1,0 +1,99 @@
+{
+  "project_id": "sci_1783008732170678400",
+  "title": "PaperGraph validation",
+  "domain": "AI for Science PaperGraph",
+  "objective": "?? PaperGraph v1 ???????? evidence ??",
+  "strategic_need": "",
+  "phase": "Gap Discovery",
+  "createdAt": 1783008732.1706803,
+  "updatedAt": 1783008732.1876037,
+  "papergraph": [
+    {
+      "paper_id": "paper_1783008732178550600",
+      "unique_key": "doi:10_1234_example_2026_001",
+      "title": "Graph-guided autonomous agents for scientific discovery",
+      "citation": "Li Wang et al. (2026) Graph-guided autonomous agents for scientific discovery doi:10.1234/example.2026.001",
+      "authors": [
+        "Li Wang",
+        "Mei Chen"
+      ],
+      "year": "2026",
+      "venue": "Nature Machine Intelligence",
+      "provider": "manual_sample",
+      "source_type": "full_text",
+      "doi": "10.1234/example.2026.001",
+      "arxiv_id": "",
+      "semantic_scholar_id": "",
+      "url": "",
+      "abstract": "We present a multi-agent research system that combines literature graphs, hypothesis generation, and mechanism validation. The method improves coverage of interdisciplinary evidence and reduces duplicated citation handling in long-running research projects.",
+      "conclusion": "Graph-guided agents can improve scientific workflow reliability when citation identity, evidence credibility, and limitation tracking are handled explicitly.",
+      "strengths": [
+        "Abstract: We present a multi-agent research system that combines literature graphs, hypothesis generation, and mechanism validation. The method improves coverage of interdisciplinary evidence and reduces duplicated citation handling in long-running research projects.",
+        "Conclusion: Graph-guided agents can improve scientific workflow reliability when citation identity, evidence credibility, and limitation tracking are handled explicitly.",
+        "Strengths: Strong integration of evidence provenance. Clear task decomposition. Useful for project-scale reasoning."
+      ],
+      "improvements": [
+        "Conclusion: Graph-guided agents can improve scientific workflow reliability when citation identity, evidence credibility, and limitation tracking are handled explicitly.",
+        "Limitations: The current prototype relies on heuristic parsing and lacks live publisher API integration.",
+        "Future work: Add robust PDF extraction and external database connectors."
+      ],
+      "method": "The method improves coverage of interdisciplinary evidence and reduces duplicated citation handling in long-running research projects.",
+      "scenario": "We evaluate the system on materials science and biomedical discovery tasks.",
+      "benchmark": "unknown benchmark",
+      "contribution": "Abstract: We present a multi-agent research system that combines literature graphs, hypothesis generation, and mechanism validation. The method improves coverage of interdisciplinary evidence and reduces duplicated citation handling in long-running research projects.",
+      "limitation": "Conclusion: Graph-guided agents can improve scientific workflow reliability when citation identity, evidence credibility, and limitation tracking are handled explicitly.",
+      "credibility_score": 0.9,
+      "credibility_reasons": [
+        "base record",
+        "has title and citation",
+        "has DOI",
+        "has substantial abstract",
+        "has conclusion/discussion",
+        "provider recorded",
+        "high-prestige venue marker",
+        "has publication year"
+      ],
+      "importedAt": 1783008732.17857
+    }
+  ],
+  "evidence": [
+    {
+      "evidence_id": "ev_1783008732178618900",
+      "title": "Graph-guided autonomous agents for scientific discovery",
+      "citation": "Li Wang et al. (2026) Graph-guided autonomous agents for scientific discovery doi:10.1234/example.2026.001",
+      "method": "The method improves coverage of interdisciplinary evidence and reduces duplicated citation handling in long-running research projects.",
+      "scenario": "We evaluate the system on materials science and biomedical discovery tasks.",
+      "benchmark": "unknown benchmark",
+      "contribution": "Abstract: We present a multi-agent research system that combines literature graphs, hypothesis generation, and mechanism validation. The method improves coverage of interdisciplinary evidence and reduces duplicated citation handling in long-running research projects.",
+      "limitation": "Conclusion: Graph-guided agents can improve scientific workflow reliability when citation identity, evidence credibility, and limitation tracking are handled explicitly.",
+      "url": "",
+      "createdAt": 1783008732.1786253
+    }
+  ],
+  "coverage_matrix": {
+    "The method improves coverage of interdisciplinary evidence and reduces duplicated citation handling in long-running research projects.": {
+      "We evaluate the system on materials science and biomedical discovery tasks.": [
+        "Li Wang et al. (2026) Graph-guided autonomous agents for scientific discovery doi:10.1234/example.2026.001"
+      ]
+    }
+  },
+  "knowledge_gaps": [
+    {
+      "gap_id": "gap_1783008732187365100",
+      "gap_type": "improvement",
+      "description": "Recorded limitation worth testing: Conclusion: Graph-guided agents can improve scientific workflow reliability when citation identity, evidence credibility, and limitation tracking are handled explicitly.",
+      "supporting_references": [
+        "Li Wang et al. (2026) Graph-guided autonomous agents for scientific discovery doi:10.1234/example.2026.001"
+      ],
+      "novelty_score": 6,
+      "application_value": "medium",
+      "feasibility": "high",
+      "suggested_research_path": "Formulate a hypothesis that directly attacks the documented limitation.",
+      "status": "candidate",
+      "createdAt": 1783008732.1873748
+    }
+  ],
+  "hypotheses": [],
+  "mechanism_reports": [],
+  "pipeline_tasks": []
+}

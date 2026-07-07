@@ -1,0 +1,2211 @@
+{
+  "thought": "ZhiZhi retrieved and filtered literature, imported grounded PaperGraph evidence, built a benchmark-aware knowledge map, expanded citation context when available, and generated gaps with novelty/value/feasibility checks.",
+  "action": {
+    "agent": "zhizhi",
+    "query": "power system simulation transient stability electromagnetic transient digital twin real-time simulator co-simulation AI surrogate modeling",
+    "domain": "Power System Simulation / 电力系统仿真",
+    "years": "last 5 years",
+    "domain_subspace_explorer": {
+      "subspace_map_id": "subspace_1783352911373840500",
+      "coverage_plan": {
+        "total_subspaces": 8,
+        "covered": 2,
+        "missing": 6,
+        "insufficient": 0,
+        "coverage_rate": 0.25,
+        "missing_details": [
+          {
+            "name": "Real-Time Power System Simulation",
+            "keywords": [
+              "real-time simulator",
+              "OPAL-RT",
+              "RTDS",
+              "HIL testing",
+              "FPGA-based simulation",
+              "latency-critical co-simulation"
+            ],
+            "suggested_action": "supplemental_search"
+          },
+          {
+            "name": "Power System Digital Twin",
+            "keywords": [
+              "digital twin",
+              "asset digital twin",
+              "model-data fusion",
+              "grid observability",
+              "twin-to-reality update",
+              "cyber-physical synchronization"
+            ],
+            "suggested_action": "supplemental_search"
+          },
+          {
+            "name": "Power System Co-Simulation",
+            "keywords": [
+              "co-simulation",
+              "FMI",
+              "cosim-rt",
+              "HELICS",
+              "energy-communication co-simulation",
+              "time-step coupling"
+            ],
+            "suggested_action": "supplemental_search"
+          },
+          {
+            "name": "AI Surrogate Modeling for Power Systems",
+            "keywords": [
+              "surrogate model",
+              "neural ODE",
+              "PINN",
+              "graph neural network",
+              "power flow surrogate",
+              "stability prediction ML"
+            ],
+            "suggested_action": "supplemental_search"
+          },
+          {
+            "name": "Multi-Time-Scale Simulation",
+            "keywords": [
+              "multi-timescale simulation",
+              "adaptive time-stepping",
+              "hybrid solver",
+              "time-scale partitioning",
+              "stiff system integration",
+              "event-driven switching"
+            ],
+            "suggested_action": "supplemental_search"
+          },
+          {
+            "name": "Model Order Reduction for Power Systems",
+            "keywords": [
+              "model order reduction",
+              "POD",
+              "balanced truncation",
+              "moment matching",
+              "HVDC model reduction",
+              "small-signal stability preservation"
+            ],
+            "suggested_action": "supplemental_search"
+          }
+        ],
+        "recommendation": "Confirm priority subspaces with the user before running ZhiZhi, then search selected subspaces independently."
+      },
+      "selected_subfields": []
+    },
+    "search_papers_stratified": {
+      "search_id": "search_1783352931812121600",
+      "total_results": 25,
+      "requested_max_results": 25,
+      "effective_search_budget": 25,
+      "providers": [
+        "semantic_scholar",
+        "arxiv"
+      ],
+      "strategy": "stratified_cascade",
+      "query_plan": [
+        {
+          "branch": "primary",
+          "query": "power system simulation transient stability electromagnetic transient digital twin real-time simulator co-simulation AI surrogate modeling"
+        },
+        {
+          "branch": "transient_stability_simulation",
+          "query": "power system simulation transient stability electromagnetic transient digital twin real-time simulator co-simulation AI surrogate modeling transient stability simulation"
+        },
+        {
+          "branch": "electromagnetic_transient_simulation",
+          "query": "power system simulation transient stability electromagnetic transient digital twin real-time simulator co-simulation AI surrogate modeling electromagnetic transient simulation"
+        },
+        {
+          "branch": "digital_twin_power_grid",
+          "query": "power system simulation transient stability electromagnetic transient digital twin real-time simulator co-simulation AI surrogate modeling digital twin power grid"
+        },
+        {
+          "branch": "real_time_simulator",
+          "query": "power system simulation transient stability electromagnetic transient digital twin real-time simulator co-simulation AI surrogate modeling real-time simulator"
+        },
+        {
+          "branch": "power_system_co_simulation",
+          "query": "power system simulation transient stability electromagnetic transient digital twin real-time simulator co-simulation AI surrogate modeling power system co-simulation"
+        },
+        {
+          "branch": "ai_surrogate_modeling_for_power_grids",
+          "query": "power system simulation transient stability electromagnetic transient digital twin real-time simulator co-simulation AI surrogate modeling AI surrogate modeling for power grids"
+        },
+        {
+          "branch": "emt_simulation_pscad_emtp_rv_switching_transients_igbt_modeling_frequency_depend",
+          "query": "power system simulation transient stability electromagnetic transient digital twin real-time simulator co-simulation AI surrogate modeling EMT simulation PSCAD EMTP-RV switching transients IGBT modeling frequency-dependent transmission lines nonlinear surge arresters converter valve dynamics review survey"
+        },
+        {
+          "branch": "transient_stability_classical_model_detailed_generator_model_pss_design_critical",
+          "query": "power system simulation transient stability electromagnetic transient digital twin real-time simulator co-simulation AI surrogate modeling transient stability classical model detailed generator model PSS design critical clearing time swing equation IEEE standard test cases dynamic phasor approximation review survey"
+        }
+      ],
+      "focus_branches": [
+        "transient stability simulation",
+        "electromagnetic transient simulation",
+        "digital twin power grid",
+        "real-time simulator",
+        "power system co-simulation",
+        "AI surrogate modeling for power grids",
+        "EMT simulation PSCAD EMTP-RV switching transients IGBT modeling frequency-dependent transmission lines nonlinear surge arresters converter valve dynamics review survey",
+        "transient stability classical model detailed generator model PSS design critical clearing time swing equation IEEE standard test cases dynamic phasor approximation review survey",
+        "co-simulation FMI cosim-rt HELICS energy-communication co-simulation time-step coupling interface synchronization cross-domain event triggering latest recent",
+        "real time simulator"
+      ],
+      "strata": [
+        {
+          "layer": "L0_review",
+          "label": "high-impact review / field map",
+          "quota": 3,
+          "query_suffix": "review survey progress perspective tutorial systematic review meta-analysis",
+          "target": 3,
+          "candidate_count": 12,
+          "raw_candidate_count": 20,
+          "selected": 3,
+          "domain_rejected": 0,
+          "recovery_used": "",
+          "carried_to_next": 0
+        },
+        {
+          "layer": "L1_milestone",
+          "label": "milestone / highly cited foundation",
+          "quota": 4,
+          "query_suffix": "seminal foundational highly cited landmark classic influential",
+          "target": 4,
+          "candidate_count": 14,
+          "raw_candidate_count": 22,
+          "selected": 4,
+          "domain_rejected": 0,
+          "recovery_used": "relaxed_milestone_highest_available_citation",
+          "carried_to_next": 0
+        },
+        {
+          "layer": "L2_top_latest",
+          "label": "recent top-venue frontier",
+          "quota": 4,
+          "query_suffix": "latest recent top journal high impact breakthrough advance frontier",
+          "target": 4,
+          "candidate_count": 15,
+          "raw_candidate_count": 22,
+          "selected": 4,
+          "domain_rejected": 0,
+          "recovery_used": "relaxed_top_latest_recent_or_high_quality_available",
+          "carried_to_next": 0
+        },
+        {
+          "layer": "L3_preprint",
+          "label": "latest arXiv preprint frontier",
+          "quota": 1,
+          "query_suffix": "",
+          "target": 1,
+          "candidate_count": 8,
+          "raw_candidate_count": 8,
+          "selected": 1,
+          "domain_rejected": 0,
+          "recovery_used": "",
+          "carried_to_next": 0
+        },
+        {
+          "layer": "L4_regular",
+          "label": "regular journal / supplemental evidence",
+          "quota": 13,
+          "query_suffix": "",
+          "target": 13,
+          "candidate_count": 76,
+          "raw_candidate_count": 79,
+          "selected": 13,
+          "domain_rejected": 0,
+          "recovery_used": "",
+          "carried_to_next": 0
+        }
+      ],
+      "errors": []
+    },
+    "domain_coverage_diagnostic": {
+      "profile": "domain_specific_research_and_engineering_context_focused_on_computational_modeli",
+      "profile_source": "llm",
+      "search_id": "search_1783352931812121600",
+      "total_results": 25,
+      "represented_topics": [
+        {
+          "topic": "Real-Time Simulation Platforms",
+          "hit_count": 15,
+          "min_hits": 10,
+          "terms": [
+            "rtds",
+            "opal-rt",
+            "typhoon hil",
+            "fpga",
+            "hil",
+            "dspace"
+          ]
+        },
+        {
+          "topic": "AI-Based Surrogate Modeling",
+          "hit_count": 18,
+          "min_hits": 10,
+          "terms": [
+            "neural emulator",
+            "pinn",
+            "gpr",
+            "rom",
+            "surrogate training",
+            "physics-informed ml"
+          ]
+        },
+        {
+          "topic": "Power System Digital Twin Architectures",
+          "hit_count": 13,
+          "min_hits": 10,
+          "terms": [
+            "digital twin",
+            "cyber-physical twin",
+            "twin engine",
+            "data assimilation",
+            "grid observability"
+          ]
+        }
+      ],
+      "blind_spots": [
+        {
+          "topic": "Electromagnetic Transient Simulation",
+          "hit_count": 2,
+          "min_hits": 10,
+          "terms": [
+            "atp-emtp",
+            "pscad",
+            "emtdc",
+            "frequency-dependent modeling",
+            "switching transients"
+          ],
+          "suggested_query": "power system simulation transient stability electromagnetic transient digital twin real-time simulator co-simulation AI surrogate modeling atp-emtp pscad emtdc frequency-dependent modeling",
+          "risk": "Live probe found literature for this missing branch; current PaperGraph may be incomplete, so TanXi should not treat this absence as a true unexplored gap.",
+          "live_probe": {
+            "query": "power system simulation transient stability electromagnetic transient digital twin real-time simulator co-simulation AI surrogate modeling atp-emtp pscad emtdc frequency-dependent modeling",
+            "status": "ok",
+            "total_results": 3,
+            "providers": [
+              {
+                "provider": "semantic_scholar",
+                "status": "ok",
+                "result_count": 0,
+                "top_titles": [],
+                "error": ""
+              },
+              {
+                "provider": "arxiv",
+                "status": "ok",
+                "result_count": 3,
+                "top_titles": [
+                  "Real-time frequency based reduced order modeling of large power grid",
+                  "Towards an Assisted Simulation Planning for Co-Simulation of Cyber-Physical Energy Systems",
+                  "Cyber-Physical Energy Systems Modeling, Test Specification, and Co-Simulation Based Testing"
+                ],
+                "error": ""
+              }
+            ]
+          },
+          "false_negative_risk": true
+        },
+        {
+          "topic": "Transient Stability Analysis",
+          "hit_count": 0,
+          "min_hits": 10,
+          "terms": [
+            "swing equation",
+            "critical clearing time",
+            "psse",
+            "generator model",
+            "angle stability"
+          ],
+          "suggested_query": "power system simulation transient stability electromagnetic transient digital twin real-time simulator co-simulation AI surrogate modeling swing equation critical clearing time psse generator model",
+          "risk": "Live probe found literature for this missing branch; current PaperGraph may be incomplete, so TanXi should not treat this absence as a true unexplored gap.",
+          "live_probe": {
+            "query": "power system simulation transient stability electromagnetic transient digital twin real-time simulator co-simulation AI surrogate modeling swing equation critical clearing time psse generator model",
+            "status": "ok",
+            "total_results": 3,
+            "providers": [
+              {
+                "provider": "semantic_scholar",
+                "status": "ok",
+                "result_count": 0,
+                "top_titles": [],
+                "error": ""
+              },
+              {
+                "provider": "arxiv",
+                "status": "ok",
+                "result_count": 3,
+                "top_titles": [
+                  "Real-time frequency based reduced order modeling of large power grid",
+                  "Towards an Assisted Simulation Planning for Co-Simulation of Cyber-Physical Energy Systems",
+                  "Real time state monitoring and fault diagnosis system for motor based on LabVIEW"
+                ],
+                "error": ""
+              }
+            ]
+          },
+          "false_negative_risk": true
+        },
+        {
+          "topic": "Co-Simulation Standards and Middleware",
+          "hit_count": 0,
+          "min_hits": 10,
+          "terms": [
+            "fmi",
+            "helics",
+            "iec 61850",
+            "co-simulation coupling",
+            "time-step synchronization"
+          ],
+          "suggested_query": "power system simulation transient stability electromagnetic transient digital twin real-time simulator co-simulation AI surrogate modeling fmi helics iec 61850 co-simulation coupling",
+          "risk": "Live probe found literature for this missing branch; current PaperGraph may be incomplete, so TanXi should not treat this absence as a true unexplored gap.",
+          "live_probe": {
+            "query": "power system simulation transient stability electromagnetic transient digital twin real-time simulator co-simulation AI surrogate modeling fmi helics iec 61850 co-simulation coupling",
+            "status": "ok",
+            "total_results": 3,
+            "providers": [
+              {
+                "provider": "semantic_scholar",
+                "status": "ok",
+                "result_count": 0,
+                "top_titles": [],
+                "error": ""
+              },
+              {
+                "provider": "arxiv",
+                "status": "ok",
+                "result_count": 3,
+                "top_titles": [
+                  "Towards an Assisted Simulation Planning for Co-Simulation of Cyber-Physical Energy Systems",
+                  "FMI-Based Distributed Co-Simulation with Enhanced Security and Intellectual Property Safeguards",
+                  "Real-time frequency based reduced order modeling of large power grid"
+                ],
+                "error": ""
+              }
+            ]
+          },
+          "false_negative_risk": true
+        }
+      ],
+      "live_validate": true,
+      "live_probe_reports": [
+        {
+          "query": "power system simulation transient stability electromagnetic transient digital twin real-time simulator co-simulation AI surrogate modeling atp-emtp pscad emtdc frequency-dependent modeling",
+          "status": "ok",
+          "total_results": 3,
+          "providers": [
+            {
+              "provider": "semantic_scholar",
+              "status": "ok",
+              "result_count": 0,
+              "top_titles": [],
+              "error": ""
+            },
+            {
+              "provider": "arxiv",
+              "status": "ok",
+              "result_count": 3,
+              "top_titles": [
+                "Real-time frequency based reduced order modeling of large power grid",
+                "Towards an Assisted Simulation Planning for Co-Simulation of Cyber-Physical Energy Systems",
+                "Cyber-Physical Energy Systems Modeling, Test Specification, and Co-Simulation Based Testing"
+              ],
+              "error": ""
+            }
+          ]
+        },
+        {
+          "query": "power system simulation transient stability electromagnetic transient digital twin real-time simulator co-simulation AI surrogate modeling swing equation critical clearing time psse generator model",
+          "status": "ok",
+          "total_results": 3,
+          "providers": [
+            {
+              "provider": "semantic_scholar",
+              "status": "ok",
+              "result_count": 0,
+              "top_titles": [],
+              "error": ""
+            },
+            {
+              "provider": "arxiv",
+              "status": "ok",
+              "result_count": 3,
+              "top_titles": [
+                "Real-time frequency based reduced order modeling of large power grid",
+                "Towards an Assisted Simulation Planning for Co-Simulation of Cyber-Physical Energy Systems",
+                "Real time state monitoring and fault diagnosis system for motor based on LabVIEW"
+              ],
+              "error": ""
+            }
+          ]
+        },
+        {
+          "query": "power system simulation transient stability electromagnetic transient digital twin real-time simulator co-simulation AI surrogate modeling fmi helics iec 61850 co-simulation coupling",
+          "status": "ok",
+          "total_results": 3,
+          "providers": [
+            {
+              "provider": "semantic_scholar",
+              "status": "ok",
+              "result_count": 0,
+              "top_titles": [],
+              "error": ""
+            },
+            {
+              "provider": "arxiv",
+              "status": "ok",
+              "result_count": 3,
+              "top_titles": [
+                "Towards an Assisted Simulation Planning for Co-Simulation of Cyber-Physical Energy Systems",
+                "FMI-Based Distributed Co-Simulation with Enhanced Security and Intellectual Property Safeguards",
+                "Real-time frequency based reduced order modeling of large power grid"
+              ],
+              "error": ""
+            }
+          ]
+        }
+      ],
+      "coverage_warning": true,
+      "needs_user_branch_confirmation": true
+    },
+    "user_interaction": {
+      "needed": true,
+      "type": "research_branch_confirmation",
+      "question": "Some major sub-branches appear missing from the current retrieval. Which should be prioritized for a supplemental search before treating gaps as real?",
+      "options": [
+        {
+          "label": "Electromagnetic Transient Simulation",
+          "suggested_query": "power system simulation transient stability electromagnetic transient digital twin real-time simulator co-simulation AI surrogate modeling atp-emtp pscad emtdc frequency-dependent modeling",
+          "live_evidence_count": 3,
+          "false_negative_risk": true
+        },
+        {
+          "label": "Transient Stability Analysis",
+          "suggested_query": "power system simulation transient stability electromagnetic transient digital twin real-time simulator co-simulation AI surrogate modeling swing equation critical clearing time psse generator model",
+          "live_evidence_count": 3,
+          "false_negative_risk": true
+        },
+        {
+          "label": "Co-Simulation Standards and Middleware",
+          "suggested_query": "power system simulation transient stability electromagnetic transient digital twin real-time simulator co-simulation AI surrogate modeling fmi helics iec 61850 co-simulation coupling",
+          "live_evidence_count": 3,
+          "false_negative_risk": true
+        }
+      ],
+      "default_action": "Run supplemental stratified search for options with false_negative_risk=true, or ask the user to pick 2-3 priority branches.",
+      "continue_with": "Pass selected option labels or custom branch keywords as focus_branches to run_zhizhi_literature_analysis/search_papers_stratified."
+    },
+    "select_literature_result": {
+      "result_index": 10,
+      "stratified_layer": "L4_regular",
+      "stratified_label": "regular journal / supplemental evidence",
+      "query_branch": "primary",
+      "retrieval_query": "power system simulation transient stability electromagnetic transient digital twin real-time simulator co-simulation AI surrogate modeling",
+      "_why_selected": "Selected as regular supplemental paper: Algorithmic Optimal Control of Screw Compressors for Energy-Efficient Operation in Smart Power Systems; year=2025; venue=Algorithms; quality=0.76; relevance=0.3309.",
+      "domain_relevance": {
+        "profile": "power_system_simulation",
+        "target_field": "general",
+        "result_field": "general",
+        "score": 0.6962,
+        "query_hits": [
+          "power",
+          "system",
+          "simulation",
+          "transient",
+          "stability",
+          "digital",
+          "twin",
+          "real-time",
+          "surrogate",
+          "modeling"
+        ],
+        "anchor_hits": [
+          "power",
+          "system",
+          "simulation"
+        ],
+        "topic_hits": [],
+        "noise_hits": [],
+        "flags": [],
+        "is_preprint": false,
+        "verdict": "keep",
+        "requires_human_review": false
+      },
+      "relevance_score": 0.3309,
+      "relevance_components": {
+        "text_score": 0.3262,
+        "recency_score": 1.0,
+        "impact_score": 0.4897,
+        "citation_field": "general",
+        "citation_baseline": 500.0,
+        "venue_score": 0.45,
+        "publication_quality_score": 0.76,
+        "base_score": 0.4354,
+        "text_weight": 0.62,
+        "recency_weight": 0.1,
+        "impact_weight": 0.18,
+        "venue_weight": 0.1
+      },
+      "publication_quality_score": 0.76,
+      "venue_quality": "unverified",
+      "journal_quartile": "",
+      "journal_metric_source": "",
+      "inferred_field": "general",
+      "quality_flags": [
+        "unverified_venue",
+        "some_citations"
+      ],
+      "quality_criteria": [
+        "venue did not match suspicious, reputable, preprint, or curated quartile tables",
+        "citation count exceeds minimum nontrivial threshold"
+      ],
+      "suspicion_type": "",
+      "is_review_like": false,
+      "pyramid_root_score": 0.5564,
+      "matched_query_terms": [
+        "power",
+        "system",
+        "simulation",
+        "transient",
+        "stability",
+        "digital",
+        "twin",
+        "real-time",
+        "surrogate",
+        "modeling"
+      ],
+      "title": "Algorithmic Optimal Control of Screw Compressors for Energy-Efficient Operation in Smart Power Systems",
+      "citation": "K. Yelemessov et al. (2025) Algorithmic Optimal Control of Screw Compressors for Energy-Efficient Operation in Smart Power Systems doi:10.3390/a18090583",
+      "provider": "semantic_scholar",
+      "year": "2025",
+      "citation_count": 20,
+      "influential_citation_count": 1,
+      "doi": "10.3390/a18090583",
+      "arxiv_id": "",
+      "url": "https://www.semanticscholar.org/paper/d0ad890efc5e9b587a39ca92b7794d8d2d1f40cf",
+      "relevance_reason": "title=2/13, abstract=10/13, citation=2/13, phrase_bonus=0.0, recency=1.0, impact=0.4897, venue=0.45, quality=0.76",
+      "quality_reason": "venue did not match suspicious, reputable, preprint, or curated quartile tables; citation count exceeds minimum nontrivial threshold"
+    },
+    "stratified_import_plan": {
+      "strategy": "layer_minimum_then_score_backfill",
+      "requested_import_top_k": 15,
+      "effective_import_top_k": 15,
+      "min_per_layer": {
+        "L0_review": 2,
+        "L1_milestone": 2,
+        "L2_top_latest": 2,
+        "L3_preprint": 2,
+        "L4_regular": 3
+      },
+      "candidate_counts_by_layer": {
+        "L0_review": 3,
+        "L1_milestone": 4,
+        "L2_top_latest": 4,
+        "L3_preprint": 1,
+        "L4_regular": 13
+      },
+      "selected_counts_by_layer": {
+        "L0_review": 2,
+        "L1_milestone": 4,
+        "L2_top_latest": 4,
+        "L3_preprint": 1,
+        "L4_regular": 4
+      },
+      "missing_layers": [
+        {
+          "layer": "L3_preprint",
+          "label": "latest preprint frontier",
+          "target": 2,
+          "selected": 1,
+          "candidates": 1
+        }
+      ],
+      "selected_result_indexes": [
+        0,
+        1,
+        4,
+        6,
+        7,
+        8,
+        11,
+        16,
+        24,
+        13,
+        9,
+        10,
+        3,
+        5,
+        15
+      ]
+    },
+    "imported_records": 15,
+    "post_retrieval_subspace_coverage": {
+      "total_selected_subspaces": 9,
+      "sufficient": 9,
+      "insufficient": 0,
+      "coverage": [
+        {
+          "subspace": "Electromagnetic Transient Simulation",
+          "branch": "electromagnetic_transient_simulation",
+          "target": 3,
+          "actual": 14,
+          "status": "sufficient",
+          "terms": [
+            "electromagnetic",
+            "transient",
+            "simulation",
+            "emt",
+            "pscad",
+            "emtp-rv",
+            "switching",
+            "transients",
+            "igbt",
+            "modeling",
+            "frequency-dependent",
+            "transmission",
+            "lines",
+            "nonlinear",
+            "surge",
+            "arresters"
+          ],
+          "matched_papers": [
+            {
+              "paper_id": "paper_1783353031814244500",
+              "title": "Real-Time FPGA-RTDS Co-Simulator for Power Systems",
+              "citation": "Conghuan Yang et al. (2018) Real-Time FPGA-RTDS Co-Simulator for Power Systems doi:10.1109/ACCESS.2018.2862893",
+              "method": "FPGA-RTDS co-simulation",
+              "scenario": "large power systems"
+            },
+            {
+              "paper_id": "paper_1783353053592976600",
+              "title": "Feedback Control of a Boost Converter Using a NARX-NN-Based Digital Twin Instance: Multi-Domain Analysis and Comparison",
+              "citation": "Karol Najdek et al. (2026) Feedback Control of a Boost Converter Using a NARX-NN-Based Digital Twin Instance: Multi-Doma...[truncated]",
+              "method": "machine learning model",
+              "scenario": "boost converter control"
+            },
+            {
+              "paper_id": "paper_1783353079614889300",
+              "title": "Design and Implementation of Scalable Communication Interfaces for Reliable and Stable Real-time Co-Simulation of Power Systems",
+              "citation": "Qi Xiao et al. (2025) Design and Implementation of Scalable Communication Interfaces for Reliable and Stable Real-time C...[truncated]",
+              "method": "co-simulation offers an integrated approach for modeling",
+              "scenario": "real-time co-simulation of power systems with high inverter-based resource (IBR) penetration"
+            },
+            {
+              "paper_id": "paper_1783353097576127400",
+              "title": "Electromagnetic Transient Simulations for Large-Scale Power Grids: A Utility Perspective",
+              "citation": "Hossein Hooshyar et al. (2026) Electromagnetic Transient Simulations for Large-Scale Power Grids: A Utility Perspective...[truncated]",
+              "method": "electromagnetic transient (EMT) simulation",
+              "scenario": "large-scale power grids"
+            },
+            {
+              "paper_id": "paper_1783353118464927800",
+              "title": "Real-Time Surrogate Modeling for Fast Transient Prediction in Inverter-Based Microgrids Using CNN and LightGBM",
+              "citation": "Osasumwen Cedric Ogiesoba-Eguakun et al. (2026) Real-Time Surrogate Modeling for Fast Transient Prediction in Inverter-B...[truncated]",
+              "method": "instrumental measurement",
+              "scenario": "inverter-based microgrids"
+            }
+          ],
+          "suggested_query": "EMT simulation PSCAD EMTP-RV switching transients IGBT modeling frequency-dependent transmission lines nonlinear surge arresters converter valve dynamics review survey",
+          "custom": false
+        },
+        {
+          "subspace": "Transient Stability Simulation",
+          "branch": "transient_stability_simulation",
+          "target": 3,
+          "actual": 15,
+          "status": "sufficient",
+          "terms": [
+            "transient",
+            "stability",
+            "simulation",
+            "classical",
+            "model",
+            "detailed",
+            "generator",
+            "pss",
+            "design",
+            "critical",
+            "clearing",
+            "time",
+            "swing",
+            "equation",
+            "ieee",
+            "standard"
+          ],
+          "matched_papers": [
+            {
+              "paper_id": "paper_1783353031814244500",
+              "title": "Real-Time FPGA-RTDS Co-Simulator for Power Systems",
+              "citation": "Conghuan Yang et al. (2018) Real-Time FPGA-RTDS Co-Simulator for Power Systems doi:10.1109/ACCESS.2018.2862893",
+              "method": "FPGA-RTDS co-simulation",
+              "scenario": "large power systems"
+            },
+            {
+              "paper_id": "paper_1783353053592976600",
+              "title": "Feedback Control of a Boost Converter Using a NARX-NN-Based Digital Twin Instance: Multi-Domain Analysis and Comparison",
+              "citation": "Karol Najdek et al. (2026) Feedback Control of a Boost Converter Using a NARX-NN-Based Digital Twin Instance: Multi-Doma...[truncated]",
+              "method": "machine learning model",
+              "scenario": "boost converter control"
+            },
+            {
+              "paper_id": "paper_1783353079614889300",
+              "title": "Design and Implementation of Scalable Communication Interfaces for Reliable and Stable Real-time Co-Simulation of Power Systems",
+              "citation": "Qi Xiao et al. (2025) Design and Implementation of Scalable Communication Interfaces for Reliable and Stable Real-time C...[truncated]",
+              "method": "co-simulation offers an integrated approach for modeling",
+              "scenario": "real-time co-simulation of power systems with high inverter-based resource (IBR) penetration"
+            },
+            {
+              "paper_id": "paper_1783353097576127400",
+              "title": "Electromagnetic Transient Simulations for Large-Scale Power Grids: A Utility Perspective",
+              "citation": "Hossein Hooshyar et al. (2026) Electromagnetic Transient Simulations for Large-Scale Power Grids: A Utility Perspective...[truncated]",
+              "method": "electromagnetic transient (EMT) simulation",
+              "scenario": "large-scale power grids"
+            },
+            {
+              "paper_id": "paper_1783353118464927800",
+              "title": "Real-Time Surrogate Modeling for Fast Transient Prediction in Inverter-Based Microgrids Using CNN and LightGBM",
+              "citation": "Osasumwen Cedric Ogiesoba-Eguakun et al. (2026) Real-Time Surrogate Modeling for Fast Transient Prediction in Inverter-B...[truncated]",
+              "method": "instrumental measurement",
+              "scenario": "inverter-based microgrids"
+            }
+          ],
+          "suggested_query": "transient stability classical model detailed generator model PSS design critical clearing time swing equation IEEE standard test cases dynamic phasor approximation review survey",
+          "custom": false
+        },
+        {
+          "subspace": "Power System Co-Simulation",
+          "branch": "power_system_co_simulation",
+          "target": 2,
+          "actual": 15,
+          "status": "sufficient",
+          "terms": [
+            "power",
+            "system",
+            "co-simulation",
+            "fmi",
+            "cosim-rt",
+            "helics",
+            "energy-communication",
+            "time-step",
+            "coupling",
+            "interface",
+            "synchronization",
+            "cross-domain",
+            "event",
+            "triggering",
+            "latest",
+            "recent"
+          ],
+          "matched_papers": [
+            {
+              "paper_id": "paper_1783353031814244500",
+              "title": "Real-Time FPGA-RTDS Co-Simulator for Power Systems",
+              "citation": "Conghuan Yang et al. (2018) Real-Time FPGA-RTDS Co-Simulator for Power Systems doi:10.1109/ACCESS.2018.2862893",
+              "method": "FPGA-RTDS co-simulation",
+              "scenario": "large power systems"
+            },
+            {
+              "paper_id": "paper_1783353053592976600",
+              "title": "Feedback Control of a Boost Converter Using a NARX-NN-Based Digital Twin Instance: Multi-Domain Analysis and Comparison",
+              "citation": "Karol Najdek et al. (2026) Feedback Control of a Boost Converter Using a NARX-NN-Based Digital Twin Instance: Multi-Doma...[truncated]",
+              "method": "machine learning model",
+              "scenario": "boost converter control"
+            },
+            {
+              "paper_id": "paper_1783353079614889300",
+              "title": "Design and Implementation of Scalable Communication Interfaces for Reliable and Stable Real-time Co-Simulation of Power Systems",
+              "citation": "Qi Xiao et al. (2025) Design and Implementation of Scalable Communication Interfaces for Reliable and Stable Real-time C...[truncated]",
+              "method": "co-simulation offers an integrated approach for modeling",
+              "scenario": "real-time co-simulation of power systems with high inverter-based resource (IBR) penetration"
+            },
+            {
+              "paper_id": "paper_1783353097576127400",
+              "title": "Electromagnetic Transient Simulations for Large-Scale Power Grids: A Utility Perspective",
+              "citation": "Hossein Hooshyar et al. (2026) Electromagnetic Transient Simulations for Large-Scale Power Grids: A Utility Perspective...[truncated]",
+              "method": "electromagnetic transient (EMT) simulation",
+              "scenario": "large-scale power grids"
+            },
+            {
+              "paper_id": "paper_1783353118464927800",
+              "title": "Real-Time Surrogate Modeling for Fast Transient Prediction in Inverter-Based Microgrids Using CNN and LightGBM",
+              "citation": "Osasumwen Cedric Ogiesoba-Eguakun et al. (2026) Real-Time Surrogate Modeling for Fast Transient Prediction in Inverter-B...[truncated]",
+              "method": "instrumental measurement",
+              "scenario": "inverter-based microgrids"
+            }
+          ],
+          "suggested_query": "co-simulation FMI cosim-rt HELICS energy-communication co-simulation time-step coupling interface synchronization cross-domain event triggering latest recent",
+          "custom": false
+        },
+        {
+          "subspace": "emt simulation pscad emtp rv switching transients igbt modeling frequency dependent transmission lines nonlinear surge arresters converter valve dynamics review survey",
+          "branch": "emt_simulation_pscad_emtp_rv_switching_transients_igbt_modeling_frequency_depend",
+          "target": 2,
+          "actual": 11,
+          "status": "sufficient",
+          "terms": [
+            "emt",
+            "simulation",
+            "pscad",
+            "emtp",
+            "switching",
+            "transients",
+            "igbt",
+            "modeling",
+            "frequency",
+            "dependent",
+            "transmission",
+            "lines",
+            "nonlinear",
+            "surge",
+            "arresters",
+            "converter"
+          ],
+          "matched_papers": [
+            {
+              "paper_id": "paper_1783353053592976600",
+              "title": "Feedback Control of a Boost Converter Using a NARX-NN-Based Digital Twin Instance: Multi-Domain Analysis and Comparison",
+              "citation": "Karol Najdek et al. (2026) Feedback Control of a Boost Converter Using a NARX-NN-Based Digital Twin Instance: Multi-Doma...[truncated]",
+              "method": "machine learning model",
+              "scenario": "boost converter control"
+            },
+            {
+              "paper_id": "paper_1783353079614889300",
+              "title": "Design and Implementation of Scalable Communication Interfaces for Reliable and Stable Real-time Co-Simulation of Power Systems",
+              "citation": "Qi Xiao et al. (2025) Design and Implementation of Scalable Communication Interfaces for Reliable and Stable Real-time C...[truncated]",
+              "method": "co-simulation offers an integrated approach for modeling",
+              "scenario": "real-time co-simulation of power systems with high inverter-based resource (IBR) penetration"
+            },
+            {
+              "paper_id": "paper_1783353097576127400",
+              "title": "Electromagnetic Transient Simulations for Large-Scale Power Grids: A Utility Perspective",
+              "citation": "Hossein Hooshyar et al. (2026) Electromagnetic Transient Simulations for Large-Scale Power Grids: A Utility Perspective...[truncated]",
+              "method": "electromagnetic transient (EMT) simulation",
+              "scenario": "large-scale power grids"
+            },
+            {
+              "paper_id": "paper_1783353118464927800",
+              "title": "Real-Time Surrogate Modeling for Fast Transient Prediction in Inverter-Based Microgrids Using CNN and LightGBM",
+              "citation": "Osasumwen Cedric Ogiesoba-Eguakun et al. (2026) Real-Time Surrogate Modeling for Fast Transient Prediction in Inverter-B...[truncated]",
+              "method": "instrumental measurement",
+              "scenario": "inverter-based microgrids"
+            },
+            {
+              "paper_id": "paper_1783353149744826200",
+              "title": "Digital Real-Time Power System Co-simulation via Distributed Transmission Line Model",
+              "citation": "Luca Barbierato et al. (2023) Digital Real-Time Power System Co-simulation via Distributed Transmission Line Model doi:1...[truncated]",
+              "method": "Distributed Transmission Line Model (DTLM) with Aurora 8B/10B data exchange",
+              "scenario": "real-time power system co-simulation for smart grids"
+            }
+          ],
+          "suggested_query": "emt simulation pscad emtp rv switching transients igbt modeling frequency dependent transmission lines nonlinear surge arresters converter valve dynamics review survey",
+          "custom": true
+        },
+        {
+          "subspace": "co simulation fmi cosim rt helics energy communication co simulation time step coupling interface synchronization cross domain event triggering latest recent",
+          "branch": "co_simulation_fmi_cosim_rt_helics_energy_communication_co_simulation_time_step_c",
+          "target": 2,
+          "actual": 15,
+          "status": "sufficient",
+          "terms": [
+            "simulation",
+            "fmi",
+            "cosim",
+            "helics",
+            "energy",
+            "communication",
+            "time",
+            "step",
+            "coupling",
+            "interface",
+            "synchronization",
+            "cross",
+            "domain",
+            "event",
+            "triggering",
+            "latest"
+          ],
+          "matched_papers": [
+            {
+              "paper_id": "paper_1783353031814244500",
+              "title": "Real-Time FPGA-RTDS Co-Simulator for Power Systems",
+              "citation": "Conghuan Yang et al. (2018) Real-Time FPGA-RTDS Co-Simulator for Power Systems doi:10.1109/ACCESS.2018.2862893",
+              "method": "FPGA-RTDS co-simulation",
+              "scenario": "large power systems"
+            },
+            {
+              "paper_id": "paper_1783353053592976600",
+              "title": "Feedback Control of a Boost Converter Using a NARX-NN-Based Digital Twin Instance: Multi-Domain Analysis and Comparison",
+              "citation": "Karol Najdek et al. (2026) Feedback Control of a Boost Converter Using a NARX-NN-Based Digital Twin Instance: Multi-Doma...[truncated]",
+              "method": "machine learning model",
+              "scenario": "boost converter control"
+            },
+            {
+              "paper_id": "paper_1783353079614889300",
+              "title": "Design and Implementation of Scalable Communication Interfaces for Reliable and Stable Real-time Co-Simulation of Power Systems",
+              "citation": "Qi Xiao et al. (2025) Design and Implementation of Scalable Communication Interfaces for Reliable and Stable Real-time C...[truncated]",
+              "method": "co-simulation offers an integrated approach for modeling",
+              "scenario": "real-time co-simulation of power systems with high inverter-based resource (IBR) penetration"
+            },
+            {
+              "paper_id": "paper_1783353097576127400",
+              "title": "Electromagnetic Transient Simulations for Large-Scale Power Grids: A Utility Perspective",
+              "citation": "Hossein Hooshyar et al. (2026) Electromagnetic Transient Simulations for Large-Scale Power Grids: A Utility Perspective...[truncated]",
+              "method": "electromagnetic transient (EMT) simulation",
+              "scenario": "large-scale power grids"
+            },
+            {
+              "paper_id": "paper_1783353118464927800",
+              "title": "Real-Time Surrogate Modeling for Fast Transient Prediction in Inverter-Based Microgrids Using CNN and LightGBM",
+              "citation": "Osasumwen Cedric Ogiesoba-Eguakun et al. (2026) Real-Time Surrogate Modeling for Fast Transient Prediction in Inverter-B...[truncated]",
+              "method": "instrumental measurement",
+              "scenario": "inverter-based microgrids"
+            }
+          ],
+          "suggested_query": "co simulation fmi cosim rt helics energy communication co simulation time step coupling interface synchronization cross domain event triggering latest recent",
+          "custom": true
+        },
+        {
+          "subspace": "real time simulator",
+          "branch": "real_time_simulator",
+          "target": 2,
+          "actual": 15,
+          "status": "sufficient",
+          "terms": [
+            "real",
+            "time",
+            "simulator"
+          ],
+          "matched_papers": [
+            {
+              "paper_id": "paper_1783353031814244500",
+              "title": "Real-Time FPGA-RTDS Co-Simulator for Power Systems",
+              "citation": "Conghuan Yang et al. (2018) Real-Time FPGA-RTDS Co-Simulator for Power Systems doi:10.1109/ACCESS.2018.2862893",
+              "method": "FPGA-RTDS co-simulation",
+              "scenario": "large power systems"
+            },
+            {
+              "paper_id": "paper_1783353053592976600",
+              "title": "Feedback Control of a Boost Converter Using a NARX-NN-Based Digital Twin Instance: Multi-Domain Analysis and Comparison",
+              "citation": "Karol Najdek et al. (2026) Feedback Control of a Boost Converter Using a NARX-NN-Based Digital Twin Instance: Multi-Doma...[truncated]",
+              "method": "machine learning model",
+              "scenario": "boost converter control"
+            },
+            {
+              "paper_id": "paper_1783353079614889300",
+              "title": "Design and Implementation of Scalable Communication Interfaces for Reliable and Stable Real-time Co-Simulation of Power Systems",
+              "citation": "Qi Xiao et al. (2025) Design and Implementation of Scalable Communication Interfaces for Reliable and Stable Real-time C...[truncated]",
+              "method": "co-simulation offers an integrated approach for modeling",
+              "scenario": "real-time co-simulation of power systems with high inverter-based resource (IBR) penetration"
+            },
+            {
+              "paper_id": "paper_1783353097576127400",
+              "title": "Electromagnetic Transient Simulations for Large-Scale Power Grids: A Utility Perspective",
+              "citation": "Hossein Hooshyar et al. (2026) Electromagnetic Transient Simulations for Large-Scale Power Grids: A Utility Perspective...[truncated]",
+              "method": "electromagnetic transient (EMT) simulation",
+              "scenario": "large-scale power grids"
+            },
+            {
+              "paper_id": "paper_1783353118464927800",
+              "title": "Real-Time Surrogate Modeling for Fast Transient Prediction in Inverter-Based Microgrids Using CNN and LightGBM",
+              "citation": "Osasumwen Cedric Ogiesoba-Eguakun et al. (2026) Real-Time Surrogate Modeling for Fast Transient Prediction in Inverter-B...[truncated]",
+              "method": "instrumental measurement",
+              "scenario": "inverter-based microgrids"
+            }
+          ],
+          "suggested_query": "real time simulator",
+          "custom": true
+        },
+        {
+          "subspace": "transient stability classical model detailed generator model pss design critical clearing time swing equation ieee standard test cases dynamic phasor approximation review survey",
+          "branch": "transient_stability_classical_model_detailed_generator_model_pss_design_critical",
+          "target": 2,
+          "actual": 15,
+          "status": "sufficient",
+          "terms": [
+            "transient",
+            "stability",
+            "classical",
+            "model",
+            "detailed",
+            "generator",
+            "pss",
+            "design",
+            "critical",
+            "clearing",
+            "time",
+            "swing",
+            "equation",
+            "ieee",
+            "standard",
+            "test"
+          ],
+          "matched_papers": [
+            {
+              "paper_id": "paper_1783353031814244500",
+              "title": "Real-Time FPGA-RTDS Co-Simulator for Power Systems",
+              "citation": "Conghuan Yang et al. (2018) Real-Time FPGA-RTDS Co-Simulator for Power Systems doi:10.1109/ACCESS.2018.2862893",
+              "method": "FPGA-RTDS co-simulation",
+              "scenario": "large power systems"
+            },
+            {
+              "paper_id": "paper_1783353053592976600",
+              "title": "Feedback Control of a Boost Converter Using a NARX-NN-Based Digital Twin Instance: Multi-Domain Analysis and Comparison",
+              "citation": "Karol Najdek et al. (2026) Feedback Control of a Boost Converter Using a NARX-NN-Based Digital Twin Instance: Multi-Doma...[truncated]",
+              "method": "machine learning model",
+              "scenario": "boost converter control"
+            },
+            {
+              "paper_id": "paper_1783353079614889300",
+              "title": "Design and Implementation of Scalable Communication Interfaces for Reliable and Stable Real-time Co-Simulation of Power Systems",
+              "citation": "Qi Xiao et al. (2025) Design and Implementation of Scalable Communication Interfaces for Reliable and Stable Real-time C...[truncated]",
+              "method": "co-simulation offers an integrated approach for modeling",
+              "scenario": "real-time co-simulation of power systems with high inverter-based resource (IBR) penetration"
+            },
+            {
+              "paper_id": "paper_1783353097576127400",
+              "title": "Electromagnetic Transient Simulations for Large-Scale Power Grids: A Utility Perspective",
+              "citation": "Hossein Hooshyar et al. (2026) Electromagnetic Transient Simulations for Large-Scale Power Grids: A Utility Perspective...[truncated]",
+              "method": "electromagnetic transient (EMT) simulation",
+              "scenario": "large-scale power grids"
+            },
+            {
+              "paper_id": "paper_1783353118464927800",
+              "title": "Real-Time Surrogate Modeling for Fast Transient Prediction in Inverter-Based Microgrids Using CNN and LightGBM",
+              "citation": "Osasumwen Cedric Ogiesoba-Eguakun et al. (2026) Real-Time Surrogate Modeling for Fast Transient Prediction in Inverter-B...[truncated]",
+              "method": "instrumental measurement",
+              "scenario": "inverter-based microgrids"
+            }
+          ],
+          "suggested_query": "transient stability classical model detailed generator model pss design critical clearing time swing equation ieee standard test cases dynamic phasor approximation review survey",
+          "custom": true
+        },
+        {
+          "subspace": "ai surrogate modeling for power grids",
+          "branch": "ai_surrogate_modeling_for_power_grids",
+          "target": 2,
+          "actual": 11,
+          "status": "sufficient",
+          "terms": [
+            "surrogate",
+            "modeling",
+            "power",
+            "grids"
+          ],
+          "matched_papers": [
+            {
+              "paper_id": "paper_1783353053592976600",
+              "title": "Feedback Control of a Boost Converter Using a NARX-NN-Based Digital Twin Instance: Multi-Domain Analysis and Comparison",
+              "citation": "Karol Najdek et al. (2026) Feedback Control of a Boost Converter Using a NARX-NN-Based Digital Twin Instance: Multi-Doma...[truncated]",
+              "method": "machine learning model",
+              "scenario": "boost converter control"
+            },
+            {
+              "paper_id": "paper_1783353079614889300",
+              "title": "Design and Implementation of Scalable Communication Interfaces for Reliable and Stable Real-time Co-Simulation of Power Systems",
+              "citation": "Qi Xiao et al. (2025) Design and Implementation of Scalable Communication Interfaces for Reliable and Stable Real-time C...[truncated]",
+              "method": "co-simulation offers an integrated approach for modeling",
+              "scenario": "real-time co-simulation of power systems with high inverter-based resource (IBR) penetration"
+            },
+            {
+              "paper_id": "paper_1783353097576127400",
+              "title": "Electromagnetic Transient Simulations for Large-Scale Power Grids: A Utility Perspective",
+              "citation": "Hossein Hooshyar et al. (2026) Electromagnetic Transient Simulations for Large-Scale Power Grids: A Utility Perspective...[truncated]",
+              "method": "electromagnetic transient (EMT) simulation",
+              "scenario": "large-scale power grids"
+            },
+            {
+              "paper_id": "paper_1783353118464927800",
+              "title": "Real-Time Surrogate Modeling for Fast Transient Prediction in Inverter-Based Microgrids Using CNN and LightGBM",
+              "citation": "Osasumwen Cedric Ogiesoba-Eguakun et al. (2026) Real-Time Surrogate Modeling for Fast Transient Prediction in Inverter-B...[truncated]",
+              "method": "instrumental measurement",
+              "scenario": "inverter-based microgrids"
+            },
+            {
+              "paper_id": "paper_1783353149744826200",
+              "title": "Digital Real-Time Power System Co-simulation via Distributed Transmission Line Model",
+              "citation": "Luca Barbierato et al. (2023) Digital Real-Time Power System Co-simulation via Distributed Transmission Line Model doi:1...[truncated]",
+              "method": "Distributed Transmission Line Model (DTLM) with Aurora 8B/10B data exchange",
+              "scenario": "real-time power system co-simulation for smart grids"
+            }
+          ],
+          "suggested_query": "ai surrogate modeling for power grids",
+          "custom": true
+        },
+        {
+          "subspace": "digital twin power grid",
+          "branch": "digital_twin_power_grid",
+          "target": 2,
+          "actual": 14,
+          "status": "sufficient",
+          "terms": [
+            "digital",
+            "twin",
+            "power",
+            "grid"
+          ],
+          "matched_papers": [
+            {
+              "paper_id": "paper_1783353031814244500",
+              "title": "Real-Time FPGA-RTDS Co-Simulator for Power Systems",
+              "citation": "Conghuan Yang et al. (2018) Real-Time FPGA-RTDS Co-Simulator for Power Systems doi:10.1109/ACCESS.2018.2862893",
+              "method": "FPGA-RTDS co-simulation",
+              "scenario": "large power systems"
+            },
+            {
+              "paper_id": "paper_1783353053592976600",
+              "title": "Feedback Control of a Boost Converter Using a NARX-NN-Based Digital Twin Instance: Multi-Domain Analysis and Comparison",
+              "citation": "Karol Najdek et al. (2026) Feedback Control of a Boost Converter Using a NARX-NN-Based Digital Twin Instance: Multi-Doma...[truncated]",
+              "method": "machine learning model",
+              "scenario": "boost converter control"
+            },
+            {
+              "paper_id": "paper_1783353079614889300",
+              "title": "Design and Implementation of Scalable Communication Interfaces for Reliable and Stable Real-time Co-Simulation of Power Systems",
+              "citation": "Qi Xiao et al. (2025) Design and Implementation of Scalable Communication Interfaces for Reliable and Stable Real-time C...[truncated]",
+              "method": "co-simulation offers an integrated approach for modeling",
+              "scenario": "real-time co-simulation of power systems with high inverter-based resource (IBR) penetration"
+            },
+            {
+              "paper_id": "paper_1783353097576127400",
+              "title": "Electromagnetic Transient Simulations for Large-Scale Power Grids: A Utility Perspective",
+              "citation": "Hossein Hooshyar et al. (2026) Electromagnetic Transient Simulations for Large-Scale Power Grids: A Utility Perspective...[truncated]",
+              "method": "electromagnetic transient (EMT) simulation",
+              "scenario": "large-scale power grids"
+            },
+            {
+              "paper_id": "paper_1783353118464927800",
+              "title": "Real-Time Surrogate Modeling for Fast Transient Prediction in Inverter-Based Microgrids Using CNN and LightGBM",
+              "citation": "Osasumwen Cedric Ogiesoba-Eguakun et al. (2026) Real-Time Surrogate Modeling for Fast Transient Prediction in Inverter-B...[truncated]",
+              "method": "instrumental measurement",
+              "scenario": "inverter-based microgrids"
+            }
+          ],
+          "suggested_query": "digital twin power grid",
+          "custom": true
+        }
+      ],
+      "needs_second_alignment": false,
+      "user_interaction": {
+        "needed": false
+      }
+    },
+    "expand_literature_graph": {
+      "graph_search_id": "graph_1783353369474549000",
+      "total_results": 12,
+      "fallback_used": false,
+      "depth": 1
+    },
+    "build_literature_relation_graph": {
+      "relation_graph_id": "relgraph_1783353375308914400",
+      "cluster_count": 8,
+      "edge_summary": {
+        "total_edges": 12,
+        "citation_graph_edges": 12,
+        "artificial_edges": 0,
+        "by_relation": {
+          "citation": 6,
+          "reference": 6
+        },
+        "by_depth": {
+          "1": 12
+        },
+        "fallback_weight_policy": "keyword_fallback/search_result edges are artificial and use very low PageRank weight."
+      },
+      "analysis_confidence": 1.0
+    }
+  },
+  "observation": [
+    "Potential retrieval blind spot: Electromagnetic Transient Simulation was not represented in retrieved/imported candidates; suggested query: power system simulation transient stability electromagnetic transient digital twin real-time simulator co-simulation AI surrogate modeling atp-emtp pscad emtdc frequency-dependent modeling; live_probe_results=3",
+    "Potential retrieval blind spot: Transient Stability Analysis was not represented in retrieved/imported candidates; suggested query: power system simulation transient stability electromagnetic transient digital twin real-time simulator co-simulation AI surrogate modeling swing equation critical clearing time psse generator model; live_probe_results=3",
+    "Potential retrieval blind spot: Co-Simulation Standards and Middleware was not represented in retrieved/imported candidates; suggested query: power system simulation transient stability electromagnetic transient digital twin real-time simulator co-simulation AI surrogate modeling fmi helics iec 61850 co-simulation coupling; live_probe_results=3",
+    "Layer import target not met: L3_preprint selected=1/target=2 from candidates=1. This indicates retrieval/candidate scarcity rather than top-K truncation."
+  ],
+  "knowledge_map_summary": {
+    "main_methods": [
+      "Deep Surrogate Models and Multi-Agent Proximal Policy Optimization",
+      "Distributed Transmission Line Model (DTLM) with Aurora 8B/10B data exchange",
+      "FPGA-RTDS co-simulation",
+      "Pontryagin maximum principle (PMP)",
+      "co-simulation offers an integrated approach for modeling",
+      "dynamic phasor transmission line model | traveling wave model | co-simulation interface",
+      "electromagnetic transient (EMT) simulation",
+      "instrumental measurement",
+      "machine learning model",
+      "online recursive least squares (RLS) identification algorithm in z-domain",
+      "optimization algorithm",
+      "real-time EMTDC simulation",
+      "real-time co-simulation",
+      "scalable communication interface design | real-time data extrapolation method",
+      "to incorporate risk in the traditional transient stability analysis"
+    ],
+    "method_scenario_coverage": {
+      "FPGA-RTDS co-simulation": [
+        "large power systems"
+      ],
+      "machine learning model": [
+        "boost converter control"
+      ],
+      "co-simulation offers an integrated approach for modeling": [
+        "real-time co-simulation of power systems with high inverter-based resource (IBR) penetration"
+      ],
+      "electromagnetic transient (EMT) simulation": [
+        "large-scale power grids"
+      ],
+      "instrumental measurement": [
+        "inverter-based microgrids"
+      ],
+      "Distributed Transmission Line Model (DTLM) with Aurora 8B/10B data exchange": [
+        "real-time power system co-simulation for smart grids"
+      ],
+      "optimization algorithm": [
+        "single-stage grid-connected solar PV system"
+      ],
+      "scalable communication interface design | real-time data extrapolation method": [
+        "real-time co-simulation of power systems with high inverter-based resource (IBR) penetration"
+      ],
+      "to incorporate risk in the traditional transient stability analysis": [
+        "power system transient stability"
+      ],
+      "real-time co-simulation": [
+        "adjustable-speed pumped storage hydro (AS-PSH) connected to bulk power system"
+      ],
+      "real-time EMTDC simulation": [
+        "IBR-dominated hybrid AC-MTDC grid"
+      ],
+      "Pontryagin maximum principle (PMP)": [
+        "screw compressors in smart power systems"
+      ],
+      "dynamic phasor transmission line model | traveling wave model | co-simulation interface": [
+        "power system simulation | real-time digital simulation"
+      ],
+      "Deep Surrogate Models and Multi-Agent Proximal Policy Optimization": [
+        "power system transient stability"
+      ],
+      "online recursive least squares (RLS) identification algorithm in z-domain": [
+        "large power grid"
+      ]
+    },
+    "method_scenario_benchmark_triples": [
+      {
+        "method": "FPGA-RTDS co-simulation",
+        "scenario": "large power systems",
+        "benchmark": "simulation accuracy | capability to simulate large AC systems",
+        "references": [
+          "Conghuan Yang et al. (2018) Real-Time FPGA-RTDS Co-Simulator for Power Systems doi:10.1109/ACCESS.2018.2862893"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "FPGA-RTDS co-simulation",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "A real-time co-simulation platform integrating FPGA and RTDS that avoids interface errors present in conventional transient stability–electromagnetic transient program coupling while enabling scalable simulation of large power systems.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "No explicit limitation extracted.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "Full text excerpt:",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "One of the significant advantages of the proposed co-simulator is that it avoids the potential interface error existing in the conventional approach of interfacing transient stability program with electromagnetic transient programs.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "Two case studies are presented to verify the simulation accuracy and capability of the proposed co-simulator.",
+            "support": "source_sentence"
+          }
+        ]
+      },
+      {
+        "method": "machine learning model",
+        "scenario": "boost converter control",
+        "benchmark": "conversion and selectivity",
+        "references": [
+          "Karol Najdek et al. (2026) Feedback Control of a Boost Converter Using a NARX-NN-Based Digital Twin Instance: Multi-Domain Analysis and Comparison doi:10.1109/ACCESS.2026.3669779"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "machine learning model",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "A data-driven feedback control framework using a NARX-NN-based Digital Twin Instance to estimate output capacitor voltage in real-time, enabling robust voltage regulation under sensing degradation and establishing a unified foundation for neural estimator integration in power-electronic control.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "Full text excerpt: A data-driven feedback control framework using a NARX-NN-based Digital Twin Instance to estimate output capacitor voltage in real-time, enabling robust voltage regulation under sensing degradation and establishing a unified foundation for neural estimator integration in power-elec...[truncated]",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "Full text excerpt:",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "This paper proposes a data-driven feedback control framework for regulating the output voltage of a boost converter using a Nonlinear AutoRegressive model with eXogenous inputs Neural Network (NARX-NN).",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "Simulation results confirm that the DTI-enhanced controller maintains accurate voltage regulation under dynamic conditions, achieving steady-state deviations below ±3% and robust transient performance while keeping computational effort within real-time constraints (sub-GFLOPS).",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "The proposed framework establishes a unified foundation for integrating neural estimators into power-electronic control and advancing adaptive Digital Twin (DT) architectures for next-generation energy-conversion systems.",
+            "support": "source_sentence"
+          }
+        ]
+      },
+      {
+        "method": "co-simulation offers an integrated approach for modeling",
+        "scenario": "real-time co-simulation of power systems with high inverter-based resource (IBR) penetration",
+        "benchmark": "scalability, effectiveness, stability, reliability, accuracy of simulation outcomes",
+        "references": [
+          "Qi Xiao et al. (2025) Design and Implementation of Scalable Communication Interfaces for Reliable and Stable Real-time Co-Simulation of Power Systems doi:10.1109/PESGM52009.2025.11225688"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "co-simulation offers an integrated approach for modeling",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "A scalable communication interface design and implementation enabling reliable and stable real-time co-simulation of power systems with high IBR penetration, including a real-time data extrapolation method to mitigate instability from data resolution mismatches.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "challenges specific to real-time co-simulation applications",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "Full text excerpt:",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "Co-simulation offers an integrated approach for modeling the large-scale integration of inverter-based resources (IBRs) into transmission and distribution grids.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "In local scenarios, where subsystems are connected within a single local area network (LAN), low-latency communication facilitates the seamless integration of electromagnetic transient (EMT) and phasor-domain models, enabling efficient interactions with power and energy management algorithms.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "The performance of both methods is evaluated using OPAL-RT as a real-time simulator, demonstrating scalability, effectiveness, and challenges specific to real-time co-simulation applications.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "To mitigate instability arising from data resolution mismatches in time-sensitive co-simulations, a real-time data extrapolation method is proposed.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "This approach significantly enhances stability and reliability, ensuring more accurate simulation outcomes.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "Full text excerpt: A scalable communication interface design and implementation enabling reliable and stable real-time co-simulation of power systems with high IBR penetration, including a real-time data extrapolation method to mitigate instability from data resolution mismatches.",
+            "support": "source_sentence"
+          }
+        ]
+      },
+      {
+        "method": "electromagnetic transient (EMT) simulation",
+        "scenario": "large-scale power grids",
+        "benchmark": "classification performance",
+        "references": [
+          "Hossein Hooshyar et al. (2026) Electromagnetic Transient Simulations for Large-Scale Power Grids: A Utility Perspective doi:10.1109/MPE.2025.3638277"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "electromagnetic transient (EMT) simulation",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "utility-focused overview of EMT simulation strategies emphasizing practical implementation, model development and validation, hybrid co-simulation architectures, and digital twin integration",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "Abstract: As the global power grid transforms, utilities face growing complexity in modeling, stability assessment, and operational planning. The increasing penetration of inverter-based resources (IBRs), power-electronics-interfaced devices (PEIDs), and distributed energy technologies exceeds the l...[truncated]",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "Full text excerpt:",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "Electromagnetic transient (EMT) simulations have become essential, offering sub-cycle accuracy, detailed switching behavior, and multi-domain integration.",
+            "support": "source_sentence"
+          }
+        ]
+      },
+      {
+        "method": "instrumental measurement",
+        "scenario": "inverter-based microgrids",
+        "benchmark": "R² score, computational speedup (×), real-time/near real-time inference capability",
+        "references": [
+          "Osasumwen Cedric Ogiesoba-Eguakun et al. (2026) Real-Time Surrogate Modeling for Fast Transient Prediction in Inverter-Based Microgrids Using CNN and LightGBM doi:10.48550/arXiv.2603.29255"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "instrumental measurement",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "A data-driven surrogate modeling framework enabling fast, accurate, and real-time or faster-than-real-time prediction of electromagnetic transients in inverter-based microgrids using CNN and LightGBM.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "No explicit limitation extracted.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "Full text excerpt:",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "This paper presents a data-driven surrogate modeling framework for fast prediction of microgrid behavior using convolutional neural networks (CNN) and Light Gradient Boosting Machine (LightGBM).",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "A sliding-window method is applied to predict important system variables, including voltage magnitude, frequency, total active power, and voltage dip.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "The results show that model performance changes depending on the type of variable being predicted.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "The CNN demonstrates high accuracy for time-dependent signals such as voltage, with an $R^2$ value of 0.84, whereas LightGBM shows better performance for structured and disturbance-related variables, achieving an $R^2$ of 0.999 for frequency and 0.75 for voltage dip.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "Beyond accuracy, the surrogate models also provide major improvements in computational efficiency.",
+            "support": "source_sentence"
+          }
+        ]
+      },
+      {
+        "method": "Distributed Transmission Line Model (DTLM) with Aurora 8B/10B data exchange",
+        "scenario": "real-time power system co-simulation for smart grids",
+        "benchmark": "stability and accuracy of 50 μs time step in Electro-Magnetic Transients (EMT) analysis",
+        "references": [
+          "Luca Barbierato et al. (2023) Digital Real-Time Power System Co-simulation via Distributed Transmission Line Model doi:10.1109/EEEIC/ICPSEurope57605.2023.10194853"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "Distributed Transmission Line Model (DTLM) with Aurora 8B/10B data exchange",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "Enables scalable real-time co-simulation of smart grids by absorbing communication latency into the transmission line propagation model",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "Full text excerpt: Enables scalable real-time co-simulation of smart grids by absorbing communication latency into the transmission line propagation model No explicit limitation extracted.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "Full text excerpt:",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "exploiting a single Digital Real-Time Simulator (DRTS) rack, could result in the inability to create reliable and accurate digital twins of increasingly complex power systems such as smart grids.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "With the presented setup, a time step duration of $50 \\mu \\mathrm{s}$ proves to be stable and accurate when running a co-simulated Electro-Magnetic Transients (EMT) analysis of a power grid scenario by interconnecting two commercial DRTS (i.e.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "OPAL-RT) with comparable results compared to the monolithic simulation, extending the scalability of future real-time smart grid simulations.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "Full text excerpt: Enables scalable real-time co-simulation of smart grids by absorbing communication latency into the transmission line propagation model Full text excerpt: Enables scalable real-time co-simulation of smart grids by absorbing communication latency into the transmission line propagat...[truncated]",
+            "support": "source_sentence"
+          }
+        ]
+      },
+      {
+        "method": "optimization algorithm",
+        "scenario": "single-stage grid-connected solar PV system",
+        "benchmark": "control stability",
+        "references": [
+          "Prateek Shrivastava et al. (2025) Digital Twin Framework for Voltage Control and Power Quality Optimization in Single-Stage Grid-Connected Solar PV System doi:10.1109/ICPEE65973.2025.11411561"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "optimization algorithm",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "A Digital Twin framework enabling real-time voltage regulation and power quality optimization in single-stage grid-connected PV systems, validated via simulation and HIL to reduce THD by >40% and maintain voltage within ±1%",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "Abstract: Single-stage grid-connected photovoltaic (PV) systems face significant challenges in maintaining voltage stability and meeting accurate power quality (PQ) standards during rapidly fluctuating irradiance, load variations, and grid disturbances. This study presents a Digital Twin (DT) archit...[truncated]",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "Full text excerpt:",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "The proposed framework integrates a highly accurate physical model, analytical computations, and adaptive control algorithms driven by data to minimize total harmonic distortion (THD), maintain voltage within allowable limits, and comply with IEEE 1547 and IEC 61727 standards.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "The DT synchronizes real-time data from voltage and current sensors to capture dynamic system behavior, allowing for pre-deployment testing of voltage regulation strategies, including classical, adaptive, and AI-assisted methods.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "Simulation and hardware-in-the-loop (HIL) evaluations demonstrate that the DT-assisted control framework reduces THD by more than 40%, maintains voltage within ± 1 %, and improves transient settling times compared to conventional control methods.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "Future work will explore the integration of DTs with distributed energy resource (DER) coordination, cyberphysical security mechanisms, and self-learning controllers to enable fully autonomous, grid-supportive PV operations in nextgeneration smart grids.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "Full text excerpt: A Digital Twin framework enabling real-time voltage regulation and power quality optimization in single-stage grid-connected PV systems, validated via simulation and HIL to reduce THD by >40% and maintain voltage within ±1% Abstract: Single-stage grid-connected photovoltaic (PV) s...[truncated]",
+            "support": "source_sentence"
+          }
+        ]
+      },
+      {
+        "method": "scalable communication interface design | real-time data extrapolation method",
+        "scenario": "real-time co-simulation of power systems with high inverter-based resource (IBR) penetration",
+        "benchmark": "stability | reliability | accuracy of simulation outcomes | scalability | effectiveness",
+        "references": [
+          "Qi Xiao et al. (2025) Design and Implementation of Scalable Communication Interfaces for Reliable and Stable Real-time Co-Simulation of Power Systems arXiv:2502.07866v1"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "scalable communication interface design | real-time data extrapolation method",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "A scalable communication interface design and a real-time data extrapolation method that enhance stability and reliability in real-time co-simulation of power systems with high IBR penetration.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "Challenges specific to real-time co-simulation applications, including instability from data resolution mismatches.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "Full text excerpt:",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "Co-simulation offers an integrated approach for modeling the large-scale integration of inverter-based resources (IBRs) into transmission and distribution grids.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "In local scenarios, where subsystems are connected within a single local area network (LAN), low-latency communication facilitates the seamless integration of electromagnetic transient (EMT) and phasor-domain models, enabling efficient interactions with power and energy management algorithms.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "The performance of both methods is evaluated using OPAL-RT as a real-time simulator, demonstrating scalability, effectiveness, and challenges specific to real-time co-simulation applications.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "To mitigate instability arising from data resolution mismatches in time-sensitive co-simulations, a real-time data extrapolation method is proposed.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "This approach significantly enhances stability and reliability, ensuring more accurate simulation outcomes.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "Full text excerpt: A scalable communication interface design and a real-time data extrapolation method that enhance stability and reliability in real-time co-simulation of power systems with high IBR penetration.",
+            "support": "source_sentence"
+          }
+        ]
+      },
+      {
+        "method": "to incorporate risk in the traditional transient stability analysis",
+        "scenario": "power system transient stability",
+        "benchmark": "uncertainty",
+        "references": [
+          "Umair Shahzad (2022) A Comprehensive Review on Power System Risk-Based Transient Stability arXiv:2206.05113v1"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "to incorporate risk in the traditional transient stability analysis",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "comprehensive review of risk-based transient stability in power networks",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "Full text excerpt: comprehensive review of risk-based transient stability in power networks No explicit limitation extracted.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "Full text excerpt:",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "Considering its significance in power system security, it is important to suggest a different methodology for enhancing the transient stability, considering uncertainties.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "These approaches typically provide a cautious principle and can result in high-priced expansion projects or operational limits.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "Further, increasing sources of uncertainty in forecast state and in the reaction to faults highly implies the implementation of risk-based approach in assessing transient stability.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "Full text excerpt: comprehensive review of risk-based transient stability in power networks Full text excerpt: comprehensive review of risk-based transient stability in power networks No explicit limitation extracted.",
+            "support": "source_sentence"
+          }
+        ]
+      },
+      {
+        "method": "real-time co-simulation",
+        "scenario": "adjustable-speed pumped storage hydro (AS-PSH) connected to bulk power system",
+        "benchmark": "transient stability",
+        "references": [
+          "M. Mohanpurkar et al. (2018) Real-time co-simulation of adjustable-speed pumped storage hydro for transient stability analysis doi:10.1016/J.EPSR.2017.08.010"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "real-time co-simulation",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "demonstrates real-time co-simulation of AS-PSH unit integrating penstock hydrodynamics and power system events",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "Full text excerpt: demonstrates real-time co-simulation of AS-PSH unit integrating penstock hydrodynamics and power system events No explicit limitation extracted.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "Full text excerpt:",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "Abstract Pumped storage hydro (PSH) based generation of electricity is a proven grid level storage technique.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "A real-time co-simulation at sub-second regime of AS-PSH connected to the IEEE 14 bus test system is performed using digital real-time simulator and the results are discussed.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "Full text excerpt: demonstrates real-time co-simulation of AS-PSH unit integrating penstock hydrodynamics and power system events Full text excerpt: demonstrates real-time co-simulation of AS-PSH unit integrating penstock hydrodynamics and power system events No explicit limitation extracted.",
+            "support": "source_sentence"
+          }
+        ]
+      },
+      {
+        "method": "real-time EMTDC simulation",
+        "scenario": "IBR-dominated hybrid AC-MTDC grid",
+        "benchmark": "dynamic and stability performance",
+        "references": [
+          "Satish Kumar Ancha et al. (2025) Leveraging Real-Time Digital Simulations for Fast Accurate Dynamic and Stability Studies of IBR Dominated Hybrid AC-MTDC Grids doi:10.1109/PESGM52009.2025.11225845"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "real-time EMTDC simulation",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "Demonstration of real-time EMTDC simulation using HYPERSIM for accurate and fast dynamic and stability studies of IBR-dominated hybrid AC-MTDC grids, including SIL and HIL integration.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "Abstract: In this era of an unprecedented energy transition, the digital representations of dynamic power system models in the time domain for Electro Magnetic Transients including DC (EMTDC) simulations, have become necessary and even mandatory by most grid codes for a range of use cases. This is p...[truncated]",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "Full text excerpt:",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "While accurate, offline EMTDC simulations are limited to some basic, small-scale studies, such as voltage, frequency, fault studies, etc., due to limitations in their performance.",
+            "support": "source_sentence"
+          }
+        ]
+      },
+      {
+        "method": "Pontryagin maximum principle (PMP)",
+        "scenario": "screw compressors in smart power systems",
+        "benchmark": "specific energy consumption",
+        "references": [
+          "K. Yelemessov et al. (2025) Algorithmic Optimal Control of Screw Compressors for Energy-Efficient Operation in Smart Power Systems doi:10.3390/a18090583"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "Pontryagin maximum principle (PMP)",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "A mathematically grounded PMP-based regulator that minimizes total energy consumption of a nonlinear electromechanical system comprising a screw compressor and variable-frequency induction motor, enabling improved adaptability, energy-aware operation, and real-time PLC deployment.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "hybrid extensions combining model-based control with AI-driven optimization and learning mechanisms, including reinforcement learning, surrogate modeling, and digital twins",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "Full text excerpt:",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "This work presents the results of a research study focused on the development and evaluation of an algorithmic optimal control framework for energy-efficient operation of screw compressors in smart power systems.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "The proposed approach is based on the Pontryagin maximum principle (PMP), which enables the synthesis of a mathematically grounded regulator that minimizes the total energy consumption of a nonlinear electromechanical system composed of a screw compressor and a variable-frequency induction motor.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "Unlike conventional PID controllers, the developed algorithm explicitly incorporates system constraints, nonlinear dynamics, and performance trade-offs into the control law, allowing for improved adaptability and energy-aware operation.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "Simulation results obtained using MATLAB/Simulink confirm that the PMP-based regulator outperforms classical PID solutions in both transient and steady-state regimes.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "Experimental tests conducted in accordance with standard energy consumption evaluation methods showed that the proposed PMP-based controller provides a reduction in specific energy consumption of up to 18% under dynamic load conditions compared to a well-tuned basic PID controller, while maintaining...[truncated]",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "Furthermore, the proposed approach lays the groundwork for hybrid extensions combining model-based control with AI-driven optimization and learning mechanisms, including reinforcement learning, surrogate modeling, and digital twins.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "The research outcomes contribute to the broader field of algorithmic control in power electronics, offering a scalable and analytically justified alternative to heuristic and empirical tuning approaches commonly used in industry.",
+            "support": "source_sentence"
+          }
+        ]
+      },
+      {
+        "method": "dynamic phasor transmission line model | traveling wave model | co-simulation interface",
+        "scenario": "power system simulation | real-time digital simulation",
+        "benchmark": "of real-time electromagnetic transient and transient stability",
+        "references": [
+          "H. Konara et al. (2023) Co-simulation of real-time electromagnetic transient and transient stability simulations using dynamic phasor T-Line model doi:10.1016/j.epsr.2023.109611"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "dynamic phasor transmission line model | traveling wave model | co-simulation interface",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "A dynamic phasor-based transmission line interface enabling stable co-simulation of electromagnetic transient and transient stability models with mismatched time-steps.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "The interface requires that the propagation delay of the interfaced transmission lines be greater than the EMT time-step.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "Full text excerpt:",
+            "support": "structured_field"
+          }
+        ]
+      },
+      {
+        "method": "Deep Surrogate Models and Multi-Agent Proximal Policy Optimization",
+        "scenario": "power system transient stability",
+        "benchmark": "transient stability and thermal constraints",
+        "references": [
+          "Kewei Shi et al. (2025) Preventive Control for Power System Transient Stability via Deep Surrogate Models and Multi-Agent Reinforcement Learning doi:10.1109/IAECST68792.2025.11414900"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "Deep Surrogate Models and Multi-Agent Proximal Policy Optimization",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "A novel preventive control framework integrating deep surrogate models and multi-agent reinforcement learning to enable real-time, robust decision support for power system security.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "No explicit limitation extracted.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "Full text excerpt:",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "Traditional preventive control methods, heavily reliant on time-domain simulations, struggle to meet the real-time requirements of modern power grids due to high computational burdens.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "To address this, this paper proposes a novel preventive control framework that integrates Deep Surrogate Models with Multi-Agent Proximal Policy Optimization.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "Full text excerpt: A novel preventive control framework integrating deep surrogate models and multi-agent reinforcement learning to enable real-time, robust decision support for power system security.",
+            "support": "source_sentence"
+          }
+        ]
+      },
+      {
+        "method": "online recursive least squares (RLS) identification algorithm in z-domain",
+        "scenario": "large power grid",
+        "benchmark": "event frequency",
+        "references": [
+          "Abilash Thakallapelli et al. (2016) Real-time frequency based reduced order modeling of large power grid doi:10.1109/PESGM.2016.7741877"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "online recursive least squares (RLS) identification algorithm in z-domain",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "introduces a method of developing FDNE based on an online recursive least squares (RLS) identification algorithm in z-domain, and modeling of reduced power systems as FDNE and as a combination of TSA and FDNE using real-time digital simulators",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "Full text excerpt: introduces a method of developing FDNE based on an online recursive least squares (RLS) identification algorithm in z-domain, and modeling of reduced power systems as FDNE and as a combination of TSA and FDNE using real-time digital simulators No explicit limitation extracted.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "Full text excerpt:",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "In general, there are methods that reduce large power system into an equivalent network that requires less computational resource, while preserving electromechanical (low frequency) and high frequency behavior of the original system.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "To this effect, this paper introduces a method of developing FDNE based on an online recursive least squares (RLS) identification algorithm in z-domain, and modeling of reduced power systems as FDNE and as a combination of TSA and FDNE using real-time digital simulators.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "Full text excerpt: introduces a method of developing FDNE based on an online recursive least squares (RLS) identification algorithm in z-domain, and modeling of reduced power systems as FDNE and as a combination of TSA and FDNE using real-time digital simulators Full text excerpt: introduces a metho...[truncated]",
+            "support": "source_sentence"
+          }
+        ]
+      },
+      {
+        "method": "FPGA-RTDS co-simulation",
+        "scenario": "large power systems",
+        "benchmark": "simulation accuracy | capability to simulate large AC systems",
+        "references": [
+          "Conghuan Yang et al. (2018) Real-Time FPGA-RTDS Co-Simulator for Power Systems doi:10.1109/ACCESS.2018.2862893"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "FPGA-RTDS co-simulation",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "A real-time co-simulation platform integrating FPGA and RTDS that avoids interface errors present in conventional transient stability–electromagnetic transient program coupling while enabling scalable simulation of large power systems.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "No explicit limitation extracted.",
+            "support": "structured_field"
+          }
+        ]
+      },
+      {
+        "method": "machine learning model",
+        "scenario": "boost converter control",
+        "benchmark": "conversion and selectivity",
+        "references": [
+          "Karol Najdek et al. (2026) Feedback Control of a Boost Converter Using a NARX-NN-Based Digital Twin Instance: Multi-Domain Analysis and Comparison doi:10.1109/ACCESS.2026.3669779"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "machine learning model",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "A data-driven feedback control framework using a NARX-NN-based Digital Twin Instance to estimate output capacitor voltage in real-time, enabling robust voltage regulation under sensing degradation and establishing a unified foundation for neural estimator integration in power-electronic control.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "Full text excerpt: A data-driven feedback control framework using a NARX-NN-based Digital Twin Instance to estimate output capacitor voltage in real-time, enabling robust voltage regulation under sensing degradation and establishing a unified foundation for neural estimator integration in power-elec...[truncated]",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "A data-driven feedback control framework using a NARX-NN-based Digital Twin Instance to estimate output capacitor voltage in real-time, enabling robust voltage regulation under sensing degradation and establishing a unified foundation for neural estimator integration in power-electronic control.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "Full text excerpt: A data-driven feedback control framework using a NARX-NN-based Digital Twin Instance to estimate output capacitor voltage in real-time, enabling robust voltage regulation under sensing degradation and establishing a unified foundation for neural estimator integration in power-elec...[truncated]",
+            "support": "source_sentence"
+          }
+        ]
+      },
+      {
+        "method": "co-simulation offers an integrated approach for modeling",
+        "scenario": "real-time co-simulation of power systems with high inverter-based resource (IBR) penetration",
+        "benchmark": "scalability, effectiveness, stability, reliability, accuracy of simulation outcomes",
+        "references": [
+          "Qi Xiao et al. (2025) Design and Implementation of Scalable Communication Interfaces for Reliable and Stable Real-time Co-Simulation of Power Systems doi:10.1109/PESGM52009.2025.11225688"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "co-simulation offers an integrated approach for modeling",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "A scalable communication interface design and implementation enabling reliable and stable real-time co-simulation of power systems with high IBR penetration, including a real-time data extrapolation method to mitigate instability from data resolution mismatches.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "challenges specific to real-time co-simulation applications",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "A scalable communication interface design and implementation enabling reliable and stable real-time co-simulation of power systems with high IBR penetration, including a real-time data extrapolation method to mitigate instability from data resolution mismatches.",
+            "support": "source_sentence"
+          }
+        ]
+      },
+      {
+        "method": "electromagnetic transient (EMT) simulation",
+        "scenario": "large-scale power grids",
+        "benchmark": "classification performance",
+        "references": [
+          "Hossein Hooshyar et al. (2026) Electromagnetic Transient Simulations for Large-Scale Power Grids: A Utility Perspective doi:10.1109/MPE.2025.3638277"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "electromagnetic transient (EMT) simulation",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "utility-focused overview of EMT simulation strategies emphasizing practical implementation, model development and validation, hybrid co-simulation architectures, and digital twin integration",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "Abstract: As the global power grid transforms, utilities face growing complexity in modeling, stability assessment, and operational planning. The increasing penetration of inverter-based resources (IBRs), power-electronics-interfaced devices (PEIDs), and distributed energy technologies exceeds the l...[truncated]",
+            "support": "structured_field"
+          }
+        ]
+      },
+      {
+        "method": "instrumental measurement",
+        "scenario": "inverter-based microgrids",
+        "benchmark": "R² score, computational speedup (×), real-time/near real-time inference capability",
+        "references": [
+          "Osasumwen Cedric Ogiesoba-Eguakun et al. (2026) Real-Time Surrogate Modeling for Fast Transient Prediction in Inverter-Based Microgrids Using CNN and LightGBM doi:10.48550/arXiv.2603.29255"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "instrumental measurement",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "A data-driven surrogate modeling framework enabling fast, accurate, and real-time or faster-than-real-time prediction of electromagnetic transients in inverter-based microgrids using CNN and LightGBM.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "No explicit limitation extracted.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "A data-driven surrogate modeling framework enabling fast, accurate, and real-time or faster-than-real-time prediction of electromagnetic transients in inverter-based microgrids using CNN and LightGBM.",
+            "support": "source_sentence"
+          }
+        ]
+      }
+    ],
+    "claim_type_counts": {
+      "methodological_description": 69,
+      "empirical_result": 43,
+      "author_opinion": 38,
+      "theoretical_claim": 20
+    }
+  },
+  "knowledge_gaps": [
+    {
+      "gap_id": "gap_1783353375524233200",
+      "gap_type": "combinatorial",
+      "description": "Method 'Deep Surrogate Models and Multi-Agent Proximal Policy Optimization' has no recorded validation in scenario 'IBR-dominated hybrid AC-MTDC grid' in the current PaperGraph map.",
+      "supporting_references": [
+        "Satish Kumar Ancha et al. (2025) Leveraging Real-Time Digital Simulations for Fast Accurate Dynamic and Stability Studies of IBR Dominated Hybrid AC-MTDC Grids doi:10.1109/PESGM52009.2025.11225845",
+        "Kewei Shi et al. (2025) Preventive Control for Power System Transient Stability via Deep Surrogate Models and Multi-Agent Reinforcement Learning doi:10.1109/IAECST68792.2025.11414900"
+      ],
+      "novelty_score": 5,
+      "application_value": "medium",
+      "feasibility": "high",
+      "suggested_research_path": "Run a targeted validation study with explicit benchmarks, baselines, and failure-mode analysis.",
+      "value_argument": "The combination may expose method-scenario boundary conditions rather than simply adding another benchmark.",
+      "overlap_risk": "low",
+      "requires_human_review": false
+    },
+    {
+      "gap_id": "gap_1783353375533617300",
+      "gap_type": "improvement",
+      "description": "Recorded limitation worth testing: No explicit limitation extracted.",
+      "supporting_references": [
+        "Conghuan Yang et al. (2018) Real-Time FPGA-RTDS Co-Simulator for Power Systems doi:10.1109/ACCESS.2018.2862893"
+      ],
+      "novelty_score": 5,
+      "application_value": "medium",
+      "feasibility": "high",
+      "suggested_research_path": "Formulate a hypothesis that directly attacks the documented limitation and verify it under stress conditions.",
+      "value_argument": "The gap is grounded in an author-reported limitation, so it has stronger evidential support than a bare untried combination.",
+      "overlap_risk": "medium",
+      "requires_human_review": false
+    },
+    {
+      "gap_id": "gap_1783353375514490300",
+      "gap_type": "anomaly",
+      "description": "Unexplained anomaly or theory-evidence tension reported in the literature: The FPGA therefore acts as an efficient and economical extension to RTDS especially when simulating large ac systems.",
+      "supporting_references": [
+        "Conghuan Yang et al. (2018) Real-Time FPGA-RTDS Co-Simulator for Power Systems doi:10.1109/ACCESS.2018.2862893"
+      ],
+      "novelty_score": 4,
+      "application_value": "medium",
+      "feasibility": "high",
+      "suggested_research_path": "Turn the anomaly into competing mechanistic explanations, then test which assumptions fail under controlled conditions, ablation, counterexample construction, or independent data.",
+      "value_argument": "Anomaly gaps can drive explanatory progress because they point to observations or results that current mechanisms do not fully account for.",
+      "overlap_risk": "high",
+      "requires_human_review": true
+    }
+  ],
+  "self_reflection": {
+    "top_venue_coverage_checked": true,
+    "pseudo_gap_risk_checked": true,
+    "method_categories_require_literature_support": true,
+    "unsupported_claims_marked_for_review": true
+  }
+}

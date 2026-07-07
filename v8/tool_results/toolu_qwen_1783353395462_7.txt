@@ -1,0 +1,1198 @@
+{
+  "agent": "tanxi",
+  "target_domain": "Power System Simulation / 电力系统仿真",
+  "thought": "TanXi scanned the PaperGraph for low-density but high-importance method-scenario-benchmark regions, claim contradictions, anomaly/tension signals, cross-disciplinary unconnected pairs, suspended unresolved problems, and strategic-need alignment.",
+  "action": {
+    "scan_coverage_density": {
+      "target_domain": "Power System Simulation / 电力系统仿真"
+    },
+    "detect_reasoning_gaps": {
+      "types": [
+        "claim_contradiction",
+        "theory_evidence_anomaly"
+      ]
+    },
+    "find_unconnected_pairs": {
+      "target_domain": "Power System Simulation / 电力系统仿真"
+    },
+    "detect_suspended_problems": {
+      "min_citation_threshold": 50
+    },
+    "prioritize_gaps": {
+      "criteria": [
+        "importance",
+        "tractability",
+        "strategic_value"
+      ]
+    },
+    "align_with_strategic_needs": {
+      "strategic_domains": [
+        "energy",
+        "AI for Science"
+      ]
+    }
+  },
+  "coverage_analysis": {
+    "target_domain": "Power System Simulation / 电力系统仿真",
+    "method_count": 15,
+    "scenario_count": 13,
+    "benchmark_count": 15,
+    "dense_areas": [
+      {
+        "topic": "Deep Surrogate Models and Multi-Agent Proximal Policy Optimization + power system transient stability",
+        "method": "Deep Surrogate Models and Multi-Agent Proximal Policy Optimization",
+        "scenario": "power system transient stability",
+        "evidence_count": 1,
+        "benchmark_count": 1,
+        "importance_score": 9
+      },
+      {
+        "topic": "Distributed Transmission Line Model (DTLM) with Aurora 8B/10B data exchange + real-time power system co-simulation for smart grids",
+        "method": "Distributed Transmission Line Model (DTLM) with Aurora 8B/10B data exchange",
+        "scenario": "real-time power system co-simulation for smart grids",
+        "evidence_count": 1,
+        "benchmark_count": 1,
+        "importance_score": 7
+      },
+      {
+        "topic": "FPGA-RTDS co-simulation + large power systems",
+        "method": "FPGA-RTDS co-simulation",
+        "scenario": "large power systems",
+        "evidence_count": 1,
+        "benchmark_count": 1,
+        "importance_score": 7
+      },
+      {
+        "topic": "Pontryagin maximum principle (PMP) + screw compressors in smart power systems",
+        "method": "Pontryagin maximum principle (PMP)",
+        "scenario": "screw compressors in smart power systems",
+        "evidence_count": 1,
+        "benchmark_count": 1,
+        "importance_score": 7
+      },
+      {
+        "topic": "co-simulation offers an integrated approach for modeling + real-time co-simulation of power systems with high inverter-based resource (IBR) penetration",
+        "method": "co-simulation offers an integrated approach for modeling",
+        "scenario": "real-time co-simulation of power systems with high inverter-based resource (IBR) penetration",
+        "evidence_count": 1,
+        "benchmark_count": 1,
+        "importance_score": 8
+      },
+      {
+        "topic": "dynamic phasor transmission line model | traveling wave model | co-simulation interface + power system simulation | real-time digital simulation",
+        "method": "dynamic phasor transmission line model | traveling wave model | co-simulation interface",
+        "scenario": "power system simulation | real-time digital simulation",
+        "evidence_count": 1,
+        "benchmark_count": 1,
+        "importance_score": 7
+      },
+      {
+        "topic": "electromagnetic transient (EMT) simulation + large-scale power grids",
+        "method": "electromagnetic transient (EMT) simulation",
+        "scenario": "large-scale power grids",
+        "evidence_count": 1,
+        "benchmark_count": 1,
+        "importance_score": 7
+      },
+      {
+        "topic": "instrumental measurement + inverter-based microgrids",
+        "method": "instrumental measurement",
+        "scenario": "inverter-based microgrids",
+        "evidence_count": 1,
+        "benchmark_count": 1,
+        "importance_score": 5
+      },
+      {
+        "topic": "machine learning model + boost converter control",
+        "method": "machine learning model",
+        "scenario": "boost converter control",
+        "evidence_count": 1,
+        "benchmark_count": 1,
+        "importance_score": 5
+      },
+      {
+        "topic": "online recursive least squares (RLS) identification algorithm in z-domain + large power grid",
+        "method": "online recursive least squares (RLS) identification algorithm in z-domain",
+        "scenario": "large power grid",
+        "evidence_count": 1,
+        "benchmark_count": 1,
+        "importance_score": 7
+      }
+    ],
+    "density_holes": [
+      {
+        "topic": "Deep Surrogate Models and Multi-Agent Proximal Policy Optimization + power system transient stability benchmark coverage",
+        "method": "Deep Surrogate Models and Multi-Agent Proximal Policy Optimization",
+        "scenario": "power system transient stability",
+        "importance_score": 9,
+        "current_evidence_level": "medium",
+        "missing_benchmarks": [
+          "R² score, computational speedup (×), real-time/near real-time inference capability",
+          "classification performance",
+          "control stability",
+          "conversion and selectivity",
+          "dynamic and stability performance"
+        ],
+        "why_important": "The method-scenario pair has evidence, but benchmark coverage is sparse, so robustness and generalization remain uncertain.",
+        "supporting_references": [
+          "Kewei Shi et al. (2025) Preventive Control for Power System Transient Stability via Deep Surrogate Models and Multi-Agent Reinforcement Learning doi:10.1109/IAECST68792.2025.11414900"
+        ]
+      },
+      {
+        "topic": "scalable communication interface design | real-time data extrapolation method + real-time co-simulation of power systems with high inverter-based resource (IBR) penetration benchmark coverage",
+        "method": "scalable communication interface design | real-time data extrapolation method",
+        "scenario": "real-time co-simulation of power systems with high inverter-based resource (IBR) penetration",
+        "importance_score": 9,
+        "current_evidence_level": "medium",
+        "missing_benchmarks": [
+          "R² score, computational speedup (×), real-time/near real-time inference capability",
+          "classification performance",
+          "control stability",
+          "conversion and selectivity",
+          "dynamic and stability performance"
+        ],
+        "why_important": "The method-scenario pair has evidence, but benchmark coverage is sparse, so robustness and generalization remain uncertain.",
+        "supporting_references": [
+          "Qi Xiao et al. (2025) Design and Implementation of Scalable Communication Interfaces for Reliable and Stable Real-time Co-Simulation of Power Systems arXiv:2502.07866v1"
+        ]
+      },
+      {
+        "topic": "to incorporate risk in the traditional transient stability analysis + power system transient stability benchmark coverage",
+        "method": "to incorporate risk in the traditional transient stability analysis",
+        "scenario": "power system transient stability",
+        "importance_score": 9,
+        "current_evidence_level": "medium",
+        "missing_benchmarks": [
+          "R² score, computational speedup (×), real-time/near real-time inference capability",
+          "classification performance",
+          "control stability",
+          "conversion and selectivity",
+          "dynamic and stability performance"
+        ],
+        "why_important": "The method-scenario pair has evidence, but benchmark coverage is sparse, so robustness and generalization remain uncertain.",
+        "supporting_references": [
+          "Umair Shahzad (2022) A Comprehensive Review on Power System Risk-Based Transient Stability arXiv:2206.05113v1"
+        ]
+      },
+      {
+        "topic": "Distributed Transmission Line Model (DTLM) with Aurora 8B/10B data exchange + power system transient stability",
+        "method": "Distributed Transmission Line Model (DTLM) with Aurora 8B/10B data exchange",
+        "scenario": "power system transient stability",
+        "importance_score": 9,
+        "current_evidence_level": "none",
+        "missing_benchmarks": [
+          "R² score, computational speedup (×), real-time/near real-time inference capability",
+          "classification performance",
+          "control stability",
+          "conversion and selectivity",
+          "dynamic and stability performance"
+        ],
+        "why_important": "Both the method and scenario are visible in the field map, but this intersection has no recorded validation.",
+        "supporting_references": [
+          "Luca Barbierato et al. (2023) Digital Real-Time Power System Co-simulation via Distributed Transmission Line Model doi:10.1109/EEEIC/ICPSEurope57605.2023.10194853",
+          "Umair Shahzad (2022) A Comprehensive Review on Power System Risk-Based Transient Stability arXiv:2206.05113v1",
+          "Kewei Shi et al. (2025) Preventive Control for Power System Transient Stability via Deep Surrogate Models and Multi-Agent Reinforcement Learning doi:10.1109/IAECST68792.2025.11414900"
+        ]
+      },
+      {
+        "topic": "FPGA-RTDS co-simulation + power system transient stability",
+        "method": "FPGA-RTDS co-simulation",
+        "scenario": "power system transient stability",
+        "importance_score": 9,
+        "current_evidence_level": "none",
+        "missing_benchmarks": [
+          "R² score, computational speedup (×), real-time/near real-time inference capability",
+          "classification performance",
+          "control stability",
+          "conversion and selectivity",
+          "dynamic and stability performance"
+        ],
+        "why_important": "Both the method and scenario are visible in the field map, but this intersection has no recorded validation.",
+        "supporting_references": [
+          "Conghuan Yang et al. (2018) Real-Time FPGA-RTDS Co-Simulator for Power Systems doi:10.1109/ACCESS.2018.2862893",
+          "Umair Shahzad (2022) A Comprehensive Review on Power System Risk-Based Transient Stability arXiv:2206.05113v1",
+          "Kewei Shi et al. (2025) Preventive Control for Power System Transient Stability via Deep Surrogate Models and Multi-Agent Reinforcement Learning doi:10.1109/IAECST68792.2025.11414900"
+        ]
+      },
+      {
+        "topic": "Pontryagin maximum principle (PMP) + power system transient stability",
+        "method": "Pontryagin maximum principle (PMP)",
+        "scenario": "power system transient stability",
+        "importance_score": 9,
+        "current_evidence_level": "none",
+        "missing_benchmarks": [
+          "R² score, computational speedup (×), real-time/near real-time inference capability",
+          "classification performance",
+          "control stability",
+          "conversion and selectivity",
+          "dynamic and stability performance"
+        ],
+        "why_important": "Both the method and scenario are visible in the field map, but this intersection has no recorded validation.",
+        "supporting_references": [
+          "Umair Shahzad (2022) A Comprehensive Review on Power System Risk-Based Transient Stability arXiv:2206.05113v1",
+          "K. Yelemessov et al. (2025) Algorithmic Optimal Control of Screw Compressors for Energy-Efficient Operation in Smart Power Systems doi:10.3390/a18090583",
+          "Kewei Shi et al. (2025) Preventive Control for Power System Transient Stability via Deep Surrogate Models and Multi-Agent Reinforcement Learning doi:10.1109/IAECST68792.2025.11414900"
+        ]
+      },
+      {
+        "topic": "co-simulation offers an integrated approach for modeling + power system transient stability",
+        "method": "co-simulation offers an integrated approach for modeling",
+        "scenario": "power system transient stability",
+        "importance_score": 9,
+        "current_evidence_level": "none",
+        "missing_benchmarks": [
+          "R² score, computational speedup (×), real-time/near real-time inference capability",
+          "classification performance",
+          "control stability",
+          "conversion and selectivity",
+          "dynamic and stability performance"
+        ],
+        "why_important": "Both the method and scenario are visible in the field map, but this intersection has no recorded validation.",
+        "supporting_references": [
+          "Qi Xiao et al. (2025) Design and Implementation of Scalable Communication Interfaces for Reliable and Stable Real-time Co-Simulation of Power Systems doi:10.1109/PESGM52009.2025.11225688",
+          "Umair Shahzad (2022) A Comprehensive Review on Power System Risk-Based Transient Stability arXiv:2206.05113v1",
+          "Kewei Shi et al. (2025) Preventive Control for Power System Transient Stability via Deep Surrogate Models and Multi-Agent Reinforcement Learning doi:10.1109/IAECST68792.2025.11414900"
+        ]
+      },
+      {
+        "topic": "dynamic phasor transmission line model | traveling wave model | co-simulation interface + power system transient stability",
+        "method": "dynamic phasor transmission line model | traveling wave model | co-simulation interface",
+        "scenario": "power system transient stability",
+        "importance_score": 9,
+        "current_evidence_level": "none",
+        "missing_benchmarks": [
+          "R² score, computational speedup (×), real-time/near real-time inference capability",
+          "classification performance",
+          "control stability",
+          "conversion and selectivity",
+          "dynamic and stability performance"
+        ],
+        "why_important": "Both the method and scenario are visible in the field map, but this intersection has no recorded validation.",
+        "supporting_references": [
+          "Umair Shahzad (2022) A Comprehensive Review on Power System Risk-Based Transient Stability arXiv:2206.05113v1",
+          "H. Konara et al. (2023) Co-simulation of real-time electromagnetic transient and transient stability simulations using dynamic phasor T-Line model doi:10.1016/j.epsr.2023.109611",
+          "Kewei Shi et al. (2025) Preventive Control for Power System Transient Stability via Deep Surrogate Models and Multi-Agent Reinforcement Learning doi:10.1109/IAECST68792.2025.11414900"
+        ]
+      },
+      {
+        "topic": "electromagnetic transient (EMT) simulation + power system transient stability",
+        "method": "electromagnetic transient (EMT) simulation",
+        "scenario": "power system transient stability",
+        "importance_score": 9,
+        "current_evidence_level": "none",
+        "missing_benchmarks": [
+          "R² score, computational speedup (×), real-time/near real-time inference capability",
+          "classification performance",
+          "control stability",
+          "conversion and selectivity",
+          "dynamic and stability performance"
+        ],
+        "why_important": "Both the method and scenario are visible in the field map, but this intersection has no recorded validation.",
+        "supporting_references": [
+          "Hossein Hooshyar et al. (2026) Electromagnetic Transient Simulations for Large-Scale Power Grids: A Utility Perspective doi:10.1109/MPE.2025.3638277",
+          "Umair Shahzad (2022) A Comprehensive Review on Power System Risk-Based Transient Stability arXiv:2206.05113v1",
+          "Kewei Shi et al. (2025) Preventive Control for Power System Transient Stability via Deep Surrogate Models and Multi-Agent Reinforcement Learning doi:10.1109/IAECST68792.2025.11414900"
+        ]
+      },
+      {
+        "topic": "instrumental measurement + power system transient stability",
+        "method": "instrumental measurement",
+        "scenario": "power system transient stability",
+        "importance_score": 9,
+        "current_evidence_level": "none",
+        "missing_benchmarks": [
+          "R² score, computational speedup (×), real-time/near real-time inference capability",
+          "classification performance",
+          "control stability",
+          "conversion and selectivity",
+          "dynamic and stability performance"
+        ],
+        "why_important": "Both the method and scenario are visible in the field map, but this intersection has no recorded validation.",
+        "supporting_references": [
+          "Osasumwen Cedric Ogiesoba-Eguakun et al. (2026) Real-Time Surrogate Modeling for Fast Transient Prediction in Inverter-Based Microgrids Using CNN and LightGBM doi:10.48550/arXiv.2603.29255",
+          "Umair Shahzad (2022) A Comprehensive Review on Power System Risk-Based Transient Stability arXiv:2206.05113v1",
+          "Kewei Shi et al. (2025) Preventive Control for Power System Transient Stability via Deep Surrogate Models and Multi-Agent Reinforcement Learning doi:10.1109/IAECST68792.2025.11414900"
+        ]
+      },
+      {
+        "topic": "machine learning model + power system transient stability",
+        "method": "machine learning model",
+        "scenario": "power system transient stability",
+        "importance_score": 9,
+        "current_evidence_level": "none",
+        "missing_benchmarks": [
+          "R² score, computational speedup (×), real-time/near real-time inference capability",
+          "classification performance",
+          "control stability",
+          "conversion and selectivity",
+          "dynamic and stability performance"
+        ],
+        "why_important": "Both the method and scenario are visible in the field map, but this intersection has no recorded validation.",
+        "supporting_references": [
+          "Karol Najdek et al. (2026) Feedback Control of a Boost Converter Using a NARX-NN-Based Digital Twin Instance: Multi-Domain Analysis and Comparison doi:10.1109/ACCESS.2026.3669779",
+          "Umair Shahzad (2022) A Comprehensive Review on Power System Risk-Based Transient Stability arXiv:2206.05113v1",
+          "Kewei Shi et al. (2025) Preventive Control for Power System Transient Stability via Deep Surrogate Models and Multi-Agent Reinforcement Learning doi:10.1109/IAECST68792.2025.11414900"
+        ]
+      },
+      {
+        "topic": "online recursive least squares (RLS) identification algorithm in z-domain + power system transient stability",
+        "method": "online recursive least squares (RLS) identification algorithm in z-domain",
+        "scenario": "power system transient stability",
+        "importance_score": 9,
+        "current_evidence_level": "none",
+        "missing_benchmarks": [
+          "R² score, computational speedup (×), real-time/near real-time inference capability",
+          "classification performance",
+          "control stability",
+          "conversion and selectivity",
+          "dynamic and stability performance"
+        ],
+        "why_important": "Both the method and scenario are visible in the field map, but this intersection has no recorded validation.",
+        "supporting_references": [
+          "Umair Shahzad (2022) A Comprehensive Review on Power System Risk-Based Transient Stability arXiv:2206.05113v1",
+          "Kewei Shi et al. (2025) Preventive Control for Power System Transient Stability via Deep Surrogate Models and Multi-Agent Reinforcement Learning doi:10.1109/IAECST68792.2025.11414900",
+          "Abilash Thakallapelli et al. (2016) Real-time frequency based reduced order modeling of large power grid doi:10.1109/PESGM.2016.7741877"
+        ]
+      },
+      {
+        "topic": "optimization algorithm + power system transient stability",
+        "method": "optimization algorithm",
+        "scenario": "power system transient stability",
+        "importance_score": 9,
+        "current_evidence_level": "none",
+        "missing_benchmarks": [
+          "R² score, computational speedup (×), real-time/near real-time inference capability",
+          "classification performance",
+          "control stability",
+          "conversion and selectivity",
+          "dynamic and stability performance"
+        ],
+        "why_important": "Both the method and scenario are visible in the field map, but this intersection has no recorded validation.",
+        "supporting_references": [
+          "Prateek Shrivastava et al. (2025) Digital Twin Framework for Voltage Control and Power Quality Optimization in Single-Stage Grid-Connected Solar PV System doi:10.1109/ICPEE65973.2025.11411561",
+          "Umair Shahzad (2022) A Comprehensive Review on Power System Risk-Based Transient Stability arXiv:2206.05113v1",
+          "Kewei Shi et al. (2025) Preventive Control for Power System Transient Stability via Deep Surrogate Models and Multi-Agent Reinforcement Learning doi:10.1109/IAECST68792.2025.11414900"
+        ]
+      },
+      {
+        "topic": "real-time EMTDC simulation + power system transient stability",
+        "method": "real-time EMTDC simulation",
+        "scenario": "power system transient stability",
+        "importance_score": 9,
+        "current_evidence_level": "none",
+        "missing_benchmarks": [
+          "R² score, computational speedup (×), real-time/near real-time inference capability",
+          "classification performance",
+          "control stability",
+          "conversion and selectivity",
+          "dynamic and stability performance"
+        ],
+        "why_important": "Both the method and scenario are visible in the field map, but this intersection has no recorded validation.",
+        "supporting_references": [
+          "Umair Shahzad (2022) A Comprehensive Review on Power System Risk-Based Transient Stability arXiv:2206.05113v1",
+          "Satish Kumar Ancha et al. (2025) Leveraging Real-Time Digital Simulations for Fast Accurate Dynamic and Stability Studies of IBR Dominated Hybrid AC-MTDC Grids doi:10.1109/PESGM52009.2025.11225845",
+          "Kewei Shi et al. (2025) Preventive Control for Power System Transient Stability via Deep Surrogate Models and Multi-Agent Reinforcement Learning doi:10.1109/IAECST68792.2025.11414900"
+        ]
+      },
+      {
+        "topic": "real-time co-simulation + power system transient stability",
+        "method": "real-time co-simulation",
+        "scenario": "power system transient stability",
+        "importance_score": 9,
+        "current_evidence_level": "none",
+        "missing_benchmarks": [
+          "R² score, computational speedup (×), real-time/near real-time inference capability",
+          "classification performance",
+          "control stability",
+          "conversion and selectivity",
+          "dynamic and stability performance"
+        ],
+        "why_important": "Both the method and scenario are visible in the field map, but this intersection has no recorded validation.",
+        "supporting_references": [
+          "Umair Shahzad (2022) A Comprehensive Review on Power System Risk-Based Transient Stability arXiv:2206.05113v1",
+          "M. Mohanpurkar et al. (2018) Real-time co-simulation of adjustable-speed pumped storage hydro for transient stability analysis doi:10.1016/J.EPSR.2017.08.010",
+          "Kewei Shi et al. (2025) Preventive Control for Power System Transient Stability via Deep Surrogate Models and Multi-Agent Reinforcement Learning doi:10.1109/IAECST68792.2025.11414900"
+        ]
+      },
+      {
+        "topic": "scalable communication interface design | real-time data extrapolation method + power system transient stability",
+        "method": "scalable communication interface design | real-time data extrapolation method",
+        "scenario": "power system transient stability",
+        "importance_score": 9,
+        "current_evidence_level": "none",
+        "missing_benchmarks": [
+          "R² score, computational speedup (×), real-time/near real-time inference capability",
+          "classification performance",
+          "control stability",
+          "conversion and selectivity",
+          "dynamic and stability performance"
+        ],
+        "why_important": "Both the method and scenario are visible in the field map, but this intersection has no recorded validation.",
+        "supporting_references": [
+          "Qi Xiao et al. (2025) Design and Implementation of Scalable Communication Interfaces for Reliable and Stable Real-time Co-Simulation of Power Systems arXiv:2502.07866v1",
+          "Umair Shahzad (2022) A Comprehensive Review on Power System Risk-Based Transient Stability arXiv:2206.05113v1",
+          "Kewei Shi et al. (2025) Preventive Control for Power System Transient Stability via Deep Surrogate Models and Multi-Agent Reinforcement Learning doi:10.1109/IAECST68792.2025.11414900"
+        ]
+      },
+      {
+        "topic": "to incorporate risk in the traditional transient stability analysis + real-time co-simulation of power systems with high inverter-based resource (IBR) penetration",
+        "method": "to incorporate risk in the traditional transient stability analysis",
+        "scenario": "real-time co-simulation of power systems with high inverter-based resource (IBR) penetration",
+        "importance_score": 9,
+        "current_evidence_level": "none",
+        "missing_benchmarks": [
+          "R² score, computational speedup (×), real-time/near real-time inference capability",
+          "classification performance",
+          "control stability",
+          "conversion and selectivity",
+          "dynamic and stability performance"
+        ],
+        "why_important": "Both the method and scenario are visible in the field map, but this intersection has no recorded validation.",
+        "supporting_references": [
+          "Qi Xiao et al. (2025) Design and Implementation of Scalable Communication Interfaces for Reliable and Stable Real-time Co-Simulation of Power Systems doi:10.1109/PESGM52009.2025.11225688",
+          "Qi Xiao et al. (2025) Design and Implementation of Scalable Communication Interfaces for Reliable and Stable Real-time Co-Simulation of Power Systems arXiv:2502.07866v1",
+          "Umair Shahzad (2022) A Comprehensive Review on Power System Risk-Based Transient Stability arXiv:2206.05113v1"
+        ]
+      },
+      {
+        "topic": "co-simulation offers an integrated approach for modeling + real-time co-simulation of power systems with high inverter-based resource (IBR) penetration benchmark coverage",
+        "method": "co-simulation offers an integrated approach for modeling",
+        "scenario": "real-time co-simulation of power systems with high inverter-based resource (IBR) penetration",
+        "importance_score": 8,
+        "current_evidence_level": "medium",
+        "missing_benchmarks": [
+          "R² score, computational speedup (×), real-time/near real-time inference capability",
+          "classification performance",
+          "control stability",
+          "conversion and selectivity",
+          "dynamic and stability performance"
+        ],
+        "why_important": "The method-scenario pair has evidence, but benchmark coverage is sparse, so robustness and generalization remain uncertain.",
+        "supporting_references": [
+          "Qi Xiao et al. (2025) Design and Implementation of Scalable Communication Interfaces for Reliable and Stable Real-time Co-Simulation of Power Systems doi:10.1109/PESGM52009.2025.11225688"
+        ]
+      },
+      {
+        "topic": "Deep Surrogate Models and Multi-Agent Proximal Policy Optimization + real-time co-simulation of power systems with high inverter-based resource (IBR) penetration",
+        "method": "Deep Surrogate Models and Multi-Agent Proximal Policy Optimization",
+        "scenario": "real-time co-simulation of power systems with high inverter-based resource (IBR) penetration",
+        "importance_score": 8,
+        "current_evidence_level": "none",
+        "missing_benchmarks": [
+          "R² score, computational speedup (×), real-time/near real-time inference capability",
+          "classification performance",
+          "control stability",
+          "conversion and selectivity",
+          "dynamic and stability performance"
+        ],
+        "why_important": "Both the method and scenario are visible in the field map, but this intersection has no recorded validation.",
+        "supporting_references": [
+          "Qi Xiao et al. (2025) Design and Implementation of Scalable Communication Interfaces for Reliable and Stable Real-time Co-Simulation of Power Systems doi:10.1109/PESGM52009.2025.11225688",
+          "Qi Xiao et al. (2025) Design and Implementation of Scalable Communication Interfaces for Reliable and Stable Real-time Co-Simulation of Power Systems arXiv:2502.07866v1",
+          "Kewei Shi et al. (2025) Preventive Control for Power System Transient Stability via Deep Surrogate Models and Multi-Agent Reinforcement Learning doi:10.1109/IAECST68792.2025.11414900"
+        ]
+      },
+      {
+        "topic": "Distributed Transmission Line Model (DTLM) with Aurora 8B/10B data exchange + real-time co-simulation of power systems with high inverter-based resource (IBR) penetration",
+        "method": "Distributed Transmission Line Model (DTLM) with Aurora 8B/10B data exchange",
+        "scenario": "real-time co-simulation of power systems with high inverter-based resource (IBR) penetration",
+        "importance_score": 8,
+        "current_evidence_level": "none",
+        "missing_benchmarks": [
+          "R² score, computational speedup (×), real-time/near real-time inference capability",
+          "classification performance",
+          "control stability",
+          "conversion and selectivity",
+          "dynamic and stability performance"
+        ],
+        "why_important": "Both the method and scenario are visible in the field map, but this intersection has no recorded validation.",
+        "supporting_references": [
+          "Qi Xiao et al. (2025) Design and Implementation of Scalable Communication Interfaces for Reliable and Stable Real-time Co-Simulation of Power Systems doi:10.1109/PESGM52009.2025.11225688",
+          "Luca Barbierato et al. (2023) Digital Real-Time Power System Co-simulation via Distributed Transmission Line Model doi:10.1109/EEEIC/ICPSEurope57605.2023.10194853",
+          "Qi Xiao et al. (2025) Design and Implementation of Scalable Communication Interfaces for Reliable and Stable Real-time Co-Simulation of Power Systems arXiv:2502.07866v1"
+        ]
+      }
+    ]
+  },
+  "reasoning_gaps": [
+    {
+      "gap_id": "gap_1783353407357559200",
+      "gap_type": "contradiction",
+      "description": "Potential conclusion conflict: real-time co-simulation of power systems with high inverter-based resource (IBR) penetration contains opposing claims: Full text excerpt: A scalable communication interface design and implementation enabling reliable and stable real-time co-simulation of power systems with high IBR penetration, inc...[truncated] vs Challenges specific to real-time co-simulation applications, including instability from data resolution mismatches..",
+      "supporting_references": [
+        "Qi Xiao et al. (2025) Design and Implementation of Scalable Communication Interfaces for Reliable and Stable Real-time Co-Simulation of Power Systems doi:10.1109/PESGM52009.2025.11225688",
+        "Qi Xiao et al. (2025) Design and Implementation of Scalable Communication Interfaces for Reliable and Stable Real-time Co-Simulation of Power Systems arXiv:2502.07866v1"
+      ],
+      "novelty_score": 3,
+      "application_value": "high",
+      "feasibility": "high",
+      "suggested_research_path": "Extract the exact claim sentences, verify citation contexts/full text, then design a discriminating experiment, simulation, benchmark, or theoretical derivation that can separate the competing explanations.",
+      "value_argument": "Contradiction gaps are high-value because resolving them can update mechanism understanding, not merely fill a sparse method-scenario cell.",
+      "status": "candidate",
+      "createdAt": 1783353407.3575644,
+      "assessment_dimensions": [
+        "academic novelty",
+        "application value",
+        "implementation feasibility"
+      ],
+      "overlap_risk": "high",
+      "strongest_overlap": 0.6944,
+      "literature_coverage_factor": 0.8833,
+      "assessment_reason": "refs=2, gap_type=contradiction, strongest_local_overlap=0.694, coverage=0.883, feasibility=high, application_value=high",
+      "requires_human_review": true,
+      "reasoning_signal": {
+        "type": "claim_contradiction",
+        "shared_context": "real-time co-simulation of power systems with high inverter-based resource (IBR) penetration",
+        "left_polarity": "positive",
+        "right_polarity": "negative"
+      },
+      "dedupe_signature": "co-simulation conclusion conflict high of potential power real-time systems with"
+    },
+    {
+      "gap_id": "gap_1783353407558752900",
+      "gap_type": "contradiction",
+      "description": "Potential conclusion conflict: power system transient stability contains opposing claims: Moreover, with the increasing demand of renewable wind generation, and the requirement to maintain a secure power system, the importance of transient stability cannot be overestima...[truncated] vs Full text excerpt: A novel preventive control framework integrating deep surrogate models and multi-agent reinforcement learning to enable real-time, robust decision support for po...[truncated].",
+      "supporting_references": [
+        "Umair Shahzad (2022) A Comprehensive Review on Power System Risk-Based Transient Stability arXiv:2206.05113v1",
+        "Kewei Shi et al. (2025) Preventive Control for Power System Transient Stability via Deep Surrogate Models and Multi-Agent Reinforcement Learning doi:10.1109/IAECST68792.2025.11414900"
+      ],
+      "novelty_score": 5,
+      "application_value": "high",
+      "feasibility": "high",
+      "suggested_research_path": "Extract the exact claim sentences, verify citation contexts/full text, then design a discriminating experiment, simulation, benchmark, or theoretical derivation that can separate the competing explanations.",
+      "value_argument": "Contradiction gaps are high-value because resolving them can update mechanism understanding, not merely fill a sparse method-scenario cell.",
+      "status": "candidate",
+      "createdAt": 1783353407.5587585,
+      "assessment_dimensions": [
+        "academic novelty",
+        "application value",
+        "implementation feasibility"
+      ],
+      "overlap_risk": "medium",
+      "strongest_overlap": 0.5238,
+      "literature_coverage_factor": 0.9,
+      "assessment_reason": "refs=2, gap_type=contradiction, strongest_local_overlap=0.524, coverage=0.9, feasibility=high, application_value=high",
+      "requires_human_review": false,
+      "reasoning_signal": {
+        "type": "claim_contradiction",
+        "shared_context": "power system transient stability",
+        "left_polarity": "negative",
+        "right_polarity": "positive"
+      },
+      "dedupe_signature": "claims conclusion conflict contains opposing potential power stability system transient"
+    },
+    {
+      "gap_id": "gap_1783353407570440600",
+      "gap_type": "anomaly",
+      "description": "Unexplained anomaly or theory-evidence tension reported in the literature: The FPGA therefore acts as an efficient and economical extension to RTDS especially when simulating large ac systems.",
+      "supporting_references": [
+        "Conghuan Yang et al. (2018) Real-Time FPGA-RTDS Co-Simulator for Power Systems doi:10.1109/ACCESS.2018.2862893"
+      ],
+      "novelty_score": 4,
+      "application_value": "medium",
+      "feasibility": "high",
+      "suggested_research_path": "Turn the anomaly into competing mechanistic explanations, then test which assumptions fail under controlled conditions, ablation, counterexample construction, or independent data.",
+      "value_argument": "Anomaly gaps can drive explanatory progress because they point to observations or results that current mechanisms do not fully account for.",
+      "status": "candidate",
+      "createdAt": 1783353407.5704448,
+      "assessment_dimensions": [
+        "academic novelty",
+        "application value",
+        "implementation feasibility"
+      ],
+      "overlap_risk": "high",
+      "strongest_overlap": 0.6667,
+      "literature_coverage_factor": 0.6467,
+      "assessment_reason": "refs=1, gap_type=anomaly, strongest_local_overlap=0.667, coverage=0.647, feasibility=high, application_value=medium",
+      "requires_human_review": true,
+      "reasoning_signal": {
+        "type": "theory_evidence_anomaly",
+        "source_field": "computer_science"
+      },
+      "dedupe_signature": "anomaly fpga in or reported tension the the theory-evidence unexplained"
+    },
+    {
+      "gap_id": "gap_1783353407582668800",
+      "gap_type": "anomaly",
+      "description": "Unexplained anomaly or theory-evidence tension reported in the literature: Full text excerpt: A scalable communication interface design and implementation enabling reliable and stable real-time co-simulation of power systems with high IBR penetration, including a real-time data extrapolation method to mitigate instability from data r...[truncated]",
+      "supporting_references": [
+        "Qi Xiao et al. (2025) Design and Implementation of Scalable Communication Interfaces for Reliable and Stable Real-time Co-Simulation of Power Systems doi:10.1109/PESGM52009.2025.11225688"
+      ],
+      "novelty_score": 3,
+      "application_value": "high",
+      "feasibility": "high",
+      "suggested_research_path": "Turn the anomaly into competing mechanistic explanations, then test which assumptions fail under controlled conditions, ablation, counterexample construction, or independent data.",
+      "value_argument": "Anomaly gaps can drive explanatory progress because they point to observations or results that current mechanisms do not fully account for.",
+      "status": "candidate",
+      "createdAt": 1783353407.582675,
+      "assessment_dimensions": [
+        "academic novelty",
+        "application value",
+        "implementation feasibility"
+      ],
+      "overlap_risk": "high",
+      "strongest_overlap": 0.6774,
+      "literature_coverage_factor": 0.8645,
+      "assessment_reason": "refs=1, gap_type=anomaly, strongest_local_overlap=0.677, coverage=0.865, feasibility=high, application_value=high",
+      "requires_human_review": true,
+      "reasoning_signal": {
+        "type": "theory_evidence_anomaly",
+        "source_field": "general"
+      },
+      "dedupe_signature": "anomaly full in or reported tension text the theory-evidence unexplained"
+    },
+    {
+      "gap_id": "gap_1783353407596393000",
+      "gap_type": "anomaly",
+      "description": "Unexplained anomaly or theory-evidence tension reported in the literature: Challenges specific to real-time co-simulation applications, including instability from data resolution mismatches.",
+      "supporting_references": [
+        "Qi Xiao et al. (2025) Design and Implementation of Scalable Communication Interfaces for Reliable and Stable Real-time Co-Simulation of Power Systems arXiv:2502.07866v1"
+      ],
+      "novelty_score": 6,
+      "application_value": "high",
+      "feasibility": "high",
+      "suggested_research_path": "Turn the anomaly into competing mechanistic explanations, then test which assumptions fail under controlled conditions, ablation, counterexample construction, or independent data.",
+      "value_argument": "Anomaly gaps can drive explanatory progress because they point to observations or results that current mechanisms do not fully account for.",
+      "status": "candidate",
+      "createdAt": 1783353407.5963976,
+      "assessment_dimensions": [
+        "academic novelty",
+        "application value",
+        "implementation feasibility"
+      ],
+      "overlap_risk": "medium",
+      "strongest_overlap": 0.625,
+      "literature_coverage_factor": 0.7275,
+      "assessment_reason": "refs=1, gap_type=anomaly, strongest_local_overlap=0.625, coverage=0.728, feasibility=high, application_value=high",
+      "requires_human_review": false,
+      "reasoning_signal": {
+        "type": "theory_evidence_anomaly",
+        "source_field": "multidisciplinary"
+      },
+      "dedupe_signature": "anomaly challenges in or reported specific tension the theory-evidence unexplained"
+    }
+  ],
+  "cross_disciplinary_unconnected_pairs": [
+    {
+      "field_a": "computer_science",
+      "concept_a": "FPGA-RTDS co-simulation",
+      "field_b": "ecology",
+      "concept_b": "real-time co-simulation",
+      "potential_synergy": "Testing whether FPGA-RTDS co-simulation can constrain, evaluate, or operationalize real-time co-simulation for Power System Simulation / 电力系统仿真 may reveal a non-obvious transfer path or boundary condition.",
+      "supporting_references": [
+        "Conghuan Yang et al. (2018) Real-Time FPGA-RTDS Co-Simulator for Power Systems doi:10.1109/ACCESS.2018.2862893",
+        "M. Mohanpurkar et al. (2018) Real-time co-simulation of adjustable-speed pumped storage hydro for transient stability analysis doi:10.1016/J.EPSR.2017.08.010"
+      ]
+    },
+    {
+      "field_a": "computer_science",
+      "concept_a": "FPGA-RTDS co-simulation",
+      "field_b": "ecology",
+      "concept_b": "adjustable-speed pumped storage hydro (AS-PSH) connected to bulk power system",
+      "potential_synergy": "Testing whether FPGA-RTDS co-simulation can constrain, evaluate, or operationalize adjustable-speed pumped storage hydro (AS-PSH) connected to bulk power system for Power System Simulation / 电力系统仿真 may reveal a non-obvious transfer path or boundary condition.",
+      "supporting_references": [
+        "Conghuan Yang et al. (2018) Real-Time FPGA-RTDS Co-Simulator for Power Systems doi:10.1109/ACCESS.2018.2862893",
+        "M. Mohanpurkar et al. (2018) Real-time co-simulation of adjustable-speed pumped storage hydro for transient stability analysis doi:10.1016/J.EPSR.2017.08.010"
+      ]
+    },
+    {
+      "field_a": "computer_science",
+      "concept_a": "FPGA-RTDS co-simulation",
+      "field_b": "ecology",
+      "concept_b": "transient stability",
+      "potential_synergy": "Testing whether FPGA-RTDS co-simulation can constrain, evaluate, or operationalize transient stability for Power System Simulation / 电力系统仿真 may reveal a non-obvious transfer path or boundary condition.",
+      "supporting_references": [
+        "Conghuan Yang et al. (2018) Real-Time FPGA-RTDS Co-Simulator for Power Systems doi:10.1109/ACCESS.2018.2862893",
+        "M. Mohanpurkar et al. (2018) Real-time co-simulation of adjustable-speed pumped storage hydro for transient stability analysis doi:10.1016/J.EPSR.2017.08.010"
+      ]
+    },
+    {
+      "field_a": "computer_science",
+      "concept_a": "large power systems",
+      "field_b": "ecology",
+      "concept_b": "real-time co-simulation",
+      "potential_synergy": "Testing whether large power systems can constrain, evaluate, or operationalize real-time co-simulation for Power System Simulation / 电力系统仿真 may reveal a non-obvious transfer path or boundary condition.",
+      "supporting_references": [
+        "Conghuan Yang et al. (2018) Real-Time FPGA-RTDS Co-Simulator for Power Systems doi:10.1109/ACCESS.2018.2862893",
+        "M. Mohanpurkar et al. (2018) Real-time co-simulation of adjustable-speed pumped storage hydro for transient stability analysis doi:10.1016/J.EPSR.2017.08.010"
+      ]
+    },
+    {
+      "field_a": "computer_science",
+      "concept_a": "large power systems",
+      "field_b": "ecology",
+      "concept_b": "adjustable-speed pumped storage hydro (AS-PSH) connected to bulk power system",
+      "potential_synergy": "Testing whether large power systems can constrain, evaluate, or operationalize adjustable-speed pumped storage hydro (AS-PSH) connected to bulk power system for Power System Simulation / 电力系统仿真 may reveal a non-obvious transfer path or boundary condition.",
+      "supporting_references": [
+        "Conghuan Yang et al. (2018) Real-Time FPGA-RTDS Co-Simulator for Power Systems doi:10.1109/ACCESS.2018.2862893",
+        "M. Mohanpurkar et al. (2018) Real-time co-simulation of adjustable-speed pumped storage hydro for transient stability analysis doi:10.1016/J.EPSR.2017.08.010"
+      ]
+    },
+    {
+      "field_a": "computer_science",
+      "concept_a": "large power systems",
+      "field_b": "ecology",
+      "concept_b": "transient stability",
+      "potential_synergy": "Testing whether large power systems can constrain, evaluate, or operationalize transient stability for Power System Simulation / 电力系统仿真 may reveal a non-obvious transfer path or boundary condition.",
+      "supporting_references": [
+        "Conghuan Yang et al. (2018) Real-Time FPGA-RTDS Co-Simulator for Power Systems doi:10.1109/ACCESS.2018.2862893",
+        "M. Mohanpurkar et al. (2018) Real-time co-simulation of adjustable-speed pumped storage hydro for transient stability analysis doi:10.1016/J.EPSR.2017.08.010"
+      ]
+    },
+    {
+      "field_a": "computer_science",
+      "concept_a": "simulation accuracy | capability to simulate large AC systems",
+      "field_b": "ecology",
+      "concept_b": "real-time co-simulation",
+      "potential_synergy": "Testing whether simulation accuracy | capability to simulate large AC systems can constrain, evaluate, or operationalize real-time co-simulation for Power System Simulation / 电力系统仿真 may reveal a non-obvious transfer path or boundary condition.",
+      "supporting_references": [
+        "Conghuan Yang et al. (2018) Real-Time FPGA-RTDS Co-Simulator for Power Systems doi:10.1109/ACCESS.2018.2862893",
+        "M. Mohanpurkar et al. (2018) Real-time co-simulation of adjustable-speed pumped storage hydro for transient stability analysis doi:10.1016/J.EPSR.2017.08.010"
+      ]
+    },
+    {
+      "field_a": "computer_science",
+      "concept_a": "simulation accuracy | capability to simulate large AC systems",
+      "field_b": "ecology",
+      "concept_b": "adjustable-speed pumped storage hydro (AS-PSH) connected to bulk power system",
+      "potential_synergy": "Testing whether simulation accuracy | capability to simulate large AC systems can constrain, evaluate, or operationalize adjustable-speed pumped storage hydro (AS-PSH) connected to bulk power system for Power System Simulation / 电力系统仿真 may reveal a non-obvious transfer path or boundary condition.",
+      "supporting_references": [
+        "Conghuan Yang et al. (2018) Real-Time FPGA-RTDS Co-Simulator for Power Systems doi:10.1109/ACCESS.2018.2862893",
+        "M. Mohanpurkar et al. (2018) Real-time co-simulation of adjustable-speed pumped storage hydro for transient stability analysis doi:10.1016/J.EPSR.2017.08.010"
+      ]
+    },
+    {
+      "field_a": "computer_science",
+      "concept_a": "simulation accuracy | capability to simulate large AC systems",
+      "field_b": "ecology",
+      "concept_b": "transient stability",
+      "potential_synergy": "Testing whether simulation accuracy | capability to simulate large AC systems can constrain, evaluate, or operationalize transient stability for Power System Simulation / 电力系统仿真 may reveal a non-obvious transfer path or boundary condition.",
+      "supporting_references": [
+        "Conghuan Yang et al. (2018) Real-Time FPGA-RTDS Co-Simulator for Power Systems doi:10.1109/ACCESS.2018.2862893",
+        "M. Mohanpurkar et al. (2018) Real-time co-simulation of adjustable-speed pumped storage hydro for transient stability analysis doi:10.1016/J.EPSR.2017.08.010"
+      ]
+    },
+    {
+      "field_a": "computer_science",
+      "concept_a": "machine learning model",
+      "field_b": "ecology",
+      "concept_b": "real-time co-simulation",
+      "potential_synergy": "Testing whether machine learning model can constrain, evaluate, or operationalize real-time co-simulation for Power System Simulation / 电力系统仿真 may reveal a non-obvious transfer path or boundary condition.",
+      "supporting_references": [
+        "Karol Najdek et al. (2026) Feedback Control of a Boost Converter Using a NARX-NN-Based Digital Twin Instance: Multi-Domain Analysis and Comparison doi:10.1109/ACCESS.2026.3669779",
+        "M. Mohanpurkar et al. (2018) Real-time co-simulation of adjustable-speed pumped storage hydro for transient stability analysis doi:10.1016/J.EPSR.2017.08.010"
+      ]
+    }
+  ],
+  "suspended_problems": [
+    {
+      "problem": "Real-time frequency based reduced order modeling of large power grid Full text excerpt: introduces a method of developing FDNE based on an online recursive least squares (RLS) identification algorithm in z-domain, and modeling of reduced power systems as FDNE...[truncated]",
+      "years_unresolved": 10,
+      "citation_count": 0,
+      "evidence_level": "unknown",
+      "barrier_to_progress": "unspecified conceptual or technical barrier",
+      "supporting_references": [
+        "Abilash Thakallapelli et al. (2016) Real-time frequency based reduced order modeling of large power grid doi:10.1109/PESGM.2016.7741877"
+      ]
+    },
+    {
+      "problem": "Real-time frequency based reduced order modeling of large power grid Large power systems are complex and real-time modeling of the grid for electromagnetic simulation (EMT) studies is impractical. In general, there are methods that reduce large power system in...[truncated]",
+      "years_unresolved": 10,
+      "citation_count": 0,
+      "evidence_level": "unknown",
+      "barrier_to_progress": "scale or computational constraint",
+      "supporting_references": [
+        "Abilash Thakallapelli et al. (2016) Real-time frequency based reduced order modeling of large power grid doi:10.1109/PESGM.2016.7741877"
+      ]
+    },
+    {
+      "problem": "Real-Time FPGA-RTDS Co-Simulator for Power Systems No explicit limitation extracted.",
+      "years_unresolved": 8,
+      "citation_count": 0,
+      "evidence_level": "unknown",
+      "barrier_to_progress": "unspecified conceptual or technical barrier",
+      "supporting_references": [
+        "Conghuan Yang et al. (2018) Real-Time FPGA-RTDS Co-Simulator for Power Systems doi:10.1109/ACCESS.2018.2862893"
+      ]
+    },
+    {
+      "problem": "Real-Time FPGA-RTDS Co-Simulator for Power Systems This paper proposes a co-simulation platform using field-programmable gate array (FPGA) and real-time digital simulator (RTDS) for the simulation of large power systems. It combines the advantages of high comp...[truncated]",
+      "years_unresolved": 8,
+      "citation_count": 0,
+      "evidence_level": "unknown",
+      "barrier_to_progress": "scale or computational constraint",
+      "supporting_references": [
+        "Conghuan Yang et al. (2018) Real-Time FPGA-RTDS Co-Simulator for Power Systems doi:10.1109/ACCESS.2018.2862893"
+      ]
+    },
+    {
+      "problem": "Real-time co-simulation of adjustable-speed pumped storage hydro for transient stability analysis Abstract Pumped storage hydro (PSH) based generation of electricity is a proven grid level storage technique. A new configuration i.e., adjustable speed PSH (AS-P...[truncated]",
+      "years_unresolved": 8,
+      "citation_count": 0,
+      "evidence_level": "unknown",
+      "barrier_to_progress": "robustness or stability barrier",
+      "supporting_references": [
+        "M. Mohanpurkar et al. (2018) Real-time co-simulation of adjustable-speed pumped storage hydro for transient stability analysis doi:10.1016/J.EPSR.2017.08.010"
+      ]
+    },
+    {
+      "problem": "Real-time co-simulation of adjustable-speed pumped storage hydro for transient stability analysis Full text excerpt: demonstrates real-time co-simulation of AS-PSH unit integrating penstock hydrodynamics and power system events No explicit limitation extracted...[truncated]",
+      "years_unresolved": 8,
+      "citation_count": 0,
+      "evidence_level": "unknown",
+      "barrier_to_progress": "robustness or stability barrier",
+      "supporting_references": [
+        "M. Mohanpurkar et al. (2018) Real-time co-simulation of adjustable-speed pumped storage hydro for transient stability analysis doi:10.1016/J.EPSR.2017.08.010"
+      ]
+    },
+    {
+      "problem": "A Comprehensive Review on Power System Risk-Based Transient Stability Full text excerpt: comprehensive review of risk-based transient stability in power networks No explicit limitation extracted.",
+      "years_unresolved": 4,
+      "citation_count": 0,
+      "evidence_level": "unknown",
+      "barrier_to_progress": "robustness or stability barrier",
+      "supporting_references": [
+        "Umair Shahzad (2022) A Comprehensive Review on Power System Risk-Based Transient Stability arXiv:2206.05113v1"
+      ]
+    },
+    {
+      "problem": "A Comprehensive Review on Power System Risk-Based Transient Stability Power systems are getting more complex than ever and are consequently operating close to their limit of stability. Moreover, with the increasing demand of renewable wind generation, and the...[truncated]",
+      "years_unresolved": 4,
+      "citation_count": 0,
+      "evidence_level": "unknown",
+      "barrier_to_progress": "robustness or stability barrier",
+      "supporting_references": [
+        "Umair Shahzad (2022) A Comprehensive Review on Power System Risk-Based Transient Stability arXiv:2206.05113v1"
+      ]
+    },
+    {
+      "problem": "Co-simulation of real-time electromagnetic transient and transient stability simulations using dynamic phasor T-Line model —This paper presents techniques to interface a Transient Stability Analysis (TSA) based model to an ElectroMagnetic Transient (EMT) based...[truncated]",
+      "years_unresolved": 3,
+      "citation_count": 0,
+      "evidence_level": "unknown",
+      "barrier_to_progress": "robustness or stability barrier",
+      "supporting_references": [
+        "H. Konara et al. (2023) Co-simulation of real-time electromagnetic transient and transient stability simulations using dynamic phasor T-Line model doi:10.1016/j.epsr.2023.109611"
+      ]
+    },
+    {
+      "problem": "Digital Real-Time Power System Co-simulation via Distributed Transmission Line Model Full text excerpt: Enables scalable real-time co-simulation of smart grids by absorbing communication latency into the transmission line propagation model No explicit limitati...[truncated]",
+      "years_unresolved": 3,
+      "citation_count": 0,
+      "evidence_level": "unknown",
+      "barrier_to_progress": "unspecified conceptual or technical barrier",
+      "supporting_references": [
+        "Luca Barbierato et al. (2023) Digital Real-Time Power System Co-simulation via Distributed Transmission Line Model doi:10.1109/EEEIC/ICPSEurope57605.2023.10194853"
+      ]
+    }
+  ],
+  "ranked_gaps": [
+    {
+      "rank": 1,
+      "gap_id": "gap_1783353407730585400",
+      "gap_description": "Cross-disciplinary unconnected pair: 'FPGA-RTDS co-simulation' from computer_science and 'adjustable-speed pumped storage hydro (AS-PSH) connected to bulk power system' from ecology have no recorded bridge in the current PaperGraph.",
+      "gap_type": "migration",
+      "exploration_value_score": 10,
+      "importance": "high",
+      "tractability": "medium",
+      "strategic_alignment": [
+        {
+          "strategic_domain": "energy",
+          "matched_keywords": [
+            "power"
+          ],
+          "alignment_score": 6
+        },
+        {
+          "strategic_domain": "AI for Science",
+          "matched_keywords": [
+            "ai"
+          ],
+          "alignment_score": 6
+        }
+      ],
+      "supporting_references": [
+        "Conghuan Yang et al. (2018) Real-Time FPGA-RTDS Co-Simulator for Power Systems doi:10.1109/ACCESS.2018.2862893",
+        "M. Mohanpurkar et al. (2018) Real-time co-simulation of adjustable-speed pumped storage hydro for transient stability analysis doi:10.1016/J.EPSR.2017.08.010"
+      ],
+      "recommended_approach": "Formulate a transfer hypothesis, audit incompatible assumptions, then run a minimal bridge experiment or benchmark.",
+      "ranking_reason": "novelty=7, refs=2, application=medium, feasibility=medium, type=migration, strategic_matches=2, density_bonus=2"
+    },
+    {
+      "rank": 2,
+      "gap_id": "gap_1783353407720882300",
+      "gap_description": "Cross-disciplinary unconnected pair: 'FPGA-RTDS co-simulation' from computer_science and 'real-time co-simulation' from ecology have no recorded bridge in the current PaperGraph.",
+      "gap_type": "migration",
+      "exploration_value_score": 10,
+      "importance": "high",
+      "tractability": "medium",
+      "strategic_alignment": [
+        {
+          "strategic_domain": "energy",
+          "matched_keywords": [
+            "power"
+          ],
+          "alignment_score": 6
+        },
+        {
+          "strategic_domain": "AI for Science",
+          "matched_keywords": [
+            "ai"
+          ],
+          "alignment_score": 6
+        }
+      ],
+      "supporting_references": [
+        "Conghuan Yang et al. (2018) Real-Time FPGA-RTDS Co-Simulator for Power Systems doi:10.1109/ACCESS.2018.2862893",
+        "M. Mohanpurkar et al. (2018) Real-time co-simulation of adjustable-speed pumped storage hydro for transient stability analysis doi:10.1016/J.EPSR.2017.08.010"
+      ],
+      "recommended_approach": "Formulate a transfer hypothesis, audit incompatible assumptions, then run a minimal bridge experiment or benchmark.",
+      "ranking_reason": "novelty=7, refs=2, application=medium, feasibility=medium, type=migration, strategic_matches=2, density_bonus=2"
+    },
+    {
+      "rank": 3,
+      "gap_id": "gap_1783353407770326900",
+      "gap_description": "Cross-disciplinary unconnected pair: 'large power systems' from computer_science and 'transient stability' from ecology have no recorded bridge in the current PaperGraph.",
+      "gap_type": "migration",
+      "exploration_value_score": 10,
+      "importance": "high",
+      "tractability": "medium",
+      "strategic_alignment": [
+        {
+          "strategic_domain": "energy",
+          "matched_keywords": [
+            "power"
+          ],
+          "alignment_score": 6
+        },
+        {
+          "strategic_domain": "AI for Science",
+          "matched_keywords": [
+            "ai"
+          ],
+          "alignment_score": 6
+        }
+      ],
+      "supporting_references": [
+        "Conghuan Yang et al. (2018) Real-Time FPGA-RTDS Co-Simulator for Power Systems doi:10.1109/ACCESS.2018.2862893",
+        "M. Mohanpurkar et al. (2018) Real-time co-simulation of adjustable-speed pumped storage hydro for transient stability analysis doi:10.1016/J.EPSR.2017.08.010"
+      ],
+      "recommended_approach": "Formulate a transfer hypothesis, audit incompatible assumptions, then run a minimal bridge experiment or benchmark.",
+      "ranking_reason": "novelty=7, refs=2, application=high, feasibility=medium, type=migration, strategic_matches=2, density_bonus=2"
+    },
+    {
+      "rank": 4,
+      "gap_id": "gap_1783353407779545000",
+      "gap_description": "Cross-disciplinary unconnected pair: 'simulation accuracy | capability to simulate large AC systems' from computer_science and 'real-time co-simulation' from ecology have no recorded bridge in the current PaperGraph.",
+      "gap_type": "migration",
+      "exploration_value_score": 10,
+      "importance": "high",
+      "tractability": "medium",
+      "strategic_alignment": [
+        {
+          "strategic_domain": "energy",
+          "matched_keywords": [
+            "power"
+          ],
+          "alignment_score": 6
+        },
+        {
+          "strategic_domain": "AI for Science",
+          "matched_keywords": [
+            "ai"
+          ],
+          "alignment_score": 6
+        }
+      ],
+      "supporting_references": [
+        "Conghuan Yang et al. (2018) Real-Time FPGA-RTDS Co-Simulator for Power Systems doi:10.1109/ACCESS.2018.2862893",
+        "M. Mohanpurkar et al. (2018) Real-time co-simulation of adjustable-speed pumped storage hydro for transient stability analysis doi:10.1016/J.EPSR.2017.08.010"
+      ],
+      "recommended_approach": "Formulate a transfer hypothesis, audit incompatible assumptions, then run a minimal bridge experiment or benchmark.",
+      "ranking_reason": "novelty=7, refs=2, application=medium, feasibility=medium, type=migration, strategic_matches=2, density_bonus=2"
+    },
+    {
+      "rank": 5,
+      "gap_id": "gap_1783353407606904600",
+      "gap_description": "Density hole: 'Deep Surrogate Models and Multi-Agent Proximal Policy Optimization' in 'power system transient stability' lacks benchmark coverage for R² score, computational speedup (×), real-time/near real-time inference capability, classification performance, control stability.",
+      "gap_type": "improvement",
+      "exploration_value_score": 10,
+      "importance": "high",
+      "tractability": "high",
+      "strategic_alignment": [
+        {
+          "strategic_domain": "energy",
+          "matched_keywords": [
+            "power"
+          ],
+          "alignment_score": 6
+        },
+        {
+          "strategic_domain": "AI for Science",
+          "matched_keywords": [
+            "ai",
+            "agent",
+            "model"
+          ],
+          "alignment_score": 10
+        }
+      ],
+      "supporting_references": [
+        "Kewei Shi et al. (2025) Preventive Control for Power System Transient Stability via Deep Surrogate Models and Multi-Agent Reinforcement Learning doi:10.1109/IAECST68792.2025.11414900"
+      ],
+      "recommended_approach": "Use the dense neighboring literature as controls, then test the sparse intersection with explicit benchmark coverage.",
+      "ranking_reason": "novelty=4, refs=1, application=high, feasibility=high, type=improvement, strategic_matches=2, density_bonus=2"
+    },
+    {
+      "rank": 6,
+      "gap_id": "gap_1783353407634369100",
+      "gap_description": "Density hole: 'Distributed Transmission Line Model (DTLM) with Aurora 8B/10B data exchange' has no recorded validation in 'power system transient stability'.",
+      "gap_type": "combinatorial",
+      "exploration_value_score": 10,
+      "importance": "high",
+      "tractability": "high",
+      "strategic_alignment": [
+        {
+          "strategic_domain": "energy",
+          "matched_keywords": [
+            "power"
+          ],
+          "alignment_score": 6
+        },
+        {
+          "strategic_domain": "AI for Science",
+          "matched_keywords": [
+            "model"
+          ],
+          "alignment_score": 6
+        }
+      ],
+      "supporting_references": [
+        "Luca Barbierato et al. (2023) Digital Real-Time Power System Co-simulation via Distributed Transmission Line Model doi:10.1109/EEEIC/ICPSEurope57605.2023.10194853",
+        "Umair Shahzad (2022) A Comprehensive Review on Power System Risk-Based Transient Stability arXiv:2206.05113v1",
+        "Kewei Shi et al. (2025) Preventive Control for Power System Transient Stability via Deep Surrogate Models and Multi-Agent Reinforcement Learning doi:10.1109/IAECST68792.2025.11414900"
+      ],
+      "recommended_approach": "Use the dense neighboring literature as controls, then test the sparse intersection with explicit benchmark coverage.",
+      "ranking_reason": "novelty=2, refs=3, application=high, feasibility=high, type=combinatorial, strategic_matches=2, density_bonus=2"
+    },
+    {
+      "rank": 7,
+      "gap_id": "gap_1783353407643361500",
+      "gap_description": "Density hole: 'FPGA-RTDS co-simulation' has no recorded validation in 'power system transient stability'.",
+      "gap_type": "combinatorial",
+      "exploration_value_score": 10,
+      "importance": "high",
+      "tractability": "high",
+      "strategic_alignment": [
+        {
+          "strategic_domain": "energy",
+          "matched_keywords": [
+            "power"
+          ],
+          "alignment_score": 6
+        }
+      ],
+      "supporting_references": [
+        "Conghuan Yang et al. (2018) Real-Time FPGA-RTDS Co-Simulator for Power Systems doi:10.1109/ACCESS.2018.2862893",
+        "Umair Shahzad (2022) A Comprehensive Review on Power System Risk-Based Transient Stability arXiv:2206.05113v1",
+        "Kewei Shi et al. (2025) Preventive Control for Power System Transient Stability via Deep Surrogate Models and Multi-Agent Reinforcement Learning doi:10.1109/IAECST68792.2025.11414900"
+      ],
+      "recommended_approach": "Use the dense neighboring literature as controls, then test the sparse intersection with explicit benchmark coverage.",
+      "ranking_reason": "novelty=4, refs=3, application=high, feasibility=high, type=combinatorial, strategic_matches=1, density_bonus=2"
+    },
+    {
+      "rank": 8,
+      "gap_id": "gap_1783353407653138200",
+      "gap_description": "Density hole: 'Pontryagin maximum principle (PMP)' has no recorded validation in 'power system transient stability'.",
+      "gap_type": "combinatorial",
+      "exploration_value_score": 10,
+      "importance": "high",
+      "tractability": "high",
+      "strategic_alignment": [
+        {
+          "strategic_domain": "energy",
+          "matched_keywords": [
+            "power"
+          ],
+          "alignment_score": 6
+        }
+      ],
+      "supporting_references": [
+        "Umair Shahzad (2022) A Comprehensive Review on Power System Risk-Based Transient Stability arXiv:2206.05113v1",
+        "K. Yelemessov et al. (2025) Algorithmic Optimal Control of Screw Compressors for Energy-Efficient Operation in Smart Power Systems doi:10.3390/a18090583",
+        "Kewei Shi et al. (2025) Preventive Control for Power System Transient Stability via Deep Surrogate Models and Multi-Agent Reinforcement Learning doi:10.1109/IAECST68792.2025.11414900"
+      ],
+      "recommended_approach": "Use the dense neighboring literature as controls, then test the sparse intersection with explicit benchmark coverage.",
+      "ranking_reason": "novelty=4, refs=3, application=high, feasibility=high, type=combinatorial, strategic_matches=1, density_bonus=2"
+    },
+    {
+      "rank": 9,
+      "gap_id": "gap_1783353407663431000",
+      "gap_description": "Density hole: 'co-simulation offers an integrated approach for modeling' has no recorded validation in 'power system transient stability'.",
+      "gap_type": "combinatorial",
+      "exploration_value_score": 10,
+      "importance": "high",
+      "tractability": "high",
+      "strategic_alignment": [
+        {
+          "strategic_domain": "energy",
+          "matched_keywords": [
+            "power"
+          ],
+          "alignment_score": 6
+        },
+        {
+          "strategic_domain": "AI for Science",
+          "matched_keywords": [
+            "model"
+          ],
+          "alignment_score": 6
+        }
+      ],
+      "supporting_references": [
+        "Qi Xiao et al. (2025) Design and Implementation of Scalable Communication Interfaces for Reliable and Stable Real-time Co-Simulation of Power Systems doi:10.1109/PESGM52009.2025.11225688",
+        "Umair Shahzad (2022) A Comprehensive Review on Power System Risk-Based Transient Stability arXiv:2206.05113v1",
+        "Kewei Shi et al. (2025) Preventive Control for Power System Transient Stability via Deep Surrogate Models and Multi-Agent Reinforcement Learning doi:10.1109/IAECST68792.2025.11414900"
+      ],
+      "recommended_approach": "Use the dense neighboring literature as controls, then test the sparse intersection with explicit benchmark coverage.",
+      "ranking_reason": "novelty=4, refs=3, application=high, feasibility=high, type=combinatorial, strategic_matches=2, density_bonus=2"
+    },
+    {
+      "rank": 10,
+      "gap_id": "gap_1783353407673077600",
+      "gap_description": "Density hole: 'dynamic phasor transmission line model | traveling wave model | co-simulation interface' has no recorded validation in 'power system transient stability'.",
+      "gap_type": "combinatorial",
+      "exploration_value_score": 10,
+      "importance": "high",
+      "tractability": "high",
+      "strategic_alignment": [
+        {
+          "strategic_domain": "energy",
+          "matched_keywords": [
+            "power"
+          ],
+          "alignment_score": 6
+        },
+        {
+          "strategic_domain": "AI for Science",
+          "matched_keywords": [
+            "model"
+          ],
+          "alignment_score": 6
+        }
+      ],
+      "supporting_references": [
+        "Umair Shahzad (2022) A Comprehensive Review on Power System Risk-Based Transient Stability arXiv:2206.05113v1",
+        "H. Konara et al. (2023) Co-simulation of real-time electromagnetic transient and transient stability simulations using dynamic phasor T-Line model doi:10.1016/j.epsr.2023.109611",
+        "Kewei Shi et al. (2025) Preventive Control for Power System Transient Stability via Deep Surrogate Models and Multi-Agent Reinforcement Learning doi:10.1109/IAECST68792.2025.11414900"
+      ],
+      "recommended_approach": "Use the dense neighboring literature as controls, then test the sparse intersection with explicit benchmark coverage.",
+      "ranking_reason": "novelty=2, refs=3, application=high, feasibility=high, type=combinatorial, strategic_matches=2, density_bonus=2"
+    }
+  ],
+  "constraints_checked": {
+    "requires_supporting_reference": true,
+    "filters_trivial_low_novelty": true,
+    "max_gaps": 10
+  }
+}

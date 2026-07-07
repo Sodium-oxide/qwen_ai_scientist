@@ -1,0 +1,67 @@
+   1 | from __future__ import annotations
+   2 | 
+   3 | from datetime import datetime
+   4 | from typing import Any
+   5 | 
+   6 | try:
+   7 |     from .config import LOG_COLOR, LOG_PATH
+   8 | except ImportError:
+   9 |     from config import LOG_COLOR, LOG_PATH
+  10 | 
+  11 | 
+  12 | COLORS = {
+  13 |     "reset": "\033[0m",
+  14 |     "gray": "\033[90m",
+  15 |     "yellow": "\033[33m",
+  16 |     "red": "\033[31m",
+  17 |     "magenta": "\033[35m",
+  18 |     "cyan": "\033[36m",
+  19 | }
+  20 | 
+  21 | CATEGORY_COLORS = {
+  22 |     "WARN": "yellow",
+  23 |     "ERROR": "red",
+  24 |     "SUBAGENT": "magenta",
+  25 |     "USER": "cyan",
+  26 |     "COMPACT": "yellow",
+  27 | }
+  28 | 
+  29 | 
+  30 | def log_event(category: str, event: str, **data: Any) -> None:
+  31 |     category = category.upper()
+  32 |     line = format_event(category, event, **data)
+  33 |     write_log_line(line)
+  34 |     print(colorize(category, line))
+  35 | 
+  36 | 
+  37 | def format_event(category: str, event: str, **data: Any) -> str:
+  38 |     details = ", ".join(f"{key}={format_value(value)}" for key, value in data.items())
+  39 |     if details:
+  40 |         return f"[{category}] {event}: {details}"
+  41 |     return f"[{category}] {event}"
+  42 | 
+  43 | 
+  44 | def format_value(value: Any) -> str:
+  45 |     text = str(value).replace("\n", "\\n")
+  46 |     if len(text) > 300:
+  47 |         return text[:300] + "...[truncated]"
+  48 |     return text
+  49 | 
+  50 | 
+  51 | def write_log_line(line: str) -> None:
+  52 |     LOG_PATH.parent.mkdir(parents=True, exist_ok=True)
+  53 |     timestamp = datetime.now().isoformat(timespec="seconds")
+  54 |     with LOG_PATH.open("a", encoding="utf-8") as handle:
+  55 |         handle.write(f"{timestamp} {line}\n")
+  56 | 
+  57 | 
+  58 | def colorize(category: str, line: str) -> str:
+  59 |     if not LOG_COLOR:
+  60 |         return line
+  61 |     if category == "ERROR" or "error" in line.lower() or "blocked" in line.lower():
+  62 |         color = "red"
+  63 |     elif "warn" in line.lower() or category in {"WARN", "COMPACT"}:
+  64 |         color = "yellow"
+  65 |     else:
+  66 |         color = CATEGORY_COLORS.get(category, "gray")
+  67 |     return f"{COLORS[color]}{line}{COLORS['reset']}"

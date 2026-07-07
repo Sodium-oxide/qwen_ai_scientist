@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Science Research Explorer</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-mark">S</div>
+        <div>
+          <div class="brand-title">Science Explorer</div>
+          <div class="brand-subtitle">ZhiZhi + TanXi</div>
+        </div>
+      </div>
+      <nav class="tabs" aria-label="Main views">
+        <button class="tab active" data-tab="dashboard">Dashboard</button>
+        <button class="tab" data-tab="subspaces">Subspaces</button>
+        <button class="tab" data-tab="graph">Knowledge Graph</button>
+        <button class="tab" data-tab="gaps">Gaps</button>
+        <button class="tab" data-tab="papers">Papers</button>
+      </nav>
+      <div class="sidebar-foot">
+        <span id="dataStatus">Loading data</span>
+      </div>
+    </aside>
+
+    <main class="app">
+      <header class="topbar">
+        <div>
+          <h1 id="projectTitle">Science Research Project</h1>
+          <p id="projectDomain"></p>
+        </div>
+        <div class="top-actions">
+          <button id="exportGapReport" class="primary-button">Export Gap Report</button>
+        </div>
+      </header>
+
+      <section id="dashboard" class="panel active">
+        <div class="stats-grid">
+          <div class="stat-card">
+            <span id="paperCount" class="stat-number">0</span>
+            <span class="stat-label">Papers</span>
+          </div>
+          <div class="stat-card">
+            <span id="subspaceCount" class="stat-number">0</span>
+            <span class="stat-label">Subspaces</span>
+          </div>
+          <div class="stat-card">
+            <span id="gapCount" class="stat-number">0</span>
+            <span class="stat-label">Gaps</span>
+          </div>
+          <div class="stat-card">
+            <span id="tripleCount" class="stat-number">0</span>
+            <span class="stat-label">Triples</span>
+          </div>
+        </div>
+
+        <div class="dashboard-grid">
+          <section class="surface">
+            <div class="section-head">
+              <h2>Subspace Signal</h2>
+              <span>importance vs. probe hits</span>
+            </div>
+            <div id="subspaceBars" class="bar-list"></div>
+          </section>
+          <section class="surface">
+            <div class="section-head">
+              <h2>Project Context</h2>
+              <span id="projectUpdated"></span>
+            </div>
+            <dl class="meta-list">
+              <dt>Objective</dt>
+              <dd id="projectObjective"></dd>
+              <dt>Phase</dt>
+              <dd id="projectPhase"></dd>
+              <dt>Source</dt>
+              <dd id="projectSource"></dd>
+            </dl>
+          </section>
+        </div>
+      </section>
+
+      <section id="subspaces" class="panel">
+        <div class="section-head page-head">
+          <h2>Domain Subspaces</h2>
+          <span>Select cards to mark priority branches for discussion.</span>
+        </div>
+        <div id="subspaceGrid" class="card-grid"></div>
+      </section>
+
+      <section id="graph" class="panel">
+        <div class="section-head page-head">
+          <h2>Method-Scenario-Benchmark Graph</h2>
+          <div class="control-row">
+            <input id="graphSearch" class="search-input" placeholder="Filter nodes or links" />
+            <button id="resetGraph" class="secondary-button">Reset</button>
+          </div>
+        </div>
+        <div class="graph-layout">
+          <div id="graphCanvas" class="graph-canvas"></div>
+          <aside id="graphDetails" class="detail-pane">
+            <h3>Graph Details</h3>
+            <p>Select a node or edge to inspect the connected evidence.</p>
+          </aside>
+        </div>
+      </section>
+
+      <section id="gaps" class="panel">
+        <div class="section-head page-head">
+          <h2>Knowledge Gaps</h2>
+          <div class="control-row">
+            <select id="gapTypeFilter" class="select-input">
+              <option value="all">All types</option>
+            </select>
+            <select id="gapSort" class="select-input">
+              <option value="rank">Rank</option>
+              <option value="novelty">Novelty</option>
+              <option value="feasibility">Feasibility</option>
+            </select>
+          </div>
+        </div>
+        <div id="gapList" class="list-stack"></div>
+      </section>
+
+      <section id="papers" class="panel">
+        <div class="section-head page-head">
+          <h2>Imported Papers</h2>
+          <div class="control-row">
+            <input id="paperSearch" class="search-input" placeholder="Search title, method, scenario, venue" />
+            <select id="paperYearFilter" class="select-input">
+              <option value="all">All years</option>
+            </select>
+          </div>
+        </div>
+        <div id="paperList" class="list-stack"></div>
+      </section>
+    </main>
+
+    <div id="modal" class="modal" aria-hidden="true">
+      <div class="modal-backdrop" data-close-modal></div>
+      <article class="modal-panel">
+        <button class="modal-close" data-close-modal aria-label="Close">x</button>
+        <div id="modalContent"></div>
+      </article>
+    </div>
+
+    <script src="website_data.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>

@@ -1,0 +1,378 @@
+   1 | {
+   2 |   "thought": "ZhiZhi retrieved and filtered literature, imported grounded PaperGraph evidence, built a benchmark-aware knowledge map, expanded citation context when available, and generated gaps with novelty/value/feasibility checks.",
+   3 |   "action": {
+   4 |     "agent": "zhizhi",
+   5 |     "query": "conductors for stable high-voltage lithium battery",
+   6 |     "domain": "battery materials",
+   7 |     "years": "last 5 years",
+   8 |     "search_papers": {
+   9 |       "search_id": "search_1783065217322086600",
+  10 |       "total_results": 10,
+  11 |       "providers": [
+  12 |         "semantic_scholar",
+  13 |         "arxiv"
+  14 |       ],
+  15 |       "errors": []
+  16 |     },
+  17 |     "select_literature_result": {
+  18 |       "result_index": 0,
+  19 |       "relevance_score": 0.8455,
+  20 |       "relevance_components": {
+  21 |         "text_score": 1.0,
+  22 |         "recency_score": 1.0,
+  23 |         "impact_score": 0.55,
+  24 |         "citation_field": "materials_energy",
+  25 |         "citation_baseline": 350.0,
+  26 |         "venue_score": 1.0,
+  27 |         "publication_quality_score": 0.92,
+  28 |         "base_score": 0.919,
+  29 |         "text_weight": 0.62,
+  30 |         "recency_weight": 0.1,
+  31 |         "impact_weight": 0.18,
+  32 |         "venue_weight": 0.1
+  33 |       },
+  34 |       "publication_quality_score": 0.92,
+  35 |       "venue_quality": "reputable",
+  36 |       "journal_quartile": "Q1",
+  37 |       "journal_metric_source": "curated",
+  38 |       "inferred_field": "materials_energy",
+  39 |       "quality_flags": [
+  40 |         "journal_quartile_q1",
+  41 |         "reputable_venue",
+  42 |         "new_paper_protection",
+  43 |         "incomplete_s2_metadata_recent"
+  44 |       ],
+  45 |       "quality_criteria": [
+  46 |         "venue matched curated journal metric table: Q1",
+  47 |         "paper is within 2-year protection window; low citations are not treated as low quality",
+  48 |         "Semantic Scholar reference metadata is missing for a recent paper; marked for data completeness review"
+  49 |       ],
+  50 |       "suspicion_type": "",
+  51 |       "matched_query_terms": [
+  52 |         "conductors",
+  53 |         "stable",
+  54 |         "high-voltage",
+  55 |         "lithium",
+  56 |         "battery"
+  57 |       ],
+  58 |       "title": "Anion-exchange fluorinated ion conductors for stable high-voltage lithium battery.",
+  59 |       "citation": "Qiaodong Li et al. (2026) Anion-exchange fluorinated ion conductors for stable high-voltage lithium battery. doi:10.1038/s41467-026-74773-8",
+  60 |       "provider": "semantic_scholar",
+  61 |       "year": "2026",
+  62 |       "citation_count": 0,
+  63 |       "influential_citation_count": 0,
+  64 |       "doi": "10.1038/s41467-026-74773-8",
+  65 |       "arxiv_id": "",
+  66 |       "url": "https://www.semanticscholar.org/paper/5b7ead0f83cd86aa46f1fb5fd6da7baeba8b5037",
+  67 |       "relevance_reason": "title=5/5, abstract=3/5, citation=5/5, phrase_bonus=0.35, recency=1.0, impact=0.55, venue=1.0, quality=0.92",
+  68 |       "quality_reason": "venue matched curated journal metric table: Q1; paper is within 2-year protection window; low citations are not treated as low quality; Semantic Scholar reference metadata is missing for a recent paper; marked for data completeness review"
+  69 |     },
+  70 |     "imported_records": 2,
+  71 |     "expand_literature_graph": {
+  72 |       "graph_search_id": "graph_1783065360096334200",
+  73 |       "total_results": 9,
+  74 |       "fallback_used": true,
+  75 |       "depth": 1
+  76 |     },
+  77 |     "build_literature_relation_graph": {
+  78 |       "relation_graph_id": "relgraph_1783065360112429200",
+  79 |       "cluster_count": 3,
+  80 |       "edge_summary": {
+  81 |         "total_edges": 9,
+  82 |         "citation_graph_edges": 0,
+  83 |         "artificial_edges": 9,
+  84 |         "by_relation": {
+  85 |           "keyword_fallback": 9
+  86 |         },
+  87 |         "by_depth": {
+  88 |           "1": 9
+  89 |         },
+  90 |         "fallback_weight_policy": "keyword_fallback/search_result edges are artificial and use very low PageRank weight."
+  91 |       },
+  92 |       "analysis_confidence": 0.65
+  93 |     }
+  94 |   },
+  95 |   "observation": [],
+  96 |   "knowledge_map_summary": {
+  97 |     "main_methods": [
+  98 |       "While fluorination is a promising strategy to enhance electrolyte stability, conventional methods are ineffective, resulting in insufficient fluorine content and a debilitating trade-off with ionic conductivity.",
+  99 |       "unknown method"
+ 100 |     ],
+ 101 |     "method_scenario_coverage": {
+ 102 |       "While fluorination is a promising strategy to enhance electrolyte stability, conventional methods are ineffective, resulting in insufficient fluorine content and a debilitating trade-off with ionic conductivity.": [
+ 103 |         "unknown scenario"
+ 104 |       ],
+ 105 |       "unknown method": [
+ 106 |         "Nevertheless, unsatisfactory high‐voltage stability restricts the further applications of halide SEs."
+ 107 |       ]
+ 108 |     },
+ 109 |     "method_scenario_benchmark_triples": [
+ 110 |       {
+ 111 |         "method": "While fluorination is a promising strategy to enhance electrolyte stability, conventional methods are ineffective, resulting in insufficient fluorine content and a debilitating trade-off with ionic conductivity.",
+ 112 |         "scenario": "unknown scenario",
+ 113 |         "benchmark": "unknown benchmark",
+ 114 |         "references": [
+ 115 |           "Qiaodong Li et al. (2026) Anion-exchange fluorinated ion conductors for stable high-voltage lithium battery. doi:10.1038/s41467-026-74773-8"
+ 116 |         ],
+ 117 |         "evidence_type_annotations": [
+ 118 |           {
+ 119 |             "claim_type": "methodological_description",
+ 120 |             "claim": "While fluorination is a promising strategy to enhance electrolyte stability, conventional methods are ineffective, resulting in insufficient fluorine content and a debilitating trade-off with ionic conductivity.",
+ 121 |             "support": "structured_field"
+ 122 |           },
+ 123 |           {
+ 124 |             "claim_type": "empirical_result",
+ 125 |             "claim": "The development of high-energy all-solid-state batteries is critically hindered by the electrochemical instability of solid electrolytes against high-voltage oxide positive electrodes.",
+ 126 |             "support": "structured_field"
+ 127 |           },
+ 128 |           {
+ 129 |             "claim_type": "author_opinion",
+ 130 |             "claim": "The development of high-energy all-solid-state batteries is critically hindered by the electrochemical instability of solid electrolytes against high-voltage oxide positive electrodes. While fluorination is a promising strategy to enhance electrolyte stability, conventional methods are ineffective,....[truncated]",
+ 131 |             "support": "structured_field"
+ 132 |           },
+ 133 |           {
+ 134 |             "claim_type": "theoretical_claim",
+ 135 |             "claim": "This stability originates from the formation of a robust, self-limiting LiF-rich interphase at the positive electrode. Consequently, an all-solid-state battery using a Li-rich oxide positive electrode achieves high performance, retaining over 77.5% capacity after 2000 cycles at a high rate of 3 C (1...[truncated]",
+ 136 |             "support": "structured_field"
+ 137 |           },
+ 138 |           {
+ 139 |             "claim_type": "empirical_result",
+ 140 |             "claim": "While fluorination is a promising strategy to enhance electrolyte stability, conventional methods are ineffective, resulting in insufficient fluorine content and a debilitating trade-off with ionic conductivity.",
+ 141 |             "support": "source_sentence"
+ 142 |           },
+ 143 |           {
+ 144 |             "claim_type": "author_opinion",
+ 145 |             "claim": "Here, we report a solid-state anion-exchange strategy that overcomes these limitations by producing core-shell Li-fluoride/LiCl nanocomposite precursors.",
+ 146 |             "support": "source_sentence"
+ 147 |           },
+ 148 |           {
+ 149 |             "claim_type": "methodological_description",
+ 150 |             "claim": "This anion-exchange approach is broadly applicable to other systems and establishes a versatile platform for designing advanced fluorinated materials for next-generation batteries.",
+ 151 |             "support": "source_sentence"
+ 152 |           }
+ 153 |         ]
+ 154 |       },
+ 155 |       {
+ 156 |         "method": "unknown method",
+ 157 |         "scenario": "Nevertheless, unsatisfactory high‐voltage stability restricts the further applications of halide SEs.",
+ 158 |         "benchmark": "unknown benchmark",
+ 159 |         "references": [
+ 160 |           "Liang Shen et al. (2024) Anion‐Engineering Toward High‐Voltage‐Stable Halide Superionic Conductors for All‐Solid‐State Lithium Batteries doi:10.1002/adfm.202408571"
+ 161 |         ],
+ 162 |         "evidence_type_annotations": [
+ 163 |           {
+ 164 |             "claim_type": "methodological_description",
+ 165 |             "claim": "unknown method",
+ 166 |             "support": "structured_field"
+ 167 |           },
+ 168 |           {
+ 169 |             "claim_type": "empirical_result",
+ 170 |             "claim": "Halide solid electrolytes (SEs) are attracting strong attention as one of the compelling candidates for the next‐generation of inorganic SEs due to their high ionic conductivity.",
+ 171 |             "support": "structured_field"
+ 172 |           },
+ 173 |           {
+ 174 |             "claim_type": "author_opinion",
+ 175 |             "claim": "No explicit limitation extracted.",
+ 176 |             "support": "structured_field"
+ 177 |           },
+ 178 |           {
+ 179 |             "claim_type": "theoretical_claim",
+ 180 |             "claim": "With LZCFO and NCM955, the all‐solid‐state lithium battery exhibits a high discharge capacity of 207.1 mAh g−1 at 0.1C and a capacity retention of 81.2% after 500 cycles at 0.5C. The interfacial characterization further demonstrates the formation of the F‐rich cathode–electrolyte interphase (CEI), w...[truncated]",
+ 181 |             "support": "structured_field"
+ 182 |           }
+ 183 |         ]
+ 184 |       },
+ 185 |       {
+ 186 |         "method": "While fluorination is a promising strategy to enhance electrolyte stability, conventional methods are ineffective, resulting in insufficient fluorine content and a debilitating trade-off with ionic conductivity.",
+ 187 |         "scenario": "unknown scenario",
+ 188 |         "benchmark": "unknown benchmark",
+ 189 |         "references": [
+ 190 |           "Qiaodong Li et al. (2026) Anion-exchange fluorinated ion conductors for stable high-voltage lithium battery. doi:10.1038/s41467-026-74773-8"
+ 191 |         ],
+ 192 |         "evidence_type_annotations": [
+ 193 |           {
+ 194 |             "claim_type": "methodological_description",
+ 195 |             "claim": "While fluorination is a promising strategy to enhance electrolyte stability, conventional methods are ineffective, resulting in insufficient fluorine content and a debilitating trade-off with ionic conductivity.",
+ 196 |             "support": "structured_field"
+ 197 |           },
+ 198 |           {
+ 199 |             "claim_type": "empirical_result",
+ 200 |             "claim": "The development of high-energy all-solid-state batteries is critically hindered by the electrochemical instability of solid electrolytes against high-voltage oxide positive electrodes.",
+ 201 |             "support": "structured_field"
+ 202 |           },
+ 203 |           {
+ 204 |             "claim_type": "author_opinion",
+ 205 |             "claim": "The development of high-energy all-solid-state batteries is critically hindered by the electrochemical instability of solid electrolytes against high-voltage oxide positive electrodes. While fluorination is a promising strategy to enhance electrolyte stability, conventional methods are ineffective,....[truncated]",
+ 206 |             "support": "structured_field"
+ 207 |           },
+ 208 |           {
+ 209 |             "claim_type": "methodological_description",
+ 210 |             "claim": "While fluorination is a promising strategy to enhance electrolyte stability, conventional methods are ineffective,...[truncated]",
+ 211 |             "support": "source_sentence"
+ 212 |           }
+ 213 |         ]
+ 214 |       },
+ 215 |       {
+ 216 |         "method": "unknown method",
+ 217 |         "scenario": "Nevertheless, unsatisfactory high‐voltage stability restricts the further applications of halide SEs.",
+ 218 |         "benchmark": "unknown benchmark",
+ 219 |         "references": [
+ 220 |           "Liang Shen et al. (2024) Anion‐Engineering Toward High‐Voltage‐Stable Halide Superionic Conductors for All‐Solid‐State Lithium Batteries doi:10.1002/adfm.202408571"
+ 221 |         ],
+ 222 |         "evidence_type_annotations": [
+ 223 |           {
+ 224 |             "claim_type": "methodological_description",
+ 225 |             "claim": "unknown method",
+ 226 |             "support": "structured_field"
+ 227 |           },
+ 228 |           {
+ 229 |             "claim_type": "empirical_result",
+ 230 |             "claim": "Halide solid electrolytes (SEs) are attracting strong attention as one of the compelling candidates for the next‐generation of inorganic SEs due to their high ionic conductivity.",
+ 231 |             "support": "structured_field"
+ 232 |           },
+ 233 |           {
+ 234 |             "claim_type": "author_opinion",
+ 235 |             "claim": "No explicit limitation extracted.",
+ 236 |             "support": "structured_field"
+ 237 |           }
+ 238 |         ]
+ 239 |       }
+ 240 |     ],
+ 241 |     "claim_type_counts": {
+ 242 |       "methodological_description": 6,
+ 243 |       "empirical_result": 5,
+ 244 |       "author_opinion": 5,
+ 245 |       "theoretical_claim": 2
+ 246 |     }
+ 247 |   },
+ 248 |   "knowledge_gaps": [
+ 249 |     {
+ 250 |       "gap_id": "gap_1783065360124895700",
+ 251 |       "gap_type": "combinatorial",
+ 252 |       "description": "Method 'While fluorination is a promising strategy to enhance electrolyte stability, conventional methods are ineffective, resulting in insufficient fluorine content and a debilitating trade-off with ionic conductivity.' has no recorded validation in scenario 'Nevertheless, unsatisfactory high‐voltage stability restricts the further applications of halide SEs.' in the current PaperGraph map.",
+ 253 |       "supporting_references": [
+ 254 |         "Qiaodong Li et al. (2026) Anion-exchange fluorinated ion conductors for stable high-voltage lithium battery. doi:10.1038/s41467-026-74773-8",
+ 255 |         "Liang Shen et al. (2024) Anion‐Engineering Toward High‐Voltage‐Stable Halide Superionic Conductors for All‐Solid‐State Lithium Batteries doi:10.1002/adfm.202408571"
+ 256 |       ],
+ 257 |       "novelty_score": 6,
+ 258 |       "application_value": "high",
+ 259 |       "feasibility": "high",
+ 260 |       "suggested_research_path": "Run a targeted validation study with explicit benchmarks, baselines, and failure-mode analysis.",
+ 261 |       "value_argument": "The combination may expose method-scenario boundary conditions rather than simply adding another benchmark.",
+ 262 |       "overlap_risk": "medium",
+ 263 |       "requires_human_review": false
+ 264 |     },
+ 265 |     {
+ 266 |       "gap_id": "gap_1783065360126060700",
+ 267 |       "gap_type": "combinatorial",
+ 268 |       "description": "Method 'unknown method' has no recorded validation in scenario 'unknown scenario' in the current PaperGraph map.",
+ 269 |       "supporting_references": [
+ 270 |         "Qiaodong Li et al. (2026) Anion-exchange fluorinated ion conductors for stable high-voltage lithium battery. doi:10.1038/s41467-026-74773-8",
+ 271 |         "Liang Shen et al. (2024) Anion‐Engineering Toward High‐Voltage‐Stable Halide Superionic Conductors for All‐Solid‐State Lithium Batteries doi:10.1002/adfm.202408571"
+ 272 |       ],
+ 273 |       "novelty_score": 7,
+ 274 |       "application_value": "medium",
+ 275 |       "feasibility": "high",
+ 276 |       "suggested_research_path": "Run a targeted validation study with explicit benchmarks, baselines, and failure-mode analysis.",
+ 277 |       "value_argument": "The combination may expose method-scenario boundary conditions rather than simply adding another benchmark.",
+ 278 |       "overlap_risk": "low",
+ 279 |       "requires_human_review": false
+ 280 |     },
+ 281 |     {
+ 282 |       "gap_id": "gap_1783065360126678000",
+ 283 |       "gap_type": "improvement",
+ 284 |       "description": "Recorded limitation worth testing: The development of high-energy all-solid-state batteries is critically hindered by the electrochemical instability of solid electrolytes against high-voltage oxide positive electrodes. While fluorination is a promising strategy to enhance electrolyte stability, conventional methods are ineffective,...[truncated]",
+ 285 |       "supporting_references": [
+ 286 |         "Qiaodong Li et al. (2026) Anion-exchange fluorinated ion conductors for stable high-voltage lithium battery. doi:10.1038/s41467-026-74773-8"
+ 287 |       ],
+ 288 |       "novelty_score": 4,
+ 289 |       "application_value": "high",
+ 290 |       "feasibility": "high",
+ 291 |       "suggested_research_path": "Formulate a hypothesis that directly attacks the documented limitation and verify it under stress conditions.",
+ 292 |       "value_argument": "The gap is grounded in an author-reported limitation, so it has stronger evidential support than a bare untried combination.",
+ 293 |       "overlap_risk": "high",
+ 294 |       "requires_human_review": true
+ 295 |     },
+ 296 |     {
+ 297 |       "gap_id": "gap_1783065360127305300",
+ 298 |       "gap_type": "improvement",
+ 299 |       "description": "Recorded limitation worth testing: No explicit limitation extracted.",
+ 300 |       "supporting_references": [
+ 301 |         "Liang Shen et al. (2024) Anion‐Engineering Toward High‐Voltage‐Stable Halide Superionic Conductors for All‐Solid‐State Lithium Batteries doi:10.1002/adfm.202408571"
+ 302 |       ],
+ 303 |       "novelty_score": 6,
+ 304 |       "application_value": "medium",
+ 305 |       "feasibility": "high",
+ 306 |       "suggested_research_path": "Formulate a hypothesis that directly attacks the documented limitation and verify it under stress conditions.",
+ 307 |       "value_argument": "The gap is grounded in an author-reported limitation, so it has stronger evidential support than a bare untried combination.",
+ 308 |       "overlap_risk": "medium",
+ 309 |       "requires_human_review": false
+ 310 |     },
+ 311 |     {
+ 312 |       "gap_id": "gap_1783065360128382600",
+ 313 |       "gap_type": "problem",
+ 314 |       "description": "Source literature indicates a recognized unresolved problem: The development of high-energy all-solid-state batteries is critically hindered by the electrochemical instability of solid electrolytes against high-voltage oxide positive electrodes. While fluorination is a promising strategy to enhance electrolyte stability...[truncated]",
+ 315 |       "supporting_references": [
+ 316 |         "Qiaodong Li et al. (2026) Anion-exchange fluorinated ion conductors for stable high-voltage lithium battery. doi:10.1038/s41467-026-74773-8"
+ 317 |       ],
+ 318 |       "novelty_score": 5,
+ 319 |       "application_value": "high",
+ 320 |       "feasibility": "medium",
+ 321 |       "suggested_research_path": "Translate the unresolved problem into a falsifiable hypothesis with acceptance criteria and failure diagnostics.",
+ 322 |       "value_argument": "Problem gaps are grounded in explicit source statements about unresolved mechanisms or practical bottlenecks.",
+ 323 |       "overlap_risk": "high",
+ 324 |       "requires_human_review": true
+ 325 |     },
+ 326 |     {
+ 327 |       "gap_id": "gap_1783065360129156300",
+ 328 |       "gap_type": "problem",
+ 329 |       "description": "Source literature indicates a recognized unresolved problem: The development of high-energy all-solid-state batteries is critically hindered by the electrochemical instability of solid electrolytes against high-voltage oxide positive electrodes. While fluorination is a promising strategy to enhance electrolyte stability...[truncated]",
+ 330 |       "supporting_references": [
+ 331 |         "Qiaodong Li et al. (2026) Anion-exchange fluorinated ion conductors for stable high-voltage lithium battery. doi:10.1038/s41467-026-74773-8"
+ 332 |       ],
+ 333 |       "novelty_score": 5,
+ 334 |       "application_value": "high",
+ 335 |       "feasibility": "medium",
+ 336 |       "suggested_research_path": "Translate the unresolved problem into a falsifiable hypothesis with acceptance criteria and failure diagnostics.",
+ 337 |       "value_argument": "Problem gaps are grounded in explicit source statements about unresolved mechanisms or practical bottlenecks.",
+ 338 |       "overlap_risk": "high",
+ 339 |       "requires_human_review": true
+ 340 |     },
+ 341 |     {
+ 342 |       "gap_id": "gap_1783065360129882600",
+ 343 |       "gap_type": "migration",
+ 344 |       "description": "Method 'While fluorination is a promising strategy to enhance electrolyte stability, conventional methods are ineffective, resulting in insufficient fluorine content and a debilitating trade-off with ionic conductivity.' is only recorded in scenario 'unknown scenario', but may be transferable to scenario 'Nevertheless, unsatisfactory high‐voltage stability restricts the further applications of halide SEs.'.",
+ 345 |       "supporting_references": [
+ 346 |         "Qiaodong Li et al. (2026) Anion-exchange fluorinated ion conductors for stable high-voltage lithium battery. doi:10.1038/s41467-026-74773-8"
+ 347 |       ],
+ 348 |       "novelty_score": 7,
+ 349 |       "application_value": "high",
+ 350 |       "feasibility": "medium",
+ 351 |       "suggested_research_path": "Audit assumptions of the source scenario, then run a small transfer validation in the target scenario.",
+ 352 |       "value_argument": "Migration gaps can create useful cross-domain leverage if mechanism assumptions remain valid.",
+ 353 |       "overlap_risk": "medium",
+ 354 |       "requires_human_review": false
+ 355 |     },
+ 356 |     {
+ 357 |       "gap_id": "gap_1783065360130679400",
+ 358 |       "gap_type": "migration",
+ 359 |       "description": "Method 'unknown method' is only recorded in scenario 'Nevertheless, unsatisfactory high‐voltage stability restricts the further applications of halide SEs.', but may be transferable to scenario 'unknown scenario'.",
+ 360 |       "supporting_references": [
+ 361 |         "Liang Shen et al. (2024) Anion‐Engineering Toward High‐Voltage‐Stable Halide Superionic Conductors for All‐Solid‐State Lithium Batteries doi:10.1002/adfm.202408571"
+ 362 |       ],
+ 363 |       "novelty_score": 5,
+ 364 |       "application_value": "high",
+ 365 |       "feasibility": "medium",
+ 366 |       "suggested_research_path": "Audit assumptions of the source scenario, then run a small transfer validation in the target scenario.",
+ 367 |       "value_argument": "Migration gaps can create useful cross-domain leverage if mechanism assumptions remain valid.",
+ 368 |       "overlap_risk": "high",
+ 369 |       "requires_human_review": true
+ 370 |     }
+ 371 |   ],
+ 372 |   "self_reflection": {
+ 373 |     "top_venue_coverage_checked": true,
+ 374 |     "pseudo_gap_risk_checked": true,
+ 375 |     "method_categories_require_literature_support": true,
+ 376 |     "unsupported_claims_marked_for_review": true
+ 377 |   }
+ 378 | }

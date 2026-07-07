@@ -1,0 +1,140 @@
+   1 | from __future__ import annotations
+   2 | 
+   3 | import argparse
+   4 | from typing import Any
+   5 | 
+   6 | try:
+   7 |     from .config import MAX_TOKENS, MODEL_ID
+   8 |     from .hook import trigger_hook
+   9 |     from .llm import get_client
+  10 |     from .skill import build_system
+  11 |     from .tools import TOOL_HANDLERS, TOOLS
+  12 | except ImportError:
+  13 |     from config import MAX_TOKENS, MODEL_ID
+  14 |     from hook import trigger_hook
+  15 |     from llm import get_client
+  16 |     from skill import build_system
+  17 |     from tools import TOOL_HANDLERS, TOOLS
+  18 | 
+  19 | 
+  20 | def block_to_dict(block: Any) -> dict[str, Any]:
+  21 |     if isinstance(block, dict):
+  22 |         return block
+  23 |     if hasattr(block, "model_dump"):
+  24 |         return block.model_dump(exclude_none=True)
+  25 |     if hasattr(block, "dict"):
+  26 |         return block.dict(exclude_none=True)
+  27 |     raise TypeError(f"Unsupported response block: {type(block)!r}")
+  28 | 
+  29 | 
+  30 | def block_attr(block: Any, name: str, default: Any = None) -> Any:
+  31 |     if isinstance(block, dict):
+  32 |         return block.get(name, default)
+  33 |     return getattr(block, name, default)
+  34 | 
+  35 | 
+  36 | def response_text(content: list[Any]) -> str:
+  37 |     parts: list[str] = []
+  38 |     for block in content:
+  39 |         if block_attr(block, "type") == "text":
+  40 |             parts.append(block_attr(block, "text", ""))
+  41 |     return "\n".join(part for part in parts if part)
+  42 | 
+  43 | 
+  44 | def tool_result(tool_use_id: str, output: str, is_error: bool = False) -> dict[str, Any]:
+  45 |     result: dict[str, Any] = {
+  46 |         "type": "tool_result",
+  47 |         "tool_use_id": tool_use_id,
+  48 |         "content": output,
+  49 |     }
+  50 |     if is_error:
+  51 |         result["is_error"] = True
+  52 |     return result
+  53 | 
+  54 | 
+  55 | def run_tool(block: Any) -> dict[str, Any]:
+  56 |     name = block_attr(block, "name")
+  57 |     tool_input = block_attr(block, "input", {}) or {}
+  58 |     tool_use_id = block_attr(block, "id")
+  59 | 
+  60 |     blocked = trigger_hook("PreToolUse", block)
+  61 |     if blocked is not None:
+  62 |         return tool_result(tool_use_id, blocked, is_error=True)
+  63 | 
+  64 |     try:
+  65 |         handler = TOOL_HANDLERS[name]
+  66 |         output = handler(**tool_input)
+  67 |     except Exception as exc:
+  68 |         output = f"ERROR: {exc}"
+  69 |         trigger_hook("PostToolUse", block, output)
+  70 |         return tool_result(tool_use_id, output, is_error=True)
+  71 | 
+  72 |     trigger_hook("PostToolUse", block, output)
+  73 |     return tool_result(tool_use_id, output)
+  74 | 
+  75 | 
+  76 | def run_agent(user_input: str) -> str:
+  77 |     client = get_client()
+  78 |     injected = trigger_hook("UserPromptSubmit", user_input)
+  79 |     prompt = injected if injected is not None else user_input
+  80 |     messages: list[dict[str, Any]] = [{"role": "user", "content": prompt}]
+  81 | 
+  82 |     while True:
+  83 |         response = client.messages.create(
+  84 |             model=MODEL_ID,
+  85 |             max_tokens=MAX_TOKENS,
+  86 |             system=build_system(user_input),
+  87 |             messages=messages,
+  88 |             tools=TOOLS,
+  89 |         )
+  90 | 
+  91 |         if response.stop_reason == "end_turn":
+  92 |             final_text = response_text(response.content)
+  93 |             stop_injection = trigger_hook("Stop", final_text)
+  94 |             if stop_injection is not None:
+  95 |                 messages.append({"role": "user", "content": stop_injection})
+  96 |                 continue
+  97 |             print(final_text)
+  98 |             return final_text
+  99 | 
+ 100 |         tool_blocks = [
+ 101 |             block for block in response.content if block_attr(block, "type") == "tool_use"
+ 102 |         ]
+ 103 |         if not tool_blocks:
+ 104 |             final_text = response_text(response.content)
+ 105 |             trigger_hook("Stop", final_text)
+ 106 |             print(final_text)
+ 107 |             return final_text
+ 108 | 
+ 109 |         messages.append(
+ 110 |             {
+ 111 |                 "role": "assistant",
+ 112 |                 "content": [block_to_dict(block) for block in response.content],
+ 113 |             }
+ 114 |         )
+ 115 |         messages.append(
+ 116 |             {
+ 117 |                 "role": "user",
+ 118 |                 "content": [run_tool(block) for block in tool_blocks],
+ 119 |             }
+ 120 |         )
+ 121 | 
+ 122 | 
+ 123 | def parse_args() -> argparse.Namespace:
+ 124 |     parser = argparse.ArgumentParser(description="Run the v3 Modular + Sub-agent loop.")
+ 125 |     parser.add_argument("prompt", nargs="*", help="Task prompt. If omitted, read one line.")
+ 126 |     return parser.parse_args()
+ 127 | 
+ 128 | 
+ 129 | def main() -> None:
+ 130 |     args = parse_args()
+ 131 |     user_input = " ".join(args.prompt).strip()
+ 132 |     if not user_input:
+ 133 |         user_input = input("User> ").strip()
+ 134 |     if not user_input:
+ 135 |         raise SystemExit("Empty prompt.")
+ 136 |     run_agent(user_input)
+ 137 | 
+ 138 | 
+ 139 | if __name__ == "__main__":
+ 140 |     main()

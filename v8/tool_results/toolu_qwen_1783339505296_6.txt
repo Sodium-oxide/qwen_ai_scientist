@@ -1,0 +1,825 @@
+{
+  "agent": "tanxi",
+  "target_domain": "Hepatocellular Carcinoma Formation Mechanisms and Liver Cancer Cell Variation Mechanisms",
+  "thought": "TanXi scanned the PaperGraph for low-density but high-importance method-scenario-benchmark regions, cross-disciplinary unconnected pairs, suspended unresolved problems, and strategic-need alignment.",
+  "action": {
+    "scan_coverage_density": {
+      "target_domain": "Hepatocellular Carcinoma Formation Mechanisms and Liver Cancer Cell Variation Mechanisms"
+    },
+    "find_unconnected_pairs": {
+      "target_domain": "Hepatocellular Carcinoma Formation Mechanisms and Liver Cancer Cell Variation Mechanisms"
+    },
+    "detect_suspended_problems": {
+      "min_citation_threshold": 50
+    },
+    "prioritize_gaps": {
+      "criteria": [
+        "importance",
+        "tractability",
+        "strategic_value"
+      ]
+    },
+    "align_with_strategic_needs": {
+      "strategic_domains": [
+        "health",
+        "AI for Science"
+      ]
+    }
+  },
+  "coverage_analysis": {
+    "target_domain": "Hepatocellular Carcinoma Formation Mechanisms and Liver Cancer Cell Variation Mechanisms",
+    "method_count": 9,
+    "scenario_count": 10,
+    "benchmark_count": 10,
+    "dense_areas": [
+      {
+        "topic": "PamGene PamStation kinome technology + hepatocellular carcinoma",
+        "method": "PamGene PamStation kinome technology",
+        "scenario": "hepatocellular carcinoma",
+        "evidence_count": 1,
+        "benchmark_count": 1,
+        "importance_score": 7
+      },
+      {
+        "topic": "agent workflow + plant-fungal pathosystem | rice apoplastic immunity | Magnaporthe oryzae infection",
+        "method": "agent workflow",
+        "scenario": "plant-fungal pathosystem | rice apoplastic immunity | Magnaporthe oryzae infection",
+        "evidence_count": 1,
+        "benchmark_count": 1,
+        "importance_score": 5
+      },
+      {
+        "topic": "gene ontology analysis + sea star wasting disease | wild Pycnopodia helianthoides | southeast Alaska",
+        "method": "gene ontology analysis",
+        "scenario": "sea star wasting disease | wild Pycnopodia helianthoides | southeast Alaska",
+        "evidence_count": 1,
+        "benchmark_count": 1,
+        "importance_score": 5
+      },
+      {
+        "topic": "multivariable logistic regression + maternal delivery behavior in Bangladesh",
+        "method": "multivariable logistic regression",
+        "scenario": "maternal delivery behavior in Bangladesh",
+        "evidence_count": 1,
+        "benchmark_count": 1,
+        "importance_score": 5
+      },
+      {
+        "topic": "network analysis | UpSet plots | Cox proportional hazards regression + hepatocellular carcinoma | comorbidity and drug use patterns",
+        "method": "network analysis | UpSet plots | Cox proportional hazards regression",
+        "scenario": "hepatocellular carcinoma | comorbidity and drug use patterns",
+        "evidence_count": 1,
+        "benchmark_count": 1,
+        "importance_score": 7
+      },
+      {
+        "topic": "omics profiling + allergy and immunology",
+        "method": "omics profiling",
+        "scenario": "allergy and immunology",
+        "evidence_count": 1,
+        "benchmark_count": 1,
+        "importance_score": 6
+      },
+      {
+        "topic": "omics profiling + cancer diagnosis and therapy",
+        "method": "omics profiling",
+        "scenario": "cancer diagnosis and therapy",
+        "evidence_count": 1,
+        "benchmark_count": 1,
+        "importance_score": 8
+      },
+      {
+        "topic": "single-cell RNA sequencing + neurodevelopmental disorders associated with chromatin dysregulation",
+        "method": "single-cell RNA sequencing",
+        "scenario": "neurodevelopmental disorders associated with chromatin dysregulation",
+        "evidence_count": 1,
+        "benchmark_count": 1,
+        "importance_score": 5
+      },
+      {
+        "topic": "single-cell transcriptome analysis + liver cancer immunotherapy response",
+        "method": "single-cell transcriptome analysis",
+        "scenario": "liver cancer immunotherapy response",
+        "evidence_count": 1,
+        "benchmark_count": 1,
+        "importance_score": 7
+      },
+      {
+        "topic": "using a combination of global transcriptomic sequencing + Mycobacterium bovis infection | epithelial-mesenchymal transition | lung cancer progression",
+        "method": "using a combination of global transcriptomic sequencing",
+        "scenario": "Mycobacterium bovis infection | epithelial-mesenchymal transition | lung cancer progression",
+        "evidence_count": 1,
+        "benchmark_count": 1,
+        "importance_score": 7
+      }
+    ],
+    "density_holes": [
+      {
+        "topic": "omics profiling + cancer diagnosis and therapy benchmark coverage",
+        "method": "omics profiling",
+        "scenario": "cancer diagnosis and therapy",
+        "importance_score": 8,
+        "current_evidence_level": "medium",
+        "missing_benchmarks": [
+          "benchmark dataset",
+          "diagnostic performance",
+          "event duration",
+          "gene ontology analysis revealed enrichment of immune response",
+          "home delivery prevalence"
+        ],
+        "why_important": "The method-scenario pair has evidence, but benchmark coverage is sparse, so robustness and generalization remain uncertain.",
+        "supporting_references": [
+          "Dipti Bhattacharya et al. (2025) Artificial Intelligence in Cancer Research: Pioneering Biomarker Discovery for Pharmacological Advances doi:10.47583/ijpsrr.2025.v85i5.008"
+        ]
+      },
+      {
+        "topic": "omics profiling + Mycobacterium bovis infection | epithelial-mesenchymal transition | lung cancer progression",
+        "method": "omics profiling",
+        "scenario": "Mycobacterium bovis infection | epithelial-mesenchymal transition | lung cancer progression",
+        "importance_score": 8,
+        "current_evidence_level": "none",
+        "missing_benchmarks": [
+          "benchmark dataset",
+          "classification performance",
+          "diagnostic performance",
+          "event duration",
+          "gene ontology analysis revealed enrichment of immune response"
+        ],
+        "why_important": "Both the method and scenario are visible in the field map, but this intersection has no recorded validation.",
+        "supporting_references": [
+          "Dipti Bhattacharya et al. (2025) Artificial Intelligence in Cancer Research: Pioneering Biomarker Discovery for Pharmacological Advances doi:10.47583/ijpsrr.2025.v85i5.008",
+          "Wang, C. et al. (2025) RBMX2: A Pivotal Regulator Linking Mycobacterium bovis Infection to Epithelial-Mesenchymal Transition and Lung Cancer Progression doi:10.1101/2025.04.15.648920",
+          "Park, J. et al. (2025) Cancer-associated metabolic alterations facilitated by astrocyte glycogenolysis mediate neuropathic pain chronification doi:10.1101/2025.05.27.655245"
+        ]
+      },
+      {
+        "topic": "omics profiling + hepatocellular carcinoma",
+        "method": "omics profiling",
+        "scenario": "hepatocellular carcinoma",
+        "importance_score": 8,
+        "current_evidence_level": "none",
+        "missing_benchmarks": [
+          "benchmark dataset",
+          "classification performance",
+          "diagnostic performance",
+          "event duration",
+          "gene ontology analysis revealed enrichment of immune response"
+        ],
+        "why_important": "Both the method and scenario are visible in the field map, but this intersection has no recorded validation.",
+        "supporting_references": [
+          "Dipti Bhattacharya et al. (2025) Artificial Intelligence in Cancer Research: Pioneering Biomarker Discovery for Pharmacological Advances doi:10.47583/ijpsrr.2025.v85i5.008",
+          "Kipp et al. (2025) HEPATOCELLULAR CARCINOMA KINOME ATLAS AS AN EMPLOYABLE INSTRUMENTED PERSONALIZED MEDICINE doi:10.1101/2025.07.04.25328828",
+          "Park, J. et al. (2025) Cancer-associated metabolic alterations facilitated by astrocyte glycogenolysis mediate neuropathic pain chronification doi:10.1101/2025.05.27.655245"
+        ]
+      },
+      {
+        "topic": "omics profiling + hepatocellular carcinoma | comorbidity and drug use patterns",
+        "method": "omics profiling",
+        "scenario": "hepatocellular carcinoma | comorbidity and drug use patterns",
+        "importance_score": 8,
+        "current_evidence_level": "none",
+        "missing_benchmarks": [
+          "benchmark dataset",
+          "classification performance",
+          "diagnostic performance",
+          "event duration",
+          "gene ontology analysis revealed enrichment of immune response"
+        ],
+        "why_important": "Both the method and scenario are visible in the field map, but this intersection has no recorded validation.",
+        "supporting_references": [
+          "Dipti Bhattacharya et al. (2025) Artificial Intelligence in Cancer Research: Pioneering Biomarker Discovery for Pharmacological Advances doi:10.47583/ijpsrr.2025.v85i5.008",
+          "Yang, B. et al. (2025) Impact of Comorbidity and Drug Use Patterns on Recurrence and Mortality Risks in Primary Hepatocellular Carcinoma: A Chinese Cohort Network Analysis Study doi:10.1101/2025.07.05.25330803",
+          "Park, J. et al. (2025) Cancer-associated metabolic alterations facilitated by astrocyte glycogenolysis mediate neuropathic pain chronification doi:10.1101/2025.05.27.655245"
+        ]
+      },
+      {
+        "topic": "omics profiling + liver cancer immunotherapy response",
+        "method": "omics profiling",
+        "scenario": "liver cancer immunotherapy response",
+        "importance_score": 8,
+        "current_evidence_level": "none",
+        "missing_benchmarks": [
+          "benchmark dataset",
+          "classification performance",
+          "diagnostic performance",
+          "event duration",
+          "gene ontology analysis revealed enrichment of immune response"
+        ],
+        "why_important": "Both the method and scenario are visible in the field map, but this intersection has no recorded validation.",
+        "supporting_references": [
+          "Fei-Yu Diao (2021) Single-Cell Landscape of Liver Cancer in Response to Immunotherapy doi:10.4103/apjon.apjon-2165",
+          "Dipti Bhattacharya et al. (2025) Artificial Intelligence in Cancer Research: Pioneering Biomarker Discovery for Pharmacological Advances doi:10.47583/ijpsrr.2025.v85i5.008",
+          "Park, J. et al. (2025) Cancer-associated metabolic alterations facilitated by astrocyte glycogenolysis mediate neuropathic pain chronification doi:10.1101/2025.05.27.655245"
+        ]
+      },
+      {
+        "topic": "PamGene PamStation kinome technology + hepatocellular carcinoma benchmark coverage",
+        "method": "PamGene PamStation kinome technology",
+        "scenario": "hepatocellular carcinoma",
+        "importance_score": 7,
+        "current_evidence_level": "medium",
+        "missing_benchmarks": [
+          "benchmark dataset",
+          "classification performance",
+          "diagnostic performance",
+          "event duration",
+          "gene ontology analysis revealed enrichment of immune response"
+        ],
+        "why_important": "The method-scenario pair has evidence, but benchmark coverage is sparse, so robustness and generalization remain uncertain.",
+        "supporting_references": [
+          "Kipp et al. (2025) HEPATOCELLULAR CARCINOMA KINOME ATLAS AS AN EMPLOYABLE INSTRUMENTED PERSONALIZED MEDICINE doi:10.1101/2025.07.04.25328828"
+        ]
+      },
+      {
+        "topic": "network analysis | UpSet plots | Cox proportional hazards regression + hepatocellular carcinoma | comorbidity and drug use patterns benchmark coverage",
+        "method": "network analysis | UpSet plots | Cox proportional hazards regression",
+        "scenario": "hepatocellular carcinoma | comorbidity and drug use patterns",
+        "importance_score": 7,
+        "current_evidence_level": "medium",
+        "missing_benchmarks": [
+          "benchmark dataset",
+          "classification performance",
+          "event duration",
+          "gene ontology analysis revealed enrichment of immune response",
+          "home delivery prevalence"
+        ],
+        "why_important": "The method-scenario pair has evidence, but benchmark coverage is sparse, so robustness and generalization remain uncertain.",
+        "supporting_references": [
+          "Yang, B. et al. (2025) Impact of Comorbidity and Drug Use Patterns on Recurrence and Mortality Risks in Primary Hepatocellular Carcinoma: A Chinese Cohort Network Analysis Study doi:10.1101/2025.07.05.25330803"
+        ]
+      },
+      {
+        "topic": "single-cell transcriptome analysis + liver cancer immunotherapy response benchmark coverage",
+        "method": "single-cell transcriptome analysis",
+        "scenario": "liver cancer immunotherapy response",
+        "importance_score": 7,
+        "current_evidence_level": "medium",
+        "missing_benchmarks": [
+          "benchmark dataset",
+          "classification performance",
+          "diagnostic performance",
+          "event duration",
+          "gene ontology analysis revealed enrichment of immune response"
+        ],
+        "why_important": "The method-scenario pair has evidence, but benchmark coverage is sparse, so robustness and generalization remain uncertain.",
+        "supporting_references": [
+          "Fei-Yu Diao (2021) Single-Cell Landscape of Liver Cancer in Response to Immunotherapy doi:10.4103/apjon.apjon-2165"
+        ]
+      },
+      {
+        "topic": "using a combination of global transcriptomic sequencing + Mycobacterium bovis infection | epithelial-mesenchymal transition | lung cancer progression benchmark coverage",
+        "method": "using a combination of global transcriptomic sequencing",
+        "scenario": "Mycobacterium bovis infection | epithelial-mesenchymal transition | lung cancer progression",
+        "importance_score": 7,
+        "current_evidence_level": "medium",
+        "missing_benchmarks": [
+          "benchmark dataset",
+          "classification performance",
+          "diagnostic performance",
+          "event duration",
+          "gene ontology analysis revealed enrichment of immune response"
+        ],
+        "why_important": "The method-scenario pair has evidence, but benchmark coverage is sparse, so robustness and generalization remain uncertain.",
+        "supporting_references": [
+          "Wang, C. et al. (2025) RBMX2: A Pivotal Regulator Linking Mycobacterium bovis Infection to Epithelial-Mesenchymal Transition and Lung Cancer Progression doi:10.1101/2025.04.15.648920"
+        ]
+      },
+      {
+        "topic": "PamGene PamStation kinome technology + Mycobacterium bovis infection | epithelial-mesenchymal transition | lung cancer progression",
+        "method": "PamGene PamStation kinome technology",
+        "scenario": "Mycobacterium bovis infection | epithelial-mesenchymal transition | lung cancer progression",
+        "importance_score": 7,
+        "current_evidence_level": "none",
+        "missing_benchmarks": [
+          "benchmark dataset",
+          "classification performance",
+          "diagnostic performance",
+          "event duration",
+          "gene ontology analysis revealed enrichment of immune response"
+        ],
+        "why_important": "Both the method and scenario are visible in the field map, but this intersection has no recorded validation.",
+        "supporting_references": [
+          "Kipp et al. (2025) HEPATOCELLULAR CARCINOMA KINOME ATLAS AS AN EMPLOYABLE INSTRUMENTED PERSONALIZED MEDICINE doi:10.1101/2025.07.04.25328828",
+          "Wang, C. et al. (2025) RBMX2: A Pivotal Regulator Linking Mycobacterium bovis Infection to Epithelial-Mesenchymal Transition and Lung Cancer Progression doi:10.1101/2025.04.15.648920"
+        ]
+      },
+      {
+        "topic": "PamGene PamStation kinome technology + cancer diagnosis and therapy",
+        "method": "PamGene PamStation kinome technology",
+        "scenario": "cancer diagnosis and therapy",
+        "importance_score": 7,
+        "current_evidence_level": "none",
+        "missing_benchmarks": [
+          "benchmark dataset",
+          "classification performance",
+          "diagnostic performance",
+          "event duration",
+          "gene ontology analysis revealed enrichment of immune response"
+        ],
+        "why_important": "Both the method and scenario are visible in the field map, but this intersection has no recorded validation.",
+        "supporting_references": [
+          "Dipti Bhattacharya et al. (2025) Artificial Intelligence in Cancer Research: Pioneering Biomarker Discovery for Pharmacological Advances doi:10.47583/ijpsrr.2025.v85i5.008",
+          "Kipp et al. (2025) HEPATOCELLULAR CARCINOMA KINOME ATLAS AS AN EMPLOYABLE INSTRUMENTED PERSONALIZED MEDICINE doi:10.1101/2025.07.04.25328828"
+        ]
+      },
+      {
+        "topic": "PamGene PamStation kinome technology + hepatocellular carcinoma | comorbidity and drug use patterns",
+        "method": "PamGene PamStation kinome technology",
+        "scenario": "hepatocellular carcinoma | comorbidity and drug use patterns",
+        "importance_score": 7,
+        "current_evidence_level": "none",
+        "missing_benchmarks": [
+          "benchmark dataset",
+          "classification performance",
+          "diagnostic performance",
+          "event duration",
+          "gene ontology analysis revealed enrichment of immune response"
+        ],
+        "why_important": "Both the method and scenario are visible in the field map, but this intersection has no recorded validation.",
+        "supporting_references": [
+          "Kipp et al. (2025) HEPATOCELLULAR CARCINOMA KINOME ATLAS AS AN EMPLOYABLE INSTRUMENTED PERSONALIZED MEDICINE doi:10.1101/2025.07.04.25328828",
+          "Yang, B. et al. (2025) Impact of Comorbidity and Drug Use Patterns on Recurrence and Mortality Risks in Primary Hepatocellular Carcinoma: A Chinese Cohort Network Analysis Study doi:10.1101/2025.07.05.25330803"
+        ]
+      },
+      {
+        "topic": "PamGene PamStation kinome technology + liver cancer immunotherapy response",
+        "method": "PamGene PamStation kinome technology",
+        "scenario": "liver cancer immunotherapy response",
+        "importance_score": 7,
+        "current_evidence_level": "none",
+        "missing_benchmarks": [
+          "benchmark dataset",
+          "classification performance",
+          "diagnostic performance",
+          "event duration",
+          "gene ontology analysis revealed enrichment of immune response"
+        ],
+        "why_important": "Both the method and scenario are visible in the field map, but this intersection has no recorded validation.",
+        "supporting_references": [
+          "Fei-Yu Diao (2021) Single-Cell Landscape of Liver Cancer in Response to Immunotherapy doi:10.4103/apjon.apjon-2165",
+          "Kipp et al. (2025) HEPATOCELLULAR CARCINOMA KINOME ATLAS AS AN EMPLOYABLE INSTRUMENTED PERSONALIZED MEDICINE doi:10.1101/2025.07.04.25328828"
+        ]
+      },
+      {
+        "topic": "agent workflow + Mycobacterium bovis infection | epithelial-mesenchymal transition | lung cancer progression",
+        "method": "agent workflow",
+        "scenario": "Mycobacterium bovis infection | epithelial-mesenchymal transition | lung cancer progression",
+        "importance_score": 7,
+        "current_evidence_level": "none",
+        "missing_benchmarks": [
+          "benchmark dataset",
+          "classification performance",
+          "diagnostic performance",
+          "event duration",
+          "gene ontology analysis revealed enrichment of immune response"
+        ],
+        "why_important": "Both the method and scenario are visible in the field map, but this intersection has no recorded validation.",
+        "supporting_references": [
+          "Wang, C. et al. (2025) RBMX2: A Pivotal Regulator Linking Mycobacterium bovis Infection to Epithelial-Mesenchymal Transition and Lung Cancer Progression doi:10.1101/2025.04.15.648920",
+          "Takeda, T. et al. (2025) Multipartite coevolution shapes plant apoplastic immunity against rice blast fungus doi:10.1101/2025.07.03.663104"
+        ]
+      },
+      {
+        "topic": "agent workflow + cancer diagnosis and therapy",
+        "method": "agent workflow",
+        "scenario": "cancer diagnosis and therapy",
+        "importance_score": 7,
+        "current_evidence_level": "none",
+        "missing_benchmarks": [
+          "benchmark dataset",
+          "classification performance",
+          "diagnostic performance",
+          "event duration",
+          "gene ontology analysis revealed enrichment of immune response"
+        ],
+        "why_important": "Both the method and scenario are visible in the field map, but this intersection has no recorded validation.",
+        "supporting_references": [
+          "Dipti Bhattacharya et al. (2025) Artificial Intelligence in Cancer Research: Pioneering Biomarker Discovery for Pharmacological Advances doi:10.47583/ijpsrr.2025.v85i5.008",
+          "Takeda, T. et al. (2025) Multipartite coevolution shapes plant apoplastic immunity against rice blast fungus doi:10.1101/2025.07.03.663104"
+        ]
+      },
+      {
+        "topic": "agent workflow + hepatocellular carcinoma",
+        "method": "agent workflow",
+        "scenario": "hepatocellular carcinoma",
+        "importance_score": 7,
+        "current_evidence_level": "none",
+        "missing_benchmarks": [
+          "benchmark dataset",
+          "classification performance",
+          "diagnostic performance",
+          "event duration",
+          "gene ontology analysis revealed enrichment of immune response"
+        ],
+        "why_important": "Both the method and scenario are visible in the field map, but this intersection has no recorded validation.",
+        "supporting_references": [
+          "Kipp et al. (2025) HEPATOCELLULAR CARCINOMA KINOME ATLAS AS AN EMPLOYABLE INSTRUMENTED PERSONALIZED MEDICINE doi:10.1101/2025.07.04.25328828",
+          "Takeda, T. et al. (2025) Multipartite coevolution shapes plant apoplastic immunity against rice blast fungus doi:10.1101/2025.07.03.663104"
+        ]
+      },
+      {
+        "topic": "agent workflow + hepatocellular carcinoma | comorbidity and drug use patterns",
+        "method": "agent workflow",
+        "scenario": "hepatocellular carcinoma | comorbidity and drug use patterns",
+        "importance_score": 7,
+        "current_evidence_level": "none",
+        "missing_benchmarks": [
+          "benchmark dataset",
+          "classification performance",
+          "diagnostic performance",
+          "event duration",
+          "gene ontology analysis revealed enrichment of immune response"
+        ],
+        "why_important": "Both the method and scenario are visible in the field map, but this intersection has no recorded validation.",
+        "supporting_references": [
+          "Yang, B. et al. (2025) Impact of Comorbidity and Drug Use Patterns on Recurrence and Mortality Risks in Primary Hepatocellular Carcinoma: A Chinese Cohort Network Analysis Study doi:10.1101/2025.07.05.25330803",
+          "Takeda, T. et al. (2025) Multipartite coevolution shapes plant apoplastic immunity against rice blast fungus doi:10.1101/2025.07.03.663104"
+        ]
+      },
+      {
+        "topic": "agent workflow + liver cancer immunotherapy response",
+        "method": "agent workflow",
+        "scenario": "liver cancer immunotherapy response",
+        "importance_score": 7,
+        "current_evidence_level": "none",
+        "missing_benchmarks": [
+          "benchmark dataset",
+          "classification performance",
+          "diagnostic performance",
+          "event duration",
+          "gene ontology analysis revealed enrichment of immune response"
+        ],
+        "why_important": "Both the method and scenario are visible in the field map, but this intersection has no recorded validation.",
+        "supporting_references": [
+          "Fei-Yu Diao (2021) Single-Cell Landscape of Liver Cancer in Response to Immunotherapy doi:10.4103/apjon.apjon-2165",
+          "Takeda, T. et al. (2025) Multipartite coevolution shapes plant apoplastic immunity against rice blast fungus doi:10.1101/2025.07.03.663104"
+        ]
+      },
+      {
+        "topic": "gene ontology analysis + Mycobacterium bovis infection | epithelial-mesenchymal transition | lung cancer progression",
+        "method": "gene ontology analysis",
+        "scenario": "Mycobacterium bovis infection | epithelial-mesenchymal transition | lung cancer progression",
+        "importance_score": 7,
+        "current_evidence_level": "none",
+        "missing_benchmarks": [
+          "benchmark dataset",
+          "classification performance",
+          "diagnostic performance",
+          "event duration",
+          "gene ontology analysis revealed enrichment of immune response"
+        ],
+        "why_important": "Both the method and scenario are visible in the field map, but this intersection has no recorded validation.",
+        "supporting_references": [
+          "Wang, C. et al. (2025) RBMX2: A Pivotal Regulator Linking Mycobacterium bovis Infection to Epithelial-Mesenchymal Transition and Lung Cancer Progression doi:10.1101/2025.04.15.648920",
+          "McCracken, A. et al. (2025) Precursors of Sea Star Wasting: Immune and Microbial Disruption During Initial Disease Outbreak in Southeast Alaska doi:10.1101/2025.07.05.662347"
+        ]
+      },
+      {
+        "topic": "gene ontology analysis + cancer diagnosis and therapy",
+        "method": "gene ontology analysis",
+        "scenario": "cancer diagnosis and therapy",
+        "importance_score": 7,
+        "current_evidence_level": "none",
+        "missing_benchmarks": [
+          "benchmark dataset",
+          "classification performance",
+          "diagnostic performance",
+          "event duration",
+          "gene ontology analysis revealed enrichment of immune response"
+        ],
+        "why_important": "Both the method and scenario are visible in the field map, but this intersection has no recorded validation.",
+        "supporting_references": [
+          "Dipti Bhattacharya et al. (2025) Artificial Intelligence in Cancer Research: Pioneering Biomarker Discovery for Pharmacological Advances doi:10.47583/ijpsrr.2025.v85i5.008",
+          "McCracken, A. et al. (2025) Precursors of Sea Star Wasting: Immune and Microbial Disruption During Initial Disease Outbreak in Southeast Alaska doi:10.1101/2025.07.05.662347"
+        ]
+      }
+    ]
+  },
+  "cross_disciplinary_unconnected_pairs": [
+    {
+      "field_a": "agriculture",
+      "concept_a": "using a combination of global transcriptomic sequencing",
+      "field_b": "biomedical",
+      "concept_b": "PamGene PamStation kinome technology",
+      "potential_synergy": "Testing whether using a combination of global transcriptomic sequencing can constrain, evaluate, or operationalize PamGene PamStation kinome technology for Hepatocellular Carcinoma Formation Mechanisms and Liver Cancer Cell Variation Mechanisms may reveal a non-obvious transfer path or boundary condition.",
+      "supporting_references": [
+        "Wang, C. et al. (2025) RBMX2: A Pivotal Regulator Linking Mycobacterium bovis Infection to Epithelial-Mesenchymal Transition and Lung Cancer Progression doi:10.1101/2025.04.15.648920",
+        "Kipp et al. (2025) HEPATOCELLULAR CARCINOMA KINOME ATLAS AS AN EMPLOYABLE INSTRUMENTED PERSONALIZED MEDICINE doi:10.1101/2025.07.04.25328828"
+      ]
+    },
+    {
+      "field_a": "agriculture",
+      "concept_a": "using a combination of global transcriptomic sequencing",
+      "field_b": "biomedical",
+      "concept_b": "hepatocellular carcinoma",
+      "potential_synergy": "Testing whether using a combination of global transcriptomic sequencing can constrain, evaluate, or operationalize hepatocellular carcinoma for Hepatocellular Carcinoma Formation Mechanisms and Liver Cancer Cell Variation Mechanisms may reveal a non-obvious transfer path or boundary condition.",
+      "supporting_references": [
+        "Wang, C. et al. (2025) RBMX2: A Pivotal Regulator Linking Mycobacterium bovis Infection to Epithelial-Mesenchymal Transition and Lung Cancer Progression doi:10.1101/2025.04.15.648920",
+        "Kipp et al. (2025) HEPATOCELLULAR CARCINOMA KINOME ATLAS AS AN EMPLOYABLE INSTRUMENTED PERSONALIZED MEDICINE doi:10.1101/2025.07.04.25328828"
+      ]
+    },
+    {
+      "field_a": "agriculture",
+      "concept_a": "using a combination of global transcriptomic sequencing",
+      "field_b": "biomedical",
+      "concept_b": "kinase activity | PerMed score",
+      "potential_synergy": "Testing whether using a combination of global transcriptomic sequencing can constrain, evaluate, or operationalize kinase activity | PerMed score for Hepatocellular Carcinoma Formation Mechanisms and Liver Cancer Cell Variation Mechanisms may reveal a non-obvious transfer path or boundary condition.",
+      "supporting_references": [
+        "Wang, C. et al. (2025) RBMX2: A Pivotal Regulator Linking Mycobacterium bovis Infection to Epithelial-Mesenchymal Transition and Lung Cancer Progression doi:10.1101/2025.04.15.648920",
+        "Kipp et al. (2025) HEPATOCELLULAR CARCINOMA KINOME ATLAS AS AN EMPLOYABLE INSTRUMENTED PERSONALIZED MEDICINE doi:10.1101/2025.07.04.25328828"
+      ]
+    },
+    {
+      "field_a": "agriculture",
+      "concept_a": "using a combination of global transcriptomic sequencing",
+      "field_b": "biomedical",
+      "concept_b": "network analysis | UpSet plots | Cox proportional hazards regression",
+      "potential_synergy": "Testing whether using a combination of global transcriptomic sequencing can constrain, evaluate, or operationalize network analysis | UpSet plots | Cox proportional hazards regression for Hepatocellular Carcinoma Formation Mechanisms and Liver Cancer Cell Variation Mechanisms may reveal a non-obvious transfer path or boundary condition.",
+      "supporting_references": [
+        "Wang, C. et al. (2025) RBMX2: A Pivotal Regulator Linking Mycobacterium bovis Infection to Epithelial-Mesenchymal Transition and Lung Cancer Progression doi:10.1101/2025.04.15.648920",
+        "Yang, B. et al. (2025) Impact of Comorbidity and Drug Use Patterns on Recurrence and Mortality Risks in Primary Hepatocellular Carcinoma: A Chinese Cohort Network Analysis Study doi:10.1101/2025.07.05.25330803"
+      ]
+    },
+    {
+      "field_a": "agriculture",
+      "concept_a": "using a combination of global transcriptomic sequencing",
+      "field_b": "biomedical",
+      "concept_b": "hepatocellular carcinoma | comorbidity and drug use patterns",
+      "potential_synergy": "Testing whether using a combination of global transcriptomic sequencing can constrain, evaluate, or operationalize hepatocellular carcinoma | comorbidity and drug use patterns for Hepatocellular Carcinoma Formation Mechanisms and Liver Cancer Cell Variation Mechanisms may reveal a non-obvious transfer path or boundary condition.",
+      "supporting_references": [
+        "Wang, C. et al. (2025) RBMX2: A Pivotal Regulator Linking Mycobacterium bovis Infection to Epithelial-Mesenchymal Transition and Lung Cancer Progression doi:10.1101/2025.04.15.648920",
+        "Yang, B. et al. (2025) Impact of Comorbidity and Drug Use Patterns on Recurrence and Mortality Risks in Primary Hepatocellular Carcinoma: A Chinese Cohort Network Analysis Study doi:10.1101/2025.07.05.25330803"
+      ]
+    },
+    {
+      "field_a": "agriculture",
+      "concept_a": "using a combination of global transcriptomic sequencing",
+      "field_b": "biomedical",
+      "concept_b": "diagnostic performance",
+      "potential_synergy": "Testing whether using a combination of global transcriptomic sequencing can constrain, evaluate, or operationalize diagnostic performance for Hepatocellular Carcinoma Formation Mechanisms and Liver Cancer Cell Variation Mechanisms may reveal a non-obvious transfer path or boundary condition.",
+      "supporting_references": [
+        "Wang, C. et al. (2025) RBMX2: A Pivotal Regulator Linking Mycobacterium bovis Infection to Epithelial-Mesenchymal Transition and Lung Cancer Progression doi:10.1101/2025.04.15.648920",
+        "Yang, B. et al. (2025) Impact of Comorbidity and Drug Use Patterns on Recurrence and Mortality Risks in Primary Hepatocellular Carcinoma: A Chinese Cohort Network Analysis Study doi:10.1101/2025.07.05.25330803"
+      ]
+    },
+    {
+      "field_a": "agriculture",
+      "concept_a": "using a combination of global transcriptomic sequencing",
+      "field_b": "biomedical",
+      "concept_b": "omics profiling",
+      "potential_synergy": "Testing whether using a combination of global transcriptomic sequencing can constrain, evaluate, or operationalize omics profiling for Hepatocellular Carcinoma Formation Mechanisms and Liver Cancer Cell Variation Mechanisms may reveal a non-obvious transfer path or boundary condition.",
+      "supporting_references": [
+        "Wang, C. et al. (2025) RBMX2: A Pivotal Regulator Linking Mycobacterium bovis Infection to Epithelial-Mesenchymal Transition and Lung Cancer Progression doi:10.1101/2025.04.15.648920",
+        "Park, J. et al. (2025) Cancer-associated metabolic alterations facilitated by astrocyte glycogenolysis mediate neuropathic pain chronification doi:10.1101/2025.05.27.655245"
+      ]
+    },
+    {
+      "field_a": "agriculture",
+      "concept_a": "using a combination of global transcriptomic sequencing",
+      "field_b": "biomedical",
+      "concept_b": "allergy and immunology",
+      "potential_synergy": "Testing whether using a combination of global transcriptomic sequencing can constrain, evaluate, or operationalize allergy and immunology for Hepatocellular Carcinoma Formation Mechanisms and Liver Cancer Cell Variation Mechanisms may reveal a non-obvious transfer path or boundary condition.",
+      "supporting_references": [
+        "Wang, C. et al. (2025) RBMX2: A Pivotal Regulator Linking Mycobacterium bovis Infection to Epithelial-Mesenchymal Transition and Lung Cancer Progression doi:10.1101/2025.04.15.648920",
+        "Park, J. et al. (2025) Cancer-associated metabolic alterations facilitated by astrocyte glycogenolysis mediate neuropathic pain chronification doi:10.1101/2025.05.27.655245"
+      ]
+    },
+    {
+      "field_a": "agriculture",
+      "concept_a": "Mycobacterium bovis infection | epithelial-mesenchymal transition | lung cancer progression",
+      "field_b": "biomedical",
+      "concept_b": "PamGene PamStation kinome technology",
+      "potential_synergy": "Testing whether Mycobacterium bovis infection | epithelial-mesenchymal transition | lung cancer progression can constrain, evaluate, or operationalize PamGene PamStation kinome technology for Hepatocellular Carcinoma Formation Mechanisms and Liver Cancer Cell Variation Mechanisms may reveal a non-obvious transfer path or boundary condition.",
+      "supporting_references": [
+        "Wang, C. et al. (2025) RBMX2: A Pivotal Regulator Linking Mycobacterium bovis Infection to Epithelial-Mesenchymal Transition and Lung Cancer Progression doi:10.1101/2025.04.15.648920",
+        "Kipp et al. (2025) HEPATOCELLULAR CARCINOMA KINOME ATLAS AS AN EMPLOYABLE INSTRUMENTED PERSONALIZED MEDICINE doi:10.1101/2025.07.04.25328828"
+      ]
+    },
+    {
+      "field_a": "agriculture",
+      "concept_a": "Mycobacterium bovis infection | epithelial-mesenchymal transition | lung cancer progression",
+      "field_b": "biomedical",
+      "concept_b": "hepatocellular carcinoma",
+      "potential_synergy": "Testing whether Mycobacterium bovis infection | epithelial-mesenchymal transition | lung cancer progression can constrain, evaluate, or operationalize hepatocellular carcinoma for Hepatocellular Carcinoma Formation Mechanisms and Liver Cancer Cell Variation Mechanisms may reveal a non-obvious transfer path or boundary condition.",
+      "supporting_references": [
+        "Wang, C. et al. (2025) RBMX2: A Pivotal Regulator Linking Mycobacterium bovis Infection to Epithelial-Mesenchymal Transition and Lung Cancer Progression doi:10.1101/2025.04.15.648920",
+        "Kipp et al. (2025) HEPATOCELLULAR CARCINOMA KINOME ATLAS AS AN EMPLOYABLE INSTRUMENTED PERSONALIZED MEDICINE doi:10.1101/2025.07.04.25328828"
+      ]
+    }
+  ],
+  "suspended_problems": [
+    {
+      "problem": "Single-Cell Landscape of Liver Cancer in Response to Immunotherapy Primary liver cancer is the sixth most commonly diagnosed cancer in the world, with 905,677 new cases of liver cancer in 2020, and the third leading cause of cancer death globally. The liver ca...[truncated]",
+      "years_unresolved": 5,
+      "citation_count": 0,
+      "evidence_level": "unknown",
+      "barrier_to_progress": "data or measurement bottleneck",
+      "supporting_references": [
+        "Fei-Yu Diao (2021) Single-Cell Landscape of Liver Cancer in Response to Immunotherapy doi:10.4103/apjon.apjon-2165"
+      ]
+    },
+    {
+      "problem": "Artificial Intelligence in Cancer Research: Pioneering Biomarker Discovery for Pharmacological Advances Challenges in standardizing data, model interpretation, and ethical implementation; algorithmic bias and restricted diversity in training datasets risk exac...[truncated]",
+      "years_unresolved": 1,
+      "citation_count": 0,
+      "evidence_level": "unknown",
+      "barrier_to_progress": "data or measurement bottleneck",
+      "supporting_references": [
+        "Dipti Bhattacharya et al. (2025) Artificial Intelligence in Cancer Research: Pioneering Biomarker Discovery for Pharmacological Advances doi:10.47583/ijpsrr.2025.v85i5.008"
+      ]
+    },
+    {
+      "problem": "Artificial Intelligence in Cancer Research: Pioneering Biomarker Discovery for Pharmacological Advances Molecular heterogeneity of cancer and dynamic nature present major challenges to effective therapy establishment, calling for the highest-level strategies t...[truncated]",
+      "years_unresolved": 1,
+      "citation_count": 0,
+      "evidence_level": "unknown",
+      "barrier_to_progress": "data or measurement bottleneck",
+      "supporting_references": [
+        "Dipti Bhattacharya et al. (2025) Artificial Intelligence in Cancer Research: Pioneering Biomarker Discovery for Pharmacological Advances doi:10.47583/ijpsrr.2025.v85i5.008"
+      ]
+    },
+    {
+      "problem": "Cancer-associated metabolic alterations facilitated by astrocyte glycogenolysis mediate neuropathic pain chronification Abstract: Chronic pain remains a major unmet medical challenge, yet the metabolic checkpoints that govern its persistence are poorly defined...[truncated]",
+      "years_unresolved": 1,
+      "citation_count": 0,
+      "evidence_level": "unknown",
+      "barrier_to_progress": "unspecified conceptual or technical barrier",
+      "supporting_references": [
+        "Park, J. et al. (2025) Cancer-associated metabolic alterations facilitated by astrocyte glycogenolysis mediate neuropathic pain chronification doi:10.1101/2025.05.27.655245"
+      ]
+    },
+    {
+      "problem": "Cancer-associated metabolic alterations facilitated by astrocyte glycogenolysis mediate neuropathic pain chronification Chronic pain remains a major unmet medical challenge, yet the metabolic checkpoints that govern its persistence are poorly defined. Astrocyt...[truncated]",
+      "years_unresolved": 1,
+      "citation_count": 0,
+      "evidence_level": "unknown",
+      "barrier_to_progress": "mechanistic uncertainty",
+      "supporting_references": [
+        "Park, J. et al. (2025) Cancer-associated metabolic alterations facilitated by astrocyte glycogenolysis mediate neuropathic pain chronification doi:10.1101/2025.05.27.655245"
+      ]
+    },
+    {
+      "problem": "HEPATOCELLULAR CARCINOMA KINOME ATLAS AS AN EMPLOYABLE INSTRUMENTED PERSONALIZED MEDICINE Liver cancer ranks high among cancer death rates and is resistant to most therapies. Studies of protein functionality are limited in patients with hepatocellular carcinom...[truncated]",
+      "years_unresolved": 1,
+      "citation_count": 0,
+      "evidence_level": "unknown",
+      "barrier_to_progress": "unspecified conceptual or technical barrier",
+      "supporting_references": [
+        "Kipp et al. (2025) HEPATOCELLULAR CARCINOMA KINOME ATLAS AS AN EMPLOYABLE INSTRUMENTED PERSONALIZED MEDICINE doi:10.1101/2025.07.04.25328828"
+      ]
+    },
+    {
+      "problem": "HEPATOCELLULAR CARCINOMA KINOME ATLAS AS AN EMPLOYABLE INSTRUMENTED PERSONALIZED MEDICINE No explicit limitation extracted.",
+      "years_unresolved": 1,
+      "citation_count": 0,
+      "evidence_level": "unknown",
+      "barrier_to_progress": "unspecified conceptual or technical barrier",
+      "supporting_references": [
+        "Kipp et al. (2025) HEPATOCELLULAR CARCINOMA KINOME ATLAS AS AN EMPLOYABLE INSTRUMENTED PERSONALIZED MEDICINE doi:10.1101/2025.07.04.25328828"
+      ]
+    },
+    {
+      "problem": "Impact of Comorbidity and Drug Use Patterns on Recurrence and Mortality Risks in Primary Hepatocellular Carcinoma: A Chinese Cohort Network Analysis Study Background & AimsComorbidities in hepatocellular carcinoma (HCC) impair liver function, limit treatment c...[truncated]",
+      "years_unresolved": 1,
+      "citation_count": 0,
+      "evidence_level": "unknown",
+      "barrier_to_progress": "robustness or stability barrier",
+      "supporting_references": [
+        "Yang, B. et al. (2025) Impact of Comorbidity and Drug Use Patterns on Recurrence and Mortality Risks in Primary Hepatocellular Carcinoma: A Chinese Cohort Network Analysis Study doi:10.1101/2025.07.05.25330803"
+      ]
+    },
+    {
+      "problem": "Multipartite coevolution shapes plant apoplastic immunity against rice blast fungus No explicit limitation extracted.",
+      "years_unresolved": 1,
+      "citation_count": 0,
+      "evidence_level": "unknown",
+      "barrier_to_progress": "unspecified conceptual or technical barrier",
+      "supporting_references": [
+        "Takeda, T. et al. (2025) Multipartite coevolution shapes plant apoplastic immunity against rice blast fungus doi:10.1101/2025.07.03.663104"
+      ]
+    },
+    {
+      "problem": "Multipartite coevolution shapes plant apoplastic immunity against rice blast fungus β-1,3-glucan-binding proteins (GBPs) play crucial roles in cell wall integrity, host- pathogen interactions, and stress responses in fungi, making them essential for fungal sur...[truncated]",
+      "years_unresolved": 1,
+      "citation_count": 0,
+      "evidence_level": "unknown",
+      "barrier_to_progress": "mechanistic uncertainty",
+      "supporting_references": [
+        "Takeda, T. et al. (2025) Multipartite coevolution shapes plant apoplastic immunity against rice blast fungus doi:10.1101/2025.07.03.663104"
+      ]
+    }
+  ],
+  "ranked_gaps": [
+    {
+      "rank": 1,
+      "gap_id": "gap_1783339459503441500",
+      "gap_description": "Cross-disciplinary unconnected pair: 'using a combination of global transcriptomic sequencing' from agriculture and 'PamGene PamStation kinome technology' from biomedical have no recorded bridge in the current PaperGraph.",
+      "gap_type": "migration",
+      "exploration_value_score": 10,
+      "importance": "high",
+      "tractability": "medium",
+      "strategic_alignment": [
+        {
+          "strategic_domain": "AI for Science",
+          "matched_keywords": [
+            "ai"
+          ],
+          "alignment_score": 6
+        }
+      ],
+      "supporting_references": [
+        "Wang, C. et al. (2025) RBMX2: A Pivotal Regulator Linking Mycobacterium bovis Infection to Epithelial-Mesenchymal Transition and Lung Cancer Progression doi:10.1101/2025.04.15.648920",
+        "Kipp et al. (2025) HEPATOCELLULAR CARCINOMA KINOME ATLAS AS AN EMPLOYABLE INSTRUMENTED PERSONALIZED MEDICINE doi:10.1101/2025.07.04.25328828",
+        "Yang, B. et al. (2025) Impact of Comorbidity and Drug Use Patterns on Recurrence and Mortality Risks in Primary Hepatocellular Carcinoma: A Chinese Cohort Network Analysis Study doi:10.1101/2025.07.05.25330803",
+        "Park, J. et al. (2025) Cancer-associated metabolic alterations facilitated by astrocyte glycogenolysis mediate neuropathic pain chronification doi:10.1101/2025.05.27.655245"
+      ],
+      "recommended_approach": "Formulate a transfer hypothesis, audit incompatible assumptions, then run a minimal bridge experiment or benchmark.",
+      "ranking_reason": "novelty=7, refs=4, application=medium, feasibility=medium, type=migration, strategic_matches=1, density_bonus=1"
+    },
+    {
+      "rank": 2,
+      "gap_id": "gap_1783339459479905000",
+      "gap_description": "Density hole: 'PamGene PamStation kinome technology' has no recorded validation in 'Mycobacterium bovis infection | epithelial-mesenchymal transition | lung cancer progression'.",
+      "gap_type": "combinatorial",
+      "exploration_value_score": 10,
+      "importance": "high",
+      "tractability": "high",
+      "strategic_alignment": [],
+      "supporting_references": [
+        "Kipp et al. (2025) HEPATOCELLULAR CARCINOMA KINOME ATLAS AS AN EMPLOYABLE INSTRUMENTED PERSONALIZED MEDICINE doi:10.1101/2025.07.04.25328828",
+        "Wang, C. et al. (2025) RBMX2: A Pivotal Regulator Linking Mycobacterium bovis Infection to Epithelial-Mesenchymal Transition and Lung Cancer Progression doi:10.1101/2025.04.15.648920"
+      ],
+      "recommended_approach": "Use the dense neighboring literature as controls, then test the sparse intersection with explicit benchmark coverage.",
+      "ranking_reason": "novelty=4, refs=2, application=medium, feasibility=high, type=combinatorial, strategic_matches=0, density_bonus=2"
+    },
+    {
+      "rank": 3,
+      "gap_id": "gap_1783339459487427800",
+      "gap_description": "Density hole: 'PamGene PamStation kinome technology' has no recorded validation in 'cancer diagnosis and therapy'.",
+      "gap_type": "combinatorial",
+      "exploration_value_score": 10,
+      "importance": "high",
+      "tractability": "high",
+      "strategic_alignment": [
+        {
+          "strategic_domain": "health",
+          "matched_keywords": [
+            "therapy",
+            "diagnosis"
+          ],
+          "alignment_score": 8
+        }
+      ],
+      "supporting_references": [
+        "Dipti Bhattacharya et al. (2025) Artificial Intelligence in Cancer Research: Pioneering Biomarker Discovery for Pharmacological Advances doi:10.47583/ijpsrr.2025.v85i5.008",
+        "Kipp et al. (2025) HEPATOCELLULAR CARCINOMA KINOME ATLAS AS AN EMPLOYABLE INSTRUMENTED PERSONALIZED MEDICINE doi:10.1101/2025.07.04.25328828"
+      ],
+      "recommended_approach": "Use the dense neighboring literature as controls, then test the sparse intersection with explicit benchmark coverage.",
+      "ranking_reason": "novelty=5, refs=2, application=medium, feasibility=high, type=combinatorial, strategic_matches=1, density_bonus=2"
+    },
+    {
+      "rank": 4,
+      "gap_id": "gap_1783339459495560800",
+      "gap_description": "Density hole: 'PamGene PamStation kinome technology' has no recorded validation in 'hepatocellular carcinoma | comorbidity and drug use patterns'.",
+      "gap_type": "combinatorial",
+      "exploration_value_score": 10,
+      "importance": "high",
+      "tractability": "high",
+      "strategic_alignment": [],
+      "supporting_references": [
+        "Kipp et al. (2025) HEPATOCELLULAR CARCINOMA KINOME ATLAS AS AN EMPLOYABLE INSTRUMENTED PERSONALIZED MEDICINE doi:10.1101/2025.07.04.25328828",
+        "Yang, B. et al. (2025) Impact of Comorbidity and Drug Use Patterns on Recurrence and Mortality Risks in Primary Hepatocellular Carcinoma: A Chinese Cohort Network Analysis Study doi:10.1101/2025.07.05.25330803"
+      ],
+      "recommended_approach": "Use the dense neighboring literature as controls, then test the sparse intersection with explicit benchmark coverage.",
+      "ranking_reason": "novelty=5, refs=2, application=medium, feasibility=high, type=combinatorial, strategic_matches=0, density_bonus=2"
+    },
+    {
+      "rank": 5,
+      "gap_id": "gap_1783339459448845000",
+      "gap_description": "Density hole: 'PamGene PamStation kinome technology' in 'hepatocellular carcinoma' lacks benchmark coverage for benchmark dataset, classification performance, diagnostic performance.",
+      "gap_type": "improvement",
+      "exploration_value_score": 10,
+      "importance": "high",
+      "tractability": "high",
+      "strategic_alignment": [
+        {
+          "strategic_domain": "AI for Science",
+          "matched_keywords": [
+            "ai"
+          ],
+          "alignment_score": 6
+        }
+      ],
+      "supporting_references": [
+        "Kipp et al. (2025) HEPATOCELLULAR CARCINOMA KINOME ATLAS AS AN EMPLOYABLE INSTRUMENTED PERSONALIZED MEDICINE doi:10.1101/2025.07.04.25328828"
+      ],
+      "recommended_approach": "Use the dense neighboring literature as controls, then test the sparse intersection with explicit benchmark coverage.",
+      "ranking_reason": "novelty=6, refs=1, application=medium, feasibility=high, type=improvement, strategic_matches=1, density_bonus=2"
+    }
+  ],
+  "constraints_checked": {
+    "requires_supporting_reference": true,
+    "filters_trivial_low_novelty": true,
+    "max_gaps": 5
+  }
+}

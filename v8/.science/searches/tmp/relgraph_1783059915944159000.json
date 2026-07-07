@@ -1,0 +1,570 @@
+{
+  "search_id": "relgraph_1783059915944159000",
+  "kind": "paper_relation_graph",
+  "source_search_id": "graph_1783059915936111300",
+  "query": "solid-state lithium conductor",
+  "createdAt": 1783059915.9441621,
+  "node_count": 4,
+  "edge_count": 3,
+  "cluster_count": 3,
+  "nodes": [
+    {
+      "node_id": "s2seed",
+      "role": "seed",
+      "result_index": 0,
+      "title": "Seed solid-state lithium conductor",
+      "year": "2024",
+      "venue": "Nature Communications",
+      "field": "materials_energy",
+      "mechanism_terms": [
+        "solid-state",
+        "lithium",
+        "battery",
+        "electrolyte",
+        "conductor",
+        "interface"
+      ],
+      "mechanism_cluster_key": "materials_energy:solid-state",
+      "relevance_score": 0.0,
+      "publication_quality_score": 0.92,
+      "venue_quality": "reputable",
+      "journal_quartile": "Q1",
+      "citation_count": 5.0,
+      "influential_citation_count": 0.0,
+      "quality_flags": [
+        "journal_quartile_q1",
+        "reputable_venue"
+      ],
+      "doi": null,
+      "arxiv_id": null,
+      "semantic_scholar_id": "seed",
+      "url": null,
+      "pagerank": 0.28805,
+      "degree_centrality": 1.0,
+      "centrality_score": 0.501635
+    },
+    {
+      "node_id": "s2ref1",
+      "role": "paper",
+      "result_index": 0,
+      "title": "Oxide garnet electrolyte interface stability",
+      "year": "2022",
+      "venue": "Advanced Energy Materials",
+      "field": "materials_energy",
+      "mechanism_terms": [
+        "solid-state",
+        "electrolyte",
+        "interface",
+        "oxide",
+        "garnet",
+        "stability"
+      ],
+      "mechanism_cluster_key": "materials_energy:solid-state",
+      "relevance_score": 0.0,
+      "publication_quality_score": 1.0,
+      "venue_quality": "reputable",
+      "journal_quartile": "Q1",
+      "citation_count": 120.0,
+      "influential_citation_count": 0.0,
+      "quality_flags": [
+        "journal_quartile_q1",
+        "reputable_venue",
+        "well_cited"
+      ],
+      "doi": null,
+      "arxiv_id": null,
+      "semantic_scholar_id": "ref1",
+      "url": null,
+      "pagerank": 0.337067,
+      "degree_centrality": 0.425532,
+      "centrality_score": 0.363607
+    },
+    {
+      "node_id": "s2cit1",
+      "role": "paper",
+      "result_index": 1,
+      "title": "High-voltage cathode coating for lithium batteries",
+      "year": "2025",
+      "venue": "Nature Energy",
+      "field": "materials_energy",
+      "mechanism_terms": [
+        "high-voltage",
+        "lithium",
+        "battery",
+        "cathode",
+        "conductor",
+        "coating"
+      ],
+      "mechanism_cluster_key": "materials_energy:high-voltage",
+      "relevance_score": 0.0,
+      "publication_quality_score": 0.92,
+      "venue_quality": "reputable",
+      "journal_quartile": "Q1",
+      "citation_count": 2.0,
+      "influential_citation_count": 0.0,
+      "quality_flags": [
+        "journal_quartile_q1",
+        "reputable_venue"
+      ],
+      "doi": null,
+      "arxiv_id": null,
+      "semantic_scholar_id": "cit1",
+      "url": null,
+      "pagerank": 0.155703,
+      "degree_centrality": 0.425532,
+      "centrality_score": 0.236651
+    },
+    {
+      "node_id": "s2fb1",
+      "role": "paper",
+      "result_index": 2,
+      "title": "Unrelated community dataset",
+      "year": "2021",
+      "venue": "PLOS ONE",
+      "field": "ecology",
+      "mechanism_terms": [
+        "biodiversity",
+        "community",
+        "dataset",
+        "unrelated",
+        "plos"
+      ],
+      "mechanism_cluster_key": "ecology:biodiversity",
+      "relevance_score": 0.0,
+      "publication_quality_score": 0.82,
+      "venue_quality": "unverified",
+      "journal_quartile": "Q2",
+      "citation_count": 3.0,
+      "influential_citation_count": 0.0,
+      "quality_flags": [
+        "journal_quartile_q2"
+      ],
+      "doi": null,
+      "arxiv_id": null,
+      "semantic_scholar_id": "fb1",
+      "url": null,
+      "pagerank": 0.21918,
+      "degree_centrality": 0.148936,
+      "centrality_score": 0.198107
+    }
+  ],
+  "edges": [
+    {
+      "source": "s2seed",
+      "target": "s2ref1",
+      "relation": "reference",
+      "weight": 1.0,
+      "citation_contexts": [
+        "Seed builds on garnet electrolyte stability."
+      ],
+      "citation_intents": [],
+      "is_influential": false
+    },
+    {
+      "source": "s2cit1",
+      "target": "s2seed",
+      "relation": "citation",
+      "weight": 1.0,
+      "citation_contexts": [
+        "This paper cites the seed for conductor design."
+      ],
+      "citation_intents": [],
+      "is_influential": false
+    },
+    {
+      "source": "s2seed",
+      "target": "s2fb1",
+      "relation": "keyword_fallback",
+      "weight": 0.35,
+      "citation_contexts": [],
+      "citation_intents": [],
+      "is_influential": false
+    }
+  ],
+  "clusters": [
+    {
+      "cluster_id": "materials_energysolid_state",
+      "field": "materials_energy",
+      "mechanism": "solid-state",
+      "size": 1,
+      "avg_quality": 1.0,
+      "avg_relevance": 0.0,
+      "quality_flags": [
+        "journal_quartile_q1",
+        "reputable_venue",
+        "well_cited"
+      ],
+      "representative_papers": [
+        {
+          "node_id": "s2ref1",
+          "title": "Oxide garnet electrolyte interface stability",
+          "year": "2022",
+          "venue": "Advanced Energy Materials",
+          "field": "materials_energy",
+          "mechanism_terms": [
+            "solid-state",
+            "electrolyte",
+            "interface",
+            "oxide",
+            "garnet",
+            "stability"
+          ],
+          "pagerank": null,
+          "degree_centrality": null,
+          "centrality_score": null,
+          "publication_quality_score": 1.0,
+          "relevance_score": 0.0,
+          "quality_flags": [
+            "journal_quartile_q1",
+            "reputable_venue",
+            "well_cited"
+          ]
+        }
+      ]
+    },
+    {
+      "cluster_id": "materials_energyhigh_voltage",
+      "field": "materials_energy",
+      "mechanism": "high-voltage",
+      "size": 1,
+      "avg_quality": 0.92,
+      "avg_relevance": 0.0,
+      "quality_flags": [
+        "journal_quartile_q1",
+        "reputable_venue"
+      ],
+      "representative_papers": [
+        {
+          "node_id": "s2cit1",
+          "title": "High-voltage cathode coating for lithium batteries",
+          "year": "2025",
+          "venue": "Nature Energy",
+          "field": "materials_energy",
+          "mechanism_terms": [
+            "high-voltage",
+            "lithium",
+            "battery",
+            "cathode",
+            "conductor",
+            "coating"
+          ],
+          "pagerank": null,
+          "degree_centrality": null,
+          "centrality_score": null,
+          "publication_quality_score": 0.92,
+          "relevance_score": 0.0,
+          "quality_flags": [
+            "journal_quartile_q1",
+            "reputable_venue"
+          ]
+        }
+      ]
+    },
+    {
+      "cluster_id": "ecologybiodiversity",
+      "field": "ecology",
+      "mechanism": "biodiversity",
+      "size": 1,
+      "avg_quality": 0.82,
+      "avg_relevance": 0.0,
+      "quality_flags": [
+        "journal_quartile_q2"
+      ],
+      "representative_papers": [
+        {
+          "node_id": "s2fb1",
+          "title": "Unrelated community dataset",
+          "year": "2021",
+          "venue": "PLOS ONE",
+          "field": "ecology",
+          "mechanism_terms": [
+            "biodiversity",
+            "community",
+            "dataset",
+            "unrelated",
+            "plos"
+          ],
+          "pagerank": null,
+          "degree_centrality": null,
+          "centrality_score": null,
+          "publication_quality_score": 0.82,
+          "relevance_score": 0.0,
+          "quality_flags": [
+            "journal_quartile_q2"
+          ]
+        }
+      ]
+    }
+  ],
+  "central_papers": [
+    {
+      "node_id": "s2seed",
+      "title": "Seed solid-state lithium conductor",
+      "year": "2024",
+      "venue": "Nature Communications",
+      "field": "materials_energy",
+      "mechanism_terms": [
+        "solid-state",
+        "lithium",
+        "battery",
+        "electrolyte",
+        "conductor",
+        "interface"
+      ],
+      "pagerank": 0.28805,
+      "degree_centrality": 1.0,
+      "centrality_score": 0.501635,
+      "publication_quality_score": 0.92,
+      "relevance_score": 0.0,
+      "quality_flags": [
+        "journal_quartile_q1",
+        "reputable_venue"
+      ]
+    },
+    {
+      "node_id": "s2ref1",
+      "title": "Oxide garnet electrolyte interface stability",
+      "year": "2022",
+      "venue": "Advanced Energy Materials",
+      "field": "materials_energy",
+      "mechanism_terms": [
+        "solid-state",
+        "electrolyte",
+        "interface",
+        "oxide",
+        "garnet",
+        "stability"
+      ],
+      "pagerank": 0.337067,
+      "degree_centrality": 0.425532,
+      "centrality_score": 0.363607,
+      "publication_quality_score": 1.0,
+      "relevance_score": 0.0,
+      "quality_flags": [
+        "journal_quartile_q1",
+        "reputable_venue",
+        "well_cited"
+      ]
+    },
+    {
+      "node_id": "s2cit1",
+      "title": "High-voltage cathode coating for lithium batteries",
+      "year": "2025",
+      "venue": "Nature Energy",
+      "field": "materials_energy",
+      "mechanism_terms": [
+        "high-voltage",
+        "lithium",
+        "battery",
+        "cathode",
+        "conductor",
+        "coating"
+      ],
+      "pagerank": 0.155703,
+      "degree_centrality": 0.425532,
+      "centrality_score": 0.236651,
+      "publication_quality_score": 0.92,
+      "relevance_score": 0.0,
+      "quality_flags": [
+        "journal_quartile_q1",
+        "reputable_venue"
+      ]
+    },
+    {
+      "node_id": "s2fb1",
+      "title": "Unrelated community dataset",
+      "year": "2021",
+      "venue": "PLOS ONE",
+      "field": "ecology",
+      "mechanism_terms": [
+        "biodiversity",
+        "community",
+        "dataset",
+        "unrelated",
+        "plos"
+      ],
+      "pagerank": 0.21918,
+      "degree_centrality": 0.148936,
+      "centrality_score": 0.198107,
+      "publication_quality_score": 0.82,
+      "relevance_score": 0.0,
+      "quality_flags": [
+        "journal_quartile_q2"
+      ]
+    }
+  ],
+  "mechanism_lineage": [
+    {
+      "mechanism": "solid-state",
+      "field": "materials_energy",
+      "paper_count": 1,
+      "avg_quality": 1.0,
+      "representative_titles": [
+        "Oxide garnet electrolyte interface stability"
+      ],
+      "interpretation": "materials_energy lineage centered on solid-state with 1 papers; inspect representative_papers before importing claims."
+    },
+    {
+      "mechanism": "high-voltage",
+      "field": "materials_energy",
+      "paper_count": 1,
+      "avg_quality": 0.92,
+      "representative_titles": [
+        "High-voltage cathode coating for lithium batteries"
+      ],
+      "interpretation": "materials_energy lineage centered on high-voltage with 1 papers; inspect representative_papers before importing claims."
+    },
+    {
+      "mechanism": "biodiversity",
+      "field": "ecology",
+      "paper_count": 1,
+      "avg_quality": 0.82,
+      "representative_titles": [
+        "Unrelated community dataset"
+      ],
+      "interpretation": "ecology lineage centered on biodiversity with 1 papers; inspect representative_papers before importing claims."
+    }
+  ],
+  "total_results": 4,
+  "results": [
+    {
+      "node_id": "s2seed",
+      "role": "seed",
+      "result_index": 0,
+      "title": "Seed solid-state lithium conductor",
+      "year": "2024",
+      "venue": "Nature Communications",
+      "field": "materials_energy",
+      "mechanism_terms": [
+        "solid-state",
+        "lithium",
+        "battery",
+        "electrolyte",
+        "conductor",
+        "interface"
+      ],
+      "mechanism_cluster_key": "materials_energy:solid-state",
+      "relevance_score": 0.0,
+      "publication_quality_score": 0.92,
+      "venue_quality": "reputable",
+      "journal_quartile": "Q1",
+      "citation_count": 5.0,
+      "influential_citation_count": 0.0,
+      "quality_flags": [
+        "journal_quartile_q1",
+        "reputable_venue"
+      ],
+      "doi": null,
+      "arxiv_id": null,
+      "semantic_scholar_id": "seed",
+      "url": null,
+      "pagerank": 0.28805,
+      "degree_centrality": 1.0,
+      "centrality_score": 0.501635
+    },
+    {
+      "node_id": "s2ref1",
+      "role": "paper",
+      "result_index": 0,
+      "title": "Oxide garnet electrolyte interface stability",
+      "year": "2022",
+      "venue": "Advanced Energy Materials",
+      "field": "materials_energy",
+      "mechanism_terms": [
+        "solid-state",
+        "electrolyte",
+        "interface",
+        "oxide",
+        "garnet",
+        "stability"
+      ],
+      "mechanism_cluster_key": "materials_energy:solid-state",
+      "relevance_score": 0.0,
+      "publication_quality_score": 1.0,
+      "venue_quality": "reputable",
+      "journal_quartile": "Q1",
+      "citation_count": 120.0,
+      "influential_citation_count": 0.0,
+      "quality_flags": [
+        "journal_quartile_q1",
+        "reputable_venue",
+        "well_cited"
+      ],
+      "doi": null,
+      "arxiv_id": null,
+      "semantic_scholar_id": "ref1",
+      "url": null,
+      "pagerank": 0.337067,
+      "degree_centrality": 0.425532,
+      "centrality_score": 0.363607
+    },
+    {
+      "node_id": "s2cit1",
+      "role": "paper",
+      "result_index": 1,
+      "title": "High-voltage cathode coating for lithium batteries",
+      "year": "2025",
+      "venue": "Nature Energy",
+      "field": "materials_energy",
+      "mechanism_terms": [
+        "high-voltage",
+        "lithium",
+        "battery",
+        "cathode",
+        "conductor",
+        "coating"
+      ],
+      "mechanism_cluster_key": "materials_energy:high-voltage",
+      "relevance_score": 0.0,
+      "publication_quality_score": 0.92,
+      "venue_quality": "reputable",
+      "journal_quartile": "Q1",
+      "citation_count": 2.0,
+      "influential_citation_count": 0.0,
+      "quality_flags": [
+        "journal_quartile_q1",
+        "reputable_venue"
+      ],
+      "doi": null,
+      "arxiv_id": null,
+      "semantic_scholar_id": "cit1",
+      "url": null,
+      "pagerank": 0.155703,
+      "degree_centrality": 0.425532,
+      "centrality_score": 0.236651
+    },
+    {
+      "node_id": "s2fb1",
+      "role": "paper",
+      "result_index": 2,
+      "title": "Unrelated community dataset",
+      "year": "2021",
+      "venue": "PLOS ONE",
+      "field": "ecology",
+      "mechanism_terms": [
+        "biodiversity",
+        "community",
+        "dataset",
+        "unrelated",
+        "plos"
+      ],
+      "mechanism_cluster_key": "ecology:biodiversity",
+      "relevance_score": 0.0,
+      "publication_quality_score": 0.82,
+      "venue_quality": "unverified",
+      "journal_quartile": "Q2",
+      "citation_count": 3.0,
+      "influential_citation_count": 0.0,
+      "quality_flags": [
+        "journal_quartile_q2"
+      ],
+      "doi": null,
+      "arxiv_id": null,
+      "semantic_scholar_id": "fb1",
+      "url": null,
+      "pagerank": 0.21918,
+      "degree_centrality": 0.148936,
+      "centrality_score": 0.198107
+    }
+  ]
+}

@@ -1,0 +1,498 @@
+{
+  "thought": "ZhiZhi retrieved and filtered literature, imported grounded PaperGraph evidence, built a benchmark-aware knowledge map, expanded citation context when available, and generated gaps with novelty/value/feasibility checks.",
+  "action": {
+    "agent": "zhizhi",
+    "query": "dark matter detection methods experimental constraints WIMP direct detection indirect detection astrophysical signals",
+    "domain": "dark matter detection astrophysics",
+    "years": "last 10 years",
+    "search_papers": {
+      "search_id": "search_1783083412890996900",
+      "total_results": 16,
+      "providers": [
+        "semantic_scholar",
+        "arxiv"
+      ],
+      "errors": []
+    },
+    "select_literature_result": {
+      "result_index": 0,
+      "relevance_score": 0.3809,
+      "relevance_components": {
+        "text_score": 0.5309,
+        "recency_score": 0.45,
+        "impact_score": 0.6662,
+        "citation_field": "general",
+        "citation_baseline": 800.0,
+        "venue_score": 0.35,
+        "publication_quality_score": 0.72,
+        "base_score": 0.5291,
+        "text_weight": 0.62,
+        "recency_weight": 0.1,
+        "impact_weight": 0.18,
+        "venue_weight": 0.1
+      },
+      "publication_quality_score": 0.72,
+      "venue_quality": "missing",
+      "journal_quartile": "",
+      "journal_metric_source": "",
+      "inferred_field": "general",
+      "quality_flags": [
+        "missing_venue",
+        "well_cited"
+      ],
+      "quality_criteria": [
+        "venue metadata is missing",
+        "citation count exceeds medium/high threshold"
+      ],
+      "suspicion_type": "",
+      "matched_query_terms": [
+        "dark",
+        "matter",
+        "detection",
+        "direct",
+        "astrophysical",
+        "methods",
+        "constraints",
+        "wimp"
+      ],
+      "title": "Astrophysical uncertainties on the local dark matter distribution and direct detection experiments",
+      "citation": "A. Green (2017) Astrophysical uncertainties on the local dark matter distribution and direct detection experiments doi:10.1088/1361-6471/aa7819",
+      "provider": "semantic_scholar",
+      "year": "2017",
+      "citation_count": 85,
+      "influential_citation_count": 5,
+      "doi": "10.1088/1361-6471/aa7819",
+      "arxiv_id": "1703.10102",
+      "url": "https://www.semanticscholar.org/paper/9af6814eb1cd9410c81cd56c8eb4d585a2a998cd",
+      "relevance_reason": "title=5/11, abstract=8/11, citation=5/11, phrase_bonus=0.0, recency=0.45, impact=0.6662, venue=0.35, quality=0.72",
+      "quality_reason": "venue metadata is missing; citation count exceeds medium/high threshold"
+    },
+    "imported_records": 4,
+    "expand_literature_graph": {
+      "graph_search_id": "graph_1783083511629016600",
+      "total_results": 10,
+      "fallback_used": false,
+      "depth": 1
+    },
+    "build_literature_relation_graph": {
+      "relation_graph_id": "relgraph_1783083516267569700",
+      "cluster_count": 3,
+      "edge_summary": {
+        "total_edges": 10,
+        "citation_graph_edges": 10,
+        "artificial_edges": 0,
+        "by_relation": {
+          "citation": 5,
+          "reference": 5
+        },
+        "by_depth": {
+          "1": 10
+        },
+        "fallback_weight_policy": "keyword_fallback/search_result edges are artificial and use very low PageRank weight."
+      },
+      "analysis_confidence": 1.0
+    }
+  },
+  "observation": [],
+  "knowledge_map_summary": {
+    "main_methods": [
+      "Eddington's inversion formula + Bayesian Markov Chain Monte Carlo sampling",
+      "parameter space scan with theoretical and experimental constraints",
+      "review of observational determinations and simulated Milky Way-like galaxies",
+      "sensitivity forecasting using instrument simulation and astrophysical modeling"
+    ],
+    "method_scenario_coverage": {
+      "review of observational determinations and simulated Milky Way-like galaxies": [
+        "local dark matter distribution in the Milky Way halo"
+      ],
+      "sensitivity forecasting using instrument simulation and astrophysical modeling": [
+        "dark matter annihilation in the Galactic Center"
+      ],
+      "Eddington's inversion formula + Bayesian Markov Chain Monte Carlo sampling": [
+        "local dark matter phase-space density in the Milky Way"
+      ],
+      "parameter space scan with theoretical and experimental constraints": [
+        "multi-component dark matter in inert doublet plus complex singlet model with Z4 symmetry"
+      ]
+    },
+    "method_scenario_benchmark_triples": [
+      {
+        "method": "review of observational determinations and simulated Milky Way-like galaxies",
+        "scenario": "local dark matter distribution in the Milky Way halo",
+        "benchmark": "energy spectrum, time dependence, direction dependence",
+        "references": [
+          "A. Green (2017) Astrophysical uncertainties on the local dark matter distribution and direct detection experiments doi:10.1088/1361-6471/aa7819"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "review of observational determinations and simulated Milky Way-like galaxies",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "systematic assessment of astrophysical uncertainties affecting WIMP direct detection interpretations",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "No explicit limitation extracted.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "Full text excerpt:",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "The differential event rate in weakly interacting massive particle (WIMP) direct detection experiments depends on the local dark matter density and velocity distribution.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "Finally, we conclude with an overview of various methods for handling these astrophysical uncertainties.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "Full text excerpt: systematic assessment of astrophysical uncertainties affecting WIMP direct detection interpretations No explicit limitation extracted.",
+            "support": "source_sentence"
+          }
+        ]
+      },
+      {
+        "method": "sensitivity forecasting using instrument simulation and astrophysical modeling",
+        "scenario": "dark matter annihilation in the Galactic Center",
+        "benchmark": "constraints on effective suppression scale (M*) and mediator mass (M_med)",
+        "references": [
+          "I. Reis et al. (2025) The complementary of CTAO, direct detection and collider searches for dark matter in Effective Field Theories and Simplified Models doi:10.1088/1475-7516/2026/02/015"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "sensitivity forecasting using instrument simulation and astrophysical modeling",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "improved constraints on M* and M_med via combined CTAO, direct detection, and collider analysis with FIRE-2–informed astrophysical inputs",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "No explicit limitation extracted.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "Full text excerpt:",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "This paper explores the sensitivity of the Cherenkov Telescope Array Observatory to dark matter annihilation in the Galactic Center, within the frameworks of Effective Field Theory and Simplified Models.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "A key aspect of our work is the inclusion of updated dark matter density profiles, J-factors, and velocity dispersion distributions derived from the FIRE-2 cosmological hydrodynamical simulations, which significantly impact the expected indirect detection signals.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "Furthermore, we update the constraints from direct detection experiments (Xenon1T and LZ) taking into account the astrophysical uncertainties informed by the FIRE-2 simulations, and also investigate limits coming from collider searches (ATLAS and CMS).",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "Our analysis reveals improved constraints on the effective suppression scale (M *) in the Effective Field Theory framework and on the mediator mass (M med) in Simplified Models compared to previous studies, highlighting the complementarity of the Cherenkov Telescope Array Observatory with direct and...[truncated]",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "We discuss the implications of these results for various dark matter interaction types, including scalar, pseudoscalar, vector, and axial-vector mediators, and emphasize the importance of considering realistic astrophysical inputs in interpreting dark matter search results across different experimen...[truncated]",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "Full text excerpt: improved constraints on M* and M_med via combined CTAO, direct detection, and collider analysis with FIRE-2–informed astrophysical inputs No explicit limitation extracted.",
+            "support": "source_sentence"
+          }
+        ]
+      },
+      {
+        "method": "Eddington's inversion formula + Bayesian Markov Chain Monte Carlo sampling",
+        "scenario": "local dark matter phase-space density in the Milky Way",
+        "benchmark": "dark matter scattering rates, direct detection exclusion limits",
+        "references": [
+          "R. Catena et al. (2011) The local dark matter phase-space density and impact on WIMP direct detection doi:10.1088/1475-7516/2012/05/005"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "Eddington's inversion formula + Bayesian Markov Chain Monte Carlo sampling",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "New self-consistent determination of local dark matter phase-space density differing significantly from standard Maxwell-Boltzmann approximation, leading to larger scattering rates and stronger exclusion limits",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "No explicit limitation extracted.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "Full text excerpt:",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "This result is obtained implementing, in the limit of isotropic velocity distribution and spherical symmetry, Eddington's inversion formula, which links univocally the dark matter distribution function to the density profile, and applying, within a Bayesian framework, a Markov Chain Monte Carlo algo...[truncated]",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "The derived dark matter phase-space densities differ significantly — most dramatically in the high velocity tails — from the model usually taken as a reference in dark matter detection studies, a Maxwell-Boltzmann distribution with velocity dispersion fixed in terms of the local circular velocity an...[truncated]",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "Tools for applying our result on the local dark matter phase-space density to other dark matter candidates or experimental setups are provided.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "Full text excerpt: New self-consistent determination of local dark matter phase-space density differing significantly from standard Maxwell-Boltzmann approximation, leading to larger scattering rates and stronger exclusion limits No explicit limitation extracted.",
+            "support": "source_sentence"
+          }
+        ]
+      },
+      {
+        "method": "parameter space scan with theoretical and experimental constraints",
+        "scenario": "multi-component dark matter in inert doublet plus complex singlet model with Z4 symmetry",
+        "benchmark": "reaction yield",
+        "references": [
+          "G. Bélanger et al. (2022) WIMP and FIMP dark matter in the inert doublet plus singlet model doi:10.1103/PhysRevD.106.095019"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "parameter space scan with theoretical and experimental constraints",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "Identification of viable parameter space where FIMP dominates dark matter abundance and WIMP signatures are suppressed, including cases where inert doublet decays to singlets yielding single-component FIMP DM",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "Astrophysical signatures of the WIMP are much suppressed when FIMP dominates, limiting detectability via indirect and direct detection",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "Full text excerpt:",
+            "support": "structured_field"
+          }
+        ]
+      },
+      {
+        "method": "review of observational determinations and simulated Milky Way-like galaxies",
+        "scenario": "local dark matter distribution in the Milky Way halo",
+        "benchmark": "energy spectrum, time dependence, direction dependence",
+        "references": [
+          "A. Green (2017) Astrophysical uncertainties on the local dark matter distribution and direct detection experiments doi:10.1088/1361-6471/aa7819"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "review of observational determinations and simulated Milky Way-like galaxies",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "systematic assessment of astrophysical uncertainties affecting WIMP direct detection interpretations",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "No explicit limitation extracted.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "systematic assessment of astrophysical uncertainties affecting WIMP direct detection interpretations No explicit limitation extracted.",
+            "support": "source_sentence"
+          }
+        ]
+      },
+      {
+        "method": "sensitivity forecasting using instrument simulation and astrophysical modeling",
+        "scenario": "dark matter annihilation in the Galactic Center",
+        "benchmark": "constraints on effective suppression scale (M*) and mediator mass (M_med)",
+        "references": [
+          "I. Reis et al. (2025) The complementary of CTAO, direct detection and collider searches for dark matter in Effective Field Theories and Simplified Models doi:10.1088/1475-7516/2026/02/015"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "sensitivity forecasting using instrument simulation and astrophysical modeling",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "improved constraints on M* and M_med via combined CTAO, direct detection, and collider analysis with FIRE-2–informed astrophysical inputs",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "No explicit limitation extracted.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "improved constraints on M* and M_med via combined CTAO, direct detection, and collider analysis with FIRE-2–informed astrophysical inputs No explicit limitation extracted.",
+            "support": "source_sentence"
+          }
+        ]
+      },
+      {
+        "method": "Eddington's inversion formula + Bayesian Markov Chain Monte Carlo sampling",
+        "scenario": "local dark matter phase-space density in the Milky Way",
+        "benchmark": "dark matter scattering rates, direct detection exclusion limits",
+        "references": [
+          "R. Catena et al. (2011) The local dark matter phase-space density and impact on WIMP direct detection doi:10.1088/1475-7516/2012/05/005"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "Eddington's inversion formula + Bayesian Markov Chain Monte Carlo sampling",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "New self-consistent determination of local dark matter phase-space density differing significantly from standard Maxwell-Boltzmann approximation, leading to larger scattering rates and stronger exclusion limits",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "No explicit limitation extracted.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "New self-consistent determination of local dark matter phase-space density differing significantly from standard Maxwell-Boltzmann approximation, leading to larger scattering rates and stronger exclusion limits No explicit limitation extracted.",
+            "support": "source_sentence"
+          }
+        ]
+      },
+      {
+        "method": "parameter space scan with theoretical and experimental constraints",
+        "scenario": "multi-component dark matter in inert doublet plus complex singlet model with Z4 symmetry",
+        "benchmark": "reaction yield",
+        "references": [
+          "G. Bélanger et al. (2022) WIMP and FIMP dark matter in the inert doublet plus singlet model doi:10.1103/PhysRevD.106.095019"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "parameter space scan with theoretical and experimental constraints",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "Identification of viable parameter space where FIMP dominates dark matter abundance and WIMP signatures are suppressed, including cases where inert doublet decays to singlets yielding single-component FIMP DM",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "Astrophysical signatures of the WIMP are much suppressed when FIMP dominates, limiting detectability via indirect and direct detection",
+            "support": "structured_field"
+          }
+        ]
+      }
+    ],
+    "claim_type_counts": {
+      "methodological_description": 9,
+      "empirical_result": 13,
+      "author_opinion": 12,
+      "theoretical_claim": 10
+    }
+  },
+  "knowledge_gaps": [
+    {
+      "gap_id": "gap_1783083516283154000",
+      "gap_type": "combinatorial",
+      "description": "Method 'Eddington's inversion formula + Bayesian Markov Chain Monte Carlo sampling' has no recorded validation in scenario 'dark matter annihilation in the Galactic Center' in the current PaperGraph map.",
+      "supporting_references": [
+        "I. Reis et al. (2025) The complementary of CTAO, direct detection and collider searches for dark matter in Effective Field Theories and Simplified Models doi:10.1088/1475-7516/2026/02/015",
+        "R. Catena et al. (2011) The local dark matter phase-space density and impact on WIMP direct detection doi:10.1088/1475-7516/2012/05/005",
+        "A. Green (2017) Astrophysical uncertainties on the local dark matter distribution and direct detection experiments doi:10.1088/1361-6471/aa7819"
+      ],
+      "novelty_score": 5,
+      "application_value": "medium",
+      "feasibility": "high",
+      "suggested_research_path": "Run a targeted validation study with explicit benchmarks, baselines, and failure-mode analysis.",
+      "value_argument": "The combination may expose method-scenario boundary conditions rather than simply adding another benchmark.",
+      "overlap_risk": "medium",
+      "requires_human_review": false
+    },
+    {
+      "gap_id": "gap_1783083516287346700",
+      "gap_type": "improvement",
+      "description": "Recorded limitation worth testing: No explicit limitation extracted.",
+      "supporting_references": [
+        "A. Green (2017) Astrophysical uncertainties on the local dark matter distribution and direct detection experiments doi:10.1088/1361-6471/aa7819",
+        "I. Reis et al. (2025) The complementary of CTAO, direct detection and collider searches for dark matter in Effective Field Theories and Simplified Models doi:10.1088/1475-7516/2026/02/015"
+      ],
+      "novelty_score": 5,
+      "application_value": "medium",
+      "feasibility": "high",
+      "suggested_research_path": "Formulate a hypothesis that directly attacks the documented limitation and verify it under stress conditions.",
+      "value_argument": "The gap is grounded in an author-reported limitation, so it has stronger evidential support than a bare untried combination.",
+      "overlap_risk": "medium",
+      "requires_human_review": false
+    },
+    {
+      "gap_id": "gap_1783083516295302700",
+      "gap_type": "migration",
+      "description": "Method 'review of observational determinations and simulated Milky Way-like galaxies' is only recorded in scenario 'local dark matter distribution in the Milky Way halo', but may be transferable to scenario 'dark matter annihilation in the Galactic Center'.",
+      "supporting_references": [
+        "A. Green (2017) Astrophysical uncertainties on the local dark matter distribution and direct detection experiments doi:10.1088/1361-6471/aa7819"
+      ],
+      "novelty_score": 5,
+      "application_value": "medium",
+      "feasibility": "medium",
+      "suggested_research_path": "Audit assumptions of the source scenario, then run a small transfer validation in the target scenario.",
+      "value_argument": "Migration gaps can create useful cross-domain leverage if mechanism assumptions remain valid.",
+      "overlap_risk": "medium",
+      "requires_human_review": false
+    },
+    {
+      "gap_id": "gap_1783083516297143200",
+      "gap_type": "migration",
+      "description": "Method 'sensitivity forecasting using instrument simulation and astrophysical modeling' is only recorded in scenario 'dark matter annihilation in the Galactic Center', but may be transferable to scenario 'local dark matter distribution in the Milky Way halo'.",
+      "supporting_references": [
+        "I. Reis et al. (2025) The complementary of CTAO, direct detection and collider searches for dark matter in Effective Field Theories and Simplified Models doi:10.1088/1475-7516/2026/02/015"
+      ],
+      "novelty_score": 5,
+      "application_value": "medium",
+      "feasibility": "medium",
+      "suggested_research_path": "Audit assumptions of the source scenario, then run a small transfer validation in the target scenario.",
+      "value_argument": "Migration gaps can create useful cross-domain leverage if mechanism assumptions remain valid.",
+      "overlap_risk": "medium",
+      "requires_human_review": false
+    }
+  ],
+  "self_reflection": {
+    "top_venue_coverage_checked": true,
+    "pseudo_gap_risk_checked": true,
+    "method_categories_require_literature_support": true,
+    "unsupported_claims_marked_for_review": true
+  }
+}

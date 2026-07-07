@@ -1,0 +1,514 @@
+{
+  "project_id": "sci_1783064800081150500",
+  "title": "ZhiZhi gap quota test 4",
+  "domain": "battery materials",
+  "objective": "test agent1",
+  "strategic_need": "",
+  "phase": "Gap Discovery",
+  "createdAt": 1783064800.0811543,
+  "updatedAt": 1783064800.101401,
+  "papergraph": [
+    {
+      "paper_id": "paper_1783064800089532700",
+      "unique_key": "text:garnet_electrolyte_stability",
+      "title": "Garnet electrolyte stability",
+      "citation": "Ref A",
+      "authors": [],
+      "year": "",
+      "venue": "Nature Energy",
+      "provider": "manual",
+      "source_type": "metadata",
+      "doi": "",
+      "arxiv_id": "",
+      "semantic_scholar_id": "",
+      "url": "",
+      "abstract": "We propose a garnet electrolyte method for solid-state lithium battery interface stability. Experiments show improved stability on benchmark A. High-voltage degradation remains unclear and is an open problem.",
+      "conclusion": "Experiments show improved stability on benchmark A. High-voltage degradation remains unclear and is an open problem. high-voltage degradation remains unclear",
+      "strengths": [
+        "We propose a garnet electrolyte method for solid-state lithium battery interface stability. Experiments show improved stability on benchmark A. High-voltage degradation remains unclear and is an open problem."
+      ],
+      "improvements": [
+        "We propose a garnet electrolyte method for solid-state lithium battery interface stability. Experiments show improved stability on benchmark A. High-voltage degradation remains unclear and is an open problem.",
+        "high-voltage degradation remains unclear"
+      ],
+      "method": "garnet electrolyte",
+      "scenario": "solid-state lithium battery",
+      "benchmark": "benchmark A",
+      "contribution": "improved interface stability",
+      "limitation": "high-voltage degradation remains unclear",
+      "credibility_score": 0.63,
+      "credibility_reasons": [
+        "base record",
+        "has title and citation",
+        "has substantial abstract",
+        "has conclusion/discussion",
+        "provider recorded",
+        "reputable venue"
+      ],
+      "importedAt": 1783064800.089548
+    },
+    {
+      "paper_id": "paper_1783064800093158700",
+      "unique_key": "text:polymer_electrolyte_safety",
+      "title": "Polymer electrolyte safety",
+      "citation": "Ref B",
+      "authors": [],
+      "year": "",
+      "venue": "Advanced Energy Materials",
+      "provider": "manual",
+      "source_type": "metadata",
+      "doi": "",
+      "arxiv_id": "",
+      "semantic_scholar_id": "",
+      "url": "",
+      "abstract": "A polymer electrolyte method is evaluated for safety benchmark B. Ionic conductivity bottleneck remains.",
+      "conclusion": "A polymer electrolyte method is evaluated for safety benchmark B. Ionic conductivity bottleneck remains. ionic conductivity bottleneck",
+      "strengths": [],
+      "improvements": [
+        "A polymer electrolyte method is evaluated for safety benchmark B. Ionic conductivity bottleneck remains."
+      ],
+      "method": "polymer electrolyte",
+      "scenario": "safe lithium battery",
+      "benchmark": "benchmark B",
+      "contribution": "better safety",
+      "limitation": "ionic conductivity bottleneck",
+      "credibility_score": 0.53,
+      "credibility_reasons": [
+        "base record",
+        "has title and citation",
+        "has conclusion/discussion",
+        "provider recorded",
+        "reputable venue"
+      ],
+      "importedAt": 1783064800.0931704
+    }
+  ],
+  "evidence": [
+    {
+      "evidence_id": "ev_1783064800089589800",
+      "title": "Garnet electrolyte stability",
+      "citation": "Ref A",
+      "method": "garnet electrolyte",
+      "scenario": "solid-state lithium battery",
+      "benchmark": "benchmark A",
+      "contribution": "improved interface stability",
+      "limitation": "high-voltage degradation remains unclear",
+      "url": "",
+      "createdAt": 1783064800.0895948
+    },
+    {
+      "evidence_id": "ev_1783064800093199900",
+      "title": "Polymer electrolyte safety",
+      "citation": "Ref B",
+      "method": "polymer electrolyte",
+      "scenario": "safe lithium battery",
+      "benchmark": "benchmark B",
+      "contribution": "better safety",
+      "limitation": "ionic conductivity bottleneck",
+      "url": "",
+      "createdAt": 1783064800.0932045
+    }
+  ],
+  "coverage_matrix": {
+    "garnet electrolyte": {
+      "solid-state lithium battery": [
+        "Ref A"
+      ]
+    },
+    "polymer electrolyte": {
+      "safe lithium battery": [
+        "Ref B"
+      ]
+    }
+  },
+  "knowledge_gaps": [
+    {
+      "gap_id": "gap_1783064800099420800",
+      "gap_type": "combinatorial",
+      "description": "Method 'garnet electrolyte' has no recorded validation in scenario 'safe lithium battery' in the current PaperGraph map.",
+      "supporting_references": [
+        "Ref A",
+        "Ref B"
+      ],
+      "novelty_score": 7,
+      "application_value": "medium",
+      "feasibility": "high",
+      "suggested_research_path": "Run a targeted validation study with explicit benchmarks, baselines, and failure-mode analysis.",
+      "value_argument": "The combination may expose method-scenario boundary conditions rather than simply adding another benchmark.",
+      "status": "candidate",
+      "createdAt": 1783064800.099428,
+      "assessment_dimensions": [
+        "academic novelty",
+        "application value",
+        "implementation feasibility"
+      ],
+      "overlap_risk": "low",
+      "strongest_overlap": 0.3846,
+      "assessment_reason": "refs=2, gap_type=combinatorial, strongest_local_overlap=0.385, feasibility=high, application_value=medium",
+      "requires_human_review": false
+    },
+    {
+      "gap_id": "gap_1783064800099875100",
+      "gap_type": "combinatorial",
+      "description": "Method 'polymer electrolyte' has no recorded validation in scenario 'solid-state lithium battery' in the current PaperGraph map.",
+      "supporting_references": [
+        "Ref A",
+        "Ref B"
+      ],
+      "novelty_score": 7,
+      "application_value": "medium",
+      "feasibility": "high",
+      "suggested_research_path": "Run a targeted validation study with explicit benchmarks, baselines, and failure-mode analysis.",
+      "value_argument": "The combination may expose method-scenario boundary conditions rather than simply adding another benchmark.",
+      "status": "candidate",
+      "createdAt": 1783064800.099879,
+      "assessment_dimensions": [
+        "academic novelty",
+        "application value",
+        "implementation feasibility"
+      ],
+      "overlap_risk": "low",
+      "strongest_overlap": 0.3846,
+      "assessment_reason": "refs=2, gap_type=combinatorial, strongest_local_overlap=0.385, feasibility=high, application_value=medium",
+      "requires_human_review": false
+    },
+    {
+      "gap_id": "gap_1783064800100071500",
+      "gap_type": "improvement",
+      "description": "Recorded limitation worth testing: high-voltage degradation remains unclear",
+      "supporting_references": [
+        "Ref A"
+      ],
+      "novelty_score": 6,
+      "application_value": "high",
+      "feasibility": "high",
+      "suggested_research_path": "Formulate a hypothesis that directly attacks the documented limitation and verify it under stress conditions.",
+      "value_argument": "The gap is grounded in an author-reported limitation, so it has stronger evidential support than a bare untried combination.",
+      "status": "candidate",
+      "createdAt": 1783064800.100074,
+      "assessment_dimensions": [
+        "academic novelty",
+        "application value",
+        "implementation feasibility"
+      ],
+      "overlap_risk": "medium",
+      "strongest_overlap": 0.5,
+      "assessment_reason": "refs=1, gap_type=improvement, strongest_local_overlap=0.5, feasibility=high, application_value=high",
+      "requires_human_review": false
+    },
+    {
+      "gap_id": "gap_1783064800100232300",
+      "gap_type": "improvement",
+      "description": "Recorded limitation worth testing: ionic conductivity bottleneck",
+      "supporting_references": [
+        "Ref B"
+      ],
+      "novelty_score": 7,
+      "application_value": "medium",
+      "feasibility": "high",
+      "suggested_research_path": "Formulate a hypothesis that directly attacks the documented limitation and verify it under stress conditions.",
+      "value_argument": "The gap is grounded in an author-reported limitation, so it has stronger evidential support than a bare untried combination.",
+      "status": "candidate",
+      "createdAt": 1783064800.1002345,
+      "assessment_dimensions": [
+        "academic novelty",
+        "application value",
+        "implementation feasibility"
+      ],
+      "overlap_risk": "low",
+      "strongest_overlap": 0.4286,
+      "assessment_reason": "refs=1, gap_type=improvement, strongest_local_overlap=0.429, feasibility=high, application_value=medium",
+      "requires_human_review": false
+    },
+    {
+      "gap_id": "gap_1783064800100442100",
+      "gap_type": "problem",
+      "description": "Source literature indicates a recognized unresolved problem: We propose a garnet electrolyte method for solid-state lithium battery interface stability. Experiments show improved stability on benchmark A. High-voltage degradation remains unclear and is an open problem. Experiments show improved stability on benchmark A....[truncated]",
+      "supporting_references": [
+        "Ref A"
+      ],
+      "novelty_score": 5,
+      "application_value": "high",
+      "feasibility": "medium",
+      "suggested_research_path": "Translate the unresolved problem into a falsifiable hypothesis with acceptance criteria and failure diagnostics.",
+      "value_argument": "Problem gaps are grounded in explicit source statements about unresolved mechanisms or practical bottlenecks.",
+      "status": "candidate",
+      "createdAt": 1783064800.100444,
+      "assessment_dimensions": [
+        "academic novelty",
+        "application value",
+        "implementation feasibility"
+      ],
+      "overlap_risk": "high",
+      "strongest_overlap": 0.76,
+      "assessment_reason": "refs=1, gap_type=problem, strongest_local_overlap=0.76, feasibility=medium, application_value=high",
+      "requires_human_review": true
+    },
+    {
+      "gap_id": "gap_1783064800100674300",
+      "gap_type": "problem",
+      "description": "Source literature indicates a recognized unresolved problem: A polymer electrolyte method is evaluated for safety benchmark B. Ionic conductivity bottleneck remains. A polymer electrolyte method is evaluated for safety benchmark B. Ionic conductivity bottleneck remains. ionic conductivity bottleneck ionic conductivity b...[truncated]",
+      "supporting_references": [
+        "Ref B"
+      ],
+      "novelty_score": 7,
+      "application_value": "high",
+      "feasibility": "medium",
+      "suggested_research_path": "Translate the unresolved problem into a falsifiable hypothesis with acceptance criteria and failure diagnostics.",
+      "value_argument": "Problem gaps are grounded in explicit source statements about unresolved mechanisms or practical bottlenecks.",
+      "status": "candidate",
+      "createdAt": 1783064800.1006763,
+      "assessment_dimensions": [
+        "academic novelty",
+        "application value",
+        "implementation feasibility"
+      ],
+      "overlap_risk": "medium",
+      "strongest_overlap": 0.5882,
+      "assessment_reason": "refs=1, gap_type=problem, strongest_local_overlap=0.588, feasibility=medium, application_value=high",
+      "requires_human_review": false
+    },
+    {
+      "gap_id": "gap_1783064800100871300",
+      "gap_type": "migration",
+      "description": "Method 'garnet electrolyte' is only recorded in scenario 'solid-state lithium battery', but may be transferable to scenario 'safe lithium battery'.",
+      "supporting_references": [
+        "Ref A"
+      ],
+      "novelty_score": 7,
+      "application_value": "medium",
+      "feasibility": "medium",
+      "suggested_research_path": "Audit assumptions of the source scenario, then run a small transfer validation in the target scenario.",
+      "value_argument": "Migration gaps can create useful cross-domain leverage if mechanism assumptions remain valid.",
+      "status": "candidate",
+      "createdAt": 1783064800.1008732,
+      "assessment_dimensions": [
+        "academic novelty",
+        "application value",
+        "implementation feasibility"
+      ],
+      "overlap_risk": "medium",
+      "strongest_overlap": 0.4615,
+      "assessment_reason": "refs=1, gap_type=migration, strongest_local_overlap=0.462, feasibility=medium, application_value=medium",
+      "requires_human_review": false
+    },
+    {
+      "gap_id": "gap_1783064800101039900",
+      "gap_type": "migration",
+      "description": "Method 'polymer electrolyte' is only recorded in scenario 'safe lithium battery', but may be transferable to scenario 'solid-state lithium battery'.",
+      "supporting_references": [
+        "Ref B"
+      ],
+      "novelty_score": 7,
+      "application_value": "medium",
+      "feasibility": "medium",
+      "suggested_research_path": "Audit assumptions of the source scenario, then run a small transfer validation in the target scenario.",
+      "value_argument": "Migration gaps can create useful cross-domain leverage if mechanism assumptions remain valid.",
+      "status": "candidate",
+      "createdAt": 1783064800.1010416,
+      "assessment_dimensions": [
+        "academic novelty",
+        "application value",
+        "implementation feasibility"
+      ],
+      "overlap_risk": "medium",
+      "strongest_overlap": 0.4615,
+      "assessment_reason": "refs=1, gap_type=migration, strongest_local_overlap=0.462, feasibility=medium, application_value=medium",
+      "requires_human_review": false
+    }
+  ],
+  "hypotheses": [],
+  "keynotes": [],
+  "mechanism_reports": [],
+  "pipeline_tasks": [],
+  "knowledge_map": {
+    "dimension": "method-scenario-benchmark",
+    "main_methods": [
+      "garnet electrolyte",
+      "polymer electrolyte"
+    ],
+    "main_scenarios": [
+      "safe lithium battery",
+      "solid-state lithium battery"
+    ],
+    "main_benchmarks": [
+      "benchmark A",
+      "benchmark B"
+    ],
+    "method_scenario_coverage": {
+      "garnet electrolyte": [
+        "solid-state lithium battery"
+      ],
+      "polymer electrolyte": [
+        "safe lithium battery"
+      ]
+    },
+    "benchmark_index": {
+      "benchmark A": [
+        "Ref A"
+      ],
+      "benchmark B": [
+        "Ref B"
+      ]
+    },
+    "method_scenario_benchmark": {
+      "garnet electrolyte": {
+        "solid-state lithium battery": {
+          "benchmark A": [
+            "Ref A"
+          ]
+        }
+      },
+      "polymer electrolyte": {
+        "safe lithium battery": {
+          "benchmark B": [
+            "Ref B"
+          ]
+        }
+      }
+    },
+    "method_scenario_benchmark_triples": [
+      {
+        "method": "garnet electrolyte",
+        "scenario": "solid-state lithium battery",
+        "benchmark": "benchmark A",
+        "references": [
+          "Ref A"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "garnet electrolyte",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "improved interface stability",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "high-voltage degradation remains unclear",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "Experiments show improved stability on benchmark A. High-voltage degradation remains unclear and is an open problem. high-voltage degradation remains unclear",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "We propose a garnet electrolyte method for solid-state lithium battery interface stability.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "Experiments show improved stability on benchmark A.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "high-voltage degradation remains unclear improved interface stability high-voltage degradation remains unclear",
+            "support": "source_sentence"
+          }
+        ]
+      },
+      {
+        "method": "polymer electrolyte",
+        "scenario": "safe lithium battery",
+        "benchmark": "benchmark B",
+        "references": [
+          "Ref B"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "polymer electrolyte",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "better safety",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "ionic conductivity bottleneck",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "A polymer electrolyte method is evaluated for safety benchmark B. Ionic conductivity bottleneck remains. ionic conductivity bottleneck",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "A polymer electrolyte method is evaluated for safety benchmark B.",
+            "support": "source_sentence"
+          }
+        ]
+      },
+      {
+        "method": "garnet electrolyte",
+        "scenario": "solid-state lithium battery",
+        "benchmark": "benchmark A",
+        "references": [
+          "Ref A"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "garnet electrolyte",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "improved interface stability",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "high-voltage degradation remains unclear",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "improved interface stability high-voltage degradation remains unclear",
+            "support": "source_sentence"
+          }
+        ]
+      },
+      {
+        "method": "polymer electrolyte",
+        "scenario": "safe lithium battery",
+        "benchmark": "benchmark B",
+        "references": [
+          "Ref B"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "polymer electrolyte",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "better safety",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "ionic conductivity bottleneck",
+            "support": "structured_field"
+          }
+        ]
+      }
+    ],
+    "claim_type_counts": {
+      "methodological_description": 6,
+      "empirical_result": 5,
+      "author_opinion": 4,
+      "theoretical_claim": 4
+    }
+  }
+}

@@ -1,0 +1,1155 @@
+{
+  "thought": "ZhiZhi retrieved and filtered literature, imported grounded PaperGraph evidence, built a benchmark-aware knowledge map, expanded citation context when available, and generated gaps with novelty/value/feasibility checks.",
+  "action": {
+    "agent": "zhizhi",
+    "query": "AI for Science autonomous scientific discovery foundation models closed-loop experimentation",
+    "domain": "AI for Science",
+    "years": "last 5 years",
+    "domain_subspace_explorer": {
+      "subspace_map_id": "subspace_1783191731184267300",
+      "coverage_plan": {
+        "total_subspaces": 10,
+        "covered": 2,
+        "missing": 8,
+        "insufficient": 0,
+        "coverage_rate": 0.2,
+        "missing_details": [
+          {
+            "name": "Physics-Informed Machine Learning",
+            "keywords": [
+              "neural PDE solver",
+              "soft constraints",
+              "symmetry-aware network",
+              "conservation loss",
+              "differentiable physics"
+            ],
+            "suggested_action": "supplemental_search"
+          },
+          {
+            "name": "Scientific Knowledge Representation and Reasoning",
+            "keywords": [
+              "scientific ontology",
+              "knowledge graph embedding",
+              "neuro-symbolic reasoning",
+              "fact verification",
+              "provenance-aware KG"
+            ],
+            "suggested_action": "supplemental_search"
+          },
+          {
+            "name": "AI for Experimental Automation",
+            "keywords": [
+              "robotic experimentation",
+              "closed-loop lab",
+              "experiment scheduling",
+              "real-time assay interpretation",
+              "hardware-software co-design"
+            ],
+            "suggested_action": "supplemental_search"
+          },
+          {
+            "name": "Multimodal Scientific Data Fusion",
+            "keywords": [
+              "spectral-text alignment",
+              "microscopy-image-text fusion",
+              "multimodal embedding",
+              "cross-modal grounding",
+              "heterogeneous data integration"
+            ],
+            "suggested_action": "supplemental_search"
+          },
+          {
+            "name": "AI for Scientific Simulation Acceleration",
+            "keywords": [
+              "neural operator",
+              "surrogate model",
+              "simulation acceleration",
+              "uncertainty-aware emulation",
+              "latent PDE solver"
+            ],
+            "suggested_action": "supplemental_search"
+          },
+          {
+            "name": "AI-Assisted Scientific Writing and Review",
+            "keywords": [
+              "literature synthesis",
+              "reproducibility assessment",
+              "review assistance",
+              "citation graph reasoning",
+              "scholarly integrity AI"
+            ],
+            "suggested_action": "supplemental_search"
+          },
+          {
+            "name": "AI for Scientific Data Curation and Annotation",
+            "keywords": [
+              "table extraction",
+              "figure captioning",
+              "metadata inference",
+              "FAIR data generation",
+              "semantic annotation"
+            ],
+            "suggested_action": "supplemental_search"
+          },
+          {
+            "name": "Ethics, Reproducibility, and Trust in AI for Science",
+            "keywords": [
+              "reproducibility crisis",
+              "AI audit trail",
+              "epistemic transparency",
+              "bias in scientific corpora",
+              "responsible discovery"
+            ],
+            "suggested_action": "supplemental_search"
+          }
+        ],
+        "recommendation": "Confirm priority subspaces with the user before running ZhiZhi, then search selected subspaces independently."
+      },
+      "selected_subfields": [
+        "Scientific Foundation Models",
+        "Autonomous Scientific Discovery",
+        "Closed-Loop Experimentation",
+        "Foundation models for scientific discovery",
+        "Autonomous laboratory and closed-loop experimentation"
+      ]
+    },
+    "search_papers_stratified": {
+      "search_id": "search_1783191737611891700",
+      "total_results": 15,
+      "providers": [
+        "semantic_scholar",
+        "arxiv"
+      ],
+      "strategy": "stratified_cascade",
+      "query_plan": [
+        {
+          "branch": "primary",
+          "query": "AI for Science autonomous scientific discovery foundation models closed-loop experimentation"
+        },
+        {
+          "branch": "scientific_pretraining_domain_adapted_llm_science_tokenizer_knowledge_grounded_g",
+          "query": "AI for Science autonomous scientific discovery foundation models closed-loop experimentation scientific pretraining domain-adapted LLM science tokenizer knowledge-grounded generation scientific instruction tuning latest recent"
+        },
+        {
+          "branch": "foundation_models_for_scientific_discovery",
+          "query": "AI for Science autonomous scientific discovery foundation models closed-loop experimentation foundation models for scientific discovery"
+        },
+        {
+          "branch": "closed_loop_experimentation",
+          "query": "AI for Science autonomous scientific discovery foundation models closed-loop experimentation closed loop experimentation"
+        },
+        {
+          "branch": "autonomous_scientific_discovery",
+          "query": "AI for Science autonomous scientific discovery foundation models closed-loop experimentation autonomous scientific discovery"
+        },
+        {
+          "branch": "autonomous_laboratory_and_closed_loop_experimentation",
+          "query": "AI for Science autonomous scientific discovery foundation models closed-loop experimentation autonomous laboratory and closed loop experimentation"
+        },
+        {
+          "branch": "field_map_reviews",
+          "query": "AI for Science autonomous scientific discovery foundation models closed-loop experimentation review survey roadmap progress perspective systematic review",
+          "topic_type": "retrieval_facet"
+        },
+        {
+          "branch": "milestone_foundations",
+          "query": "AI for Science autonomous scientific discovery foundation models closed-loop experimentation seminal foundational highly cited landmark theory method mechanism",
+          "topic_type": "retrieval_facet"
+        },
+        {
+          "branch": "methods_and_mechanisms",
+          "query": "AI for Science autonomous scientific discovery foundation models closed-loop experimentation method model algorithm mechanism experiment framework",
+          "topic_type": "retrieval_facet"
+        }
+      ],
+      "focus_branches": [
+        "scientific pretraining domain-adapted LLM science tokenizer knowledge-grounded generation scientific instruction tuning latest recent",
+        "foundation models for scientific discovery",
+        "closed loop experimentation",
+        "autonomous scientific discovery",
+        "autonomous laboratory and closed loop experimentation"
+      ],
+      "strata": [
+        {
+          "layer": "L0_review",
+          "label": "high-impact review / field map",
+          "quota": 1,
+          "query_suffix": "review survey progress perspective tutorial systematic review meta-analysis",
+          "target": 1,
+          "candidate_count": 12,
+          "raw_candidate_count": 15,
+          "selected": 1,
+          "domain_rejected": 0,
+          "recovery_used": "",
+          "carried_to_next": 0
+        },
+        {
+          "layer": "L1_milestone",
+          "label": "milestone / highly cited foundation",
+          "quota": 3,
+          "query_suffix": "seminal foundational highly cited landmark classic influential",
+          "target": 3,
+          "candidate_count": 0,
+          "raw_candidate_count": 0,
+          "selected": 0,
+          "domain_rejected": 0,
+          "recovery_used": "",
+          "carried_to_next": 3
+        },
+        {
+          "layer": "L2_top_latest",
+          "label": "recent top-venue frontier",
+          "quota": 3,
+          "query_suffix": "latest recent top journal high impact breakthrough advance frontier",
+          "target": 6,
+          "candidate_count": 0,
+          "raw_candidate_count": 0,
+          "selected": 0,
+          "domain_rejected": 0,
+          "recovery_used": "",
+          "carried_to_next": 6
+        },
+        {
+          "layer": "L3_preprint",
+          "label": "latest arXiv preprint frontier",
+          "quota": 3,
+          "query_suffix": "",
+          "target": 9,
+          "candidate_count": 15,
+          "raw_candidate_count": 15,
+          "selected": 0,
+          "domain_rejected": 15,
+          "recovery_used": "",
+          "carried_to_next": 9
+        },
+        {
+          "layer": "L4_regular",
+          "label": "regular journal / supplemental evidence",
+          "quota": 5,
+          "query_suffix": "",
+          "target": 14,
+          "candidate_count": 51,
+          "raw_candidate_count": 51,
+          "selected": 14,
+          "domain_rejected": 0,
+          "recovery_used": "",
+          "carried_to_next": 0
+        }
+      ],
+      "errors": [
+        {
+          "provider": "semantic_scholar",
+          "query": "AI for Science autonomous scientific discovery foundation models closed-loop experimentation scientific pretraining domain-adapted LLM science tokenizer knowledge-grounded generation scientific instruction tuning latest recent",
+          "status": "error",
+          "note": null,
+          "error": "Semantic Scholar rate limited; circuit opened for 30.0s: HTTP 429: {\"message\": \"Too Many Requests. Please wait and try again or apply for a key for higher rate limits. https://www.semanticscholar.org/product/api#api-key-form\", \"code\": \"429\"}",
+          "result_count": 0
+        }
+      ]
+    },
+    "domain_coverage_diagnostic": {
+      "profile": "ai_for_science",
+      "profile_source": "llm",
+      "search_id": "search_1783191737611891700",
+      "total_results": 15,
+      "represented_topics": [
+        {
+          "topic": "Foundation Models for Scientific Reasoning",
+          "hit_count": 2,
+          "min_hits": 2,
+          "terms": [
+            "foundation model",
+            "scientific reasoning"
+          ]
+        },
+        {
+          "topic": "Autonomous Experimental Robotics",
+          "hit_count": 2,
+          "min_hits": 2,
+          "terms": [
+            "autonomous lab",
+            "robotic experimentation"
+          ]
+        },
+        {
+          "topic": "Active Learning for Materials Discovery",
+          "hit_count": 4,
+          "min_hits": 2,
+          "terms": [
+            "active learning",
+            "materials discovery"
+          ]
+        },
+        {
+          "topic": "Knowledge-Driven Hypothesis Generation",
+          "hit_count": 6,
+          "min_hits": 2,
+          "terms": [
+            "knowledge graph",
+            "hypothesis generation"
+          ]
+        }
+      ],
+      "blind_spots": [],
+      "live_validate": true,
+      "live_probe_reports": [],
+      "coverage_warning": false,
+      "needs_user_branch_confirmation": false
+    },
+    "select_literature_result": {
+      "result_index": 0,
+      "stratified_layer": "L4_regular",
+      "stratified_label": "regular journal / supplemental evidence",
+      "query_branch": "primary",
+      "retrieval_query": "AI for Science autonomous scientific discovery foundation models closed-loop experimentation",
+      "_why_selected": "Selected as regular supplemental paper: Autonomous Chemistry and Materials Innovation Driven by Scientific Agents; year=2026; venue=JACS Au; quality=0.92; relevance=0.4776.",
+      "domain_relevance": {
+        "profile": "ai_for_science",
+        "score": 0.2812,
+        "query_hits": [
+          "autonomous",
+          "scientific",
+          "discovery",
+          "closed-loop",
+          "experimentation"
+        ],
+        "anchor_hits": [],
+        "topic_hits": [],
+        "noise_hits": [],
+        "flags": [],
+        "is_preprint": false,
+        "verdict": "keep"
+      },
+      "relevance_score": 0.4776,
+      "relevance_components": {
+        "text_score": 0.355,
+        "recency_score": 1.0,
+        "impact_score": 0.55,
+        "citation_field": "chemistry",
+        "citation_baseline": 700.0,
+        "venue_score": 1.0,
+        "publication_quality_score": 0.92,
+        "base_score": 0.5191,
+        "text_weight": 0.62,
+        "recency_weight": 0.1,
+        "impact_weight": 0.18,
+        "venue_weight": 0.1
+      },
+      "publication_quality_score": 0.92,
+      "venue_quality": "reputable",
+      "journal_quartile": "Q1",
+      "journal_metric_source": "curated_alias",
+      "inferred_field": "chemistry",
+      "quality_flags": [
+        "journal_quartile_q1",
+        "reputable_venue",
+        "new_paper_protection"
+      ],
+      "quality_criteria": [
+        "venue matched curated journal metric table: Q1",
+        "paper is within 2-year protection window; low citations are not treated as low quality"
+      ],
+      "suspicion_type": "",
+      "is_review_like": true,
+      "pyramid_root_score": 1.1741,
+      "matched_query_terms": [
+        "autonomous",
+        "scientific",
+        "discovery",
+        "closed-loop",
+        "experimentation"
+      ],
+      "title": "Autonomous Chemistry and Materials Innovation Driven by Scientific Agents",
+      "citation": "Zikai Xie et al. (2026) Autonomous Chemistry and Materials Innovation Driven by Scientific Agents doi:10.1021/jacsau.6c00213",
+      "provider": "semantic_scholar",
+      "year": "2026",
+      "citation_count": 0,
+      "influential_citation_count": 0,
+      "doi": "10.1021/jacsau.6c00213",
+      "arxiv_id": "",
+      "url": "https://www.semanticscholar.org/paper/0007d80c0b50ce323249fcd33a6155c05992e76e",
+      "relevance_reason": "title=2/8, abstract=5/8, citation=2/8, phrase_bonus=0.0, recency=1.0, impact=0.55, venue=1.0, quality=0.92",
+      "quality_reason": "venue matched curated journal metric table: Q1; paper is within 2-year protection window; low citations are not treated as low quality"
+    },
+    "imported_records": 5,
+    "post_retrieval_subspace_coverage": {
+      "total_selected_subspaces": 5,
+      "sufficient": 5,
+      "insufficient": 0,
+      "coverage": [
+        {
+          "subspace": "Scientific Foundation Models",
+          "branch": "scientific_foundation_models",
+          "target": 3,
+          "actual": 5,
+          "status": "sufficient",
+          "terms": [
+            "scientific",
+            "foundation",
+            "models",
+            "pretraining",
+            "domain-adapted",
+            "llm",
+            "science",
+            "tokenizer",
+            "knowledge-grounded",
+            "generation",
+            "instruction",
+            "tuning",
+            "latest",
+            "recent"
+          ],
+          "matched_papers": [
+            {
+              "paper_id": "paper_1783191813746632500",
+              "title": "Autonomous Chemistry and Materials Innovation Driven by Scientific Agents",
+              "citation": "Zikai Xie et al. (2026) Autonomous Chemistry and Materials Innovation Driven by Scientific Agents doi:10.1021/jacsau.6c0...[truncated]",
+              "method": "LLM-based agent framework",
+              "scenario": "self-driving laboratories for chemical and materials research"
+            },
+            {
+              "paper_id": "paper_1783191834441077600",
+              "title": "Transforming Molecular Science With Large Language Models: From Molecule Understanding to Autonomous Scientific Discovery",
+              "citation": "Zhikai Pan et al. (2026) Transforming Molecular Science With Large Language Models: From Molecule Understanding to Auton...[truncated]",
+              "method": "large language models",
+              "scenario": "molecular science"
+            },
+            {
+              "paper_id": "paper_1783191852288716000",
+              "title": "BioLab: End-to-End Autonomous Life Sciences Research with Multi-Agents System Integrating Biological Foundation Models",
+              "citation": "Ruofan Jin et al. (2025) BioLab: End-to-End Autonomous Life Sciences Research with Multi-Agents System Integrating Biolo...[truncated]",
+              "method": "multi-agent system integrating biological foundation models",
+              "scenario": "end-to-end autonomous life sciences research"
+            },
+            {
+              "paper_id": "paper_1783191875793593400",
+              "title": "Artificial Intelligence and Robotics as Catalysts for Autonomous Scientific Discovery",
+              "citation": "Sadiya Mohammed Dala et al. (2026) Artificial Intelligence and Robotics as Catalysts for Autonomous Scientific Discovery...[truncated]",
+              "method": "machine learning model",
+              "scenario": "autonomous scientific discovery"
+            },
+            {
+              "paper_id": "paper_1783191897130880100",
+              "title": "AUTONOMOUS POLYMER MATERIALS DISCOVERY: ARTIFICIAL INTELLIGENCE ARCHITECTURES FOR GENERATIVE DESIGN AND CLOSED-LOOP ENGINEERING",
+              "citation": "Agbogo Victor Ugbetan et al. (2026) AUTONOMOUS POLYMER MATERIALS DISCOVERY: ARTIFICIAL INTELLIGENCE ARCHITECTURES FOR GE...[truncated]",
+              "method": "deep learning model",
+              "scenario": "polymer materials discovery"
+            }
+          ],
+          "suggested_query": "scientific pretraining domain-adapted LLM science tokenizer knowledge-grounded generation scientific instruction tuning latest recent",
+          "custom": false
+        },
+        {
+          "subspace": "foundation models for scientific discovery",
+          "branch": "foundation_models_for_scientific_discovery",
+          "target": 2,
+          "actual": 5,
+          "status": "sufficient",
+          "terms": [
+            "foundation",
+            "models",
+            "scientific",
+            "discovery"
+          ],
+          "matched_papers": [
+            {
+              "paper_id": "paper_1783191813746632500",
+              "title": "Autonomous Chemistry and Materials Innovation Driven by Scientific Agents",
+              "citation": "Zikai Xie et al. (2026) Autonomous Chemistry and Materials Innovation Driven by Scientific Agents doi:10.1021/jacsau.6c0...[truncated]",
+              "method": "LLM-based agent framework",
+              "scenario": "self-driving laboratories for chemical and materials research"
+            },
+            {
+              "paper_id": "paper_1783191834441077600",
+              "title": "Transforming Molecular Science With Large Language Models: From Molecule Understanding to Autonomous Scientific Discovery",
+              "citation": "Zhikai Pan et al. (2026) Transforming Molecular Science With Large Language Models: From Molecule Understanding to Auton...[truncated]",
+              "method": "large language models",
+              "scenario": "molecular science"
+            },
+            {
+              "paper_id": "paper_1783191852288716000",
+              "title": "BioLab: End-to-End Autonomous Life Sciences Research with Multi-Agents System Integrating Biological Foundation Models",
+              "citation": "Ruofan Jin et al. (2025) BioLab: End-to-End Autonomous Life Sciences Research with Multi-Agents System Integrating Biolo...[truncated]",
+              "method": "multi-agent system integrating biological foundation models",
+              "scenario": "end-to-end autonomous life sciences research"
+            },
+            {
+              "paper_id": "paper_1783191875793593400",
+              "title": "Artificial Intelligence and Robotics as Catalysts for Autonomous Scientific Discovery",
+              "citation": "Sadiya Mohammed Dala et al. (2026) Artificial Intelligence and Robotics as Catalysts for Autonomous Scientific Discovery...[truncated]",
+              "method": "machine learning model",
+              "scenario": "autonomous scientific discovery"
+            },
+            {
+              "paper_id": "paper_1783191897130880100",
+              "title": "AUTONOMOUS POLYMER MATERIALS DISCOVERY: ARTIFICIAL INTELLIGENCE ARCHITECTURES FOR GENERATIVE DESIGN AND CLOSED-LOOP ENGINEERING",
+              "citation": "Agbogo Victor Ugbetan et al. (2026) AUTONOMOUS POLYMER MATERIALS DISCOVERY: ARTIFICIAL INTELLIGENCE ARCHITECTURES FOR GE...[truncated]",
+              "method": "deep learning model",
+              "scenario": "polymer materials discovery"
+            }
+          ],
+          "suggested_query": "foundation models for scientific discovery",
+          "custom": true
+        },
+        {
+          "subspace": "closed loop experimentation",
+          "branch": "closed_loop_experimentation",
+          "target": 2,
+          "actual": 3,
+          "status": "sufficient",
+          "terms": [
+            "closed",
+            "loop",
+            "experimentation"
+          ],
+          "matched_papers": [
+            {
+              "paper_id": "paper_1783191813746632500",
+              "title": "Autonomous Chemistry and Materials Innovation Driven by Scientific Agents",
+              "citation": "Zikai Xie et al. (2026) Autonomous Chemistry and Materials Innovation Driven by Scientific Agents doi:10.1021/jacsau.6c0...[truncated]",
+              "method": "LLM-based agent framework",
+              "scenario": "self-driving laboratories for chemical and materials research"
+            },
+            {
+              "paper_id": "paper_1783191834441077600",
+              "title": "Transforming Molecular Science With Large Language Models: From Molecule Understanding to Autonomous Scientific Discovery",
+              "citation": "Zhikai Pan et al. (2026) Transforming Molecular Science With Large Language Models: From Molecule Understanding to Auton...[truncated]",
+              "method": "large language models",
+              "scenario": "molecular science"
+            },
+            {
+              "paper_id": "paper_1783191897130880100",
+              "title": "AUTONOMOUS POLYMER MATERIALS DISCOVERY: ARTIFICIAL INTELLIGENCE ARCHITECTURES FOR GENERATIVE DESIGN AND CLOSED-LOOP ENGINEERING",
+              "citation": "Agbogo Victor Ugbetan et al. (2026) AUTONOMOUS POLYMER MATERIALS DISCOVERY: ARTIFICIAL INTELLIGENCE ARCHITECTURES FOR GE...[truncated]",
+              "method": "deep learning model",
+              "scenario": "polymer materials discovery"
+            }
+          ],
+          "suggested_query": "closed loop experimentation",
+          "custom": true
+        },
+        {
+          "subspace": "autonomous scientific discovery",
+          "branch": "autonomous_scientific_discovery",
+          "target": 2,
+          "actual": 5,
+          "status": "sufficient",
+          "terms": [
+            "autonomous",
+            "scientific",
+            "discovery"
+          ],
+          "matched_papers": [
+            {
+              "paper_id": "paper_1783191813746632500",
+              "title": "Autonomous Chemistry and Materials Innovation Driven by Scientific Agents",
+              "citation": "Zikai Xie et al. (2026) Autonomous Chemistry and Materials Innovation Driven by Scientific Agents doi:10.1021/jacsau.6c0...[truncated]",
+              "method": "LLM-based agent framework",
+              "scenario": "self-driving laboratories for chemical and materials research"
+            },
+            {
+              "paper_id": "paper_1783191834441077600",
+              "title": "Transforming Molecular Science With Large Language Models: From Molecule Understanding to Autonomous Scientific Discovery",
+              "citation": "Zhikai Pan et al. (2026) Transforming Molecular Science With Large Language Models: From Molecule Understanding to Auton...[truncated]",
+              "method": "large language models",
+              "scenario": "molecular science"
+            },
+            {
+              "paper_id": "paper_1783191852288716000",
+              "title": "BioLab: End-to-End Autonomous Life Sciences Research with Multi-Agents System Integrating Biological Foundation Models",
+              "citation": "Ruofan Jin et al. (2025) BioLab: End-to-End Autonomous Life Sciences Research with Multi-Agents System Integrating Biolo...[truncated]",
+              "method": "multi-agent system integrating biological foundation models",
+              "scenario": "end-to-end autonomous life sciences research"
+            },
+            {
+              "paper_id": "paper_1783191875793593400",
+              "title": "Artificial Intelligence and Robotics as Catalysts for Autonomous Scientific Discovery",
+              "citation": "Sadiya Mohammed Dala et al. (2026) Artificial Intelligence and Robotics as Catalysts for Autonomous Scientific Discovery...[truncated]",
+              "method": "machine learning model",
+              "scenario": "autonomous scientific discovery"
+            },
+            {
+              "paper_id": "paper_1783191897130880100",
+              "title": "AUTONOMOUS POLYMER MATERIALS DISCOVERY: ARTIFICIAL INTELLIGENCE ARCHITECTURES FOR GENERATIVE DESIGN AND CLOSED-LOOP ENGINEERING",
+              "citation": "Agbogo Victor Ugbetan et al. (2026) AUTONOMOUS POLYMER MATERIALS DISCOVERY: ARTIFICIAL INTELLIGENCE ARCHITECTURES FOR GE...[truncated]",
+              "method": "deep learning model",
+              "scenario": "polymer materials discovery"
+            }
+          ],
+          "suggested_query": "autonomous scientific discovery",
+          "custom": true
+        },
+        {
+          "subspace": "autonomous laboratory and closed loop experimentation",
+          "branch": "autonomous_laboratory_and_closed_loop_experimentation",
+          "target": 2,
+          "actual": 5,
+          "status": "sufficient",
+          "terms": [
+            "autonomous",
+            "laboratory",
+            "closed",
+            "loop",
+            "experimentation"
+          ],
+          "matched_papers": [
+            {
+              "paper_id": "paper_1783191813746632500",
+              "title": "Autonomous Chemistry and Materials Innovation Driven by Scientific Agents",
+              "citation": "Zikai Xie et al. (2026) Autonomous Chemistry and Materials Innovation Driven by Scientific Agents doi:10.1021/jacsau.6c0...[truncated]",
+              "method": "LLM-based agent framework",
+              "scenario": "self-driving laboratories for chemical and materials research"
+            },
+            {
+              "paper_id": "paper_1783191834441077600",
+              "title": "Transforming Molecular Science With Large Language Models: From Molecule Understanding to Autonomous Scientific Discovery",
+              "citation": "Zhikai Pan et al. (2026) Transforming Molecular Science With Large Language Models: From Molecule Understanding to Auton...[truncated]",
+              "method": "large language models",
+              "scenario": "molecular science"
+            },
+            {
+              "paper_id": "paper_1783191852288716000",
+              "title": "BioLab: End-to-End Autonomous Life Sciences Research with Multi-Agents System Integrating Biological Foundation Models",
+              "citation": "Ruofan Jin et al. (2025) BioLab: End-to-End Autonomous Life Sciences Research with Multi-Agents System Integrating Biolo...[truncated]",
+              "method": "multi-agent system integrating biological foundation models",
+              "scenario": "end-to-end autonomous life sciences research"
+            },
+            {
+              "paper_id": "paper_1783191875793593400",
+              "title": "Artificial Intelligence and Robotics as Catalysts for Autonomous Scientific Discovery",
+              "citation": "Sadiya Mohammed Dala et al. (2026) Artificial Intelligence and Robotics as Catalysts for Autonomous Scientific Discovery...[truncated]",
+              "method": "machine learning model",
+              "scenario": "autonomous scientific discovery"
+            },
+            {
+              "paper_id": "paper_1783191897130880100",
+              "title": "AUTONOMOUS POLYMER MATERIALS DISCOVERY: ARTIFICIAL INTELLIGENCE ARCHITECTURES FOR GENERATIVE DESIGN AND CLOSED-LOOP ENGINEERING",
+              "citation": "Agbogo Victor Ugbetan et al. (2026) AUTONOMOUS POLYMER MATERIALS DISCOVERY: ARTIFICIAL INTELLIGENCE ARCHITECTURES FOR GE...[truncated]",
+              "method": "deep learning model",
+              "scenario": "polymer materials discovery"
+            }
+          ],
+          "suggested_query": "autonomous laboratory and closed loop experimentation",
+          "custom": true
+        }
+      ],
+      "needs_second_alignment": false,
+      "user_interaction": {
+        "needed": false
+      }
+    },
+    "expand_literature_graph": {
+      "graph_search_id": "graph_1783191909547186600",
+      "total_results": 6,
+      "fallback_used": false,
+      "depth": 1
+    },
+    "build_literature_relation_graph": {
+      "relation_graph_id": "relgraph_1783191913820152700",
+      "cluster_count": 6,
+      "edge_summary": {
+        "total_edges": 6,
+        "citation_graph_edges": 6,
+        "artificial_edges": 0,
+        "by_relation": {
+          "reference": 6
+        },
+        "by_depth": {
+          "1": 6
+        },
+        "fallback_weight_policy": "keyword_fallback/search_result edges are artificial and use very low PageRank weight."
+      },
+      "analysis_confidence": 1.0
+    }
+  },
+  "observation": [],
+  "knowledge_map_summary": {
+    "main_methods": [
+      "LLM-based agent framework",
+      "deep learning model",
+      "large language models",
+      "machine learning model",
+      "multi-agent system integrating biological foundation models"
+    ],
+    "method_scenario_coverage": {
+      "LLM-based agent framework": [
+        "self-driving laboratories for chemical and materials research"
+      ],
+      "large language models": [
+        "molecular science"
+      ],
+      "multi-agent system integrating biological foundation models": [
+        "end-to-end autonomous life sciences research"
+      ],
+      "machine learning model": [
+        "autonomous scientific discovery"
+      ],
+      "deep learning model": [
+        "polymer materials discovery"
+      ]
+    },
+    "method_scenario_benchmark_triples": [
+      {
+        "method": "LLM-based agent framework",
+        "scenario": "self-driving laboratories for chemical and materials research",
+        "benchmark": "HYDRA framework",
+        "references": [
+          "Zikai Xie et al. (2026) Autonomous Chemistry and Materials Innovation Driven by Scientific Agents doi:10.1021/jacsau.6c00213"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "LLM-based agent framework",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "A five-module framework (Comprehension, Design, Execution, Analysis, Optimization) for agent-enabled self-driving laboratories and introduction of the HYDRA framework for benchmarking trustworthy agent-enabled workflows",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "Safety in physical execution, hardware interoperability, reproducibility, and auditability remain central challenges.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "Full text excerpt:",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "Large language model (LLM)-based agents are reshaping how self-driving laboratories (SDLs) may support autonomous chemical and materials research.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "Although SDLs have enabled major advances in mechanized experimentation and closed-loop optimization, their scientific utility remains limited when tasks require literature-grounded reasoning, adaptive coordination, and interpretation beyond predefined search spaces.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "In this perspective, we examine how LLM-based agents may help bridge this gap by translating scientific intent into machine-executable workflows.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "We propose a five-module framework—Comprehension, Design, Execution, Analysis, and Optimization—to organize the capabilities required for agent-enabled SDLs, and we discuss representative systems, including Coscientist, ChemCrow, LLM-RDF, and AI-Chemist, as milestones in this transition.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "To support a more critical assessment, we introduce the HYDRA framework for benchmarking trustworthy agent-enabled workflows.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "Full text excerpt: A five-module framework (Comprehension, Design, Execution, Analysis, Optimization) for agent-enabled self-driving laboratories and introduction of the HYDRA framework for benchmarking trustworthy agent-enabled workflows Safety in physical execution, hardware interoperability, repr...[truncated]",
+            "support": "source_sentence"
+          }
+        ]
+      },
+      {
+        "method": "large language models",
+        "scenario": "molecular science",
+        "benchmark": "and iterative validation",
+        "references": [
+          "Zhikai Pan et al. (2026) Transforming Molecular Science With Large Language Models: From Molecule Understanding to Autonomous Scientific Discovery. doi:10.1002/asia.70837"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "large language models",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "LLMs enable transition from molecule understanding to autonomous scientific discovery via multimodal representation learning, cross-modal alignment, domain adaptation, and integration with robotic platforms for closed-loop hypothesis generation, experimental planning, and iterative validation",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "scaling experimental validation and bridging symbolic reasoning with physical experimentation",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "Full text excerpt:",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "By learning from multimodal molecular representations through advanced training techniques, LLMs address traditional limitations in molecular research, including expert dependency and limited experimental scalability.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "Crucially, we highlight how LLMs integrate with robotic platforms to establish closed-loop autonomous discovery systems, where AI agents automate hypothesis generation, experimental planning, and iterative validation.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "While these advances accelerate exploration of molecular space, persistent challenges remain in scaling experimental validation and bridging symbolic reasoning with physical experimentation.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "Full text excerpt: LLMs enable transition from molecule understanding to autonomous scientific discovery via multimodal representation learning, cross-modal alignment, domain adaptation, and integration with robotic platforms for closed-loop hypothesis generation, experimental planning, and iterativ...[truncated]",
+            "support": "source_sentence"
+          }
+        ]
+      },
+      {
+        "method": "multi-agent system integrating biological foundation models",
+        "scenario": "end-to-end autonomous life sciences research",
+        "benchmark": "IC50 values | PubMedQA | MMLU-Pro/Biology | GPQA-diamond | SOTA ratios",
+        "references": [
+          "Ruofan Jin et al. (2025) BioLab: End-to-End Autonomous Life Sciences Research with Multi-Agents System Integrating Biological Foundation Models doi:10.1101/2025.09.03.674085"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "multi-agent system integrating biological foundation models",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "BioLab as a generalizable framework for AI-native scientific discovery enabling autonomous hypothesis generation, execution, and experimental validation",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "Abstract: Scientific discovery in the life sciences remains hindered by fragmented workflows, narrow-scope computational models, and inefficient links between in silico prediction and wet-lab validation. We present BioLab, a multi-agent system that integrates domain-specialized foundation models to....[truncated]",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "Full text excerpt:",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "These tools are built on the xTrimo Universe, a collection of 104 models derived from six foundation models (xTrimoChem, Protein, RNA, DNA, Cell, and Text), the majority of which achieve state-of-the-art (91–100% SOTA ratios) on domain benchmarks.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "Across standard reasoning tasks (PubMedQA, MMLU-Pro/Biology, GPQA-diamond), BioLab consistently outperformed leading large language models, including GPT-4o, Gemini-2.5, and DeepSeek-R1.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "Closing the computational-experimental loop, BioLab designed optimized antibodies (Pem-MOO-1, Pem-MOO-2) that achieved IC50 values of 0.01–0.016 nM, markedly surpassing the parental Pembrolizumab (0.027 nM) for PD-1.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "Functional assays confirmed enhanced pathway blockade and improved multi-parameter performance profiles.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "Together, these results establish BioLab as a generalizable framework for AI-native scientific discovery, demonstrating how multi-agent systems coupled with foundation models can autonomously generate, execute, and experimentally validate novel biological hypotheses.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "Full text excerpt: BioLab as a generalizable framework for AI-native scientific discovery enabling autonomous hypothesis generation, execution, and experimental validation Abstract: Scientific discovery in the life sciences remains hindered by fragmented workflows, narrow-scope computational models,...[truncated]",
+            "support": "source_sentence"
+          }
+        ]
+      },
+      {
+        "method": "machine learning model",
+        "scenario": "autonomous scientific discovery",
+        "benchmark": "reproducibility score",
+        "references": [
+          "Sadiya Mohammed Dala et al. (2026) Artificial Intelligence and Robotics as Catalysts for Autonomous Scientific Discovery doi:10.64290/ijsat.v1i1.16"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "machine learning model",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "AI and robotics are catalysing a new, data-driven, and accelerated paradigm of scientific discovery",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "challenges such as reproducibility, algorithmic bias, data governance, and the evolving role of the scientist remain",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "Full text excerpt:",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "The scientific method, the foundation of empirical inquiry for centuries, is undergoing a deep transformation.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "Simultaneously, we examine how robotic systems, increasingly integrated with AI, are automating experimental procedures, enabling high-throughput experimentation in fields such as biology and chemistry, and operating in environments inaccessible to humans.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "While challenges such as reproducibility, algorithmic bias, data governance, and the evolving role of the scientist remain, we conclude that the integration of AI and Robotics is not merely enhancing science; it is catalysing a new, data-driven, and accelerated paradigm of discovery.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "Full text excerpt: AI and robotics are catalysing a new, data-driven, and accelerated paradigm of scientific discovery challenges such as reproducibility, algorithmic bias, data governance, and the evolving role of the scientist remain",
+            "support": "source_sentence"
+          }
+        ]
+      },
+      {
+        "method": "deep learning model",
+        "scenario": "polymer materials discovery",
+        "benchmark": "thermal | mechanical | dielectric | functional properties",
+        "references": [
+          "Agbogo Victor Ugbetan et al. (2026) AUTONOMOUS POLYMER MATERIALS DISCOVERY: ARTIFICIAL INTELLIGENCE ARCHITECTURES FOR GENERATIVE DESIGN AND CLOSED-LOOP ENGINEERING doi:10.36868/ejmse.2026.11.01.003"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "deep learning model",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "AI architectures enabling autonomous, closed-loop polymer engineering through generative design and integrated computational-experimental workflows",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "data scarcity, polymer-specific representation learning, model interpretability, infrastructure integration, and sustainability goals",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "Full text excerpt:",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "This review summarizes recent progress in AI-driven polymer science, including structural representation, generative molecular design, property prediction, retrosynthetic planning, and closed-loop experimental processes.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "Combining these computational approaches with techniques like Bayesian optimization, active learning, and autonomous labs signifies a shift toward closed-loop polymer engineering, where AI continuously suggests, synthesizes, analyzes, and refines materials with minimal human intervention.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "Full text excerpt: AI architectures enabling autonomous, closed-loop polymer engineering through generative design and integrated computational-experimental workflows data scarcity, polymer-specific representation learning, model interpretability, infrastructure integration, and sustainability goals",
+            "support": "source_sentence"
+          }
+        ]
+      },
+      {
+        "method": "LLM-based agent framework",
+        "scenario": "self-driving laboratories for chemical and materials research",
+        "benchmark": "HYDRA framework",
+        "references": [
+          "Zikai Xie et al. (2026) Autonomous Chemistry and Materials Innovation Driven by Scientific Agents doi:10.1021/jacsau.6c00213"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "LLM-based agent framework",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "A five-module framework (Comprehension, Design, Execution, Analysis, Optimization) for agent-enabled self-driving laboratories and introduction of the HYDRA framework for benchmarking trustworthy agent-enabled workflows",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "Safety in physical execution, hardware interoperability, reproducibility, and auditability remain central challenges.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "A five-module framework (Comprehension, Design, Execution, Analysis, Optimization) for agent-enabled self-driving laboratories and introduction of the HYDRA framework for benchmarking trustworthy agent-enabled workflows Safety in physical execution, hardware interoperability, reproducibility, and au...[truncated]",
+            "support": "source_sentence"
+          }
+        ]
+      },
+      {
+        "method": "large language models",
+        "scenario": "molecular science",
+        "benchmark": "and iterative validation",
+        "references": [
+          "Zhikai Pan et al. (2026) Transforming Molecular Science With Large Language Models: From Molecule Understanding to Autonomous Scientific Discovery. doi:10.1002/asia.70837"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "large language models",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "LLMs enable transition from molecule understanding to autonomous scientific discovery via multimodal representation learning, cross-modal alignment, domain adaptation, and integration with robotic platforms for closed-loop hypothesis generation, experimental planning, and iterative validation",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "scaling experimental validation and bridging symbolic reasoning with physical experimentation",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "LLMs enable transition from molecule understanding to autonomous scientific discovery via multimodal representation learning, cross-modal alignment, domain adaptation, and integration with robotic platforms for closed-loop hypothesis generation, experimental planning, and iterative validation scalin...[truncated]",
+            "support": "source_sentence"
+          }
+        ]
+      },
+      {
+        "method": "multi-agent system integrating biological foundation models",
+        "scenario": "end-to-end autonomous life sciences research",
+        "benchmark": "IC50 values | PubMedQA | MMLU-Pro/Biology | GPQA-diamond | SOTA ratios",
+        "references": [
+          "Ruofan Jin et al. (2025) BioLab: End-to-End Autonomous Life Sciences Research with Multi-Agents System Integrating Biological Foundation Models doi:10.1101/2025.09.03.674085"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "multi-agent system integrating biological foundation models",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "BioLab as a generalizable framework for AI-native scientific discovery enabling autonomous hypothesis generation, execution, and experimental validation",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "Abstract: Scientific discovery in the life sciences remains hindered by fragmented workflows, narrow-scope computational models, and inefficient links between in silico prediction and wet-lab validation. We present BioLab, a multi-agent system that integrates domain-specialized foundation models to....[truncated]",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "BioLab as a generalizable framework for AI-native scientific discovery enabling autonomous hypothesis generation, execution, and experimental validation Abstract: Scientific discovery in the life sciences remains hindered by fragmented workflows, narrow-scope computational models, and inefficient li...[truncated]",
+            "support": "source_sentence"
+          }
+        ]
+      },
+      {
+        "method": "machine learning model",
+        "scenario": "autonomous scientific discovery",
+        "benchmark": "reproducibility score",
+        "references": [
+          "Sadiya Mohammed Dala et al. (2026) Artificial Intelligence and Robotics as Catalysts for Autonomous Scientific Discovery doi:10.64290/ijsat.v1i1.16"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "machine learning model",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "AI and robotics are catalysing a new, data-driven, and accelerated paradigm of scientific discovery",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "challenges such as reproducibility, algorithmic bias, data governance, and the evolving role of the scientist remain",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "AI and robotics are catalysing a new, data-driven, and accelerated paradigm of scientific discovery challenges such as reproducibility, algorithmic bias, data governance, and the evolving role of the scientist remain",
+            "support": "source_sentence"
+          }
+        ]
+      },
+      {
+        "method": "deep learning model",
+        "scenario": "polymer materials discovery",
+        "benchmark": "thermal | mechanical | dielectric | functional properties",
+        "references": [
+          "Agbogo Victor Ugbetan et al. (2026) AUTONOMOUS POLYMER MATERIALS DISCOVERY: ARTIFICIAL INTELLIGENCE ARCHITECTURES FOR GENERATIVE DESIGN AND CLOSED-LOOP ENGINEERING doi:10.36868/ejmse.2026.11.01.003"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "deep learning model",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "AI architectures enabling autonomous, closed-loop polymer engineering through generative design and integrated computational-experimental workflows",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "data scarcity, polymer-specific representation learning, model interpretability, infrastructure integration, and sustainability goals",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "AI architectures enabling autonomous, closed-loop polymer engineering through generative design and integrated computational-experimental workflows data scarcity, polymer-specific representation learning, model interpretability, infrastructure integration, and sustainability goals",
+            "support": "source_sentence"
+          }
+        ]
+      }
+    ],
+    "claim_type_counts": {
+      "methodological_description": 19,
+      "empirical_result": 25,
+      "author_opinion": 12,
+      "theoretical_claim": 7
+    }
+  },
+  "knowledge_gaps": [
+    {
+      "gap_id": "gap_1783191913844133100",
+      "gap_type": "combinatorial",
+      "description": "Method 'LLM-based agent framework' has no recorded validation in scenario 'autonomous scientific discovery' in the current PaperGraph map.",
+      "supporting_references": [
+        "Zikai Xie et al. (2026) Autonomous Chemistry and Materials Innovation Driven by Scientific Agents doi:10.1021/jacsau.6c00213",
+        "Sadiya Mohammed Dala et al. (2026) Artificial Intelligence and Robotics as Catalysts for Autonomous Scientific Discovery doi:10.64290/ijsat.v1i1.16"
+      ],
+      "novelty_score": 6,
+      "application_value": "medium",
+      "feasibility": "high",
+      "suggested_research_path": "Run a targeted validation study with explicit benchmarks, baselines, and failure-mode analysis.",
+      "value_argument": "The combination may expose method-scenario boundary conditions rather than simply adding another benchmark.",
+      "overlap_risk": "low",
+      "requires_human_review": false
+    },
+    {
+      "gap_id": "gap_1783191913848518200",
+      "gap_type": "combinatorial",
+      "description": "Method 'LLM-based agent framework' has no recorded validation in scenario 'end-to-end autonomous life sciences research' in the current PaperGraph map.",
+      "supporting_references": [
+        "Zikai Xie et al. (2026) Autonomous Chemistry and Materials Innovation Driven by Scientific Agents doi:10.1021/jacsau.6c00213",
+        "Ruofan Jin et al. (2025) BioLab: End-to-End Autonomous Life Sciences Research with Multi-Agents System Integrating Biological Foundation Models doi:10.1101/2025.09.03.674085"
+      ],
+      "novelty_score": 5,
+      "application_value": "medium",
+      "feasibility": "high",
+      "suggested_research_path": "Run a targeted validation study with explicit benchmarks, baselines, and failure-mode analysis.",
+      "value_argument": "The combination may expose method-scenario boundary conditions rather than simply adding another benchmark.",
+      "overlap_risk": "medium",
+      "requires_human_review": false
+    }
+  ],
+  "self_reflection": {
+    "top_venue_coverage_checked": true,
+    "pseudo_gap_risk_checked": true,
+    "method_categories_require_literature_support": true,
+    "unsupported_claims_marked_for_review": true
+  }
+}

@@ -1,0 +1,135 @@
+{
+  "project_id": "sci_1783007869867011600",
+  "title": "Demo AI Scientist for exoplanet atmosphere retrieval",
+  "domain": "exoplanet atmosphere retrieval",
+  "objective": "Find a knowledge gap and formulate a verifiable research hypothesis.",
+  "strategic_need": "AI for scientific discovery demonstration",
+  "phase": "Mechanism Verification",
+  "createdAt": 1783007869.8670144,
+  "updatedAt": 1783007869.8877409,
+  "evidence": [
+    {
+      "evidence_id": "ev_1783007869873661400",
+      "title": "TauREx retrieval baseline",
+      "citation": "Waldmann et al. 2015",
+      "method": "Bayesian retrieval",
+      "scenario": "standard atmosphere",
+      "benchmark": "HST/WFC3",
+      "contribution": "Probabilistic atmospheric retrieval",
+      "limitation": "Depends on assumed atmospheric model",
+      "url": "",
+      "createdAt": 1783007869.8736699
+    },
+    {
+      "evidence_id": "ev_1783007869876232600",
+      "title": "Self-supervised spectra representation",
+      "citation": "Demo et al. 2026",
+      "method": "Self-supervised representation",
+      "scenario": "simulated spectra",
+      "benchmark": "synthetic spectra",
+      "contribution": "Learns spectral embeddings without labels",
+      "limitation": "Limited validation on real JWST spectra",
+      "url": "",
+      "createdAt": 1783007869.8762393
+    }
+  ],
+  "coverage_matrix": {
+    "Bayesian retrieval": {
+      "standard atmosphere": [
+        "Waldmann et al. 2015"
+      ]
+    },
+    "Self-supervised representation": {
+      "simulated spectra": [
+        "Demo et al. 2026"
+      ]
+    }
+  },
+  "knowledge_gaps": [
+    {
+      "gap_id": "gap_1783007869881377100",
+      "gap_type": "combinatorial",
+      "description": "Method 'Bayesian retrieval' has no recorded validation in scenario 'simulated spectra'.",
+      "supporting_references": [
+        "Waldmann et al. 2015",
+        "Demo et al. 2026"
+      ],
+      "novelty_score": 7,
+      "application_value": "medium",
+      "feasibility": "medium",
+      "suggested_research_path": "Run a targeted validation study with explicit baselines and failure-mode analysis.",
+      "status": "candidate",
+      "createdAt": 1783007869.881387
+    },
+    {
+      "gap_id": "gap_1783007869881396600",
+      "gap_type": "combinatorial",
+      "description": "Method 'Self-supervised representation' has no recorded validation in scenario 'standard atmosphere'.",
+      "supporting_references": [
+        "Waldmann et al. 2015",
+        "Demo et al. 2026"
+      ],
+      "novelty_score": 7,
+      "application_value": "medium",
+      "feasibility": "medium",
+      "suggested_research_path": "Run a targeted validation study with explicit baselines and failure-mode analysis.",
+      "status": "candidate",
+      "createdAt": 1783007869.881401
+    },
+    {
+      "gap_id": "gap_1783007869881405100",
+      "gap_type": "improvement",
+      "description": "Recorded limitation worth testing: Depends on assumed atmospheric model",
+      "supporting_references": [
+        "Waldmann et al. 2015"
+      ],
+      "novelty_score": 6,
+      "application_value": "medium",
+      "feasibility": "high",
+      "suggested_research_path": "Formulate a hypothesis that directly attacks the documented limitation.",
+      "status": "candidate",
+      "createdAt": 1783007869.8814087
+    }
+  ],
+  "hypotheses": [
+    {
+      "hypothesis_id": "hyp_1783007869884158900",
+      "gap_id": "gap_1783007869881377100",
+      "statement": "Self-supervised spectral representations can reduce model-dependence in non-standard atmosphere retrieval.",
+      "mechanism": "If spectral embeddings separate chemical feature families because they preserve wavelength-local absorption patterns, then retrieval should remain robust when atmospheric priors shift.",
+      "expected_value": "Lower bias under non-standard atmospheric priors.",
+      "test_plan": "Compare against Bayesian retrieval on synthetic and public spectra with shifted priors.",
+      "status": "draft",
+      "createdAt": 1783007869.8841667
+    }
+  ],
+  "mechanism_reports": [
+    {
+      "report_id": "mech_1783007869887473000",
+      "hypothesis_id": "hyp_1783007869884158900",
+      "layer_1_internal_consistency": {
+        "issues_found": [],
+        "verdict": "PASS"
+      },
+      "layer_2_data_consistency": {
+        "supporting_references": [
+          "Waldmann et al. 2015",
+          "Demo et al. 2026"
+        ],
+        "issues_found": [],
+        "verdict": "PASS"
+      },
+      "layer_3_regime_shift_test": {
+        "shifted_conditions_tested": [
+          "different dataset distribution",
+          "changed key parameter regime"
+        ],
+        "cawm_risk_level": "MEDIUM",
+        "verdict": "PASS"
+      },
+      "overall_verdict": "MECHANISM_VERIFIED",
+      "createdAt": 1783007869.8874784
+    }
+  ],
+  "pipeline_tasks": []
+}

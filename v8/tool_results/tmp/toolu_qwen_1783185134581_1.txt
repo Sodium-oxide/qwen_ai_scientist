@@ -1,0 +1,777 @@
+{
+  "thought": "ZhiZhi retrieved and filtered literature, imported grounded PaperGraph evidence, built a benchmark-aware knowledge map, expanded citation context when available, and generated gaps with novelty/value/feasibility checks.",
+  "action": {
+    "agent": "zhizhi",
+    "query": "autonomous grid control power system reinforcement learning smart grid stability safety constrained control",
+    "domain": "Autonomous Grid Control",
+    "years": "last 5 years",
+    "search_papers_stratified": {
+      "search_id": "search_1783185142070621200",
+      "total_results": 20,
+      "providers": [
+        "semantic_scholar",
+        "arxiv"
+      ],
+      "strategy": "stratified_cascade",
+      "query_plan": [
+        {
+          "branch": "primary",
+          "query": "autonomous grid control power system reinforcement learning smart grid stability safety constrained control"
+        },
+        {
+          "branch": "field_map_reviews",
+          "query": "autonomous grid control power system reinforcement learning smart grid stability safety constrained control review survey roadmap progress perspective systematic review"
+        },
+        {
+          "branch": "milestone_foundations",
+          "query": "autonomous grid control power system reinforcement learning smart grid stability safety constrained control seminal foundational highly cited landmark theory method mechanism"
+        },
+        {
+          "branch": "methods_and_mechanisms",
+          "query": "autonomous grid control power system reinforcement learning smart grid stability safety constrained control method model algorithm mechanism experiment framework"
+        },
+        {
+          "branch": "applications_systems_scenarios",
+          "query": "autonomous grid control power system reinforcement learning smart grid stability safety constrained control application system scenario case study deployment"
+        },
+        {
+          "branch": "benchmarks_data_validation",
+          "query": "autonomous grid control power system reinforcement learning smart grid stability safety constrained control benchmark dataset validation evaluation metric measurement"
+        }
+      ],
+      "focus_branches": [],
+      "strata": [
+        {
+          "layer": "L0_review",
+          "label": "high-impact review / field map",
+          "quota": 1,
+          "query_suffix": "review survey progress perspective tutorial systematic review meta-analysis",
+          "target": 1,
+          "candidate_count": 5,
+          "raw_candidate_count": 8,
+          "selected": 1,
+          "domain_rejected": 0,
+          "recovery_used": "",
+          "carried_to_next": 0
+        },
+        {
+          "layer": "L1_milestone",
+          "label": "milestone / highly cited foundation",
+          "quota": 3,
+          "query_suffix": "seminal foundational highly cited landmark classic influential",
+          "target": 3,
+          "candidate_count": 0,
+          "raw_candidate_count": 0,
+          "selected": 0,
+          "domain_rejected": 0,
+          "recovery_used": "",
+          "carried_to_next": 3
+        },
+        {
+          "layer": "L2_top_latest",
+          "label": "recent top-venue frontier",
+          "quota": 3,
+          "query_suffix": "latest recent top journal high impact breakthrough advance frontier",
+          "target": 6,
+          "candidate_count": 0,
+          "raw_candidate_count": 0,
+          "selected": 0,
+          "domain_rejected": 0,
+          "recovery_used": "",
+          "carried_to_next": 6
+        },
+        {
+          "layer": "L3_preprint",
+          "label": "latest arXiv preprint frontier",
+          "quota": 3,
+          "query_suffix": "",
+          "target": 9,
+          "candidate_count": 8,
+          "raw_candidate_count": 8,
+          "selected": 7,
+          "domain_rejected": 1,
+          "recovery_used": "",
+          "carried_to_next": 2
+        },
+        {
+          "layer": "L4_regular",
+          "label": "regular journal / supplemental evidence",
+          "quota": 10,
+          "query_suffix": "",
+          "target": 12,
+          "candidate_count": 65,
+          "raw_candidate_count": 65,
+          "selected": 12,
+          "domain_rejected": 0,
+          "recovery_used": "",
+          "carried_to_next": 0
+        }
+      ],
+      "errors": []
+    },
+    "domain_coverage_diagnostic": {
+      "profile": "autonomous_grid_control_autonomous_grid_control_power_system_reinforcement_learn",
+      "profile_source": "heuristic",
+      "search_id": "search_1783185142070621200",
+      "total_results": 20,
+      "represented_topics": [
+        {
+          "topic": "field_map_reviews",
+          "hit_count": 2,
+          "terms": [
+            "review",
+            "survey",
+            "roadmap",
+            "progress"
+          ]
+        },
+        {
+          "topic": "milestone_foundations",
+          "hit_count": 1,
+          "terms": [
+            "seminal",
+            "foundational",
+            "highly cited",
+            "landmark"
+          ]
+        },
+        {
+          "topic": "methods_and_mechanisms",
+          "hit_count": 19,
+          "terms": [
+            "method",
+            "model",
+            "algorithm",
+            "mechanism",
+            "experiment"
+          ]
+        },
+        {
+          "topic": "applications_systems_scenarios",
+          "hit_count": 15,
+          "terms": [
+            "application",
+            "system",
+            "scenario",
+            "case study",
+            "deployment"
+          ]
+        },
+        {
+          "topic": "benchmarks_data_validation",
+          "hit_count": 8,
+          "terms": [
+            "benchmark",
+            "dataset",
+            "validation",
+            "evaluation",
+            "metric"
+          ]
+        }
+      ],
+      "blind_spots": [],
+      "live_validate": true,
+      "live_probe_reports": [],
+      "coverage_warning": false,
+      "needs_user_branch_confirmation": false
+    },
+    "select_literature_result": {
+      "result_index": 19,
+      "stratified_layer": "L3_preprint",
+      "stratified_label": "latest arXiv preprint frontier",
+      "query_branch": "milestone_foundations",
+      "retrieval_query": "autonomous grid control power system reinforcement learning smart grid stability safety constrained control seminal foundational highly cited landmark theory method mechanism",
+      "_why_selected": "Selected as latest preprint/frontier signal: PointDiT: Pixel-Space Diffusion for Monocular Geometry Estimation; year=2026; provider=arxiv; relevance=0.039.",
+      "domain_relevance": {
+        "profile": "autonomous_grid_control",
+        "score": 0.2,
+        "query_hits": [],
+        "anchor_hits": [],
+        "topic_hits": [
+          "methods_and_mechanisms",
+          "benchmarks_data_validation"
+        ],
+        "noise_hits": [],
+        "flags": [
+          "domain_topic_hit"
+        ],
+        "is_preprint": true,
+        "verdict": "keep"
+      },
+      "relevance_score": 0.039,
+      "relevance_components": {
+        "text_score": 0.0,
+        "recency_score": 1.0,
+        "impact_score": 0.35,
+        "citation_field": "computer_science",
+        "citation_baseline": 800.0,
+        "venue_score": 0.35,
+        "publication_quality_score": 0.64,
+        "base_score": 0.061,
+        "text_weight": 0.9,
+        "recency_weight": 0.04,
+        "impact_weight": 0.04,
+        "venue_weight": 0.02
+      },
+      "publication_quality_score": 0.64,
+      "venue_quality": "missing",
+      "journal_quartile": "",
+      "journal_metric_source": "",
+      "inferred_field": "computer_science",
+      "quality_flags": [
+        "missing_venue",
+        "new_paper_protection"
+      ],
+      "quality_criteria": [
+        "venue metadata is missing",
+        "paper is within 2-year protection window; low citations are not treated as low quality"
+      ],
+      "suspicion_type": "",
+      "is_review_like": false,
+      "pyramid_root_score": 0.2195,
+      "matched_query_terms": [],
+      "title": "PointDiT: Pixel-Space Diffusion for Monocular Geometry Estimation",
+      "citation": "Haofei Xu et al. (2026) PointDiT: Pixel-Space Diffusion for Monocular Geometry Estimation arXiv:2607.02515v1",
+      "provider": "arxiv",
+      "year": "2026",
+      "citation_count": null,
+      "influential_citation_count": null,
+      "doi": "",
+      "arxiv_id": "2607.02515v1",
+      "url": "http://arxiv.org/abs/2607.02515v1",
+      "relevance_reason": "title=0/11, abstract=0/11, citation=0/11, phrase_bonus=0.0, recency=1.0, impact=0.35, venue=0.35, quality=0.64",
+      "quality_reason": "venue metadata is missing; paper is within 2-year protection window; low citations are not treated as low quality"
+    },
+    "imported_records": 5,
+    "expand_literature_graph": {
+      "graph_search_id": "graph_1783185405821404400",
+      "total_results": 6,
+      "fallback_used": false,
+      "depth": 1
+    },
+    "build_literature_relation_graph": {
+      "relation_graph_id": "relgraph_1783185409650067800",
+      "cluster_count": 4,
+      "edge_summary": {
+        "total_edges": 6,
+        "citation_graph_edges": 6,
+        "artificial_edges": 0,
+        "by_relation": {
+          "reference": 6
+        },
+        "by_depth": {
+          "1": 6
+        },
+        "fallback_weight_policy": "keyword_fallback/search_result edges are artificial and use very low PageRank weight."
+      },
+      "analysis_confidence": 1.0
+    }
+  },
+  "observation": [],
+  "knowledge_map_summary": {
+    "main_methods": [
+      "double deep Q-learning (DDQN) with multiple agents",
+      "machine learning model",
+      "reinforcement learning",
+      "safe reinforcement learning algorithm"
+    ],
+    "method_scenario_coverage": {
+      "safe reinforcement learning algorithm": [
+        "smart grid power stability control"
+      ],
+      "reinforcement learning": [
+        "frequency control in low-inertia power systems",
+        "real-time voltage control in distribution grids"
+      ],
+      "double deep Q-learning (DDQN) with multiple agents": [
+        "low voltage (LV) grid with distributed energy resources, photovoltaics, battery storage systems, and electric vehicles"
+      ],
+      "machine learning model": [
+        "smart grid load forecasting and operation"
+      ]
+    },
+    "method_scenario_benchmark_triples": [
+      {
+        "method": "safe reinforcement learning algorithm",
+        "scenario": "smart grid power stability control",
+        "benchmark": "system resilience",
+        "references": [
+          "Yingda Chen et al. (2025) Research on Power Stability Control Technology of Smart Grid under Security Reinforcement Learning doi:10.1109/cepsi66359.2025.11403832"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "safe reinforcement learning algorithm",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "A safe reinforcement learning approach that enhances grid stability under complex disturbances through autonomous strategy learning with integrated safety mechanisms.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "Abstract: This study focuses on power stability control technology in smart grids under safe reinforcement learning, aiming to enhance the grid’s adaptability to complex operating environments and improve the precision and stability of power regulation. With the increasing uncertainty of renewable e...[truncated]",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "Full text excerpt:",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "This study focuses on power stability control technology in smart grids under safe reinforcement learning, aiming to enhance the grid’s adaptability to complex operating environments and improve the precision and stability of power regulation.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "With the increasing uncertainty of renewable energy integration and load variations, traditional stability control technologies face limitations in response speed and adaptability.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "Based on an analysis of power fluctuation characteristics and the shortcomings of conventional stability control methods, this paper introduces a safe reinforcement learning algorithm.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "This algorithm continuously learns and optimizes through interactions between the agent and the grid environment to achieve precise power control.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "Unlike traditional methods that rely on mathematical modeling or rule-based control, reinforcement learning autonomously learns optimal strategies, enhancing the flexibility and adaptability of the stability control system.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "The proposed method effectively suppresses power fluctuations under various operating conditions.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "Compared with MPC control, it decreases the number of voltage limit violations by 67% and improves the load recovery rate by over 4%.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "These results demonstrate that the proposed safe reinforcement learning approach outperforms traditional methods in terms of dynamic response speed, steady-state performance, and safety robustness, significantly enhancing grid stability under complex disturbances.",
+            "support": "source_sentence"
+          }
+        ]
+      },
+      {
+        "method": "reinforcement learning",
+        "scenario": "real-time voltage control in distribution grids",
+        "benchmark": "voltage stability | transient control cost | response time",
+        "references": [
+          "Yuanyuan Shi et al. (2021) Stability Constrained Reinforcement Learning for Real-Time Voltage Control doi:10.23919/ACC53348.2022.9867476"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "reinforcement learning",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "A reinforcement learning method with formal voltage stability guarantee via Lyapunov-based certification.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "Abstract: Deep reinforcement learning (RL) has been recognized as a promising tool to address the challenges in real-time control of power systems. However, its deployment in real-world power systems has been hindered by a lack of formal stability and safety guarantees. In this paper, we propose a s...[truncated]",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "Full text excerpt:",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "In this paper, we propose a stability constrained reinforcement learning method for real-time voltage control in distribution grids and we prove that the proposed approach provides a formal voltage stability guarantee.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "The key idea underlying our approach is an explicitly constructed Lyapunov function that certifies stability.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "We demonstrate the effectiveness of the approach in case studies, where the proposed method can reduce the transient control cost by more than 30% and shorten the response time by a third compared to a widely used linear policy, while always achieving voltage stability.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "In contrast, standard RL methods often fail to achieve voltage stability.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "Full text excerpt: A reinforcement learning method with formal voltage stability guarantee via Lyapunov-based certification.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "In this paper, we propose a s...[truncated]",
+            "support": "source_sentence"
+          }
+        ]
+      },
+      {
+        "method": "double deep Q-learning (DDQN) with multiple agents",
+        "scenario": "low voltage (LV) grid with distributed energy resources, photovoltaics, battery storage systems, and electric vehicles",
+        "benchmark": "environmental impact",
+        "references": [
+          "Lars Quakernack et al. (2022) Deep Reinforcement Learning For Autonomous Control Of Low Voltage Grids With Focus On Grid Stability In Future Power Grids doi:10.1109/ISGT-Europe54678.2022.9960416"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "double deep Q-learning (DDQN) with multiple agents",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "Demonstration that multi-agent DDQN can improve grid stability in LV networks by mitigating voltage drops, preventing reverse power flow, reducing transformer overload, and repurposing batteries for grid stability over local self-consumption.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "Abstract: The effort to achieve a low-emission electrical grid in Germany poses challenges for distribution system operators. These include the expansion of volatile and decentralised re-newable energy resources (DER), such as photovoltaics, and the steady expansion of electromobility with high char...[truncated]",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "Full text excerpt:",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "For this purpose a double deep Q-learning (DDQN) approach with multiple agents are being investigated.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "As results the voltage level drops are decrease from 0.89 p.u.",
+            "support": "source_sentence"
+          }
+        ]
+      },
+      {
+        "method": "reinforcement learning",
+        "scenario": "frequency control in low-inertia power systems",
+        "benchmark": "settling time | frequency overshoot | robustness to parameter drift",
+        "references": [
+          "Hamad Alduaij et al. (2025) Provable Stability of Reinforcement Learning-Based Frequency Control in Low-Inertia Power Systems doi:10.1109/SmartGridComm65349.2025.11204642"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "reinforcement learning",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "a scalable and theoretically grounded framework for learning-based frequency control that guarantees local exponential stability under actuator saturation and parameter variations",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "The controller comprises two components: (i) a strongly monotonic nominal control which is used as a baseline that guarantees exponential stability via Lyapunov energy decay, and (ii) a sign-controlled residual that enables robust adaptation to unknown and time-varying inertia and damping.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "Full text excerpt:",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "However, existing reinforcement learning (RL) approaches for inverter-based control often sacrifice theoretical guarantees for adaptivity, making them unsuitable for safety-critical grid operations.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "In this paper, we propose a physics-guided control decomposition that decouples the stability and adaptation mechanisms within a provably stable RL framework.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "We derive explicit design margins that certify local exponential stability under actuator saturation and parameter variations.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "The resulting method maintains linear computational complexity and is suitable for real-time deployment on grid-forming inverters.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "Simulation results on the IEEE 39-bus system show that our method achieves faster settling time, reduced frequency overshoot, and improved robustness to parameter drift compared to safe RL baselines such as Lyapunov RL techniques.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "As a result, this work provides a scalable and theoretically grounded framework for learning-based frequency control in low-inertia power systems.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "Full text excerpt: a scalable and theoretically grounded framework for learning-based frequency control that guarantees local exponential stability under actuator saturation and parameter variations The controller comprises two components: (i) a strongly monotonic nominal control which is used as a...[truncated]",
+            "support": "source_sentence"
+          }
+        ]
+      },
+      {
+        "method": "machine learning model",
+        "scenario": "smart grid load forecasting and operation",
+        "benchmark": "forecasting precision | adaptability | robustness",
+        "references": [
+          "Junhua Hu et al. (2026) Research on optimization of power grid load forecasting models based on deep learning. doi:10.1038/s41598-026-47517-3"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "machine learning model",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "A unified deep learning framework (ADLP + DGLO) that improves forecasting accuracy and enables real-time, uncertainty-aware grid operational optimization.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "Computational efficiency, generalization across grid environments, and lack of reinforcement learning integration.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "Full text excerpt:",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "Traditional statistical and machine learning methods often struggle to capture the nonlinear temporal dependencies and dynamic variations in power loads, limiting their predictive accuracy.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "Extensive experiments on real-world datasets demonstrate the superiority of the proposed framework over traditional and existing deep learning methods.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "The results confirm its enhanced forecasting precision, adaptability, and robustness in smart grid applications.",
+            "support": "source_sentence"
+          }
+        ]
+      },
+      {
+        "method": "safe reinforcement learning algorithm",
+        "scenario": "smart grid power stability control",
+        "benchmark": "system resilience",
+        "references": [
+          "Yingda Chen et al. (2025) Research on Power Stability Control Technology of Smart Grid under Security Reinforcement Learning doi:10.1109/cepsi66359.2025.11403832"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "safe reinforcement learning algorithm",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "A safe reinforcement learning approach that enhances grid stability under complex disturbances through autonomous strategy learning with integrated safety mechanisms.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "Abstract: This study focuses on power stability control technology in smart grids under safe reinforcement learning, aiming to enhance the grid’s adaptability to complex operating environments and improve the precision and stability of power regulation. With the increasing uncertainty of renewable e...[truncated]",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "A safe reinforcement learning approach that enhances grid stability under complex disturbances through autonomous strategy learning with integrated safety mechanisms.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "Abstract: This study focuses on power stability control technology in smart grids under safe reinforcement learning, aiming to enhance the grid’s adaptability to complex operating environments and improve the precision and stability of power regulation.",
+            "support": "source_sentence"
+          }
+        ]
+      },
+      {
+        "method": "reinforcement learning",
+        "scenario": "real-time voltage control in distribution grids",
+        "benchmark": "voltage stability | transient control cost | response time",
+        "references": [
+          "Yuanyuan Shi et al. (2021) Stability Constrained Reinforcement Learning for Real-Time Voltage Control doi:10.23919/ACC53348.2022.9867476"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "reinforcement learning",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "A reinforcement learning method with formal voltage stability guarantee via Lyapunov-based certification.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "Abstract: Deep reinforcement learning (RL) has been recognized as a promising tool to address the challenges in real-time control of power systems. However, its deployment in real-world power systems has been hindered by a lack of formal stability and safety guarantees. In this paper, we propose a s...[truncated]",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "A reinforcement learning method with formal voltage stability guarantee via Lyapunov-based certification.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "In this paper, we propose a s...[truncated]",
+            "support": "source_sentence"
+          }
+        ]
+      },
+      {
+        "method": "double deep Q-learning (DDQN) with multiple agents",
+        "scenario": "low voltage (LV) grid with distributed energy resources, photovoltaics, battery storage systems, and electric vehicles",
+        "benchmark": "environmental impact",
+        "references": [
+          "Lars Quakernack et al. (2022) Deep Reinforcement Learning For Autonomous Control Of Low Voltage Grids With Focus On Grid Stability In Future Power Grids doi:10.1109/ISGT-Europe54678.2022.9960416"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "double deep Q-learning (DDQN) with multiple agents",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "Demonstration that multi-agent DDQN can improve grid stability in LV networks by mitigating voltage drops, preventing reverse power flow, reducing transformer overload, and repurposing batteries for grid stability over local self-consumption.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "Abstract: The effort to achieve a low-emission electrical grid in Germany poses challenges for distribution system operators. These include the expansion of volatile and decentralised re-newable energy resources (DER), such as photovoltaics, and the steady expansion of electromobility with high char...[truncated]",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "Demonstration that multi-agent DDQN can improve grid stability in LV networks by mitigating voltage drops, preventing reverse power flow, reducing transformer overload, and repurposing batteries for grid stability over local self-consumption.",
+            "support": "source_sentence"
+          }
+        ]
+      },
+      {
+        "method": "reinforcement learning",
+        "scenario": "frequency control in low-inertia power systems",
+        "benchmark": "settling time | frequency overshoot | robustness to parameter drift",
+        "references": [
+          "Hamad Alduaij et al. (2025) Provable Stability of Reinforcement Learning-Based Frequency Control in Low-Inertia Power Systems doi:10.1109/SmartGridComm65349.2025.11204642"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "reinforcement learning",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "a scalable and theoretically grounded framework for learning-based frequency control that guarantees local exponential stability under actuator saturation and parameter variations",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "The controller comprises two components: (i) a strongly monotonic nominal control which is used as a baseline that guarantees exponential stability via Lyapunov energy decay, and (ii) a sign-controlled residual that enables robust adaptation to unknown and time-varying inertia and damping.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "a scalable and theoretically grounded framework for learning-based frequency control that guarantees local exponential stability under actuator saturation and parameter variations The controller comprises two components: (i) a strongly monotonic nominal control which is used as a baseline that guara...[truncated]",
+            "support": "source_sentence"
+          }
+        ]
+      },
+      {
+        "method": "machine learning model",
+        "scenario": "smart grid load forecasting and operation",
+        "benchmark": "forecasting precision | adaptability | robustness",
+        "references": [
+          "Junhua Hu et al. (2026) Research on optimization of power grid load forecasting models based on deep learning. doi:10.1038/s41598-026-47517-3"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "machine learning model",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "A unified deep learning framework (ADLP + DGLO) that improves forecasting accuracy and enables real-time, uncertainty-aware grid operational optimization.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "Computational efficiency, generalization across grid environments, and lack of reinforcement learning integration.",
+            "support": "structured_field"
+          }
+        ]
+      }
+    ],
+    "claim_type_counts": {
+      "methodological_description": 27,
+      "empirical_result": 18,
+      "author_opinion": 11,
+      "theoretical_claim": 11
+    }
+  },
+  "knowledge_gaps": [
+    {
+      "gap_id": "gap_1783185409670132900",
+      "gap_type": "combinatorial",
+      "description": "Method 'double deep Q-learning (DDQN) with multiple agents' has no recorded validation in scenario 'frequency control in low-inertia power systems' in the current PaperGraph map.",
+      "supporting_references": [
+        "Lars Quakernack et al. (2022) Deep Reinforcement Learning For Autonomous Control Of Low Voltage Grids With Focus On Grid Stability In Future Power Grids doi:10.1109/ISGT-Europe54678.2022.9960416",
+        "Hamad Alduaij et al. (2025) Provable Stability of Reinforcement Learning-Based Frequency Control in Low-Inertia Power Systems doi:10.1109/SmartGridComm65349.2025.11204642"
+      ],
+      "novelty_score": 4,
+      "application_value": "medium",
+      "feasibility": "high",
+      "suggested_research_path": "Run a targeted validation study with explicit benchmarks, baselines, and failure-mode analysis.",
+      "value_argument": "The combination may expose method-scenario boundary conditions rather than simply adding another benchmark.",
+      "overlap_risk": "medium",
+      "requires_human_review": false
+    },
+    {
+      "gap_id": "gap_1783185409673869300",
+      "gap_type": "combinatorial",
+      "description": "Method 'double deep Q-learning (DDQN) with multiple agents' has no recorded validation in scenario 'real-time voltage control in distribution grids' in the current PaperGraph map.",
+      "supporting_references": [
+        "Yuanyuan Shi et al. (2021) Stability Constrained Reinforcement Learning for Real-Time Voltage Control doi:10.23919/ACC53348.2022.9867476",
+        "Lars Quakernack et al. (2022) Deep Reinforcement Learning For Autonomous Control Of Low Voltage Grids With Focus On Grid Stability In Future Power Grids doi:10.1109/ISGT-Europe54678.2022.9960416"
+      ],
+      "novelty_score": 4,
+      "application_value": "medium",
+      "feasibility": "high",
+      "suggested_research_path": "Run a targeted validation study with explicit benchmarks, baselines, and failure-mode analysis.",
+      "value_argument": "The combination may expose method-scenario boundary conditions rather than simply adding another benchmark.",
+      "overlap_risk": "medium",
+      "requires_human_review": false
+    }
+  ],
+  "self_reflection": {
+    "top_venue_coverage_checked": true,
+    "pseudo_gap_risk_checked": true,
+    "method_categories_require_literature_support": true,
+    "unsupported_claims_marked_for_review": true
+  }
+}

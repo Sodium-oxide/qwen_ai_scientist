@@ -1,0 +1,1112 @@
+{
+  "thought": "ZhiZhi retrieved and filtered literature, imported grounded PaperGraph evidence, built a benchmark-aware knowledge map, expanded citation context when available, and generated gaps with novelty/value/feasibility checks.",
+  "action": {
+    "agent": "zhizhi",
+    "query": "autonomous grid control power system reinforcement learning smart grid stability safety constrained control",
+    "domain": "Autonomous Grid Control",
+    "years": "last 5 years",
+    "search_papers_stratified": {
+      "search_id": "search_1783181559589733500",
+      "total_results": 25,
+      "providers": [
+        "semantic_scholar",
+        "arxiv"
+      ],
+      "strategy": "stratified_cascade",
+      "strata": [
+        {
+          "layer": "L0_review",
+          "label": "high-impact review / field map",
+          "quota": 1,
+          "query_suffix": "review survey progress perspective tutorial systematic review meta-analysis",
+          "target": 1,
+          "candidate_count": 4,
+          "selected": 1,
+          "carried_to_next": 0
+        },
+        {
+          "layer": "L1_milestone",
+          "label": "milestone / highly cited foundation",
+          "quota": 3,
+          "query_suffix": "",
+          "target": 3,
+          "candidate_count": 0,
+          "selected": 0,
+          "carried_to_next": 3
+        },
+        {
+          "layer": "L2_top_latest",
+          "label": "recent top-venue frontier",
+          "quota": 3,
+          "query_suffix": "latest recent breakthrough advance",
+          "target": 6,
+          "candidate_count": 0,
+          "selected": 0,
+          "carried_to_next": 6
+        },
+        {
+          "layer": "L3_preprint",
+          "label": "latest arXiv preprint frontier",
+          "quota": 3,
+          "query_suffix": "",
+          "target": 9,
+          "candidate_count": 24,
+          "selected": 9,
+          "carried_to_next": 0
+        },
+        {
+          "layer": "L4_regular",
+          "label": "regular journal / supplemental evidence",
+          "quota": 15,
+          "query_suffix": "",
+          "target": 15,
+          "candidate_count": 120,
+          "selected": 15,
+          "carried_to_next": 0
+        }
+      ],
+      "errors": []
+    },
+    "select_literature_result": {
+      "result_index": 17,
+      "stratified_layer": "L3_preprint",
+      "stratified_label": "latest arXiv preprint frontier",
+      "_why_selected": "Selected as latest preprint/frontier signal: WorldDirector: Building Controllable World Simulators with Persistent Dynamic Memory; year=2026; provider=arxiv; relevance=0.1729.",
+      "relevance_score": 0.1729,
+      "relevance_components": {
+        "text_score": 0.1164,
+        "recency_score": 1.0,
+        "impact_score": 0.35,
+        "citation_field": "computer_science",
+        "citation_baseline": 800.0,
+        "venue_score": 0.35,
+        "publication_quality_score": 0.64,
+        "base_score": 0.2701,
+        "text_weight": 0.62,
+        "recency_weight": 0.1,
+        "impact_weight": 0.18,
+        "venue_weight": 0.1
+      },
+      "publication_quality_score": 0.64,
+      "venue_quality": "missing",
+      "journal_quartile": "",
+      "journal_metric_source": "",
+      "inferred_field": "computer_science",
+      "quality_flags": [
+        "missing_venue",
+        "new_paper_protection"
+      ],
+      "quality_criteria": [
+        "venue metadata is missing",
+        "paper is within 2-year protection window; low citations are not treated as low quality"
+      ],
+      "suspicion_type": "",
+      "is_review_like": false,
+      "pyramid_root_score": 0.3534,
+      "matched_query_terms": [
+        "control",
+        "stability"
+      ],
+      "title": "WorldDirector: Building Controllable World Simulators with Persistent Dynamic Memory",
+      "citation": "Hanlin Wang et al. (2026) WorldDirector: Building Controllable World Simulators with Persistent Dynamic Memory arXiv:2607.02517v1",
+      "provider": "arxiv",
+      "year": "2026",
+      "citation_count": null,
+      "influential_citation_count": null,
+      "doi": "",
+      "arxiv_id": "2607.02517v1",
+      "url": "http://arxiv.org/abs/2607.02517v1",
+      "relevance_reason": "title=1/11, abstract=2/11, citation=1/11, phrase_bonus=0.0, recency=1.0, impact=0.35, venue=0.35, quality=0.64",
+      "quality_reason": "venue metadata is missing; paper is within 2-year protection window; low citations are not treated as low quality"
+    },
+    "imported_records": 10,
+    "expand_literature_graph": {
+      "graph_search_id": "graph_1783181810130435200",
+      "total_results": 6,
+      "fallback_used": false,
+      "depth": 1
+    },
+    "build_literature_relation_graph": {
+      "relation_graph_id": "relgraph_1783181814665569000",
+      "cluster_count": 4,
+      "edge_summary": {
+        "total_edges": 6,
+        "citation_graph_edges": 6,
+        "artificial_edges": 0,
+        "by_relation": {
+          "reference": 6
+        },
+        "by_depth": {
+          "1": 6
+        },
+        "fallback_weight_policy": "keyword_fallback/search_result edges are artificial and use very low PageRank weight."
+      },
+      "analysis_confidence": 1.0
+    }
+  },
+  "observation": [],
+  "knowledge_map_summary": {
+    "main_methods": [
+      "Reinforcement Learning (RL) control",
+      "Twin-Delayed Deep Deterministic Policy Gradient",
+      "agent workflow",
+      "convolutional neural network based deep reinforcement learning",
+      "deep deterministic policy gradient",
+      "deep neural networks, reinforcement learning, multi-agent decision-making",
+      "deep reinforcement learning",
+      "reinforcement learning",
+      "safe reinforcement learning algorithm"
+    ],
+    "method_scenario_coverage": {
+      "reinforcement learning": [
+        "grid-connected voltage-source converters | modern AC–DC grids | DC-side dynamics stabilization",
+        "motion planning of autonomous vehicles"
+      ],
+      "agent workflow": [
+        "PV inverter-based real-time decentralized volt/var control in zoned distribution networks"
+      ],
+      "deep reinforcement learning": [
+        "mobile energy storage system scheduling and Volt/VAR control in coupled power distribution and transportation systems"
+      ],
+      "deep neural networks, reinforcement learning, multi-agent decision-making": [
+        "smart energy systems"
+      ],
+      "Reinforcement Learning (RL) control": [
+        "coordinated voltage regulation in distribution systems with distributed energy resources (DERs)"
+      ],
+      "Twin-Delayed Deep Deterministic Policy Gradient": [
+        "three-phase grid-connected electric vehicle voltage source inverters"
+      ],
+      "convolutional neural network based deep reinforcement learning": [
+        "hydrogen evolution reaction"
+      ],
+      "deep deterministic policy gradient": [
+        "demand response in smart grid with distributed controllable resources"
+      ],
+      "safe reinforcement learning algorithm": [
+        "smart grid power stability control"
+      ]
+    },
+    "method_scenario_benchmark_triples": [
+      {
+        "method": "reinforcement learning",
+        "scenario": "motion planning of autonomous vehicles",
+        "benchmark": "success rate",
+        "references": [
+          "Lixian Zhang et al. (2021) Safe Reinforcement Learning With Stability Guarantee for Motion Planning of Autonomous Vehicles doi:10.1109/TNNLS.2021.3084685"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "reinforcement learning",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "A novel risk-sensitive learning-based algorithm with theoretical stability guarantee via Lyapunov function integration for safe motion planning under hardware constraints.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "The learned policy is implemented on a differential drive vehicle in a simulation environment.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "Full text excerpt:",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "Reinforcement learning with safety constraints is promising for autonomous vehicles, of which various failures may result in disastrous losses.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "In general, a safe policy is trained by constrained optimization algorithms, in which the average constraint return as a function of states and actions should be lower than a predefined bound.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "However, most existing safe learning-based algorithms capture states via multiple high-precision sensors, which complicates the hardware systems and is power-consuming.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "To this end, the risk-identification method and the Lyapunov function are integrated with the well-known soft actor–critic (SAC) algorithm.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "By borrowing the concept of Lyapunov functions in the control theory, the learned policy can theoretically guarantee that the state trajectory always stays in a safe area.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "A novel risk-sensitive learning-based algorithm with the stability guarantee is proposed to train policies for the motion planning of autonomous vehicles.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "The experimental results show that the proposed algorithm achieves a higher success rate than the SAC.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "Full text excerpt: A novel risk-sensitive learning-based algorithm with theoretical stability guarantee via Lyapunov function integration for safe motion planning under hardware constraints.",
+            "support": "source_sentence"
+          }
+        ]
+      },
+      {
+        "method": "agent workflow",
+        "scenario": "PV inverter-based real-time decentralized volt/var control in zoned distribution networks",
+        "benchmark": "network energy loss | voltage deviation",
+        "references": [
+          "Rudai Yan et al. (2024) Multi-Agent Safe Graph Reinforcement Learning for PV Inverters-Based Real-Time Decentralized Volt/Var Control in Zoned Distribution Networks doi:10.1109/TSG.2023.3277087"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "agent workflow",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "A decentralized multi-agent RL framework using GCNs to jointly optimize reactive power for voltage regulation and loss minimization under safety constraints in zoned ADNs.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "No explicit limitation extracted.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "Full text excerpt:",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "To realize real-time voltage/var control (VVC) in active distribution networks (ADNs), this paper proposes a new multi-agent safe graph reinforcement learning method to optimize reactive power output from PV inverters.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "The network is divided into several zones, and a decentralized framework is proposed for coordinated control of reactive power output in each zone to regulate voltage profiles and minimize network energy loss.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "Each zone has a central control agent that embeds graph convolution networks (GCNs) in the policy network to improve the decision-making capability.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "Simulations on a 141-bus distribution system demonstrate that the proposed method can effectively minimize network energy loss and reduce voltage deviations, even in the presence of noisy or incomplete input measurements.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "Full text excerpt: A decentralized multi-agent RL framework using GCNs to jointly optimize reactive power for voltage regulation and loss minimization under safety constraints in zoned ADNs.",
+            "support": "source_sentence"
+          }
+        ]
+      },
+      {
+        "method": "deep reinforcement learning",
+        "scenario": "mobile energy storage system scheduling and Volt/VAR control in coupled power distribution and transportation systems",
+        "benchmark": "real power loss, SOC violation, voltage violation, training convergence",
+        "references": [
+          "Soi Jeon et al. (2023) Safety-Integrated Online Deep Reinforcement Learning for Mobile Energy Storage System Scheduling and Volt/VAR Control in Power Distribution Networks doi:10.1109/ACCESS.2023.3264687"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "deep reinforcement learning",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "A safety-integrated online deep reinforcement learning framework for joint MESS scheduling and Volt/VAR control, incorporating Dijkstra-based MESS routing and real-time safety modules to prevent SOC and voltage violations.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "No explicit limitation extracted.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "Full text excerpt:",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "In coupled power distribution and transportation (CPT) system, a joint scheduling framework for mobile energy storage systems (MESSs) and Volt/VAR control (VVC) ensures reliable power distribution grid operations while supporting electric vehicle loads at electric vehicle charging stations (EVCSs).",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "However, conventional model-based optimization methods for MESS scheduling and VVC may yield suboptimal solutions and greater computation times because of MESS operation and VVC in uncertain environment of CPT systems.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "To resolve this issue, this study proposes a model-free deep reinforcement learning (DRL) framework.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "In this framework, smart inverters of MESSs and solar photovoltaic (PV) systems cooperate to minimize the real power loss and mitigate the violations of both MESSs’ state of charge (SOC) and voltage in the power distribution network, while MESSs travel via the transportation network to satisfy EV lo...[truncated]",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "A MESS routing algorithm based on Dijkstra’s algorithm is developed to determine the optimal destinations of the MESSs.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "The developed MESS routing algorithm and safety modules are integrated into the proposed DRL framework, wherein the DRL agent performs the desired MESS scheduling and VVC through safe exploration during the training procedure.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "The proposed approach is tested in coupled IEEE 33-bus power distribution and 15-node transportation systems and coupled IEEE 57-bus power distribution and 42-node transportation systems.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "Numerical examples demonstrate the advantages of the proposed approach in terms of training convergence, real power loss, and SOC/voltage violation.",
+            "support": "source_sentence"
+          }
+        ]
+      },
+      {
+        "method": "deep neural networks, reinforcement learning, multi-agent decision-making",
+        "scenario": "smart energy systems",
+        "benchmark": "classification performance",
+        "references": [
+          "Arvind R. Singh et al. (2025) A deep learning and IoT-driven framework for real-time adaptive resource allocation and grid optimization in smart energy systems doi:10.1038/s41598-025-02649-w"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "deep neural networks, reinforcement learning, multi-agent decision-making",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "ORA-DL framework integrating deep learning, IoT-based sensing, and real-time adaptive control for optimized smart grid energy management",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "Abstract: The rapid evolution of smart grids, driven by rising global energy demand and renewable energy integration, calls for intelligent, adaptive, and energy-efficient resource allocation strategies. Traditional energy management methods, based on static models or heuristic algorithms, often fai...[truncated]",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "Full text excerpt:",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "Traditional energy management methods, based on static models or heuristic algorithms, often fail to handle real-time grid dynamics, leading to suboptimal energy distribution, high operational costs, and significant energy wastage.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "To overcome these challenges, this paper presents ORA-DL (Optimized Resource Allocation using Deep Learning) an advanced framework that integrates deep learning, Internet of Things (IoT)-based sensing, and real-time adaptive control to optimize smart grid energy management.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "The framework leverages both historical and real-time data for proactive power flow management, while IoT-enabled sensors ensure continuous monitoring and low-latency response through edge and cloud computing infrastructure.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "Experimental results validate the effectiveness of ORA-DL, achieving 93.38% energy demand prediction accuracy, improving grid stability to 96.25%, and reducing energy wastage to 12.96%.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "Furthermore, ORA-DL enhances resource distribution efficiency by 15.22% and reduces operational costs by 22.96%, significantly outperforming conventional techniques.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "The framework also provides a foundation for future advancements, including integration with edge computing, cybersecurity measures, and reinforcement learning enhancements, marking a significant step forward in smart grid optimization.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "Full text excerpt: ORA-DL framework integrating deep learning, IoT-based sensing, and real-time adaptive control for optimized smart grid energy management Abstract: The rapid evolution of smart grids, driven by rising global energy demand and renewable energy integration, calls for intelligent, ada...[truncated]",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "Traditional energy management methods, based on static models or heuristic algorithms, often fai...[truncated]",
+            "support": "source_sentence"
+          }
+        ]
+      },
+      {
+        "method": "Reinforcement Learning (RL) control",
+        "scenario": "coordinated voltage regulation in distribution systems with distributed energy resources (DERs)",
+        "benchmark": "voltage regulation performance",
+        "references": [
+          "Rachid Darbali-Zamora et al. (2026) Reinforcement-Learning Control for Coordinated Voltage Regulation in Distribution Systems Using a Power Hardware-in-the-Loop Platform doi:10.1109/ACCESS.2026.3658416"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "Reinforcement Learning (RL) control",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "Demonstration of RL-based data-driven control outperforming traditional Volt-Var Curve (VVC) control for system-wide voltage regulation in a Power Hardware-in-the-Loop (PHIL) platform",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "Abstract: The variable nature of Distributed Energy Resources (DERs), such as solar Photovoltaic (PV) arrays and Wind Turbine Generators (WTGs), create several challenges for utilities and system operators related to maintaining voltage and frequency stability. Power grids that incorporate a variety...[truncated]",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "Full text excerpt:",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "Therefore, there is a need for data-driven control methods, such as those based on Reinforcement Learning (RL), which can leverage system-wide measured data, and provide a customized and adaptive solution for voltage regulation across the entire system.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "Based on the obtained experimental results, the voltage regulation controls are evaluated in a PHIL platform that leverages a physical wind turbine emulator and a commercial PV inverter.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "Full text excerpt: Demonstration of RL-based data-driven control outperforming traditional Volt-Var Curve (VVC) control for system-wide voltage regulation in a Power Hardware-in-the-Loop (PHIL) platform Abstract: The variable nature of Distributed Energy Resources (DERs), such as solar Photovoltaic...[truncated]",
+            "support": "source_sentence"
+          }
+        ]
+      },
+      {
+        "method": "Twin-Delayed Deep Deterministic Policy Gradient",
+        "scenario": "three-phase grid-connected electric vehicle voltage source inverters",
+        "benchmark": "steady-state error in active and reactive power reference tracking",
+        "references": [
+          "Amirhossein Ahmadian et al. (2024) Empowering Dynamic Active and Reactive Power Control: A Deep Reinforcement Learning Controller for Three-Phase Grid-Connected Electric Vehicles doi:10.1109/ACCESS.2024.3396449"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "Twin-Delayed Deep Deterministic Policy Gradient",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "A model-free deep reinforcement learning controller enabling dynamic, four-quadrant active and reactive power control for EV on-board chargers without system identification or linearization.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "No explicit limitation extracted.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "Full text excerpt:",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "In this paper, a Markov Decision Process framework was established, encompassing the environment, actions, states, and a unique reward function.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "The minimal steady state error achieved in active and reactive power reference tracking across all four quadrant operation modes substantiates the trained agent’s capacity to sustain tracking accuracy and stability across a variety of operational settings.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "This research could potentially pave the way for any type of electric vehicle to actively play a role in smart grid management, especially through vehicle-to-grid and grid-to-vehicle capabilities.",
+            "support": "source_sentence"
+          }
+        ]
+      },
+      {
+        "method": "convolutional neural network based deep reinforcement learning",
+        "scenario": "hydrogen evolution reaction",
+        "benchmark": "trajectories boundedness",
+        "references": [
+          "Mohsen Eskandari et al. (2024) Convolutional Neural Network With Reinforcement Learning for Trajectories Boundedness of Fault Ride-Through Transients of Grid-Feeding Converters in Microgrids doi:10.1109/TII.2023.3330540"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "convolutional neural network based deep reinforcement learning",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "A state feedback control enhanced by a CNN-based deep reinforcement learning agent to dynamically adjust feedback gain and ensure boundedness of FRT trajectories under varying impedance conditions.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "No explicit limitation extracted.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "Full text excerpt:",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "The robust performance of the proposed method is reinforced by utilizing the intelligent deep reinforcement learning (DRL) method to adjust the feedback gain.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "Numerical simulations validate the proposed method.",
+            "support": "source_sentence"
+          }
+        ]
+      },
+      {
+        "method": "deep deterministic policy gradient",
+        "scenario": "demand response in smart grid with distributed controllable resources",
+        "benchmark": "event frequency",
+        "references": [
+          "Rui Ma et al. (2023) A Blockchain-Enabled Demand Management and Control Framework Driven by Deep Reinforcement Learning doi:10.1109/TIE.2022.3146631"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "deep deterministic policy gradient",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "An autonomous incentive-based demand management and control framework integrating deep reinforcement learning and blockchain for scalable, privacy-preserving coordination of distributed controllable resources in smart grids.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "Abstract: The rapid development of Internet-of-Things in smart grid has enabled millions of grid-connected distributed controllable resources (DCR; e.g., electric vehicles, controllable loads) to provide service to the grid, such as frequency regulation and demand response. The integration of these....[truncated]",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "Full text excerpt:",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "The integration of these DCRs may become a large virtual power plant network with various characteristics.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "This poses great challenges from both control and management perspectives, e.g., computation/communication burden, optimization complexity, scalability limitation, prosumer privacy, etc.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "In this article, we propose an effective autonomous incentive-based DCR control and management framework to integrate a large amount of DCRs to provide grid services, which simultaneously provides accurate active power adjustment to the grid, optimizes DCR allocations, and maximizes the profits for...[truncated]",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "A model-free deep deterministic policy gradient-based method is designed to find the optimal incentives in a continuous action space to encourage prosumers to adjust their power consumptions.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "The method is implemented in a consortium open-source blockchain platform, Hyperledger Fabric, which facilitates controls and transaction management.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "To demonstrate the effectiveness of the framework, extensive experimental studies are conducted using real-world data.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "Full text excerpt: An autonomous incentive-based demand management and control framework integrating deep reinforcement learning and blockchain for scalable, privacy-preserving coordination of distributed controllable resources in smart grids.",
+            "support": "source_sentence"
+          }
+        ]
+      },
+      {
+        "method": "reinforcement learning",
+        "scenario": "grid-connected voltage-source converters | modern AC–DC grids | DC-side dynamics stabilization",
+        "benchmark": "closed-loop stability | optimality | superiority in power hardware-in-the-loop simulations",
+        "references": [
+          "M. Davari et al. (2025) Reinforcement Learning to Stabilize Singularly Perturbed DC-Side Dynamics of Grid-Connected Voltage-Source Converters in Modern AC–DC Grids Using Singular Perturbation Theory and Adaptive Dynamic Programming doi:10.1109/TIE.2023.3327574"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "reinforcement learning",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "A decomposition-based composite optimal control framework combining singular perturbation theory and adaptive dynamic programming to stabilize singularly perturbed DC-side dynamics of GC-VSCs under uncertainty.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "First, by means of SPT, the original optimal control problem is decomposed into two optimal problems with respect to an unknown slow time-scale subsystem and a known fast time-scale subsystem.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "Full text excerpt:",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "The current-controlled GC-VSC based on the cascade control using a pulsewidth modulation approach is commonly deployed in the smart grid paradigm.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "As a result, it proposes a novel optimal control strategy for the voltage control problem with uncertain dynamics using reinforcement learning (RL) via the adaptive (or approximate) dynamic programming method and the singular perturbation theory (SPT).",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "Second, for the slow subsystem with unmeasurable states, an output-feedback-based off-policy RL algorithm with a guaranteed convergence is given in order to learn the optimal controller in terms of measurement data.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "Third, a composite controller is established in terms of the obtained fast–slow controllers; its optimality and closed-loop stability are rigorously proved.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "Unlike the direct full-order design, not only does the proposed decomposition composite design framework bypass the numerical stiffness, but it also alleviates the high dimensionality in the control synthesis.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "Comparative experiments using testing based on power hardware-in-the-loop simulations and rapid control prototyping methodology reveal the superiority and effectiveness of the proposed method.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "Full text excerpt: A decomposition-based composite optimal control framework combining singular perturbation theory and adaptive dynamic programming to stabilize singularly perturbed DC-side dynamics of GC-VSCs under uncertainty.",
+            "support": "source_sentence"
+          }
+        ]
+      },
+      {
+        "method": "safe reinforcement learning algorithm",
+        "scenario": "smart grid power stability control",
+        "benchmark": "system resilience",
+        "references": [
+          "Yingda Chen et al. (2025) Research on Power Stability Control Technology of Smart Grid under Security Reinforcement Learning doi:10.1109/cepsi66359.2025.11403832"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "safe reinforcement learning algorithm",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "safe reinforcement learning approach for enhanced dynamic response speed, steady-state performance, and safety robustness in smart grid stability control under complex disturbances",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "Abstract: This study focuses on power stability control technology in smart grids under safe reinforcement learning, aiming to enhance the grid’s adaptability to complex operating environments and improve the precision and stability of power regulation. With the increasing uncertainty of renewable e...[truncated]",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "Full text excerpt:",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "This study focuses on power stability control technology in smart grids under safe reinforcement learning, aiming to enhance the grid’s adaptability to complex operating environments and improve the precision and stability of power regulation.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "With the increasing uncertainty of renewable energy integration and load variations, traditional stability control technologies face limitations in response speed and adaptability.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "Based on an analysis of power fluctuation characteristics and the shortcomings of conventional stability control methods, this paper introduces a safe reinforcement learning algorithm.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "This algorithm continuously learns and optimizes through interactions between the agent and the grid environment to achieve precise power control.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "Unlike traditional methods that rely on mathematical modeling or rule-based control, reinforcement learning autonomously learns optimal strategies, enhancing the flexibility and adaptability of the stability control system.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "The proposed method effectively suppresses power fluctuations under various operating conditions.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "Compared with MPC control, it decreases the number of voltage limit violations by 67% and improves the load recovery rate by over 4%.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "These results demonstrate that the proposed safe reinforcement learning approach outperforms traditional methods in terms of dynamic response speed, steady-state performance, and safety robustness, significantly enhancing grid stability under complex disturbances.",
+            "support": "source_sentence"
+          }
+        ]
+      },
+      {
+        "method": "reinforcement learning",
+        "scenario": "motion planning of autonomous vehicles",
+        "benchmark": "success rate",
+        "references": [
+          "Lixian Zhang et al. (2021) Safe Reinforcement Learning With Stability Guarantee for Motion Planning of Autonomous Vehicles doi:10.1109/TNNLS.2021.3084685"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "reinforcement learning",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "A novel risk-sensitive learning-based algorithm with theoretical stability guarantee via Lyapunov function integration for safe motion planning under hardware constraints.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "The learned policy is implemented on a differential drive vehicle in a simulation environment.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "A novel risk-sensitive learning-based algorithm with theoretical stability guarantee via Lyapunov function integration for safe motion planning under hardware constraints.",
+            "support": "source_sentence"
+          }
+        ]
+      },
+      {
+        "method": "agent workflow",
+        "scenario": "PV inverter-based real-time decentralized volt/var control in zoned distribution networks",
+        "benchmark": "network energy loss | voltage deviation",
+        "references": [
+          "Rudai Yan et al. (2024) Multi-Agent Safe Graph Reinforcement Learning for PV Inverters-Based Real-Time Decentralized Volt/Var Control in Zoned Distribution Networks doi:10.1109/TSG.2023.3277087"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "agent workflow",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "A decentralized multi-agent RL framework using GCNs to jointly optimize reactive power for voltage regulation and loss minimization under safety constraints in zoned ADNs.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "No explicit limitation extracted.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "A decentralized multi-agent RL framework using GCNs to jointly optimize reactive power for voltage regulation and loss minimization under safety constraints in zoned ADNs.",
+            "support": "source_sentence"
+          }
+        ]
+      },
+      {
+        "method": "deep reinforcement learning",
+        "scenario": "mobile energy storage system scheduling and Volt/VAR control in coupled power distribution and transportation systems",
+        "benchmark": "real power loss, SOC violation, voltage violation, training convergence",
+        "references": [
+          "Soi Jeon et al. (2023) Safety-Integrated Online Deep Reinforcement Learning for Mobile Energy Storage System Scheduling and Volt/VAR Control in Power Distribution Networks doi:10.1109/ACCESS.2023.3264687"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "deep reinforcement learning",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "A safety-integrated online deep reinforcement learning framework for joint MESS scheduling and Volt/VAR control, incorporating Dijkstra-based MESS routing and real-time safety modules to prevent SOC and voltage violations.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "No explicit limitation extracted.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "A safety-integrated online deep reinforcement learning framework for joint MESS scheduling and Volt/VAR control, incorporating Dijkstra-based MESS routing and real-time safety modules to prevent SOC and voltage violations.",
+            "support": "source_sentence"
+          }
+        ]
+      },
+      {
+        "method": "deep neural networks, reinforcement learning, multi-agent decision-making",
+        "scenario": "smart energy systems",
+        "benchmark": "classification performance",
+        "references": [
+          "Arvind R. Singh et al. (2025) A deep learning and IoT-driven framework for real-time adaptive resource allocation and grid optimization in smart energy systems doi:10.1038/s41598-025-02649-w"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "deep neural networks, reinforcement learning, multi-agent decision-making",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "ORA-DL framework integrating deep learning, IoT-based sensing, and real-time adaptive control for optimized smart grid energy management",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "Abstract: The rapid evolution of smart grids, driven by rising global energy demand and renewable energy integration, calls for intelligent, adaptive, and energy-efficient resource allocation strategies. Traditional energy management methods, based on static models or heuristic algorithms, often fai...[truncated]",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "ORA-DL framework integrating deep learning, IoT-based sensing, and real-time adaptive control for optimized smart grid energy management Abstract: The rapid evolution of smart grids, driven by rising global energy demand and renewable energy integration, calls for intelligent, adaptive, and energy-e...[truncated]",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "Traditional energy management methods, based on static models or heuristic algorithms, often fai...[truncated]",
+            "support": "source_sentence"
+          }
+        ]
+      },
+      {
+        "method": "Reinforcement Learning (RL) control",
+        "scenario": "coordinated voltage regulation in distribution systems with distributed energy resources (DERs)",
+        "benchmark": "voltage regulation performance",
+        "references": [
+          "Rachid Darbali-Zamora et al. (2026) Reinforcement-Learning Control for Coordinated Voltage Regulation in Distribution Systems Using a Power Hardware-in-the-Loop Platform doi:10.1109/ACCESS.2026.3658416"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "Reinforcement Learning (RL) control",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "Demonstration of RL-based data-driven control outperforming traditional Volt-Var Curve (VVC) control for system-wide voltage regulation in a Power Hardware-in-the-Loop (PHIL) platform",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "Abstract: The variable nature of Distributed Energy Resources (DERs), such as solar Photovoltaic (PV) arrays and Wind Turbine Generators (WTGs), create several challenges for utilities and system operators related to maintaining voltage and frequency stability. Power grids that incorporate a variety...[truncated]",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "Demonstration of RL-based data-driven control outperforming traditional Volt-Var Curve (VVC) control for system-wide voltage regulation in a Power Hardware-in-the-Loop (PHIL) platform Abstract: The variable nature of Distributed Energy Resources (DERs), such as solar Photovoltaic (PV) arrays and Win...[truncated]",
+            "support": "source_sentence"
+          }
+        ]
+      },
+      {
+        "method": "Twin-Delayed Deep Deterministic Policy Gradient",
+        "scenario": "three-phase grid-connected electric vehicle voltage source inverters",
+        "benchmark": "steady-state error in active and reactive power reference tracking",
+        "references": [
+          "Amirhossein Ahmadian et al. (2024) Empowering Dynamic Active and Reactive Power Control: A Deep Reinforcement Learning Controller for Three-Phase Grid-Connected Electric Vehicles doi:10.1109/ACCESS.2024.3396449"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "Twin-Delayed Deep Deterministic Policy Gradient",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "A model-free deep reinforcement learning controller enabling dynamic, four-quadrant active and reactive power control for EV on-board chargers without system identification or linearization.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "No explicit limitation extracted.",
+            "support": "structured_field"
+          }
+        ]
+      },
+      {
+        "method": "convolutional neural network based deep reinforcement learning",
+        "scenario": "hydrogen evolution reaction",
+        "benchmark": "trajectories boundedness",
+        "references": [
+          "Mohsen Eskandari et al. (2024) Convolutional Neural Network With Reinforcement Learning for Trajectories Boundedness of Fault Ride-Through Transients of Grid-Feeding Converters in Microgrids doi:10.1109/TII.2023.3330540"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "convolutional neural network based deep reinforcement learning",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "A state feedback control enhanced by a CNN-based deep reinforcement learning agent to dynamically adjust feedback gain and ensure boundedness of FRT trajectories under varying impedance conditions.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "No explicit limitation extracted.",
+            "support": "structured_field"
+          }
+        ]
+      },
+      {
+        "method": "deep deterministic policy gradient",
+        "scenario": "demand response in smart grid with distributed controllable resources",
+        "benchmark": "event frequency",
+        "references": [
+          "Rui Ma et al. (2023) A Blockchain-Enabled Demand Management and Control Framework Driven by Deep Reinforcement Learning doi:10.1109/TIE.2022.3146631"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "deep deterministic policy gradient",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "An autonomous incentive-based demand management and control framework integrating deep reinforcement learning and blockchain for scalable, privacy-preserving coordination of distributed controllable resources in smart grids.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "Abstract: The rapid development of Internet-of-Things in smart grid has enabled millions of grid-connected distributed controllable resources (DCR; e.g., electric vehicles, controllable loads) to provide service to the grid, such as frequency regulation and demand response. The integration of these....[truncated]",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "An autonomous incentive-based demand management and control framework integrating deep reinforcement learning and blockchain for scalable, privacy-preserving coordination of distributed controllable resources in smart grids.",
+            "support": "source_sentence"
+          }
+        ]
+      },
+      {
+        "method": "reinforcement learning",
+        "scenario": "grid-connected voltage-source converters | modern AC–DC grids | DC-side dynamics stabilization",
+        "benchmark": "closed-loop stability | optimality | superiority in power hardware-in-the-loop simulations",
+        "references": [
+          "M. Davari et al. (2025) Reinforcement Learning to Stabilize Singularly Perturbed DC-Side Dynamics of Grid-Connected Voltage-Source Converters in Modern AC–DC Grids Using Singular Perturbation Theory and Adaptive Dynamic Programming doi:10.1109/TIE.2023.3327574"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "reinforcement learning",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "A decomposition-based composite optimal control framework combining singular perturbation theory and adaptive dynamic programming to stabilize singularly perturbed DC-side dynamics of GC-VSCs under uncertainty.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "First, by means of SPT, the original optimal control problem is decomposed into two optimal problems with respect to an unknown slow time-scale subsystem and a known fast time-scale subsystem.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "A decomposition-based composite optimal control framework combining singular perturbation theory and adaptive dynamic programming to stabilize singularly perturbed DC-side dynamics of GC-VSCs under uncertainty.",
+            "support": "source_sentence"
+          }
+        ]
+      },
+      {
+        "method": "safe reinforcement learning algorithm",
+        "scenario": "smart grid power stability control",
+        "benchmark": "system resilience",
+        "references": [
+          "Yingda Chen et al. (2025) Research on Power Stability Control Technology of Smart Grid under Security Reinforcement Learning doi:10.1109/cepsi66359.2025.11403832"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "safe reinforcement learning algorithm",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "safe reinforcement learning approach for enhanced dynamic response speed, steady-state performance, and safety robustness in smart grid stability control under complex disturbances",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "Abstract: This study focuses on power stability control technology in smart grids under safe reinforcement learning, aiming to enhance the grid’s adaptability to complex operating environments and improve the precision and stability of power regulation. With the increasing uncertainty of renewable e...[truncated]",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "safe reinforcement learning approach for enhanced dynamic response speed, steady-state performance, and safety robustness in smart grid stability control under complex disturbances Abstract: This study focuses on power stability control technology in smart grids under safe reinforcement learning, ai...[truncated]",
+            "support": "source_sentence"
+          }
+        ]
+      }
+    ],
+    "claim_type_counts": {
+      "methodological_description": 63,
+      "empirical_result": 33,
+      "author_opinion": 24,
+      "theoretical_claim": 18
+    }
+  },
+  "knowledge_gaps": [
+    {
+      "gap_id": "gap_1783181814715968500",
+      "gap_type": "improvement",
+      "description": "Recorded limitation worth testing: No explicit limitation extracted.",
+      "supporting_references": [
+        "Rudai Yan et al. (2024) Multi-Agent Safe Graph Reinforcement Learning for PV Inverters-Based Real-Time Decentralized Volt/Var Control in Zoned Distribution Networks doi:10.1109/TSG.2023.3277087"
+      ],
+      "novelty_score": 5,
+      "application_value": "medium",
+      "feasibility": "high",
+      "suggested_research_path": "Formulate a hypothesis that directly attacks the documented limitation and verify it under stress conditions.",
+      "value_argument": "The gap is grounded in an author-reported limitation, so it has stronger evidential support than a bare untried combination.",
+      "overlap_risk": "medium",
+      "requires_human_review": false
+    }
+  ],
+  "self_reflection": {
+    "top_venue_coverage_checked": true,
+    "pseudo_gap_risk_checked": true,
+    "method_categories_require_literature_support": true,
+    "unsupported_claims_marked_for_review": true
+  }
+}
