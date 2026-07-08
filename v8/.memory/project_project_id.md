@@ -1,7 +1,7 @@
 ---
 name: project_id
-description: Unique identifier for the research project
+description: Stable project identifier
 type: project
 ---
 
-sci_1783502949600543600
+sci_1783526838783968100

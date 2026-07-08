@@ -1,7 +1,7 @@
 ---
 name: project_objective
-description: core scientific validation goal
+description: Core validation goal
 type: project
 ---
 
-验证全钒液流电池领域中，基于文献证据的 gap 发现、假设生成、机制检验和辩论迭代闭环。
+Verify end-to-end multi-agent scientific collaboration: literature reading → knowledge graph → gap exploration → hypothesis generation → Socratic debate → mechanism audit → final adjudication

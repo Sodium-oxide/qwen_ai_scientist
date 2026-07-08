@@ -73,10 +73,10 @@ def run_autogen_research_flow(
     max_round: int = 12,
     speaker_selection_method: str = "round_robin",
     human_input_mode: str = "TERMINATE",
-    proponent_model_family: str = "qwen",
-    opponent_model_family: str = "external_critic",
-    judge_model_family: str = "external_judge",
-    verifier_model_family: str = "external_verifier",
+    proponent_model_family: str = "qwen-max",
+    opponent_model_family: str = "qwen-plus",
+    judge_model_family: str = "qwen-deep-research",
+    verifier_model_family: str = "qwen-plus",
     use_native_autogen: bool = False,
 ) -> str:
     try:
@@ -223,11 +223,13 @@ def run_autogen_research_flow(
                     run_socratic_hypothesis_debate(
                         project_id=project_id,
                         hypothesis_id=state["hypothesis_id"],
-                        max_rounds=min(clamp_int(max_round, 4, 40), 4),
+                        max_rounds=min(clamp_int(max_round, 5, 40), 5),
                         proponent_model_family=proponent_model_family,
                         opponent_model_family=opponent_model_family,
                         judge_model_family=judge_model_family,
                         verifier_model_family=verifier_model_family,
+                        auto_literature_supplement=True,
+                        supplement_providers=selected_providers,
                     )
                 )
                 report = debate.get("debate_report", {})
@@ -358,10 +360,10 @@ def autogen_agent_name(agent_key: str) -> str:
 
 def autogen_llm_config_ref(agent_key: str) -> str:
     return {
-        "mingli": "qwen_proponent",
-        "duzhi": "external_critic",
-        "bianlun": "external_judge_or_manager",
-        "yanzhen": "external_verifier_or_tool",
+        "mingli": "qwen-max",
+        "duzhi": "qwen-plus",
+        "bianlun": "qwen-deep-research",
+        "yanzhen": "qwen-plus",
         "zhizhi": "tool_backed_retriever",
         "tanxi": "tool_backed_gap_miner",
         "boxue": "human_orchestrator_proxy",

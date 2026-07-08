@@ -1,7 +1,7 @@
 ---
 name: project_title
-description: research project title
+description: Research project title
 type: project
 ---
 
-全钒液流电池 AutoGen 多Agent协作闭环验证
+4.5V以上高压锂电池机制与假设验证

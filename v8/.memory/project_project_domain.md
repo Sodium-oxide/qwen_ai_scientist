@@ -1,7 +1,7 @@
 ---
 name: project_domain
-description: technical domain scope
+description: Scientific domain and scope
 type: project
 ---
 
-Vanadium Redox Flow Battery / Energy Storage / Electrochemical Engineering
+High-voltage lithium batteries above 4.5V, cathode/electrolyte/interface stability, AI-assisted battery materials discovery
