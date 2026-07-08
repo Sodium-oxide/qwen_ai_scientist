@@ -1,0 +1,594 @@
+from __future__ import annotations
+
+import json
+import time
+from pathlib import Path
+from typing import Any
+
+try:
+    from .config import PACKAGE_DIR
+    from .log import log_event
+except ImportError:
+    from config import PACKAGE_DIR
+    from log import log_event
+
+
+AUTOGEN_DIR = PACKAGE_DIR / ".science" / "autogen_groupchats"
+AUTOGEN_RUN_DIR = PACKAGE_DIR / ".science" / "autogen_runs"
+
+DEFAULT_AUTOGEN_AGENTS = ["boxue", "zhizhi", "tanxi", "mingli", "yanzhen", "duzhi", "bianlun"]
+
+
+def create_autogen_groupchat(
+    project_id: str,
+    goal: str = "",
+    agents: list[str] | None = None,
+    max_round: int = 12,
+    speaker_selection_method: str = "round_robin",
+    human_input_mode: str = "TERMINATE",
+    use_native_autogen: bool = False,
+) -> str:
+    groupchat_id = new_autogen_groupchat_id()
+    selected_agents = normalize_agent_list(agents)
+    spec = {
+        "groupchat_id": groupchat_id,
+        "project_id": project_id,
+        "goal": goal,
+        "framework": "autogen_2_groupchat",
+        "native_autogen": native_autogen_status(use_native=use_native_autogen),
+        "groupchat": {
+            "max_round": clamp_int(max_round, 4, 40),
+            "speaker_selection_method": normalize_speaker_selection(speaker_selection_method),
+            "allow_repeat_speaker": False,
+            "human_input_mode": normalize_human_input_mode(human_input_mode),
+            "termination_marker": "TERMINATE",
+        },
+        "agents": [science_agent_to_autogen_agent(agent) for agent in selected_agents],
+        "tools": build_autogen_tool_registry(),
+        "round_protocol": build_socratic_groupchat_protocol(),
+        "execution_policy": {
+            "worktree": "disabled",
+            "background_threads": "disabled",
+            "state_owner": "groupchat_manager",
+            "shared_project_writes": "serialized_by_autogen_flow",
+            "token_policy": "structured_turns_not_freeform_chat",
+        },
+        "createdAt": time.time(),
+    }
+    save_json(AUTOGEN_DIR / f"{groupchat_id}.json", spec)
+    log_event("AUTOGEN", "groupchat_created", groupchat_id=groupchat_id, project_id=project_id)
+    return json.dumps(spec, ensure_ascii=False, indent=2)
+
+
+def run_autogen_research_flow(
+    project_id: str,
+    goal: str = "",
+    groupchat_id: str = "",
+    providers: list[str] | None = None,
+    max_results: int = 15,
+    import_top_k: int = 10,
+    use_llm: bool = True,
+    live_search: bool = False,
+    run_debate: bool = True,
+    max_round: int = 12,
+    speaker_selection_method: str = "round_robin",
+    human_input_mode: str = "TERMINATE",
+    proponent_model_family: str = "qwen",
+    opponent_model_family: str = "external_critic",
+    judge_model_family: str = "external_judge",
+    verifier_model_family: str = "external_verifier",
+    use_native_autogen: bool = False,
+) -> str:
+    try:
+        from .science_core import (
+            ask_socratic_questions,
+            default_literature_providers,
+            design_experiment,
+            finalize_idea,
+            generate_idea,
+            load_project,
+            run_socratic_hypothesis_debate,
+            run_tanxi_gap_exploration,
+            run_yanzhen_mechanism_verification,
+            run_zhizhi_literature_analysis,
+        )
+    except ImportError:
+        from science_core import (
+            ask_socratic_questions,
+            default_literature_providers,
+            design_experiment,
+            finalize_idea,
+            generate_idea,
+            load_project,
+            run_socratic_hypothesis_debate,
+            run_tanxi_gap_exploration,
+            run_yanzhen_mechanism_verification,
+            run_zhizhi_literature_analysis,
+        )
+
+    project = load_project(project_id)
+    if groupchat_id:
+        groupchat_spec = load_json(AUTOGEN_DIR / f"{groupchat_id}.json")
+    else:
+        groupchat_spec = json.loads(
+            create_autogen_groupchat(
+                project_id=project_id,
+                goal=goal or str(project.get("objective", "")),
+                max_round=max_round,
+                speaker_selection_method=speaker_selection_method,
+                human_input_mode=human_input_mode,
+                use_native_autogen=use_native_autogen,
+            )
+        )
+        groupchat_id = str(groupchat_spec.get("groupchat_id"))
+
+    run_id = new_autogen_run_id()
+    query = goal or str(project.get("objective") or project.get("domain") or project.get("title") or "")
+    domain = str(project.get("domain") or project.get("title") or "")
+    selected_providers = providers or default_literature_providers(domain=domain, query=query)
+    turns: list[dict[str, Any]] = []
+    state: dict[str, Any] = {
+        "project_id": project_id,
+        "groupchat_id": groupchat_id,
+        "goal": query,
+        "framework": "autogen_2_groupchat",
+        "hypothesis_id": "",
+        "draft_idea_id": "",
+        "final_decision": "not_started",
+    }
+
+    def record_turn(round_name: str, speaker: str, content: Any, status: str = "completed", error: str = "") -> None:
+        turns.append(
+            {
+                "round": round_name,
+                "speaker": speaker,
+                "status": status,
+                "content": safe_json_output(content),
+                "error": error,
+                "timestamp": time.time(),
+            }
+        )
+
+    log_event(
+        "AUTOGEN",
+        "groupchat_start",
+        groupchat_id=groupchat_id,
+        run_id=run_id,
+        project_id=project_id,
+        max_round=groupchat_spec.get("groupchat", {}).get("max_round"),
+    )
+    try:
+        if "zhizhi" in autogen_agent_keys(groupchat_spec):
+            output = json.loads(
+                run_zhizhi_literature_analysis(
+                    project_id=project_id,
+                    domain=domain,
+                    query=query,
+                    max_results=max_results,
+                    providers=selected_providers,
+                    import_top_k=import_top_k,
+                    use_llm=use_llm,
+                    live_coverage_check=True,
+                )
+            )
+            record_turn("round_0_literature_reading", "ZhiZhi_ToolAgent", summarize_output(output))
+            state["zhizhi_status"] = output.get("status", "completed")
+
+        if "tanxi" in autogen_agent_keys(groupchat_spec):
+            output = json.loads(run_tanxi_gap_exploration(project_id=project_id, target_domain=domain, max_gaps=10))
+            record_turn("round_0_gap_exploration", "TanXi_ToolAgent", summarize_output(output))
+            explicit_gaps = autogen_extract_ranked_gaps(output)
+            state["tanxi_gap_count"] = len(explicit_gaps)
+            state["best_gap_context"] = autogen_gap_context(explicit_gaps[:3])
+
+        if "mingli" in autogen_agent_keys(groupchat_spec):
+            gap_context = autogen_select_gap_for_mingli(state)
+            draft = json.loads(generate_idea(project_id=project_id, gap=gap_context, style="innovative", use_llm=use_llm))
+            state["draft_idea_id"] = str(draft.get("draft_idea_id") or "")
+            record_turn("round_1_proponent_position", "MingLi_AssistantAgent", summarize_output(draft))
+            experiment = json.loads(
+                design_experiment(
+                    project_id=project_id,
+                    idea_id=state["draft_idea_id"],
+                    constraints="academic lab scale; evidence-traceable; include baselines, ablations, regime shifts, and falsification criteria",
+                )
+            )
+            record_turn("round_3_methodology", "MingLi_AssistantAgent", summarize_output(experiment))
+            final = json.loads(
+                finalize_idea(
+                    project_id=project_id,
+                    idea_id=state["draft_idea_id"],
+                    live_search=live_search,
+                    providers=selected_providers,
+                )
+            )
+            record_turn("round_1_hypothesis_finalization", "MingLi_AssistantAgent", summarize_output(final), str(final.get("status") or "completed"))
+            state["hypothesis_id"] = str(final.get("hypothesis_id") or final.get("stored_hypothesis", {}).get("hypothesis_id") or "")
+            state["finalize_status"] = str(final.get("status") or "")
+
+        if "yanzhen" in autogen_agent_keys(groupchat_spec) and state.get("hypothesis_id"):
+            report = json.loads(
+                run_yanzhen_mechanism_verification(
+                    project_id=project_id,
+                    hypothesis_id=state["hypothesis_id"],
+                )
+            )
+            body = report.get("mechanism_fidelity_report", {})
+            record_turn("round_2_cawm_layer_1_2_and_round_3_layer_3", "YanZhen_ToolAgent", summarize_output(report), str(body.get("overall_verdict") or "completed"))
+            state["yanzhen_verdict"] = str(body.get("overall_verdict") or "")
+
+        if run_debate and {"duzhi", "bianlun"} & set(autogen_agent_keys(groupchat_spec)):
+            if state.get("hypothesis_id"):
+                debate = json.loads(
+                    run_socratic_hypothesis_debate(
+                        project_id=project_id,
+                        hypothesis_id=state["hypothesis_id"],
+                        max_rounds=min(clamp_int(max_round, 4, 40), 4),
+                        proponent_model_family=proponent_model_family,
+                        opponent_model_family=opponent_model_family,
+                        judge_model_family=judge_model_family,
+                        verifier_model_family=verifier_model_family,
+                    )
+                )
+                report = debate.get("debate_report", {})
+                record_turn("round_4_groupchat_synthesis", "BianLun_GroupChatManager", summarize_output(debate), str(report.get("final_decision") or "completed"))
+                state["final_decision"] = str(report.get("final_decision") or "debate_completed")
+            else:
+                critique = json.loads(
+                    ask_socratic_questions(
+                        project_id=project_id,
+                        hypothesis="No finalized hypothesis was available; critique the failed MingLi finalization and required evidence gates.",
+                    )
+                )
+                record_turn("round_2_missing_hypothesis_interrogation", "DuZhi_AssistantAgent", summarize_output(critique), "revision_required")
+                state["final_decision"] = "revision_required"
+
+        if state["final_decision"] == "not_started":
+            state["final_decision"] = "completed"
+    except Exception as exc:
+        record_turn("groupchat_error", "GroupChatManager", {}, "error", str(exc))
+        state["final_decision"] = "error"
+        state["error"] = str(exc)
+
+    run_record = {
+        "run_id": run_id,
+        "groupchat_id": groupchat_id,
+        "project_id": project_id,
+        "framework": "autogen_2_groupchat",
+        "groupchat_spec": groupchat_spec,
+        "state": state,
+        "messages": autogen_messages_from_turns(turns),
+        "turns": turns,
+        "createdAt": time.time(),
+        "native_autogen": native_autogen_status(use_native=use_native_autogen),
+        "next_step": autogen_next_step(state),
+    }
+    save_json(AUTOGEN_RUN_DIR / f"{run_id}.json", run_record)
+    log_event("AUTOGEN", "groupchat_end", groupchat_id=groupchat_id, run_id=run_id, decision=state.get("final_decision"))
+    return json.dumps(run_record, ensure_ascii=False, indent=2)
+
+
+def list_autogen_groupchats(project_id: str = "") -> str:
+    rows: list[dict[str, Any]] = []
+    for path in sorted(AUTOGEN_DIR.glob("agc_*.json")):
+        payload = load_json(path)
+        if project_id and payload.get("project_id") != project_id:
+            continue
+        rows.append(
+            {
+                "groupchat_id": payload.get("groupchat_id"),
+                "project_id": payload.get("project_id"),
+                "goal": payload.get("goal"),
+                "framework": payload.get("framework"),
+                "agents": [agent.get("name") for agent in payload.get("agents", [])],
+                "max_round": payload.get("groupchat", {}).get("max_round"),
+                "createdAt": payload.get("createdAt"),
+            }
+        )
+    return json.dumps(rows, ensure_ascii=False, indent=2)
+
+
+def get_autogen_run(run_id: str) -> str:
+    return json.dumps(load_json(AUTOGEN_RUN_DIR / f"{run_id}.json"), ensure_ascii=False, indent=2)
+
+
+def science_agent_to_autogen_agent(agent_key: str) -> dict[str, Any]:
+    try:
+        from .science_core import (
+            BIANLUN_FULL_PROMPT,
+            BOXUE_FULL_PROMPT,
+            DUZHI_FULL_PROMPT,
+            MINGLI_FULL_PROMPT,
+            SCIENCE_AGENTS,
+            YANZHEN_FULL_PROMPT,
+            ZHIZHI_FULL_PROMPT,
+        )
+    except ImportError:
+        from science_core import (
+            BIANLUN_FULL_PROMPT,
+            BOXUE_FULL_PROMPT,
+            DUZHI_FULL_PROMPT,
+            MINGLI_FULL_PROMPT,
+            SCIENCE_AGENTS,
+            YANZHEN_FULL_PROMPT,
+            ZHIZHI_FULL_PROMPT,
+        )
+    prompts = {
+        "boxue": BOXUE_FULL_PROMPT,
+        "zhizhi": ZHIZHI_FULL_PROMPT,
+        "tanxi": "You are TanXi, the Knowledge Gap Discovery AssistantAgent. Detect source-grounded, semantic-plausible, evidence-traceable gaps from PaperGraph.",
+        "mingli": MINGLI_FULL_PROMPT,
+        "yanzhen": YANZHEN_FULL_PROMPT,
+        "duzhi": DUZHI_FULL_PROMPT,
+        "bianlun": BIANLUN_FULL_PROMPT,
+    }
+    spec = SCIENCE_AGENTS.get(agent_key, {})
+    role_map = {
+        "boxue": "UserProxyAgent",
+        "zhizhi": "ToolAgent",
+        "tanxi": "ToolAgent",
+        "mingli": "AssistantAgent",
+        "yanzhen": "ToolAgent",
+        "duzhi": "AssistantAgent",
+        "bianlun": "GroupChatManager",
+    }
+    return {
+        "name": autogen_agent_name(agent_key),
+        "key": agent_key,
+        "autogen_type": role_map.get(agent_key, "AssistantAgent"),
+        "role": spec.get("title") or agent_key,
+        "goal": spec.get("mission") or f"Complete {agent_key} responsibilities.",
+        "system_message": prompts.get(agent_key, spec.get("mission", "")),
+        "llm_config_ref": autogen_llm_config_ref(agent_key),
+        "tools": spec.get("tools", []),
+    }
+
+
+def autogen_agent_name(agent_key: str) -> str:
+    return {
+        "boxue": "Boxue_UserProxy",
+        "zhizhi": "ZhiZhi_ToolAgent",
+        "tanxi": "TanXi_ToolAgent",
+        "mingli": "MingLi_Proponent",
+        "yanzhen": "YanZhen_ToolAgent",
+        "duzhi": "DuZhi_Opponent",
+        "bianlun": "BianLun_GroupChatManager",
+    }.get(agent_key, f"{agent_key}_AssistantAgent")
+
+
+def autogen_llm_config_ref(agent_key: str) -> str:
+    return {
+        "mingli": "qwen_proponent",
+        "duzhi": "external_critic",
+        "bianlun": "external_judge_or_manager",
+        "yanzhen": "external_verifier_or_tool",
+        "zhizhi": "tool_backed_retriever",
+        "tanxi": "tool_backed_gap_miner",
+        "boxue": "human_orchestrator_proxy",
+    }.get(agent_key, "qwen_default")
+
+
+def build_autogen_tool_registry() -> list[dict[str, str]]:
+    return [
+        {"name": "run_zhizhi_literature_analysis", "owner": "ZhiZhi_ToolAgent"},
+        {"name": "run_tanxi_gap_exploration", "owner": "TanXi_ToolAgent"},
+        {"name": "generate_idea", "owner": "MingLi_Proponent"},
+        {"name": "design_experiment", "owner": "MingLi_Proponent"},
+        {"name": "finalize_idea", "owner": "MingLi_Proponent"},
+        {"name": "run_yanzhen_mechanism_verification", "owner": "YanZhen_ToolAgent"},
+        {"name": "ask_socratic_questions", "owner": "DuZhi_Opponent"},
+        {"name": "run_socratic_hypothesis_debate", "owner": "BianLun_GroupChatManager"},
+    ]
+
+
+def build_socratic_groupchat_protocol() -> list[dict[str, Any]]:
+    return [
+        {"round": 0, "speaker": "ZhiZhi_ToolAgent", "objective": "Read literature and build PaperGraph evidence."},
+        {"round": 0, "speaker": "TanXi_ToolAgent", "objective": "Mine source-grounded gaps from PaperGraph."},
+        {"round": 1, "speaker": "MingLi_Proponent", "objective": "State and defend a gap-traceable hypothesis."},
+        {"round": 2, "speaker": "DuZhi_Opponent", "objective": "Ask Socratic clarification, causal, constraint, and counterexample questions."},
+        {"round": 2, "speaker": "YanZhen_ToolAgent", "objective": "Run CAWM Layer 1 and Layer 2 evidence checks."},
+        {"round": 3, "speaker": "MingLi_Proponent", "objective": "Present an experiment and falsification plan."},
+        {"round": 3, "speaker": "YanZhen_ToolAgent", "objective": "Run regime-shift CAWM Layer 3."},
+        {"round": 4, "speaker": "BianLun_GroupChatManager", "objective": "Synthesize refined hypothesis or revision decision."},
+    ]
+
+
+def native_autogen_status(*, use_native: bool) -> dict[str, Any]:
+    if not use_native:
+        return {
+            "requested": False,
+            "available": False,
+            "mode": "structured_groupchat_executor",
+            "reason": "Native AutoGen runtime disabled by default to control token use; v8 executes a deterministic GroupChat-compatible protocol.",
+        }
+    try:
+        import autogen_agentchat  # noqa: F401
+
+        return {"requested": True, "available": True, "mode": "native_autogen_agentchat_available"}
+    except Exception as exc:
+        try:
+            import autogen  # noqa: F401
+
+            return {"requested": True, "available": True, "mode": "native_autogen_legacy_available"}
+        except Exception:
+            return {"requested": True, "available": False, "mode": "structured_groupchat_executor", "reason": str(exc)}
+
+
+def normalize_agent_list(agents: list[str] | None) -> list[str]:
+    values = [normalize_key(item) for item in (agents or DEFAULT_AUTOGEN_AGENTS) if str(item).strip()]
+    return unique_preserve_order([agent for agent in values if agent])
+
+
+def autogen_agent_keys(groupchat_spec: dict[str, Any]) -> list[str]:
+    return [str(agent.get("key") or "").lower() for agent in groupchat_spec.get("agents", []) if isinstance(agent, dict)]
+
+
+def normalize_speaker_selection(value: str) -> str:
+    key = normalize_key(value)
+    if key in {"auto", "round_robin", "manual", "random"}:
+        return key
+    if key in {"roundrobin", "round-robin"}:
+        return "round_robin"
+    return "round_robin"
+
+
+def normalize_human_input_mode(value: str) -> str:
+    key = normalize_key(value).upper()
+    if key in {"ALWAYS", "TERMINATE", "NEVER"}:
+        return key
+    return "TERMINATE"
+
+
+def summarize_output(output: Any) -> Any:
+    if isinstance(output, dict):
+        keep = [
+            "status",
+            "project_id",
+            "search_id",
+            "hypothesis_id",
+            "final_decision",
+            "overall_verdict",
+            "next_step",
+            "import_plan",
+            "action",
+            "thought",
+        ]
+        summary = {key: output.get(key) for key in keep if key in output}
+        if "debate_report" in output and isinstance(output["debate_report"], dict):
+            summary["debate_report"] = {
+                "debate_id": output["debate_report"].get("debate_id"),
+                "final_decision": output["debate_report"].get("final_decision"),
+                "unresolved_issues": output["debate_report"].get("unresolved_issues", [])[:5],
+            }
+        if "mechanism_fidelity_report" in output and isinstance(output["mechanism_fidelity_report"], dict):
+            summary["mechanism_fidelity_report"] = {
+                "overall_verdict": output["mechanism_fidelity_report"].get("overall_verdict"),
+                "hypothesis_id": output["mechanism_fidelity_report"].get("hypothesis_id"),
+            }
+        return summary or trim_text(json.dumps(output, ensure_ascii=False), 2000)
+    return trim_text(str(output), 2000)
+
+
+def autogen_extract_ranked_gaps(tanxi_output: dict[str, Any]) -> list[dict[str, Any]]:
+    ranked = tanxi_output.get("ranked_gaps")
+    if isinstance(ranked, list):
+        return [item for item in ranked if isinstance(item, dict)]
+    fallback = tanxi_output.get("knowledge_gaps")
+    if isinstance(fallback, list):
+        return [item for item in fallback if isinstance(item, dict)]
+    return []
+
+
+def autogen_gap_context(gaps: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    compact: list[dict[str, Any]] = []
+    for gap in gaps:
+        compact.append(
+            {
+                "gap_id": gap.get("gap_id"),
+                "gap_type": gap.get("gap_type") or gap.get("type"),
+                "description": gap.get("description"),
+                "supporting_references": gap.get("supporting_references", [])[:5]
+                if isinstance(gap.get("supporting_references"), list)
+                else [],
+                "suggested_research_path": gap.get("suggested_research_path"),
+                "value_argument": gap.get("value_argument"),
+                "semantic_plausibility": gap.get("semantic_plausibility", {}),
+                "mechanism_issue_signal": gap.get("mechanism_issue_signal", {}),
+                "gap_signal": gap.get("gap_signal", {}),
+                "priority_score": gap.get("priority_score"),
+                "novelty_score": gap.get("novelty_score"),
+                "feasibility": gap.get("feasibility"),
+            }
+        )
+    return compact
+
+
+def autogen_select_gap_for_mingli(state: dict[str, Any]) -> dict[str, Any]:
+    gaps = state.get("best_gap_context")
+    if isinstance(gaps, list):
+        for gap in gaps:
+            if isinstance(gap, dict) and gap.get("description"):
+                return gap
+    state["mingli_gap_handoff"] = "no_explicit_gap_from_tanxi; using PaperGraph fallback inside MingLi"
+    return {}
+
+
+def autogen_messages_from_turns(turns: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    return [
+        {
+            "name": str(turn.get("speaker") or "unknown"),
+            "role": "assistant" if "UserProxy" not in str(turn.get("speaker") or "") else "user",
+            "content": json.dumps(turn.get("content", {}), ensure_ascii=False),
+            "round": turn.get("round"),
+            "status": turn.get("status"),
+        }
+        for turn in turns
+    ]
+
+
+def safe_json_output(value: Any) -> Any:
+    try:
+        json.dumps(value, ensure_ascii=False)
+        return value
+    except TypeError:
+        return str(value)
+
+
+def autogen_next_step(state: dict[str, Any]) -> str:
+    decision = str(state.get("final_decision") or "")
+    if decision == "accept_for_experiment":
+        return "Proceed to GeWu experiment planning or implementation."
+    if decision in {"revision_required", "revise", "human_review"}:
+        return "Inspect AutoGen GroupChat messages and regenerate or revise the hypothesis."
+    if decision == "error":
+        return "Inspect the failed AutoGen turn before retrying."
+    return "Review the AutoGen GroupChat run and decide whether to continue to experiment design."
+
+
+def load_json(path: Path) -> dict[str, Any]:
+    if not path.exists():
+        raise FileNotFoundError(str(path))
+    return json.loads(path.read_text(encoding="utf-8"))
+
+
+def save_json(path: Path, payload: dict[str, Any]) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
+
+
+def new_autogen_groupchat_id() -> str:
+    return f"agc_{time.time_ns()}"
+
+
+def new_autogen_run_id() -> str:
+    return f"agr_{time.time_ns()}"
+
+
+def normalize_key(value: Any) -> str:
+    return str(value or "").strip().lower().replace("-", "_").replace(" ", "_")
+
+
+def unique_preserve_order(values: list[str]) -> list[str]:
+    seen: set[str] = set()
+    result: list[str] = []
+    for value in values:
+        if value in seen:
+            continue
+        seen.add(value)
+        result.append(value)
+    return result
+
+
+def clamp_int(value: Any, low: int, high: int) -> int:
+    try:
+        parsed = int(value)
+    except Exception:
+        parsed = low
+    return max(low, min(high, parsed))
+
+
+def trim_text(text: str, limit: int) -> str:
+    if len(text) <= limit:
+        return text
+    return text[: max(0, limit - 15)] + "...[truncated]"

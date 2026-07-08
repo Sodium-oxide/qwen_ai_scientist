@@ -1,0 +1,13 @@
+{
+  "id": "task_1783513408791_9964",
+  "subject": "Boxue/mingli: Generate and evolve gap-grounded hypotheses",
+  "description": "Boxue delegation plan: boxue_1783513408735332800\nProject: 全钒液流电池 AutoGen 多Agent协作闭环验证 (sci_1783513399626838200)\nDomain: Vanadium Redox Flow Battery / Energy Storage / Electrochemical Engineering\nProject objective: 验证全钒液流电池领域中，基于文献证据的 gap 发现、假设生成、机制检验和辩论迭代闭环。\nRound goal: 围绕全钒液流电池，系统阅读高影响综述、里程碑电极材料与隔膜、最新顶刊关于性能衰减、容量恢复、电解液稳定性、高功率密度设计成果和相关预印本，构建 PaperGraph，识别真实机制 gap，生成可证伪科学假设，并通过 YanZhen 机制一致性检验与 DuZhi/BianLun 苏格拉底辩论进行迭代。\nAssigned agent: mingli\nPhase: Hypothesis Generation\nPriority: high\nAllowed/expected tools: evolve_domain_subspaces, build_temporal_knowledge_graph, detect_structural_knowledge_gaps, find_structural_analogy_transfers, check_semantic_plausibility, generate_idea, design_experiment, finalize_idea, run_mingli_hypothesis_evolution\n\nTask:\nGenerate falsifiable hypotheses from validated gaps and run tournament-style selection.\n\nDeliverable:\nTop hypotheses with mechanisms, expected value, lineage, and test plans.\n\nAcceptance criteria:\n- Each hypothesis links to a gap_id\n- Each hypothesis contains mechanism and falsification condition\n- Overlap/novelty risk is reported\n\nKnown risks to handle:\n- creative rephrasing without structural novelty\n- weak mechanism grounding\n\nRole boundary: complete only this specialist responsibility. Do not take over Boxue coordination, do not invent evidence, and mark unsupported claims for review.\nOutput should be compact structured JSON suitable for downstream agents.\n",
+  "status": "pending",
+  "owner": null,
+  "worktree": null,
+  "blockedBy": [
+    "task_1783513408765_1264"
+  ],
+  "createdAt": 1783513408.791913,
+  "updatedAt": 1783513408.8179815
+}

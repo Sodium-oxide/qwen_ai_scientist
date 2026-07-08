@@ -1,0 +1,1763 @@
+{
+  "thought": "ZhiZhi retrieved and filtered literature, imported grounded PaperGraph evidence, built a benchmark-aware knowledge map, expanded citation context when available, and generated gaps with novelty/value/feasibility checks.",
+  "action": {
+    "agent": "zhizhi",
+    "query": "click chemistry bioorthogonal chemistry review",
+    "domain": "Click Chemistry / Bioorthogonal Chemistry / Chemical Biology",
+    "years": "last 5 years",
+    "search_papers_stratified": {
+      "search_id": "search_1783512264027845000",
+      "total_results": 15,
+      "requested_max_results": 15,
+      "effective_search_budget": 15,
+      "providers": [
+        "semantic_scholar",
+        "pubmed",
+        "chemrxiv",
+        "biorxiv",
+        "medrxiv",
+        "arxiv"
+      ],
+      "strategy": "stratified_cascade",
+      "query_plan": [
+        {
+          "branch": "primary",
+          "query": "click chemistry bioorthogonal chemistry review"
+        },
+        {
+          "branch": "reaction_discovery_mechanism",
+          "query": "click chemistry bioorthogonal chemistry review mechanistic studies OR kinetic profiling OR DFT calculation OR transition state analysis AND (copper-catalyzed azide-alkyne cycloaddition OR SPAAC OR IEDDA OR tetrazine ligation)",
+          "topic_type": "branch"
+        },
+        {
+          "branch": "genetic_encoding_unnatural_amino_acid_incorporation",
+          "query": "click chemistry bioorthogonal chemistry review (genetic code expansion OR nonsense suppression OR pyrrolysyl-tRNA synthetase) AND (azide OR alkyne OR trans-cyclooctene OR selenocysteine)",
+          "topic_type": "branch"
+        },
+        {
+          "branch": "in_vivo_applications_live_cell_imaging",
+          "query": "click chemistry bioorthogonal chemistry review (live-cell imaging OR intracellular labeling OR zebrafish OR mouse model) AND (bioorthogonal probe OR metabolic labeling OR glycan imaging OR protein tracking)",
+          "topic_type": "branch"
+        },
+        {
+          "branch": "therapeutic_conjugation_targeted_delivery",
+          "query": "click chemistry bioorthogonal chemistry review (ADC OR antibody-drug conjugate OR pretargeted radioimmunotherapy OR PROTAC) AND (bioorthogonal ligation OR click-to-release OR traceless linkage)",
+          "topic_type": "branch"
+        },
+        {
+          "branch": "field_map_reviews",
+          "query": "Click Chemistry / Bioorthogonal Chemistry / Chemical Biology click chemistry bioorthogonal chemistry review review survey roadmap progress perspective systematic review",
+          "topic_type": "retrieval_facet"
+        },
+        {
+          "branch": "milestone_foundations",
+          "query": "Click Chemistry / Bioorthogonal Chemistry / Chemical Biology click chemistry bioorthogonal chemistry review seminal foundational highly cited landmark theory method mechanism",
+          "topic_type": "retrieval_facet"
+        },
+        {
+          "branch": "methods_and_mechanisms",
+          "query": "Click Chemistry / Bioorthogonal Chemistry / Chemical Biology click chemistry bioorthogonal chemistry review method model algorithm mechanism experiment framework",
+          "topic_type": "retrieval_facet"
+        },
+        {
+          "branch": "applications_systems_scenarios",
+          "query": "Click Chemistry / Bioorthogonal Chemistry / Chemical Biology click chemistry bioorthogonal chemistry review application system scenario case study deployment",
+          "topic_type": "retrieval_facet"
+        }
+      ],
+      "focus_branches": [],
+      "strata": [
+        {
+          "layer": "L0_review",
+          "label": "high-impact review / field map",
+          "quota": 3,
+          "query_suffix": "review survey progress perspective tutorial systematic review meta-analysis",
+          "target": 3,
+          "candidate_count": 44,
+          "raw_candidate_count": 72,
+          "selected": 3,
+          "domain_rejected": 7,
+          "recovery_used": "",
+          "carried_to_next": 0
+        },
+        {
+          "layer": "L1_milestone",
+          "label": "milestone / highly cited foundation",
+          "quota": 4,
+          "query_suffix": "seminal foundational highly cited landmark classic influential",
+          "target": 4,
+          "candidate_count": 1,
+          "raw_candidate_count": 33,
+          "selected": 1,
+          "domain_rejected": 0,
+          "recovery_used": "",
+          "carried_to_next": 3
+        },
+        {
+          "layer": "L2_top_latest",
+          "label": "recent top-venue frontier",
+          "quota": 4,
+          "query_suffix": "latest recent top journal high impact breakthrough advance frontier",
+          "target": 7,
+          "candidate_count": 3,
+          "raw_candidate_count": 33,
+          "selected": 3,
+          "domain_rejected": 0,
+          "recovery_used": "",
+          "carried_to_next": 4
+        },
+        {
+          "layer": "L3_preprint",
+          "label": "latest arXiv preprint frontier",
+          "quota": 1,
+          "query_suffix": "",
+          "target": 5,
+          "candidate_count": 49,
+          "raw_candidate_count": 49,
+          "selected": 5,
+          "domain_rejected": 3,
+          "recovery_used": "",
+          "carried_to_next": 0
+        },
+        {
+          "layer": "L4_regular",
+          "label": "regular journal / supplemental evidence",
+          "quota": 3,
+          "query_suffix": "",
+          "target": 3,
+          "candidate_count": 26,
+          "raw_candidate_count": 97,
+          "selected": 3,
+          "domain_rejected": 0,
+          "recovery_used": "",
+          "carried_to_next": 0
+        }
+      ],
+      "errors": [
+        {
+          "provider": "semantic_scholar",
+          "query": "click chemistry bioorthogonal chemistry review review survey progress perspective tutorial systematic review meta-analysis",
+          "status": "error",
+          "note": null,
+          "error": "HTTP 500: {\"message\": \"Internal Server Error\"}",
+          "result_count": 0
+        }
+      ]
+    },
+    "domain_coverage_diagnostic": {
+      "profile": "chemical_biology_researcher_seeking_foundational_and_recent_advances_in_click_an",
+      "profile_source": "llm",
+      "search_id": "search_1783512264027845000",
+      "total_results": 15,
+      "represented_topics": [],
+      "blind_spots": [
+        {
+          "topic": "CuAAC fundamentals and evolution",
+          "hit_count": 1,
+          "min_hits": 10,
+          "terms": [
+            "cuaac",
+            "catalyst design",
+            "ligand effects",
+            "biocompatibility limitations"
+          ],
+          "suggested_query": "click chemistry bioorthogonal chemistry review cuaac catalyst design ligand effects biocompatibility limitations",
+          "risk": "Live probe found literature for this missing branch; current PaperGraph may be incomplete, so TanXi should not treat this absence as a true unexplored gap.",
+          "live_probe": {
+            "query": "click chemistry bioorthogonal chemistry review cuaac catalyst design ligand effects biocompatibility limitations",
+            "status": "ok",
+            "total_results": 15,
+            "providers": [
+              {
+                "provider": "semantic_scholar",
+                "status": "ok",
+                "result_count": 3,
+                "top_titles": [
+                  "Ligand tricks for faster clicks: bioconjugation via the CuAAC reaction.",
+                  "Liposome functionalization with copper-free \"click chemistry\".",
+                  "Surface modification and scan imaging of upconverting nanoparticles"
+                ],
+                "error": ""
+              },
+              {
+                "provider": "pubmed",
+                "status": "ok",
+                "result_count": 0,
+                "top_titles": [],
+                "error": ""
+              },
+              {
+                "provider": "chemrxiv",
+                "status": "ok",
+                "result_count": 3,
+                "top_titles": [
+                  "Biointerface Implications of Bioorthogonal Click-to-Release Chemistry",
+                  "Unfolding Potential of Click Chemistry inBioconjugation: A Review",
+                  "Organotitanium Click Chemistry"
+                ],
+                "error": ""
+              },
+              {
+                "provider": "biorxiv",
+                "status": "ok",
+                "result_count": 3,
+                "top_titles": [
+                  "Electrophysiological Mechanisms of Psychedelic Drugs: A Systematic Review",
+                  "Brain-epigenome wide association study (BEWAS) on the effects of two emerging psychedelics: ketamine & MDMA",
+                  "Navigating parasite antigen genetic diversity in the design of Plasmodium vivax serological exposure markers for malaria"
+                ],
+                "error": ""
+              },
+              {
+                "provider": "medrxiv",
+                "status": "ok",
+                "result_count": 3,
+                "top_titles": [
+                  "Neuromodulation with Ultrasound: Hypotheses on the Directionality of Effects and a Community Resource",
+                  "Optimizing Art Viewing for Anxiety Reduction: A Systematic Literature Review",
+                  "Effects of high-intensity interval training in the treatment of women with lipedema: a randomized controlled crossover t...[truncated]"
+                ],
+                "error": ""
+              },
+              {
+                "provider": "arxiv",
+                "status": "ok",
+                "result_count": 3,
+                "top_titles": [
+                  "Guest Editorial: Special Topic on Data-enabled Theoretical Chemistry",
+                  "ChemPro: A Progressive Chemistry Benchmark for Large Language Models",
+                  "Evaluating Large Language Models on Multimodal Chemistry Olympiad Exams"
+                ],
+                "error": ""
+              }
+            ]
+          },
+          "false_negative_risk": true
+        },
+        {
+          "topic": "Copper-free bioorthogonal platforms",
+          "hit_count": 4,
+          "min_hits": 10,
+          "terms": [
+            "spaac",
+            "tetrazine ligation",
+            "tco",
+            "iedda",
+            "strain-release"
+          ],
+          "suggested_query": "click chemistry bioorthogonal chemistry review spaac tetrazine ligation tco iedda",
+          "risk": "Live probe found literature for this missing branch; current PaperGraph may be incomplete, so TanXi should not treat this absence as a true unexplored gap.",
+          "live_probe": {
+            "query": "click chemistry bioorthogonal chemistry review spaac tetrazine ligation tco iedda",
+            "status": "ok",
+            "total_results": 16,
+            "providers": [
+              {
+                "provider": "semantic_scholar",
+                "status": "ok",
+                "result_count": 3,
+                "top_titles": [
+                  "Tetrazine-trans-cyclooctene ligation: Unveiling the chemistry and applications within the human body.",
+                  "Smart Biointerfaces via Click Chemistry-Enabled Nanopatterning of Multiple Bioligands and DNA Force Sensors",
+                  "Progress in bioorthogonal chemistry for prodrug activation and imaging."
+                ],
+                "error": ""
+              },
+              {
+                "provider": "pubmed",
+                "status": "ok",
+                "result_count": 1,
+                "top_titles": [
+                  "IEDDA: An Attractive Bioorthogonal Reaction for Biomedical Applications."
+                ],
+                "error": ""
+              },
+              {
+                "provider": "chemrxiv",
+                "status": "ok",
+                "result_count": 3,
+                "top_titles": [
+                  "[68Ga]Ga-THP-Tetrazine for bioorthogonal click radiolabelling: Pretargeted PET imaging of liposomal nanomedicines",
+                  "Biointerface Implications of Bioorthogonal Click-to-Release Chemistry",
+                  "Chemo-Click: Receptor-Controlled and Bioorthogonal Chemokine Ligation for Real-time Imaging of Drug-Resistant Leukemic B...[truncated]"
+                ],
+                "error": ""
+              },
+              {
+                "provider": "biorxiv",
+                "status": "ok",
+                "result_count": 3,
+                "top_titles": [
+                  "Electrophysiological Mechanisms of Psychedelic Drugs: A Systematic Review",
+                  "Most science is published from countries lacking in democracy and freedom of press",
+                  "Life history evolution of insects in response to climate variation: seasonal timing versus thermal physiology"
+                ],
+                "error": ""
+              },
+              {
+                "provider": "medrxiv",
+                "status": "ok",
+                "result_count": 3,
+                "top_titles": [
+                  "Optimizing Art Viewing for Anxiety Reduction: A Systematic Literature Review",
+                  "Interactions Among Tumor Subtype, PPARγ Expression, and Adipose Proliferation Shape Outcomes in Breast Cancer",
+                  "Neuromodulation with Ultrasound: Hypotheses on the Directionality of Effects and a Community Resource"
+                ],
+                "error": ""
+              },
+              {
+                "provider": "arxiv",
+                "status": "ok",
+                "result_count": 3,
+                "top_titles": [
+                  "Guest Editorial: Special Topic on Data-enabled Theoretical Chemistry",
+                  "ChemPro: A Progressive Chemistry Benchmark for Large Language Models",
+                  "Evaluating Large Language Models on Multimodal Chemistry Olympiad Exams"
+                ],
+                "error": ""
+              }
+            ]
+          },
+          "false_negative_risk": true
+        },
+        {
+          "topic": "Reaction kinetics and orthogonality metrics",
+          "hit_count": 1,
+          "min_hits": 10,
+          "terms": [
+            "rate constant",
+            "k2",
+            "cross-reactivity",
+            "pairwise orthogonality",
+            "multiplexing"
+          ],
+          "suggested_query": "click chemistry bioorthogonal chemistry review rate constant k2 cross-reactivity pairwise orthogonality",
+          "risk": "Live probe found literature for this missing branch; current PaperGraph may be incomplete, so TanXi should not treat this absence as a true unexplored gap.",
+          "live_probe": {
+            "query": "click chemistry bioorthogonal chemistry review rate constant k2 cross-reactivity pairwise orthogonality",
+            "status": "ok",
+            "total_results": 12,
+            "providers": [
+              {
+                "provider": "semantic_scholar",
+                "status": "ok",
+                "result_count": 0,
+                "top_titles": [],
+                "error": ""
+              },
+              {
+                "provider": "pubmed",
+                "status": "ok",
+                "result_count": 0,
+                "top_titles": [],
+                "error": ""
+              },
+              {
+                "provider": "chemrxiv",
+                "status": "ok",
+                "result_count": 3,
+                "top_titles": [
+                  "Biointerface Implications of Bioorthogonal Click-to-Release Chemistry",
+                  "Unfolding Potential of Click Chemistry inBioconjugation: A Review",
+                  "Lipophilicity and Click Reactivity Determine the Performance of Bioorthogonal Tetrazine Tools in Pretargeted in Vivo Che...[truncated]"
+                ],
+                "error": ""
+              },
+              {
+                "provider": "biorxiv",
+                "status": "ok",
+                "result_count": 3,
+                "top_titles": [
+                  "Electrophysiological Mechanisms of Psychedelic Drugs: A Systematic Review",
+                  "mRNABench: A curated benchmark for mature mRNA property and function prediction",
+                  "Life history evolution of insects in response to climate variation: seasonal timing versus thermal physiology"
+                ],
+                "error": ""
+              },
+              {
+                "provider": "medrxiv",
+                "status": "ok",
+                "result_count": 3,
+                "top_titles": [
+                  "Optimizing Art Viewing for Anxiety Reduction: A Systematic Literature Review",
+                  "Digenic inheritance of mutations in SPG7 and AFG3L2 causes motor neuron and cerebellar disorders",
+                  "Non-autoimmune diabetes in young people from Assam, India: the PHENOEINDY 2 study"
+                ],
+                "error": ""
+              },
+              {
+                "provider": "arxiv",
+                "status": "ok",
+                "result_count": 3,
+                "top_titles": [
+                  "Guest Editorial: Special Topic on Data-enabled Theoretical Chemistry",
+                  "ChemPro: A Progressive Chemistry Benchmark for Large Language Models",
+                  "Evaluating Large Language Models on Multimodal Chemistry Olympiad Exams"
+                ],
+                "error": ""
+              }
+            ]
+          },
+          "false_negative_risk": true
+        },
+        {
+          "topic": "Translational applications in biomedicine",
+          "hit_count": 0,
+          "min_hits": 10,
+          "terms": [
+            "adc",
+            "pretargeted therapy",
+            "in vivo imaging",
+            "toxicity mitigation",
+            "clinical translation"
+          ],
+          "suggested_query": "click chemistry bioorthogonal chemistry review adc pretargeted therapy in vivo imaging toxicity mitigation",
+          "risk": "Live probe found literature for this missing branch; current PaperGraph may be incomplete, so TanXi should not treat this absence as a true unexplored gap.",
+          "live_probe": {
+            "query": "click chemistry bioorthogonal chemistry review adc pretargeted therapy in vivo imaging toxicity mitigation",
+            "status": "ok",
+            "total_results": 13,
+            "providers": [
+              {
+                "provider": "semantic_scholar",
+                "status": "ok",
+                "result_count": 1,
+                "top_titles": [
+                  "0595 TITLE : Prostate-Specific Membrane Antigen ( PSMA ) Targeted Bio-orthogonal Therapy for Metastatic Prostate Cancer"
+                ],
+                "error": ""
+              },
+              {
+                "provider": "pubmed",
+                "status": "ok",
+                "result_count": 0,
+                "top_titles": [],
+                "error": ""
+              },
+              {
+                "provider": "chemrxiv",
+                "status": "ok",
+                "result_count": 3,
+                "top_titles": [
+                  "[68Ga]Ga-THP-Tetrazine for bioorthogonal click radiolabelling: Pretargeted PET imaging of liposomal nanomedicines",
+                  "Biointerface Implications of Bioorthogonal Click-to-Release Chemistry",
+                  "Lipophilicity and Click Reactivity Determine the Performance of Bioorthogonal Tetrazine Tools in Pretargeted in Vivo Che...[truncated]"
+                ],
+                "error": ""
+              },
+              {
+                "provider": "biorxiv",
+                "status": "ok",
+                "result_count": 3,
+                "top_titles": [
+                  "Electrophysiological Mechanisms of Psychedelic Drugs: A Systematic Review",
+                  "The neuroimaging correlates of depression established across six large-scale datasets",
+                  "Most science is published from countries lacking in democracy and freedom of press"
+                ],
+                "error": ""
+              },
+              {
+                "provider": "medrxiv",
+                "status": "ok",
+                "result_count": 3,
+                "top_titles": [
+                  "Optimizing Art Viewing for Anxiety Reduction: A Systematic Literature Review",
+                  "Effects of high-intensity interval training in the treatment of women with lipedema: a randomized controlled crossover t...[truncated]",
+                  "Neuromodulation with Ultrasound: Hypotheses on the Directionality of Effects and a Community Resource"
+                ],
+                "error": ""
+              },
+              {
+                "provider": "arxiv",
+                "status": "ok",
+                "result_count": 3,
+                "top_titles": [
+                  "Guest Editorial: Special Topic on Data-enabled Theoretical Chemistry",
+                  "ChemPro: A Progressive Chemistry Benchmark for Large Language Models",
+                  "Evaluating Large Language Models on Multimodal Chemistry Olympiad Exams"
+                ],
+                "error": ""
+              }
+            ]
+          },
+          "false_negative_risk": true
+        }
+      ],
+      "live_validate": true,
+      "live_probe_reports": [
+        {
+          "query": "click chemistry bioorthogonal chemistry review cuaac catalyst design ligand effects biocompatibility limitations",
+          "status": "ok",
+          "total_results": 15,
+          "providers": [
+            {
+              "provider": "semantic_scholar",
+              "status": "ok",
+              "result_count": 3,
+              "top_titles": [
+                "Ligand tricks for faster clicks: bioconjugation via the CuAAC reaction.",
+                "Liposome functionalization with copper-free \"click chemistry\".",
+                "Surface modification and scan imaging of upconverting nanoparticles"
+              ],
+              "error": ""
+            },
+            {
+              "provider": "pubmed",
+              "status": "ok",
+              "result_count": 0,
+              "top_titles": [],
+              "error": ""
+            },
+            {
+              "provider": "chemrxiv",
+              "status": "ok",
+              "result_count": 3,
+              "top_titles": [
+                "Biointerface Implications of Bioorthogonal Click-to-Release Chemistry",
+                "Unfolding Potential of Click Chemistry inBioconjugation: A Review",
+                "Organotitanium Click Chemistry"
+              ],
+              "error": ""
+            },
+            {
+              "provider": "biorxiv",
+              "status": "ok",
+              "result_count": 3,
+              "top_titles": [
+                "Electrophysiological Mechanisms of Psychedelic Drugs: A Systematic Review",
+                "Brain-epigenome wide association study (BEWAS) on the effects of two emerging psychedelics: ketamine & MDMA",
+                "Navigating parasite antigen genetic diversity in the design of Plasmodium vivax serological exposure markers for malaria"
+              ],
+              "error": ""
+            },
+            {
+              "provider": "medrxiv",
+              "status": "ok",
+              "result_count": 3,
+              "top_titles": [
+                "Neuromodulation with Ultrasound: Hypotheses on the Directionality of Effects and a Community Resource",
+                "Optimizing Art Viewing for Anxiety Reduction: A Systematic Literature Review",
+                "Effects of high-intensity interval training in the treatment of women with lipedema: a randomized controlled crossover t...[truncated]"
+              ],
+              "error": ""
+            },
+            {
+              "provider": "arxiv",
+              "status": "ok",
+              "result_count": 3,
+              "top_titles": [
+                "Guest Editorial: Special Topic on Data-enabled Theoretical Chemistry",
+                "ChemPro: A Progressive Chemistry Benchmark for Large Language Models",
+                "Evaluating Large Language Models on Multimodal Chemistry Olympiad Exams"
+              ],
+              "error": ""
+            }
+          ]
+        },
+        {
+          "query": "click chemistry bioorthogonal chemistry review spaac tetrazine ligation tco iedda",
+          "status": "ok",
+          "total_results": 16,
+          "providers": [
+            {
+              "provider": "semantic_scholar",
+              "status": "ok",
+              "result_count": 3,
+              "top_titles": [
+                "Tetrazine-trans-cyclooctene ligation: Unveiling the chemistry and applications within the human body.",
+                "Smart Biointerfaces via Click Chemistry-Enabled Nanopatterning of Multiple Bioligands and DNA Force Sensors",
+                "Progress in bioorthogonal chemistry for prodrug activation and imaging."
+              ],
+              "error": ""
+            },
+            {
+              "provider": "pubmed",
+              "status": "ok",
+              "result_count": 1,
+              "top_titles": [
+                "IEDDA: An Attractive Bioorthogonal Reaction for Biomedical Applications."
+              ],
+              "error": ""
+            },
+            {
+              "provider": "chemrxiv",
+              "status": "ok",
+              "result_count": 3,
+              "top_titles": [
+                "[68Ga]Ga-THP-Tetrazine for bioorthogonal click radiolabelling: Pretargeted PET imaging of liposomal nanomedicines",
+                "Biointerface Implications of Bioorthogonal Click-to-Release Chemistry",
+                "Chemo-Click: Receptor-Controlled and Bioorthogonal Chemokine Ligation for Real-time Imaging of Drug-Resistant Leukemic B...[truncated]"
+              ],
+              "error": ""
+            },
+            {
+              "provider": "biorxiv",
+              "status": "ok",
+              "result_count": 3,
+              "top_titles": [
+                "Electrophysiological Mechanisms of Psychedelic Drugs: A Systematic Review",
+                "Most science is published from countries lacking in democracy and freedom of press",
+                "Life history evolution of insects in response to climate variation: seasonal timing versus thermal physiology"
+              ],
+              "error": ""
+            },
+            {
+              "provider": "medrxiv",
+              "status": "ok",
+              "result_count": 3,
+              "top_titles": [
+                "Optimizing Art Viewing for Anxiety Reduction: A Systematic Literature Review",
+                "Interactions Among Tumor Subtype, PPARγ Expression, and Adipose Proliferation Shape Outcomes in Breast Cancer",
+                "Neuromodulation with Ultrasound: Hypotheses on the Directionality of Effects and a Community Resource"
+              ],
+              "error": ""
+            },
+            {
+              "provider": "arxiv",
+              "status": "ok",
+              "result_count": 3,
+              "top_titles": [
+                "Guest Editorial: Special Topic on Data-enabled Theoretical Chemistry",
+                "ChemPro: A Progressive Chemistry Benchmark for Large Language Models",
+                "Evaluating Large Language Models on Multimodal Chemistry Olympiad Exams"
+              ],
+              "error": ""
+            }
+          ]
+        },
+        {
+          "query": "click chemistry bioorthogonal chemistry review rate constant k2 cross-reactivity pairwise orthogonality",
+          "status": "ok",
+          "total_results": 12,
+          "providers": [
+            {
+              "provider": "semantic_scholar",
+              "status": "ok",
+              "result_count": 0,
+              "top_titles": [],
+              "error": ""
+            },
+            {
+              "provider": "pubmed",
+              "status": "ok",
+              "result_count": 0,
+              "top_titles": [],
+              "error": ""
+            },
+            {
+              "provider": "chemrxiv",
+              "status": "ok",
+              "result_count": 3,
+              "top_titles": [
+                "Biointerface Implications of Bioorthogonal Click-to-Release Chemistry",
+                "Unfolding Potential of Click Chemistry inBioconjugation: A Review",
+                "Lipophilicity and Click Reactivity Determine the Performance of Bioorthogonal Tetrazine Tools in Pretargeted in Vivo Che...[truncated]"
+              ],
+              "error": ""
+            },
+            {
+              "provider": "biorxiv",
+              "status": "ok",
+              "result_count": 3,
+              "top_titles": [
+                "Electrophysiological Mechanisms of Psychedelic Drugs: A Systematic Review",
+                "mRNABench: A curated benchmark for mature mRNA property and function prediction",
+                "Life history evolution of insects in response to climate variation: seasonal timing versus thermal physiology"
+              ],
+              "error": ""
+            },
+            {
+              "provider": "medrxiv",
+              "status": "ok",
+              "result_count": 3,
+              "top_titles": [
+                "Optimizing Art Viewing for Anxiety Reduction: A Systematic Literature Review",
+                "Digenic inheritance of mutations in SPG7 and AFG3L2 causes motor neuron and cerebellar disorders",
+                "Non-autoimmune diabetes in young people from Assam, India: the PHENOEINDY 2 study"
+              ],
+              "error": ""
+            },
+            {
+              "provider": "arxiv",
+              "status": "ok",
+              "result_count": 3,
+              "top_titles": [
+                "Guest Editorial: Special Topic on Data-enabled Theoretical Chemistry",
+                "ChemPro: A Progressive Chemistry Benchmark for Large Language Models",
+                "Evaluating Large Language Models on Multimodal Chemistry Olympiad Exams"
+              ],
+              "error": ""
+            }
+          ]
+        },
+        {
+          "query": "click chemistry bioorthogonal chemistry review adc pretargeted therapy in vivo imaging toxicity mitigation",
+          "status": "ok",
+          "total_results": 13,
+          "providers": [
+            {
+              "provider": "semantic_scholar",
+              "status": "ok",
+              "result_count": 1,
+              "top_titles": [
+                "0595 TITLE : Prostate-Specific Membrane Antigen ( PSMA ) Targeted Bio-orthogonal Therapy for Metastatic Prostate Cancer"
+              ],
+              "error": ""
+            },
+            {
+              "provider": "pubmed",
+              "status": "ok",
+              "result_count": 0,
+              "top_titles": [],
+              "error": ""
+            },
+            {
+              "provider": "chemrxiv",
+              "status": "ok",
+              "result_count": 3,
+              "top_titles": [
+                "[68Ga]Ga-THP-Tetrazine for bioorthogonal click radiolabelling: Pretargeted PET imaging of liposomal nanomedicines",
+                "Biointerface Implications of Bioorthogonal Click-to-Release Chemistry",
+                "Lipophilicity and Click Reactivity Determine the Performance of Bioorthogonal Tetrazine Tools in Pretargeted in Vivo Che...[truncated]"
+              ],
+              "error": ""
+            },
+            {
+              "provider": "biorxiv",
+              "status": "ok",
+              "result_count": 3,
+              "top_titles": [
+                "Electrophysiological Mechanisms of Psychedelic Drugs: A Systematic Review",
+                "The neuroimaging correlates of depression established across six large-scale datasets",
+                "Most science is published from countries lacking in democracy and freedom of press"
+              ],
+              "error": ""
+            },
+            {
+              "provider": "medrxiv",
+              "status": "ok",
+              "result_count": 3,
+              "top_titles": [
+                "Optimizing Art Viewing for Anxiety Reduction: A Systematic Literature Review",
+                "Effects of high-intensity interval training in the treatment of women with lipedema: a randomized controlled crossover t...[truncated]",
+                "Neuromodulation with Ultrasound: Hypotheses on the Directionality of Effects and a Community Resource"
+              ],
+              "error": ""
+            },
+            {
+              "provider": "arxiv",
+              "status": "ok",
+              "result_count": 3,
+              "top_titles": [
+                "Guest Editorial: Special Topic on Data-enabled Theoretical Chemistry",
+                "ChemPro: A Progressive Chemistry Benchmark for Large Language Models",
+                "Evaluating Large Language Models on Multimodal Chemistry Olympiad Exams"
+              ],
+              "error": ""
+            }
+          ]
+        }
+      ],
+      "coverage_warning": true,
+      "needs_user_branch_confirmation": true
+    },
+    "user_interaction": {
+      "needed": true,
+      "type": "research_branch_confirmation",
+      "question": "Some major sub-branches appear missing from the current retrieval. Which should be prioritized for a supplemental search before treating gaps as real?",
+      "options": [
+        {
+          "label": "CuAAC fundamentals and evolution",
+          "suggested_query": "click chemistry bioorthogonal chemistry review cuaac catalyst design ligand effects biocompatibility limitations",
+          "live_evidence_count": 15,
+          "false_negative_risk": true
+        },
+        {
+          "label": "Copper-free bioorthogonal platforms",
+          "suggested_query": "click chemistry bioorthogonal chemistry review spaac tetrazine ligation tco iedda",
+          "live_evidence_count": 16,
+          "false_negative_risk": true
+        },
+        {
+          "label": "Reaction kinetics and orthogonality metrics",
+          "suggested_query": "click chemistry bioorthogonal chemistry review rate constant k2 cross-reactivity pairwise orthogonality",
+          "live_evidence_count": 12,
+          "false_negative_risk": true
+        },
+        {
+          "label": "Translational applications in biomedicine",
+          "suggested_query": "click chemistry bioorthogonal chemistry review adc pretargeted therapy in vivo imaging toxicity mitigation",
+          "live_evidence_count": 13,
+          "false_negative_risk": true
+        }
+      ],
+      "default_action": "Run supplemental stratified search for options with false_negative_risk=true, or ask the user to pick 2-3 priority branches.",
+      "continue_with": "Pass selected option labels or custom branch keywords as focus_branches to run_zhizhi_literature_analysis/search_papers_stratified."
+    },
+    "select_literature_result": {
+      "result_index": 0,
+      "stratified_layer": "L1_milestone",
+      "stratified_label": "milestone / highly cited foundation",
+      "query_branch": "primary",
+      "retrieval_query": "click chemistry bioorthogonal chemistry review",
+      "_why_selected": "Selected as milestone/high-impact paper: Click and Bioorthogonal Chemistry: The Future of Active Targeting of Nanoparticles for Nanomedicines?; citations=189; year=2021; venue=Chemical Reviews; quality=1.0.",
+      "domain_relevance": {
+        "profile": "click_chemistry_bioorthogonal_chemistry_chemical_biology",
+        "target_field": "general",
+        "result_field": "chemistry",
+        "score": 0.81,
+        "query_hits": [
+          "click",
+          "chemistry",
+          "bioorthogonal",
+          "review"
+        ],
+        "anchor_hits": [
+          "click",
+          "chemistry",
+          "bioorthogonal",
+          "chemical"
+        ],
+        "topic_hits": [],
+        "noise_hits": [],
+        "flags": [
+          "core_domain_hit"
+        ],
+        "is_preprint": false,
+        "core_domain_alignment": {
+          "enabled": true,
+          "passes": true,
+          "core_terms": [
+            "click chemistry bioorthogonal",
+            "chemistry bioorthogonal chemical",
+            "bioorthogonal chemical biology",
+            "chemical biology review",
+            "click chemistry",
+            "chemistry bioorthogonal",
+            "bioorthogonal chemical",
+            "chemical biology",
+            "biology review",
+            "click",
+            "chemistry",
+            "bioorthogonal",
+            "chemical",
+            "biology"
+          ],
+          "core_hit_count": 5,
+          "core_hits": [
+            "click chemistry",
+            "click",
+            "chemistry",
+            "bioorthogonal",
+            "chemical"
+          ],
+          "specific_terms": [
+            "click chemistry bioorthogonal",
+            "chemistry bioorthogonal chemical",
+            "bioorthogonal chemical biology",
+            "chemical biology review",
+            "click chemistry",
+            "chemistry bioorthogonal",
+            "bioorthogonal chemical",
+            "chemical biology",
+            "biology review",
+            "chemistry",
+            "bioorthogonal",
+            "chemical"
+          ],
+          "specific_hit_count": 4,
+          "specific_hits": [
+            "click chemistry",
+            "chemistry",
+            "bioorthogonal",
+            "chemical"
+          ],
+          "min_core_hits": 3,
+          "min_specific_hits": 2,
+          "is_preprint": false,
+          "reason": "core topic terms sufficiently covered"
+        },
+        "verdict": "keep",
+        "requires_human_review": false
+      },
+      "relevance_score": 0.8303,
+      "relevance_components": {
+        "text_score": 0.82,
+        "recency_score": 0.7,
+        "impact_score": 0.844,
+        "citation_field": "chemistry",
+        "citation_baseline": 500.0,
+        "venue_score": 1.0,
+        "publication_quality_score": 1.0,
+        "base_score": 0.8303,
+        "text_weight": 0.62,
+        "recency_weight": 0.1,
+        "impact_weight": 0.18,
+        "venue_weight": 0.1
+      },
+      "publication_quality_score": 1.0,
+      "venue_quality": "reputable",
+      "journal_quartile": "Q1",
+      "journal_metric_source": "curated",
+      "inferred_field": "chemistry",
+      "quality_flags": [
+        "journal_quartile_q1",
+        "reputable_venue",
+        "well_cited"
+      ],
+      "quality_criteria": [
+        "venue matched curated journal metric table: Q1",
+        "citation count exceeds medium/high threshold"
+      ],
+      "suspicion_type": "",
+      "is_review_like": true,
+      "pyramid_root_score": 1.5869,
+      "matched_query_terms": [
+        "click",
+        "chemistry",
+        "bioorthogonal",
+        "review"
+      ],
+      "title": "Click and Bioorthogonal Chemistry: The Future of Active Targeting of Nanoparticles for Nanomedicines?",
+      "citation": "L. Taiariol et al. (2021) Click and Bioorthogonal Chemistry: The Future of Active Targeting of Nanoparticles for Nanomedicines? doi:10.1021/acs.chemrev.1c00484",
+      "provider": "semantic_scholar",
+      "year": "2021",
+      "citation_count": 189,
+      "influential_citation_count": 1,
+      "doi": "10.1021/acs.chemrev.1c00484",
+      "arxiv_id": "",
+      "url": "https://www.semanticscholar.org/paper/af885fef0f059a6bb59408f55a3a4dd3e1499070",
+      "relevance_reason": "title=3/4, abstract=4/4, citation=3/4, phrase_bonus=0.0, recency=0.7, impact=0.844, venue=1.0, quality=1.0",
+      "quality_reason": "venue matched curated journal metric table: Q1; citation count exceeds medium/high threshold"
+    },
+    "stratified_import_plan": {
+      "strategy": "layer_minimum_then_score_backfill",
+      "requested_import_top_k": 10,
+      "effective_import_top_k": 10,
+      "min_per_layer": {
+        "L0_review": 2,
+        "L1_milestone": 2,
+        "L2_top_latest": 2,
+        "L3_preprint": 2,
+        "L4_regular": 2
+      },
+      "candidate_counts_by_layer": {
+        "L0_review": 3,
+        "L1_milestone": 1,
+        "L2_top_latest": 3,
+        "L3_preprint": 5,
+        "L4_regular": 3
+      },
+      "selected_counts_by_layer": {
+        "L0_review": 2,
+        "L1_milestone": 1,
+        "L2_top_latest": 3,
+        "L3_preprint": 2,
+        "L4_regular": 2
+      },
+      "missing_layers": [
+        {
+          "layer": "L1_milestone",
+          "label": "milestone / highly cited foundation",
+          "target": 2,
+          "selected": 1,
+          "candidates": 1
+        }
+      ],
+      "selected_result_indexes": [
+        0,
+        1,
+        3,
+        4,
+        5,
+        7,
+        8,
+        12,
+        14,
+        6
+      ]
+    },
+    "imported_records": 10,
+    "expand_literature_graph": {
+      "graph_search_id": "graph_1783512616485815000",
+      "total_results": 10,
+      "fallback_used": false,
+      "depth": 1
+    },
+    "build_literature_relation_graph": {
+      "relation_graph_id": "relgraph_1783512620930337400",
+      "cluster_count": 8,
+      "edge_summary": {
+        "total_edges": 10,
+        "citation_graph_edges": 10,
+        "artificial_edges": 0,
+        "by_relation": {
+          "citation": 10
+        },
+        "by_depth": {
+          "1": 10
+        },
+        "fallback_weight_policy": "keyword_fallback/search_result edges are artificial and use very low PageRank weight."
+      },
+      "analysis_confidence": 1.0
+    }
+  },
+  "observation": [
+    "Potential retrieval blind spot: CuAAC fundamentals and evolution was not represented in retrieved/imported candidates; suggested query: click chemistry bioorthogonal chemistry review cuaac catalyst design ligand effects biocompatibility limitations; live_probe_results=15",
+    "Potential retrieval blind spot: Copper-free bioorthogonal platforms was not represented in retrieved/imported candidates; suggested query: click chemistry bioorthogonal chemistry review spaac tetrazine ligation tco iedda; live_probe_results=16",
+    "Potential retrieval blind spot: Reaction kinetics and orthogonality metrics was not represented in retrieved/imported candidates; suggested query: click chemistry bioorthogonal chemistry review rate constant k2 cross-reactivity pairwise orthogonality; live_probe_results=12",
+    "Potential retrieval blind spot: Translational applications in biomedicine was not represented in retrieved/imported candidates; suggested query: click chemistry bioorthogonal chemistry review adc pretargeted therapy in vivo imaging toxicity mitigation; live_probe_results=13",
+    "Layer import target not met: L1_milestone selected=1/target=2 from candidates=1. This indicates retrieval/candidate scarcity rather than top-K truncation."
+  ],
+  "knowledge_map_summary": {
+    "main_methods": [
+      "[3+2] cycloaddition",
+      "bioorthogonal click chemistry",
+      "bioorthogonal click-to-release chemistry",
+      "click chemistry",
+      "click chemistry | bioorthogonal chemistry",
+      "computational screening",
+      "design and synthesis of iTCO (intramolecularly controlled trans-cyclooctene) linker",
+      "electrochemical measurement",
+      "metal-free bioorthogonal click chemistry"
+    ],
+    "method_scenario_coverage": {
+      "click chemistry | bioorthogonal chemistry": [
+        "nanoparticle functionalization for nanomedicine | active targeting | pretargeting"
+      ],
+      "metal-free bioorthogonal click chemistry": [
+        "cancer theranostics"
+      ],
+      "bioorthogonal click chemistry": [
+        "biomaterials for tissue engineering and regenerative medicine",
+        "osteochondral regeneration | osteoarthritis therapy | 3D bioprinting"
+      ],
+      "bioorthogonal click-to-release chemistry": [
+        "biointerfaces"
+      ],
+      "click chemistry": [
+        "3D bioprinting"
+      ],
+      "electrochemical measurement": [
+        "microRNA biosensing"
+      ],
+      "[3+2] cycloaddition": [
+        "organotitanium chemistry | pharmacological and bioorthogonal applications"
+      ],
+      "computational screening": [
+        "bioorthogonal 1,2,4,5-tetrazine/trans-cyclooctene cycloadditions"
+      ],
+      "design and synthesis of iTCO (intramolecularly controlled trans-cyclooctene) linker": [
+        "bioorthogonal bond-cleavage in biological systems"
+      ]
+    },
+    "method_scenario_benchmark_triples": [
+      {
+        "method": "click chemistry | bioorthogonal chemistry",
+        "scenario": "nanoparticle functionalization for nanomedicine | active targeting | pretargeting",
+        "benchmark": "conversion and selectivity",
+        "references": [
+          "L. Taiariol et al. (2021) Click and Bioorthogonal Chemistry: The Future of Active Targeting of Nanoparticles for Nanomedicines? doi:10.1021/acs.chemrev.1c00484"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "click chemistry | bioorthogonal chemistry",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "Compilation and analysis of click and bioorthogonal chemistry strategies for nanoparticle functionalization in biomedical applications, including passive/active targeting and pretargeting approaches.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "This study identifies the main strategies offered by click and bioorthogonal chemistry, with respect to passive and active targeting, for NP functionalization with specific and multiple properties for imaging and cancer therapy.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "Full text excerpt:",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "In the final part, a novel and promising approach for \"two step\" targeting of NPs, called pretargeting (PT), is also discussed; the principle of this strategy as well as all the studies listed from 2014 to the present are presented in more detail.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "Full text excerpt: Compilation and analysis of click and bioorthogonal chemistry strategies for nanoparticle functionalization in biomedical applications, including passive/active targeting and pretargeting approaches.",
+            "support": "source_sentence"
+          }
+        ]
+      },
+      {
+        "method": "metal-free bioorthogonal click chemistry",
+        "scenario": "cancer theranostics",
+        "benchmark": "conversion and selectivity",
+        "references": [
+          "Dan Wu et al. (2022) Metal-free bioorthogonal click chemistry in cancer theranostics. doi:10.1039/d1cs00451d"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "metal-free bioorthogonal click chemistry",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "comprehensive review highlighting advantages of metal-free bioorthogonal click chemistry in cancer theranostics",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "Although a great number of bioorthogonal chemistry-based strategies have been reported for cancer theranostics, a comprehensive review is scarce to highlight the advantages of these strategies.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "Full text excerpt:",
+            "support": "structured_field"
+          }
+        ]
+      },
+      {
+        "method": "bioorthogonal click chemistry",
+        "scenario": "osteochondral regeneration | osteoarthritis therapy | 3D bioprinting",
+        "benchmark": "crosslinkers",
+        "references": [
+          "Chithra Anilkumar et al. (2026) Bioorthogonal Click Chemistry Engineered Bioinks for 3D Bioprinting in Osteochondral Regeneration and Osteoarthritis Therapy: A Translational Review. doi:10.1021/acsabm.5c02348"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "bioorthogonal click chemistry",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "Integrative review addressing the gap in click chemistry-engineered bioinks specifically for osteochondral regeneration and OA therapy, including regulatory and clinical translation challenges",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "Existing click chemistry-induced hydrogel and bioink reports are not specific to osteochondral regeneration",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "Full text excerpt:",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "Osteoarthritis (OA) is a rapidly growing joint disease worldwide, and its chronic and progressive form can cause damage to the cartilage and subchondral bone, resulting in physical and economic suffering for affected individuals.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "So far, potential therapeutic approaches, such as systematic drug administration and intraarticular injections, have been used to treat OA and regenerate osteochondral defects, but they are palliative rather than curative.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "Thus, hydrogels with biologics (matrix-degrading enzyme inhibitors) and small molecules (growth factors, anti-inflammatory molecules) show promising results in preclinical studies but have failed in clinical practice due to inadequate patient benefits.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "Therefore, the potential solution to this problem is utilizing the click chemistry approach.",
+            "support": "source_sentence"
+          }
+        ]
+      },
+      {
+        "method": "bioorthogonal click chemistry",
+        "scenario": "biomaterials for tissue engineering and regenerative medicine",
+        "benchmark": "conversion and selectivity",
+        "references": [
+          "Alessia Battigelli et al. (2022) Recent Advances in Bioorthogonal Click Chemistry for Biomedical Applications. doi:10.1021/acs.bioconjchem.1c00564"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "bioorthogonal click chemistry",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "review of recent advances in bioorthogonal click chemistry for 3D biocompatible scaffolds, cell-encapsulated biomaterials, drug delivery, imaging, and cell therapy",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "Additionally, we highlight recent examples using these approaches for biomedical applications including drug delivery, imaging, and cell therapy and discuss their potential as next generation biomaterials.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "Full text excerpt:",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "Bioorthogonal click chemistry, first introduced in the early 2000s, has become one of the most widely used approaches for designing advanced biomaterials for applications in tissue engineering and regenerative medicine, due to the selectivity and biocompatibility of the associated reactants and reac...[truncated]",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "Additionally, we highlight recent examples using these approaches for biomedical applications including drug delivery, imaging, and cell therapy and discuss their potential as next generation biomaterials.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "Full text excerpt: review of recent advances in bioorthogonal click chemistry for 3D biocompatible scaffolds, cell-encapsulated biomaterials, drug delivery, imaging, and cell therapy Additionally, we highlight recent examples using these approaches for biomedical applications including drug delivery...[truncated]",
+            "support": "source_sentence"
+          }
+        ]
+      },
+      {
+        "method": "bioorthogonal click-to-release chemistry",
+        "scenario": "biointerfaces",
+        "benchmark": "release trade-offs and biological performance",
+        "references": [
+          "Dóra Kern et al. (2026) Biointerface Implications of Bioorthogonal Click-to-Release Chemistry doi:10.26434/chemrxiv-2026-p03vb"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "bioorthogonal click-to-release chemistry",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "positions C2R chemistry as a versatile tool for dynamic and spatially controlled manipulation of biological systems",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "current limitations and design challenges",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "Full text excerpt:",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "Emerging uses in protein activation, tissue engineering, and adaptive biomaterials are also discussed, alongside current limitations and design challenges.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "Overall, the manuscript positions C2R chemistry as a versatile tool for dynamic and spatially controlled manipulation of biological systems Full text excerpt: positions C2R chemistry as a versatile tool for dynamic and spatially controlled manipulation of biological systems current limitations and d...[truncated]",
+            "support": "source_sentence"
+          }
+        ]
+      },
+      {
+        "method": "click chemistry",
+        "scenario": "3D bioprinting",
+        "benchmark": "cell viability | gelation rate | degradation rate",
+        "references": [
+          "Lei Nie et al. (2023) Click chemistry for 3D bioprinting. doi:10.1039/d3mh00516j"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "click chemistry",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "Review of click chemistry applications in bioink design for 3D bioprinting, highlighting bio-orthogonality, cytocompatibility, and tunable physicochemical properties.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "Abstract: Bioinks are employed in the fabrication of 3D scaffolds containing cells and macromolecules that can be applied in regenerative medicine. The use of such bioinks facilitates the controlled introduction and localization of macromolecules, bioactives and cells for the biofabrication of livin...[truncated]",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "Full text excerpt:",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "To enable the successful preparation of the bioinks, strategies involving the use of so-called cross linkers, which may be ionic, chemical, photo-etc.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "Some of these strategies such as the use of glutaraldehyde as a crosslinker or harsh crosslinking conditions may however compromise the cytocompatibility of the bioink.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "Indeed, the bio-orthogonal nature of click chemistry has been suggested to enhance the maintenance of high cell viability in scaffolds.",
+            "support": "source_sentence"
+          }
+        ]
+      },
+      {
+        "method": "electrochemical measurement",
+        "scenario": "microRNA biosensing",
+        "benchmark": "electrochemical signal response",
+        "references": [
+          "Tingting Wang et al. (2024) DNA Nanostructure Disintegration-Assisted SPAAC Ligation for Electrochemical Biosensing. doi:10.1021/acs.nanolett.4c03394"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "electrochemical measurement",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "A novel electrochemical biosensing strategy integrating DNA nanostructure conformation transitions and click chemistry for highly sensitive and reproducible microRNA detection.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "A DNA triangle is formed, which in turn assists strain-promoted alkyne-azide cycloaddition (SPAAC) to localize single-stranded DNA probes (P1).",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "Full text excerpt:",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "This sensing strategy relies on the integration of DNA nanostructures and click chemistry, which may inspire further designs for the development of DNA nanotechnology and applications in clinical chemistry.",
+            "support": "source_sentence"
+          }
+        ]
+      },
+      {
+        "method": "[3+2] cycloaddition",
+        "scenario": "organotitanium chemistry | pharmacological and bioorthogonal applications",
+        "benchmark": "benchmark dataset",
+        "references": [
+          "Gregory Arzoumanidis (2023) Organotitanium Click Chemistry doi:10.26434/chemrxiv-2023-7p307-v2"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "[3+2] cycloaddition",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "Expansion of titanium-based click chemistry via titanium azides and new organotitanium complexes for bioactive synthesis",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "Currently limited in scope",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "Full text excerpt:",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "The click chemistry of titanium exemplified by the “green” [3+2] cycloaddition of the [Ti-N3] moiety with nitriles RCN to form a tetrazole ligand, is currently limited in scope, but the future of this open and wide field is bright, full of promising new synthetic approaches discussed herein, for pha...[truncated]",
+            "support": "source_sentence"
+          }
+        ]
+      },
+      {
+        "method": "computational screening",
+        "scenario": "bioorthogonal 1,2,4,5-tetrazine/trans-cyclooctene cycloadditions",
+        "benchmark": "reaction barrier",
+        "references": [
+          "Dennis Svatunek (2024) Computational Large-Scale Screening of Bioorthogonal 1,2,4,5-Tetrazine/trans-Cyclooctene Cycloadditions doi:10.26434/chemrxiv-2024-24xcv"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "computational screening",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "introduction of an automated computational screening tool for assessing tetrazine reactivity and generation of an initial dataset of 1,288 reaction barriers for machine learning model development",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "Computational Large-Scale Screening of Bioorthogonal 1,2,4,5-Tetrazine/trans-Cyclooctene Cycloadditions Bioorthogonal reactions between 1,2,4,5-tetrazines and trans-cyclooctenes have emerged as valuable chemical tools in the fields of chemical biology and material science, and they hold significant...[truncated]",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "Full text excerpt:",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "Experimental investigations into the reactivity of 1,2,4,5-tetrazines are time-consuming and costly.",
+            "support": "source_sentence"
+          }
+        ]
+      },
+      {
+        "method": "design and synthesis of iTCO (intramolecularly controlled trans-cyclooctene) linker",
+        "scenario": "bioorthogonal bond-cleavage in biological systems",
+        "benchmark": "benchmark dataset",
+        "references": [
+          "Walter Kuba et al. (2025) Next-Level Bioorthogonal Bond-Cleavage Through Intramolecular Control of Click-To-Release Chemistry doi:10.26434/chemrxiv-2025-7s39f"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "design and synthesis of iTCO (intramolecularly controlled trans-cyclooctene) linker",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "iTCO enables fast and complete click-triggered cleavage across biological systems—from media to in vivo—by shifting tautomerization driving force from tetrazine to TCO",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "No explicit limitation extracted.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "Full text excerpt:",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "Full text excerpt: iTCO enables fast and complete click-triggered cleavage across biological systems—from media to in vivo—by shifting tautomerization driving force from tetrazine to TCO No explicit limitation extracted.",
+            "support": "source_sentence"
+          }
+        ]
+      },
+      {
+        "method": "click chemistry | bioorthogonal chemistry",
+        "scenario": "nanoparticle functionalization for nanomedicine | active targeting | pretargeting",
+        "benchmark": "conversion and selectivity",
+        "references": [
+          "L. Taiariol et al. (2021) Click and Bioorthogonal Chemistry: The Future of Active Targeting of Nanoparticles for Nanomedicines? doi:10.1021/acs.chemrev.1c00484"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "click chemistry | bioorthogonal chemistry",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "Compilation and analysis of click and bioorthogonal chemistry strategies for nanoparticle functionalization in biomedical applications, including passive/active targeting and pretargeting approaches.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "This study identifies the main strategies offered by click and bioorthogonal chemistry, with respect to passive and active targeting, for NP functionalization with specific and multiple properties for imaging and cancer therapy.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "Compilation and analysis of click and bioorthogonal chemistry strategies for nanoparticle functionalization in biomedical applications, including passive/active targeting and pretargeting approaches.",
+            "support": "source_sentence"
+          }
+        ]
+      },
+      {
+        "method": "metal-free bioorthogonal click chemistry",
+        "scenario": "cancer theranostics",
+        "benchmark": "conversion and selectivity",
+        "references": [
+          "Dan Wu et al. (2022) Metal-free bioorthogonal click chemistry in cancer theranostics. doi:10.1039/d1cs00451d"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "metal-free bioorthogonal click chemistry",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "comprehensive review highlighting advantages of metal-free bioorthogonal click chemistry in cancer theranostics",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "Although a great number of bioorthogonal chemistry-based strategies have been reported for cancer theranostics, a comprehensive review is scarce to highlight the advantages of these strategies.",
+            "support": "structured_field"
+          }
+        ]
+      },
+      {
+        "method": "bioorthogonal click chemistry",
+        "scenario": "osteochondral regeneration | osteoarthritis therapy | 3D bioprinting",
+        "benchmark": "crosslinkers",
+        "references": [
+          "Chithra Anilkumar et al. (2026) Bioorthogonal Click Chemistry Engineered Bioinks for 3D Bioprinting in Osteochondral Regeneration and Osteoarthritis Therapy: A Translational Review. doi:10.1021/acsabm.5c02348"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "bioorthogonal click chemistry",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "Integrative review addressing the gap in click chemistry-engineered bioinks specifically for osteochondral regeneration and OA therapy, including regulatory and clinical translation challenges",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "Existing click chemistry-induced hydrogel and bioink reports are not specific to osteochondral regeneration",
+            "support": "structured_field"
+          }
+        ]
+      },
+      {
+        "method": "bioorthogonal click chemistry",
+        "scenario": "biomaterials for tissue engineering and regenerative medicine",
+        "benchmark": "conversion and selectivity",
+        "references": [
+          "Alessia Battigelli et al. (2022) Recent Advances in Bioorthogonal Click Chemistry for Biomedical Applications. doi:10.1021/acs.bioconjchem.1c00564"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "bioorthogonal click chemistry",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "review of recent advances in bioorthogonal click chemistry for 3D biocompatible scaffolds, cell-encapsulated biomaterials, drug delivery, imaging, and cell therapy",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "Additionally, we highlight recent examples using these approaches for biomedical applications including drug delivery, imaging, and cell therapy and discuss their potential as next generation biomaterials.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "review of recent advances in bioorthogonal click chemistry for 3D biocompatible scaffolds, cell-encapsulated biomaterials, drug delivery, imaging, and cell therapy Additionally, we highlight recent examples using these approaches for biomedical applications including drug delivery, imaging, and cell...[truncated]",
+            "support": "source_sentence"
+          }
+        ]
+      },
+      {
+        "method": "bioorthogonal click-to-release chemistry",
+        "scenario": "biointerfaces",
+        "benchmark": "release trade-offs and biological performance",
+        "references": [
+          "Dóra Kern et al. (2026) Biointerface Implications of Bioorthogonal Click-to-Release Chemistry doi:10.26434/chemrxiv-2026-p03vb"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "bioorthogonal click-to-release chemistry",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "positions C2R chemistry as a versatile tool for dynamic and spatially controlled manipulation of biological systems",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "current limitations and design challenges",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "positions C2R chemistry as a versatile tool for dynamic and spatially controlled manipulation of biological systems current limitations and design challenges",
+            "support": "source_sentence"
+          }
+        ]
+      },
+      {
+        "method": "click chemistry",
+        "scenario": "3D bioprinting",
+        "benchmark": "cell viability | gelation rate | degradation rate",
+        "references": [
+          "Lei Nie et al. (2023) Click chemistry for 3D bioprinting. doi:10.1039/d3mh00516j"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "click chemistry",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "Review of click chemistry applications in bioink design for 3D bioprinting, highlighting bio-orthogonality, cytocompatibility, and tunable physicochemical properties.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "Abstract: Bioinks are employed in the fabrication of 3D scaffolds containing cells and macromolecules that can be applied in regenerative medicine. The use of such bioinks facilitates the controlled introduction and localization of macromolecules, bioactives and cells for the biofabrication of livin...[truncated]",
+            "support": "structured_field"
+          }
+        ]
+      },
+      {
+        "method": "electrochemical measurement",
+        "scenario": "microRNA biosensing",
+        "benchmark": "electrochemical signal response",
+        "references": [
+          "Tingting Wang et al. (2024) DNA Nanostructure Disintegration-Assisted SPAAC Ligation for Electrochemical Biosensing. doi:10.1021/acs.nanolett.4c03394"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "electrochemical measurement",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "A novel electrochemical biosensing strategy integrating DNA nanostructure conformation transitions and click chemistry for highly sensitive and reproducible microRNA detection.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "A DNA triangle is formed, which in turn assists strain-promoted alkyne-azide cycloaddition (SPAAC) to localize single-stranded DNA probes (P1).",
+            "support": "structured_field"
+          }
+        ]
+      },
+      {
+        "method": "[3+2] cycloaddition",
+        "scenario": "organotitanium chemistry | pharmacological and bioorthogonal applications",
+        "benchmark": "benchmark dataset",
+        "references": [
+          "Gregory Arzoumanidis (2023) Organotitanium Click Chemistry doi:10.26434/chemrxiv-2023-7p307-v2"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "[3+2] cycloaddition",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "Expansion of titanium-based click chemistry via titanium azides and new organotitanium complexes for bioactive synthesis",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "Currently limited in scope",
+            "support": "structured_field"
+          }
+        ]
+      },
+      {
+        "method": "computational screening",
+        "scenario": "bioorthogonal 1,2,4,5-tetrazine/trans-cyclooctene cycloadditions",
+        "benchmark": "reaction barrier",
+        "references": [
+          "Dennis Svatunek (2024) Computational Large-Scale Screening of Bioorthogonal 1,2,4,5-Tetrazine/trans-Cyclooctene Cycloadditions doi:10.26434/chemrxiv-2024-24xcv"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "computational screening",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "introduction of an automated computational screening tool for assessing tetrazine reactivity and generation of an initial dataset of 1,288 reaction barriers for machine learning model development",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "Computational Large-Scale Screening of Bioorthogonal 1,2,4,5-Tetrazine/trans-Cyclooctene Cycloadditions Bioorthogonal reactions between 1,2,4,5-tetrazines and trans-cyclooctenes have emerged as valuable chemical tools in the fields of chemical biology and material science, and they hold significant...[truncated]",
+            "support": "structured_field"
+          }
+        ]
+      },
+      {
+        "method": "design and synthesis of iTCO (intramolecularly controlled trans-cyclooctene) linker",
+        "scenario": "bioorthogonal bond-cleavage in biological systems",
+        "benchmark": "benchmark dataset",
+        "references": [
+          "Walter Kuba et al. (2025) Next-Level Bioorthogonal Bond-Cleavage Through Intramolecular Control of Click-To-Release Chemistry doi:10.26434/chemrxiv-2025-7s39f"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "design and synthesis of iTCO (intramolecularly controlled trans-cyclooctene) linker",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "iTCO enables fast and complete click-triggered cleavage across biological systems—from media to in vivo—by shifting tautomerization driving force from tetrazine to TCO",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "No explicit limitation extracted.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "iTCO enables fast and complete click-triggered cleavage across biological systems—from media to in vivo—by shifting tautomerization driving force from tetrazine to TCO No explicit limitation extracted.",
+            "support": "source_sentence"
+          }
+        ]
+      }
+    ],
+    "claim_type_counts": {
+      "methodological_description": 30,
+      "empirical_result": 23,
+      "author_opinion": 29,
+      "theoretical_claim": 10
+    }
+  },
+  "knowledge_gaps": [
+    {
+      "gap_id": "gap_1783512639153830600",
+      "gap_type": "mechanism_problem",
+      "description": "Source-grounded mechanism gap (interface or boundary degradation) for method=bioorthogonal click chemistry, scenario=osteochondral regeneration | osteoarthritis therapy | 3D bioprinting, benchmark=crosslinkers: The click chemistry strategy can achieve efficient bio-inks without compromising their intrinsic and optimal characteristics, as click reactions are rapid, spontaneous, and bioorthogonal, favoring the gelation time, rate of degradation, and cell viability.",
+      "supporting_references": [
+        "Chithra Anilkumar et al. (2026) Bioorthogonal Click Chemistry Engineered Bioinks for 3D Bioprinting in Osteochondral Regeneration and Osteoarthritis Therapy: A Translational Review. doi:10.1021/acsabm.5c02348",
+        "Alessia Battigelli et al. (2022) Recent Advances in Bioorthogonal Click Chemistry for Biomedical Applications. doi:10.1021/acs.bioconjchem.1c00564"
+      ],
+      "novelty_score": 3,
+      "application_value": "medium",
+      "feasibility": "high",
+      "suggested_research_path": "Isolate boundary or interface degradation pathways with matched diagnostics and test protective modifications under accelerated stress.",
+      "value_argument": "This gap is grounded in a source-level mechanism/limitation/challenge statement, so it should outrank bare method-scenario matrix holes.",
+      "overlap_risk": "high",
+      "requires_human_review": true
+    },
+    {
+      "gap_id": "gap_1783512639204285200",
+      "gap_type": "combinatorial",
+      "description": "Method '[3+2] cycloaddition' has no recorded validation in scenario '3D bioprinting' in the current PaperGraph map.",
+      "supporting_references": [
+        "Lei Nie et al. (2023) Click chemistry for 3D bioprinting. doi:10.1039/d3mh00516j",
+        "Gregory Arzoumanidis (2023) Organotitanium Click Chemistry doi:10.26434/chemrxiv-2023-7p307-v2"
+      ],
+      "novelty_score": 4,
+      "application_value": "medium",
+      "feasibility": "low",
+      "suggested_research_path": "Run a targeted validation study with explicit benchmarks, baselines, and failure-mode analysis.",
+      "value_argument": "The combination may expose method-scenario boundary conditions rather than simply adding another benchmark.",
+      "overlap_risk": "low",
+      "requires_human_review": true
+    }
+  ],
+  "self_reflection": {
+    "top_venue_coverage_checked": true,
+    "pseudo_gap_risk_checked": true,
+    "method_categories_require_literature_support": true,
+    "unsupported_claims_marked_for_review": true
+  }
+}

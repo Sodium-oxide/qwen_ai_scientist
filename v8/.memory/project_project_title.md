@@ -4,4 +4,4 @@ description: research project title
 type: project
 ---
 
-电力系统仿真 ZhiZhi-TanXi-MingLi 验证
+全钒液流电池 AutoGen 多Agent协作闭环验证

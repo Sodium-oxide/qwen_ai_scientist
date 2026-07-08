@@ -90,6 +90,8 @@ SCIENCE_AGENTS: dict[str, dict[str, Any]] = {
         "phase": "all",
         "mission": "Decompose research goals into verifiable tasks and coordinate the full AI Scientist pipeline.",
         "tools": [
+            "create_autogen_groupchat",
+            "run_autogen_research_flow",
             "run_boxue_research_round",
             "create_boxue_delegation_tasks",
             "create_science_delegation_tasks",
@@ -111,7 +113,7 @@ SCIENCE_AGENTS: dict[str, dict[str, Any]] = {
         "title": "Knowledge Gap Discovery Agent",
         "phase": "Gap Discovery",
         "mission": "Detect coverage holes, suspended problems, and high-value unexplored method-scenario pairs.",
-        "tools": ["run_tanxi_gap_exploration", "detect_knowledge_gaps", "assess_novelty", "verify_uniqueness"],
+        "tools": ["run_tanxi_gap_exploration", "detect_knowledge_gaps", "check_semantic_plausibility", "assess_novelty", "verify_uniqueness"],
     },
     "mingli": {
         "title": "Hypothesis Generator",
@@ -122,6 +124,10 @@ SCIENCE_AGENTS: dict[str, dict[str, Any]] = {
             "build_temporal_knowledge_graph",
             "detect_structural_knowledge_gaps",
             "find_structural_analogy_transfers",
+            "check_semantic_plausibility",
+            "generate_idea",
+            "design_experiment",
+            "finalize_idea",
             "run_mingli_hypothesis_evolution",
         ],
     },
@@ -129,13 +135,13 @@ SCIENCE_AGENTS: dict[str, dict[str, Any]] = {
         "title": "Socratic Critic",
         "phase": "Socratic Debate",
         "mission": "Challenge hypotheses through counterexamples, hidden assumptions, and falsification questions.",
-        "tools": ["ask_critical_questions", "find_counterexamples", "stress_test_assumptions"],
+        "tools": ["ask_socratic_questions", "ask_critical_questions", "find_counterexamples", "stress_test_assumptions"],
     },
     "bianlun": {
         "title": "Structured Debate Moderator",
         "phase": "Socratic Debate",
         "mission": "Moderate structured debate and synthesize strongest surviving hypotheses.",
-        "tools": ["moderate_round", "summarize_positions", "extract_emergent_method"],
+        "tools": ["run_socratic_hypothesis_debate", "moderate_round", "summarize_positions", "extract_emergent_method"],
     },
     "gewu": {
         "title": "Experiment Planner",
@@ -147,7 +153,14 @@ SCIENCE_AGENTS: dict[str, dict[str, Any]] = {
         "title": "Mechanism Fidelity Verifier",
         "phase": "Mechanism Verification",
         "mission": "Run CAWM-style internal consistency, data consistency, and regime-shift checks.",
-        "tools": ["check_internal_consistency", "check_data_consistency", "regime_shift_test"],
+        "tools": [
+            "check_internal_consistency",
+            "check_data_consistency",
+            "regime_shift_test",
+            "detect_selective_citation",
+            "causal_chain_audit",
+            "run_yanzhen_mechanism_verification",
+        ],
     },
     "mingbian": {
         "title": "Data Analyst",
@@ -281,65 +294,201 @@ Required output JSON:
 }
 """.strip()
 
-LITERATURE_PROVIDERS: dict[str, dict[str, str]] = {
-    "arxiv": {
-        "status": "live",
-        "kind": "open_api",
-        "note": "arXiv Atom API connector for metadata, abstracts, and PDF links.",
+MINGLI_FULL_PROMPT = """
+You are MingLi, the Creative Scientist and Hypothesis Generator of the Qwen-Zhikan AI Scientist system.
+Role: Novel Hypothesis Generator & Tournament Participant.
+
+Core responsibilities:
+1. Generate novel research ideas from TanXi knowledge gaps and ZhiZhi PaperGraph evidence.
+2. Design concrete, feasible, falsifiable experimental plans for each idea.
+3. Ensure every idea is novel, grounded, feasible, and differentiated from existing literature.
+4. Participate in tournament evolution by mutating hypotheses structurally across rounds.
+
+Operational principles:
+- Every hypothesis must trace to a specific TanXi gap id.
+- Every premise must cite or summarize PaperGraph evidence, or be marked as a hypothesis.
+- Before finalizing an idea, run at least one literature uniqueness check.
+- If near-duplicate literature is found, discard or regenerate the idea.
+- Tournament mutations must introduce structural changes: new variables, mechanisms, causal paths, or experimental regimes.
+- Track parent_hypothesis_id and lineage for auditability.
+
+TAO workflow:
+Thought: evaluate novelty, feasibility, grounding, differentiation, and whether the idea actually fills the gap.
+Action: use generate_idea, design_experiment, verify_uniqueness or search_literature, then finalize_idea.
+Observation: inspect literature matches, overlap risk, PaperGraph evidence, and experiment feasibility before finalizing.
+
+Required output JSON:
+{
+  "title": "Research Title",
+  "hypothesis": "Core Hypothesis",
+  "abstract": "Abstract",
+  "related_work": "Comparison with Related Work",
+  "experiments": {
+    "setup": "Experimental Setup",
+    "metrics": "Evaluation Metrics",
+    "baselines": "Baseline Methods"
+  },
+  "risks": "Risk Factors and Limitations",
+  "tournament_generation": 1,
+  "parent_hypothesis_id": "string | null"
+}
+""".strip()
+
+YANZHEN_FULL_PROMPT = """
+You are YanZhen, the Mechanism Fidelity Verifier of the Qwen-Zhikan AI Scientist system.
+Role: CAWM Detector & Consistency Auditor.
+
+Core responsibilities:
+1. Layer 1 - Internal Consistency: verify the logical chain, causal links, formula/quantity use, and premise-to-conclusion integrity.
+2. Layer 2 - Data Consistency: verify that the claimed mechanism matches cited PaperGraph evidence and does not cherry-pick only supportive records.
+3. Layer 3 - Regime Shift Test: stress the mechanism under changed parameters, scale, environment, data distribution, boundary conditions, or adjacent domains.
+4. Detect the CAWM failure mode: correct-looking conclusion with fabricated, brittle, or inconsistent mechanism.
+
+Operational principles:
+- A hypothesis passes only if it survives all three layers.
+- Regime shift is the decisive CAWM test; unstated assumptions should raise risk.
+- Be conservative. When evidence is incomplete, return REQUIRES_HUMAN_REVIEW rather than a false pass.
+- Document the reasoning chain for every layer.
+- The protocol is domain-general across mathematics, physical sciences, life sciences, medicine, engineering, computer science, agriculture, climate, ecology, and social science.
+
+TAO workflow:
+Thought: extract the claimed mechanism, causal chain, supporting data, and hidden assumptions.
+Action: run check_internal_consistency, check_data_consistency, regime_shift_test, detect_selective_citation, causal_chain_audit, then run_yanzhen_mechanism_verification.
+Observation: record pass/fail verdicts, CAWM risk, selective citation risk, and human-review requirements.
+
+Required output JSON:
+{
+  "thought": "Mechanism verification reasoning process",
+  "action": {},
+  "mechanism_fidelity_report": {
+    "hypothesis_id": "string",
+    "layer_1_internal_consistency": {
+      "logical_chain_intact": true,
+      "formula_application_correct": true,
+      "issues_found": [],
+      "verdict": "PASS | FAIL"
     },
+    "layer_2_data_consistency": {
+      "mechanism_matches_data": true,
+      "selective_citation_detected": false,
+      "original_text_alignment": "high",
+      "verdict": "PASS | FAIL"
+    },
+    "layer_3_regime_shift_test": {
+      "shifted_conditions_tested": ["condition1", "condition2"],
+      "mechanism_stability": "stable | degrades_gracefully | collapses_unexpectedly",
+      "cawm_risk_level": "LOW | MEDIUM | HIGH",
+      "verdict": "PASS | FAIL"
+    },
+    "overall_verdict": "MECHANISM_VERIFIED | CAWM_DETECTED | REQUIRES_HUMAN_REVIEW",
+    "detailed_reasoning": "string"
+  }
+}
+""".strip()
+
+DUZHI_FULL_PROMPT = """
+You are DuZhi, the Socratic Questioner Agent of the Qwen-Zhikan AI Scientist system.
+Role: Hypothesis Interrogator & Hidden-Assumption Exposer.
+
+Core responsibilities:
+1. Ask structured Socratic questions that force MingLi hypotheses to become operational, causal, and falsifiable.
+2. Expose hidden assumptions, missing definitions, weak evidence links, and untested boundary conditions.
+3. Generate counterexamples and regime-shift challenges before a hypothesis is accepted.
+4. Keep criticism evidence-driven: every objection must reference the hypothesis text, PaperGraph evidence, YanZhen audit output, or a clearly marked missing-evidence condition.
+
+Question classes:
+- Conceptual clarification: define key terms, distinguish measurable observables from inferred constructs.
+- Constraint check: test compatibility with domain constraints, instruments, data, equations, ethics, or feasibility limits.
+- Causal probe: require the full input -> mechanism -> output chain and evidence for each link.
+- Counterexample challenge: ask where the mechanism should fail under parameter, environment, scale, or distribution shifts.
+
+Operational principles:
+- Be adversarial toward mechanisms, not toward the researcher.
+- Prefer precise questions that can change the hypothesis over generic skepticism.
+- If a claim cannot be measured, ask how it will be operationalized.
+- If a mechanism has no boundary condition, demand one.
+- If evidence is cherry-picked or missing, ask for the omitted evidence class.
+
+Output JSON:
+{
+  "thought": "Socratic critique reasoning",
+  "action": {"type": "ask_socratic_questions"},
+  "questions": [
+    {
+      "question_type": "conceptual_clarification | constraint_check | causal_probe | counterexample_challenge",
+      "question": "string",
+      "target_claim": "string",
+      "why_it_matters": "string",
+      "required_revision": "string",
+      "severity": "low | medium | high | fatal"
+    }
+  ],
+  "overall_severity": "low | medium | high | fatal",
+  "must_revise": true
+}
+""".strip()
+
+BIANLUN_FULL_PROMPT = """
+You are BianLun, the Structured Debate Moderator of the Qwen-Zhikan AI Scientist system.
+Role: Evidence-Grounded Debate Judge & Hypothesis Refinement Coordinator.
+
+Core responsibilities:
+1. Run the four-round Socratic debate protocol: clarification, evidence/CAWM Layer 1-2, methodology/regime shift, synthesis.
+2. Enforce ARIS-style safety gates: model-family independence, evidence threshold, convergence check, and human-review escalation.
+3. Integrate MingLi's proposal, DuZhi's critiques, YanZhen's mechanism fidelity report, and PaperGraph evidence.
+4. Produce a refined hypothesis, unresolved dispute list, and next experimental decision.
+
+Debate must be evidence-driven, not conversational. Unsupported revisions are not adopted.
+
+Output JSON:
+{
+  "thought": "moderator reasoning",
+  "action": {"type": "run_socratic_hypothesis_debate"},
+  "debate_report": {
+    "rounds": [],
+    "safety_gates": {},
+    "refined_hypothesis": {},
+    "unresolved_issues": [],
+    "final_decision": "accept_for_experiment | revise | human_review | reject"
+  }
+}
+""".strip()
+
+LITERATURE_PROVIDERS: dict[str, dict[str, str]] = {
     "semantic_scholar": {
         "status": "live",
         "kind": "open_api",
         "note": "Semantic Scholar Graph API connector for metadata, abstracts, citation counts, and external IDs.",
     },
-    "openalex": {
+    "arxiv": {
         "status": "live",
         "kind": "open_api",
-        "note": "OpenAlex Works API connector for broad publication metadata, open-access links, concepts, and cited-by counts.",
-    },
-    "dblp": {
-        "status": "live",
-        "kind": "open_api",
-        "note": "DBLP publication search API connector for computer science bibliographic metadata.",
-    },
-    "openreview": {
-        "status": "live",
-        "kind": "open_api",
-        "note": "OpenReview API connector for conference submissions, workshop papers, and in-review manuscripts when publicly indexed.",
+        "note": "arXiv Atom API connector for metadata, abstracts, and PDF links.",
     },
     "biorxiv": {
         "status": "live",
         "kind": "open_api",
         "note": "bioRxiv public API connector for recent preprint metadata; query relevance is filtered locally.",
     },
-    "medrxiv": {
-        "status": "live",
-        "kind": "open_api",
-        "note": "medRxiv public API connector for recent preprint metadata; query relevance is filtered locally.",
-    },
     "chemrxiv": {
         "status": "live",
         "kind": "crossref_api",
         "note": "ChemRxiv metadata connector via Crossref posted-content records with ChemRxiv DOI prefix.",
     },
-    "google_scholar": {
-        "status": "placeholder",
-        "kind": "external_or_manual",
-        "note": "No official public API; use manual import or external connector.",
+    "medrxiv": {
+        "status": "live",
+        "kind": "open_api",
+        "note": "medRxiv public API connector for recent preprint metadata; query relevance is filtered locally.",
     },
-    "web_of_science": {
-        "status": "placeholder",
-        "kind": "licensed_database",
-        "note": "Planned connector for institutional Web of Science access; requires credentials/API entitlement.",
-    },
-    "springer_nature": {
-        "status": "placeholder",
-        "kind": "publisher_api",
-        "note": "Planned Springer Nature API connector; requires API key and usage compliance.",
+    "pubmed": {
+        "status": "live",
+        "kind": "open_api",
+        "note": "NCBI PubMed E-utilities connector for biomedical journal metadata, abstracts, PMID, and DOI.",
     },
 }
 
-PREPRINT_API_PROVIDERS = {"arxiv", "biorxiv", "medrxiv", "chemrxiv", "openreview"}
+STABLE_LITERATURE_PROVIDERS = frozenset(LITERATURE_PROVIDERS)
+PREPRINT_API_PROVIDERS = {"arxiv", "biorxiv", "medrxiv", "chemrxiv"}
 
 SEMANTIC_SCHOLAR_RATE_LOCK = threading.Lock()
 SEMANTIC_SCHOLAR_CACHE_LOCK = threading.Lock()
@@ -1518,15 +1667,13 @@ def default_literature_providers(domain: str = "", query: str = "") -> list[str]
         "computer vision",
         "reinforcement learning",
     )
-    providers = ["semantic_scholar", "openalex"]
+    providers = ["semantic_scholar"]
     if any(term in text for term in biomedical_terms):
-        providers.extend(["biorxiv", "medrxiv"])
+        providers.extend(["pubmed", "biorxiv", "medrxiv"])
     if any(term in text for term in chemistry_terms):
         providers.append("chemrxiv")
     if any(term in text for term in arxiv_terms):
         providers.append("arxiv")
-    if any(term in text for term in cs_terms):
-        providers.extend(["dblp", "openreview"])
     return unique_preserve_order([provider for provider in providers if provider in live_literature_provider_names()])
 
 
@@ -1807,10 +1954,6 @@ def probe_domain_subspace(
                     )
                     continue
                 if provider == "semantic_scholar":
-                    skipped = semantic_scholar_skip_block(probe_query)
-                    if skipped:
-                        blocks.append(skipped)
-                        continue
                     if provider_budget is not None:
                         provider_budget[provider] = provider_budget.get(provider, 0) - 1
                     block = search_semantic_scholar(probe_query, max_results=per_query_depth)
@@ -1822,18 +1965,10 @@ def probe_domain_subspace(
                     if provider_budget is not None:
                         provider_budget[provider] = provider_budget.get(provider, 0) - 1
                     block = search_arxiv(probe_query, max_results=per_query_depth)
-                elif provider == "openalex":
+                elif provider == "pubmed":
                     if provider_budget is not None:
                         provider_budget[provider] = provider_budget.get(provider, 0) - 1
-                    block = search_openalex(probe_query, max_results=per_query_depth)
-                elif provider == "dblp":
-                    if provider_budget is not None:
-                        provider_budget[provider] = provider_budget.get(provider, 0) - 1
-                    block = search_dblp(probe_query, max_results=per_query_depth)
-                elif provider == "openreview":
-                    if provider_budget is not None:
-                        provider_budget[provider] = provider_budget.get(provider, 0) - 1
-                    block = search_openreview(probe_query, max_results=per_query_depth)
+                    block = search_pubmed(probe_query, max_results=per_query_depth)
                 elif provider in {"biorxiv", "medrxiv", "chemrxiv"}:
                     if provider_budget is not None:
                         provider_budget[provider] = provider_budget.get(provider, 0) - 1
@@ -2131,11 +2266,6 @@ def database_to_provider(name: str) -> str:
         "semantic_scholar": "semantic_scholar",
         "semanticscholar": "semantic_scholar",
         "s2": "semantic_scholar",
-        "openalex": "openalex",
-        "open_alex": "openalex",
-        "dblp": "dblp",
-        "openreview": "openreview",
-        "open_review": "openreview",
         "arxiv": "arxiv",
         "bio_rxiv": "biorxiv",
         "biorxiv": "biorxiv",
@@ -2144,14 +2274,13 @@ def database_to_provider(name: str) -> str:
         "medrxiv": "medrxiv",
         "chem_rxiv": "chemrxiv",
         "chemrxiv": "chemrxiv",
-        "web_of_science": "web_of_science",
-        "webofscience": "web_of_science",
-        "google_scholar": "google_scholar",
-        "googlescholar": "google_scholar",
-        "springer_nature": "springer_nature",
-        "springernature": "springer_nature",
+        "pub_med": "pubmed",
+        "pubmed": "pubmed",
+        "ncbi": "pubmed",
+        "medline": "pubmed",
     }
-    return mapping.get(key, key)
+    provider = mapping.get(key, "")
+    return provider if provider in STABLE_LITERATURE_PROVIDERS else ""
 
 
 def extract_structured_info(
@@ -2191,12 +2320,8 @@ def search_literature_provider_block(provider: str, query: str, max_results: int
         return search_arxiv(query, max_results=max_results)
     if provider == "semantic_scholar":
         return search_semantic_scholar(query, max_results=max_results)
-    if provider == "openalex":
-        return search_openalex(query, max_results=max_results)
-    if provider == "dblp":
-        return search_dblp(query, max_results=max_results)
-    if provider == "openreview":
-        return search_openreview(query, max_results=max_results)
+    if provider == "pubmed":
+        return search_pubmed(query, max_results=max_results)
     if provider in {"biorxiv", "medrxiv", "chemrxiv"}:
         return search_preprint_api(provider, query, max_results=max_results)
     return {
@@ -2216,7 +2341,9 @@ def search_literature(
 ) -> str:
     search_id = new_id("search")
     selected = [database_to_provider(provider) for provider in (providers or default_literature_providers(query=query))]
-    selected = unique_preserve_order(selected)
+    selected = unique_preserve_order([provider for provider in selected if provider in live_literature_provider_names()])
+    if not selected:
+        selected = default_literature_providers(query=query) or ["semantic_scholar"]
     provider_blocks: list[dict[str, Any]] = []
     if selected:
         indexed_blocks: dict[int, dict[str, Any]] = {}
@@ -2275,7 +2402,7 @@ def search_literature_stratified(
 ) -> str:
     search_id = new_id("search")
     selected = [database_to_provider(provider) for provider in (providers or default_literature_providers(domain=domain, query=query))]
-    selected = unique_preserve_order([provider for provider in selected if provider in LITERATURE_PROVIDERS])
+    selected = unique_preserve_order([provider for provider in selected if provider in live_literature_provider_names()])
     if not selected:
         selected = default_literature_providers(domain=domain, query=query) or ["semantic_scholar"]
     query_plan = build_domain_query_plan(query, domain=domain, focus_branches=focus_branches, use_llm=use_llm)
@@ -2911,12 +3038,22 @@ def domain_relevance_assessment(result: dict[str, Any], domain: str = "", query:
     if topic_hits:
         flags.append("domain_topic_hit")
     provider = normalize_space(str(result.get("provider") or result.get("venue") or "")).lower()
-    is_preprint = provider in PREPRINT_API_PROVIDERS or any(name in provider for name in PREPRINT_API_PROVIDERS)
+    is_preprint = is_preprint_literature_result(result) or provider in PREPRINT_API_PROVIDERS or any(name in provider for name in PREPRINT_API_PROVIDERS)
+    core_alignment = core_domain_alignment(result, domain=domain, query=query)
+    if core_alignment["enabled"]:
+        if not core_alignment["passes"]:
+            flags.append("core_domain_mismatch")
+            score = round(score * 0.45, 4)
+        elif core_alignment["specific_hit_count"] >= 2:
+            score = round(min(1.0, score + 0.08), 4)
+            flags.append("core_domain_hit")
     if is_preprint and score < 0.16:
         flags.append("weak_preprint_domain_relevance")
     preprint_has_signal = bool(query_hits or anchor_hits or topic_hits)
     verdict = "keep"
     if noise_hits:
+        verdict = "reject"
+    elif core_alignment["enabled"] and not core_alignment["passes"]:
         verdict = "reject"
     elif field_mismatch and not strong_text_signal and score < 0.25:
         verdict = "reject"
@@ -2933,6 +3070,7 @@ def domain_relevance_assessment(result: dict[str, Any], domain: str = "", query:
         "noise_hits": unique_preserve_order(noise_hits),
         "flags": unique_preserve_order(flags),
         "is_preprint": is_preprint,
+        "core_domain_alignment": core_alignment,
         "verdict": verdict,
         "requires_human_review": bool((is_preprint and score < 0.16 and verdict != "reject") or (field_mismatch and verdict != "reject")),
     }
@@ -2953,6 +3091,125 @@ def should_reject_for_domain(result: dict[str, Any], domain: str = "") -> bool:
     if "field_mismatch" in set(assessment.get("flags") or []) and score < 0.18 and citations <= 5:
         return True
     return score < 0.1 and quality < 0.55 and citations <= 0
+
+
+def core_domain_alignment(result: dict[str, Any], domain: str = "", query: str = "") -> dict[str, Any]:
+    seed_text = normalize_space(f"{domain} {query}")
+    core_terms = core_domain_terms(seed_text)
+    if len(core_terms) < 3:
+        return {
+            "enabled": False,
+            "passes": True,
+            "reason": "not enough specific core terms to enforce strict alignment",
+            "core_terms": core_terms,
+        }
+    text = normalize_space(
+        " ".join(
+            str(result.get(key) or "")
+            for key in ("title", "abstract", "citation", "method", "scenario", "benchmark")
+        )
+    ).lower()
+    hits = [term for term in core_terms if term in text]
+    specific_terms = [term for term in core_terms if core_domain_term_is_specific(term)]
+    specific_hits = [term for term in specific_terms if term in text]
+    preprint = is_preprint_literature_result(result)
+    min_hits = 3 if len(core_terms) >= 8 else 2
+    min_specific = 2 if len(specific_terms) >= 4 else 1
+    if preprint:
+        min_hits += 1
+    passes = len(hits) >= min_hits and (not specific_terms or len(specific_hits) >= min_specific)
+    if is_review_like_paper(result) and len(hits) >= max(2, min_hits - 1):
+        passes = True
+    return {
+        "enabled": True,
+        "passes": passes,
+        "core_terms": core_terms[:18],
+        "core_hit_count": len(hits),
+        "core_hits": unique_preserve_order(hits)[:12],
+        "specific_terms": specific_terms[:12],
+        "specific_hit_count": len(specific_hits),
+        "specific_hits": unique_preserve_order(specific_hits)[:10],
+        "min_core_hits": min_hits,
+        "min_specific_hits": min_specific if specific_terms else 0,
+        "is_preprint": preprint,
+        "reason": (
+            "core topic terms sufficiently covered"
+            if passes
+            else "title/abstract do not cover enough user-specified core topic terms"
+        ),
+    }
+
+
+def core_domain_terms(seed_text: str) -> list[str]:
+    generic = {
+        "review",
+        "survey",
+        "roadmap",
+        "progress",
+        "perspective",
+        "systematic",
+        "seminal",
+        "foundational",
+        "highly",
+        "cited",
+        "landmark",
+        "classic",
+        "influential",
+        "latest",
+        "recent",
+        "frontier",
+        "breakthrough",
+        "method",
+        "model",
+        "algorithm",
+        "mechanism",
+        "experiment",
+        "framework",
+        "application",
+        "system",
+        "scenario",
+        "case",
+        "study",
+        "deployment",
+        "benchmark",
+        "dataset",
+        "validation",
+        "evaluation",
+        "metric",
+        "measurement",
+        "preprint",
+        "arxiv",
+        "paper",
+        "science",
+        "research",
+        "technology",
+    }
+    raw_terms = query_terms(seed_text)
+    terms = [term for term in raw_terms if term not in generic and len(term) >= 3]
+    phrase_terms = extract_core_domain_phrases(seed_text)
+    return unique_preserve_order(phrase_terms + terms)[:24]
+
+
+def extract_core_domain_phrases(seed_text: str) -> list[str]:
+    tokens = [term for term in query_terms(seed_text) if len(term) >= 3]
+    phrases: list[str] = []
+    for size in (3, 2):
+        for index in range(0, max(0, len(tokens) - size + 1)):
+            window = tokens[index : index + size]
+            if any(core_domain_term_is_specific(term) for term in window):
+                phrases.append(" ".join(window))
+    return phrases[:10]
+
+
+def core_domain_term_is_specific(term: str) -> bool:
+    value = normalize_space(term).lower()
+    if any(char.isdigit() for char in value):
+        return True
+    if len(value) >= 7:
+        return True
+    if any(marker in value for marker in ("-", "_", "+", "/")):
+        return True
+    return False
 
 
 def literature_domain_coverage_diagnostic(
@@ -3048,20 +3305,9 @@ def live_probe_literature_branch(query: str, providers: list[str] | None = None)
     for provider in selected:
         try:
             if provider == "semantic_scholar":
-                skipped = semantic_scholar_skip_block(query)
-                if skipped:
-                    reports.append(
-                        {
-                            "provider": provider,
-                            "status": skipped.get("status"),
-                            "result_count": 0,
-                            "top_titles": [],
-                            "error": skipped.get("error", ""),
-                            "rate_limited": True,
-                        }
-                    )
-                    continue
                 block = search_semantic_scholar(query, max_results=3)
+            elif provider == "pubmed":
+                block = search_pubmed(query, max_results=3)
             elif provider in {"biorxiv", "medrxiv", "chemrxiv"}:
                 block = search_preprint_api(provider, query, max_results=3)
             else:
@@ -3142,24 +3388,14 @@ def fetch_stratified_layer_blocks(
                     block["query_branch"] = branch
                     block["retrieval_strategy"] = "latest_preprint_query"
                     blocks.append(block)
-            if "openreview" in providers:
-                block = search_openreview(planned_query, max_results=min(per_query_limit, 20))
-                block["query_branch"] = branch
-                block["retrieval_strategy"] = "latest_preprint_query"
-                blocks.append(block)
             continue
         if "semantic_scholar" in providers:
-            block = semantic_scholar_skip_block(layer_query) or search_semantic_scholar(layer_query, max_results=per_query_limit)
+            block = search_semantic_scholar(layer_query, max_results=per_query_limit)
             block["query_branch"] = branch
             block["retrieval_strategy"] = stratified_layer_retrieval_strategy(layer_name)
             blocks.append(block)
-        for provider in ("openalex", "dblp"):
-            if provider not in providers:
-                continue
-            if provider == "openalex":
-                block = search_openalex(layer_query, max_results=per_query_limit)
-            else:
-                block = search_dblp(layer_query, max_results=per_query_limit)
+        if "pubmed" in providers:
+            block = search_pubmed(layer_query, max_results=per_query_limit)
             block["query_branch"] = branch
             block["retrieval_strategy"] = stratified_layer_retrieval_strategy(layer_name)
             blocks.append(block)
@@ -3306,10 +3542,28 @@ def stratified_candidate_matches(layer: str, item: dict[str, Any]) -> bool:
     if layer == "L2_top_latest":
         return is_recent_paper(item, max_age=3) and is_top_venue_result(item) and not is_low_quality_literature_result(item)
     if layer == "L3_preprint":
-        return normalize_space(item.get("provider", "")).lower() == "arxiv" or normalize_space(item.get("venue", "")).lower() == "arxiv"
+        return is_preprint_literature_result(item) and not has_suspicious_literature_flags(item)
     if layer == "L4_regular":
-        return not is_low_quality_literature_result(item)
+        return not is_preprint_literature_result(item) and not is_low_quality_literature_result(item)
     return True
+
+
+def is_preprint_literature_result(item: dict[str, Any]) -> bool:
+    provider = normalize_space(str(item.get("provider") or "")).lower()
+    venue = normalize_space(str(item.get("venue") or "")).lower()
+    payload = item.get("papergraph_input") if isinstance(item.get("papergraph_input"), dict) else {}
+    payload_provider = normalize_space(str(payload.get("provider") or "")).lower()
+    payload_venue = normalize_space(str(payload.get("venue") or "")).lower()
+    candidates = {provider, venue, payload_provider, payload_venue}
+    return bool(candidates & PREPRINT_API_PROVIDERS) or any(
+        marker in " ".join(candidates)
+        for marker in ("preprint", "arxiv", "biorxiv", "medrxiv", "chemrxiv")
+    )
+
+
+def has_suspicious_literature_flags(item: dict[str, Any]) -> bool:
+    flags = set(item.get("quality_flags") or [])
+    return "suspicious_venue_or_publisher" in flags or "journal_quartile_suspicious" in flags
 
 
 def recover_stratified_layer_candidates(layer: str, raw_candidates: list[dict[str, Any]]) -> tuple[list[dict[str, Any]], str]:
@@ -4210,9 +4464,6 @@ def search_arxiv(query: str, max_results: int = 10, sort_by: str = "relevance") 
 
 
 def search_semantic_scholar(query: str, max_results: int = 10) -> dict[str, Any]:
-    skipped = semantic_scholar_skip_block(query)
-    if skipped:
-        return skipped
     fields = ",".join(
         [
             "title",
@@ -4250,14 +4501,72 @@ def search_semantic_scholar(query: str, max_results: int = 10) -> dict[str, Any]
         return provider_error_result("semantic_scholar", query, exc)
 
 
+def search_pubmed(query: str, max_results: int = 10) -> dict[str, Any]:
+    retmax = clamp_int(max_results, 1, 50)
+    search_params = urlencode(
+        {
+            "db": "pubmed",
+            "term": query,
+            "retmax": retmax,
+            "retmode": "json",
+            "sort": "relevance",
+            "tool": "qwen_zhikan",
+        }
+    )
+    search_url = f"https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?{search_params}"
+    try:
+        search_payload = http_get_json(search_url, headers={"User-Agent": "qwen-zhikan-papergraph/0.1"}, timeout=30.0)
+        id_list = (
+            search_payload.get("esearchresult", {}).get("idlist", [])
+            if isinstance(search_payload.get("esearchresult"), dict)
+            else []
+        )
+        ids = [str(item).strip() for item in id_list if str(item).strip()]
+        if not ids:
+            return {
+                "provider": "pubmed",
+                "query": query,
+                "status": "ok",
+                "total": int((search_payload.get("esearchresult") or {}).get("count") or 0)
+                if isinstance(search_payload.get("esearchresult"), dict)
+                else 0,
+                "results": [],
+                "next_step": "No PubMed records matched; try broader biomedical terms or Semantic Scholar.",
+            }
+        fetch_params = urlencode(
+            {
+                "db": "pubmed",
+                "id": ",".join(ids),
+                "retmode": "xml",
+                "tool": "qwen_zhikan",
+            }
+        )
+        fetch_url = f"https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?{fetch_params}"
+        raw = http_get_text(fetch_url, headers={"User-Agent": "qwen-zhikan-papergraph/0.1"}, timeout=30.0)
+        root = ET.fromstring(raw)
+        papers = [pubmed_article_to_result(article) for article in root.findall(".//PubmedArticle")]
+        papers = [paper for paper in papers if paper.get("title")]
+        return {
+            "provider": "pubmed",
+            "query": query,
+            "status": "ok",
+            "total": int((search_payload.get("esearchresult") or {}).get("count") or len(papers))
+            if isinstance(search_payload.get("esearchresult"), dict)
+            else len(papers),
+            "results": papers,
+            "next_step": "Pass a result's papergraph_input fields into import_papergraph_record, or use import_literature_search_result.",
+        }
+    except Exception as exc:
+        log_event("SCIENCE", "literature_search_failed", provider="pubmed", error=str(exc))
+        return provider_error_result("pubmed", query, exc)
+
+
 def search_preprint_api(provider: str, query: str, max_results: int = 10) -> dict[str, Any]:
     selected = database_to_provider(provider)
     if selected in {"biorxiv", "medrxiv"}:
         return search_biorxiv_or_medrxiv(selected, query, max_results=max_results)
     if selected == "chemrxiv":
         return search_chemrxiv(query, max_results=max_results)
-    if selected == "openreview":
-        return search_openreview(query, max_results=max_results)
     return {
         "provider": selected,
         "query": query,
@@ -4328,96 +4637,6 @@ def search_chemrxiv(query: str, max_results: int = 10) -> dict[str, Any]:
     except Exception as exc:
         log_event("SCIENCE", "literature_search_failed", provider="chemrxiv", error=str(exc))
         return provider_error_result("chemrxiv", query, exc)
-
-
-def search_openalex(query: str, max_results: int = 10) -> dict[str, Any]:
-    params = urlencode(
-        {
-            "search": query,
-            "per-page": clamp_int(max_results, 1, 50),
-        }
-    )
-    url = f"https://api.openalex.org/works?{params}"
-    try:
-        payload = http_get_json(url, headers={"User-Agent": "qwen-zhikan-papergraph/0.1"}, timeout=30.0)
-        results = payload.get("results") if isinstance(payload, dict) else []
-        if not isinstance(results, list):
-            results = []
-        papers = [openalex_item_to_result(item) for item in results if isinstance(item, dict)]
-        papers = rank_literature_results(query, papers)[: clamp_int(max_results, 1, 50)]
-        return {
-            "provider": "openalex",
-            "query": query,
-            "status": "ok",
-            "api": "api.openalex.org/works",
-            "total": (payload.get("meta") or {}).get("count") if isinstance(payload, dict) else None,
-            "results": papers,
-            "next_step": "Import a result with import_literature_search_result; OpenAlex provides broad publication metadata and open-access links.",
-        }
-    except Exception as exc:
-        log_event("SCIENCE", "literature_search_failed", provider="openalex", error=str(exc))
-        return provider_error_result("openalex", query, exc)
-
-
-def search_dblp(query: str, max_results: int = 10) -> dict[str, Any]:
-    params = urlencode(
-        {
-            "q": query,
-            "format": "json",
-            "h": clamp_int(max_results, 1, 50),
-        }
-    )
-    url = f"https://dblp.org/search/publ/api?{params}"
-    try:
-        payload = http_get_json(url, headers={"User-Agent": "qwen-zhikan-papergraph/0.1"}, timeout=30.0)
-        result = payload.get("result") if isinstance(payload, dict) else {}
-        hits = ((result.get("hits") or {}).get("hit") if isinstance(result, dict) else []) or []
-        if isinstance(hits, dict):
-            hits = [hits]
-        if not isinstance(hits, list):
-            hits = []
-        papers = [dblp_item_to_result(item) for item in hits if isinstance(item, dict)]
-        papers = rank_literature_results(query, papers)[: clamp_int(max_results, 1, 50)]
-        return {
-            "provider": "dblp",
-            "query": query,
-            "status": "ok",
-            "api": "dblp.org/search/publ/api",
-            "total": (result.get("hits") or {}).get("@total") if isinstance(result, dict) else None,
-            "results": papers,
-            "next_step": "Import a result with import_literature_search_result; DBLP records usually have strong CS bibliographic metadata but sparse abstracts.",
-        }
-    except Exception as exc:
-        log_event("SCIENCE", "literature_search_failed", provider="dblp", error=str(exc))
-        return provider_error_result("dblp", query, exc)
-
-
-def search_openreview(query: str, max_results: int = 10) -> dict[str, Any]:
-    params = urlencode(
-        {
-            "term": query,
-            "limit": clamp_int(max_results, 1, 50),
-        }
-    )
-    url = f"https://api2.openreview.net/notes/search?{params}"
-    try:
-        payload = http_get_json(url, headers={"User-Agent": "qwen-zhikan-papergraph/0.1"}, timeout=30.0)
-        notes = payload.get("notes") if isinstance(payload, dict) else []
-        if not isinstance(notes, list):
-            notes = []
-        papers = [openreview_item_to_result(item) for item in notes if isinstance(item, dict)]
-        papers = rank_literature_results(query, papers)[: clamp_int(max_results, 1, 50)]
-        return {
-            "provider": "openreview",
-            "query": query,
-            "status": "ok",
-            "api": "api2.openreview.net/notes/search",
-            "results": papers,
-            "next_step": "Import a result with import_literature_search_result; OpenReview records may be submissions or in-review manuscripts and should be quality-gated.",
-        }
-    except Exception as exc:
-        log_event("SCIENCE", "literature_search_failed", provider="openreview", error=str(exc))
-        return provider_error_result("openreview", query, exc)
 
 
 def expand_literature_graph(
@@ -5405,6 +5624,75 @@ def semantic_scholar_item_to_result(item: dict[str, Any]) -> dict[str, Any]:
     }
 
 
+def pubmed_article_to_result(article: ET.Element) -> dict[str, Any]:
+    medline = article.find("MedlineCitation")
+    pubmed_data = article.find("PubmedData")
+    article_node = medline.find("Article") if medline is not None else None
+    title = strip_markup(normalize_space(article_node.findtext("ArticleTitle", default="") if article_node is not None else ""))
+    abstract_parts: list[str] = []
+    if article_node is not None:
+        for abstract_text in article_node.findall(".//Abstract/AbstractText"):
+            label = normalize_space(str(abstract_text.attrib.get("Label") or ""))
+            text = strip_markup(normalize_space("".join(abstract_text.itertext())))
+            if not text:
+                continue
+            abstract_parts.append(f"{label}: {text}" if label else text)
+    abstract = normalize_space("\n".join(abstract_parts))
+    authors: list[str] = []
+    if article_node is not None:
+        for author in article_node.findall(".//AuthorList/Author"):
+            collective = normalize_space(author.findtext("CollectiveName", default=""))
+            if collective:
+                authors.append(collective)
+                continue
+            given = normalize_space(author.findtext("ForeName", default=""))
+            last = normalize_space(author.findtext("LastName", default=""))
+            name = normalize_space(f"{given} {last}".strip())
+            if name:
+                authors.append(name)
+    authors = authors[:30]
+    journal = article_node.find("Journal") if article_node is not None else None
+    venue = normalize_space(journal.findtext("Title", default="") if journal is not None else "")
+    pub_date = journal.find(".//PubDate") if journal is not None else None
+    year = ""
+    if pub_date is not None:
+        year = normalize_space(pub_date.findtext("Year", default="")) or first_year(pub_date.findtext("MedlineDate", default=""))
+    pmid = normalize_space(medline.findtext("PMID", default="") if medline is not None else "")
+    doi = ""
+    if pubmed_data is not None:
+        for article_id in pubmed_data.findall(".//ArticleIdList/ArticleId"):
+            if str(article_id.attrib.get("IdType") or "").lower() == "doi":
+                doi = normalize_doi("".join(article_id.itertext()))
+                break
+    url = f"https://pubmed.ncbi.nlm.nih.gov/{pmid}/" if pmid else ""
+    citation = build_citation(title=title, authors=authors, year=year, doi=doi, arxiv_id="")
+    input_payload = {
+        "title": title,
+        "citation": citation,
+        "authors": authors,
+        "year": year,
+        "venue": venue,
+        "provider": "pubmed",
+        "source_type": "pubmed_eutils",
+        "doi": doi,
+        "url": url,
+        "abstract": abstract,
+        "conclusion": "",
+    }
+    return {
+        "title": title,
+        "citation": citation,
+        "authors": authors,
+        "year": year,
+        "venue": venue,
+        "doi": doi,
+        "pmid": pmid,
+        "url": url,
+        "abstract": abstract,
+        "papergraph_input": input_payload,
+    }
+
+
 def biorxiv_item_to_result(item: dict[str, Any], server: str) -> dict[str, Any]:
     title = normalize_space(str(item.get("title") or ""))
     abstract = normalize_space(str(item.get("abstract") or ""))
@@ -5480,177 +5768,6 @@ def crossref_chemrxiv_item_to_result(item: dict[str, Any]) -> dict[str, Any]:
         "abstract": abstract,
         "papergraph_input": input_payload,
     }
-
-
-def openalex_item_to_result(item: dict[str, Any]) -> dict[str, Any]:
-    title = normalize_space(str(item.get("display_name") or item.get("title") or ""))
-    abstract = openalex_abstract_text(item.get("abstract_inverted_index"))
-    authorships = item.get("authorships") if isinstance(item.get("authorships"), list) else []
-    authors = [
-        normalize_space(str((authorship.get("author") or {}).get("display_name") or ""))
-        for authorship in authorships
-        if isinstance(authorship, dict)
-    ]
-    authors = [author for author in authors if author]
-    year = str(item.get("publication_year") or "")
-    doi = normalize_doi(str(item.get("doi") or ""))
-    primary_location = item.get("primary_location") if isinstance(item.get("primary_location"), dict) else {}
-    source = primary_location.get("source") if isinstance(primary_location.get("source"), dict) else {}
-    host_venue = item.get("host_venue") if isinstance(item.get("host_venue"), dict) else {}
-    venue = normalize_space(str(source.get("display_name") or host_venue.get("display_name") or ""))
-    url = str(primary_location.get("landing_page_url") or item.get("doi") or item.get("id") or "")
-    open_access = item.get("open_access") if isinstance(item.get("open_access"), dict) else {}
-    citation = build_citation(title=title, authors=authors, year=year, doi=doi, arxiv_id="")
-    input_payload = {
-        "title": title,
-        "citation": citation,
-        "authors": authors,
-        "year": year,
-        "venue": venue,
-        "provider": "openalex",
-        "source_type": "openalex_api",
-        "doi": doi,
-        "url": url,
-        "abstract": abstract,
-        "conclusion": "",
-    }
-    return {
-        "title": title,
-        "citation": citation,
-        "authors": authors,
-        "year": year,
-        "venue": venue,
-        "doi": doi,
-        "openalex_id": item.get("id"),
-        "url": url,
-        "open_access_pdf": primary_location.get("pdf_url") or open_access.get("oa_url", ""),
-        "is_open_access": open_access.get("is_oa"),
-        "citation_count": item.get("cited_by_count"),
-        "abstract": abstract,
-        "concepts": [concept.get("display_name") for concept in (item.get("concepts") or []) if isinstance(concept, dict)][:8],
-        "papergraph_input": input_payload,
-    }
-
-
-def dblp_item_to_result(item: dict[str, Any]) -> dict[str, Any]:
-    info = item.get("info") if isinstance(item.get("info"), dict) else item
-    title = strip_markup(normalize_space(str(info.get("title") or "")))
-    raw_authors = (info.get("authors") or {}).get("author") if isinstance(info.get("authors"), dict) else []
-    if isinstance(raw_authors, dict):
-        raw_authors = [raw_authors]
-    if isinstance(raw_authors, str):
-        raw_authors = [raw_authors]
-    authors: list[str] = []
-    if isinstance(raw_authors, list):
-        for author in raw_authors:
-            if isinstance(author, dict):
-                authors.append(normalize_space(str(author.get("text") or author.get("#text") or author.get("name") or "")))
-            else:
-                authors.append(normalize_space(str(author)))
-    authors = [author for author in authors if author]
-    year = str(info.get("year") or "")
-    doi = normalize_doi(str(info.get("doi") or ""))
-    venue = normalize_space(str(info.get("venue") or ""))
-    url = str(info.get("ee") or info.get("url") or (f"https://doi.org/{doi}" if doi else ""))
-    citation = build_citation(title=title, authors=authors, year=year, doi=doi, arxiv_id="")
-    input_payload = {
-        "title": title,
-        "citation": citation,
-        "authors": authors,
-        "year": year,
-        "venue": venue,
-        "provider": "dblp",
-        "source_type": "dblp_api",
-        "doi": doi,
-        "url": url,
-        "abstract": "",
-        "conclusion": "",
-    }
-    return {
-        "title": title,
-        "citation": citation,
-        "authors": authors,
-        "year": year,
-        "venue": venue,
-        "doi": doi,
-        "url": url,
-        "dblp_type": info.get("type"),
-        "abstract": "",
-        "papergraph_input": input_payload,
-    }
-
-
-def openreview_item_to_result(item: dict[str, Any]) -> dict[str, Any]:
-    content = item.get("content") if isinstance(item.get("content"), dict) else {}
-    title = normalize_space(openreview_content_value(content.get("title")))
-    abstract = normalize_space(openreview_content_value(content.get("abstract")))
-    authors = string_list(openreview_content_value(content.get("authors")))
-    if not authors:
-        authors = string_list(openreview_content_value(content.get("authorids")))
-    note_id = str(item.get("id") or item.get("forum") or "")
-    year = openreview_year(item)
-    venue = normalize_space(str(item.get("venue") or item.get("invitation") or item.get("domain") or "OpenReview"))
-    url = f"https://openreview.net/forum?id={note_id}" if note_id else ""
-    citation = build_citation(title=title, authors=authors, year=year, doi="", arxiv_id="")
-    input_payload = {
-        "title": title,
-        "citation": citation,
-        "authors": authors,
-        "year": year,
-        "venue": venue,
-        "provider": "openreview",
-        "source_type": "openreview_api",
-        "doi": "",
-        "url": url,
-        "abstract": abstract,
-        "conclusion": "",
-    }
-    return {
-        "title": title,
-        "citation": citation,
-        "authors": authors,
-        "year": year,
-        "venue": venue,
-        "url": url,
-        "openreview_id": note_id,
-        "abstract": abstract,
-        "papergraph_input": input_payload,
-    }
-
-
-def openalex_abstract_text(inverted_index: Any) -> str:
-    if not isinstance(inverted_index, dict):
-        return ""
-    positioned: list[tuple[int, str]] = []
-    for word, positions in inverted_index.items():
-        if not isinstance(positions, list):
-            continue
-        for position in positions:
-            try:
-                positioned.append((int(position), str(word)))
-            except (TypeError, ValueError):
-                continue
-    positioned.sort(key=lambda item: item[0])
-    return normalize_space(" ".join(word for _, word in positioned))
-
-
-def openreview_content_value(value: Any) -> Any:
-    if isinstance(value, dict) and "value" in value:
-        return value.get("value")
-    return value
-
-
-def openreview_year(item: dict[str, Any]) -> str:
-    for key in ("pdate", "cdate", "mdate", "tcdate", "tmdate"):
-        raw = item.get(key)
-        if not raw:
-            continue
-        try:
-            return str(time.gmtime(float(raw) / 1000.0).tm_year)
-        except (TypeError, ValueError, OSError):
-            continue
-    text = " ".join(str(item.get(key) or "") for key in ("invitation", "venue", "domain"))
-    return first_year(text)
 
 
 def split_author_string(text: str) -> list[str]:
@@ -5888,15 +6005,12 @@ def semantic_scholar_get_json(url: str, headers: dict[str, str] | None = None) -
     if cached is not None:
         log_event("SCIENCE", "semantic_scholar_cache_hit")
         return json.loads(cached)
-    circuit_open, retry_after = semantic_scholar_circuit_open()
-    if circuit_open:
-        raise RuntimeError(
-            f"Semantic Scholar circuit open after recent 429; retry_after_seconds={retry_after:.1f}"
-        )
-    retry_limit = max(0, int(SCIENCE_SEMANTIC_SCHOLAR_RETRY_LIMIT))
+    wait_for_semantic_scholar_circuit_if_needed("pre_request")
+    retry_limit = max(20, int(SCIENCE_SEMANTIC_SCHOLAR_RETRY_LIMIT))
     last_error: RuntimeError | None = None
     for attempt in range(retry_limit + 1):
         try:
+            wait_for_semantic_scholar_circuit_if_needed("retry" if attempt else "request")
             text = semantic_scholar_get_text(url, headers=headers)
             semantic_scholar_cache_put(url, text)
             return json.loads(text)
@@ -5918,13 +6032,45 @@ def semantic_scholar_get_json(url: str, headers: dict[str, str] | None = None) -
             )
             if SCIENCE_SEMANTIC_SCHOLAR_FAIL_FAST_ON_429 or attempt >= retry_limit:
                 raise RuntimeError(
-                    f"Semantic Scholar rate limited; circuit opened for "
-                    f"{semantic_scholar_circuit_seconds(delay):.1f}s: {exc}"
+                    f"Semantic Scholar rate limited after {retry_limit + 1} strict 1.5s-spaced attempts: {exc}"
                 ) from exc
-            time.sleep(delay)
+            wait_seconds = semantic_scholar_retry_wait_seconds(delay)
+            log_event(
+                "SCIENCE",
+                "semantic_scholar_retry_wait",
+                attempt=attempt + 1,
+                wait_seconds=round(wait_seconds, 2),
+            )
+            time.sleep(wait_seconds)
     raise RuntimeError(
         f"Semantic Scholar rate limit persisted after {retry_limit + 1} attempts: {last_error}"
     )
+
+
+def wait_for_semantic_scholar_circuit_if_needed(reason: str = "request") -> None:
+    circuit_open, retry_after = semantic_scholar_circuit_open()
+    if not circuit_open:
+        return
+    wait_seconds = min(retry_after, semantic_scholar_strict_interval_seconds())
+    log_event(
+        "SCIENCE",
+        "semantic_scholar_circuit_wait",
+        reason=reason,
+        wait_seconds=round(wait_seconds, 2),
+    )
+    time.sleep(wait_seconds)
+
+
+def semantic_scholar_retry_wait_seconds(delay: float) -> float:
+    return max(semantic_scholar_strict_interval_seconds(), min(float(delay), semantic_scholar_strict_interval_seconds()))
+
+
+def semantic_scholar_strict_interval_seconds() -> float:
+    return 1.5
+
+
+def semantic_scholar_retry_buffer_seconds() -> float:
+    return 0.0
 
 
 def semantic_scholar_circuit_open() -> tuple[bool, float]:
@@ -5935,8 +6081,10 @@ def semantic_scholar_circuit_open() -> tuple[bool, float]:
 
 def semantic_scholar_circuit_seconds(delay: float) -> float:
     configured = max(0.0, float(SCIENCE_SEMANTIC_SCHOLAR_CIRCUIT_SECONDS))
-    floor = max(5.0, float(SCIENCE_SEMANTIC_SCHOLAR_MIN_INTERVAL_SECONDS) * 4)
-    return min(max(configured, delay, floor), 180.0)
+    if configured <= 0:
+        return 0.0
+    floor = semantic_scholar_strict_interval_seconds()
+    return min(max(configured, floor), 180.0)
 
 
 def register_semantic_scholar_429(delay: float) -> None:
@@ -5944,13 +6092,14 @@ def register_semantic_scholar_429(delay: float) -> None:
     cooldown = semantic_scholar_circuit_seconds(delay)
     with SEMANTIC_SCHOLAR_CIRCUIT_LOCK:
         SEMANTIC_SCHOLAR_429_COUNT += 1
-        SEMANTIC_SCHOLAR_COOLDOWN_UNTIL = max(
-            SEMANTIC_SCHOLAR_COOLDOWN_UNTIL,
-            time.monotonic() + cooldown,
-        )
+        if cooldown > 0:
+            SEMANTIC_SCHOLAR_COOLDOWN_UNTIL = max(
+                SEMANTIC_SCHOLAR_COOLDOWN_UNTIL,
+                time.monotonic() + cooldown,
+            )
     log_event(
         "SCIENCE",
-        "semantic_scholar_circuit_open",
+        "semantic_scholar_429_registered",
         cooldown_seconds=round(cooldown, 2),
         count=SEMANTIC_SCHOLAR_429_COUNT,
     )
@@ -6012,14 +6161,7 @@ def arxiv_skip_block(query: str) -> dict[str, Any] | None:
 
 
 def semantic_scholar_backoff_seconds(attempt: int, error: str = "") -> float:
-    retry_after = semantic_scholar_retry_after_seconds(error)
-    if retry_after is not None:
-        return min(max(retry_after, SCIENCE_SEMANTIC_SCHOLAR_MIN_INTERVAL_SECONDS), 120.0)
-    base = max(
-        SCIENCE_SEMANTIC_SCHOLAR_429_BACKOFF_SECONDS,
-        SCIENCE_SEMANTIC_SCHOLAR_MIN_INTERVAL_SECONDS * 2,
-    )
-    return min(base * (2 ** max(0, attempt)), 60.0)
+    return max(semantic_scholar_strict_interval_seconds(), float(SCIENCE_SEMANTIC_SCHOLAR_429_BACKOFF_SECONDS))
 
 
 def semantic_scholar_get_text(url: str, headers: dict[str, str] | None = None) -> str:
@@ -6084,7 +6226,7 @@ def log_semantic_scholar_key_status() -> None:
         "SCIENCE",
         "semantic_scholar_key_status",
         configured=bool(SEMANTIC_SCHOLAR_API_KEY),
-        min_interval_seconds=SCIENCE_SEMANTIC_SCHOLAR_MIN_INTERVAL_SECONDS,
+        min_interval_seconds=semantic_scholar_strict_interval_seconds(),
     )
 
 
@@ -6104,7 +6246,7 @@ def is_semantic_scholar_not_found_error(error: str) -> bool:
 
 def wait_for_semantic_scholar_rate_limit() -> None:
     global SEMANTIC_SCHOLAR_LAST_REQUEST_AT
-    interval = max(0.0, float(SCIENCE_SEMANTIC_SCHOLAR_MIN_INTERVAL_SECONDS))
+    interval = semantic_scholar_strict_interval_seconds()
     if interval <= 0:
         return
     with SEMANTIC_SCHOLAR_RATE_LOCK:
@@ -6112,6 +6254,14 @@ def wait_for_semantic_scholar_rate_limit() -> None:
         try:
             now_wall = time.time()
             persisted_at = read_semantic_scholar_rate_timestamp()
+            if persisted_at > now_wall + interval:
+                log_event(
+                    "SCIENCE",
+                    "semantic_scholar_rate_state_future_ignored",
+                    future_seconds=round(persisted_at - now_wall, 2),
+                    strict_interval_seconds=round(interval, 2),
+                )
+                persisted_at = 0.0
             last_wall = max(persisted_at, wall_time_from_monotonic(SEMANTIC_SCHOLAR_LAST_REQUEST_AT))
             wait_seconds = last_wall + interval - now_wall
             if wait_seconds > 0:
@@ -6174,7 +6324,7 @@ def write_semantic_scholar_rate_timestamp(timestamp: float) -> None:
     write_provider_rate_timestamp(
         SEMANTIC_SCHOLAR_RATE_STATE_FILE,
         timestamp,
-        min_interval_seconds=SCIENCE_SEMANTIC_SCHOLAR_MIN_INTERVAL_SECONDS,
+        min_interval_seconds=semantic_scholar_strict_interval_seconds(),
     )
 
 
@@ -6207,7 +6357,7 @@ def write_provider_rate_timestamp(path: Path, timestamp: float, min_interval_sec
 def acquire_semantic_scholar_process_lock():
     return acquire_provider_process_lock(
         SEMANTIC_SCHOLAR_PROCESS_LOCK_DIR,
-        SCIENCE_SEMANTIC_SCHOLAR_MIN_INTERVAL_SECONDS,
+        semantic_scholar_strict_interval_seconds(),
     )
 
 
@@ -6888,6 +7038,8 @@ def get_science_agent_prompt(agent: str) -> str:
             "tao_workflow": {
                 "thought": "Assess project state, dependencies, output quality, gap lifecycle, and delegation risk.",
                 "action_tools": [
+                    "create_autogen_groupchat",
+                    "run_autogen_research_flow",
                     "create_boxue_delegation_tasks",
                     "create_science_delegation_tasks",
                     "create_science_pipeline_tasks",
@@ -6912,6 +7064,7 @@ def get_science_agent_prompt(agent: str) -> str:
                 "Boxue coordinates; specialist agents execute domain work.",
                 "Every task needs explicit deliverable standards and acceptance criteria.",
                 "Use delegation DAGs for broad or long-running workflows instead of one brittle agent run.",
+                "Prefer AutoGen GroupChat orchestration over worktree teammates when the task is research reasoning rather than file editing.",
                 "Do not treat unsupported or unreviewed evidence as a validated knowledge gap.",
             ],
         }
@@ -6954,6 +7107,7 @@ def get_science_agent_prompt(agent: str) -> str:
                 "action_tools": [
                     "run_tanxi_gap_exploration",
                     "detect_knowledge_gaps",
+                    "check_semantic_plausibility",
                     "assess_novelty",
                     "verify_uniqueness",
                 ],
@@ -6972,6 +7126,110 @@ def get_science_agent_prompt(agent: str) -> str:
                 "Rank no more than 10 gaps per scan.",
                 "Avoid trivial gaps and already-saturated areas.",
                 "Prioritize scientific significance, tractability, strategic value, and downstream impact.",
+            ],
+        }
+        return json.dumps(prompt, ensure_ascii=False, indent=2)
+    if key == "mingli":
+        prompt = {
+            "agent": key,
+            **spec,
+            "full_system_prompt": MINGLI_FULL_PROMPT,
+            "tao_workflow": {
+                "thought": "Evaluate whether a hypothesis is gap-traceable, PaperGraph-grounded, novel, feasible, and structurally distinct from prior candidates.",
+                "action_tools": [
+                    "generate_idea",
+                    "design_experiment",
+                    "check_semantic_plausibility",
+                    "verify_uniqueness",
+                    "search_literature",
+                    "finalize_idea",
+                    "run_mingli_hypothesis_evolution",
+                ],
+                "observation": "Inspect uniqueness evidence, overlap risk, experiment feasibility, lineage, and final JSON completeness before finalization.",
+            },
+            "output_schema": mingli_output_schema(),
+            "global_constraints": [
+                "Every finalized idea must reference a real project gap_id.",
+                "At least one uniqueness or literature verification check is mandatory before finalize_idea succeeds.",
+                "Every experiment must include setup, metrics, and baselines.",
+                "Tournament mutations must introduce structural changes and preserve parent lineage.",
+            ],
+        }
+        return json.dumps(prompt, ensure_ascii=False, indent=2)
+    if key == "duzhi":
+        prompt = {
+            "agent": key,
+            **spec,
+            "full_system_prompt": DUZHI_FULL_PROMPT,
+            "tao_workflow": {
+                "thought": "Extract key claims, implicit assumptions, measurement gaps, causal gaps, and possible counterexamples.",
+                "action_tools": [
+                    "ask_socratic_questions",
+                    "ask_critical_questions",
+                    "find_counterexamples",
+                    "stress_test_assumptions",
+                    "check_internal_consistency",
+                    "regime_shift_test",
+                ],
+                "observation": "Return categorized questions, required revisions, severity, and whether the hypothesis must be revised.",
+            },
+            "output_schema": duzhi_output_schema(),
+            "global_constraints": [
+                "Ask questions that can change the hypothesis, not generic objections.",
+                "Every critique must target a concrete claim, missing measurement, missing causal link, or missing boundary condition.",
+                "Use domain-general scientific constraints and avoid field-specific hardcoding.",
+                "If evidence is missing, mark it as missing instead of inventing a refutation.",
+            ],
+        }
+        return json.dumps(prompt, ensure_ascii=False, indent=2)
+    if key == "bianlun":
+        prompt = {
+            "agent": key,
+            **spec,
+            "full_system_prompt": BIANLUN_FULL_PROMPT,
+            "tao_workflow": {
+                "thought": "Check safety gates, compare MingLi claim, DuZhi objections, YanZhen reports, and PaperGraph evidence.",
+                "action_tools": [
+                    "run_socratic_hypothesis_debate",
+                    "moderate_round",
+                    "summarize_positions",
+                    "extract_emergent_method",
+                    "run_yanzhen_mechanism_verification",
+                ],
+                "observation": "Return round-by-round verdicts, adopted revisions, unresolved disputes, and final decision.",
+            },
+            "output_schema": bianlun_output_schema(),
+            "global_constraints": [
+                "Do not accept unsupported hypothesis revisions.",
+                "Enforce model-family independence as an auditable safety gate.",
+                "If YanZhen reports CAWM_DETECTED, the debate cannot accept the hypothesis without revision.",
+                "If two rounds produce no substantive revision, terminate with best current hypothesis plus unresolved issues.",
+            ],
+        }
+        return json.dumps(prompt, ensure_ascii=False, indent=2)
+    if key == "yanzhen":
+        prompt = {
+            "agent": key,
+            **spec,
+            "full_system_prompt": YANZHEN_FULL_PROMPT,
+            "tao_workflow": {
+                "thought": "Extract mechanism, causal chain, cited evidence, hidden assumptions, and regime-shift stress cases.",
+                "action_tools": [
+                    "check_internal_consistency",
+                    "check_data_consistency",
+                    "regime_shift_test",
+                    "detect_selective_citation",
+                    "causal_chain_audit",
+                    "run_yanzhen_mechanism_verification",
+                ],
+                "observation": "Return layer verdicts, detailed reasoning, CAWM risk, selective citation risk, and human-review flags.",
+            },
+            "output_schema": yanzhen_output_schema(),
+            "global_constraints": [
+                "All three layers must be executed.",
+                "Regime shift testing must include at least two shifted conditions.",
+                "Do not pass hypotheses with missing evidence, unstated assumptions, or brittle mechanisms.",
+                "The audit must be domain-general and avoid field-specific hardcoding.",
             ],
         }
         return json.dumps(prompt, ensure_ascii=False, indent=2)
@@ -7012,6 +7270,86 @@ def zhizhi_output_schema() -> dict[str, Any]:
                 "suggested_research_path": "string",
             }
         ],
+    }
+
+
+def mingli_output_schema() -> dict[str, Any]:
+    return {
+        "title": "Research Title",
+        "hypothesis": "Core Hypothesis",
+        "abstract": "Abstract",
+        "related_work": "Comparison with Related Work",
+        "experiments": {
+            "setup": "Experimental Setup",
+            "metrics": "Evaluation Metrics",
+            "baselines": "Baseline Methods",
+        },
+        "risks": "Risk Factors and Limitations",
+        "tournament_generation": 1,
+        "parent_hypothesis_id": "string | null",
+    }
+
+
+def duzhi_output_schema() -> dict[str, Any]:
+    return {
+        "thought": "Socratic critique reasoning",
+        "action": {"type": "ask_socratic_questions", "params": {}},
+        "questions": [
+            {
+                "question_type": "conceptual_clarification | constraint_check | causal_probe | counterexample_challenge",
+                "question": "string",
+                "target_claim": "string",
+                "why_it_matters": "string",
+                "required_revision": "string",
+                "severity": "low | medium | high | fatal",
+            }
+        ],
+        "overall_severity": "low | medium | high | fatal",
+        "must_revise": True,
+    }
+
+
+def bianlun_output_schema() -> dict[str, Any]:
+    return {
+        "thought": "Structured debate moderation reasoning",
+        "action": {"type": "run_socratic_hypothesis_debate", "params": {}},
+        "debate_report": {
+            "rounds": [],
+            "safety_gates": {},
+            "refined_hypothesis": {},
+            "unresolved_issues": [],
+            "final_decision": "accept_for_experiment | revise | human_review | reject",
+        },
+    }
+
+
+def yanzhen_output_schema() -> dict[str, Any]:
+    return {
+        "thought": "Mechanism verification reasoning process",
+        "action": {},
+        "mechanism_fidelity_report": {
+            "hypothesis_id": "string",
+            "layer_1_internal_consistency": {
+                "logical_chain_intact": True,
+                "formula_application_correct": True,
+                "issues_found": [],
+                "verdict": "PASS | FAIL",
+            },
+            "layer_2_data_consistency": {
+                "mechanism_matches_data": True,
+                "selective_citation_detected": False,
+                "original_text_alignment": "high | medium | low",
+                "verdict": "PASS | FAIL",
+            },
+            "layer_3_regime_shift_test": {
+                "shifted_conditions_tested": ["condition1", "condition2"],
+                "mechanism_stability": "stable | degrades_gracefully | collapses_unexpectedly",
+                "cawm_risk_level": "LOW | MEDIUM | HIGH",
+                "verdict": "PASS | FAIL",
+            },
+            "overall_verdict": "MECHANISM_VERIFIED | CAWM_DETECTED | REQUIRES_HUMAN_REVIEW",
+            "detailed_reasoning": "string",
+        },
     }
 
 
@@ -7463,14 +7801,16 @@ def run_boxue_research_round(
     )
 
     mode = normalize_key(execution_mode or "async")
-    if mode in {"pipeline", "sync", "synchronous", "closed_loop", "closedloop"}:
-        pipeline_executions = boxue_run_pipeline_specialists(
+    autogen_mode = mode in {"pipeline", "sync", "synchronous", "closed_loop", "closedloop", "autogen", "groupchat", "group_chat", "crew", "crew_flow", "flow"}
+    if autogen_mode:
+        pipeline_executions = boxue_run_autogen_groupchat_pipeline(
             project_id=project_id,
             plan_id=plan_id,
             plan_tasks=plan_tasks,
             goal=goal or str(project.get("objective", "")),
         )
         spawn_teammates = False
+        runtime_limit = 0
 
     def remaining_time() -> float:
         return runtime_limit - (time.time() - started_at)
@@ -7510,7 +7850,10 @@ def run_boxue_research_round(
         time.sleep(min(poll_interval, max(0.5, remaining_time())))
 
     snapshot = boxue_task_snapshot(task_ids)
-    final_decision = boxue_finalize_round(snapshot, revisions)
+    if autogen_mode:
+        final_decision = boxue_finalize_autogen_round(pipeline_executions, snapshot, revisions)
+    else:
+        final_decision = boxue_finalize_round(snapshot, revisions)
     project = load_project(project_id)
     round_record = {
         "round_id": round_id,
@@ -7619,6 +7962,184 @@ def boxue_run_pipeline_specialists(
             )
             progressed = True
     return executions
+
+
+def boxue_run_autogen_groupchat_pipeline(
+    *,
+    project_id: str,
+    plan_id: str,
+    plan_tasks: list[dict[str, Any]],
+    goal: str,
+) -> list[dict[str, Any]]:
+    """Run the AutoGen GroupChat pipeline behind the legacy Boxue pipeline mode."""
+    started = time.time()
+    try:
+        try:
+            from .autogen_collab import run_autogen_research_flow
+        except ImportError:
+            from autogen_collab import run_autogen_research_flow
+
+        output = run_autogen_research_flow(
+            project_id=project_id,
+            goal=boxue_research_query(load_project(project_id), goal),
+            max_results=20,
+            import_top_k=15,
+            use_llm=True,
+            live_search=False,
+            run_debate=True,
+            max_round=12,
+            speaker_selection_method="round_robin",
+            human_input_mode="TERMINATE",
+            use_native_autogen=False,
+        )
+        payload = json.loads(output)
+        completed_task_updates = boxue_mark_autogen_tasks_completed(plan_tasks=plan_tasks, autogen_run=payload)
+        log_event(
+            "SCIENCE",
+            "boxue_autogen_groupchat_done",
+            project_id=project_id,
+            plan_id=plan_id,
+            run_id=payload.get("run_id"),
+            decision=(payload.get("state") or {}).get("final_decision"),
+        )
+        return [
+            {
+                "runner": "autogen_groupchat",
+                "plan_id": plan_id,
+                "status": "completed" if str((payload.get("state") or {}).get("final_decision")) != "error" else "failed",
+                "elapsed_ms": int((time.time() - started) * 1000),
+                "groupchat_id": payload.get("groupchat_id"),
+                "run_id": payload.get("run_id"),
+                "state": payload.get("state", {}),
+                "turns": [
+                    {
+                        "round": turn.get("round"),
+                        "speaker": turn.get("speaker"),
+                        "status": turn.get("status"),
+                        "error": turn.get("error"),
+                    }
+                    for turn in payload.get("turns", [])
+                    if isinstance(turn, dict)
+                ],
+                "completed_task_updates": completed_task_updates,
+                "output_summary": summarize_json_output(output),
+            }
+        ]
+    except Exception as exc:
+        log_event("WARN", "boxue_autogen_groupchat_failed", project_id=project_id, plan_id=plan_id, error=exc)
+        return [
+            {
+                "runner": "autogen_groupchat",
+                "plan_id": plan_id,
+                "status": "failed",
+                "elapsed_ms": int((time.time() - started) * 1000),
+                "error": str(exc),
+            }
+        ]
+
+
+def boxue_mark_autogen_tasks_completed(
+    *,
+    plan_tasks: list[dict[str, Any]],
+    autogen_run: dict[str, Any],
+) -> list[dict[str, Any]]:
+    """Best-effort audit sync from AutoGen turns back to legacy Boxue DAG tasks."""
+    completed_agents = boxue_completed_agents_from_autogen_run(autogen_run)
+    updates: list[dict[str, Any]] = []
+    if not completed_agents:
+        return updates
+    progressed = True
+    while progressed:
+        progressed = False
+        for item in plan_tasks:
+            task_id = str(item.get("task_id") or "")
+            agent = normalize_key(str(item.get("agent") or ""))
+            if not task_id or agent not in completed_agents:
+                continue
+            state = boxue_task_state(task_id)
+            if state.get("status") == "completed":
+                continue
+            if not boxue_task_dependencies_completed_by_id(task_id):
+                continue
+            try:
+                completion = boxue_force_complete_task(task_id)
+                updates.append(
+                    {
+                        "task_id": task_id,
+                        "agent": agent,
+                        "status": "completed",
+                        "completion": trim_text(completion, 500),
+                    }
+                )
+                progressed = True
+            except Exception as exc:
+                updates.append({"task_id": task_id, "agent": agent, "status": "sync_failed", "error": str(exc)})
+    return updates
+
+
+def boxue_completed_agents_from_autogen_run(autogen_run: dict[str, Any]) -> set[str]:
+    completed: set[str] = set()
+    for turn in autogen_run.get("turns", []):
+        if not isinstance(turn, dict):
+            continue
+        status = normalize_key(str(turn.get("status") or ""))
+        if status in {"error", "failed", "fail"}:
+            continue
+        name = normalize_key(str(turn.get("round") or ""))
+        speaker = normalize_key(str(turn.get("speaker") or ""))
+        if "literature" in name or "zhizhi" in speaker:
+            completed.add("zhizhi")
+        elif "gap" in name or "tanxi" in speaker:
+            completed.add("tanxi")
+        elif "mingli" in speaker or "hypothesis" in name or "methodology" in name:
+            completed.add("mingli")
+        elif "yanzhen" in speaker or "cawm" in name:
+            completed.add("yanzhen")
+        elif "bianlun" in speaker or "synthesis" in name:
+            completed.update({"duzhi", "bianlun"})
+        elif "duzhi" in speaker or "interrogation" in name:
+            completed.add("duzhi")
+    state = autogen_run.get("state", {}) if isinstance(autogen_run.get("state"), dict) else {}
+    decision = normalize_key(str(state.get("final_decision") or ""))
+    if decision and decision != "error":
+        completed.add("boxue")
+    return completed
+
+
+def boxue_finalize_autogen_round(
+    pipeline_executions: list[dict[str, Any]],
+    snapshot: dict[str, Any],
+    revisions: list[dict[str, Any]],
+) -> dict[str, Any]:
+    execution = pipeline_executions[0] if pipeline_executions else {}
+    state = execution.get("state", {}) if isinstance(execution.get("state"), dict) else {}
+    status = str(execution.get("status") or "")
+    flow_decision = str(state.get("final_decision") or "")
+    if status == "failed" or flow_decision == "error":
+        final_status = "error"
+        decision = "AutoGen GroupChat pipeline failed; inspect the AutoGen run record and failed turn before retrying."
+    elif revisions:
+        final_status = "revision_required"
+        decision = "AutoGen GroupChat pipeline ran, but legacy Boxue audit tasks produced revision signals."
+    elif flow_decision in {"revision_required", "revise", "human_review"}:
+        final_status = "revision_required"
+        decision = "AutoGen GroupChat completed the research loop and requested hypothesis revision or human review."
+    else:
+        final_status = "autogen_groupchat_completed"
+        decision = "AutoGen GroupChat completed the Boxue research loop without CrewAI, worktrees, or background teammates."
+    counts = snapshot.get("counts", {}) if isinstance(snapshot.get("counts"), dict) else {}
+    return {
+        "status": final_status,
+        "autogen_decision": flow_decision,
+        "autogen_run_id": execution.get("run_id"),
+        "groupchat_id": execution.get("groupchat_id"),
+        "completed_tasks": int(counts.get("completed") or 0),
+        "total_tasks": int(snapshot.get("total") or 0),
+        "pending_tasks": int(counts.get("pending") or 0),
+        "in_progress_tasks": int(counts.get("in_progress") or 0),
+        "revision_tasks_created": len(revisions),
+        "decision": decision,
+    }
 
 
 def boxue_execute_specialist_task(
@@ -8013,6 +8534,10 @@ def boxue_round_next_step(final_decision: dict[str, Any]) -> str:
     status = str(final_decision.get("status") or "")
     if status == "finalized":
         return "Use Boxue final synthesis output to decide whether to start a new research iteration."
+    if status == "autogen_groupchat_completed":
+        return "Inspect the AutoGen GroupChat run record, then continue to experiment planning or start a focused revision round."
+    if status == "error":
+        return "Inspect the AutoGen failed turn or Boxue round record before retrying."
     if status == "revision_required":
         return "Run run_boxue_research_round again with the same plan_id after revision tasks complete, or inspect the created revision tasks."
     return "Let spawned teammates continue, then run run_boxue_research_round again with the same plan_id to monitor and dispatch newly unblocked specialists."
@@ -8624,10 +9149,20 @@ def detect_knowledge_gaps(project_id: str, max_gaps: int = 10) -> str:
     scenarios = sorted(knowledge_map.get("main_scenarios") or {scenario for coverage in matrix.values() for scenario in coverage})
     benchmarks = sorted(knowledge_map.get("main_benchmarks") or [])
     gaps: list[dict[str, Any]] = []
+    semantic_rejected_gaps: list[dict[str, Any]] = []
     per_type_quota = max(1, max_gaps // 5)
 
     if len(gaps) < max_gaps:
         gaps.extend(detect_reasoning_gaps(project, min(per_type_quota + 1, max_gaps - len(gaps))))
+
+    if len(gaps) < max_gaps:
+        gaps.extend(detect_mechanism_issue_gaps(project, max_gaps - len(gaps)))
+
+    if len(gaps) < max_gaps:
+        gaps.extend(detect_gap_signal_gaps(project, max_gaps - len(gaps)))
+
+    if len(gaps) < max_gaps:
+        gaps.extend(detect_problem_gaps(project, min(per_type_quota + 1, max_gaps - len(gaps))))
 
     for method in methods:
         for scenario in scenarios:
@@ -8641,6 +9176,21 @@ def detect_knowledge_gaps(project_id: str, max_gaps: int = 10) -> str:
                 suggested_research_path="Run a targeted validation study with explicit benchmarks, baselines, and failure-mode analysis.",
                 value_argument="The combination may expose method-scenario boundary conditions rather than simply adding another benchmark.",
             )
+            gate = semantic_plausibility_for_pair(project, method, scenario, gap)
+            gap["semantic_plausibility"] = gate
+            if gate.get("verdict") == "REJECT":
+                semantic_rejected_gaps.append(
+                    {
+                        "gap_id": gap.get("gap_id"),
+                        "gap_type": gap.get("gap_type"),
+                        "method": method,
+                        "scenario": scenario,
+                        "description": trim_text(str(gap.get("description", "")), 220),
+                        "reason": gate.get("reason"),
+                        "score": gate.get("score"),
+                    }
+                )
+                continue
             gaps.append(assess_gap_dict(project, gap))
             if count_gap_type(gaps, "combinatorial") >= per_type_quota:
                 break
@@ -8665,6 +9215,21 @@ def detect_knowledge_gaps(project_id: str, max_gaps: int = 10) -> str:
                     suggested_research_path="Test the existing method-scenario pair on the missing benchmark family and compare against canonical baselines.",
                     value_argument="Benchmark transfer can reveal robustness and generalization failures hidden by single-benchmark validation.",
                 )
+                gate = semantic_plausibility_for_pair(project, method, scenario, gap)
+                gap["semantic_plausibility"] = gate
+                if gate.get("verdict") == "REJECT":
+                    semantic_rejected_gaps.append(
+                        {
+                            "gap_id": gap.get("gap_id"),
+                            "gap_type": gap.get("gap_type"),
+                            "method": method,
+                            "scenario": scenario,
+                            "description": trim_text(str(gap.get("description", "")), 220),
+                            "reason": gate.get("reason"),
+                            "score": gate.get("score"),
+                        }
+                    )
+                    continue
                 gaps.append(assess_gap_dict(project, gap))
                 if count_gap_type(gaps, "combinatorial") >= per_type_quota:
                     break
@@ -8685,12 +9250,6 @@ def detect_knowledge_gaps(project_id: str, max_gaps: int = 10) -> str:
             value_argument="The gap is grounded in an author-reported limitation, so it has stronger evidential support than a bare untried combination.",
         )
         gaps.append(assess_gap_dict(project, gap))
-
-    if len(gaps) < max_gaps:
-        gaps.extend(detect_gap_signal_gaps(project, max_gaps - len(gaps)))
-
-    if len(gaps) < max_gaps:
-        gaps.extend(detect_problem_gaps(project, min(per_type_quota, max_gaps - len(gaps))))
 
     if len(gaps) < max_gaps:
         gaps.extend(detect_migration_gaps(project, methods, scenarios, max_gaps - len(gaps)))
@@ -8733,7 +9292,10 @@ def detect_knowledge_gaps(project_id: str, max_gaps: int = 10) -> str:
         "input_count": len(gaps),
         "rejected_count": len(rejected_gaps),
         "rejected": rejected_gaps[:5],
+        "semantic_rejected_count": len(semantic_rejected_gaps),
+        "semantic_rejected": semantic_rejected_gaps[:10],
     }
+    project["semantic_rejected_knowledge_gaps"] = semantic_rejected_gaps
     project["tanxi_gap_analysis"] = tanxi_report
     project["knowledge_gaps"] = prioritized_gaps[:max_gaps]
     project["updatedAt"] = time.time()
@@ -8744,6 +9306,7 @@ def detect_knowledge_gaps(project_id: str, max_gaps: int = 10) -> str:
         project_id=project_id,
         count=len(project["knowledge_gaps"]),
         rejected_low_novelty=len(rejected_gaps),
+        rejected_semantic=len(semantic_rejected_gaps),
     )
     return json.dumps(project["knowledge_gaps"], ensure_ascii=False, indent=2)
 
@@ -8787,11 +9350,19 @@ def tanxi_gap_exploration_report(
     unconnected_pairs = find_unconnected_pairs(project, target_domain=target_domain)
     suspended = detect_suspended_problems(project)
     reasoning_gap_candidates = detect_reasoning_gaps(project, limit=max(3, max_gaps // 2))
+    source_signal_candidates = detect_gap_signal_gaps(project, limit=max(4, max_gaps))
+    mechanism_issue_candidates = detect_mechanism_issue_gaps(project, limit=max(4, max_gaps))
     density_gap_candidates = gaps_from_density_holes(project, coverage_analysis.get("density_holes", []))
     pair_gap_candidates = gaps_from_unconnected_pairs(project, unconnected_pairs)
     suspended_gap_candidates = gaps_from_suspended_problems(project, suspended)
     candidates = dedupe_knowledge_gaps(
-        list(raw_gaps) + reasoning_gap_candidates + density_gap_candidates + pair_gap_candidates + suspended_gap_candidates
+        mechanism_issue_candidates
+        + source_signal_candidates
+        + reasoning_gap_candidates
+        + list(raw_gaps)
+        + density_gap_candidates
+        + pair_gap_candidates
+        + suspended_gap_candidates
     )
     ranked = prioritize_gaps(project, candidates, coverage_analysis, strategic_domains, max_gaps=max_gaps)
     return {
@@ -8805,6 +9376,8 @@ def tanxi_gap_exploration_report(
         "action": {
             "scan_coverage_density": {"target_domain": target_domain},
             "detect_reasoning_gaps": {"types": ["claim_contradiction", "theory_evidence_anomaly"]},
+            "detect_source_gap_signals": {"types": ["limitations", "future_work", "open_problem", "missing_evidence"]},
+            "detect_mechanism_issue_gaps": {"priority": "higher_than_matrix_holes"},
             "find_unconnected_pairs": {"target_domain": target_domain},
             "detect_suspended_problems": {"min_citation_threshold": 50},
             "prioritize_gaps": {"criteria": ["importance", "tractability", "strategic_value"]},
@@ -8831,6 +9404,7 @@ def scan_coverage_density(project: dict[str, Any], target_domain: str = "") -> d
     benchmarks = sorted(knowledge_map.get("main_benchmarks") or [])
     dense_areas: list[dict[str, Any]] = []
     density_holes: list[dict[str, Any]] = []
+    rejected_density_holes: list[dict[str, Any]] = []
     method_support = {method: sum(len(refs) for refs in matrix.get(method, {}).values()) for method in methods}
     scenario_support = {
         scenario: sum(len(matrix.get(method, {}).get(scenario, [])) for method in methods)
@@ -8855,32 +9429,40 @@ def scan_coverage_density(project: dict[str, Any], target_domain: str = "") -> d
                     }
                 )
                 if benchmarks and len(covered_benchmarks) <= max(1, len(benchmarks) // 4):
-                    density_holes.append(
-                        {
-                            "topic": f"{method} + {scenario} benchmark coverage",
-                            "method": method,
-                            "scenario": scenario,
-                            "importance_score": importance,
-                            "current_evidence_level": "medium",
-                            "missing_benchmarks": [item for item in benchmarks if item not in covered_benchmarks][:5],
-                            "why_important": "The method-scenario pair has evidence, but benchmark coverage is sparse, so robustness and generalization remain uncertain.",
-                            "supporting_references": refs[:5],
-                        }
-                    )
-            elif importance >= 5:
-                refs_for_context = supporting_references_for_method_or_scenario(project, method, scenario)
-                density_holes.append(
-                    {
-                        "topic": f"{method} + {scenario}",
+                    gate = semantic_plausibility_for_pair(project, method, scenario)
+                    hole = {
+                        "topic": f"{method} + {scenario} benchmark coverage",
                         "method": method,
                         "scenario": scenario,
                         "importance_score": importance,
-                        "current_evidence_level": "none",
-                        "missing_benchmarks": benchmarks[:5],
-                        "why_important": "Both the method and scenario are visible in the field map, but this intersection has no recorded validation.",
-                        "supporting_references": refs_for_context[:5],
+                        "current_evidence_level": "medium",
+                        "missing_benchmarks": [item for item in benchmarks if item not in covered_benchmarks][:5],
+                        "why_important": "The method-scenario pair has evidence, but benchmark coverage is sparse, so robustness and generalization remain uncertain.",
+                        "supporting_references": refs[:5],
+                        "semantic_plausibility": gate,
                     }
-                )
+                    if gate.get("verdict") == "REJECT":
+                        rejected_density_holes.append(hole)
+                    else:
+                        density_holes.append(hole)
+            elif importance >= 5:
+                refs_for_context = supporting_references_for_method_or_scenario(project, method, scenario)
+                gate = semantic_plausibility_for_pair(project, method, scenario)
+                hole = {
+                    "topic": f"{method} + {scenario}",
+                    "method": method,
+                    "scenario": scenario,
+                    "importance_score": importance,
+                    "current_evidence_level": "none",
+                    "missing_benchmarks": benchmarks[:5],
+                    "why_important": "Both the method and scenario are visible in the field map, but this intersection has no recorded validation.",
+                    "supporting_references": refs_for_context[:5],
+                    "semantic_plausibility": gate,
+                }
+                if gate.get("verdict") == "REJECT":
+                    rejected_density_holes.append(hole)
+                else:
+                    density_holes.append(hole)
 
     dense_areas.sort(key=lambda item: (-int(item["evidence_count"]), -int(item["benchmark_count"]), item["topic"]))
     density_holes.sort(key=lambda item: (-int(item["importance_score"]), item["current_evidence_level"], item["topic"]))
@@ -8891,6 +9473,7 @@ def scan_coverage_density(project: dict[str, Any], target_domain: str = "") -> d
         "benchmark_count": len(benchmarks),
         "dense_areas": dense_areas[:10],
         "density_holes": density_holes[:20],
+        "rejected_density_holes": rejected_density_holes[:20],
     }
 
 
@@ -8912,7 +9495,7 @@ def find_unconnected_pairs(project: dict[str, Any], target_domain: str = "") -> 
         for field_b in fields[i + 1 :]:
             for item_a in concepts[field_a][:8]:
                 for item_b in concepts[field_b][:8]:
-                    if concepts_are_connected(project, item_a["concept"], item_b["concept"]):
+                    if concepts_are_connected(project, item_a["concept"], item_b["concept"]) or concept_bridge_exists(project, item_a["concept"], item_b["concept"]):
                         continue
                     key = (field_a, item_a["concept"], field_b, item_b["concept"])
                     if key in seen:
@@ -9119,6 +9702,20 @@ def concepts_are_connected(project: dict[str, Any], left: str, right: str) -> bo
     return False
 
 
+def concept_bridge_exists(project: dict[str, Any], left: str, right: str) -> bool:
+    left_terms = set(query_terms(left))
+    right_terms = set(query_terms(right))
+    if not left_terms or not right_terms:
+        return False
+    for record in project_records_for_mapping(project):
+        terms = set(query_terms(record_context_text(record)))
+        left_hit = bool(left_terms & terms) or normalize_label(left).lower() in record_context_text(record).lower()
+        right_hit = bool(right_terms & terms) or normalize_label(right).lower() in record_context_text(record).lower()
+        if left_hit and right_hit:
+            return True
+    return False
+
+
 def cross_field_synergy(concept_a: str, concept_b: str, target_domain: str) -> str:
     target = f" for {target_domain}" if target_domain else ""
     return (
@@ -9195,9 +9792,11 @@ def tanxi_gap_priority_score(
     score += min(2, refs)
     score += {"high": 2, "medium": 1, "low": -1}.get(application, 0)
     score += {"high": 2, "medium": 1, "low": -2}.get(feasibility, 0)
-    if gap_type in {"migration", "problem", "contradiction", "anomaly", "structural"}:
+    if gap_type in {"migration", "problem", "mechanism_problem", "contradiction", "anomaly", "structural"}:
         score += 1
-    if gap_type in {"contradiction", "anomaly"}:
+    if gap_type in {"mechanism_problem", "contradiction", "anomaly"}:
+        score += 1
+    if gap.get("mechanism_issue_signal") or gap.get("gap_signal"):
         score += 1
     if alignment:
         score += min(2, max(int(item.get("alignment_score", 0)) for item in alignment) // 4)
@@ -10157,7 +10756,39 @@ def infer_gap_components(project: dict[str, Any], gap: dict[str, Any]) -> dict[s
     method = first_matching_label(description, methods) or (methods[0] if methods else "targeted intervention")
     scenario = first_matching_label(description, scenarios) or (scenarios[0] if scenarios else str(project.get("domain") or "target scenario"))
     benchmark = first_matching_label(description, benchmarks) or (benchmarks[0] if benchmarks else "mechanistic validity")
+    benchmark = normalize_hypothesis_benchmark(benchmark, scenario, project)
     return {"method": method, "scenario": scenario, "benchmark": benchmark}
+
+
+def normalize_hypothesis_benchmark(benchmark: str, scenario: str, project: dict[str, Any]) -> str:
+    clean = normalize_space(benchmark).lower()
+    generic = {
+        "benchmark",
+        "benchmark data",
+        "benchmark dataset",
+        "dataset",
+        "validation dataset",
+        "evaluation metric",
+        "performance metric",
+        "primary benchmark",
+        "mechanistic validity",
+    }
+    if clean not in generic and not is_generic_phrase(clean):
+        return benchmark
+    text = normalize_space(f"{scenario} {project.get('domain', '')} {project.get('objective', '')}").lower()
+    if any(term in text for term in ("reaction", "chemical", "molecular", "catalyst", "synthesis", "ligat", "cycloaddition")):
+        return "reaction yield, rate constant, selectivity, stability, and functional outcome"
+    if any(term in text for term in ("image", "imaging", "microscopy", "spectroscopy", "sensor")):
+        return "signal-to-noise ratio, resolution, specificity, and measurement reproducibility"
+    if any(term in text for term in ("protein", "cell", "gene", "clinical", "patient", "disease", "organism")):
+        return "target specificity, biological response, safety margin, and reproducibility"
+    if any(term in text for term in ("material", "device", "battery", "polymer", "semiconductor", "alloy")):
+        return "stability, efficiency, transport, durability, and failure-mode metrics"
+    if any(term in text for term in ("climate", "ecology", "environment", "geology", "agriculture")):
+        return "forecast skill, process attribution, robustness across regimes, and uncertainty calibration"
+    if any(term in text for term in ("algorithm", "model", "ai", "simulation", "control", "robot", "grid")):
+        return "predictive accuracy, robustness, constraint satisfaction, calibration, and deployment cost"
+    return "scenario-specific measurable outcome, uncertainty, robustness, and failure-mode metrics"
 
 
 def first_matching_label(text: str, labels: list[str]) -> str:
@@ -10166,6 +10797,75 @@ def first_matching_label(text: str, labels: list[str]) -> str:
         if label and label.lower() in lowered:
             return label
     return ""
+
+
+def specific_mechanism_text(
+    project: dict[str, Any],
+    method: str,
+    scenario: str,
+    benchmark: str,
+    gap: dict[str, Any],
+    semantic_gate: dict[str, Any],
+) -> str:
+    capability = method_capability_description(method)
+    target = scenario_target_description(scenario, project)
+    bridge = semantic_gate.get("bridge_terms", []) if isinstance(semantic_gate.get("bridge_terms"), list) else []
+    requirements = semantic_gate.get("requirements", []) if isinstance(semantic_gate.get("requirements"), list) else []
+    affordances = semantic_gate.get("scenario_affordances", []) if isinstance(semantic_gate.get("scenario_affordances"), list) else []
+    bridge_text = (
+        f"The required bridge is {', '.join(str(item) for item in bridge[:4])}."
+        if bridge
+        else "No explicit bridge concept is currently visible; this must be treated as a human-review assumption rather than a validated mechanism."
+    )
+    requirement_text = (
+        f"The method requires {', '.join(str(item) for item in requirements)}, while the scenario exposes {', '.join(str(item) for item in affordances) or 'no explicit matching data modality'}."
+        if requirements
+        else "The method's input requirements are broad or not clearly specified; the experiment must make them explicit."
+    )
+    return (
+        f"Concrete mechanism chain: (1) method capability: {method} contributes through {capability}; "
+        f"(2) scenario target: in {scenario}, the affected process is {target}; "
+        f"(3) measurable consequence: the bridge must produce a preregistered change in {benchmark}. "
+        f"{requirement_text} {bridge_text} "
+        f"The decisive prediction is that this concrete bridge, not a generic representation change, will alter {benchmark}; "
+        f"if the bridge data or causal link is absent, the hypothesis should fail rather than be reinterpreted post hoc."
+    )
+
+
+def method_capability_description(method: str) -> str:
+    text = normalize_space(method).lower()
+    if any(term in text for term in ("cycloaddition", "ligation", "click", "reaction", "synthesis", "conjugation")):
+        return "forming or transforming molecular bonds with measurable kinetics, selectivity, compatibility, and product stability"
+    if any(term in text for term in ("printing", "bioprint", "fabrication", "manufacturing", "assembly")):
+        return "controlling spatial organization, material architecture, and process-structure-property relationships"
+    if any(term in text for term in ("spectroscopy", "microscopy", "imaging", "sensor", "assay")):
+        return "turning a latent physical, chemical, or biological state into a calibrated observable signal"
+    if any(term in text for term in ("kernel density", "kde", "arcgis", "gis")):
+        return "estimating spatial density over coordinate-indexed observations"
+    if any(term in text for term in ("single-cell", "scrna", "transcript", "omics")):
+        return "resolving cell-state or molecular-expression heterogeneity across samples"
+    if any(term in text for term in ("graph neural", "gnn", "knowledge graph", "network")):
+        return "propagating evidence across explicitly defined nodes and relationships"
+    if any(term in text for term in ("causal", "counterfactual", "intervention")):
+        return "separating candidate causes from correlational associations under stated assumptions"
+    if any(term in text for term in ("simulation", "model", "digital twin")):
+        return "testing mechanistic predictions under controlled parameter variations"
+    if any(term in text for term in ("deep learning", "machine learning", "classification", "prediction")):
+        return "learning predictive structure from measurable input features"
+    return "a specified operation that must be mapped to observable inputs and outputs before validation"
+
+
+def scenario_target_description(scenario: str, project: dict[str, Any]) -> str:
+    text = normalize_space(f"{scenario} {project.get('domain', '')} {project.get('objective', '')}").lower()
+    if any(term in text for term in ("protein", "cell", "gene", "cancer", "clinical", "patient")):
+        return "a measurable biological or clinical mechanism such as expression, pathway activation, response, adverse effect, or persistence"
+    if any(term in text for term in ("material", "battery", "catalyst", "chemical", "reaction")):
+        return "a measurable material, molecular, or reaction mechanism under controlled conditions"
+    if any(term in text for term in ("climate", "ecology", "drought", "environment")):
+        return "a measurable environmental process, spatial pattern, temporal regime, or ecosystem response"
+    if any(term in text for term in ("grid", "control", "power", "robot", "engineering")):
+        return "a controllable system state, stability margin, safety constraint, or operational performance metric"
+    return "the scenario-specific measurable process named by the project evidence"
 
 
 def make_hypothesis_seed(
@@ -10193,19 +10893,34 @@ def make_hypothesis_seed(
         method = transferred
     if hotspot.get("concept") and variant % 2 == 1:
         condition = f"while tracking emerging hotspot '{hotspot.get('concept')}'"
-    statement = f"If {method} is applied to {scenario} {condition}, then {benchmark} will improve or reveal a falsifiable boundary condition."
-    mechanism = (
-        f"The proposed mechanism is that {method} changes the information, intervention, or representation pathway in {scenario}; "
-        f"because the source gap indicates weak evidence, testing {benchmark} can distinguish a real mechanism from a pseudo-gap."
-    )
+    semantic_gate = semantic_plausibility_for_pair(project, method, scenario, gap)
+    variable = hypothesis_control_variable(gap, method, scenario)
+    boundary = hypothesis_boundary_condition(gap)
+    if str(gap.get("gap_type") or "") == "contradiction":
+        statement = (
+            f"If the competing claims about {scenario} are evaluated under matched {variable} conditions, "
+            f"then {benchmark} will separate which mechanism holds and identify the boundary condition {boundary}."
+        )
+    else:
+        statement = (
+            f"If {method} is used to perturb or stratify {variable} in {scenario} {condition}, "
+            f"then {benchmark} will show a directional or non-monotonic boundary at {boundary}."
+        )
+    mechanism = specific_mechanism_text(project, method, scenario, benchmark, gap, semantic_gate)
     if analogy:
         mechanism += f" The structural analogy to {analogy.get('analog_source_scenario')} supports transfer because the encoded problem structures are similar."
+    causal_chain = [
+        f"Input/intervention: vary {variable} for {method} in {scenario}",
+        f"Mechanism: {method} must act through {method_capability_description(method)} on {scenario_target_description(scenario, project)}",
+        f"Observable output: measure {benchmark} and locate boundary condition {boundary}",
+    ]
     return {
         "candidate_id": new_id("hcand"),
         "gap_id": gap.get("gap_id"),
         "gap_ids": [str(gap.get("gap_id"))] if gap.get("gap_id") else [],
         "statement": statement,
         "mechanism": mechanism,
+        "causal_chain": causal_chain,
         "expected_value": gap.get("value_argument") or "Potential to convert a mapped knowledge gap into a testable scientific mechanism.",
         "test_plan": (
             f"Build a minimal benchmark for {scenario}; compare {method} against canonical baselines; measure {benchmark}; "
@@ -10214,8 +10929,11 @@ def make_hypothesis_seed(
         "verification_plan": {
             "primary_metric": benchmark,
             "baselines": ["nearest dense PaperGraph method", "domain-standard baseline"],
-            "falsification_condition": f"No improvement or mechanistic separation on {benchmark} under the stated condition.",
+            "falsification_condition": (
+                f"No directional, non-monotonic, or mechanism-separating change in {benchmark} when {variable} crosses {boundary}."
+            ),
         },
+        "semantic_plausibility": semantic_gate,
         "source_gap": gap,
         "lineage": [{"generation": 0, "operation": "seed", "gap_id": gap.get("gap_id"), "analogy_used": analogy.get("analog_source_scenario", "")}],
         "generation": 0,
@@ -10271,6 +10989,16 @@ def hypothesis_disciplinary_plausibility(project: dict[str, Any], candidate: dic
     combined = f"{method} {scenario} {text}"
     issues: list[str] = []
     suggestions: list[str] = []
+    semantic_gate = candidate.get("semantic_plausibility") if isinstance(candidate.get("semantic_plausibility"), dict) else semantic_plausibility_for_pair(project, method, scenario, gap)
+    if semantic_gate.get("verdict") == "REJECT":
+        issues.append(f"Method-scenario semantic gate rejected the pair: {semantic_gate.get('reason')}")
+        suggestions.append("Regenerate from a gap with an explicit data/modality/mechanism bridge or mark for human review.")
+    elif semantic_gate.get("verdict") == "HUMAN_REVIEW":
+        issues.append(f"Method-scenario semantic bridge is under-specified: {semantic_gate.get('reason')}")
+        suggestions.append("Add the missing bridge representation before treating the hypothesis as plausible.")
+    if "changes the information, intervention, or representation pathway" in text:
+        issues.append("Mechanism uses a forbidden generic template rather than a concrete causal operation.")
+        suggestions.append("Specify the method capability, scenario target process, bridge data, and falsification condition.")
 
     requirement_rules = [
         {
@@ -10311,6 +11039,10 @@ def hypothesis_disciplinary_plausibility(project: dict[str, Any], candidate: dic
     score = 0.82
     if issues:
         score -= min(0.55, 0.18 * len(issues))
+    if semantic_gate.get("verdict") == "REJECT":
+        score -= 0.3
+    elif semantic_gate.get("verdict") == "HUMAN_REVIEW":
+        score -= 0.12
     if "baseline" in text and ("falsification" in text or "negative control" in text or "stress" in text):
         score += 0.08
     score = max(0.15, min(1.0, score))
@@ -10318,8 +11050,49 @@ def hypothesis_disciplinary_plausibility(project: dict[str, Any], candidate: dic
         "score": round(score, 3),
         "issues": issues,
         "suggestions": unique_preserve_order(suggestions),
+        "semantic_plausibility": semantic_gate,
         "requires_human_review": bool(issues),
     }
+
+
+def hypothesis_control_variable(gap: dict[str, Any], method: str, scenario: str) -> str:
+    text = normalize_space(
+        " ".join(
+            str(item)
+            for item in [
+                gap.get("description", ""),
+                gap.get("suggested_research_path", ""),
+                method,
+                scenario,
+            ]
+        )
+    )
+    patterns = [
+        r"\b(?:concentration|dose|temperature|pressure|voltage|frequency|resolution|scale|sample size|time step|threshold|ratio|loading|coverage|depth|rate)\b",
+        r"\b(?:noise level|data quality|constraint strength|parameter|boundary condition|operating regime)\b",
+    ]
+    hits: list[str] = []
+    for pattern in patterns:
+        hits.extend(match.group(0).lower() for match in re.finditer(pattern, text, flags=re.IGNORECASE))
+    if hits:
+        return unique_preserve_order(hits)[0]
+    if str(gap.get("gap_type") or "") == "contradiction":
+        return "the experimental, observational, or simulation conditions that differ between the claims"
+    return "the key controllable variable named by the source evidence"
+
+
+def hypothesis_boundary_condition(gap: dict[str, Any]) -> str:
+    text = normalize_space(f"{gap.get('description', '')} {gap.get('suggested_research_path', '')}")
+    numeric = re.search(
+        r"\b(?:[<>]=?\s*)?\d+(?:\.\d+)?\s*(?:%|k|c|v|mv|a|ma|hz|khz|mhz|s|ms|us|nm|um|mm|cm|m|pa|bar|mol|mM|M|cycles?)\b",
+        text,
+        flags=re.IGNORECASE,
+    )
+    if numeric:
+        return normalize_space(numeric.group(0))
+    if any(term in text.lower() for term in ("challenge", "contradict", "conflict", "debate", "unclear")):
+        return "the condition where the competing explanations diverge"
+    return "a preregistered stress threshold rather than an open-ended improvement claim"
 
 
 def non_negated_phrase_in_text(phrase: str, text: str) -> bool:
@@ -10353,6 +11126,9 @@ def select_diverse_hypothesis_finalists(population: list[dict[str, Any]], top_k:
     selected: list[dict[str, Any]] = []
     used_gap_ids: set[str] = set()
     for candidate in ordered:
+        semantic_gate = candidate.get("semantic_plausibility") if isinstance(candidate.get("semantic_plausibility"), dict) else {}
+        if semantic_gate.get("verdict") == "REJECT":
+            continue
         statement = str(candidate.get("statement") or "")
         too_similar = any(text_jaccard(statement, str(existing.get("statement") or "")) >= max_similarity for existing in selected)
         same_gap_saturated = str(candidate.get("gap_id") or "") in used_gap_ids and len(used_gap_ids) < top_k
@@ -10364,6 +11140,9 @@ def select_diverse_hypothesis_finalists(population: list[dict[str, Any]], top_k:
         if len(selected) >= top_k:
             return selected
     for candidate in ordered:
+        semantic_gate = candidate.get("semantic_plausibility") if isinstance(candidate.get("semantic_plausibility"), dict) else {}
+        if semantic_gate.get("verdict") == "REJECT":
+            continue
         if candidate not in selected:
             selected.append(candidate)
         if len(selected) >= top_k:
@@ -10458,6 +11237,451 @@ def best_hypothesis_score(population: list[dict[str, Any]]) -> float:
     return max((float(item.get("score") or 0.0) for item in population), default=0.0)
 
 
+def generate_idea(
+    project_id: str,
+    gap: dict[str, Any] | str = "",
+    gap_id: str = "",
+    style: str = "innovative",
+    parent_hypothesis_id: str = "",
+    use_llm: bool = False,
+) -> str:
+    project = load_project(project_id)
+    selected_gap = mingli_resolve_gap(project, gap=gap, gap_id=gap_id)
+    components = infer_gap_components(project, selected_gap)
+    analogies = collect_project_analogies(project)
+    hotspots = collect_project_hotspots(project)
+    variant = 1 if normalize_key(style) == "innovative" else 0
+    candidate = make_hypothesis_seed(
+        project,
+        selected_gap,
+        components,
+        variant,
+        analogy=analogies[0] if analogies else {},
+        hotspot=hotspots[0] if hotspots else {},
+    )
+    candidate["style"] = style
+    candidate["parent_hypothesis_id"] = parent_hypothesis_id or None
+    if parent_hypothesis_id:
+        candidate.setdefault("lineage", []).append(
+            {"generation": 0, "operation": "manual_parent_link", "parent_hypothesis_id": parent_hypothesis_id}
+        )
+    if normalize_key(style) == "conservative":
+        candidate["statement"] = conservative_hypothesis_statement(candidate, components)
+        candidate["mechanism"] = (
+            f"The conservative mechanism tests the most direct pathway suggested by the gap: {components['method']} in "
+            f"{components['scenario']}, with {components['benchmark']} as the decisive readout. "
+            f"It must vary {hypothesis_control_variable(selected_gap, components['method'], components['scenario'])} and report the "
+            f"boundary condition {hypothesis_boundary_condition(selected_gap)} rather than only a broad improvement claim."
+        )
+    else:
+        candidate["statement"] = innovative_hypothesis_statement(candidate, components, selected_gap)
+        candidate["mechanism"] += " MingLi treats this as a structural mutation rather than a surface rephrasing."
+    candidate = score_hypothesis_candidate(project, candidate)
+    idea = mingli_candidate_to_idea_json(project, candidate)
+    draft = {
+        "draft_idea_id": new_id("idea"),
+        "project_id": project_id,
+        "gap_id": selected_gap.get("gap_id", ""),
+        "style": style,
+        "candidate": candidate,
+        "idea_json": idea,
+        "use_llm_requested": bool(use_llm),
+        "status": "draft",
+        "createdAt": time.time(),
+    }
+    project.setdefault("mingli_draft_ideas", []).append(draft)
+    project["phase"] = "Hypothesis Generation"
+    project["updatedAt"] = time.time()
+    save_project(project)
+    return json.dumps(
+        {
+            "thought": "Generated a gap-traceable MingLi draft idea and scored it for novelty, plausibility, grounding, testability, impact, and surprise.",
+            "action": {"type": "generate_idea", "gap_id": selected_gap.get("gap_id", ""), "style": style},
+            **draft,
+            "next_step": "Call design_experiment with the draft idea, then finalize_idea to run mandatory uniqueness verification.",
+        },
+        ensure_ascii=False,
+        indent=2,
+    )
+
+
+def design_experiment(
+    project_id: str,
+    idea: dict[str, Any] | str = "",
+    idea_id: str = "",
+    constraints: str = "academic lab scale",
+) -> str:
+    project = load_project(project_id)
+    idea_json = mingli_resolve_idea_json(project, idea=idea, idea_id=idea_id)
+    gap = mingli_resolve_gap(project, gap_id=str(idea_json.get("gap_id") or ""))
+    components = infer_gap_components(project, gap)
+    experiment = {
+        "setup": (
+            f"Operationalize the hypothesis in {components['scenario']} under {constraints}. "
+            f"Construct a minimal reproducible benchmark, include positive and negative controls, and run ablations that isolate "
+            f"{components['method']} from data, representation, and intervention effects."
+        ),
+        "metrics": (
+            f"Primary: {components['benchmark']}. Secondary: robustness under distribution shift, calibration/error bars, failure-mode rate, "
+            "resource cost, and reproducibility across at least two independent splits or cohorts."
+        ),
+        "baselines": (
+            "Nearest dense PaperGraph method; current domain-standard method; simple interpretable baseline; random or no-intervention control "
+            "where scientifically meaningful."
+        ),
+        "falsification_criteria": (
+            f"Reject or revise the hypothesis if {components['method']} does not improve {components['benchmark']} or if the claimed mechanism "
+            "does not survive ablation, negative controls, or regime-shift checks."
+        ),
+    }
+    idea_json["experiments"] = {
+        "setup": experiment["setup"],
+        "metrics": experiment["metrics"],
+        "baselines": experiment["baselines"],
+    }
+    idea_json["risks"] = mingli_risk_text(gap, experiment)
+    record = {
+        "experiment_plan_id": new_id("exp"),
+        "project_id": project_id,
+        "idea_id": idea_id,
+        "gap_id": gap.get("gap_id", ""),
+        "constraints": constraints,
+        "idea_json": idea_json,
+        "falsification_criteria": experiment["falsification_criteria"],
+        "createdAt": time.time(),
+    }
+    project.setdefault("mingli_experiment_plans", []).append(record)
+    if idea_id:
+        for draft in project.get("mingli_draft_ideas", []):
+            if isinstance(draft, dict) and draft.get("draft_idea_id") == idea_id:
+                draft["idea_json"] = idea_json
+                draft["experiment_plan_id"] = record["experiment_plan_id"]
+                draft["status"] = "experiment_designed"
+                break
+    project["updatedAt"] = time.time()
+    save_project(project)
+    return json.dumps(
+        {
+            "thought": "Designed a falsifiable experiment with setup, metrics, baselines, and rejection criteria.",
+            "action": {"type": "design_experiment", "gap_id": gap.get("gap_id", ""), "constraints": constraints},
+            **record,
+            "next_step": "Call finalize_idea; it will run mandatory uniqueness verification before persisting the hypothesis.",
+        },
+        ensure_ascii=False,
+        indent=2,
+    )
+
+
+def finalize_idea(
+    project_id: str,
+    idea_json: dict[str, Any] | str = "",
+    idea_id: str = "",
+    live_search: bool = True,
+    providers: list[str] | None = None,
+) -> str:
+    project = load_project(project_id)
+    idea = mingli_resolve_idea_json(project, idea=idea_json, idea_id=idea_id)
+    gap_id = str(idea.get("gap_id") or "")
+    gap = mingli_resolve_gap(project, gap_id=gap_id)
+    missing = mingli_final_schema_missing(idea)
+    if missing:
+        raise ValueError(f"finalize_idea requires complete MingLi JSON; missing: {', '.join(missing)}")
+    semantic_gate = idea.get("semantic_plausibility") if isinstance(idea.get("semantic_plausibility"), dict) else {}
+    if semantic_gate.get("verdict") == "REJECT":
+        rejected = {
+            "status": "rejected_semantic_plausibility",
+            "reason": "MingLi idea failed method-scenario semantic plausibility gate; regenerate with an explicit bridge mechanism.",
+            "idea_json": idea,
+            "semantic_plausibility": semantic_gate,
+            "gap_id": gap_id,
+        }
+        project.setdefault("mingli_rejected_ideas", []).append(rejected)
+        project["updatedAt"] = time.time()
+        save_project(project)
+        return json.dumps(rejected, ensure_ascii=False, indent=2)
+
+    verification_text = " ".join(str(idea.get(key) or "") for key in ("title", "hypothesis", "abstract", "related_work"))
+    uniqueness = json.loads(
+        verify_uniqueness(
+            project_id,
+            verification_text,
+            precision="high",
+            live_search=live_search,
+            providers=providers or default_literature_providers(domain=str(project.get("domain", "")), query=verification_text),
+        )
+    )
+    live_summary = uniqueness.get("live_search") if isinstance(uniqueness.get("live_search"), dict) else {}
+    if live_search and live_summary.get("status") == "error":
+        failed = {
+            "status": "verification_failed",
+            "reason": "Mandatory live literature verification failed; do not finalize until search succeeds.",
+            "idea_json": idea,
+            "uniqueness_check": uniqueness,
+            "gap_id": gap_id,
+        }
+        project.setdefault("mingli_rejected_ideas", []).append(failed)
+        project["updatedAt"] = time.time()
+        save_project(project)
+        return json.dumps(failed, ensure_ascii=False, indent=2)
+    if uniqueness.get("verdict") == "overlap_risk":
+        rejected = {
+            "status": "rejected_overlap",
+            "reason": "Mandatory novelty verification found high local overlap; regenerate or structurally mutate the idea.",
+            "idea_json": idea,
+            "uniqueness_check": uniqueness,
+            "gap_id": gap_id,
+        }
+        project.setdefault("mingli_rejected_ideas", []).append(rejected)
+        project["updatedAt"] = time.time()
+        save_project(project)
+        return json.dumps(rejected, ensure_ascii=False, indent=2)
+
+    hypothesis = Hypothesis(
+        hypothesis_id=new_id("hyp"),
+        gap_id=gap_id,
+        statement=str(idea.get("hypothesis") or ""),
+        mechanism=str(idea.get("abstract") or ""),
+        expected_value=str(idea.get("related_work") or ""),
+        test_plan=json.dumps(idea.get("experiments", {}), ensure_ascii=False),
+        status="finalized",
+    )
+    payload = asdict(hypothesis)
+    payload.update(
+        {
+            "mingli_final_idea": idea,
+            "uniqueness_check": uniqueness,
+            "source_gap": gap,
+            "parent_hypothesis_id": idea.get("parent_hypothesis_id"),
+            "tournament_generation": idea.get("tournament_generation", 1),
+            "lineage": idea.get("lineage", []),
+            "constraints_checked": {
+                "traceable_to_gap": bool(gap_id),
+                "papergraph_grounded": bool(gap.get("supporting_references")),
+                "mandatory_uniqueness_verification": True,
+                "live_literature_verification": bool(live_search),
+                "experiment_has_setup_metrics_baselines": True,
+            },
+        }
+    )
+    project.setdefault("hypotheses", []).append(payload)
+    project.setdefault("mingli_finalized_ideas", []).append(payload)
+    if idea_id:
+        for draft in project.get("mingli_draft_ideas", []):
+            if isinstance(draft, dict) and draft.get("draft_idea_id") == idea_id:
+                draft["status"] = "finalized"
+                draft["hypothesis_id"] = hypothesis.hypothesis_id
+                break
+    project["phase"] = "Hypothesis Generation"
+    project["updatedAt"] = time.time()
+    save_project(project)
+    log_event("SCIENCE", "mingli_idea_finalized", project_id=project_id, hypothesis_id=hypothesis.hypothesis_id, gap_id=gap_id)
+    return json.dumps(
+        {
+            "status": "finalized",
+            "hypothesis_id": hypothesis.hypothesis_id,
+            "finalized_idea": idea,
+            "uniqueness_check": uniqueness,
+            "stored_hypothesis": payload,
+        },
+        ensure_ascii=False,
+        indent=2,
+    )
+
+
+def mingli_resolve_gap(project: dict[str, Any], gap: dict[str, Any] | str = "", gap_id: str = "") -> dict[str, Any]:
+    gaps = [item for item in project.get("knowledge_gaps", []) if isinstance(item, dict)]
+    tanxi = project.get("tanxi_gap_analysis", {}) if isinstance(project.get("tanxi_gap_analysis"), dict) else {}
+    tanxi_ranked = [item for item in tanxi.get("ranked_gaps", []) if isinstance(item, dict)]
+    all_gaps = dedupe_knowledge_gaps(gaps + tanxi_ranked)
+    if gap_id:
+        found = find_by_id(all_gaps, "gap_id", gap_id)
+        if found is None:
+            raise ValueError(f"Unknown gap_id for project {project.get('project_id', '')}: {gap_id}")
+        return found
+    if isinstance(gap, dict) and gap:
+        parsed = parse_gap_input(gap)
+        if parsed.get("gap_id"):
+            found = find_by_id(all_gaps, "gap_id", str(parsed.get("gap_id")))
+            return found or parsed
+        return parsed
+    if isinstance(gap, str) and gap.strip():
+        parsed = parse_gap_input(gap)
+        if parsed.get("gap_id"):
+            found = find_by_id(all_gaps, "gap_id", str(parsed.get("gap_id")))
+            return found or parsed
+        return parsed
+    selected = select_gaps_for_hypothesis(project, None)
+    if not selected:
+        selected = tanxi_ranked[:1]
+    if not selected:
+        fallback = mingli_fallback_gap_from_papergraph(project)
+        if fallback:
+            return fallback
+        raise ValueError("No TanXi/ZhiZhi knowledge gaps are available for MingLi.")
+    return selected[0]
+
+
+def mingli_fallback_gap_from_papergraph(project: dict[str, Any]) -> dict[str, Any]:
+    mechanism = detect_mechanism_issue_gaps(project, limit=1)
+    if mechanism:
+        return mechanism[0]
+    signals = detect_gap_signal_gaps(project, limit=1)
+    if signals:
+        return signals[0]
+    records = project_records_for_mapping(project)
+    if not records:
+        return {}
+    record = records[0]
+    citation = record_reference(record)
+    method = normalize_label(record.get("method", "")) or "the reported method"
+    scenario = normalize_label(record.get("scenario", "")) or normalize_label(project.get("domain", "")) or "the target system"
+    benchmark = normalize_label(record.get("benchmark", "")) or "the primary performance metric"
+    gap = make_gap(
+        gap_type="mechanism_problem",
+        description=(
+            f"PaperGraph contains evidence for {method} in {scenario}, but no explicit source-grounded limitation or contradiction "
+            f"was available for MingLi; require a mechanism-specific validation around {benchmark} before proposing a broad hypothesis."
+        ),
+        supporting_references=[citation] if citation else [],
+        suggested_research_path=(
+            f"Extract a concrete causal link from the source text, then test how a controllable variable in {method} changes {benchmark} "
+            f"in {scenario} under matched controls."
+        ),
+        value_argument="This fallback preserves evidence traceability and prevents a matrix-only pseudo-gap from silently driving hypothesis generation.",
+    )
+    return assess_gap_dict(project, gap)
+
+
+def mingli_resolve_idea_json(project: dict[str, Any], idea: dict[str, Any] | str = "", idea_id: str = "") -> dict[str, Any]:
+    if idea_id:
+        for collection_name in ("mingli_draft_ideas", "mingli_experiment_plans"):
+            for item in project.get(collection_name, []):
+                if isinstance(item, dict) and item.get("draft_idea_id") == idea_id:
+                    value = item.get("idea_json")
+                    if isinstance(value, dict):
+                        return dict(value)
+                if isinstance(item, dict) and item.get("experiment_plan_id") == idea_id:
+                    value = item.get("idea_json")
+                    if isinstance(value, dict):
+                        return dict(value)
+        raise ValueError(f"Unknown MingLi idea_id: {idea_id}")
+    if isinstance(idea, dict):
+        return dict(idea)
+    if isinstance(idea, str) and idea.strip():
+        try:
+            parsed = json.loads(idea)
+            if isinstance(parsed, dict):
+                return parsed
+        except json.JSONDecodeError:
+            pass
+        return {"title": trim_text(idea, 90), "hypothesis": idea}
+    raise ValueError("Provide idea_json or idea_id.")
+
+
+def mingli_candidate_to_idea_json(project: dict[str, Any], candidate: dict[str, Any]) -> dict[str, Any]:
+    gap = candidate.get("source_gap") if isinstance(candidate.get("source_gap"), dict) else {}
+    refs = gap.get("supporting_references", []) if isinstance(gap.get("supporting_references"), list) else []
+    title = mingli_title_from_statement(str(candidate.get("statement", "")))
+    experiments = candidate.get("verification_plan", {}) if isinstance(candidate.get("verification_plan"), dict) else {}
+    components = infer_gap_components(project, gap)
+    control_variable = hypothesis_control_variable(gap, components["method"], components["scenario"])
+    boundary = hypothesis_boundary_condition(gap)
+    return {
+        "title": title,
+        "hypothesis": str(candidate.get("statement") or ""),
+        "abstract": (
+            f"This proposal addresses the PaperGraph gap '{gap.get('description', '')}'. "
+            f"It hypothesizes a testable mechanism: {candidate.get('mechanism', '')} "
+            f"The study is designed to be falsifiable through {candidate.get('test_plan', '')}"
+        ),
+        "related_work": (
+            f"Grounding evidence comes from: {', '.join(str(ref) for ref in refs[:5]) or 'PaperGraph records requiring expansion'}. "
+            "The proposal differs by testing the mapped gap directly with explicit baselines, ablations, and failure-mode criteria."
+        ),
+        "experiments": {
+            "setup": str(candidate.get("test_plan") or ""),
+            "metrics": str(experiments.get("primary_metric") or "primary benchmark plus robustness and failure-mode metrics"),
+            "baselines": ", ".join(str(item) for item in experiments.get("baselines", []) or ["domain-standard baseline"]),
+        },
+        "risks": mingli_risk_text(gap, experiments),
+        "tournament_generation": int(candidate.get("generation") or 1),
+        "parent_hypothesis_id": candidate.get("parent_hypothesis_id"),
+        "gap_id": str(candidate.get("gap_id") or gap.get("gap_id") or ""),
+        "lineage": candidate.get("lineage", []),
+        "scores": candidate.get("scores", {}),
+        "semantic_plausibility": candidate.get("semantic_plausibility", {}),
+        "causal_chain": candidate.get("causal_chain", []),
+        "controllable_variables": [control_variable],
+        "measurable_outputs": [components["benchmark"]],
+        "boundary_conditions": [boundary],
+    }
+
+
+def mingli_title_from_statement(statement: str) -> str:
+    clean = normalize_space(statement)
+    clean = re.sub(r"^if\s+", "", clean, flags=re.IGNORECASE)
+    clean = clean.split(", then", 1)[0]
+    clean = clean.split(" will ", 1)[0]
+    return trim_text(clean[:1].upper() + clean[1:] if clean else "Gap-Grounded Testable Hypothesis", 120)
+
+
+def conservative_hypothesis_statement(candidate: dict[str, Any], components: dict[str, str]) -> str:
+    gap = candidate.get("source_gap") if isinstance(candidate.get("source_gap"), dict) else {}
+    variable = hypothesis_control_variable(gap, components["method"], components["scenario"])
+    boundary = hypothesis_boundary_condition(gap)
+    return (
+        f"If {components['method']} is evaluated in {components['scenario']} while explicitly varying {variable}, "
+        f"then {components['benchmark']} should identify the limiting boundary {boundary} against domain-standard baselines."
+    )
+
+
+def innovative_hypothesis_statement(candidate: dict[str, Any], components: dict[str, str], gap: dict[str, Any]) -> str:
+    variable = hypothesis_control_variable(gap, components["method"], components["scenario"])
+    boundary = hypothesis_boundary_condition(gap)
+    if str(gap.get("gap_type") or "") == "contradiction":
+        return (
+            f"If the conflicting claims in {components['scenario']} are retested under matched {variable} conditions, "
+            f"then {components['benchmark']} will reveal which mechanism is valid and where the disagreement boundary lies: {boundary}."
+        )
+    return (
+        f"If {components['method']} is coupled with a mechanism-stress intervention that varies {variable} in {components['scenario']}, "
+        f"then {components['benchmark']} will expose a directional or non-monotonic boundary at {boundary}: "
+        f"{trim_text(str(gap.get('description', '')), 140)}"
+    )
+
+
+def mingli_risk_text(gap: dict[str, Any], experiment: dict[str, Any]) -> str:
+    risks = [
+        "The mapped gap may be a retrieval or extraction artifact rather than a true scientific opening.",
+        "The proposed mechanism may fail under ablation or regime-shift tests.",
+        "Available datasets, instruments, or simulations may not expose the decisive variable cleanly.",
+    ]
+    if not gap.get("supporting_references"):
+        risks.append("PaperGraph grounding is weak; collect stronger evidence before expensive experiments.")
+    return " ".join(risks)
+
+
+def mingli_final_schema_missing(idea: dict[str, Any]) -> list[str]:
+    missing: list[str] = []
+    for key in ("title", "hypothesis", "abstract", "related_work", "risks"):
+        if not str(idea.get(key) or "").strip():
+            missing.append(key)
+    experiments = idea.get("experiments")
+    if not isinstance(experiments, dict):
+        missing.append("experiments")
+    else:
+        for key in ("setup", "metrics", "baselines"):
+            if not str(experiments.get(key) or "").strip():
+                missing.append(f"experiments.{key}")
+    if "tournament_generation" not in idea:
+        missing.append("tournament_generation")
+    if "parent_hypothesis_id" not in idea:
+        missing.append("parent_hypothesis_id")
+    if not str(idea.get("gap_id") or "").strip():
+        missing.append("gap_id")
+    return missing
+
+
 def create_hypothesis(
     project_id: str,
     gap_id: str,
@@ -10485,51 +11709,801 @@ def create_hypothesis(
     return json.dumps(asdict(hypothesis), ensure_ascii=False, indent=2)
 
 
+def check_internal_consistency(
+    hypothesis: str,
+    reasoning_chain: list[str] | None = None,
+) -> str:
+    report = yanzhen_internal_consistency_report(hypothesis, reasoning_chain or [])
+    return json.dumps(report, ensure_ascii=False, indent=2)
+
+
+def check_data_consistency(
+    hypothesis: str,
+    cited_data: list[Any] | None = None,
+    original_sources: list[Any] | None = None,
+) -> str:
+    report = yanzhen_data_consistency_report(hypothesis, cited_data or [], original_sources or [])
+    return json.dumps(report, ensure_ascii=False, indent=2)
+
+
+def regime_shift_test(
+    mechanism: str,
+    original_conditions: dict[str, Any] | None = None,
+    shifted_conditions: list[dict[str, Any]] | list[str] | None = None,
+) -> str:
+    report = yanzhen_regime_shift_report(mechanism, original_conditions or {}, shifted_conditions or [])
+    return json.dumps(report, ensure_ascii=False, indent=2)
+
+
+def detect_selective_citation(
+    cited_papers: list[Any] | None = None,
+    full_paper_contexts: list[Any] | None = None,
+) -> str:
+    report = yanzhen_selective_citation_report(cited_papers or [], full_paper_contexts or [])
+    return json.dumps(report, ensure_ascii=False, indent=2)
+
+
+def causal_chain_audit(
+    causal_chain: list[str] | None = None,
+    evidence_for_each: list[Any] | None = None,
+) -> str:
+    report = yanzhen_causal_chain_report(causal_chain or [], evidence_for_each or [])
+    return json.dumps(report, ensure_ascii=False, indent=2)
+
+
+def run_yanzhen_mechanism_verification(
+    project_id: str,
+    hypothesis_id: str = "",
+    hypothesis: str = "",
+    reasoning_chain: list[str] | None = None,
+    cited_data: list[Any] | None = None,
+    original_sources: list[Any] | None = None,
+    shifted_conditions: list[dict[str, Any]] | list[str] | None = None,
+) -> str:
+    project = load_project(project_id)
+    hypothesis_record: dict[str, Any] = {}
+    if hypothesis_id:
+        found = find_by_id(project.get("hypotheses", []), "hypothesis_id", hypothesis_id)
+        if found is None:
+            raise ValueError(f"Unknown hypothesis_id for project {project_id}: {hypothesis_id}")
+        hypothesis_record = found
+    text = hypothesis or yanzhen_hypothesis_text(hypothesis_record)
+    if not text:
+        raise ValueError("YanZhen requires hypothesis text or hypothesis_id.")
+    mechanism = yanzhen_mechanism_text(hypothesis_record) or text
+    chain = reasoning_chain or extract_causal_chain(text + " " + mechanism)
+    project_sources = original_sources if original_sources is not None else yanzhen_sources_for_hypothesis(project, hypothesis_record)
+    project_citations = cited_data if cited_data is not None else yanzhen_cited_data_for_hypothesis(project, hypothesis_record)
+    shifts = shifted_conditions or default_regime_shifts(text + " " + mechanism)
+    if len(shifts) < 2:
+        shifts = list(shifts) + default_regime_shifts(text + " " + mechanism)[: 2 - len(shifts)]
+
+    layer_1 = yanzhen_internal_consistency_report(text, chain)
+    chain_report = yanzhen_causal_chain_report(chain, project_citations)
+    if chain_report.get("verdict") == "FAIL":
+        layer_1["issues_found"] = unique_preserve_order(layer_1.get("issues_found", []) + chain_report.get("unsupported_links", []))
+        layer_1["logical_chain_intact"] = False
+        layer_1["verdict"] = "FAIL"
+    citation_report = yanzhen_selective_citation_report(project_citations, project_sources)
+    layer_2 = yanzhen_data_consistency_report(text + " " + mechanism, project_citations, project_sources)
+    if citation_report.get("selective_citation_detected"):
+        layer_2["selective_citation_detected"] = True
+        layer_2["verdict"] = "FAIL"
+    layer_3 = yanzhen_regime_shift_report(mechanism, yanzhen_original_conditions(text + " " + mechanism), shifts)
+    overall = yanzhen_overall_verdict(layer_1, layer_2, layer_3)
+    detailed = yanzhen_detailed_reasoning(layer_1, layer_2, layer_3, chain_report, citation_report)
+    report = {
+        "thought": "YanZhen audited the hypothesis through internal consistency, data consistency, selective-citation, causal-chain, and regime-shift checks.",
+        "action": {
+            "type": "run_yanzhen_mechanism_verification",
+            "hypothesis_id": hypothesis_id,
+            "layers_executed": ["internal_consistency", "data_consistency", "regime_shift_test"],
+        },
+        "mechanism_fidelity_report": {
+            "hypothesis_id": hypothesis_id or str(hypothesis_record.get("hypothesis_id") or ""),
+            "layer_1_internal_consistency": layer_1,
+            "layer_2_data_consistency": layer_2,
+            "layer_3_regime_shift_test": layer_3,
+            "causal_chain_audit": chain_report,
+            "selective_citation_audit": citation_report,
+            "overall_verdict": overall,
+            "detailed_reasoning": detailed,
+            "cawm_reference_note": "CAWM risk follows the pattern where correct-looking conclusions are defended by brittle or inconsistent mechanisms that fail under regime shift.",
+        },
+    }
+    project.setdefault("mechanism_reports", []).append(report["mechanism_fidelity_report"])
+    project["phase"] = "Mechanism Verification"
+    project["updatedAt"] = time.time()
+    save_project(project)
+    log_event("SCIENCE", "yanzhen_mechanism_verified", project_id=project_id, hypothesis_id=hypothesis_id, verdict=overall)
+    return json.dumps(report, ensure_ascii=False, indent=2)
+
+
 def run_mechanism_check(
     project_id: str,
     hypothesis_id: str,
     shifted_conditions: list[str] | None = None,
 ) -> str:
-    project = load_project(project_id)
-    hypothesis = find_by_id(project.get("hypotheses", []), "hypothesis_id", hypothesis_id)
-    if hypothesis is None:
-        raise ValueError(f"Unknown hypothesis_id for project {project_id}: {hypothesis_id}")
+    return run_yanzhen_mechanism_verification(
+        project_id,
+        hypothesis_id=hypothesis_id,
+        shifted_conditions=shifted_conditions or ["different dataset distribution", "changed key parameter regime"],
+    )
 
-    mechanism = str(hypothesis.get("mechanism", ""))
-    statement = str(hypothesis.get("statement", ""))
-    shifted = shifted_conditions or ["different dataset distribution", "changed key parameter regime"]
-    internal_issues = mechanism_internal_issues(statement, mechanism)
-    data_refs = references_for_gap(project, str(hypothesis.get("gap_id", "")))
-    data_issues = [] if data_refs else ["No supporting references are linked to the hypothesis gap."]
-    regime_risk = "MEDIUM" if len(shifted) >= 2 else "HIGH"
-    overall = "MECHANISM_VERIFIED" if not internal_issues and not data_issues and regime_risk != "HIGH" else "REQUIRES_HUMAN_REVIEW"
 
+def ask_socratic_questions(
+    project_id: str = "",
+    hypothesis_id: str = "",
+    hypothesis: str = "",
+    question_types: list[str] | None = None,
+    max_questions: int = 12,
+) -> str:
+    project = load_project(project_id) if project_id else {}
+    record = debate_hypothesis_record(project, hypothesis_id) if project and hypothesis_id else {}
+    text = hypothesis or debate_hypothesis_text(record)
+    if not text:
+        raise ValueError("DuZhi requires hypothesis text or hypothesis_id.")
+    mechanism = yanzhen_mechanism_text(record) or text
+    sources = yanzhen_sources_for_hypothesis(project, record) if project else []
+    selected_types = [normalize_key(item) for item in (question_types or []) if str(item).strip()]
+    questions = duzhi_generate_questions(
+        hypothesis_text=text,
+        mechanism=mechanism,
+        sources=sources,
+        allowed_types=selected_types,
+        max_questions=max_questions,
+    )
     report = {
-        "report_id": new_id("mech"),
-        "hypothesis_id": hypothesis_id,
-        "layer_1_internal_consistency": {
-            "issues_found": internal_issues,
-            "verdict": "PASS" if not internal_issues else "FAIL",
+        "thought": "DuZhi generated structured Socratic questions targeting definitions, constraints, causal links, evidence gaps, and counterexamples.",
+        "action": {
+            "type": "ask_socratic_questions",
+            "hypothesis_id": hypothesis_id,
+            "question_types": selected_types or ["all"],
         },
-        "layer_2_data_consistency": {
-            "supporting_references": data_refs,
-            "issues_found": data_issues,
-            "verdict": "PASS" if not data_issues else "FAIL",
-        },
-        "layer_3_regime_shift_test": {
-            "shifted_conditions_tested": shifted,
-            "cawm_risk_level": regime_risk,
-            "verdict": "PASS" if regime_risk != "HIGH" else "FAIL",
-        },
-        "overall_verdict": overall,
-        "createdAt": time.time(),
+        "questions": questions,
+        "overall_severity": socratic_overall_severity(questions),
+        "must_revise": any(item.get("severity") in {"high", "fatal"} for item in questions),
     }
-    project.setdefault("mechanism_reports", []).append(report)
-    project["phase"] = "Mechanism Verification"
+    if project:
+        project.setdefault("socratic_question_reports", []).append(report)
+        project["phase"] = "Socratic Debate"
+        project["updatedAt"] = time.time()
+        save_project(project)
+    return json.dumps(report, ensure_ascii=False, indent=2)
+
+
+def ask_critical_questions(
+    project_id: str = "",
+    hypothesis_id: str = "",
+    hypothesis: str = "",
+    question_types: list[str] | None = None,
+    max_questions: int = 12,
+) -> str:
+    return ask_socratic_questions(project_id, hypothesis_id, hypothesis, question_types, max_questions)
+
+
+def find_counterexamples(
+    project_id: str = "",
+    hypothesis_id: str = "",
+    hypothesis: str = "",
+    max_questions: int = 6,
+) -> str:
+    return ask_socratic_questions(
+        project_id=project_id,
+        hypothesis_id=hypothesis_id,
+        hypothesis=hypothesis,
+        question_types=["counterexample_challenge"],
+        max_questions=max_questions,
+    )
+
+
+def stress_test_assumptions(
+    project_id: str = "",
+    hypothesis_id: str = "",
+    hypothesis: str = "",
+    max_questions: int = 8,
+) -> str:
+    return ask_socratic_questions(
+        project_id=project_id,
+        hypothesis_id=hypothesis_id,
+        hypothesis=hypothesis,
+        question_types=["constraint_check", "counterexample_challenge"],
+        max_questions=max_questions,
+    )
+
+
+def moderate_round(
+    project_id: str,
+    round_name: str,
+    proponent_position: str = "",
+    opponent_questions: list[dict[str, Any]] | None = None,
+    yanzhen_report: dict[str, Any] | None = None,
+) -> str:
+    questions = opponent_questions or []
+    verdict = "advance"
+    if any(item.get("severity") == "fatal" for item in questions):
+        verdict = "revise"
+    report_body = yanzhen_report.get("mechanism_fidelity_report", {}) if isinstance(yanzhen_report, dict) else {}
+    if report_body.get("overall_verdict") == "CAWM_DETECTED":
+        verdict = "revise"
+    result = {
+        "round_name": round_name,
+        "proponent_position": proponent_position,
+        "opponent_questions": questions,
+        "yanzhen_summary": report_body,
+        "verdict": verdict,
+        "adopted_revision_requirements": [
+            str(item.get("required_revision") or "")
+            for item in questions
+            if item.get("severity") in {"high", "fatal"} and item.get("required_revision")
+        ],
+    }
+    project = load_project(project_id)
+    project.setdefault("debate_round_moderations", []).append(result)
     project["updatedAt"] = time.time()
     save_project(project)
-    log_event("SCIENCE", "mechanism_checked", project_id=project_id, hypothesis_id=hypothesis_id, verdict=overall)
-    return json.dumps(report, ensure_ascii=False, indent=2)
+    return json.dumps(result, ensure_ascii=False, indent=2)
+
+
+def summarize_positions(
+    proponent_position: str = "",
+    opponent_questions: list[dict[str, Any]] | None = None,
+    yanzhen_report: dict[str, Any] | None = None,
+) -> str:
+    questions = opponent_questions or []
+    report_body = yanzhen_report.get("mechanism_fidelity_report", {}) if isinstance(yanzhen_report, dict) else {}
+    summary = {
+        "proponent_core_claim": trim_text(proponent_position, 500),
+        "opponent_high_severity_issues": [
+            item for item in questions if item.get("severity") in {"high", "fatal"}
+        ],
+        "yanzhen_overall_verdict": report_body.get("overall_verdict", "not_run"),
+        "shared_dispute_points": debate_unresolved_issues(questions, report_body),
+    }
+    return json.dumps(summary, ensure_ascii=False, indent=2)
+
+
+def extract_emergent_method(
+    debate_report: dict[str, Any] | str,
+) -> str:
+    parsed = parse_jsonish_dict(debate_report)
+    refined = parsed.get("refined_hypothesis") if isinstance(parsed.get("refined_hypothesis"), dict) else {}
+    if not refined:
+        body = parsed.get("debate_report") if isinstance(parsed.get("debate_report"), dict) else {}
+        refined = body.get("refined_hypothesis") if isinstance(body.get("refined_hypothesis"), dict) else {}
+    method = {
+        "emergent_method": refined.get("hypothesis") or refined.get("statement") or "",
+        "causal_chain": refined.get("causal_chain", []),
+        "falsification_conditions": refined.get("falsification_conditions", []),
+        "evidence_requirements": refined.get("evidence_requirements", []),
+    }
+    return json.dumps(method, ensure_ascii=False, indent=2)
+
+
+def run_socratic_hypothesis_debate(
+    project_id: str,
+    hypothesis_id: str = "",
+    hypothesis: str = "",
+    max_rounds: int = 4,
+    proponent_model_family: str = "qwen",
+    opponent_model_family: str = "external_critic",
+    judge_model_family: str = "external_judge",
+    verifier_model_family: str = "external_verifier",
+    shifted_conditions: list[Any] | None = None,
+) -> str:
+    project = load_project(project_id)
+    record = debate_hypothesis_record(project, hypothesis_id) if hypothesis_id else {}
+    text = hypothesis or debate_hypothesis_text(record)
+    if not text:
+        raise ValueError("BianLun requires hypothesis text or hypothesis_id.")
+    safety = debate_safety_gates(
+        proponent_model_family=proponent_model_family,
+        opponent_model_family=opponent_model_family,
+        judge_model_family=judge_model_family,
+        verifier_model_family=verifier_model_family,
+    )
+    if not safety["passed"]:
+        report = {
+            "thought": "BianLun stopped before debate because an ARIS-style safety gate failed.",
+            "action": {"type": "run_socratic_hypothesis_debate", "status": "blocked"},
+            "debate_report": {
+                "debate_id": new_id("debate"),
+                "hypothesis_id": hypothesis_id,
+                "rounds": [],
+                "safety_gates": safety,
+                "refined_hypothesis": {},
+                "unresolved_issues": safety["issues"],
+                "final_decision": "human_review",
+            },
+        }
+        project.setdefault("socratic_debates", []).append(report["debate_report"])
+        project["phase"] = "Socratic Debate"
+        project["updatedAt"] = time.time()
+        save_project(project)
+        return json.dumps(report, ensure_ascii=False, indent=2)
+
+    rounds: list[dict[str, Any]] = []
+    max_rounds = clamp_int(max_rounds, 1, 4)
+    mechanism = yanzhen_mechanism_text(record) or text
+    sources = yanzhen_sources_for_hypothesis(project, record)
+
+    round1_questions = duzhi_generate_questions(
+        text,
+        mechanism,
+        sources,
+        allowed_types=["conceptual_clarification", "constraint_check"],
+        max_questions=8,
+    )
+    rounds.append(
+        {
+            "round": 1,
+            "name": "Socratic Clarification",
+            "proponent_position": debate_proponent_position(text, mechanism, record),
+            "opponent_questions": round1_questions,
+            "moderator_verdict": "revise" if any(q.get("severity") in {"high", "fatal"} for q in round1_questions) else "advance",
+        }
+    )
+    if max_rounds >= 2:
+        yanzhen_json = json.loads(
+            run_yanzhen_mechanism_verification(
+                project_id,
+                hypothesis_id=hypothesis_id,
+                hypothesis=text if not hypothesis_id else "",
+                shifted_conditions=shifted_conditions,
+            )
+        )
+        yanzhen_body = yanzhen_json.get("mechanism_fidelity_report", {})
+        round2_questions = duzhi_generate_questions(
+            text,
+            mechanism,
+            sources,
+            allowed_types=["causal_probe", "constraint_check"],
+            max_questions=8,
+            yanzhen_report=yanzhen_body,
+        )
+        rounds.append(
+            {
+                "round": 2,
+                "name": "Evidence and CAWM Layer 1-2",
+                "yanzhen_report": yanzhen_body,
+                "opponent_questions": round2_questions,
+                "moderator_verdict": "revise" if yanzhen_body.get("overall_verdict") in {"CAWM_DETECTED", "REQUIRES_HUMAN_REVIEW"} else "advance",
+            }
+        )
+    else:
+        yanzhen_body = {}
+    if max_rounds >= 3:
+        round3_questions = duzhi_generate_questions(
+            text,
+            mechanism,
+            sources,
+            allowed_types=["counterexample_challenge", "constraint_check"],
+            max_questions=8,
+            yanzhen_report=yanzhen_body,
+        )
+        layer3 = yanzhen_body.get("layer_3_regime_shift_test", {}) if isinstance(yanzhen_body, dict) else {}
+        rounds.append(
+            {
+                "round": 3,
+                "name": "Methodology and Regime Shift",
+                "experiment_plan": record.get("test_plan") or debate_experiment_text(record),
+                "regime_shift_summary": layer3,
+                "opponent_questions": round3_questions,
+                "moderator_verdict": "revise" if layer3.get("cawm_risk_level") == "HIGH" or any(q.get("severity") in {"high", "fatal"} for q in round3_questions) else "advance",
+            }
+        )
+    if max_rounds >= 4:
+        refined = debate_refined_hypothesis(project, record, text, mechanism, rounds, yanzhen_body)
+        final_decision = debate_final_decision(rounds, yanzhen_body, refined)
+        rounds.append(
+            {
+                "round": 4,
+                "name": "Synthesis and Convergence",
+                "refined_hypothesis": refined,
+                "final_decision": final_decision,
+                "moderator_verdict": "finalize" if final_decision == "accept_for_experiment" else final_decision,
+            }
+        )
+    else:
+        refined = debate_refined_hypothesis(project, record, text, mechanism, rounds, yanzhen_body)
+        final_decision = debate_final_decision(rounds, yanzhen_body, refined)
+
+    unresolved = debate_unresolved_issues(
+        [q for round_item in rounds for q in round_item.get("opponent_questions", []) if isinstance(q, dict)],
+        yanzhen_body,
+    )
+    debate_report = {
+        "debate_id": new_id("debate"),
+        "hypothesis_id": hypothesis_id or str(record.get("hypothesis_id") or ""),
+        "model_families": {
+            "proponent": proponent_model_family,
+            "opponent": opponent_model_family,
+            "judge": judge_model_family,
+            "verifier": verifier_model_family,
+        },
+        "rounds": rounds,
+        "safety_gates": safety,
+        "refined_hypothesis": refined,
+        "unresolved_issues": unresolved,
+        "final_decision": final_decision,
+    }
+    project.setdefault("socratic_debates", []).append(debate_report)
+    project.setdefault("hypothesis_revisions", []).append(
+        {
+            "revision_id": new_id("rev"),
+            "hypothesis_id": debate_report["hypothesis_id"],
+            "source_debate_id": debate_report["debate_id"],
+            "refined_hypothesis": refined,
+            "decision": final_decision,
+            "createdAt": time.time(),
+        }
+    )
+    project["phase"] = "Socratic Debate"
+    project["updatedAt"] = time.time()
+    save_project(project)
+    log_event("SCIENCE", "socratic_debate_completed", project_id=project_id, hypothesis_id=debate_report["hypothesis_id"], decision=final_decision)
+    return json.dumps(
+        {
+            "thought": "BianLun ran an evidence-driven four-round Socratic debate with DuZhi questions and YanZhen mechanism verification.",
+            "action": {"type": "run_socratic_hypothesis_debate", "rounds": max_rounds},
+            "debate_report": debate_report,
+        },
+        ensure_ascii=False,
+        indent=2,
+    )
+
+
+def debate_hypothesis_record(project: dict[str, Any], hypothesis_id: str) -> dict[str, Any]:
+    found = find_by_id(project.get("hypotheses", []), "hypothesis_id", hypothesis_id)
+    if found is None:
+        found = find_by_id(project.get("mingli_finalized_ideas", []), "hypothesis_id", hypothesis_id)
+    if found is None:
+        raise ValueError(f"Unknown hypothesis_id for project {project.get('project_id', '')}: {hypothesis_id}")
+    return found
+
+
+def debate_hypothesis_text(record: dict[str, Any]) -> str:
+    if not record:
+        return ""
+    final = record.get("mingli_final_idea") if isinstance(record.get("mingli_final_idea"), dict) else {}
+    return normalize_space(
+        " ".join(
+            str(part)
+            for part in (
+                final.get("title", ""),
+                final.get("hypothesis", ""),
+                final.get("abstract", ""),
+                record.get("statement", ""),
+                record.get("mechanism", ""),
+            )
+            if part
+        )
+    )
+
+
+def duzhi_generate_questions(
+    hypothesis_text: str,
+    mechanism: str,
+    sources: list[Any],
+    *,
+    allowed_types: list[str] | None = None,
+    max_questions: int = 12,
+    yanzhen_report: dict[str, Any] | None = None,
+) -> list[dict[str, Any]]:
+    allowed = set(allowed_types or [])
+    questions: list[dict[str, Any]] = []
+    text = normalize_space(f"{hypothesis_text} {mechanism}")
+    lowered = text.lower()
+    source_text = normalize_space(" ".join(yanzhen_context_text(item) for item in sources))
+    chain = extract_causal_chain(text)
+
+    def include(kind: str) -> bool:
+        return not allowed or kind in allowed
+
+    def add(kind: str, question: str, target: str, why: str, revision: str, severity: str) -> None:
+        if not include(kind):
+            return
+        questions.append(
+            {
+                "question_type": kind,
+                "question": question,
+                "target_claim": trim_text(target, 220),
+                "why_it_matters": why,
+                "required_revision": revision,
+                "severity": severity,
+            }
+        )
+
+    if include("conceptual_clarification"):
+        if not any(term in lowered for term in ("measure", "metric", "observable", "readout", "quantif", "primary")):
+            add(
+                "conceptual_clarification",
+                "Which part of the hypothesis is directly measurable, and which part is inferred from those measurements?",
+                hypothesis_text,
+                "AHOIS-style clarification requires separating observables from inferred mechanisms before testing.",
+                "Add explicit observables, inferred constructs, and the mapping between them.",
+                "high",
+            )
+        if any(term in lowered for term in ("improve", "enhance", "better", "stable")) and not re.search(r"\b\d+(?:\.\d+)?\s*(?:%|fold|x|times|sigma|unit|score)\b", lowered):
+            add(
+                "conceptual_clarification",
+                "What threshold converts the claimed improvement into a successful result rather than a vague positive trend?",
+                hypothesis_text,
+                "A falsifiable hypothesis needs a decision threshold or preregistered effect direction.",
+                "Define a quantitative or ordinal success threshold and the minimum meaningful effect.",
+                "medium",
+            )
+        if not any(term in lowered for term in ("baseline", "control", "negative control", "standard")):
+            add(
+                "conceptual_clarification",
+                "What is the nearest domain-standard baseline or negative control that would make the claim nontrivial?",
+                hypothesis_text,
+                "Without a baseline, the hypothesis cannot distinguish genuine mechanism from general performance drift.",
+                "Name at least one domain-standard baseline and one failure-mode or negative control.",
+                "high",
+            )
+
+    if include("constraint_check"):
+        if not any(term in lowered for term in ("constraint", "assumption", "boundary", "regime", "limit", "under ", "unless", "when")):
+            add(
+                "constraint_check",
+                "Under what validity regime is the mechanism expected to hold, and where should it fail?",
+                mechanism,
+                "Unstated boundary conditions are a common CAWM risk under regime shift.",
+                "Add explicit assumptions, validity range, and at least one expected failure condition.",
+                "high",
+            )
+        if not any(term in lowered for term in ("data", "sample", "instrument", "simulation", "experiment", "cohort", "dataset", "measurement")):
+            add(
+                "constraint_check",
+                "What data, instrument, simulation, or experimental platform can actually observe the claimed causal step?",
+                mechanism,
+                "A hypothesis can be conceptually attractive but infeasible if the decisive mechanism is not observable.",
+                "Specify the observation platform and feasibility constraint for the decisive causal link.",
+                "medium",
+            )
+        if source_text and text_jaccard(hypothesis_text, source_text) < 0.06:
+            add(
+                "constraint_check",
+                "Which sentence or result in the imported PaperGraph evidence grounds the strongest mechanistic premise?",
+                hypothesis_text,
+                "ARIS-style evidence gates require claim-to-source traceability, not just thematic similarity.",
+                "Map each central premise to a PaperGraph citation or mark it as speculative.",
+                "high",
+            )
+
+    if include("causal_probe"):
+        if len(chain) < 2:
+            add(
+                "causal_probe",
+                "Can you rewrite the hypothesis as an explicit input -> mechanism -> output chain with evidence for each arrow?",
+                hypothesis_text,
+                "A single broad sentence hides missing causal links and prevents targeted revision.",
+                "Provide a three-to-five-step causal chain and cite or label the evidence for each link.",
+                "fatal",
+            )
+        if any(term in lowered for term in ("because", "therefore", "leads to", "causes", "drives")) and not source_text:
+            add(
+                "causal_probe",
+                "What source evidence supports the causal connector rather than only the endpoint observation?",
+                mechanism,
+                "Causal connectors are where correct-answer/wrong-mechanism failures often enter.",
+                "Add evidence for the causal link or downgrade it to a testable assumption.",
+                "high",
+            )
+        report = yanzhen_report or {}
+        layer_1 = report.get("layer_1_internal_consistency", {}) if isinstance(report, dict) else {}
+        for issue in layer_1.get("issues_found", [])[:3] if isinstance(layer_1.get("issues_found"), list) else []:
+            add(
+                "causal_probe",
+                f"How will the hypothesis be revised to address YanZhen Layer 1 issue: {issue}",
+                mechanism,
+                "Internal consistency issues must be resolved before evidence or experiments can rescue the claim.",
+                "Revise the mechanism so the logical chain is explicit and self-consistent.",
+                "fatal" if "unsupported causal link" in str(issue).lower() else "high",
+            )
+
+    if include("counterexample_challenge"):
+        shifts = default_regime_shifts(text)
+        for shift in shifts[:3]:
+            add(
+                "counterexample_challenge",
+                f"What outcome should occur if {render_shift_condition(shift)}, and would that falsify the mechanism or only weaken it?",
+                mechanism,
+                "Counterexamples reveal whether the mechanism has real explanatory content across regimes.",
+                "Add predicted behavior under this shifted condition and define pass/fail interpretation.",
+                "medium",
+            )
+        report = yanzhen_report or {}
+        layer_3 = report.get("layer_3_regime_shift_test", {}) if isinstance(report, dict) else {}
+        if layer_3.get("cawm_risk_level") in {"MEDIUM", "HIGH"}:
+            add(
+                "counterexample_challenge",
+                f"YanZhen reports {layer_3.get('cawm_risk_level')} CAWM risk; which assumption collapses first under regime shift?",
+                mechanism,
+                "The debate must localize the brittle assumption before accepting a refined hypothesis.",
+                "Name the brittle assumption, restrict the validity regime, or propose a discriminating test.",
+                "fatal" if layer_3.get("cawm_risk_level") == "HIGH" else "high",
+            )
+
+    if not questions:
+        add(
+            "causal_probe" if include("causal_probe") else "conceptual_clarification",
+            "What single observation would most strongly change your belief in this hypothesis?",
+            hypothesis_text,
+            "Even apparently complete hypotheses need a belief-updating observation to remain falsifiable.",
+            "Add a decisive observation and the expected update direction.",
+            "low",
+        )
+    questions = dedupe_socratic_questions(questions)
+    severity_rank = {"fatal": 4, "high": 3, "medium": 2, "low": 1}
+    questions.sort(key=lambda item: (-severity_rank.get(str(item.get("severity")), 0), item.get("question_type", ""), item.get("question", "")))
+    return questions[: clamp_int(max_questions, 1, 40)]
+
+
+def dedupe_socratic_questions(questions: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    deduped: list[dict[str, Any]] = []
+    seen: set[str] = set()
+    for item in questions:
+        key = normalize_key(str(item.get("question") or ""))[:120]
+        if key in seen:
+            continue
+        seen.add(key)
+        deduped.append(item)
+    return deduped
+
+
+def socratic_overall_severity(questions: list[dict[str, Any]]) -> str:
+    order = ["low", "medium", "high", "fatal"]
+    best = 0
+    for item in questions:
+        try:
+            best = max(best, order.index(str(item.get("severity") or "low")))
+        except ValueError:
+            continue
+    return order[best]
+
+
+def debate_safety_gates(
+    *,
+    proponent_model_family: str,
+    opponent_model_family: str,
+    judge_model_family: str,
+    verifier_model_family: str,
+) -> dict[str, Any]:
+    proponent = normalize_key(proponent_model_family)
+    opponent = normalize_key(opponent_model_family)
+    judge = normalize_key(judge_model_family)
+    verifier = normalize_key(verifier_model_family)
+    issues: list[str] = []
+    if not opponent or opponent == proponent:
+        issues.append("Safety gate 1 failed: DuZhi/opponent model family must differ from MingLi/proponent.")
+    if verifier and verifier == proponent:
+        issues.append("Safety gate 1 failed: YanZhen/verifier model family must differ from MingLi/proponent.")
+    if not judge:
+        issues.append("Safety gate 1 warning: BianLun/judge model family is not recorded.")
+    return {
+        "passed": not issues,
+        "issues": issues,
+        "independence": {
+            "proponent_model_family": proponent_model_family,
+            "opponent_model_family": opponent_model_family,
+            "judge_model_family": judge_model_family,
+            "verifier_model_family": verifier_model_family,
+        },
+        "evidence_gate": "Debate revisions are adopted only if tied to PaperGraph evidence, YanZhen issue, or an explicit missing-evidence condition.",
+        "convergence_gate": "If two rounds add no substantive revision, terminate with best current hypothesis and unresolved issues.",
+    }
+
+
+def debate_proponent_position(text: str, mechanism: str, record: dict[str, Any]) -> dict[str, Any]:
+    return {
+        "hypothesis": trim_text(text, 800),
+        "claimed_mechanism": trim_text(mechanism, 800),
+        "causal_chain": extract_causal_chain(f"{text} {mechanism}"),
+        "evidence_refs": yanzhen_cited_data_for_hypothesis({"papergraph": []}, record) if record else [],
+        "falsification_plan": record.get("test_plan", "") if isinstance(record, dict) else "",
+    }
+
+
+def debate_experiment_text(record: dict[str, Any]) -> str:
+    final = record.get("mingli_final_idea") if isinstance(record.get("mingli_final_idea"), dict) else {}
+    experiments = final.get("experiments") if isinstance(final.get("experiments"), dict) else {}
+    return normalize_space(" ".join(str(experiments.get(key) or "") for key in ("setup", "metrics", "baselines")) or str(record.get("test_plan") or ""))
+
+
+def debate_refined_hypothesis(
+    project: dict[str, Any],
+    record: dict[str, Any],
+    text: str,
+    mechanism: str,
+    rounds: list[dict[str, Any]],
+    yanzhen_body: dict[str, Any],
+) -> dict[str, Any]:
+    all_questions = [q for round_item in rounds for q in round_item.get("opponent_questions", []) if isinstance(q, dict)]
+    high_revisions = unique_preserve_order(
+        str(item.get("required_revision") or "")
+        for item in all_questions
+        if item.get("severity") in {"high", "fatal"} and item.get("required_revision")
+    )
+    gap_id = str(record.get("gap_id") or "")
+    source_gap = find_by_id(project.get("knowledge_gaps", []), "gap_id", gap_id) if gap_id else {}
+    components = infer_gap_components(project, source_gap or {})
+    variable = hypothesis_control_variable(source_gap or {}, components.get("method", ""), components.get("scenario", ""))
+    boundary = hypothesis_boundary_condition(source_gap or {})
+    causal_chain = extract_causal_chain(f"{text} {mechanism}")
+    if len(causal_chain) < 2:
+        causal_chain = [
+            f"Input/intervention: vary {variable}",
+            f"Mechanism: test whether the claimed causal pathway remains valid at {boundary}",
+            f"Output: measure {components.get('benchmark') or 'the preregistered primary metric'} against baselines",
+        ]
+    refined_statement = (
+        f"Refined hypothesis: under explicitly matched conditions, vary {variable} in "
+        f"{components.get('scenario') or project.get('domain') or 'the target scenario'} and test whether "
+        f"{components.get('benchmark') or 'the primary benchmark'} changes at {boundary}; "
+        "the hypothesis is accepted only if the causal chain survives ablation, evidence mapping, and regime-shift checks."
+    )
+    layer_3 = yanzhen_body.get("layer_3_regime_shift_test", {}) if isinstance(yanzhen_body, dict) else {}
+    return {
+        "hypothesis": refined_statement,
+        "causal_chain": causal_chain,
+        "adopted_revisions": high_revisions[:10],
+        "evidence_requirements": [
+            "Map each central claim to a PaperGraph citation or mark it as speculative.",
+            "Provide evidence for causal connectors, not only endpoint performance.",
+        ],
+        "falsification_conditions": [
+            f"No mechanism-separating change in {components.get('benchmark') or 'the primary metric'} when {variable} crosses {boundary}.",
+            "YanZhen Layer 1 or Layer 2 remains FAIL after revision.",
+            "Regime-shift stability collapses unexpectedly under at least two shifted conditions.",
+        ],
+        "regime_shift_requirements": layer_3.get("shifted_conditions_tested", default_regime_shifts(refined_statement)[:2]),
+    }
+
+
+def debate_unresolved_issues(questions: list[dict[str, Any]], yanzhen_body: dict[str, Any]) -> list[str]:
+    issues = [
+        f"{item.get('question_type')}: {item.get('question')}"
+        for item in questions
+        if item.get("severity") in {"high", "fatal"}
+    ]
+    if isinstance(yanzhen_body, dict):
+        if yanzhen_body.get("overall_verdict") in {"CAWM_DETECTED", "REQUIRES_HUMAN_REVIEW"}:
+            issues.append(f"YanZhen overall verdict: {yanzhen_body.get('overall_verdict')}")
+        for layer_key in ("layer_1_internal_consistency", "layer_2_data_consistency", "layer_3_regime_shift_test"):
+            layer = yanzhen_body.get(layer_key, {})
+            if isinstance(layer, dict):
+                issues.extend(str(issue) for issue in layer.get("issues_found", [])[:4] if issue)
+    return unique_preserve_order(issues)[:20]
+
+
+def debate_final_decision(rounds: list[dict[str, Any]], yanzhen_body: dict[str, Any], refined: dict[str, Any]) -> str:
+    all_questions = [q for round_item in rounds for q in round_item.get("opponent_questions", []) if isinstance(q, dict)]
+    if any(item.get("severity") == "fatal" for item in all_questions):
+        return "revise"
+    if yanzhen_body.get("overall_verdict") == "CAWM_DETECTED":
+        return "revise"
+    if yanzhen_body.get("overall_verdict") == "REQUIRES_HUMAN_REVIEW":
+        return "human_review"
+    if len(refined.get("causal_chain", [])) < 2:
+        return "revise"
+    if any(item.get("severity") == "high" for item in all_questions):
+        return "revise"
+    return "accept_for_experiment"
+
+
+def parse_jsonish_dict(value: dict[str, Any] | str) -> dict[str, Any]:
+    if isinstance(value, dict):
+        return value
+    if isinstance(value, str) and value.strip():
+        try:
+            parsed = json.loads(value)
+            if isinstance(parsed, dict):
+                return parsed
+        except json.JSONDecodeError:
+            return {"text": value}
+    return {}
 
 
 def export_research_plan(project_id: str) -> str:
@@ -10630,7 +12604,7 @@ def run_zhizhi_literature_analysis(
     import_limit = clamp_int(import_top_k, 1, SCIENCE_ZHIZHI_MAX_IMPORT_TOP_K)
     search_budget = max(clamp_int(max_results, 1, 200), import_limit)
     selected_providers = [database_to_provider(item) for item in (providers or default_literature_providers(domain=domain, query=query))]
-    selected_providers = unique_preserve_order([item for item in selected_providers if item in LITERATURE_PROVIDERS])
+    selected_providers = unique_preserve_order([item for item in selected_providers if item in live_literature_provider_names()])
     if not selected_providers:
         selected_providers = ["semantic_scholar"]
     if not use_llm:
@@ -10948,6 +12922,145 @@ def make_gap(
     }
 
 
+def semantic_plausibility_for_pair(
+    project: dict[str, Any],
+    method: str,
+    scenario: str,
+    gap: dict[str, Any] | None = None,
+) -> dict[str, Any]:
+    method_text = normalize_space(method).lower()
+    scenario_text = normalize_space(scenario).lower()
+    project_text = normalize_space(
+        " ".join(
+            [
+                str(project.get("domain", "")),
+                str(project.get("objective", "")),
+                str((gap or {}).get("description", "")),
+                " ".join(record_context_text(record) for record in project_records_for_mapping(project)[:20]),
+            ]
+        )
+    ).lower()
+    requirements = method_input_requirements(method_text)
+    affordances = scenario_data_affordances(f"{scenario_text} {project_text}")
+    bridge = semantic_bridge_terms(method_text, scenario_text, project_text)
+    score = 0.45
+    score_breakdown: list[dict[str, Any]] = [{"factor": "base_prior", "delta": 0.45, "reason": "default prior before evidence checks"}]
+    reasons: list[str] = []
+
+    if concepts_are_connected(project, method, scenario):
+        score += 0.35
+        score_breakdown.append({"factor": "papergraph_cooccurrence", "delta": 0.35, "reason": "method and scenario co-occur in PaperGraph"})
+        reasons.append("method and scenario already co-occur in at least one PaperGraph record")
+    if bridge:
+        delta = min(0.3, 0.08 * len(bridge))
+        score += delta
+        score_breakdown.append({"factor": "bridge_terms", "delta": round(delta, 3), "reason": f"{len(bridge)} bridge concept(s) detected"})
+        reasons.append(f"bridge concepts detected: {', '.join(bridge[:6])}")
+    if requirements:
+        missing = sorted(requirements - affordances)
+        if missing:
+            delta = -min(0.5, 0.18 * len(missing))
+            score += delta
+            score_breakdown.append({"factor": "missing_method_affordances", "delta": round(delta, 3), "reason": ", ".join(missing)})
+            reasons.append(f"method input requirements not visible in scenario/context: {', '.join(missing)}")
+        else:
+            score += 0.2
+            score_breakdown.append({"factor": "matched_method_affordances", "delta": 0.2, "reason": "scenario/context exposes required data affordances"})
+            reasons.append("scenario/context exposes the required data affordances")
+
+    method_field = infer_research_field({"title": method, "abstract": method})
+    scenario_field = infer_research_field({"title": scenario, "abstract": f"{scenario} {project.get('domain', '')}"})
+    if fields_are_incompatible(method_field, scenario_field) and not bridge and not concepts_are_connected(project, method, scenario):
+        score -= 0.25
+        score_breakdown.append({"factor": "field_mismatch_without_bridge", "delta": -0.25, "reason": f"{method_field} -> {scenario_field}"})
+        reasons.append(f"field mismatch without bridge evidence: {method_field} -> {scenario_field}")
+
+    if method_looks_like_narrow_tool(method_text) and not ({"spatial_coordinates", "spatial_context"} & affordances):
+        score -= 0.3
+        score_breakdown.append({"factor": "narrow_tool_modality_mismatch", "delta": -0.3, "reason": "tool implies a data modality absent from scenario/context"})
+        reasons.append("narrow tool/software method appears without matching data modality in the scenario")
+
+    score = round(max(0.0, min(1.0, score)), 3)
+    if score < 0.32:
+        verdict = "REJECT"
+    elif score < 0.55:
+        verdict = "HUMAN_REVIEW"
+    else:
+        verdict = "PASS"
+    return {
+        "verdict": verdict,
+        "score": score,
+        "requirements": sorted(requirements),
+        "scenario_affordances": sorted(affordances),
+        "bridge_terms": bridge[:10],
+        "score_breakdown": score_breakdown,
+        "reason": "; ".join(reasons) if reasons else "no obvious semantic incompatibility detected",
+    }
+
+
+def method_input_requirements(method_text: str) -> set[str]:
+    rules: list[tuple[tuple[str, ...], set[str]]] = [
+        (("kernel density", "kde", "arcgis", "gis", "geospatial", "spatial interpolation", "hotspot analysis"), {"spatial_coordinates"}),
+        (("cnn", "convolution", "vision transformer", "image segmentation", "microscopy"), {"image"}),
+        (("lstm", "rnn", "recurrent", "sequence model", "time series", "temporal"), {"sequence"}),
+        (("graph neural", "gnn", "message passing", "network embedding", "knowledge graph"), {"graph"}),
+        (("single-cell", "scrna", "transcriptomic", "omics", "proteomic", "multi-omics"), {"omics"}),
+        (("causal", "counterfactual", "instrumental variable", "difference-in-differences"), {"intervention"}),
+        (("molecular docking", "density functional", "dft", "quantum", "molecular dynamics"), {"molecular"}),
+    ]
+    reqs: set[str] = set()
+    for terms, required in rules:
+        if any(term in method_text for term in terms):
+            reqs.update(required)
+    return reqs
+
+
+def scenario_data_affordances(text: str) -> set[str]:
+    rules: list[tuple[tuple[str, ...], str]] = [
+        (("spatial transcriptomics", "spatial proteomics", "coordinate", "coordinates", "geospatial", "location", "neighborhood map"), "spatial_coordinates"),
+        (("spatial", "atlas", "map", "mapping", "histology", "microenvironment", "neighborhood", "local context"), "spatial_context"),
+        (("image", "imaging", "microscopy", "histology", "radiology", "pathology slide", "scan"), "image"),
+        (("time", "temporal", "longitudinal", "trajectory", "dynamic", "persistence", "survival", "progression"), "sequence"),
+        (("interaction", "network", "pathway", "graph", "cell-cell", "protein-protein", "ppi", "signaling"), "graph"),
+        (("omics", "transcript", "rna-seq", "single-cell", "scrna", "proteomic", "genomic", "expression", "atlas"), "omics"),
+        (("intervention", "trial", "randomized", "knockout", "perturbation", "dose", "treatment", "causal"), "intervention"),
+        (("molecule", "protein", "ligand", "binding", "structure", "receptor", "site", "motif"), "molecular"),
+    ]
+    affordances: set[str] = set()
+    for terms, affordance in rules:
+        if any(term in text for term in terms):
+            affordances.add(affordance)
+    return affordances
+
+
+def semantic_bridge_terms(method_text: str, scenario_text: str, project_text: str) -> list[str]:
+    bridges = [
+        "spatially resolved measurement",
+        "reference atlas",
+        "single-cell atlas",
+        "context map",
+        "interaction network",
+        "heterogeneity profile",
+        "target specificity",
+        "adverse-effect profile",
+        "multi-omics",
+        "multi-modal measurement",
+        "mechanistic model",
+        "causal pathway",
+        "benchmark dataset",
+        "simulation",
+        "domain adaptation",
+        "boundary condition",
+        "stress test",
+    ]
+    text = f"{method_text} {scenario_text} {project_text}"
+    return [term for term in bridges if term in text]
+
+
+def method_looks_like_narrow_tool(method_text: str) -> bool:
+    return any(term in method_text for term in ("arcgis", "qgis", "gis", "kernel density", "kde", "excel", "tableau"))
+
+
 def count_gap_type(gaps: list[dict[str, Any]], gap_type: str) -> int:
     return sum(1 for gap in gaps if gap.get("gap_type") == gap_type)
 
@@ -11085,12 +13198,21 @@ def assess_gap_dict(project: dict[str, Any], gap: dict[str, Any], dimensions: li
         novelty -= 1
     elif coverage <= 0.1:
         novelty += 1
-    if gap_type in {"migration", "problem", "contradiction", "anomaly", "structural"}:
+    if gap_type in {"migration", "problem", "mechanism_problem", "contradiction", "anomaly", "structural"}:
         novelty += 1
     if not refs:
         novelty -= 1
+    semantic_gate = assessed.get("semantic_plausibility") if isinstance(assessed.get("semantic_plausibility"), dict) else {}
+    if semantic_gate.get("verdict") == "HUMAN_REVIEW":
+        novelty -= 2
+    elif semantic_gate.get("verdict") == "REJECT":
+        novelty -= 4
     novelty = max(1, min(10, novelty))
-    feasibility = "high" if refs and gap_type in {"improvement", "combinatorial", "contradiction", "anomaly"} else "medium"
+    feasibility = "high" if refs and gap_type in {"improvement", "mechanism_problem", "combinatorial", "contradiction", "anomaly"} else "medium"
+    if semantic_gate.get("verdict") == "HUMAN_REVIEW":
+        feasibility = "low"
+    elif semantic_gate.get("verdict") == "REJECT":
+        feasibility = "low"
     if any(term in description.lower() for term in ("large-scale", "clinical", "expensive", "proprietary", "closed-source")):
         feasibility = "low"
     application_value = "high" if any(
@@ -11108,9 +13230,10 @@ def assess_gap_dict(project: dict[str, Any], gap: dict[str, Any], dimensions: li
             "literature_coverage_factor": coverage,
             "assessment_reason": (
                 f"refs={len(refs)}, gap_type={gap_type}, strongest_local_overlap={round(strongest_overlap, 3)}, "
-                f"coverage={round(coverage, 3)}, feasibility={feasibility}, application_value={application_value}"
+                f"coverage={round(coverage, 3)}, feasibility={feasibility}, application_value={application_value}, "
+                f"semantic_plausibility={semantic_gate.get('verdict', 'not_run')}"
             ),
-            "requires_human_review": strongest_overlap >= 0.65 or not refs,
+            "requires_human_review": strongest_overlap >= 0.65 or not refs or semantic_gate.get("verdict") in {"HUMAN_REVIEW", "REJECT"},
         }
     )
     return assessed
@@ -11135,6 +13258,10 @@ def detect_migration_gaps(project: dict[str, Any], methods: list[str], scenarios
             suggested_research_path="Audit assumptions of the source scenario, then run a small transfer validation in the target scenario.",
             value_argument="Migration gaps can create useful cross-domain leverage if mechanism assumptions remain valid.",
         )
+        gate = semantic_plausibility_for_pair(project, method, missing[0], gap)
+        gap["semantic_plausibility"] = gate
+        if gate.get("verdict") == "REJECT":
+            continue
         gaps.append(assess_gap_dict(project, gap))
         if len(gaps) >= limit:
             break
@@ -11182,6 +13309,137 @@ def detect_gap_signal_gaps(project: dict[str, Any], limit: int) -> list[dict[str
             if len(gaps) >= limit:
                 return gaps
     return gaps
+
+
+def detect_mechanism_issue_gaps(project: dict[str, Any], limit: int) -> list[dict[str, Any]]:
+    gaps: list[dict[str, Any]] = []
+    for record in project_records_for_mapping(project):
+        if len(gaps) >= limit:
+            break
+        citation = record_reference(record)
+        method = normalize_label(record.get("method", ""))
+        scenario = normalize_label(record.get("scenario", ""))
+        benchmark = normalize_label(record.get("benchmark", ""))
+        text = normalize_space(
+            " ".join(
+                str(record.get(key, ""))
+                for key in ("limitation", "conclusion", "abstract", "full_text_excerpt", "contribution")
+                if record.get(key)
+            )
+        )
+        candidate_signals = list(record.get("gap_signals", []) if isinstance(record.get("gap_signals"), list) else [])
+        candidate_signals.extend(extract_mechanism_issue_signals(text, citation=citation))
+        for signal in normalize_gap_signals(candidate_signals, citation=citation, limit=8):
+            if len(gaps) >= limit:
+                break
+            signal_text = str(signal.get("text") or "")
+            issue_axis = mechanism_issue_axis(signal_text)
+            if not issue_axis:
+                continue
+            gap = make_gap(
+                gap_type="mechanism_problem",
+                description=mechanism_gap_description(issue_axis, signal_text, method, scenario, benchmark),
+                supporting_references=unique_preserve_order([str(signal.get("supporting_reference") or ""), citation]),
+                suggested_research_path=mechanism_gap_research_path(issue_axis, method, scenario, benchmark),
+                value_argument=(
+                    "This gap is grounded in a source-level mechanism/limitation/challenge statement, "
+                    "so it should outrank bare method-scenario matrix holes."
+                ),
+            )
+            assessed = assess_gap_dict(project, gap)
+            assessed["mechanism_issue_signal"] = {
+                "axis": issue_axis,
+                "source_text": signal_text,
+                "signal_type": signal.get("signal_type"),
+                "confidence": signal.get("confidence"),
+            }
+            gaps.append(assessed)
+    return dedupe_knowledge_gaps(gaps)[:limit]
+
+
+def extract_mechanism_issue_signals(text: str, *, citation: str = "", limit: int = 12) -> list[dict[str, Any]]:
+    signals: list[dict[str, Any]] = []
+    for sentence in split_sentences(text):
+        axis = mechanism_issue_axis(sentence)
+        if not axis:
+            continue
+        if len(sentence.split()) < 6:
+            continue
+        signals.append(
+            {
+                "signal_id": new_id("sig"),
+                "signal_type": "mechanism_issue",
+                "issue_axis": axis,
+                "text": trim_text(sentence, 420),
+                "evidence_type": "mechanism_problem_statement",
+                "supporting_reference": citation,
+                "confidence": mechanism_issue_confidence(axis, sentence),
+            }
+        )
+    signals.sort(key=lambda item: (-float(item.get("confidence", 0.0)), item.get("issue_axis", ""), item.get("text", "")))
+    return signals[:limit]
+
+
+def mechanism_issue_axis(text: str) -> str:
+    lowered = text.lower()
+    axis_rules = [
+        ("adverse_effect_or_safety", ("toxicity", "toxic", "safety", "adverse", "side effect", "risk", "hazard", "failure mode")),
+        ("heterogeneity_or_subgroup", ("heterogeneity", "heterogeneous", "subgroup", "escape", "variation", "variability", "stratification", "combination", "combinatorial")),
+        ("persistence_or_context_stress", ("persistence", "fatigue", "exhaustion", "stress", "environment", "microenvironment", "context", "adaptation", "infiltration")),
+        ("interface_or_boundary_degradation", ("interface", "interfacial", "boundary", "surface", "degradation", "side reaction", "leakage", "drift", "decay", "aging")),
+        ("operating_regime_stability", ("voltage", "temperature", "pressure", "frequency", "load", "scale", "resolution", "stability", "cycling", "retention", "capacity fading")),
+        ("mechanism_uncertainty", ("mechanism", "remain unclear", "remains unclear", "unclear", "not understood", "unknown", "debate")),
+        ("data_measurement_gap", ("lack of", "limited data", "insufficient", "scarce", "underexplored", "not measured", "no dataset")),
+        ("generalization_robustness", ("generalization", "robustness", "failure mode", "distribution shift", "scale", "scalable", "reproducibility")),
+    ]
+    for axis, terms in axis_rules:
+        if any(term in lowered for term in terms):
+            return axis
+    return ""
+
+
+def mechanism_issue_confidence(axis: str, sentence: str) -> float:
+    confidence = 0.78
+    lowered = sentence.lower()
+    if any(term in lowered for term in ("remain unclear", "remains unclear", "challenge", "limitation", "failure", "degradation", "adverse", "risk")):
+        confidence += 0.08
+    if axis in {"adverse_effect_or_safety", "interface_or_boundary_degradation", "operating_regime_stability"}:
+        confidence += 0.04
+    if any(term in lowered for term in ("may", "could", "might")):
+        confidence -= 0.04
+    return round(max(0.1, min(0.98, confidence)), 3)
+
+
+def mechanism_gap_description(axis: str, signal_text: str, method: str, scenario: str, benchmark: str) -> str:
+    context = []
+    if method and not is_unknown_value(method):
+        context.append(f"method={method}")
+    if scenario and not is_unknown_value(scenario):
+        context.append(f"scenario={scenario}")
+    if benchmark and not is_unknown_value(benchmark):
+        context.append(f"benchmark={benchmark}")
+    prefix = f"Source-grounded mechanism gap ({axis.replace('_', ' ')})"
+    if context:
+        prefix += f" for {', '.join(context)}"
+    return f"{prefix}: {trim_text(signal_text, 360)}"
+
+
+def mechanism_gap_research_path(axis: str, method: str, scenario: str, benchmark: str) -> str:
+    if axis == "adverse_effect_or_safety":
+        return "Map intended effects against adverse effects across relevant contexts, then test whether the proposed intervention improves benefit-risk without hiding failure modes."
+    if axis == "heterogeneity_or_subgroup":
+        return "Quantify heterogeneity, identify subgroup-specific failure modes, and test single versus combined strategies under explicit stratified benchmarks."
+    if axis == "persistence_or_context_stress":
+        return "Measure persistence under contextual stress and compare against interventions that change the suspected stress pathway."
+    if axis == "interface_or_boundary_degradation":
+        return "Isolate boundary or interface degradation pathways with matched diagnostics and test protective modifications under accelerated stress."
+    if axis == "operating_regime_stability":
+        return "Run operating-regime stress tests with mechanism-specific readouts to separate headline performance from mechanism fidelity."
+    if axis == "mechanism_uncertainty":
+        return "Convert the unclear mechanism into competing causal explanations and design an experiment or simulation that distinguishes them."
+    if axis == "data_measurement_gap":
+        return "Collect or retrieve the missing measurement layer, then evaluate whether the original claim survives the added data modality."
+    return "Define the failure mode, perturb the suspected mechanism, and test whether the benchmark changes in the predicted direction."
 
 
 def research_path_for_gap_signal(signal_type: str, method: str, scenario: str) -> str:
@@ -12153,6 +14411,8 @@ def extract_gap_relevant_sections(text: str) -> list[str]:
 
 def classify_gap_signal(sentence: str) -> str:
     lowered = sentence.lower()
+    if mechanism_issue_axis(sentence):
+        return "mechanism_issue"
     if any(term in lowered for term in ("future work", "future research", "future direction", "should investigate", "warrants further")):
         return "future_work"
     if any(term in lowered for term in ("limitation", "limited by", "we did not", "does not address", "cannot", "unable to")):
@@ -12173,6 +14433,7 @@ def gap_signal_confidence(signal_type: str, sentence: str) -> float:
         "open_problem": 0.88,
         "challenge": 0.76,
         "missing_evidence": 0.72,
+        "mechanism_issue": 0.84,
     }.get(signal_type, 0.6)
     lowered = sentence.lower()
     if any(term in lowered for term in ("we", "our", "this study", "the present study")):
@@ -12584,6 +14845,341 @@ def references_for_gap(project: dict[str, Any], gap_id: str) -> list[str]:
     if gap is None:
         return []
     return [str(ref) for ref in gap.get("supporting_references", []) if str(ref)]
+
+
+def yanzhen_internal_consistency_report(hypothesis: str, reasoning_chain: list[str]) -> dict[str, Any]:
+    text = normalize_space(hypothesis)
+    chain = [normalize_space(str(item)) for item in reasoning_chain if normalize_space(str(item))]
+    issues = mechanism_internal_issues(text, " ".join(chain) if chain else text)
+    if len(chain) < 2:
+        issues.append("Reasoning chain has fewer than two explicit causal/logical steps.")
+    contradiction_terms = (
+        ("increase", "decrease"),
+        ("improve", "worsen"),
+        ("stable", "unstable"),
+        ("necessary", "unnecessary"),
+        ("always", "never"),
+    )
+    lowered = text.lower()
+    for left, right in contradiction_terms:
+        if left in lowered and right in lowered and not any(marker in lowered for marker in ("trade-off", "boundary", "except", "unless")):
+            issues.append(f"Potential unresolved contradiction: both '{left}' and '{right}' appear without a boundary condition.")
+            break
+    formula_like = bool(re.search(r"[A-Za-z]\s*[=<>]\s*[-+*/A-Za-z0-9().^ ]+", text))
+    formula_application_correct = True
+    if formula_like and not any(unit in lowered for unit in ("unit", "dimension", "scale", "boundary", "assumption", "parameter")):
+        formula_application_correct = False
+        issues.append("Formula-like claim appears without units, dimensional check, or boundary assumptions.")
+    logical_chain_intact = not any("too short" in issue.lower() or "fewer than" in issue.lower() for issue in issues)
+    return {
+        "logical_chain_intact": logical_chain_intact and not issues,
+        "formula_application_correct": formula_application_correct,
+        "issues_found": unique_preserve_order(issues),
+        "reasoning_chain": chain,
+        "verdict": "PASS" if not issues and formula_application_correct else "FAIL",
+    }
+
+
+def yanzhen_data_consistency_report(hypothesis: str, cited_data: list[Any], original_sources: list[Any]) -> dict[str, Any]:
+    cited_texts = [yanzhen_context_text(item) for item in cited_data if yanzhen_context_text(item)]
+    source_texts = [yanzhen_context_text(item) for item in original_sources if yanzhen_context_text(item)]
+    evidence_text = " ".join(cited_texts or source_texts)
+    alignment = text_jaccard(normalize_space(hypothesis), evidence_text) if evidence_text else 0.0
+    source_alignment = text_jaccard(normalize_space(hypothesis), " ".join(source_texts)) if source_texts else 0.0
+    contradictions = yanzhen_evidence_contradictions(hypothesis, source_texts)
+    missing = []
+    if not cited_texts and not source_texts:
+        missing.append("No cited data or original source context was provided.")
+    elif alignment < 0.08:
+        missing.append("Hypothesis mechanism has low lexical/semantic overlap with cited evidence.")
+    if contradictions:
+        missing.extend(contradictions)
+    original_text_alignment = "high" if source_alignment >= 0.22 else "medium" if source_alignment >= 0.08 else "low"
+    citation_report = yanzhen_selective_citation_report(cited_data, original_sources)
+    verdict = "PASS" if not missing and not citation_report.get("selective_citation_detected") else "FAIL"
+    return {
+        "mechanism_matches_data": not missing,
+        "selective_citation_detected": bool(citation_report.get("selective_citation_detected")),
+        "original_text_alignment": original_text_alignment,
+        "alignment_score": round(alignment, 4),
+        "issues_found": unique_preserve_order(missing + citation_report.get("issues_found", [])),
+        "verdict": verdict,
+    }
+
+
+def yanzhen_regime_shift_report(
+    mechanism: str,
+    original_conditions: dict[str, Any],
+    shifted_conditions: list[dict[str, Any]] | list[str],
+) -> dict[str, Any]:
+    shifts = normalize_shifted_conditions(shifted_conditions)
+    if len(shifts) < 2:
+        shifts.extend(default_regime_shifts(mechanism)[: 2 - len(shifts)])
+    text = normalize_space(mechanism).lower()
+    issues: list[str] = []
+    if not any(term in text for term in ("boundary", "limit", "assumption", "condition", "regime", "scale", "unless", "when")):
+        issues.append("Mechanism does not state boundary conditions or validity regime.")
+    if any(term in text for term in ("always", "guarantee", "universal", "all cases", "never fails")):
+        issues.append("Universal mechanism wording is brittle under regime shift.")
+    high_risk_shifts = 0
+    for shift in shifts:
+        parameter = str(shift.get("parameter") or "").lower()
+        shifted = str(shift.get("shifted_value") or "").lower()
+        if any(term in parameter + " " + shifted for term in ("10x", "0.1x", "extreme", "different domain", "distribution shift", "low data", "high noise")):
+            high_risk_shifts += 1
+    if not original_conditions:
+        issues.append("Original conditions are not explicit, so regime-shift comparison is under-specified.")
+    if issues and high_risk_shifts >= 1:
+        stability = "collapses_unexpectedly"
+        risk = "HIGH"
+    elif issues:
+        stability = "degrades_gracefully"
+        risk = "MEDIUM"
+    else:
+        stability = "stable"
+        risk = "LOW"
+    return {
+        "shifted_conditions_tested": [render_shift_condition(shift) for shift in shifts[:8]],
+        "mechanism_stability": stability,
+        "cawm_risk_level": risk,
+        "issues_found": unique_preserve_order(issues),
+        "verdict": "PASS" if risk in {"LOW", "MEDIUM"} and stability != "collapses_unexpectedly" else "FAIL",
+    }
+
+
+def yanzhen_selective_citation_report(cited_papers: list[Any], full_paper_contexts: list[Any]) -> dict[str, Any]:
+    cited_texts = [yanzhen_context_text(item) for item in cited_papers if yanzhen_context_text(item)]
+    full_texts = [yanzhen_context_text(item) for item in full_paper_contexts if yanzhen_context_text(item)]
+    issues: list[str] = []
+    if cited_texts and len(full_texts) >= len(cited_texts) + 3:
+        cited_terms = set(query_terms(" ".join(cited_texts)))
+        full_terms = set(query_terms(" ".join(full_texts)))
+        omitted_terms = sorted((full_terms - cited_terms) & yanzhen_conflict_or_limitation_terms())
+        if omitted_terms:
+            issues.append(f"Potential cherry-picking: uncited source context contains limitation/conflict terms {omitted_terms[:8]}.")
+    if cited_texts and not full_texts:
+        issues.append("Cited papers were provided without broader source contexts; selective citation cannot be ruled out.")
+    if not cited_texts:
+        issues.append("No explicit cited papers/data were provided.")
+    return {
+        "selective_citation_detected": bool(issues),
+        "cited_count": len(cited_texts),
+        "context_count": len(full_texts),
+        "issues_found": unique_preserve_order(issues),
+        "verdict": "FAIL" if issues else "PASS",
+    }
+
+
+def yanzhen_causal_chain_report(causal_chain: list[str], evidence_for_each: list[Any]) -> dict[str, Any]:
+    chain = [normalize_space(str(item)) for item in causal_chain if normalize_space(str(item))]
+    evidence = [yanzhen_context_text(item) for item in evidence_for_each if yanzhen_context_text(item)]
+    unsupported: list[str] = []
+    if not chain:
+        unsupported.append("No explicit causal chain was extracted.")
+    for index, link in enumerate(chain):
+        evidence_text = evidence[index] if index < len(evidence) else " ".join(evidence)
+        if not evidence_text or text_jaccard(link, evidence_text) < 0.04:
+            unsupported.append(f"Unsupported causal link: {link}")
+    return {
+        "causal_chain": chain,
+        "links_checked": len(chain),
+        "unsupported_links": unsupported,
+        "verdict": "PASS" if chain and not unsupported else "FAIL",
+    }
+
+
+def yanzhen_hypothesis_text(hypothesis: dict[str, Any]) -> str:
+    final = hypothesis.get("mingli_final_idea") if isinstance(hypothesis.get("mingli_final_idea"), dict) else {}
+    parts = [
+        final.get("title", ""),
+        final.get("hypothesis", ""),
+        final.get("abstract", ""),
+        hypothesis.get("statement", ""),
+        hypothesis.get("expected_value", ""),
+    ]
+    return normalize_space(" ".join(str(part) for part in parts if part))
+
+
+def yanzhen_mechanism_text(hypothesis: dict[str, Any]) -> str:
+    final = hypothesis.get("mingli_final_idea") if isinstance(hypothesis.get("mingli_final_idea"), dict) else {}
+    experiments = final.get("experiments") if isinstance(final.get("experiments"), dict) else {}
+    return normalize_space(
+        " ".join(
+            str(part)
+            for part in (
+                hypothesis.get("mechanism", ""),
+                final.get("abstract", ""),
+                experiments.get("setup", ""),
+                hypothesis.get("test_plan", ""),
+            )
+            if part
+        )
+    )
+
+
+def yanzhen_sources_for_hypothesis(project: dict[str, Any], hypothesis: dict[str, Any]) -> list[Any]:
+    gap_id = str(hypothesis.get("gap_id") or "")
+    refs = set(references_for_gap(project, gap_id))
+    records = project_records_for_mapping(project)
+    if refs:
+        matched = [
+            record
+            for record in records
+            if str(record.get("citation") or record.get("title") or "") in refs
+            or any(ref.lower() in record_context_text(record).lower() for ref in refs)
+        ]
+        if matched:
+            return matched
+    return records[:12]
+
+
+def yanzhen_cited_data_for_hypothesis(project: dict[str, Any], hypothesis: dict[str, Any]) -> list[Any]:
+    refs = references_for_gap(project, str(hypothesis.get("gap_id") or ""))
+    if refs:
+        return refs
+    source_gap = hypothesis.get("source_gap") if isinstance(hypothesis.get("source_gap"), dict) else {}
+    refs = source_gap.get("supporting_references", []) if isinstance(source_gap.get("supporting_references"), list) else []
+    return refs
+
+
+def yanzhen_original_conditions(text: str) -> dict[str, Any]:
+    lowered = text.lower()
+    conditions: dict[str, Any] = {}
+    for key, terms in {
+        "data_distribution": ("dataset", "cohort", "sample", "distribution", "population"),
+        "scale": ("scale", "size", "resolution", "step", "frequency", "concentration", "dose"),
+        "environment": ("temperature", "pressure", "noise", "humidity", "field", "medium", "climate"),
+        "domain": ("domain", "scenario", "system", "material", "organism", "patient", "network"),
+    }.items():
+        if any(term in lowered for term in terms):
+            conditions[key] = "mentioned_but_not_quantified"
+    return conditions
+
+
+def extract_causal_chain(text: str) -> list[str]:
+    sentences = split_sentences(text)
+    chain: list[str] = []
+    for sentence in sentences:
+        lowered = sentence.lower()
+        if any(marker in lowered for marker in ("because", "therefore", "leads to", "causes", "drives", "mediates", "if ", " then ", "->")):
+            chain.append(trim_text(sentence, 240))
+    return chain[:8]
+
+
+def default_regime_shifts(text: str) -> list[dict[str, str]]:
+    lowered = text.lower()
+    shifts: list[dict[str, str]] = []
+    if any(term in lowered for term in ("dataset", "model", "learning", "classification", "prediction", "ai", "algorithm")):
+        shifts.append({"parameter": "data_distribution", "original_value": "training/reference distribution", "shifted_value": "out-of-distribution or low-data setting"})
+        shifts.append({"parameter": "noise_level", "original_value": "nominal signal quality", "shifted_value": "high-noise or missing-data condition"})
+    if any(term in lowered for term in ("temperature", "pressure", "energy", "material", "chemical", "reaction", "battery", "climate", "physical", "quantum")):
+        shifts.append({"parameter": "scale_or_environment", "original_value": "nominal experimental regime", "shifted_value": "10x/0.1x parameter scaling or changed environment"})
+        shifts.append({"parameter": "boundary_condition", "original_value": "reported boundary condition", "shifted_value": "adjacent physical/chemical/climate regime"})
+    if any(term in lowered for term in ("cell", "protein", "gene", "patient", "clinical", "organism", "disease", "ecology", "crop")):
+        shifts.append({"parameter": "biological_context", "original_value": "reported cohort/model organism/context", "shifted_value": "different cohort, tissue, organism, or stress condition"})
+        shifts.append({"parameter": "intervention_dose_or_time", "original_value": "reported dose/time window", "shifted_value": "0.1x/10x dose, duration, or sampling interval"})
+    if not shifts:
+        shifts.extend(
+            [
+                {"parameter": "scale", "original_value": "nominal scale", "shifted_value": "10x larger and 0.1x smaller scale"},
+                {"parameter": "domain_transfer", "original_value": "original scenario", "shifted_value": "adjacent but distinct scenario or dataset distribution"},
+            ]
+        )
+    return shifts[:6]
+
+
+def normalize_shifted_conditions(shifted_conditions: list[dict[str, Any]] | list[str]) -> list[dict[str, Any]]:
+    normalized: list[dict[str, Any]] = []
+    for item in shifted_conditions:
+        if isinstance(item, dict):
+            normalized.append(
+                {
+                    "parameter": str(item.get("parameter") or item.get("name") or "condition"),
+                    "original_value": str(item.get("original_value") or item.get("original") or "nominal"),
+                    "shifted_value": str(item.get("shifted_value") or item.get("shifted") or item.get("value") or ""),
+                }
+            )
+        else:
+            normalized.append({"parameter": "condition", "original_value": "nominal", "shifted_value": str(item)})
+    return [item for item in normalized if item.get("shifted_value")]
+
+
+def render_shift_condition(shift: dict[str, Any]) -> str:
+    return f"{shift.get('parameter')}: {shift.get('original_value')} -> {shift.get('shifted_value')}"
+
+
+def yanzhen_context_text(item: Any) -> str:
+    if isinstance(item, dict):
+        return normalize_space(
+            " ".join(
+                str(item.get(key) or "")
+                for key in ("title", "citation", "abstract", "conclusion", "limitation", "contribution", "method", "scenario", "benchmark", "text")
+            )
+        )
+    return normalize_space(str(item))
+
+
+def yanzhen_evidence_contradictions(hypothesis: str, source_texts: list[str]) -> list[str]:
+    issues: list[str] = []
+    source = " ".join(source_texts).lower()
+    hypo = hypothesis.lower()
+    if any(term in hypo for term in ("improve", "increase", "enhance")) and any(
+        term in source for term in ("no improvement", "not improve", "failed to improve", "decrease", "worse")
+    ):
+        issues.append("Original source context includes negative or contradictory outcome language.")
+    if any(term in hypo for term in ("causes", "causal", "drives")) and any(
+        term in source for term in ("correlation", "association", "observational", "not causal", "cannot infer caus")
+    ):
+        issues.append("Hypothesis makes causal claims while source context appears correlational or warns against causal inference.")
+    return issues
+
+
+def yanzhen_conflict_or_limitation_terms() -> set[str]:
+    return {
+        "limitation",
+        "limitations",
+        "unclear",
+        "unknown",
+        "conflict",
+        "contradict",
+        "failed",
+        "failure",
+        "bias",
+        "noise",
+        "artifact",
+        "uncertain",
+        "not",
+        "cannot",
+        "underpowered",
+        "negative",
+    }
+
+
+def yanzhen_overall_verdict(layer_1: dict[str, Any], layer_2: dict[str, Any], layer_3: dict[str, Any]) -> str:
+    if layer_3.get("verdict") == "FAIL" or layer_3.get("cawm_risk_level") == "HIGH":
+        return "CAWM_DETECTED"
+    if layer_1.get("verdict") == "FAIL" or layer_2.get("verdict") == "FAIL":
+        return "REQUIRES_HUMAN_REVIEW"
+    if layer_3.get("cawm_risk_level") == "MEDIUM":
+        return "REQUIRES_HUMAN_REVIEW"
+    return "MECHANISM_VERIFIED"
+
+
+def yanzhen_detailed_reasoning(
+    layer_1: dict[str, Any],
+    layer_2: dict[str, Any],
+    layer_3: dict[str, Any],
+    chain_report: dict[str, Any],
+    citation_report: dict[str, Any],
+) -> str:
+    return (
+        f"Layer 1 verdict={layer_1.get('verdict')}; issues={layer_1.get('issues_found', [])}. "
+        f"Causal chain verdict={chain_report.get('verdict')}; unsupported={chain_report.get('unsupported_links', [])}. "
+        f"Layer 2 verdict={layer_2.get('verdict')}; alignment={layer_2.get('original_text_alignment')}; issues={layer_2.get('issues_found', [])}. "
+        f"Selective citation verdict={citation_report.get('verdict')}; issues={citation_report.get('issues_found', [])}. "
+        f"Layer 3 verdict={layer_3.get('verdict')}; stability={layer_3.get('mechanism_stability')}; CAWM risk={layer_3.get('cawm_risk_level')}. "
+        "A hypothesis is accepted only if all layers pass and regime-shift risk remains low."
+    )
 
 
 def mechanism_internal_issues(statement: str, mechanism: str) -> list[str]:

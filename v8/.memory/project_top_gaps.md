@@ -1,7 +1,9 @@
 ---
 name: top_gaps
-description: list of top 5 knowledge gaps by severity and priority
+description: Top 3 knowledge gaps detected, prioritized by mechanism relevance
 type: project
 ---
 
-['gap_1783344141620902200', 'gap_1783344118045814200', 'gap_1783344118049218500', 'gap_1783344118055810300', 'gap_1783344118059218700']
+- gap_1783441393165764400 (contradiction): opposing claims about LiCoO2 stability at >4.5 V — source: Yang et al. (2022) vs Mao et al. (2025)
+- gap_1783441403134376600 (improvement): sparse benchmark coverage for PI coating in NCM-sulfide ASSBs — source: Wu et al. (2026)
+- gap_1783441393165764401 (anomaly): unexplained divergence in oxygen release kinetics under identical surface doping — source: Chen et al. (2024)

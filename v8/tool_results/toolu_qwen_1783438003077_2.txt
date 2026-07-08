@@ -1,0 +1,1603 @@
+{
+  "thought": "ZhiZhi retrieved and filtered literature, imported grounded PaperGraph evidence, built a benchmark-aware knowledge map, expanded citation context when available, and generated gaps with novelty/value/feasibility checks.",
+  "action": {
+    "agent": "zhizhi",
+    "query": "AI-driven discovery of GPNMB CAR-T cells cancer prevention tumor antigen target prioritization on-target off-tumor toxicity",
+    "domain": "AI-driven discovery of GPNMB CAR-T cells cancer prevention",
+    "years": "last 5 years",
+    "search_papers_stratified": {
+      "search_id": "search_1783438065752896700",
+      "total_results": 12,
+      "requested_max_results": 20,
+      "effective_search_budget": 20,
+      "providers": [
+        "semantic_scholar",
+        "pubmed",
+        "biorxiv",
+        "medrxiv"
+      ],
+      "strategy": "stratified_cascade",
+      "query_plan": [
+        {
+          "branch": "primary",
+          "query": "AI-driven discovery of GPNMB CAR-T cells cancer prevention tumor antigen target prioritization on-target off-tumor toxicity"
+        },
+        {
+          "branch": "antigen_target_prioritization",
+          "query": "AI-driven discovery of GPNMB CAR-T cells cancer prevention tumor antigen target prioritization on-target off-tumor toxicity AI methods for tumor antigen selection with expression specificity, HLA binding prediction, and tissue distribution scoring",
+          "topic_type": "branch"
+        },
+        {
+          "branch": "gpnmb_biology_validation",
+          "query": "AI-driven discovery of GPNMB CAR-T cells cancer prevention tumor antigen target prioritization on-target off-tumor toxicity GPNMB expression patterns across normal/tumor tissues, functional role in immune evasion, and clinical correlation with CAR-T response",
+          "topic_type": "branch"
+        },
+        {
+          "branch": "car_t_safety_modeling",
+          "query": "AI-driven discovery of GPNMB CAR-T cells cancer prevention tumor antigen target prioritization on-target off-tumor toxicity computational modeling of CAR-T on-target/off-tumor toxicity using single-cell multi-omics and spatial transcriptomics",
+          "topic_type": "branch"
+        },
+        {
+          "branch": "ai_architectures_immuno",
+          "query": "AI-driven discovery of GPNMB CAR-T cells cancer prevention tumor antigen target prioritization on-target off-tumor toxicity machine learning architectures trained on immunopeptidomics, TCR-CAR binding data, and clinical trial outcomes for antigen safety/efficacy prediction",
+          "topic_type": "branch"
+        },
+        {
+          "branch": "field_map_reviews",
+          "query": "AI-driven discovery of GPNMB CAR-T cells cancer prevention AI-driven discovery of GPNMB CAR-T cells cancer prevention tumor antigen target prioritization on-target off-tumor toxicity review survey roadmap progress perspective systematic review",
+          "topic_type": "retrieval_facet"
+        },
+        {
+          "branch": "milestone_foundations",
+          "query": "AI-driven discovery of GPNMB CAR-T cells cancer prevention AI-driven discovery of GPNMB CAR-T cells cancer prevention tumor antigen target prioritization on-target off-tumor toxicity seminal foundational highly cited landmark theory method mechanism",
+          "topic_type": "retrieval_facet"
+        },
+        {
+          "branch": "methods_and_mechanisms",
+          "query": "AI-driven discovery of GPNMB CAR-T cells cancer prevention AI-driven discovery of GPNMB CAR-T cells cancer prevention tumor antigen target prioritization on-target off-tumor toxicity method model algorithm mechanism experiment framework",
+          "topic_type": "retrieval_facet"
+        },
+        {
+          "branch": "applications_systems_scenarios",
+          "query": "AI-driven discovery of GPNMB CAR-T cells cancer prevention AI-driven discovery of GPNMB CAR-T cells cancer prevention tumor antigen target prioritization on-target off-tumor toxicity application system scenario case study deployment",
+          "topic_type": "retrieval_facet"
+        }
+      ],
+      "focus_branches": [],
+      "strata": [
+        {
+          "layer": "L0_review",
+          "label": "high-impact review / field map",
+          "quota": 3,
+          "query_suffix": "review survey progress perspective tutorial systematic review meta-analysis",
+          "target": 3,
+          "candidate_count": 9,
+          "raw_candidate_count": 32,
+          "selected": 1,
+          "domain_rejected": 8,
+          "recovery_used": "",
+          "carried_to_next": 2
+        },
+        {
+          "layer": "L1_milestone",
+          "label": "milestone / highly cited foundation",
+          "quota": 4,
+          "query_suffix": "seminal foundational highly cited landmark classic influential",
+          "target": 6,
+          "candidate_count": 0,
+          "raw_candidate_count": 0,
+          "selected": 0,
+          "domain_rejected": 0,
+          "recovery_used": "",
+          "carried_to_next": 6
+        },
+        {
+          "layer": "L2_top_latest",
+          "label": "recent top-venue frontier",
+          "quota": 4,
+          "query_suffix": "latest recent top journal high impact breakthrough advance frontier",
+          "target": 10,
+          "candidate_count": 0,
+          "raw_candidate_count": 0,
+          "selected": 0,
+          "domain_rejected": 0,
+          "recovery_used": "",
+          "carried_to_next": 10
+        },
+        {
+          "layer": "L3_preprint",
+          "label": "latest arXiv preprint frontier",
+          "quota": 1,
+          "query_suffix": "",
+          "target": 11,
+          "candidate_count": 0,
+          "raw_candidate_count": 21,
+          "selected": 0,
+          "domain_rejected": 0,
+          "recovery_used": "",
+          "carried_to_next": 11
+        },
+        {
+          "layer": "L4_regular",
+          "label": "regular journal / supplemental evidence",
+          "quota": 8,
+          "query_suffix": "",
+          "target": 19,
+          "candidate_count": 40,
+          "raw_candidate_count": 40,
+          "selected": 11,
+          "domain_rejected": 28,
+          "recovery_used": "",
+          "carried_to_next": 8
+        },
+        {
+          "layer": "L4_regular_backfill",
+          "label": "regular journal / quota backfill",
+          "quota": 8,
+          "target": 8,
+          "candidate_count": 40,
+          "selected": 0,
+          "domain_rejected": 28,
+          "carried_to_next": 8
+        }
+      ],
+      "errors": []
+    },
+    "domain_coverage_diagnostic": {
+      "profile": "interdisciplinary_biomedical_research_at_the_intersection_of_computational_immun",
+      "profile_source": "llm",
+      "search_id": "search_1783438065752896700",
+      "total_results": 12,
+      "represented_topics": [],
+      "blind_spots": [
+        {
+          "topic": "Computational antigen prioritization frameworks",
+          "hit_count": 0,
+          "min_hits": 10,
+          "terms": [
+            "gpnmb prioritization score",
+            "tumor specificity index",
+            "ai-driven antigen ranking"
+          ],
+          "suggested_query": "AI-driven discovery of GPNMB CAR-T cells cancer prevention tumor antigen target prioritization on-target off-tumor toxicity gpnmb prioritization score tumor specificity index ai-driven antigen ranking",
+          "risk": "Live probe found literature for this missing branch; current PaperGraph may be incomplete, so TanXi should not treat this absence as a true unexplored gap.",
+          "live_probe": {
+            "query": "AI-driven discovery of GPNMB CAR-T cells cancer prevention tumor antigen target prioritization on-target off-tumor toxicity gpnmb prioritization score tumor specificity index ai-driven antigen ranking",
+            "status": "ok",
+            "total_results": 6,
+            "providers": [
+              {
+                "provider": "semantic_scholar",
+                "status": "ok",
+                "result_count": 0,
+                "top_titles": [],
+                "error": ""
+              },
+              {
+                "provider": "pubmed",
+                "status": "ok",
+                "result_count": 0,
+                "top_titles": [],
+                "error": ""
+              },
+              {
+                "provider": "biorxiv",
+                "status": "ok",
+                "result_count": 3,
+                "top_titles": [
+                  "Antibody Responses to Salmonella Typhi Antigens among Typhoid Recovered Individuals in an Endemic Region",
+                  "Navigating parasite antigen genetic diversity in the design of Plasmodium vivax serological exposure markers for malaria",
+                  "Taurine is a Natural Host Cytoadhesion Inhibitor in Asymptomatic Malaria Cases"
+                ],
+                "error": ""
+              },
+              {
+                "provider": "medrxiv",
+                "status": "ok",
+                "result_count": 3,
+                "top_titles": [
+                  "Interactions Among Tumor Subtype, PPARγ Expression, and Adipose Proliferation Shape Outcomes in Breast Cancer",
+                  "Preventing premature deaths through polygenic risk scores",
+                  "Study Protocol: Psychometric Testing of the German Vestibular Schwannoma Quality of Life Index - A Multicenter Study on...[truncated]"
+                ],
+                "error": ""
+              }
+            ]
+          },
+          "false_negative_risk": true
+        },
+        {
+          "topic": "Preclinical safety assessment of GPNMB-targeted CAR-T",
+          "hit_count": 0,
+          "min_hits": 10,
+          "terms": [
+            "on-target off-tumor toxicity",
+            "normal tissue expression atlas",
+            "gpnmb cross-reactivity"
+          ],
+          "suggested_query": "AI-driven discovery of GPNMB CAR-T cells cancer prevention tumor antigen target prioritization on-target off-tumor toxicity on-target off-tumor toxicity normal tissue expression atlas gpnmb cross-reactivity",
+          "risk": "Live probe found literature for this missing branch; current PaperGraph may be incomplete, so TanXi should not treat this absence as a true unexplored gap.",
+          "live_probe": {
+            "query": "AI-driven discovery of GPNMB CAR-T cells cancer prevention tumor antigen target prioritization on-target off-tumor toxicity on-target off-tumor toxicity normal tissue expression atlas gpnmb cross-reactivity",
+            "status": "ok",
+            "total_results": 6,
+            "providers": [
+              {
+                "provider": "semantic_scholar",
+                "status": "ok",
+                "result_count": 0,
+                "top_titles": [],
+                "error": ""
+              },
+              {
+                "provider": "pubmed",
+                "status": "ok",
+                "result_count": 0,
+                "top_titles": [],
+                "error": ""
+              },
+              {
+                "provider": "biorxiv",
+                "status": "ok",
+                "result_count": 3,
+                "top_titles": [
+                  "A single-nucleus transcriptomic atlas of the adult Aedes aegypti mosquito",
+                  "The pleuroparenchymal fibroelastosis atlas reveals aberrant cell states and their zonation as an alternate roadmap to lu...[truncated]",
+                  "Drought-associated genes exhibit high constitutive expression in Quercus douglasii, a drought tolerant California oak"
+                ],
+                "error": ""
+              },
+              {
+                "provider": "medrxiv",
+                "status": "ok",
+                "result_count": 3,
+                "top_titles": [
+                  "Interactions Among Tumor Subtype, PPARγ Expression, and Adipose Proliferation Shape Outcomes in Breast Cancer",
+                  "Circumcision for HIV prevention in men who have sex with men: an updated meta-analysis",
+                  "Health Disparity and Geospatial Analysis among Cancer Patients in the US/Mexico Border Region of Imperial Valley"
+                ],
+                "error": ""
+              }
+            ]
+          },
+          "false_negative_risk": true
+        },
+        {
+          "topic": "GPNMB functional roles in tumor immunity and progression",
+          "hit_count": 0,
+          "min_hits": 10,
+          "terms": [
+            "gpnmb immune modulation",
+            "tumor microenvironment remodeling",
+            "metastatic niche"
+          ],
+          "suggested_query": "AI-driven discovery of GPNMB CAR-T cells cancer prevention tumor antigen target prioritization on-target off-tumor toxicity gpnmb immune modulation tumor microenvironment remodeling metastatic niche",
+          "risk": "Live probe found literature for this missing branch; current PaperGraph may be incomplete, so TanXi should not treat this absence as a true unexplored gap.",
+          "live_probe": {
+            "query": "AI-driven discovery of GPNMB CAR-T cells cancer prevention tumor antigen target prioritization on-target off-tumor toxicity gpnmb immune modulation tumor microenvironment remodeling metastatic niche",
+            "status": "ok",
+            "total_results": 6,
+            "providers": [
+              {
+                "provider": "semantic_scholar",
+                "status": "ok",
+                "result_count": 0,
+                "top_titles": [],
+                "error": ""
+              },
+              {
+                "provider": "pubmed",
+                "status": "ok",
+                "result_count": 0,
+                "top_titles": [],
+                "error": ""
+              },
+              {
+                "provider": "biorxiv",
+                "status": "ok",
+                "result_count": 3,
+                "top_titles": [
+                  "Antibody Responses to Salmonella Typhi Antigens among Typhoid Recovered Individuals in an Endemic Region",
+                  "Navigating parasite antigen genetic diversity in the design of Plasmodium vivax serological exposure markers for malaria",
+                  "The pleuroparenchymal fibroelastosis atlas reveals aberrant cell states and their zonation as an alternate roadmap to lu...[truncated]"
+                ],
+                "error": ""
+              },
+              {
+                "provider": "medrxiv",
+                "status": "ok",
+                "result_count": 3,
+                "top_titles": [
+                  "Interactions Among Tumor Subtype, PPARγ Expression, and Adipose Proliferation Shape Outcomes in Breast Cancer",
+                  "Network Analysis of Rare Single-Nucleotide Polymorphisms Suggests a Central Role for Type 17 Immune Responses in Trauma-...[truncated]",
+                  "Non-autoimmune diabetes in young people from Assam, India: the PHENOEINDY 2 study"
+                ],
+                "error": ""
+              }
+            ]
+          },
+          "false_negative_risk": true
+        },
+        {
+          "topic": "AI-augmented CAR construct optimization",
+          "hit_count": 0,
+          "min_hits": 10,
+          "terms": [
+            "car affinity prediction",
+            "epitope cross-reactivity model",
+            "in silico toxicity scoring"
+          ],
+          "suggested_query": "AI-driven discovery of GPNMB CAR-T cells cancer prevention tumor antigen target prioritization on-target off-tumor toxicity car affinity prediction epitope cross-reactivity model in silico toxicity scoring",
+          "risk": "Live probe found literature for this missing branch; current PaperGraph may be incomplete, so TanXi should not treat this absence as a true unexplored gap.",
+          "live_probe": {
+            "query": "AI-driven discovery of GPNMB CAR-T cells cancer prevention tumor antigen target prioritization on-target off-tumor toxicity car affinity prediction epitope cross-reactivity model in silico toxicity scoring",
+            "status": "ok",
+            "total_results": 6,
+            "providers": [
+              {
+                "provider": "semantic_scholar",
+                "status": "ok",
+                "result_count": 0,
+                "top_titles": [],
+                "error": ""
+              },
+              {
+                "provider": "pubmed",
+                "status": "ok",
+                "result_count": 0,
+                "top_titles": [],
+                "error": ""
+              },
+              {
+                "provider": "biorxiv",
+                "status": "ok",
+                "result_count": 3,
+                "top_titles": [
+                  "Navigating parasite antigen genetic diversity in the design of Plasmodium vivax serological exposure markers for malaria",
+                  "mRNABench: A curated benchmark for mature mRNA property and function prediction",
+                  "Antibody Responses to Salmonella Typhi Antigens among Typhoid Recovered Individuals in an Endemic Region"
+                ],
+                "error": ""
+              },
+              {
+                "provider": "medrxiv",
+                "status": "ok",
+                "result_count": 3,
+                "top_titles": [
+                  "Interactions Among Tumor Subtype, PPARγ Expression, and Adipose Proliferation Shape Outcomes in Breast Cancer",
+                  "Health Disparity and Geospatial Analysis among Cancer Patients in the US/Mexico Border Region of Imperial Valley",
+                  "Study Protocol: Psychometric Testing of the German Vestibular Schwannoma Quality of Life Index - A Multicenter Study on...[truncated]"
+                ],
+                "error": ""
+              }
+            ]
+          },
+          "false_negative_risk": true
+        }
+      ],
+      "live_validate": true,
+      "live_probe_reports": [
+        {
+          "query": "AI-driven discovery of GPNMB CAR-T cells cancer prevention tumor antigen target prioritization on-target off-tumor toxicity gpnmb prioritization score tumor specificity index ai-driven antigen ranking",
+          "status": "ok",
+          "total_results": 6,
+          "providers": [
+            {
+              "provider": "semantic_scholar",
+              "status": "ok",
+              "result_count": 0,
+              "top_titles": [],
+              "error": ""
+            },
+            {
+              "provider": "pubmed",
+              "status": "ok",
+              "result_count": 0,
+              "top_titles": [],
+              "error": ""
+            },
+            {
+              "provider": "biorxiv",
+              "status": "ok",
+              "result_count": 3,
+              "top_titles": [
+                "Antibody Responses to Salmonella Typhi Antigens among Typhoid Recovered Individuals in an Endemic Region",
+                "Navigating parasite antigen genetic diversity in the design of Plasmodium vivax serological exposure markers for malaria",
+                "Taurine is a Natural Host Cytoadhesion Inhibitor in Asymptomatic Malaria Cases"
+              ],
+              "error": ""
+            },
+            {
+              "provider": "medrxiv",
+              "status": "ok",
+              "result_count": 3,
+              "top_titles": [
+                "Interactions Among Tumor Subtype, PPARγ Expression, and Adipose Proliferation Shape Outcomes in Breast Cancer",
+                "Preventing premature deaths through polygenic risk scores",
+                "Study Protocol: Psychometric Testing of the German Vestibular Schwannoma Quality of Life Index - A Multicenter Study on...[truncated]"
+              ],
+              "error": ""
+            }
+          ]
+        },
+        {
+          "query": "AI-driven discovery of GPNMB CAR-T cells cancer prevention tumor antigen target prioritization on-target off-tumor toxicity on-target off-tumor toxicity normal tissue expression atlas gpnmb cross-reactivity",
+          "status": "ok",
+          "total_results": 6,
+          "providers": [
+            {
+              "provider": "semantic_scholar",
+              "status": "ok",
+              "result_count": 0,
+              "top_titles": [],
+              "error": ""
+            },
+            {
+              "provider": "pubmed",
+              "status": "ok",
+              "result_count": 0,
+              "top_titles": [],
+              "error": ""
+            },
+            {
+              "provider": "biorxiv",
+              "status": "ok",
+              "result_count": 3,
+              "top_titles": [
+                "A single-nucleus transcriptomic atlas of the adult Aedes aegypti mosquito",
+                "The pleuroparenchymal fibroelastosis atlas reveals aberrant cell states and their zonation as an alternate roadmap to lu...[truncated]",
+                "Drought-associated genes exhibit high constitutive expression in Quercus douglasii, a drought tolerant California oak"
+              ],
+              "error": ""
+            },
+            {
+              "provider": "medrxiv",
+              "status": "ok",
+              "result_count": 3,
+              "top_titles": [
+                "Interactions Among Tumor Subtype, PPARγ Expression, and Adipose Proliferation Shape Outcomes in Breast Cancer",
+                "Circumcision for HIV prevention in men who have sex with men: an updated meta-analysis",
+                "Health Disparity and Geospatial Analysis among Cancer Patients in the US/Mexico Border Region of Imperial Valley"
+              ],
+              "error": ""
+            }
+          ]
+        },
+        {
+          "query": "AI-driven discovery of GPNMB CAR-T cells cancer prevention tumor antigen target prioritization on-target off-tumor toxicity gpnmb immune modulation tumor microenvironment remodeling metastatic niche",
+          "status": "ok",
+          "total_results": 6,
+          "providers": [
+            {
+              "provider": "semantic_scholar",
+              "status": "ok",
+              "result_count": 0,
+              "top_titles": [],
+              "error": ""
+            },
+            {
+              "provider": "pubmed",
+              "status": "ok",
+              "result_count": 0,
+              "top_titles": [],
+              "error": ""
+            },
+            {
+              "provider": "biorxiv",
+              "status": "ok",
+              "result_count": 3,
+              "top_titles": [
+                "Antibody Responses to Salmonella Typhi Antigens among Typhoid Recovered Individuals in an Endemic Region",
+                "Navigating parasite antigen genetic diversity in the design of Plasmodium vivax serological exposure markers for malaria",
+                "The pleuroparenchymal fibroelastosis atlas reveals aberrant cell states and their zonation as an alternate roadmap to lu...[truncated]"
+              ],
+              "error": ""
+            },
+            {
+              "provider": "medrxiv",
+              "status": "ok",
+              "result_count": 3,
+              "top_titles": [
+                "Interactions Among Tumor Subtype, PPARγ Expression, and Adipose Proliferation Shape Outcomes in Breast Cancer",
+                "Network Analysis of Rare Single-Nucleotide Polymorphisms Suggests a Central Role for Type 17 Immune Responses in Trauma-...[truncated]",
+                "Non-autoimmune diabetes in young people from Assam, India: the PHENOEINDY 2 study"
+              ],
+              "error": ""
+            }
+          ]
+        },
+        {
+          "query": "AI-driven discovery of GPNMB CAR-T cells cancer prevention tumor antigen target prioritization on-target off-tumor toxicity car affinity prediction epitope cross-reactivity model in silico toxicity scoring",
+          "status": "ok",
+          "total_results": 6,
+          "providers": [
+            {
+              "provider": "semantic_scholar",
+              "status": "ok",
+              "result_count": 0,
+              "top_titles": [],
+              "error": ""
+            },
+            {
+              "provider": "pubmed",
+              "status": "ok",
+              "result_count": 0,
+              "top_titles": [],
+              "error": ""
+            },
+            {
+              "provider": "biorxiv",
+              "status": "ok",
+              "result_count": 3,
+              "top_titles": [
+                "Navigating parasite antigen genetic diversity in the design of Plasmodium vivax serological exposure markers for malaria",
+                "mRNABench: A curated benchmark for mature mRNA property and function prediction",
+                "Antibody Responses to Salmonella Typhi Antigens among Typhoid Recovered Individuals in an Endemic Region"
+              ],
+              "error": ""
+            },
+            {
+              "provider": "medrxiv",
+              "status": "ok",
+              "result_count": 3,
+              "top_titles": [
+                "Interactions Among Tumor Subtype, PPARγ Expression, and Adipose Proliferation Shape Outcomes in Breast Cancer",
+                "Health Disparity and Geospatial Analysis among Cancer Patients in the US/Mexico Border Region of Imperial Valley",
+                "Study Protocol: Psychometric Testing of the German Vestibular Schwannoma Quality of Life Index - A Multicenter Study on...[truncated]"
+              ],
+              "error": ""
+            }
+          ]
+        }
+      ],
+      "coverage_warning": true,
+      "needs_user_branch_confirmation": true
+    },
+    "user_interaction": {
+      "needed": true,
+      "type": "research_branch_confirmation",
+      "question": "Some major sub-branches appear missing from the current retrieval. Which should be prioritized for a supplemental search before treating gaps as real?",
+      "options": [
+        {
+          "label": "Computational antigen prioritization frameworks",
+          "suggested_query": "AI-driven discovery of GPNMB CAR-T cells cancer prevention tumor antigen target prioritization on-target off-tumor toxicity gpnmb prioritization score tumor specificity index ai-driven antigen ranking",
+          "live_evidence_count": 6,
+          "false_negative_risk": true
+        },
+        {
+          "label": "Preclinical safety assessment of GPNMB-targeted CAR-T",
+          "suggested_query": "AI-driven discovery of GPNMB CAR-T cells cancer prevention tumor antigen target prioritization on-target off-tumor toxicity on-target off-tumor toxicity normal tissue expression atlas gpnmb cross-reactivity",
+          "live_evidence_count": 6,
+          "false_negative_risk": true
+        },
+        {
+          "label": "GPNMB functional roles in tumor immunity and progression",
+          "suggested_query": "AI-driven discovery of GPNMB CAR-T cells cancer prevention tumor antigen target prioritization on-target off-tumor toxicity gpnmb immune modulation tumor microenvironment remodeling metastatic niche",
+          "live_evidence_count": 6,
+          "false_negative_risk": true
+        },
+        {
+          "label": "AI-augmented CAR construct optimization",
+          "suggested_query": "AI-driven discovery of GPNMB CAR-T cells cancer prevention tumor antigen target prioritization on-target off-tumor toxicity car affinity prediction epitope cross-reactivity model in silico toxicity scoring",
+          "live_evidence_count": 6,
+          "false_negative_risk": true
+        }
+      ],
+      "default_action": "Run supplemental stratified search for options with false_negative_risk=true, or ask the user to pick 2-3 priority branches.",
+      "continue_with": "Pass selected option labels or custom branch keywords as focus_branches to run_zhizhi_literature_analysis/search_papers_stratified."
+    },
+    "select_literature_result": {
+      "result_index": 0,
+      "stratified_layer": "L4_regular",
+      "stratified_label": "regular journal / supplemental evidence",
+      "query_branch": "primary",
+      "retrieval_query": "AI-driven discovery of GPNMB CAR-T cells cancer prevention tumor antigen target prioritization on-target off-tumor toxicity",
+      "_why_selected": "Selected as regular supplemental paper: Interactions Among Tumor Subtype, PPARγ Expression, and Adipose Proliferation Shape Outcomes in Breast Cancer; year=2025; venue=medrxiv; quality=0.67; relevance=0.2171.",
+      "domain_relevance": {
+        "profile": "ai_driven_discovery_of_gpnmb_car_t_cells_cancer_prevention",
+        "target_field": "biomedical",
+        "result_field": "biomedical",
+        "score": 0.1464,
+        "query_hits": [
+          "cancer",
+          "tumor",
+          "target"
+        ],
+        "anchor_hits": [
+          "cancer"
+        ],
+        "topic_hits": [],
+        "noise_hits": [],
+        "flags": [
+          "low_domain_relevance",
+          "weak_preprint_domain_relevance"
+        ],
+        "is_preprint": true,
+        "verdict": "keep",
+        "requires_human_review": true
+      },
+      "relevance_score": 0.2171,
+      "relevance_components": {
+        "text_score": 0.1629,
+        "recency_score": 1.0,
+        "impact_score": 0.35,
+        "citation_field": "biomedical",
+        "citation_baseline": 800.0,
+        "venue_score": 0.6,
+        "publication_quality_score": 0.67,
+        "base_score": 0.324,
+        "text_weight": 0.62,
+        "recency_weight": 0.1,
+        "impact_weight": 0.18,
+        "venue_weight": 0.1
+      },
+      "publication_quality_score": 0.67,
+      "venue_quality": "preprint",
+      "journal_quartile": "",
+      "journal_metric_source": "",
+      "inferred_field": "biomedical",
+      "quality_flags": [
+        "preprint_not_peer_reviewed",
+        "new_paper_protection"
+      ],
+      "quality_criteria": [
+        "venue is a preprint server, not final peer-reviewed venue",
+        "paper is within 2-year protection window; low citations are not treated as low quality"
+      ],
+      "suspicion_type": "",
+      "is_review_like": false,
+      "pyramid_root_score": 0.4036,
+      "matched_query_terms": [
+        "cancer",
+        "tumor",
+        "target"
+      ],
+      "title": "Interactions Among Tumor Subtype, PPARγ Expression, and Adipose Proliferation Shape Outcomes in Breast Cancer",
+      "citation": "Shah, A. et al. (2025) Interactions Among Tumor Subtype, PPARγ Expression, and Adipose Proliferation Shape Outcomes in Breast Cancer doi:10.1101/2025.07.08.25331111",
+      "provider": "medrxiv",
+      "year": "2025",
+      "citation_count": null,
+      "influential_citation_count": null,
+      "doi": "10.1101/2025.07.08.25331111",
+      "arxiv_id": null,
+      "url": "https://www.medrxiv.org/content/10.1101/2025.07.08.25331111",
+      "relevance_reason": "title=2/14, abstract=3/14, citation=2/14, phrase_bonus=0.0, recency=1.0, impact=0.35, venue=0.6, quality=0.67",
+      "quality_reason": "venue is a preprint server, not final peer-reviewed venue; paper is within 2-year protection window; low citations are not treated as low quality"
+    },
+    "stratified_import_plan": {
+      "strategy": "layer_minimum_then_score_backfill",
+      "requested_import_top_k": 12,
+      "effective_import_top_k": 12,
+      "min_per_layer": {
+        "L0_review": 2,
+        "L1_milestone": 2,
+        "L2_top_latest": 2,
+        "L3_preprint": 2,
+        "L4_regular": 3
+      },
+      "candidate_counts_by_layer": {
+        "L0_review": 1,
+        "L4_regular": 11
+      },
+      "selected_counts_by_layer": {
+        "L0_review": 1,
+        "L4_regular": 11
+      },
+      "missing_layers": [
+        {
+          "layer": "L0_review",
+          "label": "high-impact review / field map",
+          "target": 2,
+          "selected": 1,
+          "candidates": 1
+        },
+        {
+          "layer": "L1_milestone",
+          "label": "milestone / highly cited foundation",
+          "target": 2,
+          "selected": 0,
+          "candidates": 0
+        },
+        {
+          "layer": "L2_top_latest",
+          "label": "recent top-venue frontier",
+          "target": 2,
+          "selected": 0,
+          "candidates": 0
+        },
+        {
+          "layer": "L3_preprint",
+          "label": "latest preprint frontier",
+          "target": 2,
+          "selected": 0,
+          "candidates": 0
+        }
+      ],
+      "selected_result_indexes": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11
+      ]
+    },
+    "imported_records": 12,
+    "expand_literature_graph": {
+      "graph_search_id": "graph_1783438545215058900",
+      "total_results": 8,
+      "fallback_used": false,
+      "depth": 1
+    },
+    "build_literature_relation_graph": {
+      "relation_graph_id": "relgraph_1783438550549103900",
+      "cluster_count": 8,
+      "edge_summary": {
+        "total_edges": 8,
+        "citation_graph_edges": 8,
+        "artificial_edges": 0,
+        "by_relation": {
+          "citation": 2,
+          "reference": 6
+        },
+        "by_depth": {
+          "1": 8
+        },
+        "fallback_weight_policy": "keyword_fallback/search_result edges are artificial and use very low PageRank weight."
+      },
+      "analysis_confidence": 1.0
+    }
+  },
+  "observation": [
+    "Potential retrieval blind spot: Computational antigen prioritization frameworks was not represented in retrieved/imported candidates; suggested query: AI-driven discovery of GPNMB CAR-T cells cancer prevention tumor antigen target prioritization on-target off-tumor toxicity gpnmb prioritization score tumor specificity index ai-driven antigen ranking; live_probe_results=6",
+    "Potential retrieval blind spot: Preclinical safety assessment of GPNMB-targeted CAR-T was not represented in retrieved/imported candidates; suggested query: AI-driven discovery of GPNMB CAR-T cells cancer prevention tumor antigen target prioritization on-target off-tumor toxicity on-target off-tumor toxicity normal tissue expression atlas gpnmb cross-reactivity; live_probe_results=6",
+    "Potential retrieval blind spot: GPNMB functional roles in tumor immunity and progression was not represented in retrieved/imported candidates; suggested query: AI-driven discovery of GPNMB CAR-T cells cancer prevention tumor antigen target prioritization on-target off-tumor toxicity gpnmb immune modulation tumor microenvironment remodeling metastatic niche; live_probe_results=6",
+    "Potential retrieval blind spot: AI-augmented CAR construct optimization was not represented in retrieved/imported candidates; suggested query: AI-driven discovery of GPNMB CAR-T cells cancer prevention tumor antigen target prioritization on-target off-tumor toxicity car affinity prediction epitope cross-reactivity model in silico toxicity scoring; live_probe_results=6",
+    "Layer import target not met: L0_review selected=1/target=2 from candidates=1. This indicates retrieval/candidate scarcity rather than top-K truncation.",
+    "Layer import target not met: L1_milestone selected=0/target=2 from candidates=0. This indicates retrieval/candidate scarcity rather than top-K truncation.",
+    "Layer import target not met: L2_top_latest selected=0/target=2 from candidates=0. This indicates retrieval/candidate scarcity rather than top-K truncation.",
+    "Layer import target not met: L3_preprint selected=0/target=2 from candidates=0. This indicates retrieval/candidate scarcity rather than top-K truncation."
+  ],
+  "knowledge_map_summary": {
+    "main_methods": [
+      "ELISA | flow cytometry-based assay | NK cell activation assay",
+      "Kaplan-Meier analysis | RNA-seq analysis | PET-CT SUV quantification (18F-FLT)",
+      "SNPScanner algorithm combined with bioinformatics network analysis",
+      "care",
+      "geospatial analysis | Kernel Density Estimation | logistic regression",
+      "high-density EEG | spectral analysis | temporal response function (TRF) modeling",
+      "integrated modelling approach",
+      "logistic and linear regression with cluster robust standard errors",
+      "omics profiling",
+      "plasma metabolome analysis | in vitro cytoadhesion assay",
+      "random-effects meta-analysis | confounder-adjusted meta-analysis",
+      "standard diagnostics"
+    ],
+    "method_scenario_coverage": {
+      "Kaplan-Meier analysis | RNA-seq analysis | PET-CT SUV quantification (18F-FLT)": [
+        "breast cancer | tumor subtype stratification | adipose tissue metabolism"
+      ],
+      "ELISA | flow cytometry-based assay | NK cell activation assay": [
+        "typhoid fever immunity | Salmonella Typhi infection | endemic region"
+      ],
+      "random-effects meta-analysis | confounder-adjusted meta-analysis": [
+        "men who have sex with men (MSM) | primarily-insertive MSM (PI-MSM)"
+      ],
+      "standard diagnostics": [
+        "Plasmodium vivax serological exposure marker development"
+      ],
+      "geospatial analysis | Kernel Density Estimation | logistic regression": [
+        "cancer health disparities | US-Mexico border region | rural underserved population"
+      ],
+      "plasma metabolome analysis | in vitro cytoadhesion assay": [
+        "asymptomatic Plasmodium falciparum infection | seasonal malaria in sub-Saharan Africa"
+      ],
+      "high-density EEG | spectral analysis | temporal response function (TRF) modeling": [
+        "autism Spectrum Disorder (ASD) | visual detection task with parametrically varied rhythmic structures"
+      ],
+      "integrated modelling approach": [
+        "public health intervention"
+      ],
+      "SNPScanner algorithm combined with bioinformatics network analysis": [
+        "critically ill trauma patients"
+      ],
+      "logistic and linear regression with cluster robust standard errors": [
+        "psychosocial support service for victims of armed conflict in Colombia"
+      ],
+      "care": [
+        "vestibular schwannoma | patient-centered care"
+      ],
+      "omics profiling": [
+        "neurological disorders | mitochondrial complex V deficiency | ATP5F1A-associated disease"
+      ]
+    },
+    "method_scenario_benchmark_triples": [
+      {
+        "method": "Kaplan-Meier analysis | RNA-seq analysis | PET-CT SUV quantification (18F-FLT)",
+        "scenario": "breast cancer | tumor subtype stratification | adipose tissue metabolism",
+        "benchmark": "overall survival | disease-specific survival | SUVmean/SUVmax/SUVpeak",
+        "references": [
+          "Shah, A. et al. (2025) Interactions Among Tumor Subtype, PPARγ Expression, and Adipose Proliferation Shape Outcomes in Breast Cancer doi:10.1101/2025.07.08.25331111"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "Kaplan-Meier analysis | RNA-seq analysis | PET-CT SUV quantification (18F-FLT)",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "High PPARγ expression is associated with improved survival, especially in premenopausal patients; adipose tissue proliferation (via 18F-FLT PET) differs significantly by tumor subtype and menopausal status, suggesting metabolic reprogramming linked to prognosis.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "No explicit limitation extracted.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "Full text excerpt:",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "Kaplan-Meier analysis revealed that high PPAR{gamma} expression ([&ge;]6.903 FPKM) was significantly associated with both improved overall and disease-specific survival, particularly in premenopausal patients.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "Full text excerpt: High PPARγ expression is associated with improved survival, especially in premenopausal patients; adipose tissue proliferation (via 18F-FLT PET) differs significantly by tumor subtype and menopausal status, suggesting metabolic reprogramming linked to prognosis.",
+            "support": "source_sentence"
+          }
+        ]
+      },
+      {
+        "method": "ELISA | flow cytometry-based assay | NK cell activation assay",
+        "scenario": "typhoid fever immunity | Salmonella Typhi infection | endemic region",
+        "benchmark": "this gap also applies to the long-term immune response",
+        "references": [
+          "Athavale, A. et al. (2025) Antibody Responses to Salmonella Typhi Antigens among Typhoid Recovered Individuals in an Endemic Region doi:10.1101/2025.07.04.663140"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "ELISA | flow cytometry-based assay | NK cell activation assay",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "Characterization of durable IgM responses, elevated transitional B cells, and altered CD8 TEMRA populations in typhoid-recovered individuals in an endemic setting, revealing complexity of humoral and cellular immunity to S. Typhi.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "Abstract: BackgroundTyphoid fever remains a major public health concern in endemic regions, yet the nature of antibody responses to individual Salmonella Typhi antigens and their potential role in modulating cellular immune functions are not well understood. This gap also applies to the long-term im...[truncated]",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "Polysaccharide antigens elicited significantly better IgA response in recovered typhoid participants, possibly reflecting mucosal immune priming from the gut. Persistent IgM antibodies after recovery suggest durable IgM responses following typhoid infection. Similar IgG levels between groups and the...[truncated]",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "MethodsELISA was used to measure antibody responses against five S.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "ResultsPolysaccharide antigens mounted better IgA responses among typhoid-recovered individuals compared with healthy participants.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "Typhi IgM was significantly elevated in the typhoid group for all five antigens (p<0.05), while no significant differences were observed in IgG responses.",
+            "support": "source_sentence"
+          }
+        ]
+      },
+      {
+        "method": "random-effects meta-analysis | confounder-adjusted meta-analysis",
+        "scenario": "men who have sex with men (MSM) | primarily-insertive MSM (PI-MSM)",
+        "benchmark": "odds ratio (OR) | 95% confidence interval",
+        "references": [
+          "Davis, S. et al. (2025) Circumcision for HIV prevention in men who have sex with men: an updated meta-analysis doi:10.1101/2025.07.02.25330772"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "random-effects meta-analysis | confounder-adjusted meta-analysis",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "Circumcision is protective against HIV among primarily-insertive MSM, with a confounder-adjusted effect estimate (ratio of ORs) of 0.53 (95% CI: 0.34–0.83).",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "Publication bias was present in the unadjusted meta-analysis.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "Among PI-MSM, circumcision was protective against HIV. Findings support male circumcision as an effective HIV prevention method for PI-MSM, alongside established combination prevention methods including pre-exposure prophylaxis.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "Any protection would be for primarily-insertive MSM (PI-MSM) and could have substantial impact given high incidence.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "MethodsWe performed an updated literature search for data on the association of male circumcision with HIV among MSM.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "To isolate the protective effect of circumcision from potential confounding factors, we also performed a confounder-adjusted meta-analysis, comparing the effect of circumcision on HIV status among primarily-insertive MSM versus among other (non-primarily-insertive) MSM in studies with stratified res...[truncated]",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "ResultsForty-nine studies were included in the descriptive analysis, 13 in the unadjusted meta-analysis, and 10 in the confounder-adjusted meta-analysis.",
+            "support": "source_sentence"
+          }
+        ]
+      },
+      {
+        "method": "standard diagnostics",
+        "scenario": "Plasmodium vivax serological exposure marker development",
+        "benchmark": "accuracy in identifying recent infection (within prior 9 months)",
+        "references": [
+          "Bareng, P. et al. (2025) Navigating parasite antigen genetic diversity in the design of Plasmodium vivax serological exposure markers for malaria doi:10.1101/2025.07.07.663616"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "standard diagnostics",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "Demonstrates that antigen genetic diversity need not preclude effective serological exposure markers, and shows that multi-antigen models mitigate regional immunogenicity differences.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "These dormant forms (hypnozoites) cannot be detected using standard diagnostics, but recent P.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "Full text excerpt:",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "vivax affects the utility of these antibody markers, and whether redesigned antigens could improve performance.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "MethodsWe analysed global P.",
+            "support": "source_sentence"
+          }
+        ]
+      },
+      {
+        "method": "geospatial analysis | Kernel Density Estimation | logistic regression",
+        "scenario": "cancer health disparities | US-Mexico border region | rural underserved population",
+        "benchmark": "statistical significance",
+        "references": [
+          "Fontelera, K. et al. (2025) Health Disparity and Geospatial Analysis among Cancer Patients in the US/Mexico Border Region of Imperial Valley doi:10.1101/2025.07.07.25331030"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "geospatial analysis | Kernel Density Estimation | logistic regression",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "Identification of three distinct spatial distribution patterns of cancers in Imperial Valley and demonstration of non-significant association between travel distance and mortality despite observed ethnic disparities in cancer death.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "Cancer patient mortality did not have statistical significance associations with travel distance to treatment.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "Our study found three types of spatial distribution patterns of various cancers in Imperial Valley. Cancer patient mortality did not have statistical significance associations with travel distance to treatment. However, further investigation and better tools may yield clearer results regarding its c...[truncated]",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "MethodsPatients were identified from the intake assessment data form for new patients in a community-based cancer organization (CBO) between 2006 and 2022.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "ResultsThere is a significant association between ethnicity and cancer deaths.",
+            "support": "source_sentence"
+          }
+        ]
+      },
+      {
+        "method": "plasma metabolome analysis | in vitro cytoadhesion assay",
+        "scenario": "asymptomatic Plasmodium falciparum infection | seasonal malaria in sub-Saharan Africa",
+        "benchmark": "taurine plasma level | iRBC binding inhibition to CD36 and EPCR",
+        "references": [
+          "Diffendall, G. et al. (2025) Taurine is a Natural Host Cytoadhesion Inhibitor in Asymptomatic Malaria Cases doi:10.1101/2025.07.06.663375"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "plasma metabolome analysis | in vitro cytoadhesion assay",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "Taurine is identified as a natural host-derived inhibitor of Plasmodium falciparum cytoadhesion in asymptomatic malaria, linking elevated plasma taurine to reduced iRBC binding and enhanced splenic clearance.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "No explicit limitation extracted.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "Full text excerpt:",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "Notably, we observed elevated levels of taurine in asymptomatic malaria infections, especially during periods of low transmission.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "This study uncovers a mechanism by which elevated taurine plasma levels in asymptomatic infections could reduce cytoadhesion and lead to increased splenic clearance, thereby strengthening host resistance to symptomatic infections.",
+            "support": "source_sentence"
+          }
+        ]
+      },
+      {
+        "method": "high-density EEG | spectral analysis | temporal response function (TRF) modeling",
+        "scenario": "autism Spectrum Disorder (ASD) | visual detection task with parametrically varied rhythmic structures",
+        "benchmark": "spectral analysis and temporal response",
+        "references": [
+          "Beker, S. et al. (2025) Not Just Noise: Impaired Oscillatory Entrainment Reflects Reduced Temporal Flexibility in Autism doi:10.1101/2025.07.02.662876"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "high-density EEG | spectral analysis | temporal response function (TRF) modeling",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "Impaired oscillatory entrainment in ASD reflects reduced temporal flexibility specifically under volatile temporal structures (e.g., mildly jittered rhythms), not a general non-selective deficit; neural modulation correlates with IQ in ASD.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "Abstract: Rhythmic patterns in the environment enhance neural activity, perception, and action. However, natural rhythms are often imprecise, requiring flexible adaptation. In autism Spectrum Disorder (ASD), characterized by cognitive rigidity and atypical use of prior information - favoring immedia...[truncated]",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "Full text excerpt:",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "In autism Spectrum Disorder (ASD), characterized by cognitive rigidity and atypical use of prior information - favoring immediate sensory input over predictive cues - entrainment to temporally variable input may be reduced at both neural and behavioral levels, though the neural mechanisms remain unc...[truncated]",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "Additionally, the coupling between phases of neural oscillations and behavior was diminished in ASD under the jittered conditions, suggesting reduced functional relevance of neural synchronization.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "Notably, the degree of neural modulation by temporal regularity was correlated with IQ within the ASD group, suggesting a link between temporal flexibility and individual cognitive profiles.",
+            "support": "source_sentence"
+          }
+        ]
+      },
+      {
+        "method": "integrated modelling approach",
+        "scenario": "public health intervention",
+        "benchmark": "premature deaths reduction",
+        "references": [
+          "Chuong, M. et al. (2025) Preventing premature deaths through polygenic risk scores doi:10.1101/2024.12.26.24319670"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "integrated modelling approach",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "PRS-guided tailoring of screening age could reduce premature deaths in high-risk individuals by 23.3% across seven diseases with existing screening programs.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "Abstract: BackgroundPolygenic risk scores (PRS) have demonstrated predictive validity across a range of cohorts and diseases, but quantifying their clinical utility remains a challenge. As PRS can be derived from a single biological sample and remain stable throughout life, we explore the potential....[truncated]",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "Knowledge of genetic risk, measured using PRS, has the potential to deliver substantial public health benefits when aggregated across conditions, and could reduce premature mortality by tailoring existing screening programs.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "As PRS can be derived from a single biological sample and remain stable throughout life, we explore the potential of PRS to optimize existing screening programs.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "MethodsVia an integrated modelling approach, we quantified the potential clinical benefits arising from a knowledge of PRS across seven diseases with existing screening programs (abdominal aortic aneurysm, breast cancer, colorectal cancer, coronary artery disease, hypertension, prostate cancer, and...[truncated]",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "Across all seven diseases, appropriate interventions following PRS-guided screening could reduce premature deaths in high risk individuals by 23.3%.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "ConclusionKnowledge of genetic risk, measured using PRS, has the potential to deliver substantial public health benefits when aggregated across conditions, and could reduce premature mortality by tailoring existing screening programs.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "Knowledge of genetic risk, measured using PRS, has the potential to deliver substantial public health benefits when aggregated across conditions, and could reduce premature mortality by tailoring existing screening programs.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "PRS-guided tailoring of screening age could reduce premature deaths in high-risk individuals by 23.3% across seven diseases with existing screening programs.",
+            "support": "source_sentence"
+          }
+        ]
+      },
+      {
+        "method": "SNPScanner algorithm combined with bioinformatics network analysis",
+        "scenario": "critically ill trauma patients",
+        "benchmark": "public health burden",
+        "references": [
+          "El-Dehaibi et al. (2025) Network Analysis of Rare Single-Nucleotide Polymorphisms Suggests a Central Role for Type 17 Immune Responses in Trauma-induced, Genotypically Associated Hypo-Inflammation and Critical Illness doi:10.1101/2025.01.28.25321184"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "SNPScanner algorithm combined with bioinformatics network analysis",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "Rare SNP network analysis implicates type 17 immune responses—particularly RORA-mediated Th17 differentiation—as central to trauma-induced, genotypically associated hypo-inflammation and critical illness.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "No explicit limitation extracted.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "Full text excerpt:",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "We have recently developed SNPScanner, an algorithm that enables rapid scanning through a large SNP dataset and associated inflammation biomarkers and clinical data, and in the present study leveraged this algorithm in concert with existing bioinformatics tools to define networks of interaction amon...[truncated]",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "In contrast, no Th17-related hub genes were identified in a control group of SNPs associated algorithmically with adverse clinical outcomes but with genotypically indistinct systemic inflammatory responses; the main inferred hub gene in this control group was solute carrier family 2, facilitated glu...[truncated]",
+            "support": "source_sentence"
+          }
+        ]
+      },
+      {
+        "method": "logistic and linear regression with cluster robust standard errors",
+        "scenario": "psychosocial support service for victims of armed conflict in Colombia",
+        "benchmark": "intervention assignment | intervention engagement | attendance patterns",
+        "references": [
+          "Constable Fernandez, C. et al. (2025) Intervention provision and engagement in Colombia's PAPSIVI: a national psychosocial support service for over half a million victims of armed conflict doi:10.1101/2025.07.08.25331104"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "logistic and linear regression with cluster robust standard errors",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "Psychosocial support provision can be managed effectively at very large scales.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "29% of individual session attendees only received a single session, potentially indicating early dropout or unsuitable service provision for a proportion of attendees.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "This study provides insights into support provision for civilian victims of conflict indicating that psychosocial support provision can be managed effectively at very large scales.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "MethodsWe investigated how different conflict exposures related to PAPSIVI intervention assignment and engagement.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "ResultsIntervention types were broadly provided in line with PAPSIVI guidelines, with victims experiencing torture, sexual violence, and forced recruitment more likely to receive individual sessions, while community-level impacts received community interventions.",
+            "support": "source_sentence"
+          }
+        ]
+      },
+      {
+        "method": "care",
+        "scenario": "vestibular schwannoma | patient-centered care",
+        "benchmark": "reliability | validity | patient-reported outcomes",
+        "references": [
+          "Rutenkroeger, M. et al. (2025) Study Protocol: Psychometric Testing of the German Vestibular Schwannoma Quality of Life Index - A Multicenter Study on Quality of Life and Patient-Centered Care in Vestibular Schwannoma doi:10.1101/2025.07.08.25331128"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "care",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "validation of the German Vestibular Schwannoma Quality of Life (VSQOL) Index for use in clinical assessment and research",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "Abstract: IntroductionVestibular schwannomas (VSs) are benign tumors of the vestibulocochlear nerve that often cause significant neurological and functional impairment, affecting patients overall quality of life (QoL). While clinical assessments have traditionally focused on hearing preservation and...[truncated]",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "Full text excerpt:",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "Methods and analysisThis multicenter, cross-sectional study will involve German-speaking VS patients from several clinical centers in Germany and Switzerland as well as an online cohort.",
+            "support": "source_sentence"
+          }
+        ]
+      },
+      {
+        "method": "omics profiling",
+        "scenario": "neurological disorders | mitochondrial complex V deficiency | ATP5F1A-associated disease",
+        "benchmark": "benchmark dataset",
+        "references": [
+          "Fielder et al. (2025) Dominant negative ATP5F1A variants disrupt oxidative phosphorylation causing neurological disorders doi:10.1101/2025.07.08.25330848"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "omics profiling",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "Dominant negative ATP5F1A variants disrupt oxidative phosphorylation causing neurological disorders; expands phenotypic and genotypic spectrum of ATP5F1A-associated conditions; distinguishes pathological mechanism from p.Arg207His variant.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "No explicit limitation extracted.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "Full text excerpt:",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "Biochemical and proteomics studies showed a marked reduction in complex V abundance and activity in proband-derived blood cells and fibroblasts.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "Our findings contrast functionally and clinically with the previously reported ATP5F1A variant, p.Arg207His, suggesting a distinct pathological mechanism.",
+            "support": "source_sentence"
+          }
+        ]
+      },
+      {
+        "method": "Kaplan-Meier analysis | RNA-seq analysis | PET-CT SUV quantification (18F-FLT)",
+        "scenario": "breast cancer | tumor subtype stratification | adipose tissue metabolism",
+        "benchmark": "overall survival | disease-specific survival | SUVmean/SUVmax/SUVpeak",
+        "references": [
+          "Shah, A. et al. (2025) Interactions Among Tumor Subtype, PPARγ Expression, and Adipose Proliferation Shape Outcomes in Breast Cancer doi:10.1101/2025.07.08.25331111"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "Kaplan-Meier analysis | RNA-seq analysis | PET-CT SUV quantification (18F-FLT)",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "High PPARγ expression is associated with improved survival, especially in premenopausal patients; adipose tissue proliferation (via 18F-FLT PET) differs significantly by tumor subtype and menopausal status, suggesting metabolic reprogramming linked to prognosis.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "No explicit limitation extracted.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "High PPARγ expression is associated with improved survival, especially in premenopausal patients; adipose tissue proliferation (via 18F-FLT PET) differs significantly by tumor subtype and menopausal status, suggesting metabolic reprogramming linked to prognosis.",
+            "support": "source_sentence"
+          }
+        ]
+      },
+      {
+        "method": "ELISA | flow cytometry-based assay | NK cell activation assay",
+        "scenario": "typhoid fever immunity | Salmonella Typhi infection | endemic region",
+        "benchmark": "this gap also applies to the long-term immune response",
+        "references": [
+          "Athavale, A. et al. (2025) Antibody Responses to Salmonella Typhi Antigens among Typhoid Recovered Individuals in an Endemic Region doi:10.1101/2025.07.04.663140"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "ELISA | flow cytometry-based assay | NK cell activation assay",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "Characterization of durable IgM responses, elevated transitional B cells, and altered CD8 TEMRA populations in typhoid-recovered individuals in an endemic setting, revealing complexity of humoral and cellular immunity to S. Typhi.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "Abstract: BackgroundTyphoid fever remains a major public health concern in endemic regions, yet the nature of antibody responses to individual Salmonella Typhi antigens and their potential role in modulating cellular immune functions are not well understood. This gap also applies to the long-term im...[truncated]",
+            "support": "structured_field"
+          }
+        ]
+      },
+      {
+        "method": "random-effects meta-analysis | confounder-adjusted meta-analysis",
+        "scenario": "men who have sex with men (MSM) | primarily-insertive MSM (PI-MSM)",
+        "benchmark": "odds ratio (OR) | 95% confidence interval",
+        "references": [
+          "Davis, S. et al. (2025) Circumcision for HIV prevention in men who have sex with men: an updated meta-analysis doi:10.1101/2025.07.02.25330772"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "random-effects meta-analysis | confounder-adjusted meta-analysis",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "Circumcision is protective against HIV among primarily-insertive MSM, with a confounder-adjusted effect estimate (ratio of ORs) of 0.53 (95% CI: 0.34–0.83).",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "Publication bias was present in the unadjusted meta-analysis.",
+            "support": "structured_field"
+          }
+        ]
+      },
+      {
+        "method": "standard diagnostics",
+        "scenario": "Plasmodium vivax serological exposure marker development",
+        "benchmark": "accuracy in identifying recent infection (within prior 9 months)",
+        "references": [
+          "Bareng, P. et al. (2025) Navigating parasite antigen genetic diversity in the design of Plasmodium vivax serological exposure markers for malaria doi:10.1101/2025.07.07.663616"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "standard diagnostics",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "Demonstrates that antigen genetic diversity need not preclude effective serological exposure markers, and shows that multi-antigen models mitigate regional immunogenicity differences.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "These dormant forms (hypnozoites) cannot be detected using standard diagnostics, but recent P.",
+            "support": "structured_field"
+          }
+        ]
+      },
+      {
+        "method": "geospatial analysis | Kernel Density Estimation | logistic regression",
+        "scenario": "cancer health disparities | US-Mexico border region | rural underserved population",
+        "benchmark": "statistical significance",
+        "references": [
+          "Fontelera, K. et al. (2025) Health Disparity and Geospatial Analysis among Cancer Patients in the US/Mexico Border Region of Imperial Valley doi:10.1101/2025.07.07.25331030"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "geospatial analysis | Kernel Density Estimation | logistic regression",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "Identification of three distinct spatial distribution patterns of cancers in Imperial Valley and demonstration of non-significant association between travel distance and mortality despite observed ethnic disparities in cancer death.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "Cancer patient mortality did not have statistical significance associations with travel distance to treatment.",
+            "support": "structured_field"
+          }
+        ]
+      },
+      {
+        "method": "plasma metabolome analysis | in vitro cytoadhesion assay",
+        "scenario": "asymptomatic Plasmodium falciparum infection | seasonal malaria in sub-Saharan Africa",
+        "benchmark": "taurine plasma level | iRBC binding inhibition to CD36 and EPCR",
+        "references": [
+          "Diffendall, G. et al. (2025) Taurine is a Natural Host Cytoadhesion Inhibitor in Asymptomatic Malaria Cases doi:10.1101/2025.07.06.663375"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "plasma metabolome analysis | in vitro cytoadhesion assay",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "Taurine is identified as a natural host-derived inhibitor of Plasmodium falciparum cytoadhesion in asymptomatic malaria, linking elevated plasma taurine to reduced iRBC binding and enhanced splenic clearance.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "No explicit limitation extracted.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "Taurine is identified as a natural host-derived inhibitor of Plasmodium falciparum cytoadhesion in asymptomatic malaria, linking elevated plasma taurine to reduced iRBC binding and enhanced splenic clearance.",
+            "support": "source_sentence"
+          }
+        ]
+      },
+      {
+        "method": "high-density EEG | spectral analysis | temporal response function (TRF) modeling",
+        "scenario": "autism Spectrum Disorder (ASD) | visual detection task with parametrically varied rhythmic structures",
+        "benchmark": "spectral analysis and temporal response",
+        "references": [
+          "Beker, S. et al. (2025) Not Just Noise: Impaired Oscillatory Entrainment Reflects Reduced Temporal Flexibility in Autism doi:10.1101/2025.07.02.662876"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "high-density EEG | spectral analysis | temporal response function (TRF) modeling",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "Impaired oscillatory entrainment in ASD reflects reduced temporal flexibility specifically under volatile temporal structures (e.g., mildly jittered rhythms), not a general non-selective deficit; neural modulation correlates with IQ in ASD.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "Abstract: Rhythmic patterns in the environment enhance neural activity, perception, and action. However, natural rhythms are often imprecise, requiring flexible adaptation. In autism Spectrum Disorder (ASD), characterized by cognitive rigidity and atypical use of prior information - favoring immedia...[truncated]",
+            "support": "structured_field"
+          }
+        ]
+      },
+      {
+        "method": "integrated modelling approach",
+        "scenario": "public health intervention",
+        "benchmark": "premature deaths reduction",
+        "references": [
+          "Chuong, M. et al. (2025) Preventing premature deaths through polygenic risk scores doi:10.1101/2024.12.26.24319670"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "integrated modelling approach",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "PRS-guided tailoring of screening age could reduce premature deaths in high-risk individuals by 23.3% across seven diseases with existing screening programs.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "Abstract: BackgroundPolygenic risk scores (PRS) have demonstrated predictive validity across a range of cohorts and diseases, but quantifying their clinical utility remains a challenge. As PRS can be derived from a single biological sample and remain stable throughout life, we explore the potential....[truncated]",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "PRS-guided tailoring of screening age could reduce premature deaths in high-risk individuals by 23.3% across seven diseases with existing screening programs.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "As PRS can be derived from a single biological sample and remain stable throughout life, we explore the potential...[truncated]",
+            "support": "source_sentence"
+          }
+        ]
+      }
+    ],
+    "claim_type_counts": {
+      "methodological_description": 33,
+      "empirical_result": 33,
+      "author_opinion": 33,
+      "theoretical_claim": 20
+    }
+  },
+  "knowledge_gaps": [
+    {
+      "gap_id": "gap_1783438560372161700",
+      "gap_type": "combinatorial",
+      "description": "Method 'ELISA | flow cytometry-based assay | NK cell activation assay' has no recorded validation in scenario 'Plasmodium vivax serological exposure marker development' in the current PaperGraph map.",
+      "supporting_references": [
+        "Athavale, A. et al. (2025) Antibody Responses to Salmonella Typhi Antigens among Typhoid Recovered Individuals in an Endemic Region doi:10.1101/2025.07.04.663140",
+        "Bareng, P. et al. (2025) Navigating parasite antigen genetic diversity in the design of Plasmodium vivax serological exposure markers for malaria doi:10.1101/2025.07.07.663616"
+      ],
+      "novelty_score": 6,
+      "application_value": "medium",
+      "feasibility": "high",
+      "suggested_research_path": "Run a targeted validation study with explicit benchmarks, baselines, and failure-mode analysis.",
+      "value_argument": "The combination may expose method-scenario boundary conditions rather than simply adding another benchmark.",
+      "overlap_risk": "low",
+      "requires_human_review": false
+    },
+    {
+      "gap_id": "gap_1783438560380716800",
+      "gap_type": "improvement",
+      "description": "Recorded limitation worth testing: No explicit limitation extracted.",
+      "supporting_references": [
+        "Shah, A. et al. (2025) Interactions Among Tumor Subtype, PPARγ Expression, and Adipose Proliferation Shape Outcomes in Breast Cancer doi:10.1101/2025.07.08.25331111"
+      ],
+      "novelty_score": 4,
+      "application_value": "medium",
+      "feasibility": "high",
+      "suggested_research_path": "Formulate a hypothesis that directly attacks the documented limitation and verify it under stress conditions.",
+      "value_argument": "The gap is grounded in an author-reported limitation, so it has stronger evidential support than a bare untried combination.",
+      "overlap_risk": "medium",
+      "requires_human_review": false
+    }
+  ],
+  "self_reflection": {
+    "top_venue_coverage_checked": true,
+    "pseudo_gap_risk_checked": true,
+    "method_categories_require_literature_support": true,
+    "unsupported_claims_marked_for_review": true
+  }
+}

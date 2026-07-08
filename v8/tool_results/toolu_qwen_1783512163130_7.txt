@@ -1,0 +1,1448 @@
+{
+  "agent": "tanxi",
+  "target_domain": "Click Chemistry / Bioorthogonal Chemistry / Chemical Biology",
+  "thought": "TanXi scanned the PaperGraph for low-density but high-importance method-scenario-benchmark regions, claim contradictions, anomaly/tension signals, cross-disciplinary unconnected pairs, suspended unresolved problems, and strategic-need alignment.",
+  "action": {
+    "scan_coverage_density": {
+      "target_domain": "Click Chemistry / Bioorthogonal Chemistry / Chemical Biology"
+    },
+    "detect_reasoning_gaps": {
+      "types": [
+        "claim_contradiction",
+        "theory_evidence_anomaly"
+      ]
+    },
+    "find_unconnected_pairs": {
+      "target_domain": "Click Chemistry / Bioorthogonal Chemistry / Chemical Biology"
+    },
+    "detect_suspended_problems": {
+      "min_citation_threshold": 50
+    },
+    "prioritize_gaps": {
+      "criteria": [
+        "importance",
+        "tractability",
+        "strategic_value"
+      ]
+    },
+    "align_with_strategic_needs": {
+      "strategic_domains": [
+        "ai for science"
+      ]
+    }
+  },
+  "coverage_analysis": {
+    "target_domain": "Click Chemistry / Bioorthogonal Chemistry / Chemical Biology",
+    "method_count": 9,
+    "scenario_count": 10,
+    "benchmark_count": 7,
+    "dense_areas": [
+      {
+        "topic": "[3+2] cycloaddition + organotitanium chemistry | pharmacological and bioorthogonal applications",
+        "method": "[3+2] cycloaddition",
+        "scenario": "organotitanium chemistry | pharmacological and bioorthogonal applications",
+        "evidence_count": 1,
+        "benchmark_count": 1,
+        "importance_score": 7
+      },
+      {
+        "topic": "bioorthogonal click chemistry + biomaterials for tissue engineering and regenerative medicine",
+        "method": "bioorthogonal click chemistry",
+        "scenario": "biomaterials for tissue engineering and regenerative medicine",
+        "evidence_count": 1,
+        "benchmark_count": 1,
+        "importance_score": 8
+      },
+      {
+        "topic": "bioorthogonal click chemistry + osteochondral regeneration | osteoarthritis therapy | 3D bioprinting",
+        "method": "bioorthogonal click chemistry",
+        "scenario": "osteochondral regeneration | osteoarthritis therapy | 3D bioprinting",
+        "evidence_count": 1,
+        "benchmark_count": 1,
+        "importance_score": 8
+      },
+      {
+        "topic": "bioorthogonal click-to-release chemistry + biointerfaces",
+        "method": "bioorthogonal click-to-release chemistry",
+        "scenario": "biointerfaces",
+        "evidence_count": 1,
+        "benchmark_count": 1,
+        "importance_score": 7
+      },
+      {
+        "topic": "click chemistry + 3D bioprinting",
+        "method": "click chemistry",
+        "scenario": "3D bioprinting",
+        "evidence_count": 1,
+        "benchmark_count": 1,
+        "importance_score": 7
+      },
+      {
+        "topic": "click chemistry | bioorthogonal chemistry + nanoparticle functionalization for nanomedicine | active targeting | pretargeting",
+        "method": "click chemistry | bioorthogonal chemistry",
+        "scenario": "nanoparticle functionalization for nanomedicine | active targeting | pretargeting",
+        "evidence_count": 1,
+        "benchmark_count": 1,
+        "importance_score": 7
+      },
+      {
+        "topic": "computational screening + bioorthogonal 1,2,4,5-tetrazine/trans-cyclooctene cycloadditions",
+        "method": "computational screening",
+        "scenario": "bioorthogonal 1,2,4,5-tetrazine/trans-cyclooctene cycloadditions",
+        "evidence_count": 1,
+        "benchmark_count": 1,
+        "importance_score": 7
+      },
+      {
+        "topic": "design and synthesis of iTCO (intramolecularly controlled trans-cyclooctene) linker + bioorthogonal bond-cleavage in biological systems",
+        "method": "design and synthesis of iTCO (intramolecularly controlled trans-cyclooctene) linker",
+        "scenario": "bioorthogonal bond-cleavage in biological systems",
+        "evidence_count": 1,
+        "benchmark_count": 1,
+        "importance_score": 7
+      },
+      {
+        "topic": "electrochemical measurement + microRNA biosensing",
+        "method": "electrochemical measurement",
+        "scenario": "microRNA biosensing",
+        "evidence_count": 1,
+        "benchmark_count": 1,
+        "importance_score": 5
+      },
+      {
+        "topic": "metal-free bioorthogonal click chemistry + cancer theranostics",
+        "method": "metal-free bioorthogonal click chemistry",
+        "scenario": "cancer theranostics",
+        "evidence_count": 1,
+        "benchmark_count": 1,
+        "importance_score": 7
+      }
+    ],
+    "density_holes": [
+      {
+        "topic": "bioorthogonal click chemistry + biomaterials for tissue engineering and regenerative medicine benchmark coverage",
+        "method": "bioorthogonal click chemistry",
+        "scenario": "biomaterials for tissue engineering and regenerative medicine",
+        "importance_score": 8,
+        "current_evidence_level": "medium",
+        "missing_benchmarks": [
+          "benchmark dataset",
+          "cell viability | gelation rate | degradation rate",
+          "crosslinkers",
+          "electrochemical signal response",
+          "reaction barrier"
+        ],
+        "why_important": "The method-scenario pair has evidence, but benchmark coverage is sparse, so robustness and generalization remain uncertain.",
+        "supporting_references": [
+          "Alessia Battigelli et al. (2022) Recent Advances in Bioorthogonal Click Chemistry for Biomedical Applications. doi:10.1021/acs.bioconjchem.1c00564"
+        ],
+        "semantic_plausibility": {
+          "verdict": "PASS",
+          "score": 0.88,
+          "requirements": [],
+          "scenario_affordances": [
+            "image",
+            "intervention",
+            "molecular",
+            "sequence",
+            "spatial_context"
+          ],
+          "bridge_terms": [
+            "benchmark dataset"
+          ],
+          "score_breakdown": [
+            {
+              "factor": "base_prior",
+              "delta": 0.45,
+              "reason": "default prior before evidence checks"
+            },
+            {
+              "factor": "papergraph_cooccurrence",
+              "delta": 0.35,
+              "reason": "method and scenario co-occur in PaperGraph"
+            },
+            {
+              "factor": "bridge_terms",
+              "delta": 0.08,
+              "reason": "1 bridge concept(s) detected"
+            }
+          ],
+          "reason": "method and scenario already co-occur in at least one PaperGraph record; bridge concepts detected: benchmark dataset"
+        }
+      },
+      {
+        "topic": "bioorthogonal click chemistry + osteochondral regeneration | osteoarthritis therapy | 3D bioprinting benchmark coverage",
+        "method": "bioorthogonal click chemistry",
+        "scenario": "osteochondral regeneration | osteoarthritis therapy | 3D bioprinting",
+        "importance_score": 8,
+        "current_evidence_level": "medium",
+        "missing_benchmarks": [
+          "benchmark dataset",
+          "cell viability | gelation rate | degradation rate",
+          "conversion and selectivity",
+          "electrochemical signal response",
+          "reaction barrier"
+        ],
+        "why_important": "The method-scenario pair has evidence, but benchmark coverage is sparse, so robustness and generalization remain uncertain.",
+        "supporting_references": [
+          "Chithra Anilkumar et al. (2026) Bioorthogonal Click Chemistry Engineered Bioinks for 3D Bioprinting in Osteochondral Regeneration and Osteoarthritis Therapy: A Translational Review. doi:10.1021/acsabm.5c02348"
+        ],
+        "semantic_plausibility": {
+          "verdict": "PASS",
+          "score": 0.88,
+          "requirements": [],
+          "scenario_affordances": [
+            "image",
+            "intervention",
+            "molecular",
+            "sequence",
+            "spatial_context"
+          ],
+          "bridge_terms": [
+            "benchmark dataset"
+          ],
+          "score_breakdown": [
+            {
+              "factor": "base_prior",
+              "delta": 0.45,
+              "reason": "default prior before evidence checks"
+            },
+            {
+              "factor": "papergraph_cooccurrence",
+              "delta": 0.35,
+              "reason": "method and scenario co-occur in PaperGraph"
+            },
+            {
+              "factor": "bridge_terms",
+              "delta": 0.08,
+              "reason": "1 bridge concept(s) detected"
+            }
+          ],
+          "reason": "method and scenario already co-occur in at least one PaperGraph record; bridge concepts detected: benchmark dataset"
+        }
+      },
+      {
+        "topic": "bioorthogonal click chemistry + 3D bioprinting",
+        "method": "bioorthogonal click chemistry",
+        "scenario": "3D bioprinting",
+        "importance_score": 8,
+        "current_evidence_level": "none",
+        "missing_benchmarks": [
+          "benchmark dataset",
+          "cell viability | gelation rate | degradation rate",
+          "conversion and selectivity",
+          "crosslinkers",
+          "electrochemical signal response"
+        ],
+        "why_important": "Both the method and scenario are visible in the field map, but this intersection has no recorded validation.",
+        "supporting_references": [
+          "Chithra Anilkumar et al. (2026) Bioorthogonal Click Chemistry Engineered Bioinks for 3D Bioprinting in Osteochondral Regeneration and Osteoarthritis Therapy: A Translational Review. doi:10.1021/acsabm.5c02348",
+          "Alessia Battigelli et al. (2022) Recent Advances in Bioorthogonal Click Chemistry for Biomedical Applications. doi:10.1021/acs.bioconjchem.1c00564",
+          "Lei Nie et al. (2023) Click chemistry for 3D bioprinting. doi:10.1039/d3mh00516j"
+        ],
+        "semantic_plausibility": {
+          "verdict": "HUMAN_REVIEW",
+          "score": 0.53,
+          "requirements": [],
+          "scenario_affordances": [
+            "image",
+            "intervention",
+            "molecular",
+            "sequence",
+            "spatial_context"
+          ],
+          "bridge_terms": [
+            "benchmark dataset"
+          ],
+          "score_breakdown": [
+            {
+              "factor": "base_prior",
+              "delta": 0.45,
+              "reason": "default prior before evidence checks"
+            },
+            {
+              "factor": "bridge_terms",
+              "delta": 0.08,
+              "reason": "1 bridge concept(s) detected"
+            }
+          ],
+          "reason": "bridge concepts detected: benchmark dataset"
+        }
+      },
+      {
+        "topic": "bioorthogonal click chemistry + biointerfaces",
+        "method": "bioorthogonal click chemistry",
+        "scenario": "biointerfaces",
+        "importance_score": 8,
+        "current_evidence_level": "none",
+        "missing_benchmarks": [
+          "benchmark dataset",
+          "cell viability | gelation rate | degradation rate",
+          "conversion and selectivity",
+          "crosslinkers",
+          "electrochemical signal response"
+        ],
+        "why_important": "Both the method and scenario are visible in the field map, but this intersection has no recorded validation.",
+        "supporting_references": [
+          "Chithra Anilkumar et al. (2026) Bioorthogonal Click Chemistry Engineered Bioinks for 3D Bioprinting in Osteochondral Regeneration and Osteoarthritis Therapy: A Translational Review. doi:10.1021/acsabm.5c02348",
+          "Alessia Battigelli et al. (2022) Recent Advances in Bioorthogonal Click Chemistry for Biomedical Applications. doi:10.1021/acs.bioconjchem.1c00564",
+          "Dóra Kern et al. (2026) Biointerface Implications of Bioorthogonal Click-to-Release Chemistry doi:10.26434/chemrxiv-2026-p03vb"
+        ],
+        "semantic_plausibility": {
+          "verdict": "HUMAN_REVIEW",
+          "score": 0.53,
+          "requirements": [],
+          "scenario_affordances": [
+            "image",
+            "intervention",
+            "molecular",
+            "sequence",
+            "spatial_context"
+          ],
+          "bridge_terms": [
+            "benchmark dataset"
+          ],
+          "score_breakdown": [
+            {
+              "factor": "base_prior",
+              "delta": 0.45,
+              "reason": "default prior before evidence checks"
+            },
+            {
+              "factor": "bridge_terms",
+              "delta": 0.08,
+              "reason": "1 bridge concept(s) detected"
+            }
+          ],
+          "reason": "bridge concepts detected: benchmark dataset"
+        }
+      },
+      {
+        "topic": "bioorthogonal click chemistry + bioorthogonal 1,2,4,5-tetrazine/trans-cyclooctene cycloadditions",
+        "method": "bioorthogonal click chemistry",
+        "scenario": "bioorthogonal 1,2,4,5-tetrazine/trans-cyclooctene cycloadditions",
+        "importance_score": 8,
+        "current_evidence_level": "none",
+        "missing_benchmarks": [
+          "benchmark dataset",
+          "cell viability | gelation rate | degradation rate",
+          "conversion and selectivity",
+          "crosslinkers",
+          "electrochemical signal response"
+        ],
+        "why_important": "Both the method and scenario are visible in the field map, but this intersection has no recorded validation.",
+        "supporting_references": [
+          "Chithra Anilkumar et al. (2026) Bioorthogonal Click Chemistry Engineered Bioinks for 3D Bioprinting in Osteochondral Regeneration and Osteoarthritis Therapy: A Translational Review. doi:10.1021/acsabm.5c02348",
+          "Alessia Battigelli et al. (2022) Recent Advances in Bioorthogonal Click Chemistry for Biomedical Applications. doi:10.1021/acs.bioconjchem.1c00564",
+          "Dennis Svatunek (2024) Computational Large-Scale Screening of Bioorthogonal 1,2,4,5-Tetrazine/trans-Cyclooctene Cycloadditions doi:10.26434/chemrxiv-2024-24xcv"
+        ],
+        "semantic_plausibility": {
+          "verdict": "HUMAN_REVIEW",
+          "score": 0.53,
+          "requirements": [],
+          "scenario_affordances": [
+            "image",
+            "intervention",
+            "molecular",
+            "sequence",
+            "spatial_context"
+          ],
+          "bridge_terms": [
+            "benchmark dataset"
+          ],
+          "score_breakdown": [
+            {
+              "factor": "base_prior",
+              "delta": 0.45,
+              "reason": "default prior before evidence checks"
+            },
+            {
+              "factor": "bridge_terms",
+              "delta": 0.08,
+              "reason": "1 bridge concept(s) detected"
+            }
+          ],
+          "reason": "bridge concepts detected: benchmark dataset"
+        }
+      },
+      {
+        "topic": "bioorthogonal click chemistry + bioorthogonal bond-cleavage in biological systems",
+        "method": "bioorthogonal click chemistry",
+        "scenario": "bioorthogonal bond-cleavage in biological systems",
+        "importance_score": 8,
+        "current_evidence_level": "none",
+        "missing_benchmarks": [
+          "benchmark dataset",
+          "cell viability | gelation rate | degradation rate",
+          "conversion and selectivity",
+          "crosslinkers",
+          "electrochemical signal response"
+        ],
+        "why_important": "Both the method and scenario are visible in the field map, but this intersection has no recorded validation.",
+        "supporting_references": [
+          "Chithra Anilkumar et al. (2026) Bioorthogonal Click Chemistry Engineered Bioinks for 3D Bioprinting in Osteochondral Regeneration and Osteoarthritis Therapy: A Translational Review. doi:10.1021/acsabm.5c02348",
+          "Alessia Battigelli et al. (2022) Recent Advances in Bioorthogonal Click Chemistry for Biomedical Applications. doi:10.1021/acs.bioconjchem.1c00564",
+          "Walter Kuba et al. (2025) Next-Level Bioorthogonal Bond-Cleavage Through Intramolecular Control of Click-To-Release Chemistry doi:10.26434/chemrxiv-2025-7s39f"
+        ],
+        "semantic_plausibility": {
+          "verdict": "HUMAN_REVIEW",
+          "score": 0.53,
+          "requirements": [],
+          "scenario_affordances": [
+            "image",
+            "intervention",
+            "molecular",
+            "sequence",
+            "spatial_context"
+          ],
+          "bridge_terms": [
+            "benchmark dataset"
+          ],
+          "score_breakdown": [
+            {
+              "factor": "base_prior",
+              "delta": 0.45,
+              "reason": "default prior before evidence checks"
+            },
+            {
+              "factor": "bridge_terms",
+              "delta": 0.08,
+              "reason": "1 bridge concept(s) detected"
+            }
+          ],
+          "reason": "bridge concepts detected: benchmark dataset"
+        }
+      },
+      {
+        "topic": "bioorthogonal click chemistry + cancer theranostics",
+        "method": "bioorthogonal click chemistry",
+        "scenario": "cancer theranostics",
+        "importance_score": 8,
+        "current_evidence_level": "none",
+        "missing_benchmarks": [
+          "benchmark dataset",
+          "cell viability | gelation rate | degradation rate",
+          "conversion and selectivity",
+          "crosslinkers",
+          "electrochemical signal response"
+        ],
+        "why_important": "Both the method and scenario are visible in the field map, but this intersection has no recorded validation.",
+        "supporting_references": [
+          "Dan Wu et al. (2022) Metal-free bioorthogonal click chemistry in cancer theranostics. doi:10.1039/d1cs00451d",
+          "Chithra Anilkumar et al. (2026) Bioorthogonal Click Chemistry Engineered Bioinks for 3D Bioprinting in Osteochondral Regeneration and Osteoarthritis Therapy: A Translational Review. doi:10.1021/acsabm.5c02348",
+          "Alessia Battigelli et al. (2022) Recent Advances in Bioorthogonal Click Chemistry for Biomedical Applications. doi:10.1021/acs.bioconjchem.1c00564"
+        ],
+        "semantic_plausibility": {
+          "verdict": "HUMAN_REVIEW",
+          "score": 0.53,
+          "requirements": [],
+          "scenario_affordances": [
+            "image",
+            "intervention",
+            "molecular",
+            "sequence",
+            "spatial_context"
+          ],
+          "bridge_terms": [
+            "benchmark dataset"
+          ],
+          "score_breakdown": [
+            {
+              "factor": "base_prior",
+              "delta": 0.45,
+              "reason": "default prior before evidence checks"
+            },
+            {
+              "factor": "bridge_terms",
+              "delta": 0.08,
+              "reason": "1 bridge concept(s) detected"
+            }
+          ],
+          "reason": "bridge concepts detected: benchmark dataset"
+        }
+      },
+      {
+        "topic": "bioorthogonal click chemistry + microRNA biosensing",
+        "method": "bioorthogonal click chemistry",
+        "scenario": "microRNA biosensing",
+        "importance_score": 8,
+        "current_evidence_level": "none",
+        "missing_benchmarks": [
+          "benchmark dataset",
+          "cell viability | gelation rate | degradation rate",
+          "conversion and selectivity",
+          "crosslinkers",
+          "electrochemical signal response"
+        ],
+        "why_important": "Both the method and scenario are visible in the field map, but this intersection has no recorded validation.",
+        "supporting_references": [
+          "Chithra Anilkumar et al. (2026) Bioorthogonal Click Chemistry Engineered Bioinks for 3D Bioprinting in Osteochondral Regeneration and Osteoarthritis Therapy: A Translational Review. doi:10.1021/acsabm.5c02348",
+          "Alessia Battigelli et al. (2022) Recent Advances in Bioorthogonal Click Chemistry for Biomedical Applications. doi:10.1021/acs.bioconjchem.1c00564",
+          "Tingting Wang et al. (2024) DNA Nanostructure Disintegration-Assisted SPAAC Ligation for Electrochemical Biosensing. doi:10.1021/acs.nanolett.4c03394"
+        ],
+        "semantic_plausibility": {
+          "verdict": "HUMAN_REVIEW",
+          "score": 0.53,
+          "requirements": [],
+          "scenario_affordances": [
+            "image",
+            "intervention",
+            "molecular",
+            "sequence",
+            "spatial_context"
+          ],
+          "bridge_terms": [
+            "benchmark dataset"
+          ],
+          "score_breakdown": [
+            {
+              "factor": "base_prior",
+              "delta": 0.45,
+              "reason": "default prior before evidence checks"
+            },
+            {
+              "factor": "bridge_terms",
+              "delta": 0.08,
+              "reason": "1 bridge concept(s) detected"
+            }
+          ],
+          "reason": "bridge concepts detected: benchmark dataset"
+        }
+      },
+      {
+        "topic": "bioorthogonal click chemistry + nanoparticle functionalization for nanomedicine | active targeting | pretargeting",
+        "method": "bioorthogonal click chemistry",
+        "scenario": "nanoparticle functionalization for nanomedicine | active targeting | pretargeting",
+        "importance_score": 8,
+        "current_evidence_level": "none",
+        "missing_benchmarks": [
+          "benchmark dataset",
+          "cell viability | gelation rate | degradation rate",
+          "conversion and selectivity",
+          "crosslinkers",
+          "electrochemical signal response"
+        ],
+        "why_important": "Both the method and scenario are visible in the field map, but this intersection has no recorded validation.",
+        "supporting_references": [
+          "L. Taiariol et al. (2021) Click and Bioorthogonal Chemistry: The Future of Active Targeting of Nanoparticles for Nanomedicines? doi:10.1021/acs.chemrev.1c00484",
+          "Chithra Anilkumar et al. (2026) Bioorthogonal Click Chemistry Engineered Bioinks for 3D Bioprinting in Osteochondral Regeneration and Osteoarthritis Therapy: A Translational Review. doi:10.1021/acsabm.5c02348",
+          "Alessia Battigelli et al. (2022) Recent Advances in Bioorthogonal Click Chemistry for Biomedical Applications. doi:10.1021/acs.bioconjchem.1c00564"
+        ],
+        "semantic_plausibility": {
+          "verdict": "HUMAN_REVIEW",
+          "score": 0.53,
+          "requirements": [],
+          "scenario_affordances": [
+            "image",
+            "intervention",
+            "molecular",
+            "sequence",
+            "spatial_context"
+          ],
+          "bridge_terms": [
+            "benchmark dataset"
+          ],
+          "score_breakdown": [
+            {
+              "factor": "base_prior",
+              "delta": 0.45,
+              "reason": "default prior before evidence checks"
+            },
+            {
+              "factor": "bridge_terms",
+              "delta": 0.08,
+              "reason": "1 bridge concept(s) detected"
+            }
+          ],
+          "reason": "bridge concepts detected: benchmark dataset"
+        }
+      },
+      {
+        "topic": "bioorthogonal click chemistry + organotitanium chemistry | pharmacological and bioorthogonal applications",
+        "method": "bioorthogonal click chemistry",
+        "scenario": "organotitanium chemistry | pharmacological and bioorthogonal applications",
+        "importance_score": 8,
+        "current_evidence_level": "none",
+        "missing_benchmarks": [
+          "benchmark dataset",
+          "cell viability | gelation rate | degradation rate",
+          "conversion and selectivity",
+          "crosslinkers",
+          "electrochemical signal response"
+        ],
+        "why_important": "Both the method and scenario are visible in the field map, but this intersection has no recorded validation.",
+        "supporting_references": [
+          "Chithra Anilkumar et al. (2026) Bioorthogonal Click Chemistry Engineered Bioinks for 3D Bioprinting in Osteochondral Regeneration and Osteoarthritis Therapy: A Translational Review. doi:10.1021/acsabm.5c02348",
+          "Alessia Battigelli et al. (2022) Recent Advances in Bioorthogonal Click Chemistry for Biomedical Applications. doi:10.1021/acs.bioconjchem.1c00564",
+          "Gregory Arzoumanidis (2023) Organotitanium Click Chemistry doi:10.26434/chemrxiv-2023-7p307-v2"
+        ],
+        "semantic_plausibility": {
+          "verdict": "HUMAN_REVIEW",
+          "score": 0.53,
+          "requirements": [],
+          "scenario_affordances": [
+            "image",
+            "intervention",
+            "molecular",
+            "sequence",
+            "spatial_context"
+          ],
+          "bridge_terms": [
+            "benchmark dataset"
+          ],
+          "score_breakdown": [
+            {
+              "factor": "base_prior",
+              "delta": 0.45,
+              "reason": "default prior before evidence checks"
+            },
+            {
+              "factor": "bridge_terms",
+              "delta": 0.08,
+              "reason": "1 bridge concept(s) detected"
+            }
+          ],
+          "reason": "bridge concepts detected: benchmark dataset"
+        }
+      },
+      {
+        "topic": "[3+2] cycloaddition + organotitanium chemistry | pharmacological and bioorthogonal applications benchmark coverage",
+        "method": "[3+2] cycloaddition",
+        "scenario": "organotitanium chemistry | pharmacological and bioorthogonal applications",
+        "importance_score": 7,
+        "current_evidence_level": "medium",
+        "missing_benchmarks": [
+          "cell viability | gelation rate | degradation rate",
+          "conversion and selectivity",
+          "crosslinkers",
+          "electrochemical signal response",
+          "reaction barrier"
+        ],
+        "why_important": "The method-scenario pair has evidence, but benchmark coverage is sparse, so robustness and generalization remain uncertain.",
+        "supporting_references": [
+          "Gregory Arzoumanidis (2023) Organotitanium Click Chemistry doi:10.26434/chemrxiv-2023-7p307-v2"
+        ],
+        "semantic_plausibility": {
+          "verdict": "PASS",
+          "score": 0.88,
+          "requirements": [],
+          "scenario_affordances": [
+            "image",
+            "intervention",
+            "molecular",
+            "sequence",
+            "spatial_context"
+          ],
+          "bridge_terms": [
+            "benchmark dataset"
+          ],
+          "score_breakdown": [
+            {
+              "factor": "base_prior",
+              "delta": 0.45,
+              "reason": "default prior before evidence checks"
+            },
+            {
+              "factor": "papergraph_cooccurrence",
+              "delta": 0.35,
+              "reason": "method and scenario co-occur in PaperGraph"
+            },
+            {
+              "factor": "bridge_terms",
+              "delta": 0.08,
+              "reason": "1 bridge concept(s) detected"
+            }
+          ],
+          "reason": "method and scenario already co-occur in at least one PaperGraph record; bridge concepts detected: benchmark dataset"
+        }
+      },
+      {
+        "topic": "bioorthogonal click-to-release chemistry + biointerfaces benchmark coverage",
+        "method": "bioorthogonal click-to-release chemistry",
+        "scenario": "biointerfaces",
+        "importance_score": 7,
+        "current_evidence_level": "medium",
+        "missing_benchmarks": [
+          "benchmark dataset",
+          "cell viability | gelation rate | degradation rate",
+          "conversion and selectivity",
+          "crosslinkers",
+          "electrochemical signal response"
+        ],
+        "why_important": "The method-scenario pair has evidence, but benchmark coverage is sparse, so robustness and generalization remain uncertain.",
+        "supporting_references": [
+          "Dóra Kern et al. (2026) Biointerface Implications of Bioorthogonal Click-to-Release Chemistry doi:10.26434/chemrxiv-2026-p03vb"
+        ],
+        "semantic_plausibility": {
+          "verdict": "PASS",
+          "score": 0.88,
+          "requirements": [],
+          "scenario_affordances": [
+            "image",
+            "intervention",
+            "molecular",
+            "sequence",
+            "spatial_context"
+          ],
+          "bridge_terms": [
+            "benchmark dataset"
+          ],
+          "score_breakdown": [
+            {
+              "factor": "base_prior",
+              "delta": 0.45,
+              "reason": "default prior before evidence checks"
+            },
+            {
+              "factor": "papergraph_cooccurrence",
+              "delta": 0.35,
+              "reason": "method and scenario co-occur in PaperGraph"
+            },
+            {
+              "factor": "bridge_terms",
+              "delta": 0.08,
+              "reason": "1 bridge concept(s) detected"
+            }
+          ],
+          "reason": "method and scenario already co-occur in at least one PaperGraph record; bridge concepts detected: benchmark dataset"
+        }
+      },
+      {
+        "topic": "click chemistry + 3D bioprinting benchmark coverage",
+        "method": "click chemistry",
+        "scenario": "3D bioprinting",
+        "importance_score": 7,
+        "current_evidence_level": "medium",
+        "missing_benchmarks": [
+          "benchmark dataset",
+          "conversion and selectivity",
+          "crosslinkers",
+          "electrochemical signal response",
+          "reaction barrier"
+        ],
+        "why_important": "The method-scenario pair has evidence, but benchmark coverage is sparse, so robustness and generalization remain uncertain.",
+        "supporting_references": [
+          "Lei Nie et al. (2023) Click chemistry for 3D bioprinting. doi:10.1039/d3mh00516j"
+        ],
+        "semantic_plausibility": {
+          "verdict": "PASS",
+          "score": 0.88,
+          "requirements": [],
+          "scenario_affordances": [
+            "image",
+            "intervention",
+            "molecular",
+            "sequence",
+            "spatial_context"
+          ],
+          "bridge_terms": [
+            "benchmark dataset"
+          ],
+          "score_breakdown": [
+            {
+              "factor": "base_prior",
+              "delta": 0.45,
+              "reason": "default prior before evidence checks"
+            },
+            {
+              "factor": "papergraph_cooccurrence",
+              "delta": 0.35,
+              "reason": "method and scenario co-occur in PaperGraph"
+            },
+            {
+              "factor": "bridge_terms",
+              "delta": 0.08,
+              "reason": "1 bridge concept(s) detected"
+            }
+          ],
+          "reason": "method and scenario already co-occur in at least one PaperGraph record; bridge concepts detected: benchmark dataset"
+        }
+      },
+      {
+        "topic": "click chemistry | bioorthogonal chemistry + nanoparticle functionalization for nanomedicine | active targeting | pretargeting benchmark coverage",
+        "method": "click chemistry | bioorthogonal chemistry",
+        "scenario": "nanoparticle functionalization for nanomedicine | active targeting | pretargeting",
+        "importance_score": 7,
+        "current_evidence_level": "medium",
+        "missing_benchmarks": [
+          "benchmark dataset",
+          "cell viability | gelation rate | degradation rate",
+          "crosslinkers",
+          "electrochemical signal response",
+          "reaction barrier"
+        ],
+        "why_important": "The method-scenario pair has evidence, but benchmark coverage is sparse, so robustness and generalization remain uncertain.",
+        "supporting_references": [
+          "L. Taiariol et al. (2021) Click and Bioorthogonal Chemistry: The Future of Active Targeting of Nanoparticles for Nanomedicines? doi:10.1021/acs.chemrev.1c00484"
+        ],
+        "semantic_plausibility": {
+          "verdict": "PASS",
+          "score": 0.88,
+          "requirements": [],
+          "scenario_affordances": [
+            "image",
+            "intervention",
+            "molecular",
+            "sequence",
+            "spatial_context"
+          ],
+          "bridge_terms": [
+            "benchmark dataset"
+          ],
+          "score_breakdown": [
+            {
+              "factor": "base_prior",
+              "delta": 0.45,
+              "reason": "default prior before evidence checks"
+            },
+            {
+              "factor": "papergraph_cooccurrence",
+              "delta": 0.35,
+              "reason": "method and scenario co-occur in PaperGraph"
+            },
+            {
+              "factor": "bridge_terms",
+              "delta": 0.08,
+              "reason": "1 bridge concept(s) detected"
+            }
+          ],
+          "reason": "method and scenario already co-occur in at least one PaperGraph record; bridge concepts detected: benchmark dataset"
+        }
+      },
+      {
+        "topic": "computational screening + bioorthogonal 1,2,4,5-tetrazine/trans-cyclooctene cycloadditions benchmark coverage",
+        "method": "computational screening",
+        "scenario": "bioorthogonal 1,2,4,5-tetrazine/trans-cyclooctene cycloadditions",
+        "importance_score": 7,
+        "current_evidence_level": "medium",
+        "missing_benchmarks": [
+          "benchmark dataset",
+          "cell viability | gelation rate | degradation rate",
+          "conversion and selectivity",
+          "crosslinkers",
+          "electrochemical signal response"
+        ],
+        "why_important": "The method-scenario pair has evidence, but benchmark coverage is sparse, so robustness and generalization remain uncertain.",
+        "supporting_references": [
+          "Dennis Svatunek (2024) Computational Large-Scale Screening of Bioorthogonal 1,2,4,5-Tetrazine/trans-Cyclooctene Cycloadditions doi:10.26434/chemrxiv-2024-24xcv"
+        ],
+        "semantic_plausibility": {
+          "verdict": "PASS",
+          "score": 0.88,
+          "requirements": [],
+          "scenario_affordances": [
+            "image",
+            "intervention",
+            "molecular",
+            "sequence",
+            "spatial_context"
+          ],
+          "bridge_terms": [
+            "benchmark dataset"
+          ],
+          "score_breakdown": [
+            {
+              "factor": "base_prior",
+              "delta": 0.45,
+              "reason": "default prior before evidence checks"
+            },
+            {
+              "factor": "papergraph_cooccurrence",
+              "delta": 0.35,
+              "reason": "method and scenario co-occur in PaperGraph"
+            },
+            {
+              "factor": "bridge_terms",
+              "delta": 0.08,
+              "reason": "1 bridge concept(s) detected"
+            }
+          ],
+          "reason": "method and scenario already co-occur in at least one PaperGraph record; bridge concepts detected: benchmark dataset"
+        }
+      },
+      {
+        "topic": "design and synthesis of iTCO (intramolecularly controlled trans-cyclooctene) linker + bioorthogonal bond-cleavage in biological systems benchmark coverage",
+        "method": "design and synthesis of iTCO (intramolecularly controlled trans-cyclooctene) linker",
+        "scenario": "bioorthogonal bond-cleavage in biological systems",
+        "importance_score": 7,
+        "current_evidence_level": "medium",
+        "missing_benchmarks": [
+          "cell viability | gelation rate | degradation rate",
+          "conversion and selectivity",
+          "crosslinkers",
+          "electrochemical signal response",
+          "reaction barrier"
+        ],
+        "why_important": "The method-scenario pair has evidence, but benchmark coverage is sparse, so robustness and generalization remain uncertain.",
+        "supporting_references": [
+          "Walter Kuba et al. (2025) Next-Level Bioorthogonal Bond-Cleavage Through Intramolecular Control of Click-To-Release Chemistry doi:10.26434/chemrxiv-2025-7s39f"
+        ],
+        "semantic_plausibility": {
+          "verdict": "PASS",
+          "score": 0.88,
+          "requirements": [],
+          "scenario_affordances": [
+            "image",
+            "intervention",
+            "molecular",
+            "sequence",
+            "spatial_context"
+          ],
+          "bridge_terms": [
+            "benchmark dataset"
+          ],
+          "score_breakdown": [
+            {
+              "factor": "base_prior",
+              "delta": 0.45,
+              "reason": "default prior before evidence checks"
+            },
+            {
+              "factor": "papergraph_cooccurrence",
+              "delta": 0.35,
+              "reason": "method and scenario co-occur in PaperGraph"
+            },
+            {
+              "factor": "bridge_terms",
+              "delta": 0.08,
+              "reason": "1 bridge concept(s) detected"
+            }
+          ],
+          "reason": "method and scenario already co-occur in at least one PaperGraph record; bridge concepts detected: benchmark dataset"
+        }
+      },
+      {
+        "topic": "metal-free bioorthogonal click chemistry + cancer theranostics benchmark coverage",
+        "method": "metal-free bioorthogonal click chemistry",
+        "scenario": "cancer theranostics",
+        "importance_score": 7,
+        "current_evidence_level": "medium",
+        "missing_benchmarks": [
+          "benchmark dataset",
+          "cell viability | gelation rate | degradation rate",
+          "crosslinkers",
+          "electrochemical signal response",
+          "reaction barrier"
+        ],
+        "why_important": "The method-scenario pair has evidence, but benchmark coverage is sparse, so robustness and generalization remain uncertain.",
+        "supporting_references": [
+          "Dan Wu et al. (2022) Metal-free bioorthogonal click chemistry in cancer theranostics. doi:10.1039/d1cs00451d"
+        ],
+        "semantic_plausibility": {
+          "verdict": "PASS",
+          "score": 0.88,
+          "requirements": [],
+          "scenario_affordances": [
+            "image",
+            "intervention",
+            "molecular",
+            "sequence",
+            "spatial_context"
+          ],
+          "bridge_terms": [
+            "benchmark dataset"
+          ],
+          "score_breakdown": [
+            {
+              "factor": "base_prior",
+              "delta": 0.45,
+              "reason": "default prior before evidence checks"
+            },
+            {
+              "factor": "papergraph_cooccurrence",
+              "delta": 0.35,
+              "reason": "method and scenario co-occur in PaperGraph"
+            },
+            {
+              "factor": "bridge_terms",
+              "delta": 0.08,
+              "reason": "1 bridge concept(s) detected"
+            }
+          ],
+          "reason": "method and scenario already co-occur in at least one PaperGraph record; bridge concepts detected: benchmark dataset"
+        }
+      },
+      {
+        "topic": "[3+2] cycloaddition + bioorthogonal 1,2,4,5-tetrazine/trans-cyclooctene cycloadditions",
+        "method": "[3+2] cycloaddition",
+        "scenario": "bioorthogonal 1,2,4,5-tetrazine/trans-cyclooctene cycloadditions",
+        "importance_score": 7,
+        "current_evidence_level": "none",
+        "missing_benchmarks": [
+          "benchmark dataset",
+          "cell viability | gelation rate | degradation rate",
+          "conversion and selectivity",
+          "crosslinkers",
+          "electrochemical signal response"
+        ],
+        "why_important": "Both the method and scenario are visible in the field map, but this intersection has no recorded validation.",
+        "supporting_references": [
+          "Gregory Arzoumanidis (2023) Organotitanium Click Chemistry doi:10.26434/chemrxiv-2023-7p307-v2",
+          "Dennis Svatunek (2024) Computational Large-Scale Screening of Bioorthogonal 1,2,4,5-Tetrazine/trans-Cyclooctene Cycloadditions doi:10.26434/chemrxiv-2024-24xcv"
+        ],
+        "semantic_plausibility": {
+          "verdict": "HUMAN_REVIEW",
+          "score": 0.53,
+          "requirements": [],
+          "scenario_affordances": [
+            "image",
+            "intervention",
+            "molecular",
+            "sequence",
+            "spatial_context"
+          ],
+          "bridge_terms": [
+            "benchmark dataset"
+          ],
+          "score_breakdown": [
+            {
+              "factor": "base_prior",
+              "delta": 0.45,
+              "reason": "default prior before evidence checks"
+            },
+            {
+              "factor": "bridge_terms",
+              "delta": 0.08,
+              "reason": "1 bridge concept(s) detected"
+            }
+          ],
+          "reason": "bridge concepts detected: benchmark dataset"
+        }
+      },
+      {
+        "topic": "[3+2] cycloaddition + bioorthogonal bond-cleavage in biological systems",
+        "method": "[3+2] cycloaddition",
+        "scenario": "bioorthogonal bond-cleavage in biological systems",
+        "importance_score": 7,
+        "current_evidence_level": "none",
+        "missing_benchmarks": [
+          "benchmark dataset",
+          "cell viability | gelation rate | degradation rate",
+          "conversion and selectivity",
+          "crosslinkers",
+          "electrochemical signal response"
+        ],
+        "why_important": "Both the method and scenario are visible in the field map, but this intersection has no recorded validation.",
+        "supporting_references": [
+          "Gregory Arzoumanidis (2023) Organotitanium Click Chemistry doi:10.26434/chemrxiv-2023-7p307-v2",
+          "Walter Kuba et al. (2025) Next-Level Bioorthogonal Bond-Cleavage Through Intramolecular Control of Click-To-Release Chemistry doi:10.26434/chemrxiv-2025-7s39f"
+        ],
+        "semantic_plausibility": {
+          "verdict": "HUMAN_REVIEW",
+          "score": 0.53,
+          "requirements": [],
+          "scenario_affordances": [
+            "image",
+            "intervention",
+            "molecular",
+            "sequence",
+            "spatial_context"
+          ],
+          "bridge_terms": [
+            "benchmark dataset"
+          ],
+          "score_breakdown": [
+            {
+              "factor": "base_prior",
+              "delta": 0.45,
+              "reason": "default prior before evidence checks"
+            },
+            {
+              "factor": "bridge_terms",
+              "delta": 0.08,
+              "reason": "1 bridge concept(s) detected"
+            }
+          ],
+          "reason": "bridge concepts detected: benchmark dataset"
+        }
+      },
+      {
+        "topic": "bioorthogonal click-to-release chemistry + 3D bioprinting",
+        "method": "bioorthogonal click-to-release chemistry",
+        "scenario": "3D bioprinting",
+        "importance_score": 7,
+        "current_evidence_level": "none",
+        "missing_benchmarks": [
+          "benchmark dataset",
+          "cell viability | gelation rate | degradation rate",
+          "conversion and selectivity",
+          "crosslinkers",
+          "electrochemical signal response"
+        ],
+        "why_important": "Both the method and scenario are visible in the field map, but this intersection has no recorded validation.",
+        "supporting_references": [
+          "Dóra Kern et al. (2026) Biointerface Implications of Bioorthogonal Click-to-Release Chemistry doi:10.26434/chemrxiv-2026-p03vb",
+          "Lei Nie et al. (2023) Click chemistry for 3D bioprinting. doi:10.1039/d3mh00516j"
+        ],
+        "semantic_plausibility": {
+          "verdict": "HUMAN_REVIEW",
+          "score": 0.53,
+          "requirements": [],
+          "scenario_affordances": [
+            "image",
+            "intervention",
+            "molecular",
+            "sequence",
+            "spatial_context"
+          ],
+          "bridge_terms": [
+            "benchmark dataset"
+          ],
+          "score_breakdown": [
+            {
+              "factor": "base_prior",
+              "delta": 0.45,
+              "reason": "default prior before evidence checks"
+            },
+            {
+              "factor": "bridge_terms",
+              "delta": 0.08,
+              "reason": "1 bridge concept(s) detected"
+            }
+          ],
+          "reason": "bridge concepts detected: benchmark dataset"
+        }
+      }
+    ],
+    "rejected_density_holes": []
+  },
+  "reasoning_gaps": [],
+  "cross_disciplinary_unconnected_pairs": [
+    {
+      "field_a": "biomedical",
+      "concept_a": "biomaterials for tissue engineering and regenerative medicine",
+      "field_b": "computer_science",
+      "concept_b": "computational screening",
+      "potential_synergy": "Testing whether biomaterials for tissue engineering and regenerative medicine can constrain, evaluate, or operationalize computational screening for Click Chemistry / Bioorthogonal Chemistry / Chemical Biology may reveal a non-obvious transfer path or boundary condition.",
+      "supporting_references": [
+        "Alessia Battigelli et al. (2022) Recent Advances in Bioorthogonal Click Chemistry for Biomedical Applications. doi:10.1021/acs.bioconjchem.1c00564",
+        "Dennis Svatunek (2024) Computational Large-Scale Screening of Bioorthogonal 1,2,4,5-Tetrazine/trans-Cyclooctene Cycloadditions doi:10.26434/chemrxiv-2024-24xcv"
+      ]
+    },
+    {
+      "field_a": "biomedical",
+      "concept_a": "conversion and selectivity",
+      "field_b": "computer_science",
+      "concept_b": "computational screening",
+      "potential_synergy": "Testing whether conversion and selectivity can constrain, evaluate, or operationalize computational screening for Click Chemistry / Bioorthogonal Chemistry / Chemical Biology may reveal a non-obvious transfer path or boundary condition.",
+      "supporting_references": [
+        "Alessia Battigelli et al. (2022) Recent Advances in Bioorthogonal Click Chemistry for Biomedical Applications. doi:10.1021/acs.bioconjchem.1c00564",
+        "Dennis Svatunek (2024) Computational Large-Scale Screening of Bioorthogonal 1,2,4,5-Tetrazine/trans-Cyclooctene Cycloadditions doi:10.26434/chemrxiv-2024-24xcv"
+      ]
+    },
+    {
+      "field_a": "biomedical",
+      "concept_a": "cancer theranostics",
+      "field_b": "computer_science",
+      "concept_b": "computational screening",
+      "potential_synergy": "Testing whether cancer theranostics can constrain, evaluate, or operationalize computational screening for Click Chemistry / Bioorthogonal Chemistry / Chemical Biology may reveal a non-obvious transfer path or boundary condition.",
+      "supporting_references": [
+        "Dan Wu et al. (2022) Metal-free bioorthogonal click chemistry in cancer theranostics. doi:10.1039/d1cs00451d",
+        "Dennis Svatunek (2024) Computational Large-Scale Screening of Bioorthogonal 1,2,4,5-Tetrazine/trans-Cyclooctene Cycloadditions doi:10.26434/chemrxiv-2024-24xcv"
+      ]
+    },
+    {
+      "field_a": "biomedical",
+      "concept_a": "biomaterials for tissue engineering and regenerative medicine",
+      "field_b": "general",
+      "concept_b": "[3+2] cycloaddition",
+      "potential_synergy": "Testing whether biomaterials for tissue engineering and regenerative medicine can constrain, evaluate, or operationalize [3+2] cycloaddition for Click Chemistry / Bioorthogonal Chemistry / Chemical Biology may reveal a non-obvious transfer path or boundary condition.",
+      "supporting_references": [
+        "Alessia Battigelli et al. (2022) Recent Advances in Bioorthogonal Click Chemistry for Biomedical Applications. doi:10.1021/acs.bioconjchem.1c00564",
+        "Gregory Arzoumanidis (2023) Organotitanium Click Chemistry doi:10.26434/chemrxiv-2023-7p307-v2"
+      ]
+    },
+    {
+      "field_a": "biomedical",
+      "concept_a": "biomaterials for tissue engineering and regenerative medicine",
+      "field_b": "general",
+      "concept_b": "benchmark dataset",
+      "potential_synergy": "Testing whether biomaterials for tissue engineering and regenerative medicine can constrain, evaluate, or operationalize benchmark dataset for Click Chemistry / Bioorthogonal Chemistry / Chemical Biology may reveal a non-obvious transfer path or boundary condition.",
+      "supporting_references": [
+        "Alessia Battigelli et al. (2022) Recent Advances in Bioorthogonal Click Chemistry for Biomedical Applications. doi:10.1021/acs.bioconjchem.1c00564",
+        "Gregory Arzoumanidis (2023) Organotitanium Click Chemistry doi:10.26434/chemrxiv-2023-7p307-v2"
+      ]
+    },
+    {
+      "field_a": "biomedical",
+      "concept_a": "conversion and selectivity",
+      "field_b": "general",
+      "concept_b": "[3+2] cycloaddition",
+      "potential_synergy": "Testing whether conversion and selectivity can constrain, evaluate, or operationalize [3+2] cycloaddition for Click Chemistry / Bioorthogonal Chemistry / Chemical Biology may reveal a non-obvious transfer path or boundary condition.",
+      "supporting_references": [
+        "Alessia Battigelli et al. (2022) Recent Advances in Bioorthogonal Click Chemistry for Biomedical Applications. doi:10.1021/acs.bioconjchem.1c00564",
+        "Gregory Arzoumanidis (2023) Organotitanium Click Chemistry doi:10.26434/chemrxiv-2023-7p307-v2"
+      ]
+    },
+    {
+      "field_a": "biomedical",
+      "concept_a": "conversion and selectivity",
+      "field_b": "general",
+      "concept_b": "benchmark dataset",
+      "potential_synergy": "Testing whether conversion and selectivity can constrain, evaluate, or operationalize benchmark dataset for Click Chemistry / Bioorthogonal Chemistry / Chemical Biology may reveal a non-obvious transfer path or boundary condition.",
+      "supporting_references": [
+        "Alessia Battigelli et al. (2022) Recent Advances in Bioorthogonal Click Chemistry for Biomedical Applications. doi:10.1021/acs.bioconjchem.1c00564",
+        "Gregory Arzoumanidis (2023) Organotitanium Click Chemistry doi:10.26434/chemrxiv-2023-7p307-v2"
+      ]
+    },
+    {
+      "field_a": "biomedical",
+      "concept_a": "cancer theranostics",
+      "field_b": "general",
+      "concept_b": "[3+2] cycloaddition",
+      "potential_synergy": "Testing whether cancer theranostics can constrain, evaluate, or operationalize [3+2] cycloaddition for Click Chemistry / Bioorthogonal Chemistry / Chemical Biology may reveal a non-obvious transfer path or boundary condition.",
+      "supporting_references": [
+        "Dan Wu et al. (2022) Metal-free bioorthogonal click chemistry in cancer theranostics. doi:10.1039/d1cs00451d",
+        "Gregory Arzoumanidis (2023) Organotitanium Click Chemistry doi:10.26434/chemrxiv-2023-7p307-v2"
+      ]
+    },
+    {
+      "field_a": "biomedical",
+      "concept_a": "cancer theranostics",
+      "field_b": "general",
+      "concept_b": "benchmark dataset",
+      "potential_synergy": "Testing whether cancer theranostics can constrain, evaluate, or operationalize benchmark dataset for Click Chemistry / Bioorthogonal Chemistry / Chemical Biology may reveal a non-obvious transfer path or boundary condition.",
+      "supporting_references": [
+        "Dan Wu et al. (2022) Metal-free bioorthogonal click chemistry in cancer theranostics. doi:10.1039/d1cs00451d",
+        "Gregory Arzoumanidis (2023) Organotitanium Click Chemistry doi:10.26434/chemrxiv-2023-7p307-v2"
+      ]
+    },
+    {
+      "field_a": "biomedical",
+      "concept_a": "conversion and selectivity",
+      "field_b": "materials",
+      "concept_b": "crosslinkers",
+      "potential_synergy": "Testing whether conversion and selectivity can constrain, evaluate, or operationalize crosslinkers for Click Chemistry / Bioorthogonal Chemistry / Chemical Biology may reveal a non-obvious transfer path or boundary condition.",
+      "supporting_references": [
+        "Alessia Battigelli et al. (2022) Recent Advances in Bioorthogonal Click Chemistry for Biomedical Applications. doi:10.1021/acs.bioconjchem.1c00564",
+        "Chithra Anilkumar et al. (2026) Bioorthogonal Click Chemistry Engineered Bioinks for 3D Bioprinting in Osteochondral Regeneration and Osteoarthritis Therapy: A Translational Review. doi:10.1021/acsabm.5c02348"
+      ]
+    }
+  ],
+  "suspended_problems": [
+    {
+      "problem": "Click and Bioorthogonal Chemistry: The Future of Active Targeting of Nanoparticles for Nanomedicines? Over the years, click and bioorthogonal reactions have been the subject of considerable research efforts. These high-performance chemical reactions have been...[truncated]",
+      "years_unresolved": 5,
+      "citation_count": 0,
+      "evidence_level": "unknown",
+      "barrier_to_progress": "unspecified conceptual or technical barrier",
+      "supporting_references": [
+        "L. Taiariol et al. (2021) Click and Bioorthogonal Chemistry: The Future of Active Targeting of Nanoparticles for Nanomedicines? doi:10.1021/acs.chemrev.1c00484"
+      ]
+    },
+    {
+      "problem": "Metal-free bioorthogonal click chemistry in cancer theranostics Bioorthogonal chemistry is a powerful tool to site-specifically activate drugs in living systems. Bioorthogonal reactions between a pair of biologically reactive groups can rapidly and specificall...[truncated]",
+      "years_unresolved": 4,
+      "citation_count": 0,
+      "evidence_level": "unknown",
+      "barrier_to_progress": "unspecified conceptual or technical barrier",
+      "supporting_references": [
+        "Dan Wu et al. (2022) Metal-free bioorthogonal click chemistry in cancer theranostics. doi:10.1039/d1cs00451d"
+      ]
+    },
+    {
+      "problem": "Recent Advances in Bioorthogonal Click Chemistry for Biomedical Applications Bioorthogonal click chemistry, first introduced in the early 2000s, has become one of the most widely used approaches for designing advanced biomaterials for applications in tissue en...[truncated]",
+      "years_unresolved": 4,
+      "citation_count": 0,
+      "evidence_level": "unknown",
+      "barrier_to_progress": "unspecified conceptual or technical barrier",
+      "supporting_references": [
+        "Alessia Battigelli et al. (2022) Recent Advances in Bioorthogonal Click Chemistry for Biomedical Applications. doi:10.1021/acs.bioconjchem.1c00564"
+      ]
+    },
+    {
+      "problem": "Click chemistry for 3D bioprinting. Bioinks are employed in the fabrication of 3D scaffolds containing cells and macromolecules that can be applied in regenerative medicine. The use of such bioinks facilitates the controlled introduction and localization of ma...[truncated]",
+      "years_unresolved": 3,
+      "citation_count": 0,
+      "evidence_level": "unknown",
+      "barrier_to_progress": "robustness or stability barrier",
+      "supporting_references": [
+        "Lei Nie et al. (2023) Click chemistry for 3D bioprinting. doi:10.1039/d3mh00516j"
+      ]
+    },
+    {
+      "problem": "Computational Large-Scale Screening of Bioorthogonal 1,2,4,5-Tetrazine/trans-Cyclooctene Cycloadditions Bioorthogonal reactions between 1,2,4,5-tetrazines and trans-cyclooctenes have emerged as valuable chemical tools in the fields of chemical biology and mate...[truncated]",
+      "years_unresolved": 2,
+      "citation_count": 0,
+      "evidence_level": "unknown",
+      "barrier_to_progress": "data or measurement bottleneck",
+      "supporting_references": [
+        "Dennis Svatunek (2024) Computational Large-Scale Screening of Bioorthogonal 1,2,4,5-Tetrazine/trans-Cyclooctene Cycloadditions doi:10.26434/chemrxiv-2024-24xcv"
+      ]
+    },
+    {
+      "problem": "DNA Nanostructure Disintegration-Assisted SPAAC Ligation for Electrochemical Biosensing MicroRNAs (MiRNAs) are valuable biomarkers for the diagnosis and prognosis of diseases. The development of reliable assays is an urgent pursuit. We herein fabricate a novel...[truncated]",
+      "years_unresolved": 2,
+      "citation_count": 0,
+      "evidence_level": "unknown",
+      "barrier_to_progress": "robustness or stability barrier",
+      "supporting_references": [
+        "Tingting Wang et al. (2024) DNA Nanostructure Disintegration-Assisted SPAAC Ligation for Electrochemical Biosensing. doi:10.1021/acs.nanolett.4c03394"
+      ]
+    },
+    {
+      "problem": "Next-Level Bioorthogonal Bond-Cleavage Through Intramolecular Control of Click-To-Release Chemistry Bioorthogonal bond-cleavage reactions are powerful tools for investigating biological dynamics and advancing therapeutic strategies. Primed by click reactivity,...[truncated]",
+      "years_unresolved": 1,
+      "citation_count": 0,
+      "evidence_level": "unknown",
+      "barrier_to_progress": "robustness or stability barrier",
+      "supporting_references": [
+        "Walter Kuba et al. (2025) Next-Level Bioorthogonal Bond-Cleavage Through Intramolecular Control of Click-To-Release Chemistry doi:10.26434/chemrxiv-2025-7s39f"
+      ]
+    },
+    {
+      "problem": "Next-Level Bioorthogonal Bond-Cleavage Through Intramolecular Control of Click-To-Release Chemistry No explicit limitation extracted.",
+      "years_unresolved": 1,
+      "citation_count": 0,
+      "evidence_level": "unknown",
+      "barrier_to_progress": "unspecified conceptual or technical barrier",
+      "supporting_references": [
+        "Walter Kuba et al. (2025) Next-Level Bioorthogonal Bond-Cleavage Through Intramolecular Control of Click-To-Release Chemistry doi:10.26434/chemrxiv-2025-7s39f"
+      ]
+    },
+    {
+      "problem": "Biointerface Implications of Bioorthogonal Click-to-Release Chemistry This manuscript provides a comprehensive overview of bioorthogonal click-to-release (C2R) chemistry with a specific focus on its implications for biointerfaces. It surveys the major C2R reac...[truncated]",
+      "years_unresolved": 0,
+      "citation_count": 0,
+      "evidence_level": "unknown",
+      "barrier_to_progress": "unspecified conceptual or technical barrier",
+      "supporting_references": [
+        "Dóra Kern et al. (2026) Biointerface Implications of Bioorthogonal Click-to-Release Chemistry doi:10.26434/chemrxiv-2026-p03vb"
+      ]
+    },
+    {
+      "problem": "Biointerface Implications of Bioorthogonal Click-to-Release Chemistry current limitations and design challenges",
+      "years_unresolved": 0,
+      "citation_count": 0,
+      "evidence_level": "unknown",
+      "barrier_to_progress": "unspecified conceptual or technical barrier",
+      "supporting_references": [
+        "Dóra Kern et al. (2026) Biointerface Implications of Bioorthogonal Click-to-Release Chemistry doi:10.26434/chemrxiv-2026-p03vb"
+      ]
+    }
+  ],
+  "ranked_gaps": [
+    {
+      "rank": 1,
+      "gap_id": "gap_1783512654268635000",
+      "gap_description": "Cross-disciplinary unconnected pair: 'biomaterials for tissue engineering and regenerative medicine' from biomedical and 'computational screening' from computer_science have no recorded bridge in the current PaperGraph.",
+      "gap_type": "migration",
+      "exploration_value_score": 10,
+      "importance": "high",
+      "tractability": "medium",
+      "strategic_alignment": [
+        {
+          "strategic_domain": "ai for science",
+          "matched_keywords": [
+            "ai"
+          ],
+          "alignment_score": 6
+        }
+      ],
+      "supporting_references": [
+        "Alessia Battigelli et al. (2022) Recent Advances in Bioorthogonal Click Chemistry for Biomedical Applications. doi:10.1021/acs.bioconjchem.1c00564",
+        "Dennis Svatunek (2024) Computational Large-Scale Screening of Bioorthogonal 1,2,4,5-Tetrazine/trans-Cyclooctene Cycloadditions doi:10.26434/chemrxiv-2024-24xcv",
+        "Gregory Arzoumanidis (2023) Organotitanium Click Chemistry doi:10.26434/chemrxiv-2023-7p307-v2"
+      ],
+      "recommended_approach": "Formulate a transfer hypothesis, audit incompatible assumptions, then run a minimal bridge experiment or benchmark.",
+      "ranking_reason": "novelty=7, refs=3, application=medium, feasibility=medium, type=migration, strategic_matches=1, density_bonus=2"
+    },
+    {
+      "rank": 2,
+      "gap_id": "gap_1783512654303941000",
+      "gap_description": "Cross-disciplinary unconnected pair: 'conversion and selectivity' from biomedical and '[3+2] cycloaddition' from general have no recorded bridge in the current PaperGraph.",
+      "gap_type": "migration",
+      "exploration_value_score": 10,
+      "importance": "high",
+      "tractability": "medium",
+      "strategic_alignment": [
+        {
+          "strategic_domain": "ai for science",
+          "matched_keywords": [
+            "ai"
+          ],
+          "alignment_score": 6
+        }
+      ],
+      "supporting_references": [
+        "Alessia Battigelli et al. (2022) Recent Advances in Bioorthogonal Click Chemistry for Biomedical Applications. doi:10.1021/acs.bioconjchem.1c00564",
+        "Gregory Arzoumanidis (2023) Organotitanium Click Chemistry doi:10.26434/chemrxiv-2023-7p307-v2",
+        "Dan Wu et al. (2022) Metal-free bioorthogonal click chemistry in cancer theranostics. doi:10.1039/d1cs00451d"
+      ],
+      "recommended_approach": "Formulate a transfer hypothesis, audit incompatible assumptions, then run a minimal bridge experiment or benchmark.",
+      "ranking_reason": "novelty=7, refs=3, application=medium, feasibility=medium, type=migration, strategic_matches=1, density_bonus=1"
+    },
+    {
+      "rank": 3,
+      "gap_id": "gap_1783512654274632500",
+      "gap_description": "Cross-disciplinary unconnected pair: 'conversion and selectivity' from biomedical and 'computational screening' from computer_science have no recorded bridge in the current PaperGraph.",
+      "gap_type": "migration",
+      "exploration_value_score": 10,
+      "importance": "high",
+      "tractability": "medium",
+      "strategic_alignment": [
+        {
+          "strategic_domain": "ai for science",
+          "matched_keywords": [
+            "ai"
+          ],
+          "alignment_score": 6
+        }
+      ],
+      "supporting_references": [
+        "Alessia Battigelli et al. (2022) Recent Advances in Bioorthogonal Click Chemistry for Biomedical Applications. doi:10.1021/acs.bioconjchem.1c00564",
+        "Dennis Svatunek (2024) Computational Large-Scale Screening of Bioorthogonal 1,2,4,5-Tetrazine/trans-Cyclooctene Cycloadditions doi:10.26434/chemrxiv-2024-24xcv",
+        "Dan Wu et al. (2022) Metal-free bioorthogonal click chemistry in cancer theranostics. doi:10.1039/d1cs00451d"
+      ],
+      "recommended_approach": "Formulate a transfer hypothesis, audit incompatible assumptions, then run a minimal bridge experiment or benchmark.",
+      "ranking_reason": "novelty=7, refs=3, application=medium, feasibility=medium, type=migration, strategic_matches=1, density_bonus=1"
+    },
+    {
+      "rank": 4,
+      "gap_id": "gap_1783512654256371700",
+      "gap_description": "Density hole: '[3+2] cycloaddition' in 'organotitanium chemistry | pharmacological and bioorthogonal applications' lacks benchmark coverage for cell viability | gelation rate | degradation rate, conversion and selectivity, crosslinkers.",
+      "gap_type": "improvement",
+      "exploration_value_score": 10,
+      "importance": "high",
+      "tractability": "high",
+      "strategic_alignment": [
+        {
+          "strategic_domain": "ai for science",
+          "matched_keywords": [
+            "ai"
+          ],
+          "alignment_score": 6
+        }
+      ],
+      "supporting_references": [
+        "Gregory Arzoumanidis (2023) Organotitanium Click Chemistry doi:10.26434/chemrxiv-2023-7p307-v2"
+      ],
+      "recommended_approach": "Use the dense neighboring literature as controls, then test the sparse intersection with explicit benchmark coverage.",
+      "ranking_reason": "novelty=5, refs=1, application=medium, feasibility=high, type=improvement, strategic_matches=1, density_bonus=2"
+    },
+    {
+      "rank": 5,
+      "gap_id": "gap_1783512654206863800",
+      "gap_description": "Density hole: 'bioorthogonal click chemistry' has no recorded validation in '3D bioprinting'.",
+      "gap_type": "combinatorial",
+      "exploration_value_score": 10,
+      "importance": "high",
+      "tractability": "high",
+      "strategic_alignment": [],
+      "supporting_references": [
+        "Chithra Anilkumar et al. (2026) Bioorthogonal Click Chemistry Engineered Bioinks for 3D Bioprinting in Osteochondral Regeneration and Osteoarthritis Therapy: A Translational Review. doi:10.1021/acsabm.5c02348",
+        "Alessia Battigelli et al. (2022) Recent Advances in Bioorthogonal Click Chemistry for Biomedical Applications. doi:10.1021/acs.bioconjchem.1c00564",
+        "Lei Nie et al. (2023) Click chemistry for 3D bioprinting. doi:10.1039/d3mh00516j",
+        "Dóra Kern et al. (2026) Biointerface Implications of Bioorthogonal Click-to-Release Chemistry doi:10.26434/chemrxiv-2026-p03vb",
+        "Dan Wu et al. (2022) Metal-free bioorthogonal click chemistry in cancer theranostics. doi:10.1039/d1cs00451d"
+      ],
+      "recommended_approach": "Use the dense neighboring literature as controls, then test the sparse intersection with explicit benchmark coverage.",
+      "ranking_reason": "novelty=6, refs=6, application=medium, feasibility=high, type=combinatorial, strategic_matches=0, density_bonus=2"
+    }
+  ],
+  "constraints_checked": {
+    "requires_supporting_reference": true,
+    "filters_trivial_low_novelty": true,
+    "max_gaps": 5
+  }
+}

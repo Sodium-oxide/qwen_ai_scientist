@@ -1,0 +1,231 @@
+{
+  "project_id": "sci_1783440260606615200",
+  "title": "Semantic gate smoke",
+  "domain": "AI-driven discovery of GPNMB CAR-T cells cancer prevention",
+  "objective": "test semantic plausibility gate",
+  "strategic_need": "",
+  "phase": "Gap Discovery",
+  "createdAt": 1783440260.606619,
+  "updatedAt": 1783440260.644293,
+  "papergraph": [
+    {
+      "title": "GIS density method",
+      "citation": "GIS Ref",
+      "method": "ArcGIS Pro | Kernel Density Estimation (KDE)",
+      "scenario": "urban event mapping",
+      "benchmark": "spatial clustering accuracy",
+      "abstract": "Kernel density estimation maps coordinate-indexed events.",
+      "extraction_quality": {
+        "score": 0.88,
+        "unknown_ratio": 0.0,
+        "unknown_fields": [],
+        "abstract_chars": 57,
+        "flags": [
+          "short_abstract",
+          "missing_conclusion"
+        ],
+        "needs_enrichment": false,
+        "needs_llm_retry": false,
+        "requires_human_review": false,
+        "initial": {
+          "score": 0.88,
+          "unknown_ratio": 0.0,
+          "unknown_fields": [],
+          "abstract_chars": 57,
+          "flags": [
+            "short_abstract",
+            "missing_conclusion"
+          ],
+          "needs_enrichment": false,
+          "needs_llm_retry": false,
+          "requires_human_review": false
+        },
+        "llm_retry": {
+          "attempted": false,
+          "succeeded": false,
+          "error": ""
+        }
+      },
+      "contribution": "GIS density method Kernel density estimation maps coordinate-indexed events.",
+      "limitation": "No explicit limitation extracted."
+    },
+    {
+      "title": "GPNMB CAR-T target biology",
+      "citation": "CAR-T Ref",
+      "method": "multi-omics target prioritization",
+      "scenario": "CAR-T cell therapy development",
+      "benchmark": "toxicity prediction",
+      "abstract": "GPNMB CAR-T target discovery requires tumor antigen expression and normal tissue toxicity checks.",
+      "extraction_quality": {
+        "score": 0.88,
+        "unknown_ratio": 0.0,
+        "unknown_fields": [],
+        "abstract_chars": 97,
+        "flags": [
+          "short_abstract",
+          "missing_conclusion"
+        ],
+        "needs_enrichment": false,
+        "needs_llm_retry": false,
+        "requires_human_review": false,
+        "initial": {
+          "score": 0.88,
+          "unknown_ratio": 0.0,
+          "unknown_fields": [],
+          "abstract_chars": 97,
+          "flags": [
+            "short_abstract",
+            "missing_conclusion"
+          ],
+          "needs_enrichment": false,
+          "needs_llm_retry": false,
+          "requires_human_review": false
+        },
+        "llm_retry": {
+          "attempted": false,
+          "succeeded": false,
+          "error": ""
+        }
+      },
+      "contribution": "GPNMB CAR-T target biology GPNMB CAR-T target discovery requires tumor antigen expression and normal tissue toxicity checks.",
+      "limitation": "No explicit limitation extracted."
+    }
+  ],
+  "evidence": [],
+  "coverage_matrix": {
+    "ArcGIS Pro | Kernel Density Estimation (KDE)": {
+      "urban event mapping": [
+        "GIS Ref"
+      ]
+    },
+    "multi-omics target prioritization": {
+      "CAR-T cell therapy development": [
+        "CAR-T Ref"
+      ]
+    }
+  },
+  "knowledge_gaps": [],
+  "hypotheses": [],
+  "keynotes": [],
+  "mechanism_reports": [],
+  "pipeline_tasks": [],
+  "knowledge_map": {
+    "dimension": "method-scenario-benchmark",
+    "main_methods": [
+      "ArcGIS Pro | Kernel Density Estimation (KDE)",
+      "multi-omics target prioritization"
+    ],
+    "main_scenarios": [
+      "CAR-T cell therapy development",
+      "urban event mapping"
+    ],
+    "main_benchmarks": [
+      "spatial clustering accuracy",
+      "toxicity prediction"
+    ],
+    "method_scenario_coverage": {
+      "ArcGIS Pro | Kernel Density Estimation (KDE)": [
+        "urban event mapping"
+      ],
+      "multi-omics target prioritization": [
+        "CAR-T cell therapy development"
+      ]
+    },
+    "benchmark_index": {
+      "spatial clustering accuracy": [
+        "GIS Ref"
+      ],
+      "toxicity prediction": [
+        "CAR-T Ref"
+      ]
+    },
+    "method_scenario_benchmark": {
+      "ArcGIS Pro | Kernel Density Estimation (KDE)": {
+        "urban event mapping": {
+          "spatial clustering accuracy": [
+            "GIS Ref"
+          ]
+        }
+      },
+      "multi-omics target prioritization": {
+        "CAR-T cell therapy development": {
+          "toxicity prediction": [
+            "CAR-T Ref"
+          ]
+        }
+      }
+    },
+    "method_scenario_benchmark_triples": [
+      {
+        "method": "ArcGIS Pro | Kernel Density Estimation (KDE)",
+        "scenario": "urban event mapping",
+        "benchmark": "spatial clustering accuracy",
+        "references": [
+          "GIS Ref"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "ArcGIS Pro | Kernel Density Estimation (KDE)",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "GIS density method Kernel density estimation maps coordinate-indexed events.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "No explicit limitation extracted.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "GIS density method Kernel density estimation maps coordinate-indexed events.",
+            "support": "source_sentence"
+          }
+        ]
+      },
+      {
+        "method": "multi-omics target prioritization",
+        "scenario": "CAR-T cell therapy development",
+        "benchmark": "toxicity prediction",
+        "references": [
+          "CAR-T Ref"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "multi-omics target prioritization",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "GPNMB CAR-T target biology GPNMB CAR-T target discovery requires tumor antigen expression and normal tissue toxicity checks.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "No explicit limitation extracted.",
+            "support": "structured_field"
+          }
+        ]
+      }
+    ],
+    "claim_type_counts": {
+      "methodological_description": 3,
+      "empirical_result": 2,
+      "author_opinion": 2
+    },
+    "extraction_repair": {
+      "attempted": 0,
+      "repaired": 2,
+      "still_low_quality": 0,
+      "errors": []
+    },
+    "unknown_summary": {
+      "total_triples": 2,
+      "unknown_triples": 0
+    }
+  }
+}
