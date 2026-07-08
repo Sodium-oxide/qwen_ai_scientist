@@ -1575,6 +1575,29 @@ class Hypothesis:
     createdAt: float = field(default_factory=time.time)
 
 
+@dataclass
+class DebateArgument:
+    round: int
+    speaker: str
+    role: str
+    content: str
+    evidence_refs: list[str] = field(default_factory=list)
+    verdict: str = ""
+
+
+@dataclass
+class DebateState:
+    hypothesis_id: str
+    round: int = 0
+    max_rounds: int = 5
+    arguments: list[dict[str, Any]] = field(default_factory=list)
+    unresolved_issues: list[str] = field(default_factory=list)
+    revisions: list[dict[str, Any]] = field(default_factory=list)
+    mechanism_audits: list[dict[str, Any]] = field(default_factory=list)
+    literature_supplements: list[dict[str, Any]] = field(default_factory=list)
+    status: str = "ONGOING"
+
+
 def create_research_project(
     title: str,
     domain: str,
@@ -3356,6 +3379,267 @@ def build_branch_user_interaction(coverage_diagnostic: dict[str, Any]) -> dict[s
         "options": options,
         "default_action": "Run supplemental stratified search for options with false_negative_risk=true, or ask the user to pick 2-3 priority branches.",
         "continue_with": "Pass selected option labels or custom branch keywords as focus_branches to run_zhizhi_literature_analysis/search_papers_stratified.",
+    }
+
+
+def zhizhi_auto_supplement_blind_spots(
+    *,
+    project_id: str,
+    coverage_diagnostic: dict[str, Any],
+    providers: list[str],
+    domain: str,
+    use_llm: bool,
+    max_branches: int = 3,
+    per_branch_imports: int = 2,
+) -> dict[str, Any]:
+    blind_spots = coverage_diagnostic.get("blind_spots", [])
+    selected: list[dict[str, Any]] = []
+    for spot in blind_spots:
+        if not isinstance(spot, dict):
+            continue
+        probe = spot.get("live_probe") if isinstance(spot.get("live_probe"), dict) else {}
+        if int(probe.get("total_results") or 0) <= 0:
+            continue
+        query = normalize_space(str(spot.get("suggested_query") or spot.get("topic") or ""))
+        if not query:
+            continue
+        selected.append({"topic": spot.get("topic"), "query": query, "live_probe_total": probe.get("total_results")})
+        if len(selected) >= clamp_int(max_branches, 1, 8):
+            break
+    if not selected:
+        return {"attempted": False, "reason": "no live-confirmed blind spots"}
+
+    imports: list[dict[str, Any]] = []
+    branch_reports: list[dict[str, Any]] = []
+    for branch in selected:
+        query = str(branch.get("query") or "")
+        try:
+            payload = json.loads(
+                search_literature_stratified(
+                    query=query,
+                    providers=providers,
+                    max_results=max(6, per_branch_imports * 4),
+                    domain=domain,
+                    focus_branches=[query],
+                    use_llm=use_llm,
+                )
+            )
+            search_id = str(payload.get("search_id") or "")
+            results = payload.get("results", []) if isinstance(payload.get("results"), list) else []
+            selected_results = select_zhizhi_import_results(results, per_branch_imports)[0]
+            branch_imports: list[dict[str, Any]] = []
+            for result in selected_results[:per_branch_imports]:
+                try:
+                    imported = json.loads(
+                        import_literature_search_result(
+                            project_id,
+                            search_id,
+                            int(result.get("result_index") or 0),
+                            use_llm=use_llm,
+                        )
+                    )
+                    record = imported.get("record") or imported.get("existing_record") or {}
+                    branch_imports.append(
+                        {
+                            "result_index": result.get("result_index"),
+                            "paper_id": record.get("paper_id"),
+                            "title": record.get("title"),
+                            "status": imported.get("status"),
+                        }
+                    )
+                    if record.get("paper_id"):
+                        try:
+                            extract_paper_keynote(project_id, paper_id=str(record.get("paper_id")), use_llm=use_llm)
+                        except Exception:
+                            pass
+                except Exception as exc:
+                    branch_imports.append({"result_index": result.get("result_index"), "status": "import_failed", "error": str(exc)})
+            imports.extend(branch_imports)
+            branch_reports.append(
+                {
+                    "topic": branch.get("topic"),
+                    "query": query,
+                    "search_id": search_id,
+                    "total_results": payload.get("total_results"),
+                    "imports": branch_imports,
+                }
+            )
+        except Exception as exc:
+            branch_reports.append({"topic": branch.get("topic"), "query": query, "status": "search_failed", "error": str(exc)})
+    return {
+        "attempted": True,
+        "branches_attempted": len(selected),
+        "imports": imports,
+        "branches": branch_reports,
+        "policy": "auto-supplement only live-confirmed blind spots; cap branches/imports to control API and token budget",
+    }
+
+
+def zhizhi_supplement_from_audit(
+    *,
+    project_id: str,
+    audit_report: dict[str, Any],
+    hypothesis_text: str,
+    providers: list[str] | None = None,
+    max_claims: int = 2,
+    per_claim_imports: int = 1,
+    use_llm: bool = True,
+) -> dict[str, Any]:
+    claims = audit_report.get("unsupported_claims", []) if isinstance(audit_report.get("unsupported_claims"), list) else []
+    if not claims:
+        return {"attempted": False, "reason": "no unsupported claims from YanZhen"}
+    project = load_project(project_id)
+    domain = str(project.get("domain") or "")
+    selected_providers = providers or default_literature_providers(query=f"{domain} {hypothesis_text}")
+    selected_claims = [normalize_space(str(claim)) for claim in claims if normalize_space(str(claim))][: clamp_int(max_claims, 1, 5)]
+    if not selected_claims:
+        return {"attempted": False, "reason": "unsupported claims were empty after normalization"}
+    imports: list[dict[str, Any]] = []
+    claim_reports: list[dict[str, Any]] = []
+    for claim in selected_claims:
+        query = build_audit_supplement_query(domain, hypothesis_text, claim)
+        try:
+            payload = json.loads(
+                search_literature_stratified(
+                    query=query,
+                    providers=selected_providers,
+                    max_results=max(6, per_claim_imports * 5),
+                    domain=domain,
+                    focus_branches=[claim],
+                    use_llm=use_llm,
+                )
+            )
+            search_id = str(payload.get("search_id") or "")
+            results = payload.get("results", []) if isinstance(payload.get("results"), list) else []
+            relevance_reports = [
+                {
+                    "result_index": item.get("result_index"),
+                    "title": item.get("title"),
+                    "relevance_gate": audit_supplement_candidate_relevance(item, claim, domain, hypothesis_text),
+                }
+                for item in results[:12]
+                if isinstance(item, dict)
+            ]
+            gated_results = [
+                item
+                for item in results
+                if isinstance(item, dict)
+                and audit_supplement_candidate_relevance(item, claim, domain, hypothesis_text).get("pass")
+            ]
+            selected_results = select_zhizhi_import_results(gated_results, per_claim_imports)[0] if gated_results else []
+            claim_imports: list[dict[str, Any]] = []
+            for result in selected_results[:per_claim_imports]:
+                try:
+                    relevance_gate = audit_supplement_candidate_relevance(result, claim, domain, hypothesis_text)
+                    imported = json.loads(
+                        import_literature_search_result(
+                            project_id,
+                            search_id,
+                            int(result.get("result_index") or 0),
+                            use_llm=use_llm,
+                        )
+                    )
+                    record = imported.get("record") or imported.get("existing_record") or {}
+                    item = {
+                        "claim": claim,
+                        "query": query,
+                        "result_index": result.get("result_index"),
+                        "paper_id": record.get("paper_id"),
+                        "title": record.get("title"),
+                        "status": imported.get("status"),
+                        "relevance_gate": relevance_gate,
+                    }
+                    claim_imports.append(item)
+                    imports.append(item)
+                    if record.get("paper_id"):
+                        try:
+                            extract_paper_keynote(project_id, paper_id=str(record.get("paper_id")), use_llm=use_llm)
+                        except Exception:
+                            pass
+                except Exception as exc:
+                    claim_imports.append({"claim": claim, "query": query, "status": "import_failed", "error": str(exc)})
+            if not claim_imports:
+                claim_imports.append(
+                    {
+                        "claim": claim,
+                        "query": query,
+                        "status": "no_relevance_pass",
+                        "reason": "Search returned candidates, but none matched the unsupported causal link closely enough to import.",
+                    }
+                )
+            claim_reports.append(
+                {
+                    "claim": claim,
+                    "query": query,
+                    "search_id": search_id,
+                    "total_results": payload.get("total_results"),
+                    "relevance_reports": relevance_reports,
+                    "imports": claim_imports,
+                }
+            )
+        except Exception as exc:
+            claim_reports.append({"claim": claim, "query": query, "status": "search_failed", "error": str(exc)})
+    report = {
+        "attempted": True,
+        "trigger": "yanzhen_unsupported_claims",
+        "claims_attempted": len(selected_claims),
+        "providers": selected_providers,
+        "imports": imports,
+        "claims": claim_reports,
+        "policy": "targeted evidence completion only; capped by unsupported-claim count to avoid broad rescans",
+    }
+    project = load_project(project_id)
+    project.setdefault("audit_triggered_literature_supplements", []).append(report)
+    project["updatedAt"] = time.time()
+    save_project(project)
+    return report
+
+
+def build_audit_supplement_query(domain: str, hypothesis_text: str, unsupported_claim: str) -> str:
+    causal_terms = causal_link_terms(unsupported_claim)
+    terms = query_terms(f"{domain} {hypothesis_text} {' '.join(causal_terms)} {unsupported_claim}")
+    prioritized = unique_preserve_order(causal_terms + terms)
+    compact_terms = " ".join(prioritized[:16])
+    if not compact_terms:
+        compact_terms = normalize_space(f"{domain} {unsupported_claim}")[:240]
+    return normalize_space(f"{compact_terms} causal mechanism evidence limitation contradiction validation")
+
+
+def causal_link_terms(text: str) -> list[str]:
+    clean = normalize_space(str(text or ""))
+    clean = re.sub(r"^unsupported causal link:\s*", "", clean, flags=re.IGNORECASE)
+    parts = re.split(r"\s*(?:->|→|leads to|causes|drives|because|therefore)\s*", clean, flags=re.IGNORECASE)
+    terms: list[str] = []
+    for part in parts:
+        terms.extend(query_terms(part)[:6])
+    return unique_preserve_order(terms)[:12]
+
+
+def audit_supplement_candidate_relevance(result: dict[str, Any], claim: str, domain: str, hypothesis_text: str) -> dict[str, Any]:
+    text = normalize_space(
+        " ".join(str(result.get(key) or "") for key in ("title", "abstract", "venue", "citation", "method", "scenario", "benchmark"))
+    ).lower()
+    claim_terms = set(query_terms(" ".join(causal_link_terms(claim)) or claim))
+    domain_terms = set(query_terms(domain))
+    hypothesis_terms = set(query_terms(hypothesis_text))
+    if not text:
+        return {"pass": False, "score": 0.0, "reason": "candidate has no textual metadata"}
+    claim_hits = {term for term in claim_terms if science_term_in_text(term, text)}
+    domain_hits = {term for term in domain_terms if science_term_in_text(term, text)}
+    hypothesis_hits = {term for term in hypothesis_terms if science_term_in_text(term, text)}
+    score = 0.0
+    score += 0.55 * (len(claim_hits) / max(1, min(len(claim_terms), 6)))
+    score += 0.25 * (len(domain_hits) / max(1, min(len(domain_terms), 5)))
+    score += 0.20 * (len(hypothesis_hits) / max(1, min(len(hypothesis_terms), 8)))
+    score = round(min(1.0, score), 3)
+    passes = bool(claim_hits) and (score >= 0.18 or bool(domain_hits))
+    return {
+        "pass": passes,
+        "score": score,
+        "claim_hits": sorted(claim_hits)[:8],
+        "domain_hits": sorted(domain_hits)[:8],
+        "hypothesis_hits": sorted(hypothesis_hits)[:8],
+        "reason": "requires at least one causal-claim term hit plus domain/hypothesis support",
     }
 
 
@@ -6639,8 +6923,18 @@ def import_papergraph_record(
             indent=2,
         )
 
-    parsed_fallback = parse_paper_text("\n\n".join(part for part in [abstract, conclusion, full_text_excerpt, limitation] if part))
-    final_abstract = abstract or parsed_fallback["abstract"]
+    clean_abstract = "" if invalid_placeholder_abstract(abstract) else abstract
+    parsed_fallback = parse_paper_text("\n\n".join(part for part in [clean_abstract, conclusion, full_text_excerpt, limitation] if part))
+    final_abstract = clean_abstract or parsed_fallback["abstract"]
+    if invalid_placeholder_abstract(final_abstract):
+        final_abstract = first_sentences(
+            "\n\n".join(
+                part
+                for part in [conclusion, full_text_excerpt, contribution, limitation, parsed_fallback.get("conclusion", "")]
+                if normalize_space(part)
+            ),
+            4,
+        )
     final_conclusion = conclusion or parsed_fallback["conclusion"]
     final_strengths = strengths or parsed_fallback["strengths"]
     final_improvements = improvements or parsed_fallback["improvements"]
@@ -6649,7 +6943,7 @@ def import_papergraph_record(
     final_benchmark = benchmark or parsed_fallback["benchmark"]
     final_contribution = contribution or parsed_fallback["contribution"]
     final_limitation = limitation or parsed_fallback["limitation"]
-    context_text = "\n".join(part for part in [title, abstract, conclusion, full_text_excerpt, final_contribution, final_limitation] if part)
+    context_text = "\n".join(part for part in [title, final_abstract, conclusion, full_text_excerpt, final_contribution, final_limitation] if part)
     final_method = repair_unknown_field(final_method, context_text, "method")
     final_scenario = repair_unknown_field(final_scenario, context_text, "scenario")
     final_benchmark = repair_unknown_field(final_benchmark, context_text, "benchmark")
@@ -9624,6 +9918,9 @@ def gaps_from_unconnected_pairs(project: dict[str, Any], pairs: list[dict[str, A
         refs = [ref for ref in pair.get("supporting_references", []) if ref]
         if len(refs) < 2:
             continue
+        gate = semantic_plausibility_for_pair(project, str(pair.get("concept_a") or ""), str(pair.get("concept_b") or ""))
+        if gate.get("verdict") == "REJECT":
+            continue
         gaps.append(
             assess_gap_dict(
                 project,
@@ -9639,6 +9936,7 @@ def gaps_from_unconnected_pairs(project: dict[str, Any], pairs: list[dict[str, A
                 ),
             )
         )
+        gaps[-1]["semantic_plausibility"] = gate
     return gaps
 
 
@@ -11790,8 +12088,26 @@ def run_yanzhen_mechanism_verification(
         layer_2["selective_citation_detected"] = True
         layer_2["verdict"] = "FAIL"
     layer_3 = yanzhen_regime_shift_report(mechanism, yanzhen_original_conditions(text + " " + mechanism), shifts)
-    overall = yanzhen_overall_verdict(layer_1, layer_2, layer_3)
+    feasibility = yanzhen_feasibility_audit(text + " " + mechanism)
+    overall = yanzhen_overall_verdict(layer_1, layer_2, layer_3, feasibility)
     detailed = yanzhen_detailed_reasoning(layer_1, layer_2, layer_3, chain_report, citation_report)
+    mechanism_report = {
+        "hypothesis_id": hypothesis_id or str(hypothesis_record.get("hypothesis_id") or ""),
+        "layer_1_internal_consistency": layer_1,
+        "layer_2_data_consistency": layer_2,
+        "layer_3_regime_shift_test": layer_3,
+        "causal_chain_audit": chain_report,
+        "selective_citation_audit": citation_report,
+        "feasibility_audit": feasibility,
+        "overall_verdict": overall,
+        "verdict": yanzhen_public_verdict(overall),
+        "required_actions": [],
+        "unsupported_claims": [],
+        "detailed_reasoning": detailed,
+        "cawm_reference_note": "CAWM risk follows the pattern where correct-looking conclusions are defended by brittle or inconsistent mechanisms that fail under regime shift.",
+    }
+    mechanism_report["unsupported_claims"] = yanzhen_unsupported_claims(mechanism_report)
+    mechanism_report["required_actions"] = yanzhen_required_actions(mechanism_report)
     report = {
         "thought": "YanZhen audited the hypothesis through internal consistency, data consistency, selective-citation, causal-chain, and regime-shift checks.",
         "action": {
@@ -11799,17 +12115,7 @@ def run_yanzhen_mechanism_verification(
             "hypothesis_id": hypothesis_id,
             "layers_executed": ["internal_consistency", "data_consistency", "regime_shift_test"],
         },
-        "mechanism_fidelity_report": {
-            "hypothesis_id": hypothesis_id or str(hypothesis_record.get("hypothesis_id") or ""),
-            "layer_1_internal_consistency": layer_1,
-            "layer_2_data_consistency": layer_2,
-            "layer_3_regime_shift_test": layer_3,
-            "causal_chain_audit": chain_report,
-            "selective_citation_audit": citation_report,
-            "overall_verdict": overall,
-            "detailed_reasoning": detailed,
-            "cawm_reference_note": "CAWM risk follows the pattern where correct-looking conclusions are defended by brittle or inconsistent mechanisms that fail under regime shift.",
-        },
+        "mechanism_fidelity_report": mechanism_report,
     }
     project.setdefault("mechanism_reports", []).append(report["mechanism_fidelity_report"])
     project["phase"] = "Mechanism Verification"
@@ -11920,10 +12226,15 @@ def moderate_round(
     yanzhen_report: dict[str, Any] | None = None,
 ) -> str:
     questions = opponent_questions or []
+    project = load_project(project_id)
     verdict = "advance"
     if any(item.get("severity") == "fatal" for item in questions):
         verdict = "revise"
     report_body = yanzhen_report.get("mechanism_fidelity_report", {}) if isinstance(yanzhen_report, dict) else {}
+    if not report_body and isinstance(yanzhen_report, dict):
+        report_body = yanzhen_report
+    if not report_body:
+        report_body = latest_yanzhen_report(project)
     if report_body.get("overall_verdict") == "CAWM_DETECTED":
         verdict = "revise"
     result = {
@@ -11938,11 +12249,18 @@ def moderate_round(
             if item.get("severity") in {"high", "fatal"} and item.get("required_revision")
         ],
     }
-    project = load_project(project_id)
     project.setdefault("debate_round_moderations", []).append(result)
     project["updatedAt"] = time.time()
     save_project(project)
     return json.dumps(result, ensure_ascii=False, indent=2)
+
+
+def latest_yanzhen_report(project: dict[str, Any]) -> dict[str, Any]:
+    reports = project.get("mechanism_reports", [])
+    if isinstance(reports, list) and reports:
+        latest = reports[-1]
+        return latest if isinstance(latest, dict) else {}
+    return {}
 
 
 def summarize_positions(
@@ -11984,12 +12302,14 @@ def run_socratic_hypothesis_debate(
     project_id: str,
     hypothesis_id: str = "",
     hypothesis: str = "",
-    max_rounds: int = 4,
-    proponent_model_family: str = "qwen",
-    opponent_model_family: str = "external_critic",
-    judge_model_family: str = "external_judge",
-    verifier_model_family: str = "external_verifier",
+    max_rounds: int = 5,
+    proponent_model_family: str = "qwen-max",
+    opponent_model_family: str = "qwen-plus",
+    judge_model_family: str = "qwen-deep-research",
+    verifier_model_family: str = "qwen-plus",
     shifted_conditions: list[Any] | None = None,
+    auto_literature_supplement: bool = True,
+    supplement_providers: list[str] | None = None,
 ) -> str:
     project = load_project(project_id)
     record = debate_hypothesis_record(project, hypothesis_id) if hypothesis_id else {}
@@ -12023,23 +12343,38 @@ def run_socratic_hypothesis_debate(
         return json.dumps(report, ensure_ascii=False, indent=2)
 
     rounds: list[dict[str, Any]] = []
-    max_rounds = clamp_int(max_rounds, 1, 4)
+    max_rounds = clamp_int(max_rounds, 4, 5)
     mechanism = yanzhen_mechanism_text(record) or text
     sources = yanzhen_sources_for_hypothesis(project, record)
+    working_text = text
+    working_mechanism = mechanism
+    yanzhen_body: dict[str, Any] = {}
 
     round1_questions = duzhi_generate_questions(
-        text,
-        mechanism,
+        working_text,
+        working_mechanism,
         sources,
         allowed_types=["conceptual_clarification", "constraint_check"],
         max_questions=8,
     )
+    round1_revision = mingli_revision_from_questions(
+        project,
+        record,
+        working_text,
+        working_mechanism,
+        round1_questions,
+        {},
+        "Socratic Clarification",
+    )
+    working_text = str(round1_revision.get("revised_hypothesis") or working_text)
+    working_mechanism = str(round1_revision.get("revised_mechanism") or working_mechanism)
     rounds.append(
         {
             "round": 1,
             "name": "Socratic Clarification",
             "proponent_position": debate_proponent_position(text, mechanism, record),
             "opponent_questions": round1_questions,
+            "proponent_response": round1_revision,
             "moderator_verdict": "revise" if any(q.get("severity") in {"high", "fatal"} for q in round1_questions) else "advance",
         }
     )
@@ -12047,40 +12382,64 @@ def run_socratic_hypothesis_debate(
         yanzhen_json = json.loads(
             run_yanzhen_mechanism_verification(
                 project_id,
-                hypothesis_id=hypothesis_id,
-                hypothesis=text if not hypothesis_id else "",
+                hypothesis=working_text,
+                reasoning_chain=extract_causal_chain(f"{working_text} {working_mechanism}"),
+                original_sources=sources,
                 shifted_conditions=shifted_conditions,
             )
         )
         yanzhen_body = yanzhen_json.get("mechanism_fidelity_report", {})
         round2_questions = duzhi_generate_questions(
-            text,
-            mechanism,
+            working_text,
+            working_mechanism,
             sources,
             allowed_types=["causal_probe", "constraint_check"],
             max_questions=8,
             yanzhen_report=yanzhen_body,
         )
+        round2_questions = filter_new_debate_questions(round2_questions, rounds, min_keep=3)
+        round2_revision = mingli_revision_from_questions(
+            project,
+            record,
+            working_text,
+            working_mechanism,
+            round2_questions,
+            yanzhen_body,
+            "Evidence and CAWM Layer 1-2",
+        )
+        working_text = str(round2_revision.get("revised_hypothesis") or working_text)
+        working_mechanism = str(round2_revision.get("revised_mechanism") or working_mechanism)
         rounds.append(
             {
                 "round": 2,
                 "name": "Evidence and CAWM Layer 1-2",
                 "yanzhen_report": yanzhen_body,
                 "opponent_questions": round2_questions,
+                "proponent_response": round2_revision,
                 "moderator_verdict": "revise" if yanzhen_body.get("overall_verdict") in {"CAWM_DETECTED", "REQUIRES_HUMAN_REVIEW"} else "advance",
             }
         )
-    else:
-        yanzhen_body = {}
     if max_rounds >= 3:
         round3_questions = duzhi_generate_questions(
-            text,
-            mechanism,
+            working_text,
+            working_mechanism,
             sources,
             allowed_types=["counterexample_challenge", "constraint_check"],
             max_questions=8,
             yanzhen_report=yanzhen_body,
         )
+        round3_questions = filter_new_debate_questions(round3_questions, rounds, min_keep=3)
+        round3_revision = mingli_revision_from_questions(
+            project,
+            record,
+            working_text,
+            working_mechanism,
+            round3_questions,
+            yanzhen_body,
+            "Methodology and Regime Shift",
+        )
+        working_text = str(round3_revision.get("revised_hypothesis") or working_text)
+        working_mechanism = str(round3_revision.get("revised_mechanism") or working_mechanism)
         layer3 = yanzhen_body.get("layer_3_regime_shift_test", {}) if isinstance(yanzhen_body, dict) else {}
         rounds.append(
             {
@@ -12089,24 +12448,115 @@ def run_socratic_hypothesis_debate(
                 "experiment_plan": record.get("test_plan") or debate_experiment_text(record),
                 "regime_shift_summary": layer3,
                 "opponent_questions": round3_questions,
+                "proponent_response": round3_revision,
                 "moderator_verdict": "revise" if layer3.get("cawm_risk_level") == "HIGH" or any(q.get("severity") in {"high", "fatal"} for q in round3_questions) else "advance",
             }
         )
     if max_rounds >= 4:
-        refined = debate_refined_hypothesis(project, record, text, mechanism, rounds, yanzhen_body)
-        final_decision = debate_final_decision(rounds, yanzhen_body, refined)
+        final_yanzhen_body = yanzhen_body
+        if working_text != text and max_rounds >= 3:
+            try:
+                final_yanzhen_json = json.loads(
+                    run_yanzhen_mechanism_verification(
+                        project_id,
+                        hypothesis=working_text,
+                        reasoning_chain=extract_causal_chain(f"{working_text} {working_mechanism}"),
+                        original_sources=sources,
+                        shifted_conditions=shifted_conditions,
+                    )
+                )
+                final_yanzhen_body = final_yanzhen_json.get("mechanism_fidelity_report", yanzhen_body)
+            except Exception:
+                final_yanzhen_body = yanzhen_body
+        yanzhen_body = final_yanzhen_body
+        audit_feedback = yanzhen_debate_feedback(yanzhen_body)
+        literature_supplement: dict[str, Any] = {"attempted": False, "reason": "not required"}
+        if auto_literature_supplement and yanzhen_body.get("verdict") != "PASS" and yanzhen_body.get("unsupported_claims"):
+            literature_supplement = zhizhi_supplement_from_audit(
+                project_id=project_id,
+                audit_report=yanzhen_body,
+                hypothesis_text=working_text,
+                providers=supplement_providers,
+                max_claims=2,
+                per_claim_imports=1,
+                use_llm=True,
+            )
+            if literature_supplement.get("attempted") and literature_supplement.get("imports"):
+                project = load_project(project_id)
+                sources = yanzhen_sources_for_hypothesis(project, record)
+                try:
+                    refreshed_json = json.loads(
+                        run_yanzhen_mechanism_verification(
+                            project_id,
+                            hypothesis=working_text,
+                            reasoning_chain=extract_causal_chain(f"{working_text} {working_mechanism}"),
+                            original_sources=sources,
+                            shifted_conditions=shifted_conditions,
+                        )
+                    )
+                    yanzhen_body = refreshed_json.get("mechanism_fidelity_report", yanzhen_body)
+                    audit_feedback = yanzhen_debate_feedback(yanzhen_body)
+                except Exception:
+                    pass
+        if yanzhen_body.get("verdict") != "PASS" and max_rounds >= 5:
+            audit_questions = duzhi_questions_from_yanzhen_actions(yanzhen_body, working_text, working_mechanism)
+            audit_questions = filter_new_debate_questions(audit_questions, rounds, min_keep=2)
+            round4_revision = mingli_revision_from_questions(
+                project,
+                record,
+                working_text,
+                working_mechanism,
+                audit_questions,
+                yanzhen_body,
+                "Mechanism Audit Feedback",
+            )
+            working_text = str(round4_revision.get("revised_hypothesis") or working_text)
+            working_mechanism = str(round4_revision.get("revised_mechanism") or working_mechanism)
+            rounds.append(
+                {
+                    "round": 4,
+                    "name": "Mechanism Audit Feedback and Literature Completion",
+                    "yanzhen_report": yanzhen_body,
+                    "audit_feedback": audit_feedback,
+                    "literature_supplement": literature_supplement,
+                    "opponent_questions": audit_questions,
+                    "proponent_response": round4_revision,
+                    "moderator_verdict": "revise" if yanzhen_body.get("verdict") != "PASS" else "advance",
+                }
+            )
+            try:
+                final_after_revision_json = json.loads(
+                    run_yanzhen_mechanism_verification(
+                        project_id,
+                        hypothesis=working_text,
+                        reasoning_chain=extract_causal_chain(f"{working_text} {working_mechanism}"),
+                        original_sources=sources,
+                        shifted_conditions=shifted_conditions,
+                    )
+                )
+                yanzhen_body = final_after_revision_json.get("mechanism_fidelity_report", yanzhen_body)
+            except Exception:
+                pass
+        refined = debate_refined_hypothesis(project, record, working_text, working_mechanism, rounds, yanzhen_body)
+        execution_validation = execution_level_validation(project, refined, yanzhen_body, rounds)
+        final_decision = debate_final_decision(rounds, yanzhen_body, refined, execution_validation)
+        final_round_number = 5 if max_rounds >= 5 and any(item.get("round") == 4 and item.get("name") == "Mechanism Audit Feedback and Literature Completion" for item in rounds) else 4
         rounds.append(
             {
-                "round": 4,
+                "round": final_round_number,
                 "name": "Synthesis and Convergence",
                 "refined_hypothesis": refined,
+                "yanzhen_report": yanzhen_body,
+                "audit_feedback": yanzhen_debate_feedback(yanzhen_body),
+                "execution_validation": execution_validation,
                 "final_decision": final_decision,
                 "moderator_verdict": "finalize" if final_decision == "accept_for_experiment" else final_decision,
             }
         )
     else:
-        refined = debate_refined_hypothesis(project, record, text, mechanism, rounds, yanzhen_body)
-        final_decision = debate_final_decision(rounds, yanzhen_body, refined)
+        refined = debate_refined_hypothesis(project, record, working_text, working_mechanism, rounds, yanzhen_body)
+        execution_validation = execution_level_validation(project, refined, yanzhen_body, rounds)
+        final_decision = debate_final_decision(rounds, yanzhen_body, refined, execution_validation)
 
     unresolved = debate_unresolved_issues(
         [q for round_item in rounds for q in round_item.get("opponent_questions", []) if isinstance(q, dict)],
@@ -12122,11 +12572,20 @@ def run_socratic_hypothesis_debate(
             "verifier": verifier_model_family,
         },
         "rounds": rounds,
+        "debate_state": {},
         "safety_gates": safety,
         "refined_hypothesis": refined,
         "unresolved_issues": unresolved,
         "final_decision": final_decision,
     }
+    debate_report["debate_state"] = build_debate_state(
+        hypothesis_id=debate_report["hypothesis_id"],
+        rounds=rounds,
+        max_rounds=max_rounds,
+        unresolved=unresolved,
+        final_decision=final_decision,
+    )
+    project = load_project(project_id)
     project.setdefault("socratic_debates", []).append(debate_report)
     project.setdefault("hypothesis_revisions", []).append(
         {
@@ -12144,8 +12603,8 @@ def run_socratic_hypothesis_debate(
     log_event("SCIENCE", "socratic_debate_completed", project_id=project_id, hypothesis_id=debate_report["hypothesis_id"], decision=final_decision)
     return json.dumps(
         {
-            "thought": "BianLun ran an evidence-driven four-round Socratic debate with DuZhi questions and YanZhen mechanism verification.",
-            "action": {"type": "run_socratic_hypothesis_debate", "rounds": max_rounds},
+            "thought": "BianLun ran the triangle loop: Socratic debate, YanZhen mechanism audit, targeted literature completion when needed, MingLi revision, and final synthesis.",
+            "action": {"type": "run_socratic_hypothesis_debate", "rounds": len(rounds), "max_rounds": max_rounds},
             "debate_report": debate_report,
         },
         ensure_ascii=False,
@@ -12195,6 +12654,7 @@ def duzhi_generate_questions(
     text = normalize_space(f"{hypothesis_text} {mechanism}")
     lowered = text.lower()
     source_text = normalize_space(" ".join(yanzhen_context_text(item) for item in sources))
+    evidence_terms = socratic_evidence_terms(sources, text)
     chain = extract_causal_chain(text)
 
     def include(kind: str) -> bool:
@@ -12271,6 +12731,16 @@ def duzhi_generate_questions(
                 "Map each central premise to a PaperGraph citation or mark it as speculative.",
                 "high",
             )
+        if evidence_terms:
+            term_list = ", ".join(evidence_terms[:5])
+            add(
+                "constraint_check",
+                f"The evidence repeatedly mentions {term_list}; which of these domain-specific constraints is actually required for the mechanism to hold?",
+                mechanism,
+                "A strong critique should test the hypothesis against the concrete variables found in the retrieved literature, not only generic stress tests.",
+                "Name the required evidence-derived constraint, its allowed range or qualitative regime, and how it will be monitored.",
+                "medium",
+            )
 
     if include("causal_probe"):
         if len(chain) < 2:
@@ -12289,6 +12759,15 @@ def duzhi_generate_questions(
                 mechanism,
                 "Causal connectors are where correct-answer/wrong-mechanism failures often enter.",
                 "Add evidence for the causal link or downgrade it to a testable assumption.",
+                "high",
+            )
+        if evidence_terms:
+            add(
+                "causal_probe",
+                f"For the evidence-derived terms {', '.join(evidence_terms[:4])}, which exact term sits at the intervention, mediator, and output positions of the causal chain?",
+                mechanism,
+                "Domain-targeted causal probing forces MingLi to connect the hypothesis to field-specific entities without hardcoding the field.",
+                "Rewrite the causal chain using at least two evidence-derived terms and mark unsupported links as assumptions.",
                 "high",
             )
         report = yanzhen_report or {}
@@ -12341,6 +12820,20 @@ def duzhi_generate_questions(
     return questions[: clamp_int(max_questions, 1, 40)]
 
 
+def socratic_evidence_terms(sources: list[Any], fallback_text: str = "", limit: int = 8) -> list[str]:
+    records: list[dict[str, Any]] = [item for item in sources if isinstance(item, dict)]
+    terms: list[str] = []
+    for record in records:
+        for key in ("method", "scenario", "benchmark"):
+            value = normalize_label(record.get(key, ""))
+            if value and not is_unknown_value(value) and not is_low_information_field(value, key):
+                terms.append(value)
+    if not terms:
+        source_text = " ".join(yanzhen_context_text(item) for item in sources)
+        terms = query_terms(source_text or fallback_text)
+    return unique_preserve_order(term for term in terms if term and len(term) >= 3)[: clamp_int(limit, 1, 20)]
+
+
 def dedupe_socratic_questions(questions: list[dict[str, Any]]) -> list[dict[str, Any]]:
     deduped: list[dict[str, Any]] = []
     seen: set[str] = set()
@@ -12351,6 +12844,36 @@ def dedupe_socratic_questions(questions: list[dict[str, Any]]) -> list[dict[str,
         seen.add(key)
         deduped.append(item)
     return deduped
+
+
+def filter_new_debate_questions(
+    questions: list[dict[str, Any]],
+    previous_rounds: list[dict[str, Any]],
+    *,
+    min_keep: int = 2,
+) -> list[dict[str, Any]]:
+    previous: set[str] = set()
+    for round_item in previous_rounds:
+        for item in round_item.get("opponent_questions", []) if isinstance(round_item.get("opponent_questions"), list) else []:
+            previous.add(question_similarity_key(str(item.get("question") or "")))
+    fresh: list[dict[str, Any]] = []
+    repeats: list[dict[str, Any]] = []
+    for item in questions:
+        key = question_similarity_key(str(item.get("question") or ""))
+        if key and key in previous:
+            repeated = dict(item)
+            repeated["repeated_from_prior_round"] = True
+            repeats.append(repeated)
+            continue
+        fresh.append(item)
+    if len(fresh) >= min_keep:
+        return fresh
+    return fresh + repeats[: max(0, min_keep - len(fresh))]
+
+
+def question_similarity_key(question: str) -> str:
+    terms = [term for term in query_terms(question) if term not in {"hypothesis", "mechanism", "evidence", "claim"}]
+    return " ".join(terms[:10])
 
 
 def socratic_overall_severity(questions: list[dict[str, Any]]) -> str:
@@ -12376,24 +12899,40 @@ def debate_safety_gates(
     judge = normalize_key(judge_model_family)
     verifier = normalize_key(verifier_model_family)
     issues: list[str] = []
-    if not opponent or opponent == proponent:
-        issues.append("Safety gate 1 failed: DuZhi/opponent model family must differ from MingLi/proponent.")
+    warnings: list[str] = []
+    if not opponent:
+        issues.append("Safety gate 1 failed: DuZhi/opponent model id is not recorded.")
+    elif opponent == proponent:
+        issues.append("Safety gate 1 failed: DuZhi/opponent must use a different model id or role channel than MingLi/proponent.")
     if verifier and verifier == proponent:
-        issues.append("Safety gate 1 failed: YanZhen/verifier model family must differ from MingLi/proponent.")
+        issues.append("Safety gate 1 failed: YanZhen/verifier must use a different model id or role channel than MingLi/proponent.")
     if not judge:
         issues.append("Safety gate 1 warning: BianLun/judge model family is not recorded.")
+    qwen_only = all(is_qwen_model_id(item) for item in (proponent, opponent, judge, verifier) if item)
+    if qwen_only:
+        warnings.append("Qwen-only adversarial setup accepted: independence is enforced by distinct model ids/role prompts rather than non-Qwen families.")
+    if opponent and verifier and opponent == verifier:
+        warnings.append("DuZhi and YanZhen share the same model id; this is allowed under Qwen-only constraints but lowers independence strength.")
     return {
         "passed": not issues,
         "issues": issues,
+        "warnings": warnings,
         "independence": {
             "proponent_model_family": proponent_model_family,
             "opponent_model_family": opponent_model_family,
             "judge_model_family": judge_model_family,
             "verifier_model_family": verifier_model_family,
+            "policy": "Require distinct model ids or role channels. Qwen-only multi-model setups such as qwen-max/qwen-plus/qwen-deep-research are allowed.",
+            "qwen_only": qwen_only,
         },
         "evidence_gate": "Debate revisions are adopted only if tied to PaperGraph evidence, YanZhen issue, or an explicit missing-evidence condition.",
         "convergence_gate": "If two rounds add no substantive revision, terminate with best current hypothesis and unresolved issues.",
     }
+
+
+def is_qwen_model_id(value: str) -> bool:
+    normalized = normalize_key(value)
+    return normalized.startswith("qwen") or normalized.startswith("tongyi") or normalized.startswith("dashscope")
 
 
 def debate_proponent_position(text: str, mechanism: str, record: dict[str, Any]) -> dict[str, Any]:
@@ -12462,6 +13001,287 @@ def debate_refined_hypothesis(
     }
 
 
+def mingli_revision_from_questions(
+    project: dict[str, Any],
+    record: dict[str, Any],
+    hypothesis_text: str,
+    mechanism: str,
+    questions: list[dict[str, Any]],
+    yanzhen_body: dict[str, Any],
+    round_name: str,
+) -> dict[str, Any]:
+    serious = [
+        item
+        for item in questions
+        if item.get("severity") in {"high", "fatal"} and normalize_space(str(item.get("required_revision") or ""))
+    ]
+    adopted = unique_preserve_order(str(item.get("required_revision") or "") for item in serious)[:8]
+    gap_id = str(record.get("gap_id") or "")
+    source_gap = find_by_id(project.get("knowledge_gaps", []), "gap_id", gap_id) if gap_id else {}
+    components = infer_gap_components(project, source_gap or {})
+    method = components.get("method") or "the proposed intervention or method"
+    scenario = components.get("scenario") or project.get("domain") or "the target scenario"
+    benchmark = components.get("benchmark") or "the preregistered primary metric"
+    variable = hypothesis_control_variable(source_gap or {}, method, scenario)
+    boundary = hypothesis_boundary_condition(source_gap or {})
+    chain = extract_causal_chain(f"{hypothesis_text} {mechanism}")
+    if len(chain) < 3:
+        chain = [
+            f"Input/intervention: change {variable} while holding the closest baseline/control fixed.",
+            f"Mechanism: test whether {method} changes the relevant state or process inside {scenario}.",
+            f"Output: measure {benchmark} and compare it with baseline and failure-mode controls.",
+        ]
+    layer_1 = yanzhen_body.get("layer_1_internal_consistency", {}) if isinstance(yanzhen_body, dict) else {}
+    layer_2 = yanzhen_body.get("layer_2_data_consistency", {}) if isinstance(yanzhen_body, dict) else {}
+    layer_3 = yanzhen_body.get("layer_3_regime_shift_test", {}) if isinstance(yanzhen_body, dict) else {}
+    audit_requirements: list[str] = []
+    if layer_1.get("verdict") == "FAIL":
+        audit_requirements.append("repair logical-chain breaks identified by YanZhen Layer 1")
+    if layer_2.get("verdict") == "FAIL":
+        audit_requirements.append("separate source-supported claims from speculative mechanism claims")
+    if layer_3.get("verdict") == "FAIL" or layer_3.get("cawm_risk_level") in {"MEDIUM", "HIGH"}:
+        audit_requirements.append("restrict the validity regime and add at least two regime-shift predictions")
+    adopted = unique_preserve_order(adopted + audit_requirements)[:10]
+    if adopted:
+        addressed = mingli_address_questions(serious, method, scenario, benchmark, variable, boundary)
+        revision_delta = [
+            f"Operationalized method/scenario/benchmark as: {method} | {scenario} | {benchmark}.",
+            f"Added explicit control variable and boundary: {variable} at {boundary}.",
+            "Marked unsupported mechanism links as testable assumptions until PaperGraph evidence is attached.",
+        ]
+        revised_clause = (
+            f"Revision after {round_name}: the hypothesis is limited to {scenario}; "
+            f"{variable} is varied under matched baseline/control conditions; "
+            f"{benchmark} must change in the predicted direction and the causal chain must survive source mapping, "
+            "ablation, and regime-shift tests."
+        )
+        revised_hypothesis = normalize_space(f"{hypothesis_text} {revised_clause}")
+        revised_mechanism = normalize_space(
+            f"{mechanism} Revised mechanism: {method} must produce an observable intermediate change in {scenario}; "
+            f"otherwise any endpoint change in {benchmark} is treated as correlation rather than mechanism."
+        )
+        response = "MingLi responds to the opponent's concrete questions and narrows the claim into an operational, evidence-gated version."
+    else:
+        addressed = mingli_address_questions(questions[:3], method, scenario, benchmark, variable, boundary)
+        revision_delta = ["No high-severity critique required a structural revision in this round."]
+        revised_hypothesis = hypothesis_text
+        revised_mechanism = mechanism
+        response = "MingLi keeps the current hypothesis but records the opponent questions as monitoring checks."
+    return {
+        "round_name": round_name,
+        "proponent_response": response,
+        "addressed_opponent_questions": addressed,
+        "adopted_revision_requirements": adopted,
+        "revision_delta": revision_delta,
+        "revised_hypothesis": trim_text(revised_hypothesis, 2400),
+        "revised_mechanism": trim_text(revised_mechanism, 1600),
+        "causal_chain_after_revision": chain,
+        "remaining_speculative_claims": mingli_remaining_speculative_claims(questions, yanzhen_body),
+    }
+
+
+def mingli_address_questions(
+    questions: list[dict[str, Any]],
+    method: str,
+    scenario: str,
+    benchmark: str,
+    variable: str,
+    boundary: str,
+) -> list[dict[str, Any]]:
+    addressed: list[dict[str, Any]] = []
+    for question in questions[:8]:
+        qtext = normalize_space(str(question.get("question") or ""))
+        required = normalize_space(str(question.get("required_revision") or ""))
+        qtype = str(question.get("question_type") or "")
+        if not qtext:
+            continue
+        lower = f"{qtext} {required}".lower()
+        if any(term in lower for term in ("threshold", "metric", "measurable", "observable", "success")):
+            response = f"Use {benchmark} as the primary readout and require a preregistered direction/change relative to the closest baseline."
+        elif any(term in lower for term in ("boundary", "regime", "condition", "shift", "noise", "scale")):
+            response = f"Restrict the claim to {boundary}; outside that regime the mechanism must be treated as uncertain and stress-tested."
+        elif any(term in lower for term in ("evidence", "citation", "papergraph", "unsupported", "source")):
+            response = "Attach a PaperGraph citation for the causal link, or downgrade the link to an explicit testable assumption."
+        elif any(term in lower for term in ("causal", "chain", "input", "mediator", "output")):
+            response = f"Rewrite the chain as intervention={variable}; mediator={method} acting in {scenario}; output={benchmark}."
+        elif any(term in lower for term in ("baseline", "control", "negative")):
+            response = f"Compare {variable} against a matched baseline/control so endpoint changes in {benchmark} are not over-interpreted."
+        else:
+            response = f"Treat this as a constraint on the {method} -> {scenario} mechanism and record it as a falsification check."
+        addressed.append(
+            {
+                "question_type": qtype,
+                "opponent_question": trim_text(qtext, 260),
+                "mingli_direct_response": response,
+                "adopted_revision": required,
+            }
+        )
+    return addressed
+
+
+def mingli_remaining_speculative_claims(questions: list[dict[str, Any]], yanzhen_body: dict[str, Any]) -> list[str]:
+    claims = [
+        str(item.get("target_claim") or item.get("question") or "")
+        for item in questions
+        if item.get("severity") in {"high", "fatal"}
+    ]
+    if isinstance(yanzhen_body, dict):
+        layer_2 = yanzhen_body.get("layer_2_data_consistency", {})
+        if isinstance(layer_2, dict) and layer_2.get("verdict") == "FAIL":
+            claims.append("Mechanism-data alignment remains incomplete until source quotations or structured evidence are attached.")
+    return unique_preserve_order(trim_text(item, 180) for item in claims if item)[:8]
+
+
+def yanzhen_debate_feedback(yanzhen_body: dict[str, Any]) -> dict[str, Any]:
+    if not isinstance(yanzhen_body, dict) or not yanzhen_body:
+        return {"verdict": "NOT_RUN", "required_actions": [], "unsupported_claims": []}
+    return {
+        "verdict": yanzhen_body.get("verdict") or yanzhen_public_verdict(str(yanzhen_body.get("overall_verdict") or "")),
+        "overall_verdict": yanzhen_body.get("overall_verdict", ""),
+        "required_actions": yanzhen_body.get("required_actions", []),
+        "unsupported_claims": yanzhen_body.get("unsupported_claims", []),
+        "audit_layers": {
+            "internal": (yanzhen_body.get("layer_1_internal_consistency") or {}).get("verdict"),
+            "data": (yanzhen_body.get("layer_2_data_consistency") or {}).get("verdict"),
+            "regime_shift": (yanzhen_body.get("layer_3_regime_shift_test") or {}).get("verdict"),
+            "feasibility": (yanzhen_body.get("feasibility_audit") or {}).get("verdict"),
+        },
+    }
+
+
+def duzhi_questions_from_yanzhen_actions(
+    yanzhen_body: dict[str, Any],
+    hypothesis_text: str,
+    mechanism: str,
+) -> list[dict[str, Any]]:
+    questions: list[dict[str, Any]] = []
+    actions = yanzhen_body.get("required_actions", []) if isinstance(yanzhen_body.get("required_actions"), list) else []
+    unsupported = yanzhen_body.get("unsupported_claims", []) if isinstance(yanzhen_body.get("unsupported_claims"), list) else []
+    for claim in unsupported[:4]:
+        questions.append(
+            {
+                "question_type": "evidence_completion_challenge",
+                "question": f"YanZhen marked this claim as unsupported: {claim}. Will MingLi attach a PaperGraph citation, narrow the claim, or remove it?",
+                "target_claim": trim_text(str(claim), 220),
+                "why_it_matters": "Unsupported links are exactly where CAWM and selective-citation failures enter the hypothesis.",
+                "required_revision": "Attach evidence for the unsupported claim or downgrade it to an explicit assumption with a falsification test.",
+                "severity": "high",
+            }
+        )
+    for action in actions[:5]:
+        action_name = str(action.get("action") or "")
+        questions.append(
+            {
+                "question_type": "audit_action_challenge",
+                "question": f"YanZhen requires `{action_name}`. What concrete revision satisfies this action before the hypothesis advances?",
+                "target_claim": mechanism or hypothesis_text,
+                "why_it_matters": str(action.get("reason") or "Mechanism audit actions must be resolved before BianLun can accept the claim."),
+                "required_revision": str(action.get("reason") or action_name or "Resolve YanZhen required action."),
+                "severity": "fatal" if action_name in {"mingli_rewrite_causal_chain", "restrict_validity_regime_and_add_shift_tests"} else "high",
+            }
+        )
+    if not questions:
+        questions.append(
+            {
+                "question_type": "audit_action_challenge",
+                "question": "YanZhen did not provide a concrete action; what audit evidence would make the mechanism pass rather than require review?",
+                "target_claim": hypothesis_text,
+                "why_it_matters": "A debate cannot close without a clear pass criterion.",
+                "required_revision": "State the pass criterion and attach it to the refined hypothesis.",
+                "severity": "medium",
+            }
+        )
+    return dedupe_socratic_questions(questions)
+
+
+def debate_question_adopted(question: dict[str, Any], rounds: list[dict[str, Any]]) -> bool:
+    requirement = normalize_space(str(question.get("required_revision") or ""))
+    if not requirement:
+        return False
+    for round_item in rounds:
+        response = round_item.get("proponent_response")
+        if not isinstance(response, dict):
+            continue
+        adopted = [normalize_space(str(item)) for item in response.get("adopted_revision_requirements", [])]
+        if requirement in adopted:
+            return True
+    return False
+
+
+def build_debate_state(
+    *,
+    hypothesis_id: str,
+    rounds: list[dict[str, Any]],
+    max_rounds: int,
+    unresolved: list[str],
+    final_decision: str,
+) -> dict[str, Any]:
+    state = DebateState(
+        hypothesis_id=hypothesis_id,
+        round=max([int(item.get("round") or 0) for item in rounds] or [0]),
+        max_rounds=max_rounds,
+        unresolved_issues=list(unresolved),
+        status=debate_status_from_decision(final_decision),
+    )
+    for round_item in rounds:
+        round_no = int(round_item.get("round") or 0)
+        if round_item.get("proponent_position"):
+            state.arguments.append(
+                asdict(
+                    DebateArgument(
+                        round=round_no,
+                        speaker="MingLi",
+                        role="proponent",
+                        content=trim_text(json.dumps(round_item.get("proponent_position"), ensure_ascii=False), 900),
+                        verdict=str(round_item.get("moderator_verdict") or ""),
+                    )
+                )
+            )
+        for question in round_item.get("opponent_questions", []) if isinstance(round_item.get("opponent_questions"), list) else []:
+            state.arguments.append(
+                asdict(
+                    DebateArgument(
+                        round=round_no,
+                        speaker="DuZhi",
+                        role="opponent",
+                        content=trim_text(str(question.get("question") or ""), 900),
+                        verdict=str(question.get("severity") or ""),
+                    )
+                )
+            )
+        response = round_item.get("proponent_response")
+        if isinstance(response, dict):
+            state.revisions.append(
+                {
+                    "round": round_no,
+                    "adopted_revision_requirements": response.get("adopted_revision_requirements", []),
+                    "revision_delta": response.get("revision_delta", []),
+                    "remaining_speculative_claims": response.get("remaining_speculative_claims", []),
+                }
+            )
+        if isinstance(round_item.get("yanzhen_report"), dict):
+            state.mechanism_audits.append(
+                {
+                    "round": round_no,
+                    "verdict": round_item["yanzhen_report"].get("verdict") or yanzhen_public_verdict(str(round_item["yanzhen_report"].get("overall_verdict") or "")),
+                    "overall_verdict": round_item["yanzhen_report"].get("overall_verdict"),
+                    "required_actions": round_item["yanzhen_report"].get("required_actions", []),
+                    "unsupported_claims": round_item["yanzhen_report"].get("unsupported_claims", []),
+                }
+            )
+        if isinstance(round_item.get("literature_supplement"), dict):
+            state.literature_supplements.append(round_item["literature_supplement"])
+    return asdict(state)
+
+
+def debate_status_from_decision(final_decision: str) -> str:
+    if final_decision == "accept_for_experiment":
+        return "CONCLUDED"
+    if final_decision in {"human_review", "revise"}:
+        return "ESCALATED"
+    return "CONCLUDED"
+
+
 def debate_unresolved_issues(questions: list[dict[str, Any]], yanzhen_body: dict[str, Any]) -> list[str]:
     issues = [
         f"{item.get('question_type')}: {item.get('question')}"
@@ -12478,9 +13298,19 @@ def debate_unresolved_issues(questions: list[dict[str, Any]], yanzhen_body: dict
     return unique_preserve_order(issues)[:20]
 
 
-def debate_final_decision(rounds: list[dict[str, Any]], yanzhen_body: dict[str, Any], refined: dict[str, Any]) -> str:
+def debate_final_decision(
+    rounds: list[dict[str, Any]],
+    yanzhen_body: dict[str, Any],
+    refined: dict[str, Any],
+    execution_validation: dict[str, Any] | None = None,
+) -> str:
     all_questions = [q for round_item in rounds for q in round_item.get("opponent_questions", []) if isinstance(q, dict)]
-    if any(item.get("severity") == "fatal" for item in all_questions):
+    unadopted_serious = [
+        item
+        for item in all_questions
+        if item.get("severity") in {"high", "fatal"} and not debate_question_adopted(item, rounds)
+    ]
+    if any(item.get("severity") == "fatal" for item in unadopted_serious):
         return "revise"
     if yanzhen_body.get("overall_verdict") == "CAWM_DETECTED":
         return "revise"
@@ -12488,9 +13318,113 @@ def debate_final_decision(rounds: list[dict[str, Any]], yanzhen_body: dict[str, 
         return "human_review"
     if len(refined.get("causal_chain", [])) < 2:
         return "revise"
-    if any(item.get("severity") == "high" for item in all_questions):
+    if execution_validation:
+        verdict = execution_validation.get("verdict")
+        if verdict == "FAIL":
+            return "revise"
+        if verdict == "REQUIRES_HUMAN_REVIEW":
+            return "human_review"
+    if any(item.get("severity") == "high" for item in unadopted_serious):
         return "revise"
     return "accept_for_experiment"
+
+
+def execution_level_validation(
+    project: dict[str, Any],
+    refined: dict[str, Any],
+    yanzhen_body: dict[str, Any],
+    rounds: list[dict[str, Any]],
+) -> dict[str, Any]:
+    text = normalize_space(
+        " ".join(
+            [
+                str(refined.get("hypothesis") or ""),
+                " ".join(str(item) for item in refined.get("causal_chain", []) if item),
+                " ".join(str(item) for item in refined.get("falsification_conditions", []) if item),
+                " ".join(str(item) for item in refined.get("evidence_requirements", []) if item),
+            ]
+        )
+    ).lower()
+    checks: list[dict[str, Any]] = []
+
+    def add_check(name: str, passed: bool, severity: str, reason: str) -> None:
+        checks.append({"name": name, "passed": bool(passed), "severity": severity, "reason": reason})
+
+    causal_chain = refined.get("causal_chain", []) if isinstance(refined.get("causal_chain"), list) else []
+    falsifiers = refined.get("falsification_conditions", []) if isinstance(refined.get("falsification_conditions"), list) else []
+    evidence_requirements = refined.get("evidence_requirements", []) if isinstance(refined.get("evidence_requirements"), list) else []
+    add_check(
+        "causal_chain_operationalized",
+        len(causal_chain) >= 3,
+        "fatal",
+        "Requires at least input/intervention, mediator/mechanism, and output/readout steps.",
+    )
+    add_check(
+        "has_falsification_condition",
+        bool(falsifiers),
+        "fatal",
+        "Requires explicit evidence that would falsify or weaken the hypothesis.",
+    )
+    add_check(
+        "claim_to_evidence_plan",
+        bool(evidence_requirements),
+        "high",
+        "Requires a plan for mapping claims to PaperGraph evidence or marking assumptions.",
+    )
+    add_check(
+        "observable_and_baseline_declared",
+        any(term in text for term in ("measure", "metric", "readout", "observable", "benchmark", "primary")) and any(term in text for term in ("baseline", "control")),
+        "high",
+        "Requires both an observable outcome and a baseline/control comparison.",
+    )
+    add_check(
+        "regime_shift_ready",
+        any(term in text for term in ("regime", "boundary", "shift", "stress", "condition", "outside", "under")),
+        "high",
+        "Requires boundary conditions or regime-shift stress tests before execution.",
+    )
+    unsupported = yanzhen_body.get("unsupported_claims", []) if isinstance(yanzhen_body.get("unsupported_claims"), list) else []
+    supplement_rounds = [
+        item.get("literature_supplement")
+        for item in rounds
+        if isinstance(item.get("literature_supplement"), dict) and item.get("literature_supplement", {}).get("attempted")
+    ]
+    supplement_resolved = not unsupported or any(
+        supplement.get("imports") or any(
+            imp.get("status") == "no_relevance_pass"
+            for claim in supplement.get("claims", []) if isinstance(claim, dict)
+            for imp in claim.get("imports", []) if isinstance(imp, dict)
+        )
+        for supplement in supplement_rounds
+    )
+    add_check(
+        "unsupported_claims_handled",
+        supplement_resolved,
+        "high",
+        "Unsupported YanZhen claims must be supported, narrowed, or recorded as no-relevant-evidence after targeted search.",
+    )
+    yanzhen_verdict = yanzhen_body.get("verdict") or yanzhen_public_verdict(str(yanzhen_body.get("overall_verdict") or ""))
+    add_check(
+        "mechanism_audit_not_failed",
+        yanzhen_verdict not in {"REJECTED"},
+        "fatal",
+        "A rejected YanZhen mechanism audit cannot advance to execution.",
+    )
+
+    failed_fatal = [item for item in checks if not item["passed"] and item["severity"] == "fatal"]
+    failed_high = [item for item in checks if not item["passed"] and item["severity"] == "high"]
+    if failed_fatal:
+        verdict = "FAIL"
+    elif failed_high or yanzhen_verdict in {"REQUIRES_REVISION", "REQUIRES_HUMAN_REVIEW"}:
+        verdict = "REQUIRES_HUMAN_REVIEW"
+    else:
+        verdict = "PASS"
+    return {
+        "verdict": verdict,
+        "checks": checks,
+        "failed_checks": [item for item in checks if not item["passed"]],
+        "execution_gate": "A hypothesis can enter Gewu only after it is operational, falsifiable, evidence-mapped, and stress-test-ready.",
+    }
 
 
 def parse_jsonish_dict(value: dict[str, Any] | str) -> dict[str, Any]:
@@ -12713,6 +13647,23 @@ def run_zhizhi_literature_analysis(
             f"{spot.get('topic')} was not represented in retrieved/imported candidates; "
             f"suggested query: {spot.get('suggested_query')}; "
             f"live_probe_results={(spot.get('live_probe') or {}).get('total_results', 'not_run') if isinstance(spot.get('live_probe'), dict) else 'not_run'}"
+        )
+    supplemental_imports: list[dict[str, Any]] = []
+    supplemental_report = zhizhi_auto_supplement_blind_spots(
+        project_id=project_id,
+        coverage_diagnostic=coverage_diagnostic,
+        providers=selected_providers,
+        domain=domain,
+        use_llm=use_llm,
+        max_branches=3,
+        per_branch_imports=2,
+    )
+    if supplemental_report.get("attempted"):
+        action["auto_supplement_blind_spots"] = supplemental_report
+        supplemental_imports = supplemental_report.get("imports", []) if isinstance(supplemental_report.get("imports"), list) else []
+        observations.append(
+            "Auto-supplemented confirmed retrieval blind spots before TanXi gap reasoning: "
+            f"branches={supplemental_report.get('branches_attempted', 0)}, imports={len(supplemental_imports)}."
         )
     selected_payload = json.loads(select_literature_result(search_id, query=query, top_k=min(5, search_budget), use_llm=use_llm))
     selected = selected_payload.get("selected") or {}
@@ -12971,9 +13922,20 @@ def semantic_plausibility_for_pair(
     method_field = infer_research_field({"title": method, "abstract": method})
     scenario_field = infer_research_field({"title": scenario, "abstract": f"{scenario} {project.get('domain', '')}"})
     if fields_are_incompatible(method_field, scenario_field) and not bridge and not concepts_are_connected(project, method, scenario):
-        score -= 0.25
-        score_breakdown.append({"factor": "field_mismatch_without_bridge", "delta": -0.25, "reason": f"{method_field} -> {scenario_field}"})
+        delta = -0.35 if not project_context_mentions_pair(project_text, method_text, scenario_text) else -0.25
+        score += delta
+        score_breakdown.append({"factor": "field_mismatch_without_bridge", "delta": round(delta, 3), "reason": f"{method_field} -> {scenario_field}"})
         reasons.append(f"field mismatch without bridge evidence: {method_field} -> {scenario_field}")
+
+    if ambiguous_short_method_label(method) and not bridge and not concepts_are_connected(project, method, scenario):
+        score -= 0.2
+        score_breakdown.append({"factor": "ambiguous_short_label_without_bridge", "delta": -0.2, "reason": "short acronym-like method label has no explicit bridge in context"})
+        reasons.append("short acronym-like method label may be ambiguous across disciplines and lacks bridge evidence")
+
+    if migration_noise_risk(project_text, method_text, scenario_text, bridge):
+        score -= 0.2
+        score_breakdown.append({"factor": "migration_noise_risk", "delta": -0.2, "reason": "pair appears to be driven by disconnected source domains rather than a shared mechanism"})
+        reasons.append("cross-domain transfer risk: no shared mechanism terms, project context, or PaperGraph bridge")
 
     if method_looks_like_narrow_tool(method_text) and not ({"spatial_coordinates", "spatial_context"} & affordances):
         score -= 0.3
@@ -13059,6 +14021,41 @@ def semantic_bridge_terms(method_text: str, scenario_text: str, project_text: st
 
 def method_looks_like_narrow_tool(method_text: str) -> bool:
     return any(term in method_text for term in ("arcgis", "qgis", "gis", "kernel density", "kde", "excel", "tableau"))
+
+
+def ambiguous_short_method_label(method: str) -> bool:
+    raw = normalize_space(str(method or ""))
+    compact = re.sub(r"[^A-Za-z0-9]", "", raw)
+    if 2 <= len(compact) <= 5 and compact.upper() == compact and any(ch.isalpha() for ch in compact):
+        return True
+    words = raw.split()
+    if len(words) > 1:
+        return False
+    return 2 <= len(raw) <= 5 and raw.lower() in {"ai", "ml", "rl", "md", "sem", "mas", "pde", "ode", "gcn", "vae"}
+
+
+def project_context_mentions_pair(project_text: str, method_text: str, scenario_text: str) -> bool:
+    method_terms = set(query_terms(method_text))
+    scenario_terms = set(query_terms(scenario_text))
+    if not method_terms or not scenario_terms:
+        return False
+    method_hit = any(science_term_in_text(term, project_text) for term in method_terms)
+    scenario_hit = any(science_term_in_text(term, project_text) for term in scenario_terms)
+    return method_hit and scenario_hit
+
+
+def migration_noise_risk(project_text: str, method_text: str, scenario_text: str, bridge: list[str]) -> bool:
+    if bridge:
+        return False
+    method_terms = set(query_terms(method_text))
+    scenario_terms = set(query_terms(scenario_text))
+    project_terms = set(query_terms(project_text))
+    if not method_terms or not scenario_terms:
+        return True
+    shared = method_terms & scenario_terms
+    method_overlap = method_terms & project_terms
+    scenario_overlap = scenario_terms & project_terms
+    return not shared and (not method_overlap or not scenario_overlap)
 
 
 def count_gap_type(gaps: list[dict[str, Any]], gap_type: str) -> int:
@@ -13847,7 +14844,6 @@ def json_repair_candidates(text: str) -> str:
     if not candidate:
         return ""
     candidate = re.sub(r",\s*([}\]])", r"\1", candidate)
-    candidate = candidate.replace("“", '"').replace("”", '"').replace("’", "'")
     return candidate
 
 
@@ -14030,7 +15026,9 @@ def extraction_quality_report(record: dict[str, Any]) -> dict[str, Any]:
         )
     )
     flags: list[str] = []
-    if not abstract:
+    if invalid_placeholder_abstract(abstract):
+        flags.append("invalid_placeholder_abstract")
+    if not abstract or invalid_placeholder_abstract(abstract):
         flags.append("missing_abstract")
     elif len(abstract) < 220:
         flags.append("short_abstract")
@@ -14066,6 +15064,7 @@ def extraction_quality_report(record: dict[str, Any]) -> dict[str, Any]:
         "flags": unique_preserve_order(flags),
         "needs_enrichment": (
             "missing_abstract" in flags
+            or "invalid_placeholder_abstract" in flags
             or "truncated_abstract" in flags
             or ("short_abstract" in flags and len(unknown_fields) >= 1)
         ),
@@ -14079,14 +15078,26 @@ def is_unknown_value(value: Any) -> bool:
     return not text or text.startswith("unknown") or text in {"none", "n/a", "unspecified", "unspecified benchmark"}
 
 
+def invalid_placeholder_abstract(text: str) -> bool:
+    clean = normalize_space(text)
+    if not clean:
+        return True
+    lowered = clean.lower().strip(" :;.-")
+    if lowered in {"abstract", "summary", "conclusion", "conclusions", "result", "results", "not available", "no abstract available"}:
+        return True
+    if re.fullmatch(r"(abstract|summary|conclusion|conclusions|results?)\s*:?", clean, flags=re.IGNORECASE):
+        return True
+    return len(clean.split()) <= 2 and any(label in lowered for label in ("abstract", "summary", "conclusion", "result"))
+
+
 def looks_truncated(text: str) -> bool:
     stripped = normalize_space(text)
     if not stripped:
         return False
     lowered = stripped.lower().rstrip()
-    if lowered.endswith(("...", "…")):
+    if lowered.endswith("..."):
         return True
-    return bool(re.search(r"\b(using|via|through|based on|with|by|as|an|a|the)\s*(?:\.\.\.|…)?$", lowered))
+    return bool(re.search(r"\b(using|via|through|based on|with|by|as|an|a|the)\s*(?:\.\.\.)?$", lowered))
 
 
 def background_only_text(text: str) -> bool:
@@ -15155,14 +16166,126 @@ def yanzhen_conflict_or_limitation_terms() -> set[str]:
     }
 
 
-def yanzhen_overall_verdict(layer_1: dict[str, Any], layer_2: dict[str, Any], layer_3: dict[str, Any]) -> str:
+def yanzhen_feasibility_audit(text: str) -> dict[str, Any]:
+    lowered = normalize_space(text).lower()
+    issues: list[str] = []
+    observable_terms = (
+        "measure", "metric", "observable", "readout", "assay", "spectrum", "image", "signal",
+        "dataset", "simulation", "experiment", "benchmark", "score", "rate", "yield", "accuracy",
+        "stability", "response", "performance", "validation",
+    )
+    control_terms = (
+        "vary", "control", "intervention", "dose", "concentration", "temperature", "pressure",
+        "parameter", "ablation", "baseline", "condition", "setting", "treatment", "input",
+    )
+    boundary_terms = ("boundary", "condition", "regime", "assumption", "range", "scale", "limit", "under", "unless")
+    if not any(term in lowered for term in observable_terms):
+        issues.append("No observable, measurement, benchmark, or validation readout is stated.")
+    if not any(term in lowered for term in control_terms):
+        issues.append("No controllable variable, intervention, baseline, or experimental/simulation condition is stated.")
+    if not any(term in lowered for term in boundary_terms):
+        issues.append("No validity range, boundary condition, or assumption is stated.")
+    if any(term in lowered for term in ("impossible", "violates", "cannot be measured", "unobservable")):
+        issues.append("The mechanism text contains explicit infeasibility language.")
+    verdict = "PASS" if not issues else "WARN"
+    if any("explicit infeasibility" in issue for issue in issues):
+        verdict = "FAIL"
+    return {
+        "observable_or_measurable": not any("observable" in issue for issue in issues),
+        "controllable_or_intervenable": not any("controllable" in issue for issue in issues),
+        "boundary_conditions_stated": not any("validity range" in issue for issue in issues),
+        "issues_found": unique_preserve_order(issues),
+        "verdict": verdict,
+    }
+
+
+def yanzhen_overall_verdict(
+    layer_1: dict[str, Any],
+    layer_2: dict[str, Any],
+    layer_3: dict[str, Any],
+    feasibility: dict[str, Any] | None = None,
+) -> str:
     if layer_3.get("verdict") == "FAIL" or layer_3.get("cawm_risk_level") == "HIGH":
         return "CAWM_DETECTED"
+    if isinstance(feasibility, dict) and feasibility.get("verdict") == "FAIL":
+        return "CAWM_DETECTED"
     if layer_1.get("verdict") == "FAIL" or layer_2.get("verdict") == "FAIL":
+        return "REQUIRES_HUMAN_REVIEW"
+    if isinstance(feasibility, dict) and feasibility.get("verdict") == "WARN":
         return "REQUIRES_HUMAN_REVIEW"
     if layer_3.get("cawm_risk_level") == "MEDIUM":
         return "REQUIRES_HUMAN_REVIEW"
     return "MECHANISM_VERIFIED"
+
+
+def yanzhen_public_verdict(overall: str) -> str:
+    if overall == "MECHANISM_VERIFIED":
+        return "PASS"
+    if overall == "CAWM_DETECTED":
+        return "REJECTED"
+    return "REQUIRES_REVISION"
+
+
+def yanzhen_unsupported_claims(report: dict[str, Any]) -> list[str]:
+    claims: list[str] = []
+    chain = report.get("causal_chain_audit", {}) if isinstance(report.get("causal_chain_audit"), dict) else {}
+    claims.extend(str(item) for item in chain.get("unsupported_links", []) if item)
+    for layer_key in ("layer_1_internal_consistency", "layer_2_data_consistency", "selective_citation_audit", "feasibility_audit"):
+        layer = report.get(layer_key, {}) if isinstance(report.get(layer_key), dict) else {}
+        for issue in layer.get("issues_found", []) if isinstance(layer.get("issues_found"), list) else []:
+            issue_text = str(issue)
+            if any(term in issue_text.lower() for term in ("unsupported", "no cited", "low lexical", "no observable", "no controllable", "no validity")):
+                claims.append(issue_text)
+    return unique_preserve_order(trim_text(item, 220) for item in claims if normalize_space(item))[:12]
+
+
+def yanzhen_required_actions(report: dict[str, Any]) -> list[dict[str, Any]]:
+    actions: list[dict[str, Any]] = []
+    if report.get("unsupported_claims"):
+        actions.append(
+            {
+                "action": "zhizhi_supplement_evidence",
+                "reason": "Unsupported causal or evidence links require targeted literature completion before accepting the hypothesis.",
+                "claims": report.get("unsupported_claims", [])[:5],
+            }
+        )
+    layer_1 = report.get("layer_1_internal_consistency", {}) if isinstance(report.get("layer_1_internal_consistency"), dict) else {}
+    if layer_1.get("verdict") == "FAIL":
+        actions.append(
+            {
+                "action": "mingli_rewrite_causal_chain",
+                "reason": "Internal consistency failed.",
+                "issues": layer_1.get("issues_found", [])[:5],
+            }
+        )
+    layer_2 = report.get("layer_2_data_consistency", {}) if isinstance(report.get("layer_2_data_consistency"), dict) else {}
+    if layer_2.get("verdict") == "FAIL":
+        actions.append(
+            {
+                "action": "separate_supported_from_speculative_claims",
+                "reason": "Mechanism-data alignment is insufficient or selective citation cannot be ruled out.",
+                "issues": layer_2.get("issues_found", [])[:5],
+            }
+        )
+    layer_3 = report.get("layer_3_regime_shift_test", {}) if isinstance(report.get("layer_3_regime_shift_test"), dict) else {}
+    if layer_3.get("verdict") == "FAIL" or layer_3.get("cawm_risk_level") in {"MEDIUM", "HIGH"}:
+        actions.append(
+            {
+                "action": "restrict_validity_regime_and_add_shift_tests",
+                "reason": "Regime-shift stability is not yet strong enough.",
+                "shifted_conditions": layer_3.get("shifted_conditions_tested", [])[:6],
+            }
+        )
+    feasibility = report.get("feasibility_audit", {}) if isinstance(report.get("feasibility_audit"), dict) else {}
+    if feasibility.get("verdict") in {"WARN", "FAIL"}:
+        actions.append(
+            {
+                "action": "pre_experiment_feasibility_check",
+                "reason": "Observable/control/boundary conditions are incomplete.",
+                "issues": feasibility.get("issues_found", [])[:5],
+            }
+        )
+    return actions
 
 
 def yanzhen_detailed_reasoning(
