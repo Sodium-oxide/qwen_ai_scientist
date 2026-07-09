@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import re
 import time
 from pathlib import Path
 from typing import Any
@@ -65,8 +66,8 @@ def run_autogen_research_flow(
     goal: str = "",
     groupchat_id: str = "",
     providers: list[str] | None = None,
-    max_results: int = 15,
-    import_top_k: int = 10,
+    max_results: int = 40,
+    import_top_k: int = 20,
     use_llm: bool = True,
     live_search: bool = False,
     run_debate: bool = True,
@@ -123,8 +124,17 @@ def run_autogen_research_flow(
         groupchat_id = str(groupchat_spec.get("groupchat_id"))
 
     run_id = new_autogen_run_id()
-    query = goal or str(project.get("objective") or project.get("domain") or project.get("title") or "")
     domain = str(project.get("domain") or project.get("title") or "")
+    # Derive search query from domain (research field), NOT from goal (project objective).
+    # Goal describes what the agent should DO; domain describes what to SEARCH FOR.
+    search_query = domain or str(project.get("title") or project.get("objective") or "")
+    # Strip Chinese characters and non-search text from the query
+    search_query = re.sub(r"[\u4e00-\u9fff]+", "", search_query).strip()
+    search_query = re.sub(r"[/\|]+", " ", search_query).strip()
+    search_query = re.sub(r"\s{2,}", " ", search_query).strip()
+    if not search_query:
+        search_query = goal or str(project.get("objective") or "")
+    query = search_query
     selected_providers = providers or default_literature_providers(domain=domain, query=query)
     turns: list[dict[str, Any]] = []
     state: dict[str, Any] = {

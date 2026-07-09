@@ -1,7 +1,7 @@
 ---
 name: project_id
-description: Stable project identifier
+description: stable project identifier
 type: project
 ---
 
-sci_1783526838783968100
+sci_1783541582585393700

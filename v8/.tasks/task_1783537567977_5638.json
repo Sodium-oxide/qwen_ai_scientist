@@ -1,0 +1,13 @@
+{
+  "id": "task_1783537567977_5638",
+  "subject": "Boxue/yanzhen: Audit mechanism fidelity",
+  "description": "Boxue delegation plan: boxue_1783537567813513400\nProject: 电力系统DAE仿真 AutoGen 多Agent协作闭环验证 (sci_1783537560271596100)\nDomain: Power System DAE Simulation / Transient Stability Analysis / Numerical Integration Methods\nProject objective: 验证电力系统微分代数方程仿真领域中，基于文献证据的 gap 发现、假设生成、机制检验和辩论迭代闭环。\nRound goal: 围绕电力系统DAE仿真，系统阅读高影响综述、里程碑数值方法、最新顶刊关于刚性系统求解、事件处理、大规模稀疏矩阵、新能源并网稳定性成果和相关预印本，构建 PaperGraph，识别真实机制 gap，生成可证伪科学假设，并通过 YanZhen 机制一致性检验与 DuZhi/BianLun 苏格拉底辩论进行迭代。\nAssigned agent: yanzhen\nPhase: Mechanism Verification\nPriority: high\nAllowed/expected tools: check_internal_consistency, check_data_consistency, regime_shift_test, detect_selective_citation, causal_chain_audit, run_yanzhen_mechanism_verification\n\nTask:\nRun internal consistency, data consistency, and regime-shift checks for refined hypotheses.\n\nDeliverable:\nMechanism fidelity report with CAWM risk level.\n\nAcceptance criteria:\n- All three verification layers are addressed\n- Regime-shift conditions are explicit\n- High-risk mechanisms are routed to revision or human review\n\nKnown risks to handle:\n- correct answer wrong mechanism\n- selective citation\n\nRole boundary: complete only this specialist responsibility. Do not take over Boxue coordination, do not invent evidence, and mark unsupported claims for review.\nOutput should be compact structured JSON suitable for downstream agents.\n",
+  "status": "pending",
+  "owner": null,
+  "worktree": null,
+  "blockedBy": [
+    "task_1783537567944_9375"
+  ],
+  "createdAt": 1783537567.9776273,
+  "updatedAt": 1783537568.0075
+}

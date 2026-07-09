@@ -1,6 +1,6 @@
 ---
 name: project_title
-description: Research project title
+description: user-defined research title
 type: project
 ---
 

@@ -29,19 +29,6 @@ MEMORY_INDEX = MEMORY_DIR / "MEMORY.md"
 TASKS_DIR = Path(os.environ.get("TASKS_DIR", PACKAGE_DIR / ".tasks")).resolve()
 TEAM_DIR = Path(os.environ.get("TEAM_DIR", PACKAGE_DIR / ".team")).resolve()
 TEAM_INBOX_DIR = TEAM_DIR / "inboxes"
-WORKTREES_DIR = Path(os.environ.get("WORKTREES_DIR", PACKAGE_DIR / ".worktrees")).resolve()
-WORKTREE_EVENTS = WORKTREES_DIR / "events.jsonl"
-WORKTREE_FALLBACK_MODE = os.environ.get("WORKTREE_FALLBACK_MODE", "filtered").strip().lower()
-WORKTREE_SPARSE_CHECKOUT = os.environ.get("WORKTREE_SPARSE_CHECKOUT", "1").lower() not in {"0", "false", "no"}
-WORKTREE_SNAPSHOT_MAX_FILE_BYTES = int(os.environ.get("WORKTREE_SNAPSHOT_MAX_FILE_BYTES", "5000000"))
-WORKTREE_SNAPSHOT_INCLUDE_PREFIXES = tuple(
-    item.strip().replace("\\", "/")
-    for item in os.environ.get(
-        "WORKTREE_SNAPSHOT_INCLUDE_PREFIXES",
-        "v8,v8_eval_target,v8_eval_targets,src,test,docs,README.md,CLAUDE.md,requirements.txt,pyproject.toml,setup.py,setup.cfg,package.json",
-    ).split(",")
-    if item.strip()
-)
 SCHEDULED_TASKS_PATH = Path(
     os.environ.get("SCHEDULED_TASKS_PATH", PACKAGE_DIR / ".scheduled_tasks.json")
 ).resolve()
@@ -66,7 +53,7 @@ SCIENCE_SEMANTIC_SCHOLAR_FAIL_FAST_ON_429 = os.environ.get(
     "SCIENCE_SEMANTIC_SCHOLAR_FAIL_FAST_ON_429", "0"
 ).lower() not in {"0", "false", "no"}
 SCIENCE_SEMANTIC_SCHOLAR_CIRCUIT_SECONDS = float(
-    os.environ.get("SCIENCE_SEMANTIC_SCHOLAR_CIRCUIT_SECONDS", "0")
+    os.environ.get("SCIENCE_SEMANTIC_SCHOLAR_CIRCUIT_SECONDS", "3")
 )
 SCIENCE_SEMANTIC_SCHOLAR_PROBE_VARIANTS = int(
     os.environ.get("SCIENCE_SEMANTIC_SCHOLAR_PROBE_VARIANTS", "2")
@@ -81,7 +68,7 @@ SCIENCE_ARXIV_MIN_INTERVAL_SECONDS = float(
     os.environ.get("SCIENCE_ARXIV_MIN_INTERVAL_SECONDS", "3.5")
 )
 SCIENCE_ARXIV_CIRCUIT_SECONDS = float(
-    os.environ.get("SCIENCE_ARXIV_CIRCUIT_SECONDS", "90")
+    os.environ.get("SCIENCE_ARXIV_CIRCUIT_SECONDS", "30")
 )
 SCIENCE_SUBSPACE_PROBE_MAX_CALLS_PER_PROVIDER = int(
     os.environ.get("SCIENCE_SUBSPACE_PROBE_MAX_CALLS_PER_PROVIDER", "4")
@@ -90,7 +77,7 @@ SCIENCE_STRATIFIED_MAX_BRANCHES_PER_LAYER = int(
     os.environ.get("SCIENCE_STRATIFIED_MAX_BRANCHES_PER_LAYER", "3")
 )
 SCIENCE_ZHIZHI_DEFAULT_IMPORT_TOP_K = int(
-    os.environ.get("SCIENCE_ZHIZHI_DEFAULT_IMPORT_TOP_K", "15")
+    os.environ.get("SCIENCE_ZHIZHI_DEFAULT_IMPORT_TOP_K", "20")
 )
 SCIENCE_ZHIZHI_MAX_IMPORT_TOP_K = int(
     os.environ.get("SCIENCE_ZHIZHI_MAX_IMPORT_TOP_K", "50")
@@ -138,10 +125,6 @@ RECOVERY_MAX_DELAY_MS = int(os.environ.get("RECOVERY_MAX_DELAY_MS", "32000"))
 FALLBACK_MODEL_ID = os.environ.get("FALLBACK_MODEL_ID", MODEL_ID)
 BACKGROUND_ENABLED = os.environ.get("BACKGROUND_ENABLED", "1").lower() not in {"0", "false", "no"}
 BACKGROUND_MAX_OUTPUT_CHARS = int(os.environ.get("BACKGROUND_MAX_OUTPUT_CHARS", "20000"))
-TEAMMATE_IDLE_POLL_SECONDS = float(os.environ.get("TEAMMATE_IDLE_POLL_SECONDS", "5.0"))
-TEAMMATE_MAX_IDLE_SECONDS = float(os.environ.get("TEAMMATE_MAX_IDLE_SECONDS", "60"))
-TEAMMATE_WORK_MAX_TURNS = int(os.environ.get("TEAMMATE_WORK_MAX_TURNS", "10"))
-TEAMMATE_AUTONOMOUS = os.environ.get("TEAMMATE_AUTONOMOUS", "1").lower() not in {"0", "false", "no"}
 CRON_ENABLED = os.environ.get("CRON_ENABLED", "1").lower() not in {"0", "false", "no"}
 CRON_POLL_SECONDS = float(os.environ.get("CRON_POLL_SECONDS", "1.0"))
 CRON_QUEUE_POLL_SECONDS = float(os.environ.get("CRON_QUEUE_POLL_SECONDS", "0.2"))
