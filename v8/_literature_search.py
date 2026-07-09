@@ -2098,7 +2098,7 @@ def semantic_scholar_get_json(url: str, headers: dict[str, str] | None = None) -
         log_event("SCIENCE", "semantic_scholar_cache_hit")
         return json.loads(cached)
     # Session-level kill switch: if too many 429s total, stop hitting SS entirely
-    if SEMANTIC_SCHOLAR_429_COUNT >= 25:
+    if SEMANTIC_SCHOLAR_429_COUNT >= 200:
         raise RuntimeError(
             f"Semantic Scholar session rate limit exceeded: {SEMANTIC_SCHOLAR_429_COUNT} total 429s. "
             "All further SS API calls are skipped for this session to avoid wasting time."
@@ -2108,7 +2108,7 @@ def semantic_scholar_get_json(url: str, headers: dict[str, str] | None = None) -
     last_error: RuntimeError | None = None
     for attempt in range(retry_limit + 1):
         # Check session kill switch inside retry loop too
-        if SEMANTIC_SCHOLAR_429_COUNT >= 25:
+        if SEMANTIC_SCHOLAR_429_COUNT >= 200:
             raise RuntimeError(
                 f"Semantic Scholar session rate limit exceeded during retry: {SEMANTIC_SCHOLAR_429_COUNT} total 429s. "
                 "Stopping retries to avoid wasting time."
