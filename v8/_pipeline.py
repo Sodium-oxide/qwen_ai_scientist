@@ -1518,7 +1518,7 @@ def run_zhizhi_literature_analysis(
 
     search_id = str(search_payload.get("search_id"))
     log_event("SCIENCE", "search_phase_complete", search_id=search_id, total_results=search_payload.get("total_results", 0),
-              providers=selected_providers, strata={s.get("layer"): s.get("count", 0) for s in (search_payload.get("strata") or [])})
+              providers=selected_providers, strata={s.get("layer"): s.get("selected", 0) for s in (search_payload.get("strata") or [])})
     coverage_diagnostic = literature_domain_coverage_diagnostic(
         search_id,
         domain=domain,
