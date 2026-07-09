@@ -429,8 +429,16 @@ def domain_exclusion_markers(domain: str = "") -> set[str]:
     # Build exclusion markers based on domain family
     exclusions: set[str] = set()
 
+    def _domain_matches(terms: tuple[str, ...]) -> bool:
+        """Check if any trigger term appears as a whole word in the domain string."""
+        import re as _re
+        for term in terms:
+            if _re.search(r'\b' + _re.escape(term) + r'\b', domain_lower):
+                return True
+        return False
+
     # Physical / materials / chemistry domains should exclude pure clinical / social / finance
-    if any(term in domain_lower for term in ("battery", "catalyst", "material", "polymer", "semiconductor", "alloy", "chemistry", "chemical")):
+    if _domain_matches(("battery", "catalyst", "material", "polymer", "semiconductor", "alloy", "chemistry", "chemical")):
         exclusions.update({
             "clinical trial", "patient cohort", "epidemiological", "public health",
             "stock market", "financial return", "gdp", "macroeconomic",
@@ -438,7 +446,7 @@ def domain_exclusion_markers(domain: str = "") -> set[str]:
         })
 
     # Bio / medical domains should exclude pure physics / math / finance
-    if any(term in domain_lower for term in ("protein", "cell", "gene", "clinical", "patient", "disease", "organism", "cancer", "biomedical")):
+    if _domain_matches(("protein", "cell", "gene", "clinical", "patient", "disease", "organism", "cancer", "biomedical")):
         exclusions.update({
             "dark matter", "gravitational wave", "black hole", "cosmological",
             "stock market", "financial return", "gdp", "macroeconomic",
@@ -446,7 +454,7 @@ def domain_exclusion_markers(domain: str = "") -> set[str]:
         })
 
     # CS / AI domains should exclude pure clinical / materials / ecology
-    if any(term in domain_lower for term in ("algorithm", "model", "ai", "simulation", "control", "robot", "grid", "neural", "deep learning")):
+    if _domain_matches(("algorithm", "neural network", "deep learning", "robotics", "compiler", "operating system")):
         exclusions.update({
             "clinical trial", "patient cohort", "epidemiological",
             "crystal structure", "x-ray diffraction", "catalytic activity",
@@ -454,7 +462,7 @@ def domain_exclusion_markers(domain: str = "") -> set[str]:
         })
 
     # Ecology / environmental should exclude pure CS / finance / high-energy physics
-    if any(term in domain_lower for term in ("climate", "ecology", "environment", "geology", "agriculture")):
+    if _domain_matches(("climate", "ecology", "environment", "geology", "agriculture")):
         exclusions.update({
             "stock market", "financial return", "gdp",
             "collider", "quark", "hadron", "lattice gauge",
@@ -462,7 +470,7 @@ def domain_exclusion_markers(domain: str = "") -> set[str]:
         })
 
     # Math / stats should exclude pure experimental sciences
-    if any(term in domain_lower for term in ("mathematics", "statistics", "topology", "algebra")):
+    if _domain_matches(("mathematics", "statistics", "topology", "algebra")):
         exclusions.update({
             "clinical trial", "in vivo", "in vitro",
             "battery performance", "catalytic activity",
