@@ -403,6 +403,11 @@ def detect_knowledge_gaps(project_id: str, max_gaps: int = 10) -> str:
     if len(gaps) < max_gaps:
         gaps.extend(detect_problem_gaps(project, min(per_type_quota + 1, max_gaps - len(gaps))))
 
+    # TABI abductive reasoning: implicit gaps from evidence pair analysis
+    if len(gaps) < max_gaps:
+        tabi_candidates = tabi_abductive_gap_detection(project, max_gaps=max_gaps - len(gaps))
+        gaps.extend(tabi_candidates)
+
     for method in methods:
         for scenario in scenarios:
             if scenario in matrix.get(method, {}):
@@ -596,6 +601,7 @@ def tanxi_gap_exploration_report(
     density_gap_candidates = gaps_from_density_holes(project, coverage_analysis.get("density_holes", []))
     pair_gap_candidates = gaps_from_unconnected_pairs(project, unconnected_pairs)
     suspended_gap_candidates = gaps_from_suspended_problems(project, suspended)
+    tabi_gap_candidates = tabi_abductive_gap_detection(project, max_gaps=max(4, max_gaps))
     candidates = dedupe_knowledge_gaps(
         mechanism_issue_candidates
         + source_signal_candidates
@@ -604,8 +610,10 @@ def tanxi_gap_exploration_report(
         + density_gap_candidates
         + pair_gap_candidates
         + suspended_gap_candidates
+        + tabi_gap_candidates
     )
     ranked = prioritize_gaps(project, candidates, coverage_analysis, strategic_domains, max_gaps=max_gaps)
+    ranked = counterfactual_gap_analysis(project, ranked, limit=min(max_gaps, 10))
     return {
         "agent": "tanxi",
         "target_domain": target_domain,
@@ -2876,4 +2884,480 @@ def normalize_gap_signals(signals: list[dict[str, Any]], *, citation: str = "", 
             break
     normalized.sort(key=lambda item: (-float(item["confidence"]), item["signal_type"], item["text"]))
     return normalized
+
+
+# ---------------------------------------------------------------------------
+# TABI: Toulmin-Abductive Bucketed Inference
+# ---------------------------------------------------------------------------
+
+def extract_evidence_pairs_from_records(project, limit=30):
+    try:
+        from ._pipeline import project_records_for_mapping
+        from ._utils import normalize_space, trim_text
+    except ImportError:
+        from _pipeline import project_records_for_mapping
+        from _utils import normalize_space, trim_text
+    records = project_records_for_mapping(project)
+    pairs = []
+    method_records = defaultdict(list)
+    for rec in records:
+        method = str(rec.get("method") or "").strip()
+        if method and method.lower() not in ("unknown", "unspecified", ""):
+            method_records[method.lower()].append(rec)
+    for method_key, recs in method_records.items():
+        if len(recs) < 2:
+            continue
+        for i, left in enumerate(recs):
+            for right in recs[i+1:]:
+                ls = str(left.get("scenario", "")).lower().strip()
+                rs = str(right.get("scenario", "")).lower().strip()
+                if ls and rs and ls == rs:
+                    lc = normalize_space(str(left.get("contribution") or ""))
+                    rc = normalize_space(str(right.get("contribution") or ""))
+                    if lc and rc and lc != rc:
+                        pairs.append({
+                            "pair_type": "contradiction",
+                            "grounds_a": {
+                                "text": trim_text(f"{left.get('method','')}: {lc}", 300),
+                                "reference": record_reference(left),
+                                "scenario": str(left.get("scenario", "")),
+                            },
+                            "grounds_b": {
+                                "text": trim_text(f"{right.get('method','')}: {rc}", 300),
+                                "reference": record_reference(right),
+                                "scenario": str(right.get("scenario", "")),
+                            },
+                            "shared_context": f"method={left.get('method','')}, scenario={left.get('scenario','')}",
+                        })
+    causal_markers = [
+        "leads to", "causes", "results in", "improves", "reduces",
+        "increases", "decreases", "affects", "enables",
+    ]
+    chain_claims = []
+    for rec in records:
+        for fn in ("contribution", "limitation", "conclusion"):
+            text = normalize_space(str(rec.get(fn) or ""))
+            if not text:
+                continue
+            for m in causal_markers:
+                if m in text.lower():
+                    chain_claims.append({
+                        "text": trim_text(text, 300),
+                        "marker": m,
+                        "reference": record_reference(rec),
+                        "method": str(rec.get("method", "")),
+                        "scenario": str(rec.get("scenario", "")),
+                    })
+                    break
+    for i, ca in enumerate(chain_claims):
+        for cb in chain_claims[i+1:]:
+            aw = set(re.findall(r"\w{4,}", ca["text"].lower()))
+            bw = set(re.findall(r"\w{4,}", cb["text"].lower()))
+            overlap = aw & bw
+            if len(overlap) >= 2 and ca["reference"] != cb["reference"]:
+                pairs.append({
+                    "pair_type": "causal_chain_gap",
+                    "grounds_a": {
+                        "text": ca["text"],
+                        "reference": ca["reference"],
+                        "scenario": ca.get("scenario", ""),
+                    },
+                    "grounds_b": {
+                        "text": cb["text"],
+                        "reference": cb["reference"],
+                        "scenario": cb.get("scenario", ""),
+                    },
+                    "shared_context": f"shared_terms={','.join(list(overlap)[:5])}",
+                })
+    condition_markers = [
+        ("under", "condition"), ("at", "level"), ("in", "environment"),
+        ("for", "case"), ("when", "scenario"), ("within", "range"),
+        ("above", "threshold"), ("below", "threshold"),
+    ]
+    for rec in records:
+        lim = normalize_space(str(rec.get("limitation") or ""))
+        if not lim or len(lim) < 20:
+            continue
+        for marker, kind in condition_markers:
+            if f" {marker} " in lim.lower():
+                pairs.append({
+                    "pair_type": "extrapolation_limit",
+                    "grounds_a": {
+                        "text": trim_text(lim, 300),
+                        "reference": record_reference(rec),
+                        "scenario": str(rec.get("scenario", "")),
+                    },
+                    "grounds_b": {
+                        "text": f"Validity claimed {marker} specific {kind}; generalization to other {kind}s is unverified",
+                        "reference": record_reference(rec),
+                        "scenario": str(rec.get("scenario", "")),
+                    },
+                    "shared_context": f"extrapolation from {kind} '{marker}'",
+                })
+                break
+    return pairs[:limit]
+
+
+def tabi_abductive_gap_detection(project, max_gaps=8):
+    try:
+        from ._utils import new_id, normalize_space, trim_text, unique_preserve_order
+    except ImportError:
+        from _utils import new_id, normalize_space, trim_text, unique_preserve_order
+    evidence_pairs = extract_evidence_pairs_from_records(project, limit=30)
+    if not evidence_pairs:
+        return []
+    gaps, seen_claims = [], set()
+    for pair in evidence_pairs:
+        pt = pair.get("pair_type", "")
+        ga, gb = pair.get("grounds_a", {}), pair.get("grounds_b", {})
+        sc = pair.get("shared_context", "")
+        ta = normalize_space(str(ga.get("text", "")))
+        tb = normalize_space(str(gb.get("text", "")))
+        if not ta or not tb:
+            continue
+        warrant = tabi_warrant_for_pair(pt, ta, tb, sc)
+        claim = tabi_abductive_claim(pt, ta, tb, warrant, sc)
+        if not claim or len(claim) < 15:
+            continue
+        ck = gap_signature(claim)
+        if ck in seen_claims:
+            continue
+        seen_claims.add(ck)
+        bucket = tabi_bucket_confidence(pt, ta, tb, warrant)
+        refs = unique_preserve_order([str(ga.get("reference", "")), str(gb.get("reference", ""))])
+        gap = make_gap(
+            gap_type="implicit_tabi" if pt != "extrapolation_limit" else "migration",
+            description=trim_text(claim, 500),
+            supporting_references=[r for r in refs if r],
+            suggested_research_path=tabi_research_path(pt, claim, sc),
+            value_argument=f"TABI abductive inference from {pt} evidence pair.",
+        )
+        gap["tabi_chain"] = {
+            "grounds_a": trim_text(ta, 300),
+            "grounds_b": trim_text(tb, 300),
+            "warrant": trim_text(warrant, 300),
+            "claim": trim_text(claim, 300),
+            "pair_type": pt,
+            "shared_context": sc,
+        }
+        gap["gap_discovery_method"] = "implicit_tabi"
+        gap["confidence_bucket"] = bucket
+        gap["tabi_evidence_type"] = pt
+        gaps.append(gap)
+        if len(gaps) >= max_gaps:
+            break
+    gaps.sort(key=lambda g: (0 if g.get("confidence_bucket") == "more_probable" else 1, -len(str(g.get("description", "")))))
+    log_event("SCIENCE", "tabi_abductive_gaps_detected", count=len(gaps), pairs_evaluated=len(evidence_pairs))
+    return gaps
+
+
+def tabi_warrant_for_pair(pt, ta, tb, sc):
+    if pt == "contradiction":
+        return (
+            f"Two studies report conflicting findings about {sc}. "
+            "When evidence contradicts, the underlying mechanism or boundary condition is likely unresolved."
+        )
+    if pt == "causal_chain_gap":
+        return (
+            f"Evidence establishes separate causal links that share intermediate terms ({sc}). "
+            "If A→B and B→C are independently supported but A→C has not been directly validated, "
+            "the transitive causal claim remains a knowledge gap."
+        )
+    if pt == "extrapolation_limit":
+        return (
+            f"Validity is claimed {sc}. "
+            "Generalization beyond the stated condition boundary is not supported by the available evidence."
+        )
+    return "Evidence premises suggest an unresolved inferential gap."
+
+
+def tabi_abductive_claim(pt, ta, tb, warrant, sc):
+    if pt == "contradiction":
+        return (
+            f"The mechanism underlying the contradiction between "
+            f"'{ta[:120].rstrip('.,;')}' and '{tb[:120].rstrip('.,;')}' remains unresolved. "
+            f"A systematic study controlling for {sc} is needed."
+        )
+    if pt == "causal_chain_gap":
+        return (
+            f"Although individual causal links are supported "
+            f"({ta[:80].rstrip('.,;')} and {tb[:80].rstrip('.,;')}), "
+            "the transitive relationship has not been directly validated."
+        )
+    if pt == "extrapolation_limit":
+        return (
+            f"The evidence supports validity {ta[:100].rstrip('.,;')}, "
+            "but generalization to untested conditions remains an open question."
+        )
+    return ""
+
+
+def tabi_bucket_confidence(pt, ta, tb, warrant):
+    if pt == "contradiction":
+        return "more_probable"
+    if pt == "causal_chain_gap":
+        aw = set(re.findall(r"\w{4,}", ta.lower()))
+        bw = set(re.findall(r"\w{4,}", tb.lower()))
+        return "more_probable" if len(aw & bw) >= 3 else "least_probable"
+    if pt == "extrapolation_limit":
+        return "more_probable" if len(ta) > 40 else "least_probable"
+    return "least_probable"
+
+
+def tabi_research_path(pt, claim, sc):
+    if pt == "contradiction":
+        return "Design a controlled experiment that systematically varies the disputed parameters while holding confounders constant."
+    if pt == "causal_chain_gap":
+        return "Conduct an end-to-end study that directly tests the transitive causal relationship with intermediate variable monitoring."
+    if pt == "extrapolation_limit":
+        return "Perform a regime-shift experiment varying the boundary condition to map the validity frontier."
+    return "Investigate the identified gap with targeted experiments."
+
+
+# ---------------------------------------------------------------------------
+# Counterfactual Gap Analysis (CG)
+# ---------------------------------------------------------------------------
+
+def counterfactual_gap_analysis(project, gaps, limit=10):
+    try:
+        from ._pipeline import project_records_for_mapping
+    except ImportError:
+        from _pipeline import project_records_for_mapping
+    records = project_records_for_mapping(project)
+    if not records:
+        return gaps
+    enriched = []
+    for gap in gaps[:limit]:
+        tree = build_counterfactual_tree(gap, records)
+        gap["counterfactual_tree"] = tree
+        gap["gap_resolution_type"] = classify_gap_counterfactual_type(tree)
+        gap["leaf_conditions"] = tree.get("leaf_conditions", [])
+        gap["resolution_complexity"] = tree.get("resolution_complexity", "unknown")
+        enriched.append(gap)
+    log_event(
+        "SCIENCE", "counterfactual_gap_analysis",
+        gaps_analyzed=len(enriched),
+        complement=sum(1 for g in enriched if g.get("gap_resolution_type") == "complement_gap"),
+        novel=sum(1 for g in enriched if g.get("gap_resolution_type") == "novel_concept_gap"),
+    )
+    return enriched
+
+
+def build_counterfactual_tree(gap, records):
+    try:
+        from ._utils import normalize_space, trim_text
+    except ImportError:
+        from _utils import normalize_space, trim_text
+    desc = normalize_space(str(gap.get("description", "")))
+    gt = str(gap.get("gap_type", ""))
+    gm, gs = infer_method_scenario_from_gap(gap, records)
+    related = find_related_records(gm, gs, records)
+    missing = find_missing_evidence(gm, gs, records)
+    branches = []
+    if related:
+        covered = {normalize_space(str(r.get("scenario", ""))).lower() for r in related}
+        target = normalize_space(gs).lower()
+        if target and target not in covered:
+            branches.append({
+                "condition": f"'{gm}' validated in other scenarios",
+                "missing": f"No validation in '{gs}'",
+                "counterfactual": f"If '{gm}' were validated in '{gs}', gap resolved",
+                "leaf": True,
+            })
+        for rec in related:
+            lim = normalize_space(str(rec.get("limitation", "")))
+            if lim and len(lim) > 15:
+                branches.append({
+                    "condition": f"Study: {trim_text(str(rec.get('title', '')), 80)}",
+                    "missing": f"Limitation: {trim_text(lim, 150)}",
+                    "counterfactual": "If limitation addressed, evidence base strengthens",
+                    "leaf": False,
+                })
+    if gt in ("contradiction", "implicit_tabi"):
+        tc = gap.get("tabi_chain", {})
+        if tc:
+            branches.append({
+                "condition": f"Conflict: {trim_text(str(tc.get('shared_context', '')), 120)}",
+                "missing": f"Warrant: {trim_text(str(tc.get('warrant', '')), 150)}",
+                "counterfactual": "If controlled experiment resolved conflict, gap disappears",
+                "leaf": True,
+            })
+    benchmarks = {normalize_space(str(r.get("benchmark", ""))).lower() for r in related if r.get("benchmark")}
+    if benchmarks and gm:
+        branches.append({
+            "condition": f"Benchmarks: {', '.join(list(benchmarks)[:4])}",
+            "missing": "No standardized benchmark",
+            "counterfactual": "If standard benchmark existed, gap could be quantitatively assessed",
+            "leaf": True,
+        })
+    leaves = [trim_text(b.get("counterfactual", ""), 200) for b in branches if b.get("leaf")]
+    if not branches:
+        root, cx = "No related evidence; gap may require entirely new research", "high"
+    elif len(leaves) <= 1:
+        root, cx = f"Single validation missing: {leaves[0] if leaves else desc[:100]}", "low"
+    elif len(leaves) <= 3:
+        root, cx = f"{len(leaves)} evidence conditions unmet", "medium"
+    else:
+        root, cx = f"{len(leaves)} evidence conditions unmet across dimensions", "high"
+    return {
+        "root": trim_text(root, 300),
+        "branches": branches[:6],
+        "leaf_conditions": leaves[:5],
+        "resolution_complexity": cx,
+        "related_evidence_count": len(related),
+        "missing_evidence_count": len(missing),
+        "gap_method": gm,
+        "gap_scenario": gs,
+    }
+
+
+def classify_gap_counterfactual_type(tree):
+    if tree.get("related_evidence_count", 0) == 0:
+        return "novel_concept_gap"
+    return "complement_gap"
+
+
+def infer_method_scenario_from_gap(gap, records):
+    try:
+        from ._utils import normalize_space
+    except ImportError:
+        from _utils import normalize_space
+    dl = normalize_space(str(gap.get("description", ""))).lower()
+    tabi = gap.get("tabi_chain", {})
+    if tabi:
+        sc = str(tabi.get("shared_context", ""))
+        if "method=" in sc:
+            m = sc.split("method=")[-1].split(",")[0].strip()
+            s = sc.split("scenario=")[-1].split(",")[0].strip() if "scenario=" in sc else ""
+            return m, s
+    km = {
+        normalize_space(str(r.get("method", ""))).lower()
+        for r in records
+        if r.get("method") and str(r.get("method", "")).lower() not in ("unknown", "unspecified")
+    }
+    ks = {
+        normalize_space(str(r.get("scenario", ""))).lower()
+        for r in records
+        if r.get("scenario") and str(r.get("scenario", "")).lower() not in ("unknown", "unspecified")
+    }
+    mm = ms = ""
+    for m in km:
+        if m and m in dl:
+            mm = m
+            break
+    for s in ks:
+        if s and s in dl:
+            ms = s
+            break
+    return mm, ms
+
+
+def find_related_records(method, scenario, records):
+    try:
+        from ._utils import normalize_space
+    except ImportError:
+        from _utils import normalize_space
+    ml = normalize_space(method).lower() if method else ""
+    sl = normalize_space(scenario).lower() if scenario else ""
+    return [
+        r for r in records
+        if (ml and normalize_space(str(r.get("method", ""))).lower() == ml)
+        or (sl and normalize_space(str(r.get("scenario", ""))).lower() == sl)
+    ][:8]
+
+
+def find_missing_evidence(method, scenario, records):
+    try:
+        from ._utils import normalize_space
+    except ImportError:
+        from _utils import normalize_space
+    ml = normalize_space(method).lower() if method else ""
+    sl = normalize_space(scenario).lower() if scenario else ""
+    missing = []
+    pair_exists = any(
+        normalize_space(str(r.get("method", ""))).lower() == ml
+        and normalize_space(str(r.get("scenario", ""))).lower() == sl
+        for r in records
+    )
+    if not pair_exists and ml and sl:
+        missing.append(f"No record validates '{method}' in scenario '{scenario}'")
+    return missing
+
+
+# ---------------------------------------------------------------------------
+# GRADE Knowledge Sufficiency
+# ---------------------------------------------------------------------------
+
+def grade_knowledge_sufficiency(hypothesis_text, project):
+    try:
+        from ._pipeline import project_records_for_mapping
+        from ._utils import normalize_space
+    except ImportError:
+        from _pipeline import project_records_for_mapping
+        from _utils import normalize_space
+    records = project_records_for_mapping(project)
+    if not records:
+        return {
+            "rank_ratio": 1.0,
+            "verdict": "knowledge_insufficient",
+            "knowledge_boundary": "outside",
+            "covered_terms": [],
+            "uncovered_terms": [],
+            "suggested_action": "No records; import literature first",
+        }
+    corpus = " ".join(
+        normalize_space(
+            " ".join(str(r.get(k, "")) for k in ("title", "abstract", "method", "scenario", "contribution", "conclusion"))
+        ).lower()
+        for r in records
+    )
+    key_terms = extract_grade_key_terms(normalize_space(hypothesis_text).lower())
+    if not key_terms:
+        return {
+            "rank_ratio": 0.0,
+            "verdict": "knowledge_sufficient",
+            "knowledge_boundary": "within",
+            "covered_terms": [],
+            "uncovered_terms": [],
+            "suggested_action": "Proceed to verification",
+        }
+    covered = [t for t in key_terms if t in corpus]
+    uncovered = [t for t in key_terms if t not in corpus]
+    rr = len(uncovered) / max(1, len(key_terms))
+    if rr < 0.3:
+        v, b, a = "knowledge_sufficient", "within", "PaperGraph covers hypothesis well"
+    elif rr < 0.6:
+        v, b, a = "knowledge_partial", "boundary", f"Partial coverage; supplement: {', '.join(uncovered[:5])}"
+    else:
+        v, b, a = "knowledge_insufficient", "outside", f"Lacks coverage: {', '.join(uncovered[:5])}"
+    return {
+        "rank_ratio": round(rr, 3),
+        "verdict": v,
+        "knowledge_boundary": b,
+        "covered_terms": covered[:10],
+        "uncovered_terms": uncovered[:10],
+        "total_key_terms": len(key_terms),
+        "suggested_action": a,
+    }
+
+
+def extract_grade_key_terms(text):
+    stopwords = {
+        "the", "and", "for", "that", "this", "with", "from", "have", "been",
+        "will", "are", "was", "were", "not", "but", "can", "may", "should",
+        "when", "then", "than", "also", "more", "less", "such", "each",
+        "which", "their", "there", "would", "could", "does", "into", "over",
+        "under", "between", "through", "during", "before", "after", "above",
+        "below", "because", "while", "where", "both", "either", "neither",
+        "hypothesis", "study", "experiment", "method", "results", "show",
+        "using", "based", "propose", "approach", "analysis", "paper",
+    }
+    words = re.findall(r"[a-z][a-z0-9-]{2,}", text.lower())
+    filtered = [w for w in words if w not in stopwords and len(w) >= 4]
+    bigrams = []
+    for i in range(len(filtered) - 1):
+        bg = f"{filtered[i]} {filtered[i+1]}"
+        if len(bg) > 8:
+            bigrams.append(bg)
+    return list(dict.fromkeys(filtered + bigrams))[:20]
 

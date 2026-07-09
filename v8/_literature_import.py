@@ -369,6 +369,44 @@ def import_papergraph_record(
             indent=2,
         )
 
+    # Title-based fuzzy dedup: catch same-paper imports from different providers/identifiers
+    normalized_new_title = normalize_space(title).lower()
+    if normalized_new_title and len(normalized_new_title) >= 10:
+        new_title_tokens = set(re.findall(r"[a-z0-9]+", normalized_new_title))
+        for existing in project.get("papergraph", []):
+            if not isinstance(existing, dict):
+                continue
+            existing_title = normalize_space(str(existing.get("title") or "")).lower()
+            if not existing_title or len(existing_title) < 10:
+                continue
+            existing_tokens = set(re.findall(r"[a-z0-9]+", existing_title))
+            if not new_title_tokens or not existing_tokens:
+                continue
+            intersection = new_title_tokens & existing_tokens
+            union = new_title_tokens | existing_tokens
+            jaccard = len(intersection) / max(1, len(union))
+            if jaccard >= 0.85:
+                log_event(
+                    "SCIENCE",
+                    "paper_fuzzy_title_duplicate",
+                    project_id=project_id,
+                    paper_id=existing.get("paper_id"),
+                    jaccard=round(jaccard, 3),
+                    new_title=title[:80],
+                    existing_title=existing_title[:80],
+                )
+                return json.dumps(
+                    {
+                        "status": "duplicate",
+                        "reason": "fuzzy_title_match",
+                        "jaccard": round(jaccard, 3),
+                        "unique_key": unique_key,
+                        "existing_record": existing,
+                    },
+                    ensure_ascii=False,
+                    indent=2,
+                )
+
     clean_abstract = "" if invalid_placeholder_abstract(abstract) else abstract
     parsed_fallback = parse_paper_text("\n\n".join(part for part in [clean_abstract, conclusion, full_text_excerpt, limitation] if part))
     final_abstract = clean_abstract or parsed_fallback["abstract"]

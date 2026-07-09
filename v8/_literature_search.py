@@ -495,7 +495,7 @@ def stratified_literature_quotas(max_results: int) -> dict[str, int]:
         "L0_review": 3,
         "L1_milestone": 4,
         "L2_top_latest": 4,
-        "L3_preprint": 1,
+        "L3_preprint": 3,
     }
     if total <= 1:
         return {"L0_review": total, "L1_milestone": 0, "L2_top_latest": 0, "L3_preprint": 0, "L4_regular": 0}

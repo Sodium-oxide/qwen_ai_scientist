@@ -71,6 +71,7 @@ def expand_literature_graph(
     )
     errors: list[dict[str, str]] = []
     seed_not_indexed = False
+    rate_limited_ids: list[str] = []
     for edge_kind in edge_kinds:
         if edge_kind not in {"references", "citations"}:
             errors.append({"edge": edge_kind, "error": "unknown direction"})
@@ -106,6 +107,8 @@ def expand_literature_graph(
                 )
                 if is_semantic_scholar_rate_limit_error(error_text):
                     log_event("SCIENCE", "graph_expand_rate_limited", search_id=search_id, edge=edge_kind)
+                    rate_limited_ids.append(f"{candidate_lookup_id}:{edge_kind}")
+                    continue
                 else:
                     log_event("SCIENCE", "graph_expand_failed", search_id=search_id, edge=edge_kind, error=error_text)
                 break
@@ -130,6 +133,27 @@ def expand_literature_graph(
                 lookup_ids=",".join(lookup_ids),
             )
             break
+
+    # Delayed retry for rate-limited edge fetches (429)
+    if rate_limited_ids and not raw_edges:
+        import time as _time
+        _time.sleep(2)
+        for rate_limited_entry in rate_limited_ids:
+            rl_lookup_id, rl_edge_kind = rate_limited_entry.rsplit(":", 1)
+            try:
+                edges = fetch_semantic_scholar_edges(rl_lookup_id, rl_edge_kind, limit=per_edge_limit)
+                raw_edges.extend(edges)
+                log_event("SCIENCE", "graph_expand_rate_limit_retry_success", search_id=search_id, edge=rl_edge_kind)
+            except Exception as retry_exc:
+                errors.append(
+                    {
+                        "edge": rl_edge_kind,
+                        "lookup_id": rl_lookup_id,
+                        "error": str(retry_exc),
+                        "rate_limited_retry": True,
+                    }
+                )
+                log_event("SCIENCE", "graph_expand_rate_limit_retry_failed", search_id=search_id, edge=rl_edge_kind, error=str(retry_exc))
 
     graph_results = dedupe_literature_results(
         [
@@ -173,13 +197,14 @@ def expand_literature_graph(
                 "edge": "fallback_keyword_expansion",
                 "error": "citation graph returned no usable neighbors; fell back to Semantic Scholar keyword search",
                 "seed_not_indexed": seed_not_indexed,
+                "rate_limited_empty": bool(rate_limited_ids),
             }
         )
         log_event(
             "SCIENCE",
             "graph_expand_fallback",
             seed_search_id=search_id,
-            reason="seed_not_indexed" if seed_not_indexed else "empty_graph",
+            reason="rate_limited_empty" if rate_limited_ids else ("seed_not_indexed" if seed_not_indexed else "empty_graph"),
             count=len(ranked),
         )
     graph_search_id = new_id("graph")

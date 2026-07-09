@@ -879,6 +879,104 @@ def detect_hypothesis_template(idea: dict[str, Any]) -> dict[str, Any]:
     }
 
 
+def enforce_hypothesis_specificity(idea: dict[str, Any]) -> dict[str, Any]:
+    """Enforce that a hypothesis contains domain-specific, non-template content.
+
+    Checks 4 dimensions:
+    - numerical_bounds: at least one concrete number, unit, or formula
+    - operating_condition: a named controllable variable or regime
+    - measurable_metric: a domain-specific measurable outcome (not a generic list)
+    - causal_chain: an explicit causal or mechanistic pathway (not a vague link)
+
+    Returns a dict with verdict (PASS / WARN / REJECT), per-dimension status,
+    and a list of missing dimensions.
+    """
+    hyp_text = " ".join(
+        str(idea.get(k) or "") for k in ("title", "hypothesis", "abstract", "related_work")
+    ).lower()
+
+    # --- numerical_bounds ---
+    has_numbers = bool(
+        re.search(r"\d+\.?\d*\s*(nm|μm|mm|°c|°C|mV|V|A|mol|wt%|at%|hrs?|hours?|cycles?|ppm|K|kPa|MPa|GHz|MHz|kHz|Hz|s\b|ms|μs)", hyp_text)
+        or re.search(r"[A-Z][a-z]{0,2}\d|[IVX]{2,}|Li[A-Z]|V\([IVX]+\)", hyp_text)
+        or re.search(r"\b\d+\s*%", hyp_text)
+        or re.search(r"\b\d+\.\d+\b", hyp_text)
+    )
+
+    # --- operating_condition ---
+    condition_markers = [
+        "temperature", "pressure", "voltage", "concentration", "dose", "frequency",
+        "flow rate", "pH", "humidity", "strain", "stress", "loading", "ratio",
+        "time step", "sample size", "threshold", "regime", "boundary condition",
+        "operating condition", "under the condition", "when", "while varying",
+    ]
+    has_condition = any(marker in hyp_text for marker in condition_markers)
+
+    # --- measurable_metric ---
+    generic_metric_lists = [
+        "reaction yield, rate constant, selectivity",
+        "stability, and functional outcome",
+        "signal-to-noise ratio, resolution, specificity",
+        "predictive accuracy, robustness, constraint satisfaction",
+    ]
+    has_specific_metric = True
+    for generic in generic_metric_lists:
+        if generic in hyp_text:
+            has_specific_metric = False
+            break
+    if not has_specific_metric:
+        # Check if there is at least one non-generic measurable term
+        specific_metric_markers = [
+            "yield", "conversion", "selectivity", "ee", "er",
+            "accuracy", "precision", "recall", "f1", "auc", "rmse", "mae",
+            "efficiency", "throughput", "latency", "bandwidth",
+            "survival", "mortality", "incidence", "prevalence",
+            "biomass", "diversity", "richness", "evenness",
+            "conductivity", "resistivity", "capacitance", "impedance",
+            "resolution", "sensitivity", "specificity", "limit of detection",
+        ]
+        has_specific_metric = any(marker in hyp_text for marker in specific_metric_markers)
+
+    # --- causal_chain ---
+    causal_markers = [
+        "mechanism", "pathway", "causal", "because", "leads to",
+        "results in", "triggers", "mediated by", "downstream",
+        "upstream", "feedback", "cascade", "coupling",
+    ]
+    anti_causal = [
+        "changes the information", "intervention, or representation pathway",
+        "affects the system", "improves performance",
+    ]
+    has_causal = any(marker in hyp_text for marker in causal_markers) and not any(anti in hyp_text for anti in anti_causal)
+
+    dimensions = {
+        "numerical_bounds": has_numbers,
+        "operating_condition": has_condition,
+        "measurable_metric": has_specific_metric,
+        "causal_chain": has_causal,
+    }
+    missing = [dim for dim, ok in dimensions.items() if not ok]
+
+    if len(missing) == 0:
+        verdict = "PASS"
+    elif len(missing) <= 1:
+        verdict = "WARN"
+    else:
+        verdict = "REJECT"
+
+    return {
+        "verdict": verdict,
+        "dimensions": dimensions,
+        "missing_dimensions": missing,
+        "guidance": (
+            f"Hypothesis is missing specificity in: {', '.join(missing)}. "
+            "Add concrete numbers/units, a named operating condition, a domain-specific metric, "
+            "and an explicit causal pathway."
+            if missing else "Hypothesis passes all specificity checks."
+        ),
+    }
+
+
 def check_hypothesis_evidence_alignment(idea: dict[str, Any], papergraph: list[dict[str, Any]]) -> dict[str, Any]:
     """Check if a hypothesis is anchored to the PaperGraph's core topics.
 
@@ -1047,6 +1145,28 @@ def finalize_idea(
         log_event("WARN", "hypothesis_rejected_template", gap_id=gap_id, patterns=template_check.get("matched_patterns"))
         return json.dumps(rejected, ensure_ascii=False, indent=2)
 
+    # Specificity enforcement: reject hypotheses that lack domain-specific content
+    specificity_check = enforce_hypothesis_specificity(idea)
+    if specificity_check.get("verdict") == "REJECT":
+        rejected = {
+            "status": "rejected_specificity",
+            "reason": (
+                "Hypothesis lacks domain-specific content. "
+                f"Missing dimensions: {', '.join(specificity_check.get('missing_dimensions', []))}. "
+                "Regenerate with concrete numbers, named operating conditions, domain-specific metrics, "
+                "and an explicit causal pathway."
+            ),
+            "specificity_check": specificity_check,
+            "template_check": template_check,
+            "idea_json": idea,
+            "gap_id": gap_id,
+        }
+        project.setdefault("mingli_rejected_ideas", []).append(rejected)
+        project["updatedAt"] = time.time()
+        save_project(project)
+        log_event("WARN", "hypothesis_rejected_specificity", gap_id=gap_id, missing=specificity_check.get("missing_dimensions"))
+        return json.dumps(rejected, ensure_ascii=False, indent=2)
+
     hypothesis = Hypothesis(
         hypothesis_id=new_id("hyp"),
         gap_id=gap_id,
@@ -1079,6 +1199,7 @@ def finalize_idea(
             "lineage": idea.get("lineage", []),
             "evidence_alignment": alignment,
             "template_check": template_check,
+            "specificity_check": specificity_check,
             "constraints_checked": {
                 "traceable_to_gap": bool(gap_id),
                 "papergraph_grounded": bool(gap.get("supporting_references")),
@@ -1089,6 +1210,8 @@ def finalize_idea(
                 "evidence_alignment_score": alignment.get("score"),
                 "template_severity": template_check.get("severity"),
                 "has_domain_specifics": template_check.get("has_domain_specifics"),
+                "specificity_verdict": specificity_check.get("verdict"),
+                "specificity_missing": specificity_check.get("missing_dimensions", []),
             },
         }
     )

@@ -193,30 +193,109 @@ def run_autogen_research_flow(
 
         if "mingli" in autogen_agent_keys(groupchat_spec):
             gap_context = autogen_select_gap_for_mingli(state)
-            draft = json.loads(generate_idea(project_id=project_id, gap=gap_context, style="innovative", use_llm=use_llm))
-            state["draft_idea_id"] = str(draft.get("draft_idea_id") or "")
-            record_turn("round_1_proponent_position", "MingLi_AssistantAgent", summarize_output(draft))
-            experiment = json.loads(
-                design_experiment(
-                    project_id=project_id,
-                    idea_id=state["draft_idea_id"],
-                    constraints="academic lab scale; evidence-traceable; include baselines, ablations, regime shifts, and falsification criteria",
-                )
-            )
-            record_turn("round_3_methodology", "MingLi_AssistantAgent", summarize_output(experiment))
-            final = json.loads(
-                finalize_idea(
-                    project_id=project_id,
-                    idea_id=state["draft_idea_id"],
-                    live_search=live_search,
-                    providers=selected_providers,
-                )
-            )
-            record_turn("round_1_hypothesis_finalization", "MingLi_AssistantAgent", summarize_output(final), str(final.get("status") or "completed"))
-            state["hypothesis_id"] = str(final.get("hypothesis_id") or final.get("stored_hypothesis", {}).get("hypothesis_id") or "")
-            state["finalize_status"] = str(final.get("status") or "")
+            mingli_max_attempts = 3
+            for mingli_attempt in range(1, mingli_max_attempts + 1):
+                # On retry, add anti-template and specificity guidance
+                if mingli_attempt > 1:
+                    retry_guidance = {
+                        "anti_template_guidance": (
+                            "CRITICAL: Your previous hypothesis was rejected for using forbidden generic templates "
+                            "or lacking domain specificity. Do NOT use phrases like 'conflicting claims', "
+                            "'retested under matched conditions', or 'mechanism-stress intervention'. "
+                            "Instead, include concrete domain-specific numbers/units, a named controllable variable, "
+                            "a domain-specific measurable metric, and an explicit causal pathway."
+                        ),
+                        "specificity_requirements": (
+                            "Include at least one numerical bound (e.g., temperature, concentration, voltage), "
+                            "a specific operating condition, a measurable domain-specific outcome, "
+                            "and a named causal mechanism. Avoid generic cross-domain metric lists."
+                        ),
+                        "attempt_number": mingli_attempt,
+                    }
+                    if isinstance(gap_context, dict):
+                        gap_context.update(retry_guidance)
+                    else:
+                        gap_context = retry_guidance
 
+                try:
+                    draft = json.loads(generate_idea(project_id=project_id, gap=gap_context, style="innovative", use_llm=use_llm))
+                    state["draft_idea_id"] = str(draft.get("draft_idea_id") or "")
+                    record_turn(f"round_1_proponent_position_attempt_{mingli_attempt}", "MingLi_AssistantAgent", summarize_output(draft))
+
+                    experiment = json.loads(
+                        design_experiment(
+                            project_id=project_id,
+                            idea_id=state["draft_idea_id"],
+                            constraints="academic lab scale; evidence-traceable; include baselines, ablations, regime shifts, and falsification criteria",
+                        )
+                    )
+                    record_turn(f"round_3_methodology_attempt_{mingli_attempt}", "MingLi_AssistantAgent", summarize_output(experiment))
+
+                    final = json.loads(
+                        finalize_idea(
+                            project_id=project_id,
+                            idea_id=state["draft_idea_id"],
+                            live_search=live_search,
+                            providers=selected_providers,
+                        )
+                    )
+                    final_status = str(final.get("status") or "completed")
+                    record_turn(f"round_1_hypothesis_finalization_attempt_{mingli_attempt}", "MingLi_AssistantAgent", summarize_output(final), final_status)
+
+                    # Check if finalized successfully
+                    if final_status == "finalized":
+                        state["hypothesis_id"] = str(final.get("hypothesis_id") or final.get("stored_hypothesis", {}).get("hypothesis_id") or "")
+                        state["finalize_status"] = final_status
+                        state["mingli_attempts"] = mingli_attempt
+                        break
+                    elif final_status in ("rejected_template", "rejected_specificity"):
+                        # Retry with guidance
+                        log_event("AUTOGEN", "mingli_retry", attempt=mingli_attempt, reason=final_status)
+                        if mingli_attempt == mingli_max_attempts:
+                            state["finalize_status"] = final_status
+                            state["mingli_attempts"] = mingli_attempt
+                            state["hypothesis_id"] = ""
+                        continue
+                    else:
+                        # Other rejection (overlap, semantic plausibility, etc.) - don't retry
+                        state["hypothesis_id"] = str(final.get("hypothesis_id") or "")
+                        state["finalize_status"] = final_status
+                        state["mingli_attempts"] = mingli_attempt
+                        break
+                except Exception as mingli_exc:
+                    record_turn(f"mingli_error_attempt_{mingli_attempt}", "MingLi_AssistantAgent", {}, "error", str(mingli_exc))
+                    if mingli_attempt == mingli_max_attempts:
+                        state["finalize_status"] = "error"
+                        state["mingli_attempts"] = mingli_attempt
+                    continue
+
+        # GRADE knowledge sufficiency check: verify PaperGraph has enough evidence before YanZhen
         if "yanzhen" in autogen_agent_keys(groupchat_spec) and state.get("hypothesis_id"):
+            papergraph = project.get("papergraph", [])
+            paper_count = len([p for p in papergraph if isinstance(p, dict)])
+            evidence_count = len([e for e in project.get("evidence", []) if isinstance(e, dict)])
+            grade_sufficient = paper_count >= 5 and evidence_count >= 3
+            state["grade_knowledge_check"] = {
+                "paper_count": paper_count,
+                "evidence_count": evidence_count,
+                "sufficient": grade_sufficient,
+                "threshold": {"min_papers": 5, "min_evidence": 3},
+            }
+            record_turn(
+                "grade_knowledge_sufficiency",
+                "GRADE_CheckPoint",
+                {
+                    "paper_count": paper_count,
+                    "evidence_count": evidence_count,
+                    "sufficient": grade_sufficient,
+                    "decision": "proceed_to_yanzhen" if grade_sufficient else "skip_yanzhen_insufficient_knowledge",
+                },
+            )
+            if not grade_sufficient:
+                log_event("AUTOGEN", "grade_insufficient_knowledge", paper_count=paper_count, evidence_count=evidence_count)
+                state["yanzhen_skipped_reason"] = "insufficient_knowledge"
+
+        if "yanzhen" in autogen_agent_keys(groupchat_spec) and state.get("hypothesis_id") and not state.get("yanzhen_skipped_reason"):
             report = json.loads(
                 run_yanzhen_mechanism_verification(
                     project_id=project_id,
@@ -253,6 +332,30 @@ def run_autogen_research_flow(
                     )
                 )
                 record_turn("round_2_missing_hypothesis_interrogation", "DuZhi_AssistantAgent", summarize_output(critique), "revision_required")
+
+                # BianLun synthesis: synthesize the failed state and produce revision guidance
+                synthesis_state = project.get("papergraph", [])
+                gaps_state = project.get("knowledge_gaps", [])
+                mingli_runs = project.get("mingli_hypothesis_evolution_runs", [])
+                rejected_ideas = project.get("mingli_rejected_ideas", [])
+                synthesis = {
+                    "synthesis_type": "no_hypothesis_revision_guidance",
+                    "papergraph_size": len(synthesis_state),
+                    "knowledge_gaps_count": len(gaps_state),
+                    "mingli_evolution_runs": len(mingli_runs),
+                    "rejected_ideas_count": len(rejected_ideas),
+                    "revision_guidance": (
+                        f"Project has {len(synthesis_state)} papers and {len(gaps_state)} gaps. "
+                        f"MingLi made {len(mingli_runs)} evolution runs with {len(rejected_ideas)} rejected ideas. "
+                        "Recommended actions: (1) expand PaperGraph with more domain-specific literature, "
+                        "(2) refine gap descriptions with concrete mechanisms, "
+                        "(3) re-run MingLi with improved gap context and specificity requirements."
+                    ),
+                    "finalize_status": state.get("finalize_status", "unknown"),
+                    "mingli_attempts": state.get("mingli_attempts", 0),
+                }
+                record_turn("round_4_bianlun_synthesis", "BianLun_GroupChatManager", synthesis, "revision_required")
+                state["bianlun_synthesis"] = synthesis
                 state["final_decision"] = "revision_required"
 
         if state["final_decision"] == "not_started":

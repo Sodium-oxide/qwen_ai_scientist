@@ -531,6 +531,75 @@ def run_boxue_research_round(
     log_event("SCIENCE", "delegation_tasks_created", project_id=project_id, plan_id=plan_id, branches=len(branch_tasks))
     return json.dumps(plan, ensure_ascii=False, indent=2)
 
+def create_science_delegation_tasks(
+    project_id: str,
+    objective: str = "",
+    subspace_map_id: str = "",
+    selected_subfields: list[str] | None = None,
+    focus_branches: list[str] | None = None,
+    max_branch_tasks: int = 6,
+) -> str:
+    """Create a subagent-friendly DAG for long science workflows."""
+    project = load_project(project_id)
+    try:
+        from .task_system import create_task
+    except ImportError:
+        from task_system import create_task
+    plan_id = new_id("sdeleg")
+    artifact_dir = SCIENCE_DIR / "delegation" / plan_id
+    artifact_dir.mkdir(parents=True, exist_ok=True)
+    branches = science_delegation_branch_plan(
+        project,
+        subspace_map_id=subspace_map_id,
+        selected_subfields=selected_subfields,
+        focus_branches=focus_branches,
+        max_branch_tasks=max_branch_tasks,
+    )
+    if not branches:
+        raise ValueError("No delegation branches could be built; provide focus_branches or a subspace_map_id.")
+    providers = default_literature_providers(domain=str(project.get("domain", "")), query=str(project.get("objective", "")))
+    branch_task_ids: list[str] = []
+    branch_tasks: list[dict[str, Any]] = []
+    for index, branch in enumerate(branches, 1):
+        artifact_path = science_delegation_artifact_relpath(plan_id, index, str(branch.get("branch") or branch.get("name") or "branch"))
+        description = science_branch_scout_description(project, objective=objective, branch=branch, artifact_path=artifact_path, providers=providers)
+        rendered = create_task(subject=f"Science scout {index}: {branch.get('name') or branch.get('branch')}", description=description, blockedBy=[])
+        task_id = extract_task_id(rendered)
+        if task_id:
+            branch_task_ids.append(task_id)
+            branch_tasks.append({"task_id": task_id, "branch": branch.get("branch"), "name": branch.get("name"), "query": branch.get("query"), "artifact_path": artifact_path})
+    synthesis_description = science_synthesis_gate_description(project, objective=objective, plan_id=plan_id, branch_tasks=branch_tasks)
+    synthesis_rendered = create_task(subject=f"Science synthesis gate: {project.get('title', project_id)}", description=synthesis_description, blockedBy=branch_task_ids)
+    synthesis_task_id = extract_task_id(synthesis_rendered)
+    tanxi_rendered = create_task(
+        subject=f"TanXi gap ranking after delegation: {project.get('title', project_id)}",
+        description=(f"Science delegation plan: {plan_id}\nProject: {project.get('title', '')} ({project_id})\nDomain: {project.get('domain', '')}\nWait until the synthesis gate confirms lead-side PaperGraph imports are complete. Then run build_knowledge_map, run_tanxi_gap_exploration, and produce a compact ranked-gap report."),
+        blockedBy=[synthesis_task_id] if synthesis_task_id else branch_task_ids,
+    )
+    tanxi_task_id = extract_task_id(tanxi_rendered)
+    mingli_rendered = create_task(
+        subject=f"MingLi hypothesis evolution after delegation: {project.get('title', project_id)}",
+        description=(f"Science delegation plan: {plan_id}\nProject: {project.get('title', '')} ({project_id})\nAfter TanXi completes, run run_mingli_hypothesis_evolution on the validated top gaps."),
+        blockedBy=[tanxi_task_id] if tanxi_task_id else [],
+    )
+    mingli_task_id = extract_task_id(mingli_rendered)
+    plan = {
+        "delegation_plan_id": plan_id, "project_id": project_id, "objective": objective, "createdAt": time.time(),
+        "policy": {"parallel_work": "branch scouts retrieve and judge evidence independently", "shared_state": "lead/synthesis gate performs PaperGraph imports serially after reviewing artifacts"},
+        "artifact_dir": str(artifact_dir), "providers": providers, "branch_tasks": branch_tasks,
+        "synthesis_task_id": synthesis_task_id, "tanxi_task_id": tanxi_task_id, "mingli_task_id": mingli_task_id,
+        "next_step": "Let scouts complete branch artifacts, then have the synthesis gate choose import candidates.",
+    }
+    project.setdefault("delegation_plans", []).append(plan)
+    project.setdefault("pipeline_tasks", [])
+    project["pipeline_tasks"] = unique_preserve_order(
+        list(project.get("pipeline_tasks", [])) + branch_task_ids + [tid for tid in (synthesis_task_id, tanxi_task_id, mingli_task_id) if tid]
+    )
+    project["updatedAt"] = time.time()
+    save_project(project)
+    log_event("SCIENCE", "delegation_tasks_created", project_id=project_id, plan_id=plan_id, branches=len(branch_tasks))
+    return json.dumps(plan, ensure_ascii=False, indent=2)
+
 def science_delegation_branch_plan(
     project: dict[str, Any],
     *,

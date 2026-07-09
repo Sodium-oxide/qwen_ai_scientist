@@ -387,12 +387,90 @@ def should_reject_for_domain(result: dict[str, Any], domain: str = "") -> bool:
         result["domain_relevance"] = assessment
     if assessment.get("verdict") == "reject":
         return True
+    # Domain exclusion marker check: reject papers from clearly different disciplines
+    exclusion_markers = domain_exclusion_markers(domain)
+    if exclusion_markers:
+        paper_text = " ".join(
+            str(result.get(key) or "")
+            for key in ("title", "abstract", "venue")
+        ).lower()
+        matched_exclusions = [marker for marker in exclusion_markers if marker in paper_text]
+        if matched_exclusions:
+            log_event(
+                "SCIENCE",
+                "domain_exclusion_marker_hit",
+                domain=domain,
+                title=str(result.get("title", ""))[:80],
+                markers=matched_exclusions,
+            )
+            return True
     score = float(assessment.get("score") or 0.0)
     quality = float(result.get("publication_quality_score") or publication_quality_assessment(result)["quality_score"])
     citations = numeric_value(result.get("citation_count"))
     if "field_mismatch" in set(assessment.get("flags") or []) and score < 0.18 and citations <= 5:
         return True
     return score < 0.1 and quality < 0.55 and citations <= 0
+
+def domain_exclusion_markers(domain: str = "") -> set[str]:
+    """Return exclusion markers for the given domain.
+
+    These markers identify papers that are clearly from a *different* major
+    discipline and should be rejected even if they share some surface-level
+    keyword overlap (e.g., 'neural network' in a chemistry project).
+    """
+    try:
+        from ._utils import normalize_space
+    except ImportError:
+        from _utils import normalize_space
+    if not domain:
+        return set()
+    domain_lower = normalize_space(domain).lower()
+
+    # Build exclusion markers based on domain family
+    exclusions: set[str] = set()
+
+    # Physical / materials / chemistry domains should exclude pure clinical / social / finance
+    if any(term in domain_lower for term in ("battery", "catalyst", "material", "polymer", "semiconductor", "alloy", "chemistry", "chemical")):
+        exclusions.update({
+            "clinical trial", "patient cohort", "epidemiological", "public health",
+            "stock market", "financial return", "gdp", "macroeconomic",
+            "social media", "survey respondents", "questionnaire",
+        })
+
+    # Bio / medical domains should exclude pure physics / math / finance
+    if any(term in domain_lower for term in ("protein", "cell", "gene", "clinical", "patient", "disease", "organism", "cancer", "biomedical")):
+        exclusions.update({
+            "dark matter", "gravitational wave", "black hole", "cosmological",
+            "stock market", "financial return", "gdp", "macroeconomic",
+            "partial differential equation", "algebraic geometry", "number theory",
+        })
+
+    # CS / AI domains should exclude pure clinical / materials / ecology
+    if any(term in domain_lower for term in ("algorithm", "model", "ai", "simulation", "control", "robot", "grid", "neural", "deep learning")):
+        exclusions.update({
+            "clinical trial", "patient cohort", "epidemiological",
+            "crystal structure", "x-ray diffraction", "catalytic activity",
+            "species richness", "community ecology", "biodiversity",
+        })
+
+    # Ecology / environmental should exclude pure CS / finance / high-energy physics
+    if any(term in domain_lower for term in ("climate", "ecology", "environment", "geology", "agriculture")):
+        exclusions.update({
+            "stock market", "financial return", "gdp",
+            "collider", "quark", "hadron", "lattice gauge",
+            "compiler optimization", "operating system",
+        })
+
+    # Math / stats should exclude pure experimental sciences
+    if any(term in domain_lower for term in ("mathematics", "statistics", "topology", "algebra")):
+        exclusions.update({
+            "clinical trial", "in vivo", "in vitro",
+            "battery performance", "catalytic activity",
+            "field experiment", "crop yield",
+        })
+
+    return exclusions
+
 
 def core_domain_alignment(result: dict[str, Any], domain: str = "", query: str = "") -> dict[str, Any]:
     try:
