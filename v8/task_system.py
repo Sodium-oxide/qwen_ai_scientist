@@ -122,8 +122,7 @@ def claim_task(task_id: str, owner: str = "main") -> str:
         if not can_start(task):
             missing = incomplete_dependencies(task)
             raise ValueError(f"Task {task_id} is blocked by: {', '.join(missing)}")
-        if not task.worktree:
-            task.status = "in_progress"
+        task.status = "in_progress"
         task.owner = owner
         task.updatedAt = time.time()
         save_task(task)
@@ -587,7 +586,6 @@ def task_from_dict(data: dict[str, Any]) -> Task:
         description=str(data.get("description", "")),
         status=status,
         owner=data.get("owner"),
-        worktree=data.get("worktree"),
         blockedBy=list(data.get("blockedBy", [])),
         createdAt=float(data.get("createdAt", time.time())),
         updatedAt=float(data.get("updatedAt", time.time())),
