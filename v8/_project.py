@@ -948,7 +948,7 @@ def get_science_agent_prompt(agent: str) -> str:
             "output_schema": bianlun_output_schema(),
             "global_constraints": [
                 "Do not accept unsupported hypothesis revisions.",
-                "Enforce model-family independence as an auditable safety gate.",
+                "Enforce role-prompt independence as an auditable safety gate.",
                 "If YanZhen reports CAWM_DETECTED, the debate cannot accept the hypothesis without revision.",
                 "If two rounds produce no substantive revision, terminate with best current hypothesis plus unresolved issues.",
             ],

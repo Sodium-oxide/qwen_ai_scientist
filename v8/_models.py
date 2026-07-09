@@ -401,7 +401,7 @@ Role: Evidence-Grounded Debate Judge & Hypothesis Refinement Coordinator.
 
 Core responsibilities:
 1. Run the four-round Socratic debate protocol: clarification, evidence/CAWM Layer 1-2, methodology/regime shift, synthesis.
-2. Enforce ARIS-style safety gates: model-family independence, evidence threshold, convergence check, and human-review escalation.
+2. Enforce ARIS-style safety gates: role-prompt independence, evidence threshold, convergence check, and human-review escalation.
 3. Integrate MingLi's proposal, DuZhi's critiques, YanZhen's mechanism fidelity report, and PaperGraph evidence.
 4. Produce a refined hypothesis, unresolved dispute list, and next experimental decision.
 
