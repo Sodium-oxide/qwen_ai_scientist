@@ -230,14 +230,22 @@ def run_autogen_research_flow(
             record_turn("round_0_gap_exploration", "TanXi_ToolAgent", summarize_output(output))
             explicit_gaps = autogen_extract_ranked_gaps(output)
             state["tanxi_gap_count"] = len(explicit_gaps)
-            state["best_gap_context"] = autogen_gap_context(explicit_gaps[:3])
+            state["best_gap_context"] = autogen_gap_context(explicit_gaps[:5])
 
         if "mingli" in autogen_agent_keys(groupchat_spec):
+            # Collect all valid gaps for multi-gap aggregation with rotation on retry
+            all_valid_gaps = [
+                g for g in (state.get("best_gap_context") or [])
+                if isinstance(g, dict) and g.get("description")
+            ]
             gap_context = autogen_select_gap_for_mingli(state)
             mingli_max_attempts = 3
             for mingli_attempt in range(1, mingli_max_attempts + 1):
-                # On retry, add anti-template and specificity guidance
-                if mingli_attempt > 1:
+                # On retry, rotate gap order so different gaps get primary emphasis
+                if mingli_attempt > 1 and len(all_valid_gaps) > 1:
+                    shift = mingli_attempt - 1
+                    rotated = all_valid_gaps[shift:] + all_valid_gaps[:shift]
+                    gap_context = autogen_aggregate_gaps_for_mingli(rotated)
                     retry_guidance = {
                         "anti_template_guidance": (
                             "CRITICAL: Your previous hypothesis was rejected for using forbidden generic templates "
@@ -655,19 +663,105 @@ def autogen_gap_context(gaps: list[dict[str, Any]]) -> list[dict[str, Any]]:
                 "priority_score": gap.get("priority_score"),
                 "novelty_score": gap.get("novelty_score"),
                 "feasibility": gap.get("feasibility"),
+                "counterfactual_tree": gap.get("counterfactual_tree"),
+                "tabi_chain": gap.get("tabi_chain"),
+                "tabi_warrant": gap.get("tabi_warrant"),
+                "tabi_claim": gap.get("tabi_claim"),
             }
         )
     return compact
 
 
 def autogen_select_gap_for_mingli(state: dict[str, Any]) -> dict[str, Any]:
+    """Select and aggregate multiple gaps for MingLi hypothesis generation.
+
+    Instead of picking a single gap (which often leads to template rejections),
+    aggregate all available gaps into a synthetic super-gap that provides
+    cross-gap context: richer descriptions, more supporting references, and
+    domain-specific parameters from multiple angles.
+    """
     gaps = state.get("best_gap_context")
     if isinstance(gaps, list):
-        for gap in gaps:
-            if isinstance(gap, dict) and gap.get("description"):
-                return gap
+        valid = [g for g in gaps if isinstance(g, dict) and g.get("description")]
+        if valid:
+            return autogen_aggregate_gaps_for_mingli(valid)
     state["mingli_gap_handoff"] = "no_explicit_gap_from_tanxi; using PaperGraph fallback inside MingLi"
     return {}
+
+
+def autogen_aggregate_gaps_for_mingli(gaps: list[dict[str, Any]]) -> dict[str, Any]:
+    """Aggregate multiple gaps into a single synthetic gap for hypothesis generation.
+
+    Combines descriptions, supporting references, counterfactual trees, and TABI
+    chains from all input gaps so that MingLi receives enough domain-specific
+    context to produce concrete, non-template hypotheses.
+    """
+    if not gaps:
+        return {}
+    if len(gaps) == 1:
+        return gaps[0]
+
+    descriptions = [str(g.get("description", "")).strip() for g in gaps if g.get("description")]
+    all_refs: list[str] = []
+    all_gap_types: list[str] = []
+    all_counterfactual_trees: list[dict] = []
+    all_tabi_chains: list[dict] = []
+
+    for g in gaps:
+        refs = g.get("supporting_references", [])
+        if isinstance(refs, list):
+            all_refs.extend(refs[:5])
+        gt = g.get("gap_type", "")
+        if gt:
+            all_gap_types.append(gt)
+        ct = g.get("counterfactual_tree")
+        if ct and isinstance(ct, dict):
+            all_counterfactual_trees.append(ct)
+        tc = g.get("tabi_chain")
+        if tc and isinstance(tc, dict):
+            all_tabi_chains.append(tc)
+
+    # Build composite description: numbered per-gap summaries for clarity
+    combined_desc_parts = []
+    for i, d in enumerate(descriptions):
+        combined_desc_parts.append(f"[Gap {i + 1}] {d}")
+    combined_desc = " ; ".join(combined_desc_parts) if combined_desc_parts else descriptions[0] if descriptions else ""
+
+    # Deduplicate references while preserving order
+    seen: set[str] = set()
+    unique_refs: list[str] = []
+    for r in all_refs:
+        key = str(r).strip().lower()[:120]
+        if key and key not in seen:
+            seen.add(key)
+            unique_refs.append(str(r))
+
+    primary = gaps[0]
+    return {
+        "gap_id": str(primary.get("gap_id", "")),
+        "source_gap_ids": [str(g.get("gap_id", "")) for g in gaps],
+        "gap_type": primary.get("gap_type", ""),
+        "gap_types_aggregated": all_gap_types,
+        "description": combined_desc,
+        "supporting_references": unique_refs[:10],
+        "suggested_research_path": str(
+            max(
+                (g for g in gaps if g.get("supporting_references")),
+                key=lambda g: len(g.get("supporting_references", [])),
+                default=primary,
+            ).get("suggested_research_path")
+            or ""
+        ),
+        "value_argument": "Multi-gap synthesis from " + ", ".join(all_gap_types[:4]),
+        "novelty_score": max((g.get("novelty_score", 0) for g in gaps), default=0),
+        "feasibility": max(
+            (g.get("feasibility", "low") for g in gaps),
+            key=lambda f: {"high": 3, "medium": 2, "low": 1}.get(str(f).lower(), 0),
+            default="low",
+        ),
+        "counterfactual_trees": all_counterfactual_trees,
+        "tabi_chains": all_tabi_chains,
+    }
 
 
 def autogen_messages_from_turns(turns: list[dict[str, Any]]) -> list[dict[str, Any]]:

@@ -3040,6 +3040,8 @@ def tabi_abductive_gap_detection(project, max_gaps=8):
             "pair_type": pt,
             "shared_context": sc,
         }
+        gap["tabi_warrant"] = trim_text(warrant, 300)
+        gap["tabi_claim"] = trim_text(claim, 300)
         gap["gap_discovery_method"] = "implicit_tabi"
         gap["confidence_bucket"] = bucket
         gap["tabi_evidence_type"] = pt
@@ -3173,6 +3175,51 @@ def build_counterfactual_tree(gap, records):
                     "counterfactual": "If limitation addressed, evidence base strengthens",
                     "leaf": False,
                 })
+    else:
+        # Fallback: synthesize counterfactual branches from gap_type and description
+        if gt == "contradiction":
+            branches.append({
+                "condition": f"Conflicting claims about '{trim_text(desc, 80)}'",
+                "missing": "No controlled experiment resolving the contradiction",
+                "counterfactual": f"If a controlled experiment varied the disputed parameter in '{trim_text(gs or desc, 60)}', the contradiction would be resolved",
+                "leaf": True,
+            })
+        elif gt in ("combinatorial", "density_hole"):
+            branches.append({
+                "condition": f"Method-scenario pair untested: '{trim_text(gm or desc, 60)}' in '{trim_text(gs or desc, 60)}'",
+                "missing": "No validation study for this combination",
+                "counterfactual": f"If '{trim_text(gm or 'the method', 40)}' were tested in '{trim_text(gs or 'the target scenario', 40)}', this density hole would be filled",
+                "leaf": True,
+            })
+        elif gt == "migration":
+            branches.append({
+                "condition": f"Cross-domain transfer unvalidated",
+                "missing": f"No study bridging the source and target domains in '{trim_text(desc, 80)}'",
+                "counterfactual": f"If a transfer experiment validated the method across domains, this migration gap would be resolved",
+                "leaf": True,
+            })
+        elif gt in ("improvement", "mechanism_problem"):
+            branches.append({
+                "condition": f"Mechanism unclear for '{trim_text(gm or desc, 60)}'",
+                "missing": "No ablation or mechanistic study",
+                "counterfactual": f"If an ablation study isolated the causal mechanism, this gap would be resolved",
+                "leaf": True,
+            })
+        elif gt == "implicit_tabi":
+            branches.append({
+                "condition": f"TABI inference chain incomplete",
+                "missing": "Warrant not empirically validated",
+                "counterfactual": f"If the warrant linking the evidence pairs were tested, the implicit gap would be confirmed or refuted",
+                "leaf": True,
+            })
+        # Always add a generic fallback branch for any gap type
+        if not branches:
+            branches.append({
+                "condition": f"Gap: '{trim_text(desc, 100)}'",
+                "missing": "No directly related evidence",
+                "counterfactual": f"If a study addressed '{trim_text(desc, 60)}' directly, this gap would not exist",
+                "leaf": True,
+            })
     if gt in ("contradiction", "implicit_tabi"):
         tc = gap.get("tabi_chain", {})
         if tc:
@@ -3249,6 +3296,27 @@ def infer_method_scenario_from_gap(gap, records):
         if s and s in dl:
             ms = s
             break
+    # Token-based fallback: if exact substring matching failed, score by shared significant words
+    if not mm and km:
+        desc_tokens = {t for t in re.findall(r"\w{4,}", dl)}
+        best_score, best_method = 0, ""
+        for m in km:
+            m_tokens = {t for t in re.findall(r"\w{4,}", m)}
+            overlap = len(desc_tokens & m_tokens)
+            if overlap > best_score:
+                best_score, best_method = overlap, m
+        if best_score >= 1 and best_method:
+            mm = best_method
+    if not ms and ks:
+        desc_tokens = {t for t in re.findall(r"\w{4,}", dl)}
+        best_score, best_scenario = 0, ""
+        for s in ks:
+            s_tokens = {t for t in re.findall(r"\w{4,}", s)}
+            overlap = len(desc_tokens & s_tokens)
+            if overlap > best_score:
+                best_score, best_scenario = overlap, s
+        if best_score >= 1 and best_scenario:
+            ms = best_scenario
     return mm, ms
 
 
