@@ -1390,7 +1390,7 @@ def run_zhizhi_literature_analysis(
     domain: str,
     query: str,
     max_results: int = 50,
-    years: str = "last 5 years",
+    years: str = "last 15 years",
     providers: list[str] | None = None,
     import_top_k: int = SCIENCE_ZHIZHI_DEFAULT_IMPORT_TOP_K,
     graph_depth: int = 1,
@@ -1423,7 +1423,7 @@ def run_zhizhi_literature_analysis(
     action: dict[str, Any] = {"agent": "zhizhi", "query": query, "domain": domain, "years": years}
     observations: list[str] = []
     import_limit = clamp_int(import_top_k, 1, SCIENCE_ZHIZHI_MAX_IMPORT_TOP_K)
-    search_budget = max(clamp_int(max_results, 1, 200), import_limit)
+    search_budget = max(clamp_int(max_results, 50, 200), import_limit, 50)
     selected_providers = [database_to_provider(item) for item in (providers or default_literature_providers(domain=domain, query=query))]
     selected_providers = unique_preserve_order([item for item in selected_providers if item in live_literature_provider_names()])
     if not selected_providers:

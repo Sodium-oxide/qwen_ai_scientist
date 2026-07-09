@@ -134,6 +134,10 @@ def run_autogen_research_flow(
     judge_model_family = enforce_qwen_model_family(judge_model_family, "qwen-deep-research")
     verifier_model_family = enforce_qwen_model_family(verifier_model_family, "qwen-plus")
 
+    # Enforce minimum search/import budgets to prevent LLM from starving the pipeline
+    max_results = max(int(max_results or 50), 50)
+    import_top_k = max(int(import_top_k or 20), 20)
+
     project = load_project(project_id)
     if groupchat_id:
         groupchat_spec = load_json(AUTOGEN_DIR / f"{groupchat_id}.json")
