@@ -16,9 +16,11 @@
 - [feedback_hcc_specific_validation.md](feedback_hcc_specific_validation.md) - feedback: Confirmed absence of pan-cancer noise; all imported papers are HCC-specific
 - [feedback_hcc_specificity_confirmation.md](feedback_hcc_specificity_confirmation.md) - feedback: Validation that retrieved literature is HCC-specific, not pan-cancer noise
 - [feedback_human_review_required.md](feedback_human_review_required.md) - feedback: Adjudication outcome from BianLun mandating domain-expert intervention before debate continuation
+- [feedback_initial_execution_error.md](feedback_initial_execution_error.md) - feedback: 初始执行错误
 - [feedback_knowledge_gap_confirmed.md](feedback_knowledge_gap_confirmed.md) - feedback: Key conclusion from literature analysis: absence of high-quality, on-topic papers confirms substantial knowledge gap
 - [feedback_knowledge_gap_structure_validation.md](feedback_knowledge_gap_structure_validation.md) - feedback: Output fields confirmed present in ZhiZhi analysis result
 - [feedback_knowledge_map_extraction_limitation.md](feedback_knowledge_map_extraction_limitation.md) - feedback: Persistent structural weakness in automated knowledge mapping.
+- [feedback_literature_ingestion_failure.md](feedback_literature_ingestion_failure.md) - feedback: Root cause: zero papers ingested due to provider failures
 - [feedback_literature_provider_failures.md](feedback_literature_provider_failures.md) - feedback: confirmed API failures blocking PaperGraph construction
 - [feedback_literature_retrieval_failure_semantic_scholar.md](feedback_literature_retrieval_failure_semantic_scholar.md) - feedback: Semantic Scholar API检索失败
 - [feedback_literature_search_failure_semantic_scholar.md](feedback_literature_search_failure_semantic_scholar.md) - feedback: Semantic Scholar API rate limit (HTTP 429) prevented retrieval; zero results returned; no paper substitution permitted.
@@ -28,8 +30,8 @@
 - [feedback_method_scenario_gap_ranking_issue.md](feedback_method_scenario_gap_ranking_issue.md) - feedback: Root cause explanation for dominance of method-scenario gaps over mechanism-problem gaps
 - [feedback_mingli_revision_directive.md](feedback_mingli_revision_directive.md) - feedback: required hypothesis revision constraint
 - [feedback_missing_subfields.md](feedback_missing_subfields.md) - feedback: gaps identified in coverage analysis requiring supplemental search
-- [feedback_model_family_divergence_required.md](feedback_model_family_divergence_required.md) - feedback: Critical safety constraint for adversarial robustness
 - [feedback_next_step.md](feedback_next_step.md) - feedback: Required action to unblock pipeline
+- [feedback_next_step_recommendation.md](feedback_next_step_recommendation.md) - feedback: Actionable recovery path
 - [feedback_pipeline_integrity_constraints.md](feedback_pipeline_integrity_constraints.md) - feedback: Hard constraints enforced during execution
 - [feedback_quality_flags.md](feedback_quality_flags.md) - feedback: Stable quality indicators from seed paper evaluation
 - [feedback_retrieval_failure_handling.md](feedback_retrieval_failure_handling.md) - feedback: Policy for zero-result searches
@@ -37,6 +39,7 @@
 - [feedback_retrieval_honesty_policy.md](feedback_retrieval_honesty_policy.md) - feedback: User expects no fabrication when retrieval fails
 - [feedback_selected_subfields_coverage_status.md](feedback_selected_subfields_coverage_status.md) - feedback: coverage assessment of user-specified subfields; highlights gaps in 'gravitational wave echoes' and 'X-ray reverberation mapping
 - [feedback_semantic_scholar_rate_limit_failure.md](feedback_semantic_scholar_rate_limit_failure.md) - feedback: Literature search failure due to API rate limiting
+- [feedback_tool_error_handling.md](feedback_tool_error_handling.md) - feedback: 在尝试使用run_boxue_research_round工具时遇到错误，因为找不到boxue_load_or_create_plan函数。
 - [feedback_top_knowledge_gap.md](feedback_top_knowledge_gap.md) - feedback: Highest-priority combinatorial gap identified by TanXi
 - [feedback_unknown_method_scenario_benchmark.md](feedback_unknown_method_scenario_benchmark.md) - feedback: No unresolved method/scenario/benchmark fields after LLM enrichment
 - [feedback_yanzhen_failure_reason.md](feedback_yanzhen_failure_reason.md) - feedback: Root cause of YanZhen rejection
@@ -64,6 +67,8 @@
 - [project_cawm_risk_assessment.md](project_cawm_risk_assessment.md) - project: CAWM risk level and interpretation
 - [project_cawm_risk_level.md](project_cawm_risk_level.md) - project: Risk severity assigned by YanZhen mechanism verification
 - [project_click_chemistry_autogen_closed_loop_project.md](project_click_chemistry_autogen_closed_loop_project.md) - project: Research project validating multi-agent scientific reasoning闭环 in click chemistry using AutoGen GroupChat
+- [project_closed_loop_breakpoint.md](project_closed_loop_breakpoint.md) - project: First failure point in agent chain
+- [project_closed_loop_completed.md](project_closed_loop_completed.md) - project: 闭环是否完成。当前状态为未完全跑通。
 - [project_coverage_matrix_built.md](project_coverage_matrix_built.md) - project: Coverage matrix successfully constructed from imported paper’s method-scenario mapping.
 - [project_coverage_matrix_sparsity.md](project_coverage_matrix_sparsity.md) - project: Low-signal abstract impact
 - [project_coverage_plan_stratified_cascade.md](project_coverage_plan_stratified_cascade.md) - project: 分层检索策略建议：高重要性+低密度子空间启用 L1+L2+L3 stratified cascade；中密度启用 L2+L3；高密度可跳过或仅 L0 review
@@ -90,6 +95,7 @@
 - [project_final_hypothesis_title.md](project_final_hypothesis_title.md) - project: MingLi's highest-ranked hypothesis title
 - [project_finalized_hypothesis_id.md](project_finalized_hypothesis_id.md) - project: ID of the hypothesis generated and uniqueness-verified
 - [project_finalized_hypothesis_json.md](project_finalized_hypothesis_json.md) - project: MingLi-finalized hypothesis with traceable gap linkage and falsifiability criteria
+- [project_framework_used.md](project_framework_used.md) - project: 使用的框架类型，这里是`autogen_2_groupchat`。
 - [project_gap_analysis_result.md](project_gap_analysis_result.md) - project: Primary knowledge gap identified and assessed
 - [project_gap_assessment_summary.md](project_gap_assessment_summary.md) - project: Key properties of the primary identified knowledge gap.
 - [project_gap_criteria.md](project_gap_criteria.md) - project: non-pseudo gap requirements
@@ -137,6 +143,7 @@
 - [project_min_quality_threshold.md](project_min_quality_threshold.md) - project: filter applied to literature graph construction
 - [project_min_quality_threshold_used.md](project_min_quality_threshold_used.md) - project: quality filter applied during relation graph construction
 - [project_mock_teammates_behavior.md](project_mock_teammates_behavior.md) - project: Spawned teammates are chat-only
+- [project_next_step.md](project_next_step.md) - project: 下一步行动建议，需要检查AutoGen GroupChat消息并重新生成或修订假设。
 - [project_next_step_required.md](project_next_step_required.md) - project: Immediate remediation action
 - [project_next_step_uhv_bootstrap.md](project_next_step_uhv_bootstrap.md) - project: Actionable recovery step
 - [project_objective.md](project_objective.md) - project: primary research objective
@@ -148,6 +155,7 @@
 - [project_primary_gap_id.md](project_primary_gap_id.md) - project: Top-prioritized knowledge gap identified by TanXi
 - [project_primary_knowledge_gap.md](project_primary_knowledge_gap.md) - project: Top-ranked combinatorial gap identified and verified
 - [project_project_conductors_high_voltage_li_battery.md](project_project_conductors_high_voltage_li_battery.md) - project: Research project on conductor materials for stable high-voltage lithium batteries
+- [project_project_creation.md](project_project_creation.md) - project: 创建了一个科学研究项目，标题为'黑洞形成机理 AutoGen 多Agent协作闭环验证'，领域为'Black Hole Formation / Astrophysics / General Relativity / Gravitational Collapse'。
 - [project_project_dielectrics_high_temp_capacitive_storage.md](project_project_dielectrics_high_temp_capacitive_storage.md) - project: Research project on dielectric materials for capacitive energy storage above 150°C
 - [project_project_domain.md](project_project_domain.md) - project: Scientific domain and scope
 - [project_project_dse_pre_scan_validation.md](project_project_dse_pre_scan_validation.md) - project: 科学研究项目：DSE 前置扫描验证，聚焦 Autonomous Grid Control 领域，目标为验证子空间遍历器、用户选择机制与 ZhiZhi 检索衔接
@@ -216,6 +224,7 @@
 - [project_zhizhi_project_workspace.md](project_zhizhi_project_workspace.md) - project: ZhiZhi project workspace path
 - [project_zhizhi_verify_uniqueness_duplicate_index_bug.md](project_zhizhi_verify_uniqueness_duplicate_index_bug.md) - project: Observed duplicate index bug in verify_uniqueness
 - [project_闭环验证_result.md](project_闭环验证_result.md) - project: Final validation outcome of the DSE-ZhiZhi-TanXi pipeline
+- [reference_agent_capabilities.md](reference_agent_capabilities.md) - reference: 列出所有可用的科学代理及其功能。
 - [reference_arxiv_2510_09901v2_paper.md](reference_arxiv_2510_09901v2_paper.md) - reference: Key literature record imported: arXiv preprint (2025) on LLM-based scientific agents, covering hypothesis generation, experimental design, and result analysis.
 - [reference_bash_background_task_behavior.md](reference_bash_background_task_behavior.md) - reference: bash tool runs commands as background tasks
 - [reference_bash_tool_background_behavior.md](reference_bash_tool_background_behavior.md) - reference: bash tool sometimes backgrounds commands
@@ -233,6 +242,7 @@
 - [reference_pagerank_highest_paper_doi.md](reference_pagerank_highest_paper_doi.md) - reference: most influential paper by PageRank
 - [reference_polymer_electrolyte_safety_evidence.md](reference_polymer_electrolyte_safety_evidence.md) - reference: Second imported literature evidence
 - [reference_pre_final_validation_hook.md](reference_pre_final_validation_hook.md) - reference: Pre-final validation enforces concrete outcomes
+- [reference_project_id.md](reference_project_id.md) - reference: 项目ID
 - [reference_seed_paper_arxiv_id.md](reference_seed_paper_arxiv_id.md) - reference: primary literature seed
 - [reference_seed_paper_doi.md](reference_seed_paper_doi.md) - reference: DOI of the highest-quality seed paper selected
 - [reference_seed_paper_title.md](reference_seed_paper_title.md) - reference: title of the central paper
