@@ -1,7 +1,7 @@
 ---
 name: autogen_run_id
-description: Identifier for the AutoGen groupchat execution round
+description: stable AutoGen execution identifier that failed
 type: project
 ---
 
-agr_1783518514989797200
+agr_1783537080427354400

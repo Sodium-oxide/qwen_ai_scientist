@@ -1,7 +1,7 @@
 ---
 name: yanzhen_verdict
-description: Mechanism audit outcome
+description: mechanism audit verdict from YanZhen
 type: project
 ---
 
-REQUIRES_HUMAN_REVIEW
+REQUIRES_REVISION

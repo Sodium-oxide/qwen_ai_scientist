@@ -1,0 +1,1309 @@
+{
+  "run_id": "agr_1783532080722917400",
+  "groupchat_id": "agc_1783532071704742300",
+  "project_id": "sci_1783532060879533700",
+  "framework": "autogen_2_groupchat",
+  "groupchat_spec": {
+    "groupchat_id": "agc_1783532071704742300",
+    "project_id": "sci_1783532060879533700",
+    "goal": "验证从文献阅读、知识图谱构建、Gap探索、假设生成、苏格拉底辩论、机制审计到最终裁决的多Agent协作能力",
+    "framework": "autogen_2_groupchat",
+    "native_autogen": {
+      "requested": false,
+      "available": false,
+      "mode": "structured_groupchat_executor",
+      "reason": "Native AutoGen runtime disabled by default to control token use; v8 executes a deterministic GroupChat-compatible protocol."
+    },
+    "groupchat": {
+      "max_round": 12,
+      "speaker_selection_method": "auto",
+      "allow_repeat_speaker": false,
+      "human_input_mode": "NEVER",
+      "termination_marker": "TERMINATE"
+    },
+    "agents": [
+      {
+        "name": "Boxue_UserProxy",
+        "key": "boxue",
+        "autogen_type": "UserProxyAgent",
+        "role": "Chief Research Scheduler",
+        "goal": "Decompose research goals into verifiable tasks and coordinate the full AI Scientist pipeline.",
+        "system_message": "You are Boxue (博學), the Chief Research Scheduler and Principal Investigator of the Qwen-Zhikan multi-agent AI Scientist system.\nRole: Principal Investigator & Research Expedition Commander.\n\nCore responsibilities:\n1. Decompose broad research objectives into executable, verifiable, closed-loop subtasks.\n2. Coordinate specialist agents without performing their specialist work yourself.\n3. Track every knowledge gap from discovery through validation, implementation, manuscript, review, and iteration.\n4. Embed acceptance criteria, evidence requirements, role boundaries, and risk controls into every task.\n5. Synthesize specialist outputs and decide whether to advance, revise, or finalize.\n\nOperational principles:\n- Every task must have a responsible agent, dependency chain, deliverable, acceptance criteria, priority, and risks.\n- Domain-specific judgments must be delegated to specialist agents.\n- Prefer delegation DAGs over long single-agent runs for broad workflows.\n- Shared PaperGraph/project-state mutations should be gated by lead/synthesis tasks when parallel workers are involved.\n- Every action must serve knowledge gap identification, validation, or filling.\n\nTAO workflow:\nThought: review project state, dependencies, output quality, gap lifecycle status, and risks.\nAction: use create_boxue_delegation_tasks for full PI-style role DAGs, create_science_delegation_tasks for broad retrieval branch scouting, create_science_pipeline_tasks for coarse phase scaffolding, then review/synthesize/adjust/finalize through task gates.\nObservation: receive specialist deliverables, record progress, and update the next decision point.",
+        "llm_config_ref": "human_orchestrator_proxy",
+        "tools": [
+          "create_autogen_groupchat",
+          "run_autogen_research_flow",
+          "run_boxue_research_round",
+          "create_boxue_delegation_tasks",
+          "create_science_delegation_tasks",
+          "create_science_pipeline_tasks",
+          "assign_task",
+          "review_output",
+          "synthesize",
+          "adjust_plan",
+          "finalize"
+        ]
+      },
+      {
+        "name": "ZhiZhi_ToolAgent",
+        "key": "zhizhi",
+        "autogen_type": "ToolAgent",
+        "role": "Literature Mining and PaperGraph Expert",
+        "goal": "Retrieve literature, extract structured evidence, and build the PaperGraph substrate.",
+        "system_message": "You are ZhiZhi (致知), the Literature Mining & Knowledge Graph Expert of the Qwen-Zhikan AI Scientist system.\nRole: Academic Information Analyst & Knowledge Substrate Builder.\n\nCore responsibilities:\n1. Targeted literature retrieval from high-quality venues and academic databases.\n2. Structured extraction of method, scenario, benchmark, contribution/conclusion, and limitation.\n3. Domain knowledge graph construction over method-scenario-benchmark relations.\n4. Knowledge gap detection through combinatorial gaps, improvement gaps, migration gaps, and problem gaps.\n5. Novelty/value/feasibility assessment for each gap.\n6. Plagiarism/overlap verification for proposed ideas.\n\nOperational principles:\n- Prioritize top-tier and canonical literature.\n- Do not invent papers, method categories, or unsupported claims.\n- Distinguish empirical results, theoretical claims, methodological descriptions, and author opinions.\n- Every gap must include traceable supporting references or be marked for human review.\n- Avoid pseudo-gaps: \"nobody tried it\" is not enough unless scientific/application value is clear.\n\nTAO workflow:\nThought: analyze keywords, coverage, blind spots, method migration opportunities, and pseudo-gap risk.\nAction: prefer search_papers_stratified for systematic retrieval, then use extract_structured_info, build_knowledge_map, detect_knowledge_gaps, assess_novelty, verify_uniqueness.\nObservation: update the research landscape, record gaps, and flag validated innovation points.\n\nRequired output JSON:\n{\n  \"thought\": \"Literature analysis and gap detection reasoning process\",\n  \"action\": {},\n  \"knowledge_map_summary\": {\n    \"main_methods\": [\"method1\"],\n    \"method_scenario_coverage\": {\"method1\": [\"scenario1\"]},\n    \"method_scenario_benchmark_triples\": []\n  },\n  \"knowledge_gaps\": [\n    {\n      \"gap_id\": \"GAP-001\",\n      \"gap_type\": \"combinatorial | improvement | migration | problem\",\n      \"description\": \"Detailed academic description of the gap\",\n      \"supporting_references\": [\"reference1\"],\n      \"novelty_score\": 1,\n      \"application_value\": \"high | medium | low\",\n      \"feasibility\": \"high | medium | low\",\n      \"suggested_research_path\": \"Recommended research approach\"\n    }\n  ]\n}",
+        "llm_config_ref": "tool_backed_retriever",
+        "tools": [
+          "search_papers_stratified",
+          "search_papers",
+          "extract_structured_info",
+          "build_knowledge_map",
+          "verify_uniqueness"
+        ]
+      },
+      {
+        "name": "TanXi_ToolAgent",
+        "key": "tanxi",
+        "autogen_type": "ToolAgent",
+        "role": "Knowledge Gap Discovery Agent",
+        "goal": "Detect coverage holes, suspended problems, and high-value unexplored method-scenario pairs.",
+        "system_message": "You are TanXi, the Knowledge Gap Discovery AssistantAgent. Detect source-grounded, semantic-plausible, evidence-traceable gaps from PaperGraph.",
+        "llm_config_ref": "tool_backed_gap_miner",
+        "tools": [
+          "run_tanxi_gap_exploration",
+          "detect_knowledge_gaps",
+          "check_semantic_plausibility",
+          "assess_novelty",
+          "verify_uniqueness"
+        ]
+      },
+      {
+        "name": "MingLi_Proponent",
+        "key": "mingli",
+        "autogen_type": "AssistantAgent",
+        "role": "Hypothesis Generator",
+        "goal": "Generate and refine hypotheses guided by validated knowledge gaps.",
+        "system_message": "You are MingLi, the Creative Scientist and Hypothesis Generator of the Qwen-Zhikan AI Scientist system.\nRole: Novel Hypothesis Generator & Tournament Participant.\n\nCore responsibilities:\n1. Generate novel research ideas from TanXi knowledge gaps and ZhiZhi PaperGraph evidence.\n2. Design concrete, feasible, falsifiable experimental plans for each idea.\n3. Ensure every idea is novel, grounded, feasible, and differentiated from existing literature.\n4. Participate in tournament evolution by mutating hypotheses structurally across rounds.\n\nOperational principles:\n- Every hypothesis must trace to a specific TanXi gap id.\n- Every premise must cite or summarize PaperGraph evidence, or be marked as a hypothesis.\n- Before finalizing an idea, run at least one literature uniqueness check.\n- If near-duplicate literature is found, discard or regenerate the idea.\n- Tournament mutations must introduce structural changes: new variables, mechanisms, causal paths, or experimental regimes.\n- Track parent_hypothesis_id and lineage for auditability.\n\nTAO workflow:\nThought: evaluate novelty, feasibility, grounding, differentiation, and whether the idea actually fills the gap.\nAction: use generate_idea, design_experiment, verify_uniqueness or search_literature, then finalize_idea.\nObservation: inspect literature matches, overlap risk, PaperGraph evidence, and experiment feasibility before finalizing.\n\nRequired output JSON:\n{\n  \"title\": \"Research Title\",\n  \"hypothesis\": \"Core Hypothesis\",\n  \"abstract\": \"Abstract\",\n  \"related_work\": \"Comparison with Related Work\",\n  \"experiments\": {\n    \"setup\": \"Experimental Setup\",\n    \"metrics\": \"Evaluation Metrics\",\n    \"baselines\": \"Baseline Methods\"\n  },\n  \"risks\": \"Risk Factors and Limitations\",\n  \"tournament_generation\": 1,\n  \"parent_hypothesis_id\": \"string | null\"\n}",
+        "llm_config_ref": "qwen-max",
+        "tools": [
+          "evolve_domain_subspaces",
+          "build_temporal_knowledge_graph",
+          "detect_structural_knowledge_gaps",
+          "find_structural_analogy_transfers",
+          "check_semantic_plausibility",
+          "generate_idea",
+          "design_experiment",
+          "finalize_idea",
+          "run_mingli_hypothesis_evolution"
+        ]
+      },
+      {
+        "name": "DuZhi_Opponent",
+        "key": "duzhi",
+        "autogen_type": "AssistantAgent",
+        "role": "Socratic Critic",
+        "goal": "Challenge hypotheses through counterexamples, hidden assumptions, and falsification questions.",
+        "system_message": "You are DuZhi, the Socratic Questioner Agent of the Qwen-Zhikan AI Scientist system.\nRole: Hypothesis Interrogator & Hidden-Assumption Exposer.\n\nCore responsibilities:\n1. Ask structured Socratic questions that force MingLi hypotheses to become operational, causal, and falsifiable.\n2. Expose hidden assumptions, missing definitions, weak evidence links, and untested boundary conditions.\n3. Generate counterexamples and regime-shift challenges before a hypothesis is accepted.\n4. Keep criticism evidence-driven: every objection must reference the hypothesis text, PaperGraph evidence, YanZhen audit output, or a clearly marked missing-evidence condition.\n\nQuestion classes:\n- Conceptual clarification: define key terms, distinguish measurable observables from inferred constructs.\n- Constraint check: test compatibility with domain constraints, instruments, data, equations, ethics, or feasibility limits.\n- Causal probe: require the full input -> mechanism -> output chain and evidence for each link.\n- Counterexample challenge: ask where the mechanism should fail under parameter, environment, scale, or distribution shifts.\n\nOperational principles:\n- Be adversarial toward mechanisms, not toward the researcher.\n- Prefer precise questions that can change the hypothesis over generic skepticism.\n- If a claim cannot be measured, ask how it will be operationalized.\n- If a mechanism has no boundary condition, demand one.\n- If evidence is cherry-picked or missing, ask for the omitted evidence class.\n\nOutput JSON:\n{\n  \"thought\": \"Socratic critique reasoning\",\n  \"action\": {\"type\": \"ask_socratic_questions\"},\n  \"questions\": [\n    {\n      \"question_type\": \"conceptual_clarification | constraint_check | causal_probe | counterexample_challenge\",\n      \"question\": \"string\",\n      \"target_claim\": \"string\",\n      \"why_it_matters\": \"string\",\n      \"required_revision\": \"string\",\n      \"severity\": \"low | medium | high | fatal\"\n    }\n  ],\n  \"overall_severity\": \"low | medium | high | fatal\",\n  \"must_revise\": true\n}",
+        "llm_config_ref": "qwen-plus",
+        "tools": [
+          "ask_socratic_questions",
+          "ask_critical_questions",
+          "find_counterexamples",
+          "stress_test_assumptions"
+        ]
+      },
+      {
+        "name": "YanZhen_ToolAgent",
+        "key": "yanzhen",
+        "autogen_type": "ToolAgent",
+        "role": "Mechanism Fidelity Verifier",
+        "goal": "Run CAWM-style internal consistency, data consistency, and regime-shift checks.",
+        "system_message": "You are YanZhen, the Mechanism Fidelity Verifier of the Qwen-Zhikan AI Scientist system.\nRole: CAWM Detector & Consistency Auditor.\n\nCore responsibilities:\n1. Layer 1 - Internal Consistency: verify the logical chain, causal links, formula/quantity use, and premise-to-conclusion integrity.\n2. Layer 2 - Data Consistency: verify that the claimed mechanism matches cited PaperGraph evidence and does not cherry-pick only supportive records.\n3. Layer 3 - Regime Shift Test: stress the mechanism under changed parameters, scale, environment, data distribution, boundary conditions, or adjacent domains.\n4. Detect the CAWM failure mode: correct-looking conclusion with fabricated, brittle, or inconsistent mechanism.\n\nOperational principles:\n- A hypothesis passes only if it survives all three layers.\n- Regime shift is the decisive CAWM test; unstated assumptions should raise risk.\n- Be conservative. When evidence is incomplete, return REQUIRES_HUMAN_REVIEW rather than a false pass.\n- Document the reasoning chain for every layer.\n- The protocol is domain-general across mathematics, physical sciences, life sciences, medicine, engineering, computer science, agriculture, climate, ecology, and social science.\n\nTAO workflow:\nThought: extract the claimed mechanism, causal chain, supporting data, and hidden assumptions.\nAction: run check_internal_consistency, check_data_consistency, regime_shift_test, detect_selective_citation, causal_chain_audit, then run_yanzhen_mechanism_verification.\nObservation: record pass/fail verdicts, CAWM risk, selective citation risk, and human-review requirements.\n\nRequired output JSON:\n{\n  \"thought\": \"Mechanism verification reasoning process\",\n  \"action\": {},\n  \"mechanism_fidelity_report\": {\n    \"hypothesis_id\": \"string\",\n    \"layer_1_internal_consistency\": {\n      \"logical_chain_intact\": true,\n      \"formula_application_correct\": true,\n      \"issues_found\": [],\n      \"verdict\": \"PASS | FAIL\"\n    },\n    \"layer_2_data_consistency\": {\n      \"mechanism_matches_data\": true,\n      \"selective_citation_detected\": false,\n      \"original_text_alignment\": \"high\",\n      \"verdict\": \"PASS | FAIL\"\n    },\n    \"layer_3_regime_shift_test\": {\n      \"shifted_conditions_tested\": [\"condition1\", \"condition2\"],\n      \"mechanism_stability\": \"stable | degrades_gracefully | collapses_unexpectedly\",\n      \"cawm_risk_level\": \"LOW | MEDIUM | HIGH\",\n      \"verdict\": \"PASS | FAIL\"\n    },\n    \"overall_verdict\": \"MECHANISM_VERIFIED | CAWM_DETECTED | REQUIRES_HUMAN_REVIEW\",\n    \"detailed_reasoning\": \"string\"\n  }\n}",
+        "llm_config_ref": "qwen-plus",
+        "tools": [
+          "check_internal_consistency",
+          "check_data_consistency",
+          "regime_shift_test",
+          "detect_selective_citation",
+          "causal_chain_audit",
+          "run_yanzhen_mechanism_verification"
+        ]
+      },
+      {
+        "name": "BianLun_GroupChatManager",
+        "key": "bianlun",
+        "autogen_type": "GroupChatManager",
+        "role": "Structured Debate Moderator",
+        "goal": "Moderate structured debate and synthesize strongest surviving hypotheses.",
+        "system_message": "You are BianLun, the Structured Debate Moderator of the Qwen-Zhikan AI Scientist system.\nRole: Evidence-Grounded Debate Judge & Hypothesis Refinement Coordinator.\n\nCore responsibilities:\n1. Run the four-round Socratic debate protocol: clarification, evidence/CAWM Layer 1-2, methodology/regime shift, synthesis.\n2. Enforce ARIS-style safety gates: model-family independence, evidence threshold, convergence check, and human-review escalation.\n3. Integrate MingLi's proposal, DuZhi's critiques, YanZhen's mechanism fidelity report, and PaperGraph evidence.\n4. Produce a refined hypothesis, unresolved dispute list, and next experimental decision.\n\nDebate must be evidence-driven, not conversational. Unsupported revisions are not adopted.\n\nOutput JSON:\n{\n  \"thought\": \"moderator reasoning\",\n  \"action\": {\"type\": \"run_socratic_hypothesis_debate\"},\n  \"debate_report\": {\n    \"rounds\": [],\n    \"safety_gates\": {},\n    \"refined_hypothesis\": {},\n    \"unresolved_issues\": [],\n    \"final_decision\": \"accept_for_experiment | revise | human_review | reject\"\n  }\n}",
+        "llm_config_ref": "qwen-deep-research",
+        "tools": [
+          "run_socratic_hypothesis_debate",
+          "moderate_round",
+          "summarize_positions",
+          "extract_emergent_method"
+        ]
+      }
+    ],
+    "tools": [
+      {
+        "name": "run_zhizhi_literature_analysis",
+        "owner": "ZhiZhi_ToolAgent"
+      },
+      {
+        "name": "run_tanxi_gap_exploration",
+        "owner": "TanXi_ToolAgent"
+      },
+      {
+        "name": "generate_idea",
+        "owner": "MingLi_Proponent"
+      },
+      {
+        "name": "design_experiment",
+        "owner": "MingLi_Proponent"
+      },
+      {
+        "name": "finalize_idea",
+        "owner": "MingLi_Proponent"
+      },
+      {
+        "name": "run_yanzhen_mechanism_verification",
+        "owner": "YanZhen_ToolAgent"
+      },
+      {
+        "name": "ask_socratic_questions",
+        "owner": "DuZhi_Opponent"
+      },
+      {
+        "name": "run_socratic_hypothesis_debate",
+        "owner": "BianLun_GroupChatManager"
+      }
+    ],
+    "round_protocol": [
+      {
+        "round": 0,
+        "speaker": "ZhiZhi_ToolAgent",
+        "objective": "Read literature and build PaperGraph evidence."
+      },
+      {
+        "round": 0,
+        "speaker": "TanXi_ToolAgent",
+        "objective": "Mine source-grounded gaps from PaperGraph."
+      },
+      {
+        "round": 1,
+        "speaker": "MingLi_Proponent",
+        "objective": "State and defend a gap-traceable hypothesis."
+      },
+      {
+        "round": 2,
+        "speaker": "DuZhi_Opponent",
+        "objective": "Ask Socratic clarification, causal, constraint, and counterexample questions."
+      },
+      {
+        "round": 2,
+        "speaker": "YanZhen_ToolAgent",
+        "objective": "Run CAWM Layer 1 and Layer 2 evidence checks."
+      },
+      {
+        "round": 3,
+        "speaker": "MingLi_Proponent",
+        "objective": "Present an experiment and falsification plan."
+      },
+      {
+        "round": 3,
+        "speaker": "YanZhen_ToolAgent",
+        "objective": "Run regime-shift CAWM Layer 3."
+      },
+      {
+        "round": 4,
+        "speaker": "BianLun_GroupChatManager",
+        "objective": "Synthesize refined hypothesis or revision decision."
+      }
+    ],
+    "execution_policy": {
+      "worktree": "disabled",
+      "background_threads": "disabled",
+      "state_owner": "groupchat_manager",
+      "shared_project_writes": "serialized_by_autogen_flow",
+      "token_policy": "structured_turns_not_freeform_chat"
+    },
+    "createdAt": 1783532071.7048347
+  },
+  "state": {
+    "project_id": "sci_1783532060879533700",
+    "groupchat_id": "agc_1783532071704742300",
+    "goal": "验证从文献阅读、知识图谱构建、Gap探索、假设生成、苏格拉底辩论、机制审计到最终裁决的多Agent协作能力",
+    "framework": "autogen_2_groupchat",
+    "hypothesis_id": "hyp_1783532982999188300",
+    "draft_idea_id": "idea_1783532982935003600",
+    "final_decision": "human_review",
+    "zhizhi_status": "completed",
+    "tanxi_gap_count": 10,
+    "best_gap_context": [
+      {
+        "gap_id": "gap_1783532982654023500",
+        "gap_type": "migration",
+        "description": null,
+        "supporting_references": [
+          "Shipeng Jia et al. (2025) Promoting Reversible Anionic Redox in Sodium-Ion Cathodes by Doping and Phase Control doi:10.1149/ma2025-013168mtgabs",
+          "Qi Wang et al. (2024) Suppression of Adverse Phase Transition of Layered Oxide Cathode via Local Electronic Structure Regulation for High-Capacity Sodium-Ion Batteries. doi:10.1021/acsnano.4c04847"
+        ],
+        "suggested_research_path": null,
+        "value_argument": null,
+        "semantic_plausibility": {},
+        "mechanism_issue_signal": {},
+        "gap_signal": {},
+        "priority_score": null,
+        "novelty_score": null,
+        "feasibility": null
+      },
+      {
+        "gap_id": "gap_1783532982477142600",
+        "gap_type": "migration",
+        "description": null,
+        "supporting_references": [
+          "Shipeng Jia et al. (2025) Promoting Reversible Anionic Redox in Sodium-Ion Cathodes by Doping and Phase Control doi:10.1149/ma2025-013168mtgabs",
+          "Adil Ali et al. (2026) Impact of Innovation and Project Control on Sustainable Project Success: Examining the Mediating Role of Project Governance in Pakistan’s Software Development Sector doi:10.63544/ijss.v5i2.270"
+        ],
+        "suggested_research_path": null,
+        "value_argument": null,
+        "semantic_plausibility": {},
+        "mechanism_issue_signal": {},
+        "gap_signal": {},
+        "priority_score": null,
+        "novelty_score": null,
+        "feasibility": null
+      },
+      {
+        "gap_id": "gap_1783532982506516000",
+        "gap_type": "migration",
+        "description": null,
+        "supporting_references": [
+          "Shipeng Jia et al. (2025) Promoting Reversible Anionic Redox in Sodium-Ion Cathodes by Doping and Phase Control doi:10.1149/ma2025-013168mtgabs",
+          "Adil Ali et al. (2026) Impact of Innovation and Project Control on Sustainable Project Success: Examining the Mediating Role of Project Governance in Pakistan’s Software Development Sector doi:10.63544/ijss.v5i2.270"
+        ],
+        "suggested_research_path": null,
+        "value_argument": null,
+        "semantic_plausibility": {},
+        "mechanism_issue_signal": {},
+        "gap_signal": {},
+        "priority_score": null,
+        "novelty_score": null,
+        "feasibility": null
+      }
+    ],
+    "mingli_gap_handoff": "no_explicit_gap_from_tanxi; using PaperGraph fallback inside MingLi",
+    "finalize_status": "finalized",
+    "yanzhen_verdict": "REQUIRES_HUMAN_REVIEW"
+  },
+  "messages": [
+    {
+      "name": "ZhiZhi_ToolAgent",
+      "role": "assistant",
+      "content": "{\"action\": {\"agent\": \"zhizhi\", \"query\": \"验证从文献阅读、知识图谱构建、Gap探索、假设生成、苏格拉底辩论、机制审计到最终裁决的多Agent协作能力\", \"domain\": \"High-voltage lithium batteries above 4.5V, cathode/electrolyte/interface stability, AI-assisted battery materials discovery\", \"years\": \"last 5 years\", \"search_papers_stratified\": {\"search_id\": \"search_1783532080724679800\", \"total_results\": 20, \"requested_max_results\": 20, \"effective_search_budget\": 20, \"providers\": [\"semantic_scholar\", \"arxiv\", \"chemrxiv\"], \"strategy\": \"stratified_cascade\", \"query_plan\": [{\"branch\": \"primary\", \"query\": \"验证从文献阅读、知识图谱构建、Gap探索、假设生成、苏格拉底辩论、机制审计到最终裁决的多Agent协作能力\"}, {\"branch\": \"cathode_materials_chemistry\", \"query\": \"验证从文献阅读、知识图谱构建、Gap探索、假设生成、苏格拉底辩论、机制审计到最终裁决的多Agent协作能力 layered oxide cathodes >4.5V vs Li/Li+ with structural degradation mechanisms\", \"topic_type\": \"branch\"}, {\"branch\": \"electrolyte_design_decomposition\", \"query\": \"验证从文献阅读、知识图谱构建、Gap探索、假设生成、苏格拉底辩论、机制审计到最终裁决的多Agent协作能力 electrolyte oxidation stability at >4.5V with SEI/CEI formation kinetics\", \"topic_type\": \"branch\"}, {\"branch\": \"interface_thermodynamics_kinetics\", \"query\": \"验证从文献阅读、知识图谱构建、Gap探索、假设生成、苏格拉底辩论、机制审计到最终裁决的多Agent协作能力 thermodynamic window mismatch and interfacial reaction pathways at high-voltage cathode-electrolyte interfaces\", \"topic_type\": \"branch\"}, {\"branch\": \"ai_driven_materials_discovery\", \"query\": \"验证从文献阅读、知识图谱构建、Gap探索、假设生成、苏格拉底辩论、机制审计到最终裁决的多Agent协作能力 machine learning or foundation models for predicting high-voltage cathode/electrolyte compatibility and degradation signatures\", \"topic_type\": \"branch\"}, {\"branch\": \"field_map_reviews\", \"query\": \"High-voltage lithium batteries above 4.5V, cathode/electrolyte/interface stability, AI-assisted battery materials discovery 验证从文献阅读、知识图谱构建、Gap探索、假设生成、苏格拉底辩论、机制审计到最终裁决的多Agent协作能力 review survey roadmap progress perspective systematic review\", \"topic_type\": \"retrieval_facet\"}, {\"branch\": \"milestone_foundations\", \"query\": \"High-voltage lithium batteries above 4.5V, cathode/electrolyte/interface stability, AI-assisted battery materials discovery 验证从文献阅读、知识图谱构建、Gap探索、假设生成、苏格拉底辩论、机制审计到最终裁决的多Agent协作能力 seminal foundational highly cited landmark theory method mechanism\", \"topic_type\": \"retrieval_facet\"}, {\"branch\": \"methods_and_mechanisms\", \"query\": \"High-voltage lithium batteries above 4.5V, cathode/electrolyte/interface stability, AI-assisted battery materials discovery 验证从文献阅读、知识图谱构建、Gap探索、假设生成、苏格拉底辩论、机制审计到最终裁决的多Agent协作能力 method model algorithm mechanism experiment framework\", \"topic_type\": \"retrieval_facet\"}, {\"branch\": \"applications_systems_scenarios\", \"query\": \"High-voltage lithium batteries above 4.5V, cathode/electrolyte/interface stability, AI-assisted battery materials discovery 验证从文献阅读、知识图谱构建、Gap探索、假设生成、苏格拉底辩论、机制审计到最终裁决的多Agent协作能力 application system scenario case study deployment\", \"topic_type\": \"retrieval_facet\"}], \"focus_branches\": [], \"strata\": [{\"layer\": \"L0_review\", \"label\": \"high-impact review / field map\", \"quota\": 3, \"query_suffix\": \"review survey progress perspective tutorial systematic review meta-analysis\", \"target\": 3, \"candidate_count\": 21, \"raw_candidate_count\": 23, \"selected\": 2, \"domain_rejected\": 19, \"recovery_used\": \"\", \"carried_to_next\": 1}, {\"layer\": \"L1_milestone\", \"label\": \"milestone / highly cited foundation\", \"quota\": 4, \"query_suffix\": \"seminal foundational highly cited landmark classic influential\", \"target\": 5, \"candidate_count\": 2, \"raw_candidate_count\": 12, \"selected\": 2, \"domain_rejected\": 0, \"recovery_used\": \"\", \"carried_to_next\": 3}, {\"layer\": \"L2_top_latest\", \"label\": \"recent top-venue frontier\", \"quota\": 4, \"query_suffix\": \"latest recent top journal high impact breakthrough advance frontier\", \"target\": 7, \"candidate_count\": 4, \"raw_candidate_count\": 12, \"selected\": 2, \"domain_rejected\": 1, \"recovery_used\": \"\", \"carried_to_next\": 5}, {\"layer\": \"L3_preprint\", \"label\": \"latest arXiv preprint frontier\", \"quota\": 1, \"query_suffix\": \"\", \"target\": 6, \"candidate_count\": 12, \"raw_candidate_count\": 12, \"selected\": 0, \"domain_rejected\": 12, \"recovery_used\": \"\", \"carried_to_next\": 6}, {\"layer\": \"L4_regular\", \"label\": \"regular journal / supplemental evidence\", \"quota\": 8, \"query_suffix\": \"\", \"target\": 14, \"candidate_count\": 19, \"raw_candidate_count\": 58, \"selected\": 13, \"domain_rejected\": 2, \"recovery_used\": \"\", \"carried_to_next\": 1}, {\"layer\": \"L4_regular_backfill\", \"label\": \"regular journal / quota backfill\", \"quota\": 1, \"target\": 1, \"candidate_count\": 21, \"selected\": 1, \"domain_rejected\": 1, \"carried_to_next\": 0}], \"errors\": []}, \"domain_coverage_diagnostic\": {\"profile\": \"interdisciplinary_battery_science_research_integrating_electrochemistry_material\", \"profile_source\": \"llm\", \"search_id\": \"search_1783532080724679800\", \"total_results\": 20, \"represented_topics\": [], \"blind_spots\": [{\"topic\": \"High-Voltage Cathode Degradation Pathways\", \"hit_count\": 5, \"min_hits\": 10, \"terms\": [\"oxygen loss\", \"phase transition\", \"microcrack propagation\", \"transition metal migration\"], \"suggested_query\": \"验证从文献阅读、知识图谱构建、Gap探索、假设生成、苏格拉底辩论、机制审计到最终裁决的多Agent协作能力 oxygen loss phase transition microcrack propagation transition metal migration\", \"risk\": \"Live probe found literature for this missing branch; current PaperGraph may be incomplete, so TanXi should not treat this absence as a true unexplored gap.\", \"live_probe\": {\"query\": \"验证从文献阅读、知识图谱构建、Gap探索、假设生成、苏格拉底辩论、机制审计到最终裁决的多Agent协作能力 oxygen loss phase transition microcrack propagation transition metal migration\", \"status\": \"ok\", \"total_results\": 6, \"providers\": [{\"provider\": \"semantic_scholar\", \"status\": \"ok\", \"result_count\": 3, \"top_titles\": [\"Voltage Decay in Li‐Rich Layered Oxide Cathodes: From Multiscale Mechanism Clarification to Integrated Strategies Design\", \"Surfactant-Assisted Bulk Doping of High-Valence Ions for Structurally Stable Co-Free High-Ni Cathodes\", \"High Voltage Cycling Induced Thermal Vulnerability in LiCoO2 Cathode: Cation Loss and Oxygen Release Driven by Oxygen Va...[truncated]\"], \"error\": \"\"}, {\"provider\": \"arxiv\", \"status\": \"ok\", \"result_count\": 3, \"top_titles\": [\"Driven spin wave modes in XY ferromagnet: Nonequilibrium phase transition\", \"Group 13 Metals as L-Type Ligands for Transition Metals\", \"Thomas-Fermi model yields condensed phase of molecular metallic oxygen\"], \"error\": \"\"}, {\"provider\": \"chemrxiv\", \"status\": \"ok\", \"result_count\": 0, \"top_titles\": [], \"error\": \"\"}]}, \"false_negative_risk\": true}, {\"topic\": \"Electrolyte Oxidation Mitigation Strategies\", \"hit_count\": 0, \"min_hits\": 10, \"terms\": [\"anion-derived cei\", \"redox shuttle inhibitors\", \"high-lumo solvents\", \"electrochemical window expansion\"], \"suggested_query\": \"验证从文献阅读、知识图谱构建、Gap探索、假设生成、苏格拉底辩论、机制审计到最终裁决的多Agent协作能力 anion-derived cei redox shuttle inhibitors high-lumo solvents electrochemical window expansion\", \"risk\": \"Live probe found literature for this missing branch; current PaperGraph may be incomplete, so TanXi should not treat this absence as a true unexplored gap.\", \"live_probe\": {\"query\": \"验证从文献阅读、知识图谱构建、Gap探索、假设生成、苏格拉底辩论、机制审计到最终裁决的多Agent协作能力 anion-derived cei redox shuttle inhibitors high-lumo solvents electrochemical window expansion\", \"status\": \"ok\", \"total_results\": 3, \"providers\": [{\"provider\": \"semantic_scholar\", \"status\": \"error\", \"result_count\": 0, \"top_titles\": [], \"error\": \"HTTP 500: {\\\"message\\\": \\\"Internal Server Error\\\"}\"}, {\"provider\": \"arxiv\", \"status\": \"ok\", \"result_count\": 3, \"top_titles\": [\"Dynamics of electrochemical flows 1 Motion of electrochemical flows\", \"Dynamics of electrochemical flows 2 Electrochemical flows-through porous electrode\", \"Dynamics of electrochemical flows 3 Closure models\"], \"error\": \"\"}, {\"provider\": \"chemrxiv\", \"status\": \"ok\", \"result_count\": 0, \"top_titles\": [], \"error\": \"\"}]}, \"false_negative_risk\": true}, {\"topic\": \"Multimodal Interface Characterization\", \"hit_count\": 0, \"min_hits\": 10, \"terms\": [\"time-resolved xas\", \"tof-sims depth profiling\", \"in situ raman\", \"correlative microscopy\"], \"suggested_query\": \"验证从文献阅读、知识图谱构建、Gap探索、假设生成、苏格拉底辩论、机制审计到最终裁决的多Agent协作能力 time-resolved xas tof-sims depth profiling in situ raman correlative microscopy\", \"risk\": \"Live probe found literature for this missing branch; current PaperGraph may be incomplete, so TanXi should not treat this absence as a true unexplored gap.\", \"live_probe\": {\"query\": \"验证从文献阅读、知识图谱构建、Gap探索、假设生成、苏格拉底辩论、机制审计到最终裁决的多Agent协作能力 time-resolved xas tof-sims depth profiling in situ raman correlative microscopy\", \"status\": \"ok\", \"total_results\": 3, \"providers\": [{\"provider\": \"semantic_scholar\", \"status\": \"ok\", \"result_count\": 0, \"top_titles\": [], \"error\": \"\"}, {\"provider\": \"arxiv\", \"status\": \"ok\", \"result_count\": 3, \"top_titles\": [\"Raman spectroscopy on cubic and hexagonal SrMnO$_3$\", \"Polarizability calculation of vibrating nanoparticles for intensity of low frequency Raman scattering\", \"Optimizing ToF-SIMS Depth Profiles of Semiconductor Heterostructures\"], \"error\": \"\"}, {\"provider\": \"chemrxiv\", \"status\": \"ok\", \"result_count\": 0, \"top_titles\": [], \"error\": \"\"}]}, \"false_negative_risk\": true}, {\"topic\": \"Multi-Agent AI for Battery R&D\", \"hit_count\": 0, \"min_hits\": 10, \"terms\": [\"agent role specialization\", \"knowledge graph grounding\", \"socratic reasoning traceability\", \"hypothesis falsifiability scoring\", \"mechanistic audit log\"], \"suggested_query\": \"验证从文献阅读、知识图谱构建、Gap探索、假设生成、苏格拉底辩论、机制审计到最终裁决的多Agent协作能力 agent role specialization knowledge graph grounding socratic reasoning traceability hypothesis falsifiability scoring\", \"risk\": \"Live probe found literature for this missing branch; current PaperGraph may be incomplete, so TanXi should not treat this absence as a true unexplored gap.\", \"live_probe\": {\"query\": \"验证从文献阅读、知识图谱构建、Gap探索、假设生成、苏格拉底辩论、机制审计到最终裁决的多Agent协作能力 agent role specialization knowledge graph grounding socratic reasoning traceability hypothesis falsifiability scoring\", \"status\": \"ok\", \"total_results\": 3, \"providers\": [{\"provider\": \"semantic_scholar\", \"status\": \"ok\", \"result_count\": 0, \"top_titles\": [], \"error\": \"\"}, {\"provider\": \"arxiv\", \"status\": \"ok\", \"result_count\": 3, \"top_titles\": [\"AI Agent-Driven Framework for Automated Product Knowledge Graph Construction in E-Commerce\", \"Grounding LLM Reasoning under Incomplete Graph Evidence\", \"A Multi-Agent System for Semantic Mapping of Relational Data to Knowledge Graphs\"], \"error\": \"\"}, {\"provider\": \"chemrxiv\", \"status\": \"ok\", \"result_count\": 0, \"top_titles\": [], \"error\": \"\"}]}, \"false_negative_risk\": true}], \"live_validate\": true, \"live_probe_reports\": [{\"query\": \"验证从文献阅读、知识图谱构建、Gap探索、假设生成、苏格拉底辩论、机制审计到最终裁决的多Agent协作能力 oxygen loss phase transition microcrack propagation transition metal migration\", \"status\": \"ok\", \"total_results\": 6, \"providers\": [{\"provider\": \"semantic_scholar\", \"status\": \"ok\", \"result_count\": 3, \"top_titles\": [\"Voltage Decay in Li‐Rich Layered Oxide Cathodes: From Multiscale Mechanism Clarification to Integrated Strategies Design\", \"Surfactant-Assisted Bulk Doping of High-Valence Ions for Structurally Stable Co-Free High-Ni Cathodes\", \"High Voltage Cycling Induced Thermal Vulnerability in LiCoO2 Cathode: Cation Loss and Oxygen Release Driven by Oxygen Va...[truncated]\"], \"error\": \"\"}, {\"provider\": \"arxiv\", \"status\": \"ok\", \"result_count\": 3, \"top_titles\": [\"Driven spin wave modes in XY ferromagnet: Nonequilibrium phase transition\", \"Group 13 Metals as L-Type Ligands for Transition Metals\", \"Thomas-Fermi model yields condensed phase of molecular metallic oxygen\"], \"error\": \"\"}, {\"provider\": \"chemrxiv\", \"status\": \"ok\", \"result_count\": 0, \"top_titles\": [], \"error\": \"\"}]}, {\"query\": \"验证从文献阅读、知识图谱构建、Gap探索、假设生成、苏格拉底辩论、机制审计到最终裁决的多Agent协作能力 anion-derived cei redox shuttle inhibitors high-lumo solvents electrochemical window expansion\", \"status\": \"ok\", \"total_results\": 3, \"providers\": [{\"provider\": \"semantic_scholar\", \"status\": \"error\", \"result_count\": 0, \"top_titles\": [], \"error\": \"HTTP 500: {\\\"message\\\": \\\"Internal Server Error\\\"}\"}, {\"provider\": \"arxiv\", \"status\": \"ok\", \"result_count\": 3, \"top_titles\": [\"Dynamics of electrochemical flows 1 Motion of electrochemical flows\", \"Dynamics of electrochemical flows 2 Electrochemical flows-through porous electrode\", \"Dynamics of electrochemical flows 3 Closure models\"], \"error\": \"\"}, {\"provider\": \"chemrxiv\", \"status\": \"ok\", \"result_count\": 0, \"top_titles\": [], \"error\": \"\"}]}, {\"query\": \"验证从文献阅读、知识图谱构建、Gap探索、假设生成、苏格拉底辩论、机制审计到最终裁决的多Agent协作能力 time-resolved xas tof-sims depth profiling in situ raman correlative microscopy\", \"status\": \"ok\", \"total_results\": 3, \"providers\": [{\"provider\": \"semantic_scholar\", \"status\": \"ok\", \"result_count\": 0, \"top_titles\": [], \"error\": \"\"}, {\"provider\": \"arxiv\", \"status\": \"ok\", \"result_count\": 3, \"top_titles\": [\"Raman spectroscopy on cubic and hexagonal SrMnO$_3$\", \"Polarizability calculation of vibrating nanoparticles for intensity of low frequency Raman scattering\", \"Optimizing ToF-SIMS Depth Profiles of Semiconductor Heterostructures\"], \"error\": \"\"}, {\"provider\": \"chemrxiv\", \"status\": \"ok\", \"result_count\": 0, \"top_titles\": [], \"error\": \"\"}]}, {\"query\": \"验证从文献阅读、知识图谱构建、Gap探索、假设生成、苏格拉底辩论、机制审计到最终裁决的多Agent协作能力 agent role specialization knowledge graph grounding socratic reasoning traceability hypothesis falsifiability scoring\", \"status\": \"ok\", \"total_results\": 3, \"providers\": [{\"provider\": \"semantic_scholar\", \"status\": \"ok\", \"result_count\": 0, \"top_titles\": [], \"error\": \"\"}, {\"provider\": \"arxiv\", \"status\": \"ok\", \"result_count\": 3, \"top_titles\": [\"AI Agent-Driven Framework for Automated Product Knowledge Graph Construction in E-Commerce\", \"Grounding LLM Reasoning under Incomplete Graph Evidence\", \"A Multi-Agent System for Semantic Mapping of Relational Data to Knowledge Graphs\"], \"error\": \"\"}, {\"provider\": \"chemrxiv\", \"status\": \"ok\", \"result_count\": 0, \"top_titles\": [], \"error\": \"\"}]}], \"coverage_warning\": true, \"needs_user_branch_confirmation\": true}, \"user_interaction\": {\"needed\": true, \"type\": \"research_branch_confirmation\", \"question\": \"Some major sub-branches appear missing from the current retrieval. Which should be prioritized for a supplemental search before treating gaps as real?\", \"options\": [{\"label\": \"High-Voltage Cathode Degradation Pathways\", \"suggested_query\": \"验证从文献阅读、知识图谱构建、Gap探索、假设生成、苏格拉底辩论、机制审计到最终裁决的多Agent协作能力 oxygen loss phase transition microcrack propagation transition metal migration\", \"live_evidence_count\": 6, \"false_negative_risk\": true}, {\"label\": \"Electrolyte Oxidation Mitigation Strategies\", \"suggested_query\": \"验证从文献阅读、知识图谱构建、Gap探索、假设生成、苏格拉底辩论、机制审计到最终裁决的多Agent协作能力 anion-derived cei redox shuttle inhibitors high-lumo solvents electrochemical window expansion\", \"live_evidence_count\": 3, \"false_negative_risk\": true}, {\"label\": \"Multimodal Interface Characterization\", \"suggested_query\": \"验证从文献阅读、知识图谱构建、Gap探索、假设生成、苏格拉底辩论、机制审计到最终裁决的多Agent协作能力 time-resolved xas tof-sims depth profiling in situ raman correlative microscopy\", \"live_evidence_count\": 3, \"false_negative_risk\": true}, {\"label\": \"Multi-Agent AI for Battery R&D\", \"suggested_query\": \"验证从文献阅读、知识图谱构建、Gap探索、假设生成、苏格拉底辩论、机制审计到最终裁决的多Agent协作能力 agent role specialization knowledge graph grounding socratic reasoning traceability hypothesis falsifiability scoring\", \"live_evidence_count\": 3, \"false_negative_risk\": true}], \"default_action\": \"Run supplemental stratified search for options with false_negative_risk=true, or ask the user to pick 2-3 priority branches.\", \"continue_with\": \"Pass selected option labels or custom branch keywords as focus_branches to run_zhizhi_literature_analysis/search_papers_stratified.\"}, \"auto_supplement_blind_spots\": {\"attempted\": true, \"branches_attempted\": 3, \"imports\": [{\"result_index\": 0, \"paper_id\": \"paper_1783532310566668900\", \"title\": \"High Voltage Cycling Induced Thermal Vulnerability in LiCoO2 Cathode: Cation Loss and Oxygen Release Driven by Oxygen Vacancy Migration\", \"status\": \"imported\"}, {\"result_index\": 1, \"paper_id\": \"paper_1783532353548605000\", \"title\": \"Surfactant-Assisted Bulk Doping of High-Valence Ions for Structurally Stable Co-Free High-Ni Cathodes\", \"status\": \"imported\"}, {\"result_index\": 0, \"paper_id\": \"paper_1783532471059581700\", \"title\": \"Redox-Active Halide Materials for Cathode Applications\", \"status\": \"imported\"}, {\"result_index\": 2, \"paper_id\": \"paper_1783532492040752500\", \"title\": \"Investigation of Cathode Electrolyte Interphase Formation via Coupling Liquid Electrochemical TEM and GC/MS\", \"status\": \"imported\"}], \"branches\": [{\"topic\": \"High-Voltage Cathode Degradation Pathways\", \"query\": \"验证从文献阅读、知识图谱构建、Gap探索、假设生成、苏格拉底辩论、机制审计到最终裁决的多Agent协作能力 oxygen loss phase transition microcrack propagation transition metal migration\", \"search_id\": \"search_1783532192556534400\", \"total_results\": 6, \"imports\": [{\"result_index\": 0, \"paper_id\": \"paper_1783532310566668900\", \"title\": \"High Voltage Cycling Induced Thermal Vulnerability in LiCoO2 Cathode: Cation Loss and Oxygen Release Driven by Oxygen Vacancy Migration\", \"status\": \"imported\"}, {\"result_index\": 1, \"paper_id\": \"paper_1783532353548605000\", \"title\": \"Surfactant-Assisted Bulk Doping of High-Valence Ions for Structurally Stable Co-Free High-Ni Cathodes\", \"status\": \"imported\"}]}, {\"topic\": \"Electrolyte Oxidation Mitigation Strategies\", \"query\": \"验证从文献阅读、知识图谱构建、Gap探索、假设生成、苏格拉底辩论、机制审计到最终裁决的多Agent协作能力 anion-derived cei redox shuttle inhibitors high-lumo solvents electrochemical window expansion\", \"search_id\": \"search_1783532369557624000\", \"total_results\": 8, \"imports\": [{\"result_index\": 0, \"paper_id\": \"paper_1783532471059581700\", \"title\": \"Redox-Active Halide Materials for Cathode Applications\", \"status\": \"imported\"}, {\"result_index\": 2, \"paper_id\": \"paper_1783532492040752500\", \"title\": \"Investigation of Cathode Electrolyte Interphase Formation via Coupling Liquid Electrochemical TEM and GC/MS\", \"status\": \"imported\"}]}, {\"topic\": \"Multimodal Interface Characterization\", \"query\": \"验证从文献阅读、知识图谱构建、Gap探索、假设生成、苏格拉底辩论、机制审计到最终裁决的多Agent协作能力 time-resolved xas tof-sims depth profiling in situ raman correlative microscopy\", \"search_id\": \"search_1783532514177016700\", \"total_results\": 0, \"imports\": []}], \"policy\": \"auto-supplement only live-confirmed blind spots; cap branches/imports to control API and token budget\"}, \"select_literature_result\": {\"result_index\": 2, \"stratified_layer\": \"L4_regular\", \"stratified_label\": \"regular journal / supplemental evidence\", \"query_branch\": \"cathode_materials_chemistry\", \"retrieval_query\": \"验证从文献阅读、知识图谱构建、Gap探索、假设生成、苏格拉底辩论、机制审计到最终裁决的多Agent协作能力 layered oxide cathodes >4.5V vs Li/Li+ with structural degradation mechanisms\", \"_why_selected\": \"Selected as regular supplemental paper: Promoting Reversible Anionic Redox in Sodium-Ion Cathodes by Doping and Phase Control; year=2025; venue=ECS Meeting Abstracts; quality=0.72; relevance=0.2186.\", \"domain_relevance\": {\"profile\": \"high_voltage_lithium_batteries_above_4_5v_cathode_electrolyte_interface_stabilit\", \"target_field\": \"materials_energy\", \"result_field\": \"chemistry\", \"score\": 0.48, \"query_hits\": [\"gap\"], \"anchor_hits\": [\"batteries\", \"cathode\", \"stability\", \"materials\"], \"topic_hits\": [], \"noise_hits\": [], \"flags\": [\"core_domain_hit\"], \"is_preprint\": false, \"core_domain_alignment\": {\"enabled\": true, \"passes\": true, \"core_terms\": [\"high-voltage lithium batteries\", \"lithium batteries above\", \"batteries above cathode\", \"above cathode electrolyte\", \"cathode electrolyte interface\", \"electrolyte interface stability\", \"interface stability ai-assisted\", \"stability ai-assisted battery\", \"ai-assisted battery materials\", \"battery materials discovery\", \"high-voltage\", \"lithium\", \"batteries\", \"above\", \"cathode\", \"electrolyte\", \"interface\", \"stability\"], \"core_hit_count\": 5, \"core_hits\": [\"batteries\", \"cathode\", \"stability\", \"materials\", \"gap\"], \"specific_terms\": [\"high-voltage lithium batteries\", \"lithium batteries above\", \"batteries above cathode\", \"above cathode electrolyte\", \"cathode electrolyte interface\", \"electrolyte interface stability\", \"interface stability ai-assisted\", \"stability ai-assisted battery\", \"ai-assisted battery materials\", \"battery materials discovery\", \"high-voltage\", \"lithium\"], \"specific_hit_count\": 4, \"specific_hits\": [\"batteries\", \"cathode\", \"stability\", \"materials\"], \"min_core_hits\": 3, \"min_specific_hits\": 2, \"is_preprint\": false, \"reason\": \"core topic terms sufficiently covered\"}, \"verdict\": \"keep\", \"requires_human_review\": false}, \"relevance_score\": 0.2123, \"relevance_components\": {\"text_score\": 0.14, \"recency_score\": 1.0, \"impact_score\": 0.35, \"citation_field\": \"chemistry\", \"citation_baseline\": 500.0, \"venue_score\": 0.45, \"publication_quality_score\": 0.72, \"base_score\": 0.2948, \"text_weight\": 0.62, \"recency_weight\": 0.1, \"impact_weight\": 0.18, \"venue_weight\": 0.1}, \"publication_quality_score\": 0.72, \"venue_quality\": \"unverified\", \"journal_quartile\": \"\", \"journal_metric_source\": \"\", \"inferred_field\": \"chemistry\", \"quality_flags\": [\"unverified_venue\", \"incomplete_s2_metadata_recent\"], \"quality_criteria\": [\"venue did not match suspicious, reputable, preprint, or curated quartile tables\", \"Semantic Scholar reference metadata is missing for a recent paper; marked for data completeness review\"], \"suspicion_type\": \"\", \"is_review_like\": true, \"pyramid_root_score\": 0.7588, \"matched_query_terms\": [\"gap\"], \"title\": \"Promoting Reversible Anionic Redox in Sodium-Ion Cathodes by Doping and Phase Control\", \"citation\": \"Shipeng Jia et al. (2025) Promoting Reversible Anionic Redox in Sodium-Ion Cathodes by Doping and Phase Control doi:10.1149/ma2025-013168mtgabs\", \"provider\": \"semantic_scholar\", \"year\": \"2025\", \"citation_count\": 1, \"influential_citation_count\": 0, \"doi\": \"10.1149/ma2025-013168mtgabs\", \"arxiv_id\": \"\", \"url\": \"https://www.semanticscholar.org/paper/e1c67d6da842852e631904dfad09630b89e2f285\", \"relevance_reason\": \"title=0/2, abstract=1/2, citation=0/2, phrase_bonus=0.0, recency=1.0, impact=0.35, venue=0.45, quality=0.72\", \"quality_reason\": \"venue did not match suspicious, reputable, preprint, or curated quartile tables; Semantic Scholar reference metadata is missing for a recent paper; marked for data completeness review\"}, \"stratified_import_plan\": {\"strategy\": \"layer_minimum_then_score_backfill\", \"requested_import_top_k\": 10, \"effective_import_top_k\": 10, \"min_per_layer\": {\"L0_review\": 2, \"L1_milestone\": 2, \"L2_top_latest\": 2, \"L3_preprint\": 2, \"L4_regular\": 2}, \"candidate_counts_by_layer\": {\"L0_review\": 2, \"L1_milestone\": 2, \"L2_top_latest\": 2, \"L4_regular\": 14}, \"selected_counts_by_layer\": {\"L0_review\": 2, \"L1_milestone\": 2, \"L2_top_latest\": 2, \"L4_regular\": 4}, \"missing_layers\": [{\"layer\": \"L3_preprint\", \"label\": \"latest preprint frontier\", \"target\": 2, \"selected\": 0, \"candidates\": 0}], \"selected_result_indexes\": [0, 1, 2, 3, 4, 5, 6, 10, 11, 7]}, \"imported_records\": 10, \"expand_literature_graph\": {\"graph_search_id\": \"graph_1783532967248770000\", \"total_results\": 1, \"fallback_used\": false, \"depth\": 1}, \"build_literature_relation_graph\": {\"relation_graph_id\": \"relgraph_1783532970662486600\", \"cluster_count\": 1, \"edge_summary\": {\"total_edges\": 1, \"citation_graph_edges\": 1, \"artificial_edges\": 0, \"by_relation\": {\"citation\": 1}, \"by_depth\": {\"1\": 1}, \"fallback_weight_policy\": \"keyword_fallback/search_result edges are artificial and use very low PageRank weight.\"}, \"analysis_confidence\": 1.0}}, \"thought\": \"ZhiZhi retrieved and filtered literature, imported grounded PaperGraph evidence, built a benchmark-aware knowledge map, expanded citation context when available, and generated gaps with novelty/value/feasibility checks.\"}",
+      "round": "round_0_literature_reading",
+      "status": "completed"
+    },
+    {
+      "name": "TanXi_ToolAgent",
+      "role": "assistant",
+      "content": "{\"action\": {\"scan_coverage_density\": {\"target_domain\": \"High-voltage lithium batteries above 4.5V, cathode/electrolyte/interface stability, AI-assisted battery materials discovery\"}, \"detect_reasoning_gaps\": {\"types\": [\"claim_contradiction\", \"theory_evidence_anomaly\"]}, \"detect_source_gap_signals\": {\"types\": [\"limitations\", \"future_work\", \"open_problem\", \"missing_evidence\"]}, \"detect_mechanism_issue_gaps\": {\"priority\": \"higher_than_matrix_holes\"}, \"find_unconnected_pairs\": {\"target_domain\": \"High-voltage lithium batteries above 4.5V, cathode/electrolyte/interface stability, AI-assisted battery materials discovery\"}, \"detect_suspended_problems\": {\"min_citation_threshold\": 50}, \"prioritize_gaps\": {\"criteria\": [\"importance\", \"tractability\", \"strategic_value\"]}, \"align_with_strategic_needs\": {\"strategic_domains\": [\"ai for science\", \"energy\"]}}, \"thought\": \"TanXi scanned the PaperGraph for low-density but high-importance method-scenario-benchmark regions, claim contradictions, anomaly/tension signals, cross-disciplinary unconnected pairs, suspended unresolved problems, and strategic-need alignment.\"}",
+      "round": "round_0_gap_exploration",
+      "status": "completed"
+    },
+    {
+      "name": "MingLi_AssistantAgent",
+      "role": "assistant",
+      "content": "{\"status\": \"draft\", \"project_id\": \"sci_1783532060879533700\", \"next_step\": \"Call design_experiment with the draft idea, then finalize_idea to run mandatory uniqueness verification.\", \"action\": {\"type\": \"generate_idea\", \"gap_id\": \"gap_1783532971318580900\", \"style\": \"innovative\"}, \"thought\": \"Generated a gap-traceable MingLi draft idea and scored it for novelty, plausibility, grounding, testability, impact, and surprise.\"}",
+      "round": "round_1_proponent_position",
+      "status": "completed"
+    },
+    {
+      "name": "MingLi_AssistantAgent",
+      "role": "assistant",
+      "content": "{\"project_id\": \"sci_1783532060879533700\", \"next_step\": \"Call finalize_idea; it will run mandatory uniqueness verification before persisting the hypothesis.\", \"action\": {\"type\": \"design_experiment\", \"gap_id\": \"gap_1783532971318580900\", \"constraints\": \"academic lab scale; evidence-traceable; include baselines, ablations, regime shifts, and falsification criteria\"}, \"thought\": \"Designed a falsifiable experiment with setup, metrics, baselines, and rejection criteria.\"}",
+      "round": "round_3_methodology",
+      "status": "completed"
+    },
+    {
+      "name": "MingLi_AssistantAgent",
+      "role": "assistant",
+      "content": "{\"status\": \"finalized\", \"hypothesis_id\": \"hyp_1783532982999188300\"}",
+      "round": "round_1_hypothesis_finalization",
+      "status": "finalized"
+    },
+    {
+      "name": "YanZhen_ToolAgent",
+      "role": "assistant",
+      "content": "{\"action\": {\"type\": \"run_yanzhen_mechanism_verification\", \"hypothesis_id\": \"hyp_1783532982999188300\", \"layers_executed\": [\"internal_consistency\", \"data_consistency\", \"regime_shift_test\"]}, \"thought\": \"YanZhen audited the hypothesis through internal consistency, data consistency, selective-citation, causal-chain, and regime-shift checks.\", \"mechanism_fidelity_report\": {\"overall_verdict\": \"REQUIRES_HUMAN_REVIEW\", \"hypothesis_id\": \"hyp_1783532982999188300\"}}",
+      "round": "round_2_cawm_layer_1_2_and_round_3_layer_3",
+      "status": "REQUIRES_HUMAN_REVIEW"
+    },
+    {
+      "name": "BianLun_GroupChatManager",
+      "role": "assistant",
+      "content": "{\"action\": {\"type\": \"run_socratic_hypothesis_debate\", \"rounds\": 5, \"max_rounds\": 5}, \"thought\": \"BianLun ran the triangle loop: Socratic debate, YanZhen mechanism audit, targeted literature completion when needed, MingLi revision, and final synthesis.\", \"debate_report\": {\"debate_id\": \"debate_1783533112307230700\", \"final_decision\": \"human_review\", \"unresolved_issues\": [\"causal_probe: How will the hypothesis be revised to address YanZhen Layer 1 issue: Unsupported causal link: CTAB-assisted co-precipitation is coupled with a mechanism-stress intervention that varies temperature in Co-free high-N...[truncated] If CTAB-assisted co-precipitation is coupled with a mechanism-stress intervention that varies temperature...[truncated]\", \"causal_probe: How will the hypothesis be revised to address YanZhen Layer 1 issue: Unsupported causal link: If CTAB-assisted co-precipitation is coupled with a mechanism-stress intervention that varies temperature in Co-free high-Ni cathodes, then capacity (161.2 mAh g-1), cycling stabil...[truncated] This proposal addresses the PaperGraph gap 'U...[truncated]\", \"causal_probe: How will the hypothesis be revised to address YanZhen Layer 1 issue: Unsupported causal link: The decisive prediction is that this concrete bridge, not a generic representation change, will alter capacity (161.2 mAh g-1), cycling stability (100 cycles); if the bridge data or causal link is absent, the hypothesis should fail rather t...[truncated]\", \"causal_probe: For the evidence-derived terms CTAB-assisted co-precipitation, Co-free high-Ni cathodes, capacity retention | microcrack resistance | c-lattice shrinkage, which exact term sits at the intervention, mediator, and output positions of the causal chain?\", \"evidence_completion_challenge: YanZhen marked this claim as unsupported: Unsupported causal link: CTAB-assisted co-precipitation is coupled with a mechanism-stress intervention that varies temperature in Co-free high-N...[truncated] If CTAB-assisted co-precipitation is coupled with a mechanis...[truncated]. Will MingLi attach a PaperGraph citation, narrow the claim, or remove it?\"]}}",
+      "round": "round_4_groupchat_synthesis",
+      "status": "human_review"
+    }
+  ],
+  "turns": [
+    {
+      "round": "round_0_literature_reading",
+      "speaker": "ZhiZhi_ToolAgent",
+      "status": "completed",
+      "content": {
+        "action": {
+          "agent": "zhizhi",
+          "query": "验证从文献阅读、知识图谱构建、Gap探索、假设生成、苏格拉底辩论、机制审计到最终裁决的多Agent协作能力",
+          "domain": "High-voltage lithium batteries above 4.5V, cathode/electrolyte/interface stability, AI-assisted battery materials discovery",
+          "years": "last 5 years",
+          "search_papers_stratified": {
+            "search_id": "search_1783532080724679800",
+            "total_results": 20,
+            "requested_max_results": 20,
+            "effective_search_budget": 20,
+            "providers": [
+              "semantic_scholar",
+              "arxiv",
+              "chemrxiv"
+            ],
+            "strategy": "stratified_cascade",
+            "query_plan": [
+              {
+                "branch": "primary",
+                "query": "验证从文献阅读、知识图谱构建、Gap探索、假设生成、苏格拉底辩论、机制审计到最终裁决的多Agent协作能力"
+              },
+              {
+                "branch": "cathode_materials_chemistry",
+                "query": "验证从文献阅读、知识图谱构建、Gap探索、假设生成、苏格拉底辩论、机制审计到最终裁决的多Agent协作能力 layered oxide cathodes >4.5V vs Li/Li+ with structural degradation mechanisms",
+                "topic_type": "branch"
+              },
+              {
+                "branch": "electrolyte_design_decomposition",
+                "query": "验证从文献阅读、知识图谱构建、Gap探索、假设生成、苏格拉底辩论、机制审计到最终裁决的多Agent协作能力 electrolyte oxidation stability at >4.5V with SEI/CEI formation kinetics",
+                "topic_type": "branch"
+              },
+              {
+                "branch": "interface_thermodynamics_kinetics",
+                "query": "验证从文献阅读、知识图谱构建、Gap探索、假设生成、苏格拉底辩论、机制审计到最终裁决的多Agent协作能力 thermodynamic window mismatch and interfacial reaction pathways at high-voltage cathode-electrolyte interfaces",
+                "topic_type": "branch"
+              },
+              {
+                "branch": "ai_driven_materials_discovery",
+                "query": "验证从文献阅读、知识图谱构建、Gap探索、假设生成、苏格拉底辩论、机制审计到最终裁决的多Agent协作能力 machine learning or foundation models for predicting high-voltage cathode/electrolyte compatibility and degradation signatures",
+                "topic_type": "branch"
+              },
+              {
+                "branch": "field_map_reviews",
+                "query": "High-voltage lithium batteries above 4.5V, cathode/electrolyte/interface stability, AI-assisted battery materials discovery 验证从文献阅读、知识图谱构建、Gap探索、假设生成、苏格拉底辩论、机制审计到最终裁决的多Agent协作能力 review survey roadmap progress perspective systematic review",
+                "topic_type": "retrieval_facet"
+              },
+              {
+                "branch": "milestone_foundations",
+                "query": "High-voltage lithium batteries above 4.5V, cathode/electrolyte/interface stability, AI-assisted battery materials discovery 验证从文献阅读、知识图谱构建、Gap探索、假设生成、苏格拉底辩论、机制审计到最终裁决的多Agent协作能力 seminal foundational highly cited landmark theory method mechanism",
+                "topic_type": "retrieval_facet"
+              },
+              {
+                "branch": "methods_and_mechanisms",
+                "query": "High-voltage lithium batteries above 4.5V, cathode/electrolyte/interface stability, AI-assisted battery materials discovery 验证从文献阅读、知识图谱构建、Gap探索、假设生成、苏格拉底辩论、机制审计到最终裁决的多Agent协作能力 method model algorithm mechanism experiment framework",
+                "topic_type": "retrieval_facet"
+              },
+              {
+                "branch": "applications_systems_scenarios",
+                "query": "High-voltage lithium batteries above 4.5V, cathode/electrolyte/interface stability, AI-assisted battery materials discovery 验证从文献阅读、知识图谱构建、Gap探索、假设生成、苏格拉底辩论、机制审计到最终裁决的多Agent协作能力 application system scenario case study deployment",
+                "topic_type": "retrieval_facet"
+              }
+            ],
+            "focus_branches": [],
+            "strata": [
+              {
+                "layer": "L0_review",
+                "label": "high-impact review / field map",
+                "quota": 3,
+                "query_suffix": "review survey progress perspective tutorial systematic review meta-analysis",
+                "target": 3,
+                "candidate_count": 21,
+                "raw_candidate_count": 23,
+                "selected": 2,
+                "domain_rejected": 19,
+                "recovery_used": "",
+                "carried_to_next": 1
+              },
+              {
+                "layer": "L1_milestone",
+                "label": "milestone / highly cited foundation",
+                "quota": 4,
+                "query_suffix": "seminal foundational highly cited landmark classic influential",
+                "target": 5,
+                "candidate_count": 2,
+                "raw_candidate_count": 12,
+                "selected": 2,
+                "domain_rejected": 0,
+                "recovery_used": "",
+                "carried_to_next": 3
+              },
+              {
+                "layer": "L2_top_latest",
+                "label": "recent top-venue frontier",
+                "quota": 4,
+                "query_suffix": "latest recent top journal high impact breakthrough advance frontier",
+                "target": 7,
+                "candidate_count": 4,
+                "raw_candidate_count": 12,
+                "selected": 2,
+                "domain_rejected": 1,
+                "recovery_used": "",
+                "carried_to_next": 5
+              },
+              {
+                "layer": "L3_preprint",
+                "label": "latest arXiv preprint frontier",
+                "quota": 1,
+                "query_suffix": "",
+                "target": 6,
+                "candidate_count": 12,
+                "raw_candidate_count": 12,
+                "selected": 0,
+                "domain_rejected": 12,
+                "recovery_used": "",
+                "carried_to_next": 6
+              },
+              {
+                "layer": "L4_regular",
+                "label": "regular journal / supplemental evidence",
+                "quota": 8,
+                "query_suffix": "",
+                "target": 14,
+                "candidate_count": 19,
+                "raw_candidate_count": 58,
+                "selected": 13,
+                "domain_rejected": 2,
+                "recovery_used": "",
+                "carried_to_next": 1
+              },
+              {
+                "layer": "L4_regular_backfill",
+                "label": "regular journal / quota backfill",
+                "quota": 1,
+                "target": 1,
+                "candidate_count": 21,
+                "selected": 1,
+                "domain_rejected": 1,
+                "carried_to_next": 0
+              }
+            ],
+            "errors": []
+          },
+          "domain_coverage_diagnostic": {
+            "profile": "interdisciplinary_battery_science_research_integrating_electrochemistry_material",
+            "profile_source": "llm",
+            "search_id": "search_1783532080724679800",
+            "total_results": 20,
+            "represented_topics": [],
+            "blind_spots": [
+              {
+                "topic": "High-Voltage Cathode Degradation Pathways",
+                "hit_count": 5,
+                "min_hits": 10,
+                "terms": [
+                  "oxygen loss",
+                  "phase transition",
+                  "microcrack propagation",
+                  "transition metal migration"
+                ],
+                "suggested_query": "验证从文献阅读、知识图谱构建、Gap探索、假设生成、苏格拉底辩论、机制审计到最终裁决的多Agent协作能力 oxygen loss phase transition microcrack propagation transition metal migration",
+                "risk": "Live probe found literature for this missing branch; current PaperGraph may be incomplete, so TanXi should not treat this absence as a true unexplored gap.",
+                "live_probe": {
+                  "query": "验证从文献阅读、知识图谱构建、Gap探索、假设生成、苏格拉底辩论、机制审计到最终裁决的多Agent协作能力 oxygen loss phase transition microcrack propagation transition metal migration",
+                  "status": "ok",
+                  "total_results": 6,
+                  "providers": [
+                    {
+                      "provider": "semantic_scholar",
+                      "status": "ok",
+                      "result_count": 3,
+                      "top_titles": [
+                        "Voltage Decay in Li‐Rich Layered Oxide Cathodes: From Multiscale Mechanism Clarification to Integrated Strategies Design",
+                        "Surfactant-Assisted Bulk Doping of High-Valence Ions for Structurally Stable Co-Free High-Ni Cathodes",
+                        "High Voltage Cycling Induced Thermal Vulnerability in LiCoO2 Cathode: Cation Loss and Oxygen Release Driven by Oxygen Va...[truncated]"
+                      ],
+                      "error": ""
+                    },
+                    {
+                      "provider": "arxiv",
+                      "status": "ok",
+                      "result_count": 3,
+                      "top_titles": [
+                        "Driven spin wave modes in XY ferromagnet: Nonequilibrium phase transition",
+                        "Group 13 Metals as L-Type Ligands for Transition Metals",
+                        "Thomas-Fermi model yields condensed phase of molecular metallic oxygen"
+                      ],
+                      "error": ""
+                    },
+                    {
+                      "provider": "chemrxiv",
+                      "status": "ok",
+                      "result_count": 0,
+                      "top_titles": [],
+                      "error": ""
+                    }
+                  ]
+                },
+                "false_negative_risk": true
+              },
+              {
+                "topic": "Electrolyte Oxidation Mitigation Strategies",
+                "hit_count": 0,
+                "min_hits": 10,
+                "terms": [
+                  "anion-derived cei",
+                  "redox shuttle inhibitors",
+                  "high-lumo solvents",
+                  "electrochemical window expansion"
+                ],
+                "suggested_query": "验证从文献阅读、知识图谱构建、Gap探索、假设生成、苏格拉底辩论、机制审计到最终裁决的多Agent协作能力 anion-derived cei redox shuttle inhibitors high-lumo solvents electrochemical window expansion",
+                "risk": "Live probe found literature for this missing branch; current PaperGraph may be incomplete, so TanXi should not treat this absence as a true unexplored gap.",
+                "live_probe": {
+                  "query": "验证从文献阅读、知识图谱构建、Gap探索、假设生成、苏格拉底辩论、机制审计到最终裁决的多Agent协作能力 anion-derived cei redox shuttle inhibitors high-lumo solvents electrochemical window expansion",
+                  "status": "ok",
+                  "total_results": 3,
+                  "providers": [
+                    {
+                      "provider": "semantic_scholar",
+                      "status": "error",
+                      "result_count": 0,
+                      "top_titles": [],
+                      "error": "HTTP 500: {\"message\": \"Internal Server Error\"}"
+                    },
+                    {
+                      "provider": "arxiv",
+                      "status": "ok",
+                      "result_count": 3,
+                      "top_titles": [
+                        "Dynamics of electrochemical flows 1 Motion of electrochemical flows",
+                        "Dynamics of electrochemical flows 2 Electrochemical flows-through porous electrode",
+                        "Dynamics of electrochemical flows 3 Closure models"
+                      ],
+                      "error": ""
+                    },
+                    {
+                      "provider": "chemrxiv",
+                      "status": "ok",
+                      "result_count": 0,
+                      "top_titles": [],
+                      "error": ""
+                    }
+                  ]
+                },
+                "false_negative_risk": true
+              },
+              {
+                "topic": "Multimodal Interface Characterization",
+                "hit_count": 0,
+                "min_hits": 10,
+                "terms": [
+                  "time-resolved xas",
+                  "tof-sims depth profiling",
+                  "in situ raman",
+                  "correlative microscopy"
+                ],
+                "suggested_query": "验证从文献阅读、知识图谱构建、Gap探索、假设生成、苏格拉底辩论、机制审计到最终裁决的多Agent协作能力 time-resolved xas tof-sims depth profiling in situ raman correlative microscopy",
+                "risk": "Live probe found literature for this missing branch; current PaperGraph may be incomplete, so TanXi should not treat this absence as a true unexplored gap.",
+                "live_probe": {
+                  "query": "验证从文献阅读、知识图谱构建、Gap探索、假设生成、苏格拉底辩论、机制审计到最终裁决的多Agent协作能力 time-resolved xas tof-sims depth profiling in situ raman correlative microscopy",
+                  "status": "ok",
+                  "total_results": 3,
+                  "providers": [
+                    {
+                      "provider": "semantic_scholar",
+                      "status": "ok",
+                      "result_count": 0,
+                      "top_titles": [],
+                      "error": ""
+                    },
+                    {
+                      "provider": "arxiv",
+                      "status": "ok",
+                      "result_count": 3,
+                      "top_titles": [
+                        "Raman spectroscopy on cubic and hexagonal SrMnO$_3$",
+                        "Polarizability calculation of vibrating nanoparticles for intensity of low frequency Raman scattering",
+                        "Optimizing ToF-SIMS Depth Profiles of Semiconductor Heterostructures"
+                      ],
+                      "error": ""
+                    },
+                    {
+                      "provider": "chemrxiv",
+                      "status": "ok",
+                      "result_count": 0,
+                      "top_titles": [],
+                      "error": ""
+                    }
+                  ]
+                },
+                "false_negative_risk": true
+              },
+              {
+                "topic": "Multi-Agent AI for Battery R&D",
+                "hit_count": 0,
+                "min_hits": 10,
+                "terms": [
+                  "agent role specialization",
+                  "knowledge graph grounding",
+                  "socratic reasoning traceability",
+                  "hypothesis falsifiability scoring",
+                  "mechanistic audit log"
+                ],
+                "suggested_query": "验证从文献阅读、知识图谱构建、Gap探索、假设生成、苏格拉底辩论、机制审计到最终裁决的多Agent协作能力 agent role specialization knowledge graph grounding socratic reasoning traceability hypothesis falsifiability scoring",
+                "risk": "Live probe found literature for this missing branch; current PaperGraph may be incomplete, so TanXi should not treat this absence as a true unexplored gap.",
+                "live_probe": {
+                  "query": "验证从文献阅读、知识图谱构建、Gap探索、假设生成、苏格拉底辩论、机制审计到最终裁决的多Agent协作能力 agent role specialization knowledge graph grounding socratic reasoning traceability hypothesis falsifiability scoring",
+                  "status": "ok",
+                  "total_results": 3,
+                  "providers": [
+                    {
+                      "provider": "semantic_scholar",
+                      "status": "ok",
+                      "result_count": 0,
+                      "top_titles": [],
+                      "error": ""
+                    },
+                    {
+                      "provider": "arxiv",
+                      "status": "ok",
+                      "result_count": 3,
+                      "top_titles": [
+                        "AI Agent-Driven Framework for Automated Product Knowledge Graph Construction in E-Commerce",
+                        "Grounding LLM Reasoning under Incomplete Graph Evidence",
+                        "A Multi-Agent System for Semantic Mapping of Relational Data to Knowledge Graphs"
+                      ],
+                      "error": ""
+                    },
+                    {
+                      "provider": "chemrxiv",
+                      "status": "ok",
+                      "result_count": 0,
+                      "top_titles": [],
+                      "error": ""
+                    }
+                  ]
+                },
+                "false_negative_risk": true
+              }
+            ],
+            "live_validate": true,
+            "live_probe_reports": [
+              {
+                "query": "验证从文献阅读、知识图谱构建、Gap探索、假设生成、苏格拉底辩论、机制审计到最终裁决的多Agent协作能力 oxygen loss phase transition microcrack propagation transition metal migration",
+                "status": "ok",
+                "total_results": 6,
+                "providers": [
+                  {
+                    "provider": "semantic_scholar",
+                    "status": "ok",
+                    "result_count": 3,
+                    "top_titles": [
+                      "Voltage Decay in Li‐Rich Layered Oxide Cathodes: From Multiscale Mechanism Clarification to Integrated Strategies Design",
+                      "Surfactant-Assisted Bulk Doping of High-Valence Ions for Structurally Stable Co-Free High-Ni Cathodes",
+                      "High Voltage Cycling Induced Thermal Vulnerability in LiCoO2 Cathode: Cation Loss and Oxygen Release Driven by Oxygen Va...[truncated]"
+                    ],
+                    "error": ""
+                  },
+                  {
+                    "provider": "arxiv",
+                    "status": "ok",
+                    "result_count": 3,
+                    "top_titles": [
+                      "Driven spin wave modes in XY ferromagnet: Nonequilibrium phase transition",
+                      "Group 13 Metals as L-Type Ligands for Transition Metals",
+                      "Thomas-Fermi model yields condensed phase of molecular metallic oxygen"
+                    ],
+                    "error": ""
+                  },
+                  {
+                    "provider": "chemrxiv",
+                    "status": "ok",
+                    "result_count": 0,
+                    "top_titles": [],
+                    "error": ""
+                  }
+                ]
+              },
+              {
+                "query": "验证从文献阅读、知识图谱构建、Gap探索、假设生成、苏格拉底辩论、机制审计到最终裁决的多Agent协作能力 anion-derived cei redox shuttle inhibitors high-lumo solvents electrochemical window expansion",
+                "status": "ok",
+                "total_results": 3,
+                "providers": [
+                  {
+                    "provider": "semantic_scholar",
+                    "status": "error",
+                    "result_count": 0,
+                    "top_titles": [],
+                    "error": "HTTP 500: {\"message\": \"Internal Server Error\"}"
+                  },
+                  {
+                    "provider": "arxiv",
+                    "status": "ok",
+                    "result_count": 3,
+                    "top_titles": [
+                      "Dynamics of electrochemical flows 1 Motion of electrochemical flows",
+                      "Dynamics of electrochemical flows 2 Electrochemical flows-through porous electrode",
+                      "Dynamics of electrochemical flows 3 Closure models"
+                    ],
+                    "error": ""
+                  },
+                  {
+                    "provider": "chemrxiv",
+                    "status": "ok",
+                    "result_count": 0,
+                    "top_titles": [],
+                    "error": ""
+                  }
+                ]
+              },
+              {
+                "query": "验证从文献阅读、知识图谱构建、Gap探索、假设生成、苏格拉底辩论、机制审计到最终裁决的多Agent协作能力 time-resolved xas tof-sims depth profiling in situ raman correlative microscopy",
+                "status": "ok",
+                "total_results": 3,
+                "providers": [
+                  {
+                    "provider": "semantic_scholar",
+                    "status": "ok",
+                    "result_count": 0,
+                    "top_titles": [],
+                    "error": ""
+                  },
+                  {
+                    "provider": "arxiv",
+                    "status": "ok",
+                    "result_count": 3,
+                    "top_titles": [
+                      "Raman spectroscopy on cubic and hexagonal SrMnO$_3$",
+                      "Polarizability calculation of vibrating nanoparticles for intensity of low frequency Raman scattering",
+                      "Optimizing ToF-SIMS Depth Profiles of Semiconductor Heterostructures"
+                    ],
+                    "error": ""
+                  },
+                  {
+                    "provider": "chemrxiv",
+                    "status": "ok",
+                    "result_count": 0,
+                    "top_titles": [],
+                    "error": ""
+                  }
+                ]
+              },
+              {
+                "query": "验证从文献阅读、知识图谱构建、Gap探索、假设生成、苏格拉底辩论、机制审计到最终裁决的多Agent协作能力 agent role specialization knowledge graph grounding socratic reasoning traceability hypothesis falsifiability scoring",
+                "status": "ok",
+                "total_results": 3,
+                "providers": [
+                  {
+                    "provider": "semantic_scholar",
+                    "status": "ok",
+                    "result_count": 0,
+                    "top_titles": [],
+                    "error": ""
+                  },
+                  {
+                    "provider": "arxiv",
+                    "status": "ok",
+                    "result_count": 3,
+                    "top_titles": [
+                      "AI Agent-Driven Framework for Automated Product Knowledge Graph Construction in E-Commerce",
+                      "Grounding LLM Reasoning under Incomplete Graph Evidence",
+                      "A Multi-Agent System for Semantic Mapping of Relational Data to Knowledge Graphs"
+                    ],
+                    "error": ""
+                  },
+                  {
+                    "provider": "chemrxiv",
+                    "status": "ok",
+                    "result_count": 0,
+                    "top_titles": [],
+                    "error": ""
+                  }
+                ]
+              }
+            ],
+            "coverage_warning": true,
+            "needs_user_branch_confirmation": true
+          },
+          "user_interaction": {
+            "needed": true,
+            "type": "research_branch_confirmation",
+            "question": "Some major sub-branches appear missing from the current retrieval. Which should be prioritized for a supplemental search before treating gaps as real?",
+            "options": [
+              {
+                "label": "High-Voltage Cathode Degradation Pathways",
+                "suggested_query": "验证从文献阅读、知识图谱构建、Gap探索、假设生成、苏格拉底辩论、机制审计到最终裁决的多Agent协作能力 oxygen loss phase transition microcrack propagation transition metal migration",
+                "live_evidence_count": 6,
+                "false_negative_risk": true
+              },
+              {
+                "label": "Electrolyte Oxidation Mitigation Strategies",
+                "suggested_query": "验证从文献阅读、知识图谱构建、Gap探索、假设生成、苏格拉底辩论、机制审计到最终裁决的多Agent协作能力 anion-derived cei redox shuttle inhibitors high-lumo solvents electrochemical window expansion",
+                "live_evidence_count": 3,
+                "false_negative_risk": true
+              },
+              {
+                "label": "Multimodal Interface Characterization",
+                "suggested_query": "验证从文献阅读、知识图谱构建、Gap探索、假设生成、苏格拉底辩论、机制审计到最终裁决的多Agent协作能力 time-resolved xas tof-sims depth profiling in situ raman correlative microscopy",
+                "live_evidence_count": 3,
+                "false_negative_risk": true
+              },
+              {
+                "label": "Multi-Agent AI for Battery R&D",
+                "suggested_query": "验证从文献阅读、知识图谱构建、Gap探索、假设生成、苏格拉底辩论、机制审计到最终裁决的多Agent协作能力 agent role specialization knowledge graph grounding socratic reasoning traceability hypothesis falsifiability scoring",
+                "live_evidence_count": 3,
+                "false_negative_risk": true
+              }
+            ],
+            "default_action": "Run supplemental stratified search for options with false_negative_risk=true, or ask the user to pick 2-3 priority branches.",
+            "continue_with": "Pass selected option labels or custom branch keywords as focus_branches to run_zhizhi_literature_analysis/search_papers_stratified."
+          },
+          "auto_supplement_blind_spots": {
+            "attempted": true,
+            "branches_attempted": 3,
+            "imports": [
+              {
+                "result_index": 0,
+                "paper_id": "paper_1783532310566668900",
+                "title": "High Voltage Cycling Induced Thermal Vulnerability in LiCoO2 Cathode: Cation Loss and Oxygen Release Driven by Oxygen Vacancy Migration",
+                "status": "imported"
+              },
+              {
+                "result_index": 1,
+                "paper_id": "paper_1783532353548605000",
+                "title": "Surfactant-Assisted Bulk Doping of High-Valence Ions for Structurally Stable Co-Free High-Ni Cathodes",
+                "status": "imported"
+              },
+              {
+                "result_index": 0,
+                "paper_id": "paper_1783532471059581700",
+                "title": "Redox-Active Halide Materials for Cathode Applications",
+                "status": "imported"
+              },
+              {
+                "result_index": 2,
+                "paper_id": "paper_1783532492040752500",
+                "title": "Investigation of Cathode Electrolyte Interphase Formation via Coupling Liquid Electrochemical TEM and GC/MS",
+                "status": "imported"
+              }
+            ],
+            "branches": [
+              {
+                "topic": "High-Voltage Cathode Degradation Pathways",
+                "query": "验证从文献阅读、知识图谱构建、Gap探索、假设生成、苏格拉底辩论、机制审计到最终裁决的多Agent协作能力 oxygen loss phase transition microcrack propagation transition metal migration",
+                "search_id": "search_1783532192556534400",
+                "total_results": 6,
+                "imports": [
+                  {
+                    "result_index": 0,
+                    "paper_id": "paper_1783532310566668900",
+                    "title": "High Voltage Cycling Induced Thermal Vulnerability in LiCoO2 Cathode: Cation Loss and Oxygen Release Driven by Oxygen Vacancy Migration",
+                    "status": "imported"
+                  },
+                  {
+                    "result_index": 1,
+                    "paper_id": "paper_1783532353548605000",
+                    "title": "Surfactant-Assisted Bulk Doping of High-Valence Ions for Structurally Stable Co-Free High-Ni Cathodes",
+                    "status": "imported"
+                  }
+                ]
+              },
+              {
+                "topic": "Electrolyte Oxidation Mitigation Strategies",
+                "query": "验证从文献阅读、知识图谱构建、Gap探索、假设生成、苏格拉底辩论、机制审计到最终裁决的多Agent协作能力 anion-derived cei redox shuttle inhibitors high-lumo solvents electrochemical window expansion",
+                "search_id": "search_1783532369557624000",
+                "total_results": 8,
+                "imports": [
+                  {
+                    "result_index": 0,
+                    "paper_id": "paper_1783532471059581700",
+                    "title": "Redox-Active Halide Materials for Cathode Applications",
+                    "status": "imported"
+                  },
+                  {
+                    "result_index": 2,
+                    "paper_id": "paper_1783532492040752500",
+                    "title": "Investigation of Cathode Electrolyte Interphase Formation via Coupling Liquid Electrochemical TEM and GC/MS",
+                    "status": "imported"
+                  }
+                ]
+              },
+              {
+                "topic": "Multimodal Interface Characterization",
+                "query": "验证从文献阅读、知识图谱构建、Gap探索、假设生成、苏格拉底辩论、机制审计到最终裁决的多Agent协作能力 time-resolved xas tof-sims depth profiling in situ raman correlative microscopy",
+                "search_id": "search_1783532514177016700",
+                "total_results": 0,
+                "imports": []
+              }
+            ],
+            "policy": "auto-supplement only live-confirmed blind spots; cap branches/imports to control API and token budget"
+          },
+          "select_literature_result": {
+            "result_index": 2,
+            "stratified_layer": "L4_regular",
+            "stratified_label": "regular journal / supplemental evidence",
+            "query_branch": "cathode_materials_chemistry",
+            "retrieval_query": "验证从文献阅读、知识图谱构建、Gap探索、假设生成、苏格拉底辩论、机制审计到最终裁决的多Agent协作能力 layered oxide cathodes >4.5V vs Li/Li+ with structural degradation mechanisms",
+            "_why_selected": "Selected as regular supplemental paper: Promoting Reversible Anionic Redox in Sodium-Ion Cathodes by Doping and Phase Control; year=2025; venue=ECS Meeting Abstracts; quality=0.72; relevance=0.2186.",
+            "domain_relevance": {
+              "profile": "high_voltage_lithium_batteries_above_4_5v_cathode_electrolyte_interface_stabilit",
+              "target_field": "materials_energy",
+              "result_field": "chemistry",
+              "score": 0.48,
+              "query_hits": [
+                "gap"
+              ],
+              "anchor_hits": [
+                "batteries",
+                "cathode",
+                "stability",
+                "materials"
+              ],
+              "topic_hits": [],
+              "noise_hits": [],
+              "flags": [
+                "core_domain_hit"
+              ],
+              "is_preprint": false,
+              "core_domain_alignment": {
+                "enabled": true,
+                "passes": true,
+                "core_terms": [
+                  "high-voltage lithium batteries",
+                  "lithium batteries above",
+                  "batteries above cathode",
+                  "above cathode electrolyte",
+                  "cathode electrolyte interface",
+                  "electrolyte interface stability",
+                  "interface stability ai-assisted",
+                  "stability ai-assisted battery",
+                  "ai-assisted battery materials",
+                  "battery materials discovery",
+                  "high-voltage",
+                  "lithium",
+                  "batteries",
+                  "above",
+                  "cathode",
+                  "electrolyte",
+                  "interface",
+                  "stability"
+                ],
+                "core_hit_count": 5,
+                "core_hits": [
+                  "batteries",
+                  "cathode",
+                  "stability",
+                  "materials",
+                  "gap"
+                ],
+                "specific_terms": [
+                  "high-voltage lithium batteries",
+                  "lithium batteries above",
+                  "batteries above cathode",
+                  "above cathode electrolyte",
+                  "cathode electrolyte interface",
+                  "electrolyte interface stability",
+                  "interface stability ai-assisted",
+                  "stability ai-assisted battery",
+                  "ai-assisted battery materials",
+                  "battery materials discovery",
+                  "high-voltage",
+                  "lithium"
+                ],
+                "specific_hit_count": 4,
+                "specific_hits": [
+                  "batteries",
+                  "cathode",
+                  "stability",
+                  "materials"
+                ],
+                "min_core_hits": 3,
+                "min_specific_hits": 2,
+                "is_preprint": false,
+                "reason": "core topic terms sufficiently covered"
+              },
+              "verdict": "keep",
+              "requires_human_review": false
+            },
+            "relevance_score": 0.2123,
+            "relevance_components": {
+              "text_score": 0.14,
+              "recency_score": 1.0,
+              "impact_score": 0.35,
+              "citation_field": "chemistry",
+              "citation_baseline": 500.0,
+              "venue_score": 0.45,
+              "publication_quality_score": 0.72,
+              "base_score": 0.2948,
+              "text_weight": 0.62,
+              "recency_weight": 0.1,
+              "impact_weight": 0.18,
+              "venue_weight": 0.1
+            },
+            "publication_quality_score": 0.72,
+            "venue_quality": "unverified",
+            "journal_quartile": "",
+            "journal_metric_source": "",
+            "inferred_field": "chemistry",
+            "quality_flags": [
+              "unverified_venue",
+              "incomplete_s2_metadata_recent"
+            ],
+            "quality_criteria": [
+              "venue did not match suspicious, reputable, preprint, or curated quartile tables",
+              "Semantic Scholar reference metadata is missing for a recent paper; marked for data completeness review"
+            ],
+            "suspicion_type": "",
+            "is_review_like": true,
+            "pyramid_root_score": 0.7588,
+            "matched_query_terms": [
+              "gap"
+            ],
+            "title": "Promoting Reversible Anionic Redox in Sodium-Ion Cathodes by Doping and Phase Control",
+            "citation": "Shipeng Jia et al. (2025) Promoting Reversible Anionic Redox in Sodium-Ion Cathodes by Doping and Phase Control doi:10.1149/ma2025-013168mtgabs",
+            "provider": "semantic_scholar",
+            "year": "2025",
+            "citation_count": 1,
+            "influential_citation_count": 0,
+            "doi": "10.1149/ma2025-013168mtgabs",
+            "arxiv_id": "",
+            "url": "https://www.semanticscholar.org/paper/e1c67d6da842852e631904dfad09630b89e2f285",
+            "relevance_reason": "title=0/2, abstract=1/2, citation=0/2, phrase_bonus=0.0, recency=1.0, impact=0.35, venue=0.45, quality=0.72",
+            "quality_reason": "venue did not match suspicious, reputable, preprint, or curated quartile tables; Semantic Scholar reference metadata is missing for a recent paper; marked for data completeness review"
+          },
+          "stratified_import_plan": {
+            "strategy": "layer_minimum_then_score_backfill",
+            "requested_import_top_k": 10,
+            "effective_import_top_k": 10,
+            "min_per_layer": {
+              "L0_review": 2,
+              "L1_milestone": 2,
+              "L2_top_latest": 2,
+              "L3_preprint": 2,
+              "L4_regular": 2
+            },
+            "candidate_counts_by_layer": {
+              "L0_review": 2,
+              "L1_milestone": 2,
+              "L2_top_latest": 2,
+              "L4_regular": 14
+            },
+            "selected_counts_by_layer": {
+              "L0_review": 2,
+              "L1_milestone": 2,
+              "L2_top_latest": 2,
+              "L4_regular": 4
+            },
+            "missing_layers": [
+              {
+                "layer": "L3_preprint",
+                "label": "latest preprint frontier",
+                "target": 2,
+                "selected": 0,
+                "candidates": 0
+              }
+            ],
+            "selected_result_indexes": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              10,
+              11,
+              7
+            ]
+          },
+          "imported_records": 10,
+          "expand_literature_graph": {
+            "graph_search_id": "graph_1783532967248770000",
+            "total_results": 1,
+            "fallback_used": false,
+            "depth": 1
+          },
+          "build_literature_relation_graph": {
+            "relation_graph_id": "relgraph_1783532970662486600",
+            "cluster_count": 1,
+            "edge_summary": {
+              "total_edges": 1,
+              "citation_graph_edges": 1,
+              "artificial_edges": 0,
+              "by_relation": {
+                "citation": 1
+              },
+              "by_depth": {
+                "1": 1
+              },
+              "fallback_weight_policy": "keyword_fallback/search_result edges are artificial and use very low PageRank weight."
+            },
+            "analysis_confidence": 1.0
+          }
+        },
+        "thought": "ZhiZhi retrieved and filtered literature, imported grounded PaperGraph evidence, built a benchmark-aware knowledge map, expanded citation context when available, and generated gaps with novelty/value/feasibility checks."
+      },
+      "error": "",
+      "timestamp": 1783532977.2061665
+    },
+    {
+      "round": "round_0_gap_exploration",
+      "speaker": "TanXi_ToolAgent",
+      "status": "completed",
+      "content": {
+        "action": {
+          "scan_coverage_density": {
+            "target_domain": "High-voltage lithium batteries above 4.5V, cathode/electrolyte/interface stability, AI-assisted battery materials discovery"
+          },
+          "detect_reasoning_gaps": {
+            "types": [
+              "claim_contradiction",
+              "theory_evidence_anomaly"
+            ]
+          },
+          "detect_source_gap_signals": {
+            "types": [
+              "limitations",
+              "future_work",
+              "open_problem",
+              "missing_evidence"
+            ]
+          },
+          "detect_mechanism_issue_gaps": {
+            "priority": "higher_than_matrix_holes"
+          },
+          "find_unconnected_pairs": {
+            "target_domain": "High-voltage lithium batteries above 4.5V, cathode/electrolyte/interface stability, AI-assisted battery materials discovery"
+          },
+          "detect_suspended_problems": {
+            "min_citation_threshold": 50
+          },
+          "prioritize_gaps": {
+            "criteria": [
+              "importance",
+              "tractability",
+              "strategic_value"
+            ]
+          },
+          "align_with_strategic_needs": {
+            "strategic_domains": [
+              "ai for science",
+              "energy"
+            ]
+          }
+        },
+        "thought": "TanXi scanned the PaperGraph for low-density but high-importance method-scenario-benchmark regions, claim contradictions, anomaly/tension signals, cross-disciplinary unconnected pairs, suspended unresolved problems, and strategic-need alignment."
+      },
+      "error": "",
+      "timestamp": 1783532982.8999548
+    },
+    {
+      "round": "round_1_proponent_position",
+      "speaker": "MingLi_AssistantAgent",
+      "status": "completed",
+      "content": {
+        "status": "draft",
+        "project_id": "sci_1783532060879533700",
+        "next_step": "Call design_experiment with the draft idea, then finalize_idea to run mandatory uniqueness verification.",
+        "action": {
+          "type": "generate_idea",
+          "gap_id": "gap_1783532971318580900",
+          "style": "innovative"
+        },
+        "thought": "Generated a gap-traceable MingLi draft idea and scored it for novelty, plausibility, grounding, testability, impact, and surprise."
+      },
+      "error": "",
+      "timestamp": 1783532982.9466424
+    },
+    {
+      "round": "round_3_methodology",
+      "speaker": "MingLi_AssistantAgent",
+      "status": "completed",
+      "content": {
+        "project_id": "sci_1783532060879533700",
+        "next_step": "Call finalize_idea; it will run mandatory uniqueness verification before persisting the hypothesis.",
+        "action": {
+          "type": "design_experiment",
+          "gap_id": "gap_1783532971318580900",
+          "constraints": "academic lab scale; evidence-traceable; include baselines, ablations, regime shifts, and falsification criteria"
+        },
+        "thought": "Designed a falsifiable experiment with setup, metrics, baselines, and rejection criteria."
+      },
+      "error": "",
+      "timestamp": 1783532982.9668546
+    },
+    {
+      "round": "round_1_hypothesis_finalization",
+      "speaker": "MingLi_AssistantAgent",
+      "status": "finalized",
+      "content": {
+        "status": "finalized",
+        "hypothesis_id": "hyp_1783532982999188300"
+      },
+      "error": "",
+      "timestamp": 1783532983.0126781
+    },
+    {
+      "round": "round_2_cawm_layer_1_2_and_round_3_layer_3",
+      "speaker": "YanZhen_ToolAgent",
+      "status": "REQUIRES_HUMAN_REVIEW",
+      "content": {
+        "action": {
+          "type": "run_yanzhen_mechanism_verification",
+          "hypothesis_id": "hyp_1783532982999188300",
+          "layers_executed": [
+            "internal_consistency",
+            "data_consistency",
+            "regime_shift_test"
+          ]
+        },
+        "thought": "YanZhen audited the hypothesis through internal consistency, data consistency, selective-citation, causal-chain, and regime-shift checks.",
+        "mechanism_fidelity_report": {
+          "overall_verdict": "REQUIRES_HUMAN_REVIEW",
+          "hypothesis_id": "hyp_1783532982999188300"
+        }
+      },
+      "error": "",
+      "timestamp": 1783532983.048132
+    },
+    {
+      "round": "round_4_groupchat_synthesis",
+      "speaker": "BianLun_GroupChatManager",
+      "status": "human_review",
+      "content": {
+        "action": {
+          "type": "run_socratic_hypothesis_debate",
+          "rounds": 5,
+          "max_rounds": 5
+        },
+        "thought": "BianLun ran the triangle loop: Socratic debate, YanZhen mechanism audit, targeted literature completion when needed, MingLi revision, and final synthesis.",
+        "debate_report": {
+          "debate_id": "debate_1783533112307230700",
+          "final_decision": "human_review",
+          "unresolved_issues": [
+            "causal_probe: How will the hypothesis be revised to address YanZhen Layer 1 issue: Unsupported causal link: CTAB-assisted co-precipitation is coupled with a mechanism-stress intervention that varies temperature in Co-free high-N...[truncated] If CTAB-assisted co-precipitation is coupled with a mechanism-stress intervention that varies temperature...[truncated]",
+            "causal_probe: How will the hypothesis be revised to address YanZhen Layer 1 issue: Unsupported causal link: If CTAB-assisted co-precipitation is coupled with a mechanism-stress intervention that varies temperature in Co-free high-Ni cathodes, then capacity (161.2 mAh g-1), cycling stabil...[truncated] This proposal addresses the PaperGraph gap 'U...[truncated]",
+            "causal_probe: How will the hypothesis be revised to address YanZhen Layer 1 issue: Unsupported causal link: The decisive prediction is that this concrete bridge, not a generic representation change, will alter capacity (161.2 mAh g-1), cycling stability (100 cycles); if the bridge data or causal link is absent, the hypothesis should fail rather t...[truncated]",
+            "causal_probe: For the evidence-derived terms CTAB-assisted co-precipitation, Co-free high-Ni cathodes, capacity retention | microcrack resistance | c-lattice shrinkage, which exact term sits at the intervention, mediator, and output positions of the causal chain?",
+            "evidence_completion_challenge: YanZhen marked this claim as unsupported: Unsupported causal link: CTAB-assisted co-precipitation is coupled with a mechanism-stress intervention that varies temperature in Co-free high-N...[truncated] If CTAB-assisted co-precipitation is coupled with a mechanis...[truncated]. Will MingLi attach a PaperGraph citation, narrow the claim, or remove it?"
+          ]
+        }
+      },
+      "error": "",
+      "timestamp": 1783533112.3364537
+    }
+  ],
+  "createdAt": 1783533112.337055,
+  "native_autogen": {
+    "requested": false,
+    "available": false,
+    "mode": "structured_groupchat_executor",
+    "reason": "Native AutoGen runtime disabled by default to control token use; v8 executes a deterministic GroupChat-compatible protocol."
+  },
+  "next_step": "Inspect AutoGen GroupChat messages and regenerate or revise the hypothesis."
+}

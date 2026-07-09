@@ -1,0 +1,1069 @@
+{
+  "project_id": "sci_1783540705102573000",
+  "title": "4.5V以上高压锂电池机制与假设验证",
+  "domain": "High-voltage lithium batteries above 4.5V, cathode/electrolyte/interface stability, AI-assisted battery materials discovery",
+  "objective": "验证从文献阅读、知识图谱构建、Gap探索、假设生成、苏格拉底辩论、机制审计到最终裁决的多Agent协作能力",
+  "strategic_need": "",
+  "phase": "Gap Discovery",
+  "createdAt": 1783540705.1025789,
+  "updatedAt": 1783541497.950776,
+  "papergraph": [
+    {
+      "paper_id": "paper_1783541168871102500",
+      "unique_key": "arxiv:2008_10896v2",
+      "title": "Cathode Materials for Lithium Ion Batteries (LIBs): A Review on Materials related aspects towards High Energy Density LIBs",
+      "citation": "Ambesh Dixit (2020) Cathode Materials for Lithium Ion Batteries (LIBs): A Review on Materials related aspects towards High Energy Density LIBs arXiv:2008.10896v2",
+      "authors": [
+        "Ambesh Dixit"
+      ],
+      "year": "2020",
+      "venue": "arXiv",
+      "provider": "arxiv",
+      "source_type": "api",
+      "doi": "",
+      "arxiv_id": "2008.10896v2",
+      "semantic_scholar_id": "",
+      "url": "http://arxiv.org/abs/2008.10896v2",
+      "abstract": "This article reviews the development of cathode materials for secondary lithium ion batteries since its inception with the introduction of lithium cobalt oxide in early 1980s. The time has passed and numerous cathode materials are designed and developed to realize not only the enhanced capacity but also the power density simultaneously. However, there are numerous challenges such as the cyclic stability of cathode materials, their structural and thermal stability, higher operating voltage together with high ionic and electronic conductivity for efficient ion and charge transport during charging and discharging. This article will cover the development of materials in chronological order classifying as the lithium ion cathode materials in different generations. The ternary oxides such as LiTMOx (TM=Transition Metal) are considered as the first generation materials, whereas modified ternary and quaternary oxide systems are considered as the second generation materials. The current i.e. third generation includes complex oxide systems with higher lithium content such as Li2TMSiO4 aiming for higher energy density. Further, developments are heading towards lithium metal based batteries with a possibility for very high energy densities.",
+      "full_text_excerpt": "",
+      "conclusion": "Full text excerpt:",
+      "strengths": [],
+      "improvements": [
+        "Abstract: This article reviews the development of cathode materials for secondary lithium ion batteries since its inception with the introduction of lithium cobalt oxide in early 1980s. The time has passed and numerous cathode materials are designed and developed to realize not only the enhanced cap...[truncated]"
+      ],
+      "method": "the introduction of lithium cobalt oxide in early 1980s",
+      "scenario": "lithium ion battery cathode materials",
+      "benchmark": "ionic conductivity",
+      "contribution": "Chronological classification of lithium-ion cathode materials into three generations based on compositional and structural evolution toward higher energy density.",
+      "limitation": "Numerous challenges such as cyclic stability, structural and thermal stability, higher operating voltage, and high ionic and electronic conductivity.",
+      "credibility_score": 0.43,
+      "credibility_reasons": [
+        "base record",
+        "has title and citation",
+        "has scholarly identifier",
+        "has URL",
+        "has substantial abstract",
+        "provider recorded",
+        "preprint venue",
+        "requires human quality review",
+        "credibility multiplied down by low publication quality",
+        "has publication year"
+      ],
+      "extraction_quality": {
+        "score": 1.0,
+        "unknown_ratio": 0.0,
+        "unknown_fields": [],
+        "abstract_chars": 1248,
+        "flags": [],
+        "needs_enrichment": false,
+        "needs_llm_retry": false,
+        "requires_human_review": false,
+        "initial": {
+          "score": 0.28,
+          "unknown_ratio": 1.0,
+          "unknown_fields": [
+            "method",
+            "scenario",
+            "benchmark"
+          ],
+          "abstract_chars": 1248,
+          "flags": [
+            "missing_conclusion",
+            "unknown_fields",
+            "unknown_fields_high",
+            "missing_benchmark"
+          ],
+          "needs_enrichment": false,
+          "needs_llm_retry": true,
+          "requires_human_review": true
+        },
+        "llm_retry": {
+          "attempted": true,
+          "succeeded": true,
+          "error": "",
+          "extractor": "qwen_json"
+        }
+      },
+      "enrichment_sources": [],
+      "gap_signals": [
+        {
+          "signal_id": "sig_1783541168870109100",
+          "signal_type": "mechanism_issue",
+          "text": "However, there are numerous challenges such as the cyclic stability of cathode materials, their structural and thermal stability, higher operating voltage together with high ionic and electronic conductivity for efficient ion and charge transport during charging and discharging.",
+          "evidence_type": "problem_statement",
+          "supporting_reference": "Ambesh Dixit (2020) Cathode Materials for Lithium Ion Batteries (LIBs): A Review on Materials related aspects towards High Energy Density LIBs arXiv:2008.10896v2",
+          "confidence": 0.89
+        },
+        {
+          "signal_id": "sig_1783541168870413300",
+          "signal_type": "mechanism_issue",
+          "text": "Numerous challenges such as cyclic stability, structural and thermal stability, higher operating voltage, and high ionic and electronic conductivity.",
+          "evidence_type": "problem_statement",
+          "supporting_reference": "Ambesh Dixit (2020) Cathode Materials for Lithium Ion Batteries (LIBs): A Review on Materials related aspects towards High Energy Density LIBs arXiv:2008.10896v2",
+          "confidence": 0.84
+        },
+        {
+          "signal_id": "sig_1783541168850602600",
+          "signal_type": "challenge",
+          "text": "cyclic stability of cathode materials",
+          "evidence_type": "problem_statement",
+          "supporting_reference": "Ambesh Dixit (2020) Cathode Materials for Lithium Ion Batteries (LIBs): A Review on Materials related aspects towards High Energy Density LIBs arXiv:2008.10896v2",
+          "confidence": 0.76
+        },
+        {
+          "signal_id": "sig_1783541168850745300",
+          "signal_type": "challenge",
+          "text": "higher operating voltage together with high ionic and electronic conductivity for efficient ion and charge transport during charging and discharging",
+          "evidence_type": "problem_statement",
+          "supporting_reference": "Ambesh Dixit (2020) Cathode Materials for Lithium Ion Batteries (LIBs): A Review on Materials related aspects towards High Energy Density LIBs arXiv:2008.10896v2",
+          "confidence": 0.76
+        },
+        {
+          "signal_id": "sig_1783541168850694300",
+          "signal_type": "challenge",
+          "text": "structural and thermal stability",
+          "evidence_type": "problem_statement",
+          "supporting_reference": "Ambesh Dixit (2020) Cathode Materials for Lithium Ion Batteries (LIBs): A Review on Materials related aspects towards High Energy Density LIBs arXiv:2008.10896v2",
+          "confidence": 0.76
+        }
+      ],
+      "importedAt": 1783541168.8711283
+    },
+    {
+      "paper_id": "paper_1783541203527857500",
+      "unique_key": "doi:10_26434_chemrxiv_2025_s4hrh",
+      "title": "Voltage-dependent charge compensation mechanism and cathode electrolyte interface stability of the lithium-ion battery cathode materials LiNi0.6Mn0.2Co0.2O2, LiNi0.8Mn0.1Co0.1O2 and LiNi0.80Co0.15Al0.05O2 studied by photoelectron spectroscopy",
+      "citation": "Maximilian Mellin et al. (2025) Voltage-dependent charge compensation mechanism and cathode electrolyte interface stability of the lithium-ion battery cathode materials LiNi0.6Mn0.2Co0.2O2, LiNi0.8Mn0.1Co0.1O2 and LiNi0.80Co0.15Al0.05O2 studied by photoelectron spectroscopy doi:10.26434/chemrxiv-2025-s4hrh",
+      "authors": [
+        "Maximilian Mellin"
+      ],
+      "year": "2025",
+      "venue": "ChemRxiv",
+      "provider": "chemrxiv",
+      "source_type": "crossref_api",
+      "doi": "10.26434/chemrxiv-2025-s4hrh",
+      "arxiv_id": "",
+      "semantic_scholar_id": "",
+      "url": "https://doi.org/10.26434/chemrxiv-2025-s4hrh",
+      "abstract": "The wide utilization of Ni-rich oxides as a cathode material in lithium-ion batteries (LIB) for high-energy applications remains a challenge due to their unstable behavior at high state-of-charge (SOC) increasing the risk of thermal runaway. To understand this instability, in-depth knowledge of the involved redox processes is needed, which depend on the electronic structure of these materials as well as their interaction with the electrolyte. X-ray photoemission spectroscopy (XPS) is a promising method to gain information on the electronic structure while inherently limited to a low information depth. The latter is especially problematic for LIB materials, due to the formation of interphase layers on both the anode and the cathode. In our previous studies, we developed an in vacuo scratching method, which allowed the removal of a large fraction of the cathode electrolyte interface (CEI) and applied the method to the cathode materials LiCoO2 (LCO) and LiNi0.3Mn0.3Co0.3O2 (NMC333) to investigate the charge state dependent transition metal core spectra, exhibiting high spectral quality. In this study, the in vacuo scratching method was applied to the Ni-rich layered oxide compounds, including LiNi0.6Mn0.2Co0.2O2 (NMC622), LiNi0.8Mn0.1Co0.1O2 (NMC811) and 2 LiNi0.80Co0.15Al0.05O2 (NCA). All three materials showed an equal, high oxidation state of Ni in the pristine state. The Ni2+/3+ and Ni3+/4+ redox couples were identified by the analysis of the Ni 2p core spectra as a function of voltage. Based on the Co 2p and O 1s photoelectron spectra, a shift to lower binding energies was observed due to the downward shift of the Fermi level. Charging the materials to high voltages up to 4.8 V vs. Li+/Li resulted in fully deintercalated compounds, as shown by the Li 1s photoelectron spectra, while no further change in the Ni 2p photoelectron spectra suggests deviations from the cationic redox process. The cathode-electrolyte interface (CEI) composition was also analyzed for non-scratched samples at several voltage steps in the typical operational range of 3.0 to 4.2 V vs. Li+/Li indicating a difference in the amount of semi-carbonates and lithium alkoxides. At high voltages of 4.5/ 4.8 V vs. Li+/Li, considerable changes were observed in the CEI due to the onset of decomposition reactions of the CEI components.",
+      "full_text_excerpt": "",
+      "conclusion": "Full text excerpt:",
+      "strengths": [],
+      "improvements": [
+        "Abstract: The wide utilization of Ni-rich oxides as a cathode material in lithium-ion batteries (LIB) for high-energy applications remains a challenge due to their unstable behavior at high state-of-charge (SOC) increasing the risk of thermal runaway. To understand this instability, in-depth knowled...[truncated]"
+      ],
+      "method": "X-ray photoemission spectroscopy (XPS) with in vacuo scratching",
+      "scenario": "lithium-ion battery cathode materials",
+      "benchmark": "compensation mechanism and cathode electrolyte interface stability",
+      "contribution": "Identification of Ni2+/3+ and Ni3+/4+ redox couples via Ni 2p spectra as a function of voltage; evidence of Fermi level shift via Co 2p and O 1s spectra; observation of CEI compositional changes at high voltage (4.5/4.8 V vs. Li+/Li); demonstration that Ni 2p spectra plateau upon full delithiation, suggesting non-cationic redox contributions.",
+      "limitation": "XPS is inherently limited to a low information depth, especially problematic for LIB materials due to CEI layer formation.",
+      "credibility_score": 0.77,
+      "credibility_reasons": [
+        "base record",
+        "has title and citation",
+        "has DOI",
+        "has URL",
+        "has substantial abstract",
+        "provider recorded",
+        "preprint venue",
+        "has publication year"
+      ],
+      "extraction_quality": {
+        "score": 1.0,
+        "unknown_ratio": 0.0,
+        "unknown_fields": [],
+        "abstract_chars": 2337,
+        "flags": [],
+        "needs_enrichment": false,
+        "needs_llm_retry": false,
+        "requires_human_review": false,
+        "initial": {
+          "score": 0.28,
+          "unknown_ratio": 1.0,
+          "unknown_fields": [
+            "method",
+            "scenario",
+            "benchmark"
+          ],
+          "abstract_chars": 2337,
+          "flags": [
+            "missing_conclusion",
+            "unknown_fields",
+            "unknown_fields_high",
+            "missing_benchmark"
+          ],
+          "needs_enrichment": false,
+          "needs_llm_retry": true,
+          "requires_human_review": true
+        },
+        "llm_retry": {
+          "attempted": true,
+          "succeeded": true,
+          "error": "",
+          "extractor": "qwen_json"
+        }
+      },
+      "enrichment_sources": [],
+      "gap_signals": [
+        {
+          "signal_id": "sig_1783541203526369000",
+          "signal_type": "mechanism_issue",
+          "text": "In our previous studies, we developed an in vacuo scratching method, which allowed the removal of a large fraction of the cathode electrolyte interface (CEI) and applied the method to the cathode materials LiCoO2 (LCO) and LiNi0.3Mn0.3Co0.3O2 (NMC333) to investigate the charge state dependent transition metal core spectra, exhibiting high spectral quality.",
+          "evidence_type": "problem_statement",
+          "supporting_reference": "Maximilian Mellin et al. (2025) Voltage-dependent charge compensation mechanism and cathode electrolyte interface stability of the lithium-ion battery cathode materials LiNi0.6Mn0.2Co0.2O2, LiNi0.8Mn0.1Co0.1O2 and LiNi0.80Co0.15Al0.05O2 studied by photoelectron spectroscopy doi:10.26434/chemrxiv-2025-s4hrh",
+          "confidence": 0.89
+        },
+        {
+          "signal_id": "sig_1783541203526492500",
+          "signal_type": "mechanism_issue",
+          "text": "The Ni2+/3+ and Ni3+/4+ redox couples were identified by the analysis of the Ni 2p core spectra as a function of voltage.",
+          "evidence_type": "problem_statement",
+          "supporting_reference": "Maximilian Mellin et al. (2025) Voltage-dependent charge compensation mechanism and cathode electrolyte interface stability of the lithium-ion battery cathode materials LiNi0.6Mn0.2Co0.2O2, LiNi0.8Mn0.1Co0.1O2 and LiNi0.80Co0.15Al0.05O2 studied by photoelectron spectroscopy doi:10.26434/chemrxiv-2025-s4hrh",
+          "confidence": 0.89
+        },
+        {
+          "signal_id": "sig_1783541203526205400",
+          "signal_type": "mechanism_issue",
+          "text": "To understand this instability, in-depth knowledge of the involved redox processes is needed, which depend on the electronic structure of these materials as well as their interaction with the electrolyte.",
+          "evidence_type": "problem_statement",
+          "supporting_reference": "Maximilian Mellin et al. (2025) Voltage-dependent charge compensation mechanism and cathode electrolyte interface stability of the lithium-ion battery cathode materials LiNi0.6Mn0.2Co0.2O2, LiNi0.8Mn0.1Co0.1O2 and LiNi0.80Co0.15Al0.05O2 studied by photoelectron spectroscopy doi:10.26434/chemrxiv-2025-s4hrh",
+          "confidence": 0.89
+        },
+        {
+          "signal_id": "sig_1783541203526718700",
+          "signal_type": "mechanism_issue",
+          "text": "At high voltages of 4.5/ 4.8 V vs.",
+          "evidence_type": "problem_statement",
+          "supporting_reference": "Maximilian Mellin et al. (2025) Voltage-dependent charge compensation mechanism and cathode electrolyte interface stability of the lithium-ion battery cathode materials LiNi0.6Mn0.2Co0.2O2, LiNi0.8Mn0.1Co0.1O2 and LiNi0.80Co0.15Al0.05O2 studied by photoelectron spectroscopy doi:10.26434/chemrxiv-2025-s4hrh",
+          "confidence": 0.84
+        },
+        {
+          "signal_id": "sig_1783541203526563300",
+          "signal_type": "mechanism_issue",
+          "text": "Charging the materials to high voltages up to 4.8 V vs.",
+          "evidence_type": "problem_statement",
+          "supporting_reference": "Maximilian Mellin et al. (2025) Voltage-dependent charge compensation mechanism and cathode electrolyte interface stability of the lithium-ion battery cathode materials LiNi0.6Mn0.2Co0.2O2, LiNi0.8Mn0.1Co0.1O2 and LiNi0.80Co0.15Al0.05O2 studied by photoelectron spectroscopy doi:10.26434/chemrxiv-2025-s4hrh",
+          "confidence": 0.84
+        },
+        {
+          "signal_id": "sig_1783541203526817000",
+          "signal_type": "mechanism_issue",
+          "text": "Full text excerpt: Identification of Ni2+/3+ and Ni3+/4+ redox couples via Ni 2p spectra as a function of voltage; evidence of Fermi level shift via Co 2p and O 1s spectra; observation of CEI compositional changes at high voltage (4.5/4.8 V vs.",
+          "evidence_type": "problem_statement",
+          "supporting_reference": "Maximilian Mellin et al. (2025) Voltage-dependent charge compensation mechanism and cathode electrolyte interface stability of the lithium-ion battery cathode materials LiNi0.6Mn0.2Co0.2O2, LiNi0.8Mn0.1Co0.1O2 and LiNi0.80Co0.15Al0.05O2 studied by photoelectron spectroscopy doi:10.26434/chemrxiv-2025-s4hrh",
+          "confidence": 0.84
+        },
+        {
+          "signal_id": "sig_1783541203526656700",
+          "signal_type": "mechanism_issue",
+          "text": "The cathode-electrolyte interface (CEI) composition was also analyzed for non-scratched samples at several voltage steps in the typical operational range of 3.0 to 4.2 V vs.",
+          "evidence_type": "problem_statement",
+          "supporting_reference": "Maximilian Mellin et al. (2025) Voltage-dependent charge compensation mechanism and cathode electrolyte interface stability of the lithium-ion battery cathode materials LiNi0.6Mn0.2Co0.2O2, LiNi0.8Mn0.1Co0.1O2 and LiNi0.80Co0.15Al0.05O2 studied by photoelectron spectroscopy doi:10.26434/chemrxiv-2025-s4hrh",
+          "confidence": 0.84
+        },
+        {
+          "signal_id": "sig_1783541203526127500",
+          "signal_type": "mechanism_issue",
+          "text": "Voltage-dependent charge compensation mechanism and cathode electrolyte interface stability of the lithium-ion battery cathode materials LiNi0.6Mn0.2Co0.2O2, LiNi0.8Mn0.1Co0.1O2 and LiNi0.80Co0.15Al0.05O2 studied by photoelectron spectroscopy The wide utilization of Ni-rich oxides as a cathode material in lithium-ion batteries (LIB) for high-energy applicati...[truncated]",
+          "evidence_type": "problem_statement",
+          "supporting_reference": "Maximilian Mellin et al. (2025) Voltage-dependent charge compensation mechanism and cathode electrolyte interface stability of the lithium-ion battery cathode materials LiNi0.6Mn0.2Co0.2O2, LiNi0.8Mn0.1Co0.1O2 and LiNi0.80Co0.15Al0.05O2 studied by photoelectron spectroscopy doi:10.26434/chemrxiv-2025-s4hrh",
+          "confidence": 0.84
+        },
+        {
+          "signal_id": "sig_1783541203490723800",
+          "signal_type": "limitation",
+          "text": "X-ray photoemission spectroscopy (XPS) is a promising method to gain information on the electronic structure while inherently limited to a low information depth. The latter is especially problematic for LIB materials, due to the formation of interphase layers on both the anode and the cathode.",
+          "evidence_type": "author_opinion",
+          "supporting_reference": "Maximilian Mellin et al. (2025) Voltage-dependent charge compensation mechanism and cathode electrolyte interface stability of the lithium-ion battery cathode materials LiNi0.6Mn0.2Co0.2O2, LiNi0.8Mn0.1Co0.1O2 and LiNi0.80Co0.15Al0.05O2 studied by photoelectron spectroscopy doi:10.26434/chemrxiv-2025-s4hrh",
+          "confidence": 0.82
+        }
+      ],
+      "importedAt": 1783541203.5278776
+    },
+    {
+      "paper_id": "paper_1783541363078584800",
+      "unique_key": "arxiv:2508_03278v1",
+      "title": "Artificial Intelligence and Generative Models for Materials Discovery -- A Review",
+      "citation": "Albertus Denny Handoko et al. (2025) Artificial Intelligence and Generative Models for Materials Discovery -- A Review arXiv:2508.03278v1",
+      "authors": [
+        "Albertus Denny Handoko"
+      ],
+      "year": "2025",
+      "venue": "arXiv",
+      "provider": "arxiv",
+      "source_type": "api",
+      "doi": "",
+      "arxiv_id": "2508.03278v1",
+      "semantic_scholar_id": "",
+      "url": "http://arxiv.org/abs/2508.03278v1",
+      "abstract": "High throughput experimentation tools, machine learning (ML) methods, and open material databases are radically changing the way new materials are discovered. From the experimentally driven approach in the past, we are moving quickly towards the artificial intelligence (AI) driven approach, realizing the 'inverse design' capabilities that allow the discovery of new materials given the desired properties. This review aims to discuss different principles of AI-driven generative models that are applicable for materials discovery, including different materials representations available for this purpose. We will also highlight specific applications of generative models in designing new catalysts, semiconductors, polymers, or crystals while addressing challenges such as data scarcity, computational cost, interpretability, synthesizability, and dataset biases. Emerging approaches to overcome limitations and integrate AI with experimental workflows will be discussed, including multimodal models, physics informed architectures, and closed-loop discovery systems. This review aims to provide insights for researchers aiming to harness AI's transformative potential in accelerating materials discovery for sustainability, healthcare, and energy innovation.",
+      "full_text_excerpt": "",
+      "conclusion": "Full text excerpt:",
+      "strengths": [],
+      "improvements": [
+        "Abstract: High throughput experimentation tools, machine learning (ML) methods, and open material databases are radically changing the way new materials are discovered. From the experimentally driven approach in the past, we are moving quickly towards the artificial intelligence (AI) driven approach...[truncated]"
+      ],
+      "method": "generative models",
+      "scenario": "materials discovery",
+      "benchmark": "resource cost",
+      "contribution": "review of AI-driven generative models for inverse design in materials discovery, including representations, applications (catalysts, semiconductors, polymers, crystals), and integration strategies (multimodal models, physics-informed architectures, closed-loop systems)",
+      "limitation": "data scarcity, computational cost, interpretability, synthesizability, dataset biases",
+      "credibility_score": 0.72,
+      "credibility_reasons": [
+        "base record",
+        "has title and citation",
+        "has scholarly identifier",
+        "has URL",
+        "has substantial abstract",
+        "provider recorded",
+        "preprint venue",
+        "has publication year"
+      ],
+      "extraction_quality": {
+        "score": 1.0,
+        "unknown_ratio": 0.0,
+        "unknown_fields": [],
+        "abstract_chars": 1261,
+        "flags": [],
+        "needs_enrichment": false,
+        "needs_llm_retry": false,
+        "requires_human_review": false,
+        "initial": {
+          "score": 0.28,
+          "unknown_ratio": 1.0,
+          "unknown_fields": [
+            "method",
+            "scenario",
+            "benchmark"
+          ],
+          "abstract_chars": 1261,
+          "flags": [
+            "missing_conclusion",
+            "unknown_fields",
+            "unknown_fields_high",
+            "missing_benchmark"
+          ],
+          "needs_enrichment": false,
+          "needs_llm_retry": true,
+          "requires_human_review": true
+        },
+        "llm_retry": {
+          "attempted": true,
+          "succeeded": true,
+          "error": "",
+          "extractor": "qwen_json"
+        }
+      },
+      "enrichment_sources": [],
+      "gap_signals": [
+        {
+          "signal_id": "sig_1783541363077890900",
+          "signal_type": "limitation",
+          "text": "Emerging approaches to overcome limitations and integrate AI with experimental workflows will be discussed, including multimodal models, physics informed architectures, and closed-loop discovery systems.",
+          "evidence_type": "author_opinion",
+          "supporting_reference": "Albertus Denny Handoko et al. (2025) Artificial Intelligence and Generative Models for Materials Discovery -- A Review arXiv:2508.03278v1",
+          "confidence": 0.82
+        },
+        {
+          "signal_id": "sig_1783541363059993800",
+          "signal_type": "limitation",
+          "text": "computational cost",
+          "evidence_type": "author_opinion",
+          "supporting_reference": "Albertus Denny Handoko et al. (2025) Artificial Intelligence and Generative Models for Materials Discovery -- A Review arXiv:2508.03278v1",
+          "confidence": 0.82
+        },
+        {
+          "signal_id": "sig_1783541363059952900",
+          "signal_type": "limitation",
+          "text": "data scarcity",
+          "evidence_type": "author_opinion",
+          "supporting_reference": "Albertus Denny Handoko et al. (2025) Artificial Intelligence and Generative Models for Materials Discovery -- A Review arXiv:2508.03278v1",
+          "confidence": 0.82
+        },
+        {
+          "signal_id": "sig_1783541363060046600",
+          "signal_type": "limitation",
+          "text": "dataset biases",
+          "evidence_type": "author_opinion",
+          "supporting_reference": "Albertus Denny Handoko et al. (2025) Artificial Intelligence and Generative Models for Materials Discovery -- A Review arXiv:2508.03278v1",
+          "confidence": 0.82
+        },
+        {
+          "signal_id": "sig_1783541363060014000",
+          "signal_type": "limitation",
+          "text": "interpretability",
+          "evidence_type": "author_opinion",
+          "supporting_reference": "Albertus Denny Handoko et al. (2025) Artificial Intelligence and Generative Models for Materials Discovery -- A Review arXiv:2508.03278v1",
+          "confidence": 0.82
+        },
+        {
+          "signal_id": "sig_1783541363060030200",
+          "signal_type": "limitation",
+          "text": "synthesizability",
+          "evidence_type": "author_opinion",
+          "supporting_reference": "Albertus Denny Handoko et al. (2025) Artificial Intelligence and Generative Models for Materials Discovery -- A Review arXiv:2508.03278v1",
+          "confidence": 0.82
+        },
+        {
+          "signal_id": "sig_1783541363077811300",
+          "signal_type": "challenge",
+          "text": "We will also highlight specific applications of generative models in designing new catalysts, semiconductors, polymers, or crystals while addressing challenges such as data scarcity, computational cost, interpretability, synthesizability, and dataset biases.",
+          "evidence_type": "problem_statement",
+          "supporting_reference": "Albertus Denny Handoko et al. (2025) Artificial Intelligence and Generative Models for Materials Discovery -- A Review arXiv:2508.03278v1",
+          "confidence": 0.81
+        }
+      ],
+      "importedAt": 1783541363.0785978
+    },
+    {
+      "paper_id": "paper_1783541489037404300",
+      "unique_key": "doi:10_1021_jp308929a",
+      "title": "Electronic Structure Modeling of Electrochemical Reactions at Electrode/Electrolyte Interfaces in Lithium Ion Batteries",
+      "citation": "Kevin Leung (2013) Electronic Structure Modeling of Electrochemical Reactions at Electrode/Electrolyte Interfaces in Lithium Ion Batteries doi:10.1021/jp308929a",
+      "authors": [
+        "Kevin Leung"
+      ],
+      "year": "2013",
+      "venue": "arXiv",
+      "provider": "arxiv",
+      "source_type": "api",
+      "doi": "10.1021/jp308929a",
+      "arxiv_id": "1304.5976v1",
+      "semantic_scholar_id": "",
+      "url": "http://arxiv.org/abs/1304.5976v1",
+      "abstract": "We review recent ab initio molecular dynamics studies of electrode/electrolyte interfaces in lithium ion batteries. Our goals are to introduce experimentalists to simulation techniques applicable to models which are arguably most faithful to experimental conditions so far, and to emphasize to theorists that the inherently interdisciplinary nature of this subject requires bridging the gap between solid and liquid state perspectives. We consider liquid ethylene carbonate (EC) decomposition on lithium intercalated graphite, lithium metal, oxide-coated graphite, and spinel manganese oxide surfaces. These calculations are put in the context of more widely studied water-solid interfaces. Our main themes include kinetically controlled two-electron-induced reactions, the breaking of a previously much neglected chemical bond in EC, and electron tunneling. Future work on modeling batteries at atomic lengthscales requires capabilities beyond state-of-the-art, which emphasizes that applied battery research can and should drive fundamental science development.",
+      "full_text_excerpt": "",
+      "conclusion": "Full text excerpt:",
+      "strengths": [],
+      "improvements": [
+        "Abstract: We review recent ab initio molecular dynamics studies of electrode/electrolyte interfaces in lithium ion batteries. Our goals are to introduce experimentalists to simulation techniques applicable to models which are arguably most faithful to experimental conditions so far, and to emphasize...[truncated]"
+      ],
+      "method": "ab initio molecular dynamics",
+      "scenario": "electrode/electrolyte interfaces in lithium ion batteries",
+      "benchmark": "unknown benchmark",
+      "contribution": "Review of ab initio molecular dynamics studies of EC decomposition on multiple electrode surfaces; emphasis on kinetically controlled two-electron-induced reactions, bond breaking in EC, and electron tunneling.",
+      "limitation": "Future work on modeling batteries at atomic lengthscales requires capabilities beyond state-of-the-art.",
+      "credibility_score": 0.56,
+      "credibility_reasons": [
+        "base record",
+        "has title and citation",
+        "has DOI",
+        "has scholarly identifier",
+        "has URL",
+        "has substantial abstract",
+        "provider recorded",
+        "preprint venue",
+        "requires human quality review",
+        "credibility multiplied down by low publication quality",
+        "has publication year"
+      ],
+      "extraction_quality": {
+        "score": 0.76,
+        "unknown_ratio": 0.333,
+        "unknown_fields": [
+          "benchmark"
+        ],
+        "abstract_chars": 1063,
+        "flags": [
+          "unknown_fields",
+          "missing_benchmark"
+        ],
+        "needs_enrichment": false,
+        "needs_llm_retry": true,
+        "requires_human_review": false,
+        "initial": {
+          "score": 0.28,
+          "unknown_ratio": 1.0,
+          "unknown_fields": [
+            "method",
+            "scenario",
+            "benchmark"
+          ],
+          "abstract_chars": 1063,
+          "flags": [
+            "missing_conclusion",
+            "unknown_fields",
+            "unknown_fields_high",
+            "missing_benchmark"
+          ],
+          "needs_enrichment": false,
+          "needs_llm_retry": true,
+          "requires_human_review": true
+        },
+        "llm_retry": {
+          "attempted": true,
+          "succeeded": true,
+          "error": "",
+          "extractor": "qwen_json"
+        }
+      },
+      "enrichment_sources": [],
+      "gap_signals": [
+        {
+          "signal_id": "sig_1783541489036339400",
+          "signal_type": "mechanism_issue",
+          "text": "Electronic Structure Modeling of Electrochemical Reactions at Electrode/Electrolyte Interfaces in Lithium Ion Batteries We review recent ab initio molecular dynamics studies of electrode/electrolyte interfaces in lithium ion batteries.",
+          "evidence_type": "problem_statement",
+          "supporting_reference": "Kevin Leung (2013) Electronic Structure Modeling of Electrochemical Reactions at Electrode/Electrolyte Interfaces in Lithium Ion Batteries doi:10.1021/jp308929a",
+          "confidence": 0.89
+        },
+        {
+          "signal_id": "sig_1783541489036485700",
+          "signal_type": "mechanism_issue",
+          "text": "We consider liquid ethylene carbonate (EC) decomposition on lithium intercalated graphite, lithium metal, oxide-coated graphite, and spinel manganese oxide surfaces.",
+          "evidence_type": "problem_statement",
+          "supporting_reference": "Kevin Leung (2013) Electronic Structure Modeling of Electrochemical Reactions at Electrode/Electrolyte Interfaces in Lithium Ion Batteries doi:10.1021/jp308929a",
+          "confidence": 0.89
+        },
+        {
+          "signal_id": "sig_1783541489036652200",
+          "signal_type": "mechanism_issue",
+          "text": "Full text excerpt: Review of ab initio molecular dynamics studies of EC decomposition on multiple electrode surfaces; emphasis on kinetically controlled two-electron-induced reactions, bond breaking in EC, and electron tunneling.",
+          "evidence_type": "problem_statement",
+          "supporting_reference": "Kevin Leung (2013) Electronic Structure Modeling of Electrochemical Reactions at Electrode/Electrolyte Interfaces in Lithium Ion Batteries doi:10.1021/jp308929a",
+          "confidence": 0.84
+        },
+        {
+          "signal_id": "sig_1783541489036514200",
+          "signal_type": "mechanism_issue",
+          "text": "These calculations are put in the context of more widely studied water-solid interfaces.",
+          "evidence_type": "problem_statement",
+          "supporting_reference": "Kevin Leung (2013) Electronic Structure Modeling of Electrochemical Reactions at Electrode/Electrolyte Interfaces in Lithium Ion Batteries doi:10.1021/jp308929a",
+          "confidence": 0.84
+        },
+        {
+          "signal_id": "sig_1783541489017081500",
+          "signal_type": "challenge",
+          "text": "The inherently interdisciplinary nature of this subject requires bridging the gap between solid and liquid state perspectives.",
+          "evidence_type": "problem_statement",
+          "supporting_reference": "Kevin Leung (2013) Electronic Structure Modeling of Electrochemical Reactions at Electrode/Electrolyte Interfaces in Lithium Ion Batteries doi:10.1021/jp308929a",
+          "confidence": 0.81
+        },
+        {
+          "signal_id": "sig_1783541489017026800",
+          "signal_type": "future_work",
+          "text": "Future work on modeling batteries at atomic lengthscales requires capabilities beyond state-of-the-art.",
+          "evidence_type": "author_opinion",
+          "supporting_reference": "Kevin Leung (2013) Electronic Structure Modeling of Electrochemical Reactions at Electrode/Electrolyte Interfaces in Lithium Ion Batteries doi:10.1021/jp308929a",
+          "confidence": 0.78
+        },
+        {
+          "signal_id": "sig_1783541489036444600",
+          "signal_type": "missing_evidence",
+          "text": "Our goals are to introduce experimentalists to simulation techniques applicable to models which are arguably most faithful to experimental conditions so far, and to emphasize to theorists that the inherently interdisciplinary nature of this subject requires bridging the gap between solid and liquid state perspectives.",
+          "evidence_type": "problem_statement",
+          "supporting_reference": "Kevin Leung (2013) Electronic Structure Modeling of Electrochemical Reactions at Electrode/Electrolyte Interfaces in Lithium Ion Batteries doi:10.1021/jp308929a",
+          "confidence": 0.77
+        }
+      ],
+      "importedAt": 1783541489.0374157
+    }
+  ],
+  "evidence": [
+    {
+      "evidence_id": "ev_1783541168871233200",
+      "title": "Cathode Materials for Lithium Ion Batteries (LIBs): A Review on Materials related aspects towards High Energy Density LIBs",
+      "citation": "Ambesh Dixit (2020) Cathode Materials for Lithium Ion Batteries (LIBs): A Review on Materials related aspects towards High Energy Density LIBs arXiv:2008.10896v2",
+      "method": "the introduction of lithium cobalt oxide in early 1980s",
+      "scenario": "lithium ion battery cathode materials",
+      "benchmark": "ionic conductivity",
+      "contribution": "Chronological classification of lithium-ion cathode materials into three generations based on compositional and structural evolution toward higher energy density.",
+      "limitation": "Numerous challenges such as cyclic stability, structural and thermal stability, higher operating voltage, and high ionic and electronic conductivity.",
+      "url": "http://arxiv.org/abs/2008.10896v2",
+      "createdAt": 1783541168.8712418
+    },
+    {
+      "evidence_id": "ev_1783541203527986400",
+      "title": "Voltage-dependent charge compensation mechanism and cathode electrolyte interface stability of the lithium-ion battery cathode materials LiNi0.6Mn0.2Co0.2O2, LiNi0.8Mn0.1Co0.1O2 and LiNi0.80Co0.15Al0.05O2 studied by photoelectron spectroscopy",
+      "citation": "Maximilian Mellin et al. (2025) Voltage-dependent charge compensation mechanism and cathode electrolyte interface stability of the lithium-ion battery cathode materials LiNi0.6Mn0.2Co0.2O2, LiNi0.8Mn0.1Co0.1O2 and LiNi0.80Co0.15Al0.05O2 studied by photoelectron spectroscopy doi:10.26434/chemrxiv-2025-s4hrh",
+      "method": "X-ray photoemission spectroscopy (XPS) with in vacuo scratching",
+      "scenario": "lithium-ion battery cathode materials",
+      "benchmark": "compensation mechanism and cathode electrolyte interface stability",
+      "contribution": "Identification of Ni2+/3+ and Ni3+/4+ redox couples via Ni 2p spectra as a function of voltage; evidence of Fermi level shift via Co 2p and O 1s spectra; observation of CEI compositional changes at high voltage (4.5/4.8 V vs. Li+/Li); demonstration that Ni 2p spectra plateau upon full delithiation, suggesting non-cationic redox contributions.",
+      "limitation": "XPS is inherently limited to a low information depth, especially problematic for LIB materials due to CEI layer formation.",
+      "url": "https://doi.org/10.26434/chemrxiv-2025-s4hrh",
+      "createdAt": 1783541203.5279937
+    },
+    {
+      "evidence_id": "ev_1783541363078697300",
+      "title": "Artificial Intelligence and Generative Models for Materials Discovery -- A Review",
+      "citation": "Albertus Denny Handoko et al. (2025) Artificial Intelligence and Generative Models for Materials Discovery -- A Review arXiv:2508.03278v1",
+      "method": "generative models",
+      "scenario": "materials discovery",
+      "benchmark": "resource cost",
+      "contribution": "review of AI-driven generative models for inverse design in materials discovery, including representations, applications (catalysts, semiconductors, polymers, crystals), and integration strategies (multimodal models, physics-informed architectures, closed-loop systems)",
+      "limitation": "data scarcity, computational cost, interpretability, synthesizability, dataset biases",
+      "url": "http://arxiv.org/abs/2508.03278v1",
+      "createdAt": 1783541363.0787027
+    },
+    {
+      "evidence_id": "ev_1783541489037521500",
+      "title": "Electronic Structure Modeling of Electrochemical Reactions at Electrode/Electrolyte Interfaces in Lithium Ion Batteries",
+      "citation": "Kevin Leung (2013) Electronic Structure Modeling of Electrochemical Reactions at Electrode/Electrolyte Interfaces in Lithium Ion Batteries doi:10.1021/jp308929a",
+      "method": "ab initio molecular dynamics",
+      "scenario": "electrode/electrolyte interfaces in lithium ion batteries",
+      "benchmark": "unknown benchmark",
+      "contribution": "Review of ab initio molecular dynamics studies of EC decomposition on multiple electrode surfaces; emphasis on kinetically controlled two-electron-induced reactions, bond breaking in EC, and electron tunneling.",
+      "limitation": "Future work on modeling batteries at atomic lengthscales requires capabilities beyond state-of-the-art.",
+      "url": "http://arxiv.org/abs/1304.5976v1",
+      "createdAt": 1783541489.0375268
+    }
+  ],
+  "coverage_matrix": {},
+  "knowledge_gaps": [],
+  "hypotheses": [],
+  "keynotes": [
+    {
+      "keynote_id": "keynote_1783541177372225900",
+      "paper_id": "paper_1783541168871102500",
+      "search_id": "",
+      "result_index": null,
+      "title": "Cathode Materials for Lithium Ion Batteries (LIBs): A Review on Materials related aspects towards High Energy Density LIBs",
+      "createdAt": 1783541177.3722293,
+      "keynote": {
+        "title": "Cathode Materials for Lithium Ion Batteries (LIBs): A Review on Materials related aspects towards High Energy Density LIBs",
+        "core_problem": "Achieving high energy density in lithium-ion batteries while maintaining cyclic, structural, and thermal stability, high operating voltage, and high ionic/electronic conductivity in cathode materials.",
+        "contributions": [
+          "Chronological classification of cathode materials into three generations",
+          "Review of material evolution from LiCoO₂ to complex oxide systems (e.g., Li₂TMSiO₄)",
+          "Synthesis of challenges impeding high-energy-density LIB development"
+        ],
+        "methods": [],
+        "experiments_or_evidence": [],
+        "assumptions": [],
+        "limitations": [],
+        "gap_signals": [
+          {
+            "signal_id": "sig_1783541177372159000",
+            "signal_type": "problem_gap",
+            "text": "Numerous challenges such as the cyclic stability of cathode materials, their structural and thermal stability, higher operating voltage together with high ionic and electronic conductivity",
+            "evidence_type": "problem_statement",
+            "supporting_reference": "",
+            "confidence": 0.6
+          }
+        ],
+        "datasets_or_materials": [],
+        "code_or_implementation": [],
+        "important_claims": [
+          {
+            "claim": "Ternary oxides such as LiTMOₓ (TM = Transition Metal) are first-generation cathode materials.",
+            "evidence": "Stated in full text excerpt: 'The ternary oxides such as LiTMOx (TM=Transition Metal) are considered as the first generation materials'"
+          },
+          {
+            "claim": "Modified ternary and quaternary oxide systems constitute second-generation cathode materials.",
+            "evidence": "Stated in full text excerpt: 'whereas modified ternary and quaternary oxide systems are considered as the second generation materials'"
+          },
+          {
+            "claim": "Third-generation cathode materials include complex oxide systems with higher lithium content (e.g., Li₂TMSiO₄) aiming for higher energy density.",
+            "evidence": "Stated in full text excerpt: 'The current i.e. third generation includes complex oxide systems with higher lithium content such as Li₂TMSiO₄ aiming for higher energy density'"
+          }
+        ],
+        "reuse_value_for_research": "Provides a generational taxonomy and problem framing useful for situating new cathode material studies within historical and technical context; highlights stability-conductivity-voltage trade-offs as persistent design constraints.",
+        "extractor": "qwen_keynote"
+      }
+    },
+    {
+      "keynote_id": "keynote_1783541221575990200",
+      "paper_id": "paper_1783541203527857500",
+      "search_id": "",
+      "result_index": null,
+      "title": "Voltage-dependent charge compensation mechanism and cathode electrolyte interface stability of the lithium-ion battery cathode materials LiNi0.6Mn0.2Co0.2O2, LiNi0.8Mn0.1Co0.1O2 and LiNi0.80Co0.15Al0.05O2 studied by photoelectron spectroscopy",
+      "createdAt": 1783541221.575993,
+      "keynote": {
+        "title": "Voltage-dependent charge compensation mechanism and cathode electrolyte interface stability of the lithium-ion battery cathode materials LiNi0.6Mn0.2Co0.2O2, LiNi0.8Mn0.1Co0.1O2 and LiNi0.80Co0.15Al0.05O2 studied by photoelectron spectroscopy",
+        "core_problem": "Instability of Ni-rich cathode materials at high state-of-charge (SOC) in lithium-ion batteries, linked to unclear redox mechanisms and cathode-electrolyte interface (CEI) evolution.",
+        "contributions": [
+          "Application of in vacuo scratching XPS method to three Ni-rich cathodes (NMC622, NMC811, NCA) to probe bulk electronic structure beneath CEI",
+          "Identification of Ni2+/3+ and Ni3+/4+ redox couples via voltage-dependent Ni 2p spectra",
+          "Observation of Fermi level downward shift via Co 2p and O 1s binding energy shifts",
+          "Evidence of non-cationic redox behavior at high voltage (4.8 V) based on saturation of Ni 2p changes despite full Li deintercalation (Li 1s)",
+          "CEI compositional analysis across voltage (3.0–4.8 V) revealing voltage-dependent decomposition (e.g., semi-carbonates, lithium alkoxides)"
+        ],
+        "methods": [
+          "X-ray photoemission spectroscopy (XPS)",
+          "In vacuo scratching method to remove CEI layer",
+          "Voltage-resolved (ex situ) XPS on charged/discharged electrodes",
+          "Analysis of core-level spectra: Ni 2p, Co 2p, O 1s, Li 1s"
+        ],
+        "experiments_or_evidence": [
+          "Ni 2p spectral evolution with voltage showing two distinct redox transitions",
+          "Co 2p and O 1s binding energy shifts indicating Fermi level movement",
+          "Li 1s signal disappearance confirming full delithiation at 4.8 V",
+          "Saturation of Ni 2p spectral changes beyond ~4.5 V despite continued delithiation",
+          "CEI composition differences observed between scratched vs. non-scratched samples",
+          "CEI chemical changes (semi-carbonates, lithium alkoxides) tracked from 3.0 to 4.8 V"
+        ],
+        "assumptions": [
+          "In vacuo scratching effectively removes CEI without altering bulk cathode chemistry",
+          "Core-level XPS shifts reliably reflect changes in oxidation state and Fermi level position",
+          "Ex situ voltage steps preserve electrochemical state without air/moisture artifacts"
+        ],
+        "limitations": [
+          "XPS inherently limited to low information depth (~5–10 nm), even post-scratching",
+          "Ex situ measurements may not capture dynamic interfacial processes during operation",
+          "No quantification of CEI thickness or spatial heterogeneity",
+          "No direct evidence distinguishing anionic vs. cationic redox contributions beyond Ni spectral saturation"
+        ],
+        "gap_signals": [
+          {
+            "signal_id": "sig_1783541221575878900",
+            "signal_type": "limitation",
+            "text": "No direct evidence distinguishing anionic vs. cationic redox contributions beyond Ni spectral saturation",
+            "evidence_type": "author_opinion",
+            "supporting_reference": "",
+            "confidence": 0.82
+          },
+          {
+            "signal_id": "sig_1783541221575848300",
+            "signal_type": "limitation",
+            "text": "No quantification of CEI thickness or spatial heterogeneity",
+            "evidence_type": "author_opinion",
+            "supporting_reference": "",
+            "confidence": 0.82
+          },
+          {
+            "signal_id": "sig_1783541221575786600",
+            "signal_type": "limitation",
+            "text": "XPS inherently limited to low information depth (~5–10 nm), even post-scratching",
+            "evidence_type": "author_opinion",
+            "supporting_reference": "",
+            "confidence": 0.82
+          },
+          {
+            "signal_id": "sig_1783541221575821200",
+            "signal_type": "limitation",
+            "text": "Ex situ measurements may not capture dynamic interfacial processes during operation",
+            "evidence_type": "author_opinion",
+            "supporting_reference": "",
+            "confidence": 0.77
+          },
+          {
+            "signal_id": "sig_1783541221575689200",
+            "signal_type": "methodological_gap",
+            "text": "XPS is inherently limited to a low information depth, especially problematic for LIB materials due to CEI layer formation.",
+            "evidence_type": "problem_statement",
+            "supporting_reference": "",
+            "confidence": 0.6
+          },
+          {
+            "signal_id": "sig_1783541221575747800",
+            "signal_type": "phenomenological_gap",
+            "text": "No further change in the Ni 2p photoelectron spectra suggests deviations from the cationic redox process.",
+            "evidence_type": "problem_statement",
+            "supporting_reference": "",
+            "confidence": 0.6
+          }
+        ],
+        "datasets_or_materials": [
+          "LiNi0.6Mn0.2Co0.2O2 (NMC622)",
+          "LiNi0.8Mn0.1Co0.1O2 (NMC811)",
+          "LiNi0.80Co0.15Al0.05O2 (NCA)"
+        ],
+        "code_or_implementation": [],
+        "important_claims": [
+          {
+            "claim": "Ni redox proceeds via two distinct couples: Ni2+/3+ and Ni3+/4+",
+            "evidence": "Voltage-dependent Ni 2p core spectra analysis"
+          },
+          {
+            "claim": "Fermi level shifts downward upon charging",
+            "evidence": "Binding energy shifts in Co 2p and O 1s spectra"
+          },
+          {
+            "claim": "Full delithiation occurs at 4.8 V vs. Li+/Li",
+            "evidence": "Disappearance of Li 1s photoelectron signal"
+          },
+          {
+            "claim": "Redox mechanism deviates from purely cationic above ~4.5 V",
+            "evidence": "Saturation of Ni 2p spectral changes despite continued Li removal (Li 1s depletion)"
+          },
+          {
+            "claim": "CEI composition evolves voltage-dependently, with decomposition onset at ≥4.5 V",
+            "evidence": "Changes in semi-carbonate and lithium alkoxide signatures in O 1s and C 1s regions at high voltage"
+          }
+        ],
+        "reuse_value_for_research": "Provides protocol (in vacuo scratching + voltage-resolved XPS) and spectral benchmarks for probing redox activity and CEI evolution in Ni-rich cathodes; highlights need for complementary bulk-sensitive or operando techniques to resolve anionic contributions.",
+        "extractor": "qwen_keynote"
+      }
+    },
+    {
+      "keynote_id": "keynote_1783541369535698300",
+      "paper_id": "paper_1783541363078584800",
+      "search_id": "",
+      "result_index": null,
+      "title": "Artificial Intelligence and Generative Models for Materials Discovery -- A Review",
+      "createdAt": 1783541369.5357003,
+      "keynote": {
+        "title": "Artificial Intelligence and Generative Models for Materials Discovery -- A Review",
+        "core_problem": "Accelerating materials discovery via AI-driven inverse design while overcoming barriers including data scarcity, computational cost, interpretability, synthesizability, and dataset biases.",
+        "contributions": [
+          "Survey and categorization of AI-driven generative models applicable to materials discovery",
+          "Review of materials representations used in generative modeling",
+          "Highlighting domain-specific applications (catalysts, semiconductors, polymers, crystals)",
+          "Discussion of emerging solutions: multimodal models, physics-informed architectures, closed-loop discovery systems",
+          "Identification and framing of key challenges in AI-powered materials discovery"
+        ],
+        "methods": [],
+        "experiments_or_evidence": [],
+        "assumptions": [],
+        "limitations": [
+          "Data scarcity",
+          "High computational cost",
+          "Limited model interpretability",
+          "Poor guarantee of synthesizability",
+          "Dataset biases"
+        ],
+        "gap_signals": [
+          {
+            "signal_id": "sig_1783541369535596700",
+            "signal_type": "limitation",
+            "text": "High computational cost",
+            "evidence_type": "author_opinion",
+            "supporting_reference": "",
+            "confidence": 0.82
+          },
+          {
+            "signal_id": "sig_1783541369535616700",
+            "signal_type": "limitation",
+            "text": "Limited model interpretability",
+            "evidence_type": "author_opinion",
+            "supporting_reference": "",
+            "confidence": 0.82
+          },
+          {
+            "signal_id": "sig_1783541369535635900",
+            "signal_type": "limitation",
+            "text": "Poor guarantee of synthesizability",
+            "evidence_type": "author_opinion",
+            "supporting_reference": "",
+            "confidence": 0.82
+          },
+          {
+            "signal_id": "sig_1783541369535516200",
+            "signal_type": "challenge",
+            "text": "computational cost",
+            "evidence_type": "problem_statement",
+            "supporting_reference": "",
+            "confidence": 0.76
+          },
+          {
+            "signal_id": "sig_1783541369535473800",
+            "signal_type": "challenge",
+            "text": "data scarcity",
+            "evidence_type": "problem_statement",
+            "supporting_reference": "",
+            "confidence": 0.76
+          },
+          {
+            "signal_id": "sig_1783541369535568400",
+            "signal_type": "challenge",
+            "text": "dataset biases",
+            "evidence_type": "problem_statement",
+            "supporting_reference": "",
+            "confidence": 0.76
+          },
+          {
+            "signal_id": "sig_1783541369535535800",
+            "signal_type": "challenge",
+            "text": "interpretability",
+            "evidence_type": "problem_statement",
+            "supporting_reference": "",
+            "confidence": 0.76
+          },
+          {
+            "signal_id": "sig_1783541369535551700",
+            "signal_type": "challenge",
+            "text": "synthesizability",
+            "evidence_type": "problem_statement",
+            "supporting_reference": "",
+            "confidence": 0.76
+          }
+        ],
+        "datasets_or_materials": [],
+        "code_or_implementation": [],
+        "important_claims": [],
+        "reuse_value_for_research": "Provides a structured conceptual map of generative AI methods, representation strategies, application domains, and persistent challenges—enabling researchers to identify appropriate techniques and open problems for domain-adapted development.",
+        "extractor": "qwen_keynote"
+      }
+    },
+    {
+      "keynote_id": "keynote_1783541386535515200",
+      "paper_id": "paper_1783541168871102500",
+      "search_id": "",
+      "result_index": null,
+      "title": "Cathode Materials for Lithium Ion Batteries (LIBs): A Review on Materials related aspects towards High Energy Density LIBs",
+      "createdAt": 1783541386.5355175,
+      "keynote": {
+        "title": "Cathode Materials for Lithium Ion Batteries (LIBs): A Review on Materials related aspects towards High Energy Density LIBs",
+        "core_problem": "Achieving high energy density in lithium-ion batteries while maintaining cyclic, structural, and thermal stability, high operating voltage, and high ionic/electronic conductivity in cathode materials.",
+        "contributions": [
+          "Chronological classification of cathode materials into three generations",
+          "Review of material evolution from LiCoO₂ to complex oxide systems (e.g., Li₂TMSiO₄)",
+          "Synthesis of challenges impeding high-energy-density LIB development"
+        ],
+        "methods": [],
+        "experiments_or_evidence": [],
+        "assumptions": [],
+        "limitations": [],
+        "gap_signals": [
+          {
+            "signal_id": "sig_1783541386535452500",
+            "signal_type": "problem_gap",
+            "text": "Numerous challenges such as the cyclic stability of cathode materials, their structural and thermal stability, higher operating voltage together with high ionic and electronic conductivity",
+            "evidence_type": "problem_statement",
+            "supporting_reference": "",
+            "confidence": 0.6
+          }
+        ],
+        "datasets_or_materials": [],
+        "code_or_implementation": [],
+        "important_claims": [
+          {
+            "claim": "Ternary oxides such as LiTMOₓ (TM = Transition Metal) are first-generation cathode materials",
+            "evidence": "Stated explicitly in full text excerpt"
+          },
+          {
+            "claim": "Modified ternary and quaternary oxide systems constitute second-generation cathode materials",
+            "evidence": "Stated explicitly in full text excerpt"
+          },
+          {
+            "claim": "Third-generation cathode materials include complex oxide systems with higher lithium content such as Li₂TMSiO₄ aiming for higher energy density",
+            "evidence": "Stated explicitly in full text excerpt"
+          }
+        ],
+        "reuse_value_for_research": "Provides a generational taxonomy and consolidated problem framing for cathode material design; useful for identifying historical trends and open technical challenges in battery materials research.",
+        "extractor": "qwen_keynote"
+      }
+    },
+    {
+      "keynote_id": "keynote_1783541476903612400",
+      "paper_id": "paper_1783541168871102500",
+      "search_id": "",
+      "result_index": null,
+      "title": "Cathode Materials for Lithium Ion Batteries (LIBs): A Review on Materials related aspects towards High Energy Density LIBs",
+      "createdAt": 1783541476.9036143,
+      "keynote": {
+        "title": "Cathode Materials for Lithium Ion Batteries (LIBs): A Review on Materials related aspects towards High Energy Density LIBs",
+        "core_problem": "Achieving high energy density in lithium-ion batteries while maintaining cyclic, structural, and thermal stability, high operating voltage, and high ionic/electronic conductivity in cathode materials.",
+        "contributions": [
+          "Chronological classification of cathode materials into three generations",
+          "Review of material development from LiCoO₂ to complex high-lithium systems (e.g., Li₂TMSiO₄)",
+          "Identification of key challenges limiting performance and commercialization"
+        ],
+        "methods": [],
+        "experiments_or_evidence": [],
+        "assumptions": [],
+        "limitations": [],
+        "gap_signals": [
+          {
+            "signal_id": "sig_1783541476903479200",
+            "signal_type": "problem gap",
+            "text": "Numerous challenges such as the cyclic stability of cathode materials, their structural and thermal stability, higher operating voltage together with high ionic and electronic conductivity for efficient ion and charge transport during charging and discharging.",
+            "evidence_type": "problem_statement",
+            "supporting_reference": "",
+            "confidence": 0.6
+          }
+        ],
+        "datasets_or_materials": [
+          "LiCoO₂",
+          "LiTMOₓ (TM = Transition Metal)",
+          "Modified ternary and quaternary oxide systems",
+          "Li₂TMSiO₄"
+        ],
+        "code_or_implementation": [],
+        "important_claims": [
+          {
+            "claim": "Cathode materials are classified into three generations: first (ternary oxides like LiTMOₓ), second (modified ternary/quaternary oxides), and third (complex high-lithium systems like Li₂TMSiO₄).",
+            "evidence": "The article covers development in chronological order classifying cathode materials as first-, second-, and third-generation systems."
+          },
+          {
+            "claim": "Current research is progressing toward lithium metal-based batteries for very high energy densities.",
+            "evidence": "Further developments are heading towards lithium metal based batteries with a possibility for very high energy densities."
+          }
+        ],
+        "reuse_value_for_research": "Provides a taxonomy and historical framing for cathode material evolution; useful for identifying generational trends, benchmarking new materials against established classes, and situating emerging systems (e.g., Li₂TMSiO₄) within the broader development trajectory.",
+        "extractor": "qwen_keynote"
+      }
+    },
+    {
+      "keynote_id": "keynote_1783541497950434300",
+      "paper_id": "paper_1783541489037404300",
+      "search_id": "",
+      "result_index": null,
+      "title": "Electronic Structure Modeling of Electrochemical Reactions at Electrode/Electrolyte Interfaces in Lithium Ion Batteries",
+      "createdAt": 1783541497.950436,
+      "keynote": {
+        "title": "Electronic Structure Modeling of Electrochemical Reactions at Electrode/Electrolyte Interfaces in Lithium Ion Batteries",
+        "core_problem": "Accurately modeling electrochemical reactions at electrode/electrolyte interfaces in lithium-ion batteries using ab initio methods, bridging solid-state and liquid-state perspectives to reflect experimental conditions.",
+        "contributions": [
+          "Introducing experimentalists to ab initio molecular dynamics (AIMD) techniques applicable to realistic electrode/electrolyte interface models",
+          "Emphasizing interdisciplinary integration between solid-state and liquid-state theoretical frameworks",
+          "Highlighting kinetically controlled two-electron-induced reactions, previously neglected bond breaking in ethylene carbonate (EC), and electron tunneling as key mechanistic features"
+        ],
+        "methods": [
+          "Ab initio molecular dynamics (AIMD)",
+          "Electronic structure modeling of electrode/electrolyte interfaces"
+        ],
+        "experiments_or_evidence": [],
+        "assumptions": [],
+        "limitations": [
+          "Current computational capabilities are insufficient for modeling batteries at atomic length scales",
+          "State-of-the-art methods fall short of required accuracy and scale for realistic battery interfaces"
+        ],
+        "gap_signals": [
+          {
+            "signal_id": "sig_1783541497950262800",
+            "signal_type": "limitation",
+            "text": "Current computational capabilities are insufficient for modeling batteries at atomic length scales",
+            "evidence_type": "author_opinion",
+            "supporting_reference": "",
+            "confidence": 0.82
+          },
+          {
+            "signal_id": "sig_1783541497950296500",
+            "signal_type": "limitation",
+            "text": "State-of-the-art methods fall short of required accuracy and scale for realistic battery interfaces",
+            "evidence_type": "author_opinion",
+            "supporting_reference": "",
+            "confidence": 0.82
+          },
+          {
+            "signal_id": "sig_1783541497950210900",
+            "signal_type": "capability_gap",
+            "text": "Future work on modeling batteries at atomic lengthscales requires capabilities beyond state-of-the-art.",
+            "evidence_type": "problem_statement",
+            "supporting_reference": "",
+            "confidence": 0.6
+          }
+        ],
+        "datasets_or_materials": [
+          "Liquid ethylene carbonate (EC)",
+          "Lithium intercalated graphite",
+          "Lithium metal",
+          "Oxide-coated graphite",
+          "Spinel manganese oxide surfaces",
+          "Water-solid interfaces (for contextual comparison)"
+        ],
+        "code_or_implementation": [],
+        "important_claims": [
+          {
+            "claim": "Kinetically controlled two-electron-induced reactions govern EC decomposition at interfaces",
+            "evidence": "Identified through ab initio molecular dynamics studies of EC decomposition on multiple electrode surfaces"
+          },
+          {
+            "claim": "A previously much neglected chemical bond in EC is broken during decomposition",
+            "evidence": "Revealed in AIMD simulations across multiple electrode systems"
+          },
+          {
+            "claim": "Electron tunneling plays a critical role in interfacial electrochemical reactions",
+            "evidence": "Emerges as a key theme in the reviewed AIMD studies"
+          }
+        ],
+        "reuse_value_for_research": "Provides conceptual framing and mechanistic insights for designing future AIMD studies of battery interfaces; highlights cross-disciplinary methodological needs and prioritizes electron-transfer and bond-breaking phenomena in electrolyte decomposition modeling.",
+        "extractor": "qwen_keynote"
+      }
+    }
+  ],
+  "mechanism_reports": [],
+  "pipeline_tasks": []
+}

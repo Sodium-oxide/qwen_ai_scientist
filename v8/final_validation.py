@@ -100,24 +100,6 @@ class ExistingPath:
         self.absolute_path = absolute_path
 
 
-def task_worktree_roots(task_ids: set[str]) -> list[Path]:
-    roots: list[Path] = []
-    for task_id in sorted(task_ids):
-        try:
-            task = load_task(task_id)
-        except Exception:
-            continue
-        if not task.worktree:
-            continue
-        try:
-            from .worktree_isolation import resolve_worktree_cwd
-        except ImportError:
-            from worktree_isolation import resolve_worktree_cwd
-        try:
-            roots.append(resolve_worktree_cwd(task.worktree))
-        except Exception as exc:
-            log_event("WARN", "validation_worktree_unavailable", task_id=task.id, worktree=task.worktree, detail=exc)
-    return roots
 
 
 def find_existing_path(rel_path: str, preferred_roots: list[Path] | None = None) -> ExistingPath | None:
@@ -159,8 +141,8 @@ def run_pytest(root: Path, rel_path: str) -> str:
     if completed.returncode == 0:
         return ""
     summary = output.strip().replace("\n", "\\n")
-    if len(summary) > 500:
-        summary = summary[:500] + "...[truncated]"
+    if len(summary) > 1000:
+        summary = summary[:1000] + "...[truncated]"
     return f"- Tests failed for {rel_path} under {root}: {summary}"
 
 

@@ -145,7 +145,6 @@ def bounded_tool_result_preview(rel: str, chars: int, mode: str, body: str) -> s
 
 def write_file(path: str, content: str, cwd: str | None = None, actor: str = "lead") -> str:
     target = safe_path(path, cwd)
-    enforce_assigned_worktree_write_permission(target, actor)
     target.parent.mkdir(parents=True, exist_ok=True)
     target.write_text(content, encoding="utf-8")
     return f"Wrote {len(content)} characters to {relative(target)}"
@@ -153,45 +152,12 @@ def write_file(path: str, content: str, cwd: str | None = None, actor: str = "le
 
 def edit_file(path: str, old_text: str, new_text: str, cwd: str | None = None, actor: str = "lead") -> str:
     target = safe_path(path, cwd)
-    enforce_assigned_worktree_write_permission(target, actor)
     content = target.read_text(encoding="utf-8", errors="replace")
     if old_text not in content:
         raise ValueError("old_text was not found.")
     updated = content.replace(old_text, new_text, 1)
     target.write_text(updated, encoding="utf-8")
     return f"Replaced one occurrence in {relative(target)}"
-
-
-def enforce_assigned_worktree_write_permission(target: Path, actor: str) -> None:
-    actor_name = normalize_actor(actor)
-    try:
-        from .task_system import load_tasks
-        from .worktree_isolation import resolve_worktree_cwd
-    except ImportError:
-        from task_system import load_tasks
-        from worktree_isolation import resolve_worktree_cwd
-
-    for task in load_tasks():
-        if task.status != "in_progress" or not task.owner or not task.worktree:
-            continue
-        owner = normalize_actor(task.owner)
-        if actor_name == owner:
-            continue
-        try:
-            worktree_root = resolve_worktree_cwd(task.worktree)
-        except Exception:
-            continue
-        if target.resolve().is_relative_to(worktree_root.resolve()):
-            raise PermissionError(
-                "Assigned worktree write blocked: "
-                f"task {task.id} is owned by {task.owner}; actor {actor or 'lead'} "
-                "must ask the owner teammate to modify this worktree."
-            )
-
-
-def normalize_actor(value: str) -> str:
-    raw = str(value or "lead").strip().lower().replace("-", "_").replace(" ", "_")
-    return "".join(char for char in raw if char.isalnum() or char == "_") or "lead"
 
 
 def glob(pattern: str, limit: int = 200, cwd: str | None = None) -> str:
@@ -284,83 +250,12 @@ def complete_task(task_id: str) -> str:
     return task_complete(task_id)
 
 
-def spawn_teammate(name: str, task: str = "") -> str:
-    try:
-        from .agent_teams import spawn_teammate as team_spawn
-    except ImportError:
-        from agent_teams import spawn_teammate as team_spawn
-    return team_spawn(name, task)
 
 
-def send_message(to: str, content: str, type: str = "message") -> str:
-    try:
-        from .agent_teams import LEAD, send_message as team_send
-    except ImportError:
-        from agent_teams import LEAD, send_message as team_send
-    return team_send(LEAD, to, content, type=type)
 
 
-def check_inbox(agent: str = "lead") -> str:
-    try:
-        from .agent_teams import check_inbox as team_check
-    except ImportError:
-        from agent_teams import check_inbox as team_check
-    return team_check(agent)
 
 
-def request_shutdown(teammate: str, reason: str = "") -> str:
-    try:
-        from .agent_teams import request_shutdown as team_shutdown
-    except ImportError:
-        from agent_teams import request_shutdown as team_shutdown
-    return team_shutdown(teammate, reason)
-
-
-def request_plan(teammate: str, prompt: str) -> str:
-    try:
-        from .agent_teams import request_plan as team_plan
-    except ImportError:
-        from agent_teams import request_plan as team_plan
-    return team_plan(teammate, prompt)
-
-
-def review_plan(request_id: str, approve: bool, feedback: str = "") -> str:
-    try:
-        from .agent_teams import review_plan as team_review
-    except ImportError:
-        from agent_teams import review_plan as team_review
-    return team_review(request_id, approve, feedback)
-
-
-def create_worktree(name: str, task_id: str = "") -> str:
-    try:
-        from .worktree_isolation import create_worktree as wt_create
-    except ImportError:
-        from worktree_isolation import create_worktree as wt_create
-    result = wt_create(name, task_id)
-    if task_id:
-        try:
-            from .task_system import bind_task_worktree
-        except ImportError:
-            from task_system import bind_task_worktree
-        result = f"{result}\n{bind_task_worktree(task_id, name)}"
-    return result
-
-
-def remove_worktree(name: str, discard_changes: bool = False) -> str:
-    try:
-        from .worktree_isolation import remove_worktree as wt_remove
-    except ImportError:
-        from worktree_isolation import remove_worktree as wt_remove
-    return wt_remove(name, discard_changes)
-
-
-def keep_worktree(name: str, reason: str = "") -> str:
-    try:
-        from .worktree_isolation import keep_worktree as wt_keep
-    except ImportError:
-        from worktree_isolation import keep_worktree as wt_keep
-    return wt_keep(name, reason)
 
 
 def connect_mcp(name: str) -> str:
@@ -463,7 +358,7 @@ def explore_domain_subspaces(
     return science_explore_subspaces(domain, max_subspaces, probe_depth, use_llm, providers, user_hints)
 
 
-def search_literature(query: str, providers: list[str] | None = None, max_results: int = 10) -> str:
+def search_literature(query: str, providers: list[str] | None = None, max_results: int = 30) -> str:
     try:
         from .science_core import search_literature as science_search
     except ImportError:
@@ -474,7 +369,7 @@ def search_literature(query: str, providers: list[str] | None = None, max_result
 def search_literature_stratified(
     query: str,
     providers: list[str] | None = None,
-    max_results: int = 15,
+    max_results: int = 40,
     domain: str = "",
     focus_branches: list[str] | None = None,
     use_llm: bool = False,
@@ -489,7 +384,7 @@ def search_literature_stratified(
 def search_papers(
     query: str,
     databases: list[str] | None = None,
-    max_results: int = 15,
+    max_results: int = 40,
     years: str = "",
 ) -> str:
     try:
@@ -502,7 +397,7 @@ def search_papers(
 def search_papers_stratified(
     query: str,
     databases: list[str] | None = None,
-    max_results: int = 15,
+    max_results: int = 40,
     years: str = "",
     domain: str = "",
     focus_branches: list[str] | None = None,
@@ -592,7 +487,6 @@ def create_science_delegation_tasks(
     selected_subfields: list[str] | None = None,
     focus_branches: list[str] | None = None,
     max_branch_tasks: int = 6,
-    spawn_teammates: bool = False,
 ) -> str:
     try:
         from .science_core import create_science_delegation_tasks as science_delegation
@@ -605,7 +499,6 @@ def create_science_delegation_tasks(
         selected_subfields,
         focus_branches,
         max_branch_tasks,
-        spawn_teammates,
     )
 
 
@@ -614,21 +507,19 @@ def create_boxue_delegation_tasks(
     goal: str = "",
     phases: list[str] | None = None,
     max_steps: int = 20,
-    spawn_teammates: bool = False,
     max_parallel_agents: int = 3,
 ) -> str:
     try:
         from .science_core import create_boxue_delegation_tasks as boxue_delegation
     except ImportError:
         from science_core import create_boxue_delegation_tasks as boxue_delegation
-    return boxue_delegation(project_id, goal, phases, max_steps, spawn_teammates, max_parallel_agents)
+    return boxue_delegation(project_id, goal, phases, max_steps, max_parallel_agents)
 
 
 def run_boxue_research_round(
     project_id: str,
     goal: str = "",
     phases: list[str] | None = None,
-    spawn_teammates: bool = True,
     plan_id: str = "",
     execution_mode: str = "async",
     max_steps: int = 20,
@@ -645,7 +536,7 @@ def run_boxue_research_round(
         project_id=project_id,
         goal=goal,
         phases=phases,
-        spawn_teammates=spawn_teammates,
+        
         plan_id=plan_id,
         execution_mode=execution_mode,
         max_steps=max_steps,
@@ -677,8 +568,8 @@ def run_autogen_research_flow(
     goal: str = "",
     groupchat_id: str = "",
     providers: list[str] | None = None,
-    max_results: int = 15,
-    import_top_k: int = 10,
+    max_results: int = 40,
+    import_top_k: int = 20,
     use_llm: bool = True,
     live_search: bool = False,
     run_debate: bool = True,
@@ -751,8 +642,8 @@ def run_science_crew_flow(
     process: str = "sequential",
     flow: str = "research_hypothesis_debate",
     providers: list[str] | None = None,
-    max_results: int = 15,
-    import_top_k: int = 10,
+    max_results: int = 40,
+    import_top_k: int = 20,
     use_llm: bool = True,
     live_search: bool = False,
     run_debate: bool = True,
@@ -1004,12 +895,12 @@ def run_zhizhi_literature_analysis(
     project_id: str,
     domain: str,
     query: str,
-    max_results: int = 10,
-    years: str = "last 5 years",
+    max_results: int = 40,
+    years: str = "last 15 years",
     providers: list[str] | None = None,
     import_top_k: int = SCIENCE_ZHIZHI_DEFAULT_IMPORT_TOP_K,
     graph_depth: int = 1,
-    use_llm: bool = False,
+    use_llm: bool = True,
     focus_branches: list[str] | None = None,
     live_coverage_check: bool = True,
     subspace_map_id: str = "",
@@ -1123,7 +1014,7 @@ def find_structural_analogy_transfers(
     project_id: str,
     target_scenario: str = "",
     threshold: float = 0.55,
-    max_results: int = 10,
+    max_results: int = 40,
 ) -> str:
     try:
         from .science_core import find_structural_analogy_transfers as science_analogies
@@ -1667,132 +1558,8 @@ TASK_TOOLS = [
     },
 ]
 
-TEAM_TOOLS = [
-    {
-        "name": "spawn_teammate",
-        "description": "Start a named teammate agent in a background idle loop.",
-        "input_schema": {
-            "type": "object",
-            "properties": {
-                "name": {"type": "string", "description": "Stable teammate name."},
-                "task": {
-                    "type": "string",
-                    "description": "Optional initial task to place in the teammate inbox.",
-                },
-            },
-            "required": ["name"],
-        },
-    },
-    {
-        "name": "send_message",
-        "description": "Send a mailbox message from Lead to another agent.",
-        "input_schema": {
-            "type": "object",
-            "properties": {
-                "to": {"type": "string", "description": "Target teammate or lead."},
-                "content": {"type": "string", "description": "Message body."},
-                "type": {
-                    "type": "string",
-                    "description": "Message type, usually message/result.",
-                },
-            },
-            "required": ["to", "content"],
-        },
-    },
-    {
-        "name": "check_inbox",
-        "description": "Read and clear an agent mailbox, routing Lead protocol responses.",
-        "input_schema": {
-            "type": "object",
-            "properties": {
-                "agent": {
-                    "type": "string",
-                    "description": "Agent name. Defaults to lead.",
-                }
-            },
-            "required": [],
-        },
-    },
-    {
-        "name": "request_shutdown",
-        "description": "Ask a teammate to stop gracefully through the protocol state machine.",
-        "input_schema": {
-            "type": "object",
-            "properties": {
-                "teammate": {"type": "string", "description": "Target teammate name."},
-                "reason": {"type": "string", "description": "Optional shutdown reason."},
-            },
-            "required": ["teammate"],
-        },
-    },
-    {
-        "name": "request_plan",
-        "description": "Ask a teammate to submit a plan for Lead approval.",
-        "input_schema": {
-            "type": "object",
-            "properties": {
-                "teammate": {"type": "string", "description": "Target teammate name."},
-                "prompt": {"type": "string", "description": "Planning request."},
-            },
-            "required": ["teammate", "prompt"],
-        },
-    },
-    {
-        "name": "review_plan",
-        "description": "Approve or reject a teammate plan approval request.",
-        "input_schema": {
-            "type": "object",
-            "properties": {
-                "request_id": {"type": "string", "description": "Protocol request id."},
-                "approve": {"type": "boolean", "description": "Whether to approve the plan."},
-                "feedback": {"type": "string", "description": "Optional feedback."},
-            },
-            "required": ["request_id", "approve"],
-        },
-    },
-]
 
-WORKTREE_TOOLS = [
-    {
-        "name": "create_worktree",
-        "description": "Create an isolated git worktree. If git worktree fails, use the configured lightweight fallback snapshot instead of copying the whole workspace.",
-        "input_schema": {
-            "type": "object",
-            "properties": {
-                "name": {"type": "string", "description": "Safe worktree name."},
-                "task_id": {"type": "string", "description": "Optional task id to bind."},
-            },
-            "required": ["name"],
-        },
-    },
-    {
-        "name": "remove_worktree",
-        "description": "Remove an isolated worktree after safety checks.",
-        "input_schema": {
-            "type": "object",
-            "properties": {
-                "name": {"type": "string", "description": "Worktree name."},
-                "discard_changes": {
-                    "type": "boolean",
-                    "description": "Allow deleting uncommitted or non-empty worktrees.",
-                },
-            },
-            "required": ["name"],
-        },
-    },
-    {
-        "name": "keep_worktree",
-        "description": "Keep a worktree and record an audit event.",
-        "input_schema": {
-            "type": "object",
-            "properties": {
-                "name": {"type": "string", "description": "Worktree name."},
-                "reason": {"type": "string", "description": "Why the worktree is kept."},
-            },
-            "required": ["name"],
-        },
-    },
-]
+WORKTREE_TOOLS = []
 
 MCP_TOOLS = [
     {
@@ -2090,10 +1857,6 @@ SCIENCE_TOOLS = [
                     "description": "Manual branch labels/queries when no subspace_map_id is available.",
                 },
                 "max_branch_tasks": {"type": "integer", "description": "Maximum parallel branch scout tasks to create, default 6."},
-                "spawn_teammates": {
-                    "type": "boolean",
-                    "description": "If true, also spawn one teammate per branch scout. Default false; creating tasks first is safer.",
-                },
             },
             "required": ["project_id"],
         },
@@ -2112,10 +1875,6 @@ SCIENCE_TOOLS = [
                     "description": "Optional subset of phases, e.g. Gap Discovery, Hypothesis Generation, Socratic Debate.",
                 },
                 "max_steps": {"type": "integer", "description": "Maximum Boxue delegation steps, default 20, capped at 25."},
-                "spawn_teammates": {
-                    "type": "boolean",
-                    "description": "If true, spawn teammates for currently unblocked specialist tasks. Default false.",
-                },
                 "max_parallel_agents": {"type": "integer", "description": "Maximum teammates to spawn for unblocked tasks, default 3."},
             },
             "required": ["project_id"],
@@ -2133,10 +1892,6 @@ SCIENCE_TOOLS = [
                     "type": "array",
                     "items": {"type": "string"},
                     "description": "Optional subset of phases, e.g. Gap Discovery, Hypothesis Generation, Socratic Debate.",
-                },
-                "spawn_teammates": {
-                    "type": "boolean",
-                    "description": "If true, start currently unblocked specialist teammates. Default true.",
                 },
                 "plan_id": {
                     "type": "string",
@@ -2906,15 +2661,6 @@ TOOL_HANDLERS: dict[str, Callable[..., str]] = {
     "get_task": get_task,
     "claim_task": claim_task,
     "complete_task": complete_task,
-    "spawn_teammate": spawn_teammate,
-    "send_message": send_message,
-    "check_inbox": check_inbox,
-    "request_shutdown": request_shutdown,
-    "request_plan": request_plan,
-    "review_plan": review_plan,
-    "create_worktree": create_worktree,
-    "remove_worktree": remove_worktree,
-    "keep_worktree": keep_worktree,
     "connect_mcp": connect_mcp,
     "schedule_cron": schedule_cron,
     "list_crons": list_crons,

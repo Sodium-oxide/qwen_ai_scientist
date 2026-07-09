@@ -1,9 +1,7 @@
 ---
 name: top_gaps
-description: Top 3 knowledge gaps detected, prioritized by mechanism relevance
+description: TanXi-identified priority knowledge gaps
 type: project
 ---
 
-- gap_1783441393165764400 (contradiction): opposing claims about LiCoO2 stability at >4.5 V — source: Yang et al. (2022) vs Mao et al. (2025)
-- gap_1783441403134376600 (improvement): sparse benchmark coverage for PI coating in NCM-sulfide ASSBs — source: Wu et al. (2026)
-- gap_1783441393165764401 (anomaly): unexplained divergence in oxygen release kinetics under identical surface doping — source: Chen et al. (2024)
+['Mechanism Gap: No unified causal model linking surface reconstruction → oxygen release → electrolyte oxidation → CEI breakdown → impedance rise under >4.5V cycling.', 'Contradiction Gap: Coating (e.g., Al₂O₃) improves interfacial stability in LiCoO₂ but reduces Li⁺ conductivity in Ni-rich NMC — no systematic trade-off quantification across voltage, temperature, and loading.', 'Boundary Gap: Performance divergence at 4.6V vs. 4.7V is inconsistently attributed to electrolyte composition, temperature, or cathode morphology — no controlled multi-variable study exists.']
