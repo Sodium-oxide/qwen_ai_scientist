@@ -138,6 +138,7 @@
 - [project_min_quality_threshold_used.md](project_min_quality_threshold_used.md) - project: quality filter applied during relation graph construction
 - [project_mock_teammates_behavior.md](project_mock_teammates_behavior.md) - project: Spawned teammates are chat-only
 - [project_next_step_required.md](project_next_step_required.md) - project: Immediate remediation action
+- [project_next_step_uhv_bootstrap.md](project_next_step_uhv_bootstrap.md) - project: Actionable recovery step
 - [project_objective.md](project_objective.md) - project: primary research objective
 - [project_papergraph_import_stats.md](project_papergraph_import_stats.md) - project: Literature ingestion summary
 - [project_papergraph_network_test_project.md](project_papergraph_network_test_project.md) - project: Research project created to validate the literature-to-knowledge-gap detection闭环 for AI for Science.
@@ -155,6 +156,7 @@
 - [project_project_id.md](project_project_id.md) - project: stable project identifier
 - [project_project_objective.md](project_project_objective.md) - project: Core validation goal
 - [project_project_title.md](project_project_title.md) - project: user-defined research title
+- [project_provider_failure_summary.md](project_provider_failure_summary.md) - project: Stable record of failed providers and reasons
 - [project_python_interpreter_path.md](project_python_interpreter_path.md) - project: Python interpreter to use for running tests/scripts
 - [project_relation_graph_id.md](project_relation_graph_id.md) - project: ID of the filtered literature relation graph (min_quality=0.55)
 - [project_repo_structure_claude_code_versions.md](project_repo_structure_claude_code_versions.md) - project: Repo layout: v1-v8 iterative Python versions
@@ -184,6 +186,7 @@
 - [project_top_hypothesis_physical_engineering_validity.md](project_top_hypothesis_physical_engineering_validity.md) - project: Top 3 MingLi假设的工程合理性结论
 - [project_top_knowledge_gaps.md](project_top_knowledge_gaps.md) - project: Top 5 validated, HCC-specific knowledge gaps identified by TanXi
 - [project_total_retrieved_papers.md](project_total_retrieved_papers.md) - project: total literature retrieved in stratified cascade
+- [project_uhv_autogen_closed_loop_failure_point.md](project_uhv_autogen_closed_loop_failure_point.md) - project: ZhiZhi failed to ingest any literature due to API failures, breaking the chain at step 1
 - [project_unknown_method_scenario_benchmark_ratio.md](project_unknown_method_scenario_benchmark_ratio.md) - project: fraction of missing method-scenario-benchmark triples
 - [project_v8_eval_target_calc_project.md](project_v8_eval_target_calc_project.md) - project: Python calc project with pytest
 - [project_v8_eval_targets_sandbox.md](project_v8_eval_targets_sandbox.md) - project: Sandbox project for eval tasks (canonical path + style + existing modules)

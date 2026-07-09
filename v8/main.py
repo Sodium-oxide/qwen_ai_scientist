@@ -418,14 +418,6 @@ def run_agent_locked(user_input: str) -> str:
         fired_crons = consume_cron_queue()
         if fired_crons:
             messages.append({"role": "user", "content": render_scheduled_prompt(fired_crons)})
-        team_messages = consume_lead_inbox()
-        if team_messages:
-            messages.append(
-                {
-                    "role": "user",
-                    "content": "<team_inbox>\n" + "\n\n".join(team_messages) + "\n</team_inbox>",
-                }
-            )
         notifications = collect_background_notifications()
         if notifications:
             messages.append({"role": "user", "content": "\n\n".join(notifications)})
