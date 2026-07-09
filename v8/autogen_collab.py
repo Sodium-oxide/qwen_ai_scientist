@@ -140,13 +140,14 @@ def run_autogen_research_flow(
 
     # Enforce minimum provider set: always include semantic_scholar + arxiv for preprint coverage
     MINIMUM_PROVIDERS = ["semantic_scholar", "arxiv"]
-    if providers:
+    if not providers:
+        providers = list(MINIMUM_PROVIDERS)
+    else:
         normalized = [p.strip().lower().replace("-", "_") for p in providers]
         for required in MINIMUM_PROVIDERS:
             if required not in normalized:
                 providers = list(providers) + [required]
                 _logger.warning(f"Provider '{required}' was missing from LLM request; auto-added for coverage.")
-    # providers=None falls through to default_literature_providers() which already includes both
 
     project = load_project(project_id)
     if groupchat_id:

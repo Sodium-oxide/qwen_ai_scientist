@@ -865,8 +865,9 @@ def boxue_run_autogen_groupchat_pipeline(
         output = run_autogen_research_flow(
             project_id=project_id,
             goal=boxue_research_query(load_project(project_id), goal),
-            max_results=20,
-            import_top_k=15,
+            max_results=50,
+            import_top_k=20,
+            providers=["semantic_scholar", "arxiv"],
             use_llm=True,
             live_search=False,
             run_debate=True,

@@ -119,6 +119,15 @@ def default_literature_providers(domain: str = "", query: str = "") -> list[str]
         "control",
         "robotics",
         "statistics",
+        "electrical engineering",
+        "power",
+        "grid",
+        "transmission",
+        "energy",
+        "engineering",
+        "signal processing",
+        "optimization",
+        "automation",
     )
     cs_terms = (
         "computer science",
