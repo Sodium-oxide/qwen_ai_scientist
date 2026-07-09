@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import re
+import logging
 import time
 from pathlib import Path
 from typing import Any
@@ -12,6 +13,8 @@ try:
 except ImportError:
     from config import PACKAGE_DIR
     from log import log_event
+
+_logger = logging.getLogger(__name__)
 
 
 AUTOGEN_DIR = PACKAGE_DIR / ".science" / "autogen_groupchats"
@@ -61,6 +64,24 @@ def create_autogen_groupchat(
     return json.dumps(spec, ensure_ascii=False, indent=2)
 
 
+def enforce_qwen_model_family(value: str, default: str) -> str:
+    """Validate that *value* is a qwen-family model name.
+
+    If the value is non-empty and starts with 'qwen' (case-insensitive),
+    return it unchanged.  Otherwise log a warning and return *default*.
+    """
+    stripped = (value or "").strip()
+    if stripped and stripped.lower().startswith("qwen"):
+        return stripped
+    if stripped:
+        _logger.warning(
+            "Non-qwen model family '%s' was passed; silently replacing with default '%s'.",
+            value,
+            default,
+        )
+    return default
+
+
 def run_autogen_research_flow(
     project_id: str,
     goal: str = "",
@@ -106,6 +127,12 @@ def run_autogen_research_flow(
             run_yanzhen_mechanism_verification,
             run_zhizhi_literature_analysis,
         )
+
+    # Enforce qwen-family models for all debate/verification roles.
+    proponent_model_family = enforce_qwen_model_family(proponent_model_family, "qwen-plus")
+    opponent_model_family = enforce_qwen_model_family(opponent_model_family, "qwen-max")
+    judge_model_family = enforce_qwen_model_family(judge_model_family, "qwen-deep-research")
+    verifier_model_family = enforce_qwen_model_family(verifier_model_family, "qwen-plus")
 
     project = load_project(project_id)
     if groupchat_id:
