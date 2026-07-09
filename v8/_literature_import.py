@@ -228,7 +228,6 @@ def import_literature_search_result(
             query=str(search_record.get("query") or ""),
         )
     if should_reject_for_domain(result, domain=project_domain):
-        from .log import log_event
         log_event(
             "SCIENCE",
             "import_rejected_by_domain_gate",
