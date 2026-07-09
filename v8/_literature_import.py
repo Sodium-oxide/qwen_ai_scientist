@@ -511,7 +511,7 @@ def import_papergraph_record(
     )
     project["updatedAt"] = time.time()
     save_project(project)
-    log_event("SCIENCE", "paper_imported", project_id=project_id, paper_id=record.paper_id, credibility=score)
+    log_event("SCIENCE", "paper_imported", project_id=project_id, paper_id=record.paper_id, credibility=score, title=str(title or "")[:120])
     return json.dumps({"status": "imported", "record": asdict(record)}, ensure_ascii=False, indent=2)
 
 def extract_paper_keynote(

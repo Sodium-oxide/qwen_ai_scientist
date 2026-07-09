@@ -971,6 +971,8 @@ def run_zhizhi_literature_analysis(
         )
 
     search_id = str(search_payload.get("search_id"))
+    log_event("SCIENCE", "search_phase_complete", search_id=search_id, total_results=search_payload.get("total_results", 0),
+              providers=selected_providers, strata={s.get("layer"): s.get("count", 0) for s in (search_payload.get("strata") or [])})
     coverage_diagnostic = literature_domain_coverage_diagnostic(
         search_id,
         domain=domain,
@@ -1003,20 +1005,50 @@ def run_zhizhi_literature_analysis(
             f"{missing.get('layer')} selected={missing.get('selected')}/target={missing.get('target')} "
             f"from candidates={missing.get('candidates')}. This indicates retrieval/candidate scarcity rather than top-K truncation."
         )
+    # === STRATIFIED LAYER-BY-LAYER IMPORT ===
+    # Separate search results from import: search is already done, now import layer by layer
     imported_records: list[dict[str, Any]] = []
-    for result in import_candidates:
-        try:
-            imported = json.loads(import_literature_search_result(project_id, search_id, int(result.get("result_index") or 0), use_llm=use_llm))
-            imported_records.append(imported)
-            record = imported.get("record") or imported.get("existing_record") or {}
-            paper_id = record.get("paper_id")
-            if paper_id:
-                try:
-                    extract_paper_keynote(project_id, paper_id=str(paper_id), use_llm=use_llm)
-                except Exception as exc:
-                    observations.append(f"keynote extraction failed for {paper_id}: {exc}")
-        except Exception as exc:
-            observations.append(f"import failed for result {result.get('result_index')}: {exc}")
+    layer_order = ["L0_review", "L1_milestone", "L2_top_latest", "L3_preprint", "L4_regular"]
+    # Group candidates by stratified_layer
+    by_layer: dict[str, list[dict[str, Any]]] = {layer: [] for layer in layer_order}
+    for candidate in import_candidates:
+        layer = str(candidate.get("stratified_layer") or "L4_regular")
+        if layer in by_layer:
+            by_layer[layer].append(candidate)
+        else:
+            by_layer["L4_regular"].append(candidate)
+
+    log_event("SCIENCE", "import_phase_start", search_id=search_id, total_candidates=len(import_candidates),
+              layers={layer: len(items) for layer, items in by_layer.items() if items})
+
+    for layer_name in layer_order:
+        layer_candidates = by_layer.get(layer_name, [])
+        if not layer_candidates:
+            continue
+        log_event("SCIENCE", "import_layer_start", layer=layer_name, candidates=len(layer_candidates))
+        layer_imported = 0
+        layer_failed = 0
+        for result in layer_candidates:
+            result_index = int(result.get("result_index") or 0)
+            result_title = str(result.get("title") or "untitled")[:100]
+            try:
+                imported = json.loads(import_literature_search_result(project_id, search_id, result_index, use_llm=use_llm))
+                imported_records.append(imported)
+                layer_imported += 1
+                record = imported.get("record") or imported.get("existing_record") or {}
+                paper_id = record.get("paper_id")
+                log_event("SCIENCE", "paper_imported", layer=layer_name, title=result_title, paper_id=paper_id, result_index=result_index)
+                if paper_id:
+                    try:
+                        extract_paper_keynote(project_id, paper_id=str(paper_id), use_llm=use_llm)
+                    except Exception as exc:
+                        observations.append(f"keynote extraction failed for {paper_id}: {exc}")
+            except Exception as exc:
+                layer_failed += 1
+                observations.append(f"import failed for {layer_name} result {result_index} ({result_title}): {exc}")
+        log_event("SCIENCE", "import_layer_complete", layer=layer_name, imported=layer_imported, failed=layer_failed, total=len(layer_candidates))
+
+    log_event("SCIENCE", "import_phase_complete", search_id=search_id, total_imported=len(imported_records), total_candidates=len(import_candidates))
     action["imported_records"] = len(imported_records)
 
     # === BLIND SPOT SUPPLEMENT (runs after main import to avoid exhausting SS quota first) ===
