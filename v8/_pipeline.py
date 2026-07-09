@@ -1030,7 +1030,8 @@ def run_zhizhi_literature_analysis(
         layer_failed = 0
         for result in layer_candidates:
             result_index = int(result.get("result_index") or 0)
-            result_title = str(result.get("title") or "untitled")[:100]
+            result_title = str(result.get("title") or "untitled")[:120]
+            log_event("SCIENCE", "import_paper_attempt", layer=layer_name, title=result_title, result_index=result_index)
             try:
                 imported = json.loads(import_literature_search_result(project_id, search_id, result_index, use_llm=use_llm))
                 imported_records.append(imported)
@@ -1045,6 +1046,7 @@ def run_zhizhi_literature_analysis(
                         observations.append(f"keynote extraction failed for {paper_id}: {exc}")
             except Exception as exc:
                 layer_failed += 1
+                log_event("SCIENCE", "import_paper_failed", layer=layer_name, title=result_title, result_index=result_index, error=str(exc)[:200])
                 observations.append(f"import failed for {layer_name} result {result_index} ({result_title}): {exc}")
         log_event("SCIENCE", "import_layer_complete", layer=layer_name, imported=layer_imported, failed=layer_failed, total=len(layer_candidates))
 
