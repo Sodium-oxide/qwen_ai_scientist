@@ -68,7 +68,7 @@ ARXIV_429_COUNT = 0
 def search_papers(
     query: str,
     databases: list[str] | None = None,
-    max_results: int = 15,
+    max_results: int = 50,
     years: str = "",
 ) -> str:
     try:
@@ -88,7 +88,7 @@ def search_papers(
 def search_papers_stratified(
     query: str,
     databases: list[str] | None = None,
-    max_results: int = 15,
+    max_results: int = 50,
     years: str = "",
     domain: str = "",
     focus_branches: list[str] | None = None,
@@ -211,7 +211,7 @@ def search_literature_provider_block(provider: str, query: str, max_results: int
 def search_literature(
     query: str,
     providers: list[str] | None = None,
-    max_results: int = 40,
+    max_results: int = 50,
 ) -> str:
     try:
         from ._literature_import import import_literature_search_result
@@ -276,7 +276,7 @@ def search_literature(
 def search_literature_stratified(
     query: str,
     providers: list[str] | None = None,
-    max_results: int = 40,
+    max_results: int = 50,
     domain: str = "",
     focus_branches: list[str] | None = None,
     use_llm: bool = False,
@@ -495,7 +495,7 @@ def stratified_literature_quotas(max_results: int) -> dict[str, int]:
         "L0_review": 3,
         "L1_milestone": 4,
         "L2_top_latest": 4,
-        "L3_preprint": 1,
+        "L3_preprint": 3,
     }
     if total <= 1:
         return {"L0_review": total, "L1_milestone": 0, "L2_top_latest": 0, "L3_preprint": 0, "L4_regular": 0}
@@ -2098,7 +2098,7 @@ def semantic_scholar_get_json(url: str, headers: dict[str, str] | None = None) -
         log_event("SCIENCE", "semantic_scholar_cache_hit")
         return json.loads(cached)
     # Session-level kill switch: if too many 429s total, stop hitting SS entirely
-    if SEMANTIC_SCHOLAR_429_COUNT >= 25:
+    if SEMANTIC_SCHOLAR_429_COUNT >= 200:
         raise RuntimeError(
             f"Semantic Scholar session rate limit exceeded: {SEMANTIC_SCHOLAR_429_COUNT} total 429s. "
             "All further SS API calls are skipped for this session to avoid wasting time."
@@ -2108,7 +2108,7 @@ def semantic_scholar_get_json(url: str, headers: dict[str, str] | None = None) -
     last_error: RuntimeError | None = None
     for attempt in range(retry_limit + 1):
         # Check session kill switch inside retry loop too
-        if SEMANTIC_SCHOLAR_429_COUNT >= 25:
+        if SEMANTIC_SCHOLAR_429_COUNT >= 200:
             raise RuntimeError(
                 f"Semantic Scholar session rate limit exceeded during retry: {SEMANTIC_SCHOLAR_429_COUNT} total 429s. "
                 "Stopping retries to avoid wasting time."

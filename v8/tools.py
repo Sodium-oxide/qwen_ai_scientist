@@ -369,7 +369,7 @@ def search_literature(query: str, providers: list[str] | None = None, max_result
 def search_literature_stratified(
     query: str,
     providers: list[str] | None = None,
-    max_results: int = 40,
+    max_results: int = 50,
     domain: str = "",
     focus_branches: list[str] | None = None,
     use_llm: bool = False,
@@ -384,7 +384,7 @@ def search_literature_stratified(
 def search_papers(
     query: str,
     databases: list[str] | None = None,
-    max_results: int = 40,
+    max_results: int = 50,
     years: str = "",
 ) -> str:
     try:
@@ -397,7 +397,7 @@ def search_papers(
 def search_papers_stratified(
     query: str,
     databases: list[str] | None = None,
-    max_results: int = 40,
+    max_results: int = 50,
     years: str = "",
     domain: str = "",
     focus_branches: list[str] | None = None,
@@ -435,7 +435,7 @@ def expand_literature_graph(
     result_index: int = 0,
     query: str = "",
     direction: str = "both",
-    max_results: int = 40,
+    max_results: int = 50,
     use_llm: bool = False,
     depth: int = 1,
     second_layer_top_k: int = 3,
@@ -568,7 +568,7 @@ def run_autogen_research_flow(
     goal: str = "",
     groupchat_id: str = "",
     providers: list[str] | None = None,
-    max_results: int = 40,
+    max_results: int = 50,
     import_top_k: int = 20,
     use_llm: bool = True,
     live_search: bool = False,
@@ -642,7 +642,7 @@ def run_science_crew_flow(
     process: str = "sequential",
     flow: str = "research_hypothesis_debate",
     providers: list[str] | None = None,
-    max_results: int = 40,
+    max_results: int = 50,
     import_top_k: int = 20,
     use_llm: bool = True,
     live_search: bool = False,
@@ -895,7 +895,7 @@ def run_zhizhi_literature_analysis(
     project_id: str,
     domain: str,
     query: str,
-    max_results: int = 40,
+    max_results: int = 50,
     years: str = "last 15 years",
     providers: list[str] | None = None,
     import_top_k: int = SCIENCE_ZHIZHI_DEFAULT_IMPORT_TOP_K,
@@ -1014,7 +1014,7 @@ def find_structural_analogy_transfers(
     project_id: str,
     target_scenario: str = "",
     threshold: float = 0.55,
-    max_results: int = 40,
+    max_results: int = 50,
 ) -> str:
     try:
         from .science_core import find_structural_analogy_transfers as science_analogies

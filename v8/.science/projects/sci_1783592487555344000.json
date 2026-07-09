@@ -1,0 +1,976 @@
+{
+  "project_id": "sci_1783592487555344000",
+  "title": "特高压输电变电技术 AutoGen 多Agent协作闭环验证",
+  "domain": "Ultra-High Voltage Power Transmission and Transformation / Electrical Engineering / Power Grid",
+  "objective": "验证特高压输电变电领域中，基于文献证据的 gap 发现、假设生成、机制检验和辩论迭代闭环。",
+  "strategic_need": "",
+  "phase": "Gap Discovery",
+  "createdAt": 1783592487.5553484,
+  "updatedAt": 1783593081.500809,
+  "papergraph": [],
+  "evidence": [],
+  "coverage_matrix": {},
+  "knowledge_gaps": [],
+  "hypotheses": [],
+  "keynotes": [],
+  "mechanism_reports": [],
+  "pipeline_tasks": [],
+  "knowledge_map": {
+    "dimension": "method-scenario-benchmark",
+    "main_methods": [],
+    "main_scenarios": [],
+    "main_benchmarks": [],
+    "method_scenario_coverage": {},
+    "benchmark_index": {},
+    "method_scenario_benchmark": {},
+    "method_scenario_benchmark_triples": [],
+    "claim_type_counts": {},
+    "extraction_repair": {
+      "attempted": 0,
+      "repaired": 0,
+      "still_low_quality": 0,
+      "errors": []
+    },
+    "unknown_summary": {
+      "total_triples": 0,
+      "unknown_triples": 0
+    }
+  },
+  "knowledge_gap_filter": {
+    "min_novelty": 4,
+    "input_count": 0,
+    "rejected_count": 0,
+    "rejected": [],
+    "semantic_rejected_count": 0,
+    "semantic_rejected": []
+  },
+  "semantic_rejected_knowledge_gaps": [],
+  "tanxi_gap_analysis": {
+    "agent": "tanxi",
+    "target_domain": "Ultra-High Voltage Power Transmission and Transformation / Electrical Engineering / Power Grid",
+    "thought": "TanXi scanned the PaperGraph for low-density but high-importance method-scenario-benchmark regions, claim contradictions, anomaly/tension signals, cross-disciplinary unconnected pairs, suspended unresolved problems, and strategic-need alignment.",
+    "action": {
+      "scan_coverage_density": {
+        "target_domain": "Ultra-High Voltage Power Transmission and Transformation / Electrical Engineering / Power Grid"
+      },
+      "detect_reasoning_gaps": {
+        "types": [
+          "claim_contradiction",
+          "theory_evidence_anomaly"
+        ]
+      },
+      "detect_source_gap_signals": {
+        "types": [
+          "limitations",
+          "future_work",
+          "open_problem",
+          "missing_evidence"
+        ]
+      },
+      "detect_mechanism_issue_gaps": {
+        "priority": "higher_than_matrix_holes"
+      },
+      "find_unconnected_pairs": {
+        "target_domain": "Ultra-High Voltage Power Transmission and Transformation / Electrical Engineering / Power Grid"
+      },
+      "detect_suspended_problems": {
+        "min_citation_threshold": 50
+      },
+      "prioritize_gaps": {
+        "criteria": [
+          "importance",
+          "tractability",
+          "strategic_value"
+        ]
+      },
+      "align_with_strategic_needs": {
+        "strategic_domains": [
+          "ai for science",
+          "energy"
+        ]
+      }
+    },
+    "coverage_analysis": {
+      "target_domain": "Ultra-High Voltage Power Transmission and Transformation / Electrical Engineering / Power Grid",
+      "method_count": 0,
+      "scenario_count": 0,
+      "benchmark_count": 0,
+      "dense_areas": [],
+      "density_holes": [],
+      "rejected_density_holes": []
+    },
+    "reasoning_gaps": [],
+    "cross_disciplinary_unconnected_pairs": [],
+    "suspended_problems": [],
+    "ranked_gaps": [],
+    "constraints_checked": {
+      "requires_supporting_reference": true,
+      "filters_trivial_low_novelty": true,
+      "max_gaps": 10
+    }
+  },
+  "zhizhi_reports": [
+    {
+      "thought": "ZhiZhi retrieved and filtered literature, imported grounded PaperGraph evidence, built a benchmark-aware knowledge map, expanded citation context when available, and generated gaps with novelty/value/feasibility checks.",
+      "action": {
+        "agent": "zhizhi",
+        "query": "Ultra-High Voltage Power Transmission and Transformation Electrical Engineering Power Grid",
+        "domain": "Ultra-High Voltage Power Transmission and Transformation / Electrical Engineering / Power Grid",
+        "years": "last 5 years",
+        "search_papers_stratified": {
+          "search_id": "search_1783592514057418500",
+          "total_results": 15,
+          "requested_max_results": 15,
+          "effective_search_budget": 15,
+          "providers": [
+            "semantic_scholar",
+            "arxiv",
+            "chemrxiv"
+          ],
+          "strategy": "stratified_cascade",
+          "query_plan": [
+            {
+              "branch": "primary",
+              "query": "Ultra-High Voltage Power Transmission and Transformation Electrical Engineering Power Grid"
+            },
+            {
+              "branch": "uhvac_system_design",
+              "query": "Ultra-High Voltage Power Transmission and Transformation Electrical Engineering Power Grid UHVAC transmission line design insulation coordination corona loss",
+              "topic_type": "branch"
+            },
+            {
+              "branch": "uhvdc_conversion_and_control",
+              "query": "Ultra-High Voltage Power Transmission and Transformation Electrical Engineering Power Grid UHVDC converter station VSC-HVDC LCC-HVDC control strategy",
+              "topic_type": "branch"
+            },
+            {
+              "branch": "uhv_power_transformers",
+              "query": "Ultra-High Voltage Power Transmission and Transformation Electrical Engineering Power Grid UHV transformer design insulation oil-paper aging thermal management",
+              "topic_type": "branch"
+            },
+            {
+              "branch": "grid_integration_and_stability",
+              "query": "Ultra-High Voltage Power Transmission and Transformation Electrical Engineering Power Grid UHV grid interconnection small-signal stability wide-area monitoring",
+              "topic_type": "branch"
+            },
+            {
+              "branch": "field_map_reviews",
+              "query": "Ultra-High Voltage Power Transmission and Transformation / Electrical Engineering / Power Grid Ultra-High Voltage Power Transmission and Transformation Electrical Engineering Power Grid review survey roadmap progress perspective systematic review",
+              "topic_type": "retrieval_facet"
+            },
+            {
+              "branch": "milestone_foundations",
+              "query": "Ultra-High Voltage Power Transmission and Transformation / Electrical Engineering / Power Grid Ultra-High Voltage Power Transmission and Transformation Electrical Engineering Power Grid seminal foundational highly cited landmark theory method mechanism",
+              "topic_type": "retrieval_facet"
+            },
+            {
+              "branch": "methods_and_mechanisms",
+              "query": "Ultra-High Voltage Power Transmission and Transformation / Electrical Engineering / Power Grid Ultra-High Voltage Power Transmission and Transformation Electrical Engineering Power Grid method model algorithm mechanism experiment framework",
+              "topic_type": "retrieval_facet"
+            },
+            {
+              "branch": "applications_systems_scenarios",
+              "query": "Ultra-High Voltage Power Transmission and Transformation / Electrical Engineering / Power Grid Ultra-High Voltage Power Transmission and Transformation Electrical Engineering Power Grid application system scenario case study deployment",
+              "topic_type": "retrieval_facet"
+            }
+          ],
+          "focus_branches": [],
+          "strata": [
+            {
+              "layer": "L0_review",
+              "label": "high-impact review / field map",
+              "quota": 3,
+              "query_suffix": "review survey progress perspective tutorial systematic review meta-analysis",
+              "target": 3,
+              "candidate_count": 7,
+              "raw_candidate_count": 28,
+              "selected": 3,
+              "domain_rejected": 2,
+              "recovery_used": "",
+              "carried_to_next": 0
+            },
+            {
+              "layer": "L1_milestone",
+              "label": "milestone / highly cited foundation",
+              "quota": 4,
+              "query_suffix": "seminal foundational highly cited landmark classic influential",
+              "target": 4,
+              "candidate_count": 1,
+              "raw_candidate_count": 16,
+              "selected": 1,
+              "domain_rejected": 0,
+              "recovery_used": "",
+              "carried_to_next": 3
+            },
+            {
+              "layer": "L2_top_latest",
+              "label": "recent top-venue frontier",
+              "quota": 4,
+              "query_suffix": "latest recent top journal high impact breakthrough advance frontier",
+              "target": 7,
+              "candidate_count": 13,
+              "raw_candidate_count": 16,
+              "selected": 7,
+              "domain_rejected": 0,
+              "recovery_used": "relaxed_top_latest_recent_or_high_quality_available",
+              "carried_to_next": 0
+            },
+            {
+              "layer": "L3_preprint",
+              "label": "latest arXiv preprint frontier",
+              "quota": 1,
+              "query_suffix": "",
+              "target": 1,
+              "candidate_count": 22,
+              "raw_candidate_count": 22,
+              "selected": 0,
+              "domain_rejected": 22,
+              "recovery_used": "",
+              "carried_to_next": 1
+            },
+            {
+              "layer": "L4_regular",
+              "label": "regular journal / supplemental evidence",
+              "quota": 3,
+              "query_suffix": "",
+              "target": 4,
+              "candidate_count": 13,
+              "raw_candidate_count": 54,
+              "selected": 4,
+              "domain_rejected": 0,
+              "recovery_used": "",
+              "carried_to_next": 0
+            }
+          ],
+          "errors": []
+        },
+        "domain_coverage_diagnostic": {
+          "profile": "electrical_engineering_domain_focused_on_ultra_high_voltage_uhv_ac_dc_transmissi",
+          "profile_source": "llm",
+          "search_id": "search_1783592514057418500",
+          "total_results": 15,
+          "represented_topics": [],
+          "blind_spots": [
+            {
+              "topic": "UHVAC System Design",
+              "hit_count": 1,
+              "min_hits": 10,
+              "terms": [
+                "1000 kv",
+                "bundle conductor",
+                "tower configuration"
+              ],
+              "suggested_query": "Ultra-High Voltage Power Transmission and Transformation Electrical Engineering Power Grid 1000 kv bundle conductor tower configuration",
+              "risk": "Live probe found literature for this missing branch; current PaperGraph may be incomplete, so TanXi should not treat this absence as a true unexplored gap.",
+              "live_probe": {
+                "query": "Ultra-High Voltage Power Transmission and Transformation Electrical Engineering Power Grid 1000 kv bundle conductor tower configuration",
+                "status": "ok",
+                "total_results": 6,
+                "providers": [
+                  {
+                    "provider": "semantic_scholar",
+                    "status": "ok",
+                    "result_count": 0,
+                    "top_titles": [],
+                    "error": ""
+                  },
+                  {
+                    "provider": "arxiv",
+                    "status": "ok",
+                    "result_count": 3,
+                    "top_titles": [
+                      "Electric Vehicle Attack Impact on Power Grid Operation",
+                      "A Hybrid Transmission Grid Architecture Enabling Efficient Optimal Power Flow",
+                      "Decomposition Problem in Process of Selective Identification and Localization of Voltage Fluctuations Sources in Power G...[truncated]"
+                    ],
+                    "error": ""
+                  },
+                  {
+                    "provider": "chemrxiv",
+                    "status": "ok",
+                    "result_count": 3,
+                    "top_titles": [
+                      "Ultra-High Thermal Stability of a pyrroloquinoline quinone–Calcium Radical Persistent Above 1000 K",
+                      "Facile Ion Diffusion and High Electrical Conductivity Enable High-Energy and High-Power Sodium-Ion Batteries from a Laye...[truncated]",
+                      "A Co-Axial Microtubular Flow Battery Cell with Ultra-high Volumetric Power Density"
+                    ],
+                    "error": ""
+                  }
+                ]
+              },
+              "false_negative_risk": true
+            },
+            {
+              "topic": "UHVDC Converter Technology",
+              "hit_count": 1,
+              "min_hits": 10,
+              "terms": [
+                "±800 kv",
+                "mmc",
+                "thyristor valve"
+              ],
+              "suggested_query": "Ultra-High Voltage Power Transmission and Transformation Electrical Engineering Power Grid ±800 kv mmc thyristor valve",
+              "risk": "Live probe found literature for this missing branch; current PaperGraph may be incomplete, so TanXi should not treat this absence as a true unexplored gap.",
+              "live_probe": {
+                "query": "Ultra-High Voltage Power Transmission and Transformation Electrical Engineering Power Grid ±800 kv mmc thyristor valve",
+                "status": "ok",
+                "total_results": 6,
+                "providers": [
+                  {
+                    "provider": "semantic_scholar",
+                    "status": "ok",
+                    "result_count": 0,
+                    "top_titles": [],
+                    "error": ""
+                  },
+                  {
+                    "provider": "arxiv",
+                    "status": "ok",
+                    "result_count": 3,
+                    "top_titles": [
+                      "Electric Vehicle Attack Impact on Power Grid Operation",
+                      "A Hybrid Transmission Grid Architecture Enabling Efficient Optimal Power Flow",
+                      "Decomposition Problem in Process of Selective Identification and Localization of Voltage Fluctuations Sources in Power G...[truncated]"
+                    ],
+                    "error": ""
+                  },
+                  {
+                    "provider": "chemrxiv",
+                    "status": "ok",
+                    "result_count": 3,
+                    "top_titles": [
+                      "Towards Cancer Theragnostic‒Probing the 225Ac decay chain with Ultra-High-Resolution MMC-based detectors",
+                      "Facile Ion Diffusion and High Electrical Conductivity Enable High-Energy and High-Power Sodium-Ion Batteries from a Laye...[truncated]",
+                      "A Co-Axial Microtubular Flow Battery Cell with Ultra-high Volumetric Power Density"
+                    ],
+                    "error": ""
+                  }
+                ]
+              },
+              "false_negative_risk": true
+            },
+            {
+              "topic": "UHV Transformer Engineering",
+              "hit_count": 0,
+              "min_hits": 10,
+              "terms": [
+                "1000 kv transformer",
+                "oil-paper insulation",
+                "partial discharge"
+              ],
+              "suggested_query": "Ultra-High Voltage Power Transmission and Transformation Electrical Engineering Power Grid 1000 kv transformer oil-paper insulation partial discharge",
+              "risk": "Live probe found literature for this missing branch; current PaperGraph may be incomplete, so TanXi should not treat this absence as a true unexplored gap.",
+              "live_probe": {
+                "query": "Ultra-High Voltage Power Transmission and Transformation Electrical Engineering Power Grid 1000 kv transformer oil-paper insulation partial discharge",
+                "status": "ok",
+                "total_results": 6,
+                "providers": [
+                  {
+                    "provider": "semantic_scholar",
+                    "status": "ok",
+                    "result_count": 0,
+                    "top_titles": [],
+                    "error": ""
+                  },
+                  {
+                    "provider": "arxiv",
+                    "status": "ok",
+                    "result_count": 3,
+                    "top_titles": [
+                      "Electric Vehicle Attack Impact on Power Grid Operation",
+                      "A Hybrid Transmission Grid Architecture Enabling Efficient Optimal Power Flow",
+                      "Decomposition Problem in Process of Selective Identification and Localization of Voltage Fluctuations Sources in Power G...[truncated]"
+                    ],
+                    "error": ""
+                  },
+                  {
+                    "provider": "chemrxiv",
+                    "status": "ok",
+                    "result_count": 3,
+                    "top_titles": [
+                      "Ultra-High Thermal Stability of a pyrroloquinoline quinone–Calcium Radical Persistent Above 1000 K",
+                      "Facile Ion Diffusion and High Electrical Conductivity Enable High-Energy and High-Power Sodium-Ion Batteries from a Laye...[truncated]",
+                      "Ultra-stable Transformer Oil nanofluids with significant AC Breakdown Voltage enhancement at ultra-low filler fraction o...[truncated]"
+                    ],
+                    "error": ""
+                  }
+                ]
+              },
+              "false_negative_risk": true
+            },
+            {
+              "topic": "Grid Integration & Stability",
+              "hit_count": 0,
+              "min_hits": 10,
+              "terms": [
+                "transient stability",
+                "statcom",
+                "wide-area monitoring"
+              ],
+              "suggested_query": "Ultra-High Voltage Power Transmission and Transformation Electrical Engineering Power Grid transient stability statcom wide-area monitoring",
+              "risk": "Live probe found literature for this missing branch; current PaperGraph may be incomplete, so TanXi should not treat this absence as a true unexplored gap.",
+              "live_probe": {
+                "query": "Ultra-High Voltage Power Transmission and Transformation Electrical Engineering Power Grid transient stability statcom wide-area monitoring",
+                "status": "ok",
+                "total_results": 6,
+                "providers": [
+                  {
+                    "provider": "semantic_scholar",
+                    "status": "ok",
+                    "result_count": 0,
+                    "top_titles": [],
+                    "error": ""
+                  },
+                  {
+                    "provider": "arxiv",
+                    "status": "ok",
+                    "result_count": 3,
+                    "top_titles": [
+                      "Electric Vehicle Attack Impact on Power Grid Operation",
+                      "A Hybrid Transmission Grid Architecture Enabling Efficient Optimal Power Flow",
+                      "Decomposition Problem in Process of Selective Identification and Localization of Voltage Fluctuations Sources in Power G...[truncated]"
+                    ],
+                    "error": ""
+                  },
+                  {
+                    "provider": "chemrxiv",
+                    "status": "ok",
+                    "result_count": 3,
+                    "top_titles": [
+                      "Facile Ion Diffusion and High Electrical Conductivity Enable High-Energy and High-Power Sodium-Ion Batteries from a Laye...[truncated]",
+                      "DyFeO3 electrode material with ultra-wide voltage window for aqueous symmetric supercapacitors",
+                      "DyFeO3 electrode material with ultra-wide voltage window for aqueous symmetric supercapacitors"
+                    ],
+                    "error": ""
+                  }
+                ]
+              },
+              "false_negative_risk": true
+            }
+          ],
+          "live_validate": true,
+          "live_probe_reports": [
+            {
+              "query": "Ultra-High Voltage Power Transmission and Transformation Electrical Engineering Power Grid 1000 kv bundle conductor tower configuration",
+              "status": "ok",
+              "total_results": 6,
+              "providers": [
+                {
+                  "provider": "semantic_scholar",
+                  "status": "ok",
+                  "result_count": 0,
+                  "top_titles": [],
+                  "error": ""
+                },
+                {
+                  "provider": "arxiv",
+                  "status": "ok",
+                  "result_count": 3,
+                  "top_titles": [
+                    "Electric Vehicle Attack Impact on Power Grid Operation",
+                    "A Hybrid Transmission Grid Architecture Enabling Efficient Optimal Power Flow",
+                    "Decomposition Problem in Process of Selective Identification and Localization of Voltage Fluctuations Sources in Power G...[truncated]"
+                  ],
+                  "error": ""
+                },
+                {
+                  "provider": "chemrxiv",
+                  "status": "ok",
+                  "result_count": 3,
+                  "top_titles": [
+                    "Ultra-High Thermal Stability of a pyrroloquinoline quinone–Calcium Radical Persistent Above 1000 K",
+                    "Facile Ion Diffusion and High Electrical Conductivity Enable High-Energy and High-Power Sodium-Ion Batteries from a Laye...[truncated]",
+                    "A Co-Axial Microtubular Flow Battery Cell with Ultra-high Volumetric Power Density"
+                  ],
+                  "error": ""
+                }
+              ]
+            },
+            {
+              "query": "Ultra-High Voltage Power Transmission and Transformation Electrical Engineering Power Grid ±800 kv mmc thyristor valve",
+              "status": "ok",
+              "total_results": 6,
+              "providers": [
+                {
+                  "provider": "semantic_scholar",
+                  "status": "ok",
+                  "result_count": 0,
+                  "top_titles": [],
+                  "error": ""
+                },
+                {
+                  "provider": "arxiv",
+                  "status": "ok",
+                  "result_count": 3,
+                  "top_titles": [
+                    "Electric Vehicle Attack Impact on Power Grid Operation",
+                    "A Hybrid Transmission Grid Architecture Enabling Efficient Optimal Power Flow",
+                    "Decomposition Problem in Process of Selective Identification and Localization of Voltage Fluctuations Sources in Power G...[truncated]"
+                  ],
+                  "error": ""
+                },
+                {
+                  "provider": "chemrxiv",
+                  "status": "ok",
+                  "result_count": 3,
+                  "top_titles": [
+                    "Towards Cancer Theragnostic‒Probing the 225Ac decay chain with Ultra-High-Resolution MMC-based detectors",
+                    "Facile Ion Diffusion and High Electrical Conductivity Enable High-Energy and High-Power Sodium-Ion Batteries from a Laye...[truncated]",
+                    "A Co-Axial Microtubular Flow Battery Cell with Ultra-high Volumetric Power Density"
+                  ],
+                  "error": ""
+                }
+              ]
+            },
+            {
+              "query": "Ultra-High Voltage Power Transmission and Transformation Electrical Engineering Power Grid 1000 kv transformer oil-paper insulation partial discharge",
+              "status": "ok",
+              "total_results": 6,
+              "providers": [
+                {
+                  "provider": "semantic_scholar",
+                  "status": "ok",
+                  "result_count": 0,
+                  "top_titles": [],
+                  "error": ""
+                },
+                {
+                  "provider": "arxiv",
+                  "status": "ok",
+                  "result_count": 3,
+                  "top_titles": [
+                    "Electric Vehicle Attack Impact on Power Grid Operation",
+                    "A Hybrid Transmission Grid Architecture Enabling Efficient Optimal Power Flow",
+                    "Decomposition Problem in Process of Selective Identification and Localization of Voltage Fluctuations Sources in Power G...[truncated]"
+                  ],
+                  "error": ""
+                },
+                {
+                  "provider": "chemrxiv",
+                  "status": "ok",
+                  "result_count": 3,
+                  "top_titles": [
+                    "Ultra-High Thermal Stability of a pyrroloquinoline quinone–Calcium Radical Persistent Above 1000 K",
+                    "Facile Ion Diffusion and High Electrical Conductivity Enable High-Energy and High-Power Sodium-Ion Batteries from a Laye...[truncated]",
+                    "Ultra-stable Transformer Oil nanofluids with significant AC Breakdown Voltage enhancement at ultra-low filler fraction o...[truncated]"
+                  ],
+                  "error": ""
+                }
+              ]
+            },
+            {
+              "query": "Ultra-High Voltage Power Transmission and Transformation Electrical Engineering Power Grid transient stability statcom wide-area monitoring",
+              "status": "ok",
+              "total_results": 6,
+              "providers": [
+                {
+                  "provider": "semantic_scholar",
+                  "status": "ok",
+                  "result_count": 0,
+                  "top_titles": [],
+                  "error": ""
+                },
+                {
+                  "provider": "arxiv",
+                  "status": "ok",
+                  "result_count": 3,
+                  "top_titles": [
+                    "Electric Vehicle Attack Impact on Power Grid Operation",
+                    "A Hybrid Transmission Grid Architecture Enabling Efficient Optimal Power Flow",
+                    "Decomposition Problem in Process of Selective Identification and Localization of Voltage Fluctuations Sources in Power G...[truncated]"
+                  ],
+                  "error": ""
+                },
+                {
+                  "provider": "chemrxiv",
+                  "status": "ok",
+                  "result_count": 3,
+                  "top_titles": [
+                    "Facile Ion Diffusion and High Electrical Conductivity Enable High-Energy and High-Power Sodium-Ion Batteries from a Laye...[truncated]",
+                    "DyFeO3 electrode material with ultra-wide voltage window for aqueous symmetric supercapacitors",
+                    "DyFeO3 electrode material with ultra-wide voltage window for aqueous symmetric supercapacitors"
+                  ],
+                  "error": ""
+                }
+              ]
+            }
+          ],
+          "coverage_warning": true,
+          "needs_user_branch_confirmation": true
+        },
+        "user_interaction": {
+          "needed": true,
+          "type": "research_branch_confirmation",
+          "question": "Some major sub-branches appear missing from the current retrieval. Which should be prioritized for a supplemental search before treating gaps as real?",
+          "options": [
+            {
+              "label": "UHVAC System Design",
+              "suggested_query": "Ultra-High Voltage Power Transmission and Transformation Electrical Engineering Power Grid 1000 kv bundle conductor tower configuration",
+              "live_evidence_count": 6,
+              "false_negative_risk": true
+            },
+            {
+              "label": "UHVDC Converter Technology",
+              "suggested_query": "Ultra-High Voltage Power Transmission and Transformation Electrical Engineering Power Grid ±800 kv mmc thyristor valve",
+              "live_evidence_count": 6,
+              "false_negative_risk": true
+            },
+            {
+              "label": "UHV Transformer Engineering",
+              "suggested_query": "Ultra-High Voltage Power Transmission and Transformation Electrical Engineering Power Grid 1000 kv transformer oil-paper insulation partial discharge",
+              "live_evidence_count": 6,
+              "false_negative_risk": true
+            },
+            {
+              "label": "Grid Integration & Stability",
+              "suggested_query": "Ultra-High Voltage Power Transmission and Transformation Electrical Engineering Power Grid transient stability statcom wide-area monitoring",
+              "live_evidence_count": 6,
+              "false_negative_risk": true
+            }
+          ],
+          "default_action": "Run supplemental stratified search for options with false_negative_risk=true, or ask the user to pick 2-3 priority branches.",
+          "continue_with": "Pass selected option labels or custom branch keywords as focus_branches to run_zhizhi_literature_analysis/search_papers_stratified."
+        },
+        "select_literature_result": {
+          "result_index": 12,
+          "stratified_layer": "L0_review",
+          "stratified_label": "high-impact review / field map",
+          "query_branch": "primary",
+          "retrieval_query": "Ultra-High Voltage Power Transmission and Transformation Electrical Engineering Power Grid review survey progress perspective tutorial systematic review meta-analysis",
+          "_why_selected": "Selected as field-map review/survey candidate: A new perspective on the development of stable, high-power-density 5 V-class allsolid-state lithium-ion batteries; venue=ChemRxiv; citations=0; quality=0.67; relevance=0.2159.",
+          "domain_relevance": {
+            "profile": "ultra_high_voltage_power_transmission_and_transformation_electrical_engineering_",
+            "target_field": "general",
+            "result_field": "materials_energy",
+            "score": 0.38,
+            "query_hits": [
+              "voltage",
+              "power",
+              "engineering"
+            ],
+            "anchor_hits": [
+              "voltage",
+              "power",
+              "engineering"
+            ],
+            "topic_hits": [],
+            "noise_hits": [],
+            "flags": [
+              "core_domain_hit"
+            ],
+            "is_preprint": true,
+            "core_domain_alignment": {
+              "enabled": true,
+              "passes": true,
+              "core_terms": [
+                "ultra-high voltage power",
+                "voltage power transmission",
+                "power transmission transformation",
+                "transmission transformation electrical",
+                "transformation electrical engineering",
+                "electrical engineering grid",
+                "ultra-high voltage",
+                "voltage power",
+                "power transmission",
+                "transmission transformation",
+                "ultra-high",
+                "voltage",
+                "power",
+                "transmission",
+                "transformation",
+                "electrical",
+                "engineering",
+                "grid"
+              ],
+              "core_hit_count": 3,
+              "core_hits": [
+                "voltage",
+                "power",
+                "engineering"
+              ],
+              "specific_terms": [
+                "ultra-high voltage power",
+                "voltage power transmission",
+                "power transmission transformation",
+                "transmission transformation electrical",
+                "transformation electrical engineering",
+                "electrical engineering grid",
+                "ultra-high voltage",
+                "voltage power",
+                "power transmission",
+                "transmission transformation",
+                "ultra-high",
+                "voltage"
+              ],
+              "specific_hit_count": 2,
+              "specific_hits": [
+                "voltage",
+                "engineering"
+              ],
+              "min_core_hits": 4,
+              "min_specific_hits": 2,
+              "is_preprint": true,
+              "reason": "core topic terms sufficiently covered"
+            },
+            "verdict": "keep",
+            "requires_human_review": false
+          },
+          "relevance_score": 0.2159,
+          "relevance_components": {
+            "text_score": 0.16,
+            "recency_score": 1.0,
+            "impact_score": 0.35,
+            "citation_field": "materials_energy",
+            "citation_baseline": 250.0,
+            "venue_score": 0.6,
+            "publication_quality_score": 0.67,
+            "base_score": 0.3222,
+            "text_weight": 0.62,
+            "recency_weight": 0.1,
+            "impact_weight": 0.18,
+            "venue_weight": 0.1
+          },
+          "publication_quality_score": 0.67,
+          "venue_quality": "preprint",
+          "journal_quartile": "",
+          "journal_metric_source": "",
+          "inferred_field": "materials_energy",
+          "quality_flags": [
+            "preprint_not_peer_reviewed",
+            "new_paper_protection"
+          ],
+          "quality_criteria": [
+            "venue is a preprint server, not final peer-reviewed venue",
+            "paper is within 2-year protection window; low citations are not treated as low quality"
+          ],
+          "suspicion_type": "",
+          "is_review_like": true,
+          "pyramid_root_score": 0.7524,
+          "matched_query_terms": [
+            "power",
+            "voltage",
+            "engineering"
+          ],
+          "title": "A new perspective on the development of stable, high-power-density 5 V-class allsolid-state lithium-ion batteries",
+          "citation": "Zhili Liang et al. (2026) A new perspective on the development of stable, high-power-density 5 V-class allsolid-state lithium-ion batteries doi:10.26434/chemrxiv.10001819/v1",
+          "provider": "chemrxiv",
+          "year": "2026",
+          "citation_count": null,
+          "influential_citation_count": null,
+          "doi": "10.26434/chemrxiv.10001819/v1",
+          "arxiv_id": null,
+          "url": "https://doi.org/10.26434/chemrxiv.10001819/v1",
+          "relevance_reason": "title=1/8, abstract=2/8, citation=1/8, phrase_bonus=0.0, recency=1.0, impact=0.35, venue=0.6, quality=0.67",
+          "quality_reason": "venue is a preprint server, not final peer-reviewed venue; paper is within 2-year protection window; low citations are not treated as low quality"
+        },
+        "stratified_import_plan": {
+          "strategy": "layer_minimum_then_score_backfill",
+          "requested_import_top_k": 15,
+          "effective_import_top_k": 15,
+          "min_per_layer": {
+            "L0_review": 2,
+            "L1_milestone": 4,
+            "L2_top_latest": 4,
+            "L3_preprint": 3,
+            "L4_regular": 2
+          },
+          "candidate_counts_by_layer": {
+            "L0_review": 3,
+            "L1_milestone": 1,
+            "L2_top_latest": 7,
+            "L4_regular": 4
+          },
+          "selected_counts_by_layer": {
+            "L0_review": 3,
+            "L1_milestone": 1,
+            "L2_top_latest": 7,
+            "L4_regular": 4
+          },
+          "missing_layers": [
+            {
+              "layer": "L1_milestone",
+              "label": "milestone / highly cited foundation",
+              "target": 4,
+              "selected": 1,
+              "candidates": 1
+            },
+            {
+              "layer": "L3_preprint",
+              "label": "latest preprint frontier",
+              "target": 3,
+              "selected": 0,
+              "candidates": 0
+            }
+          ],
+          "selected_result_indexes": [
+            0,
+            1,
+            3,
+            4,
+            5,
+            6,
+            7,
+            12,
+            13,
+            8,
+            9,
+            10,
+            2,
+            11,
+            14
+          ]
+        },
+        "imported_records": 0,
+        "auto_supplement_blind_spots": {
+          "attempted": true,
+          "branches_attempted": 3,
+          "imports": [
+            {
+              "result_index": 0,
+              "status": "import_failed",
+              "error": "cannot access local variable 'log_event' where it is not associated with a value"
+            },
+            {
+              "result_index": 1,
+              "status": "import_failed",
+              "error": "cannot access local variable 'log_event' where it is not associated with a value"
+            },
+            {
+              "result_index": 0,
+              "status": "import_failed",
+              "error": "cannot access local variable 'log_event' where it is not associated with a value"
+            },
+            {
+              "result_index": 1,
+              "status": "import_failed",
+              "error": "cannot access local variable 'log_event' where it is not associated with a value"
+            },
+            {
+              "result_index": 0,
+              "status": "import_failed",
+              "error": "cannot access local variable 'log_event' where it is not associated with a value"
+            },
+            {
+              "result_index": 2,
+              "status": "import_failed",
+              "error": "cannot access local variable 'log_event' where it is not associated with a value"
+            }
+          ],
+          "branches": [
+            {
+              "topic": "UHVAC System Design",
+              "query": "Ultra-High Voltage Power Transmission and Transformation Electrical Engineering Power Grid 1000 kv bundle conductor tower configuration",
+              "search_id": "search_1783592811157882400",
+              "total_results": 7,
+              "imports": [
+                {
+                  "result_index": 0,
+                  "status": "import_failed",
+                  "error": "cannot access local variable 'log_event' where it is not associated with a value"
+                },
+                {
+                  "result_index": 1,
+                  "status": "import_failed",
+                  "error": "cannot access local variable 'log_event' where it is not associated with a value"
+                }
+              ]
+            },
+            {
+              "topic": "UHVDC Converter Technology",
+              "query": "Ultra-High Voltage Power Transmission and Transformation Electrical Engineering Power Grid ±800 kv mmc thyristor valve",
+              "search_id": "search_1783592915705376900",
+              "total_results": 8,
+              "imports": [
+                {
+                  "result_index": 0,
+                  "status": "import_failed",
+                  "error": "cannot access local variable 'log_event' where it is not associated with a value"
+                },
+                {
+                  "result_index": 1,
+                  "status": "import_failed",
+                  "error": "cannot access local variable 'log_event' where it is not associated with a value"
+                }
+              ]
+            },
+            {
+              "topic": "UHV Transformer Engineering",
+              "query": "Ultra-High Voltage Power Transmission and Transformation Electrical Engineering Power Grid 1000 kv transformer oil-paper insulation partial discharge",
+              "search_id": "search_1783593001623769600",
+              "total_results": 8,
+              "imports": [
+                {
+                  "result_index": 0,
+                  "status": "import_failed",
+                  "error": "cannot access local variable 'log_event' where it is not associated with a value"
+                },
+                {
+                  "result_index": 2,
+                  "status": "import_failed",
+                  "error": "cannot access local variable 'log_event' where it is not associated with a value"
+                }
+              ]
+            }
+          ],
+          "policy": "auto-supplement only live-confirmed blind spots; cap branches/imports to control API and token budget"
+        },
+        "expand_literature_graph": {
+          "graph_search_id": "graph_1783593081449581800",
+          "total_results": 0,
+          "fallback_used": true,
+          "depth": 1
+        },
+        "build_literature_relation_graph": {
+          "relation_graph_id": "relgraph_1783593081474559700",
+          "cluster_count": 0,
+          "edge_summary": {
+            "total_edges": 0,
+            "citation_graph_edges": 0,
+            "artificial_edges": 0,
+            "by_relation": {},
+            "by_depth": {},
+            "fallback_weight_policy": "keyword_fallback/search_result edges are artificial and use very low PageRank weight."
+          },
+          "analysis_confidence": 0.65
+        }
+      },
+      "observation": [
+        "Potential retrieval blind spot: UHVAC System Design was not represented in retrieved/imported candidates; suggested query: Ultra-High Voltage Power Transmission and Transformation Electrical Engineering Power Grid 1000 kv bundle conductor tower configuration; live_probe_results=6",
+        "Potential retrieval blind spot: UHVDC Converter Technology was not represented in retrieved/imported candidates; suggested query: Ultra-High Voltage Power Transmission and Transformation Electrical Engineering Power Grid ±800 kv mmc thyristor valve; live_probe_results=6",
+        "Potential retrieval blind spot: UHV Transformer Engineering was not represented in retrieved/imported candidates; suggested query: Ultra-High Voltage Power Transmission and Transformation Electrical Engineering Power Grid 1000 kv transformer oil-paper insulation partial discharge; live_probe_results=6",
+        "Potential retrieval blind spot: Grid Integration & Stability was not represented in retrieved/imported candidates; suggested query: Ultra-High Voltage Power Transmission and Transformation Electrical Engineering Power Grid transient stability statcom wide-area monitoring; live_probe_results=6",
+        "Layer import target not met: L1_milestone selected=1/target=4 from candidates=1. This indicates retrieval/candidate scarcity rather than top-K truncation.",
+        "Layer import target not met: L3_preprint selected=0/target=3 from candidates=0. This indicates retrieval/candidate scarcity rather than top-K truncation.",
+        "import failed for result 0: cannot access local variable 'log_event' where it is not associated with a value",
+        "import failed for result 1: cannot access local variable 'log_event' where it is not associated with a value",
+        "import failed for result 3: cannot access local variable 'log_event' where it is not associated with a value",
+        "import failed for result 4: cannot access local variable 'log_event' where it is not associated with a value",
+        "import failed for result 5: cannot access local variable 'log_event' where it is not associated with a value",
+        "import failed for result 6: cannot access local variable 'log_event' where it is not associated with a value",
+        "import failed for result 7: cannot access local variable 'log_event' where it is not associated with a value",
+        "import failed for result 12: cannot access local variable 'log_event' where it is not associated with a value",
+        "import failed for result 13: cannot access local variable 'log_event' where it is not associated with a value",
+        "import failed for result 8: cannot access local variable 'log_event' where it is not associated with a value",
+        "import failed for result 9: cannot access local variable 'log_event' where it is not associated with a value",
+        "import failed for result 10: cannot access local variable 'log_event' where it is not associated with a value",
+        "import failed for result 2: cannot access local variable 'log_event' where it is not associated with a value",
+        "import failed for result 11: cannot access local variable 'log_event' where it is not associated with a value",
+        "import failed for result 14: cannot access local variable 'log_event' where it is not associated with a value",
+        "Auto-supplemented confirmed retrieval blind spots before TanXi gap reasoning: branches=3, imports=6."
+      ],
+      "knowledge_map_summary": {
+        "main_methods": [],
+        "method_scenario_coverage": {},
+        "method_scenario_benchmark_triples": [],
+        "claim_type_counts": {}
+      },
+      "knowledge_gaps": [],
+      "self_reflection": {
+        "top_venue_coverage_checked": true,
+        "pseudo_gap_risk_checked": true,
+        "method_categories_require_literature_support": true,
+        "unsupported_claims_marked_for_review": true
+      }
+    }
+  ]
+}

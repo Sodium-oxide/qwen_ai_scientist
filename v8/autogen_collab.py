@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import re
+import logging
 import time
 from pathlib import Path
 from typing import Any
@@ -12,6 +13,8 @@ try:
 except ImportError:
     from config import PACKAGE_DIR
     from log import log_event
+
+_logger = logging.getLogger(__name__)
 
 
 AUTOGEN_DIR = PACKAGE_DIR / ".science" / "autogen_groupchats"
@@ -61,12 +64,30 @@ def create_autogen_groupchat(
     return json.dumps(spec, ensure_ascii=False, indent=2)
 
 
+def enforce_qwen_model_family(value: str, default: str) -> str:
+    """Validate that *value* is a qwen-family model name.
+
+    If the value is non-empty and starts with 'qwen' (case-insensitive),
+    return it unchanged.  Otherwise log a warning and return *default*.
+    """
+    stripped = (value or "").strip()
+    if stripped and stripped.lower().startswith("qwen"):
+        return stripped
+    if stripped:
+        _logger.warning(
+            "Non-qwen model family '%s' was passed; silently replacing with default '%s'.",
+            value,
+            default,
+        )
+    return default
+
+
 def run_autogen_research_flow(
     project_id: str,
     goal: str = "",
     groupchat_id: str = "",
     providers: list[str] | None = None,
-    max_results: int = 40,
+    max_results: int = 50,
     import_top_k: int = 20,
     use_llm: bool = True,
     live_search: bool = False,
@@ -74,8 +95,8 @@ def run_autogen_research_flow(
     max_round: int = 12,
     speaker_selection_method: str = "round_robin",
     human_input_mode: str = "TERMINATE",
-    proponent_model_family: str = "qwen-max",
-    opponent_model_family: str = "qwen-plus",
+    proponent_model_family: str = "qwen-plus",
+    opponent_model_family: str = "qwen-max",
     judge_model_family: str = "qwen-deep-research",
     verifier_model_family: str = "qwen-plus",
     use_native_autogen: bool = False,
@@ -106,6 +127,27 @@ def run_autogen_research_flow(
             run_yanzhen_mechanism_verification,
             run_zhizhi_literature_analysis,
         )
+
+    # Enforce qwen-family models for all debate/verification roles.
+    proponent_model_family = enforce_qwen_model_family(proponent_model_family, "qwen-plus")
+    opponent_model_family = enforce_qwen_model_family(opponent_model_family, "qwen-max")
+    judge_model_family = enforce_qwen_model_family(judge_model_family, "qwen-deep-research")
+    verifier_model_family = enforce_qwen_model_family(verifier_model_family, "qwen-plus")
+
+    # Enforce minimum search/import budgets to prevent LLM from starving the pipeline
+    max_results = max(int(max_results or 50), 50)
+    import_top_k = max(int(import_top_k or 20), 20)
+
+    # Enforce minimum provider set: always include semantic_scholar + arxiv for preprint coverage
+    MINIMUM_PROVIDERS = ["semantic_scholar", "arxiv"]
+    if not providers:
+        providers = list(MINIMUM_PROVIDERS)
+    else:
+        normalized = [p.strip().lower().replace("-", "_") for p in providers]
+        for required in MINIMUM_PROVIDERS:
+            if required not in normalized:
+                providers = list(providers) + [required]
+                _logger.warning(f"Provider '{required}' was missing from LLM request; auto-added for coverage.")
 
     project = load_project(project_id)
     if groupchat_id:
@@ -189,34 +231,139 @@ def run_autogen_research_flow(
             record_turn("round_0_gap_exploration", "TanXi_ToolAgent", summarize_output(output))
             explicit_gaps = autogen_extract_ranked_gaps(output)
             state["tanxi_gap_count"] = len(explicit_gaps)
-            state["best_gap_context"] = autogen_gap_context(explicit_gaps[:3])
+
+            # Multi-gap selector: pick best combination by ingredient richness + type diversity
+            try:
+                from ._gap_detection import select_gap_combination_for_hypothesis, prefilter_gap_combination
+            except ImportError:
+                from _gap_detection import select_gap_combination_for_hypothesis, prefilter_gap_combination
+            selected_gaps = select_gap_combination_for_hypothesis(project, explicit_gaps, strategy="auto")
+            state["selected_gap_count"] = len(selected_gaps)
+            state["best_gap_context"] = autogen_gap_context(selected_gaps if selected_gaps else explicit_gaps[:5])
+
+            # GRADE pre-screening: check literature coverage before hypothesis generation
+            if selected_gaps:
+                grade_ok, grade_reason, grade_coverage = prefilter_gap_combination(project, selected_gaps)
+                state["grade_prefilter"] = {
+                    "sufficient": grade_ok,
+                    "reason": grade_reason,
+                    "coverage": round(grade_coverage, 3),
+                }
+                log_event("AUTOGEN", "grade_gap_prefilter", sufficient=grade_ok, coverage=round(grade_coverage, 3), reason=grade_reason)
 
         if "mingli" in autogen_agent_keys(groupchat_spec):
+            # Collect all valid gaps for multi-gap aggregation with rotation on retry
+            all_valid_gaps = [
+                g for g in (state.get("best_gap_context") or [])
+                if isinstance(g, dict) and g.get("description")
+            ]
             gap_context = autogen_select_gap_for_mingli(state)
-            draft = json.loads(generate_idea(project_id=project_id, gap=gap_context, style="innovative", use_llm=use_llm))
-            state["draft_idea_id"] = str(draft.get("draft_idea_id") or "")
-            record_turn("round_1_proponent_position", "MingLi_AssistantAgent", summarize_output(draft))
-            experiment = json.loads(
-                design_experiment(
-                    project_id=project_id,
-                    idea_id=state["draft_idea_id"],
-                    constraints="academic lab scale; evidence-traceable; include baselines, ablations, regime shifts, and falsification criteria",
-                )
-            )
-            record_turn("round_3_methodology", "MingLi_AssistantAgent", summarize_output(experiment))
-            final = json.loads(
-                finalize_idea(
-                    project_id=project_id,
-                    idea_id=state["draft_idea_id"],
-                    live_search=live_search,
-                    providers=selected_providers,
-                )
-            )
-            record_turn("round_1_hypothesis_finalization", "MingLi_AssistantAgent", summarize_output(final), str(final.get("status") or "completed"))
-            state["hypothesis_id"] = str(final.get("hypothesis_id") or final.get("stored_hypothesis", {}).get("hypothesis_id") or "")
-            state["finalize_status"] = str(final.get("status") or "")
+            mingli_max_attempts = 3
+            for mingli_attempt in range(1, mingli_max_attempts + 1):
+                # On retry, rotate gap order so different gaps get primary emphasis
+                if mingli_attempt > 1 and len(all_valid_gaps) > 1:
+                    shift = mingli_attempt - 1
+                    rotated = all_valid_gaps[shift:] + all_valid_gaps[:shift]
+                    gap_context = autogen_aggregate_gaps_for_mingli(rotated)
+                    retry_guidance = {
+                        "anti_template_guidance": (
+                            "CRITICAL: Your previous hypothesis was rejected for using forbidden generic templates "
+                            "or lacking domain specificity. Do NOT use phrases like 'conflicting claims', "
+                            "'retested under matched conditions', or 'mechanism-stress intervention'. "
+                            "Instead, include concrete domain-specific numbers/units, a named controllable variable, "
+                            "a domain-specific measurable metric, and an explicit causal pathway."
+                        ),
+                        "specificity_requirements": (
+                            "Include at least one numerical bound (e.g., temperature, concentration, voltage), "
+                            "a specific operating condition, a measurable domain-specific outcome, "
+                            "and a named causal mechanism. Avoid generic cross-domain metric lists."
+                        ),
+                        "attempt_number": mingli_attempt,
+                    }
+                    if isinstance(gap_context, dict):
+                        gap_context.update(retry_guidance)
+                    else:
+                        gap_context = retry_guidance
 
+                try:
+                    draft = json.loads(generate_idea(project_id=project_id, gap=gap_context, style="innovative", use_llm=use_llm))
+                    state["draft_idea_id"] = str(draft.get("draft_idea_id") or "")
+                    record_turn(f"round_1_proponent_position_attempt_{mingli_attempt}", "MingLi_AssistantAgent", summarize_output(draft))
+
+                    experiment = json.loads(
+                        design_experiment(
+                            project_id=project_id,
+                            idea_id=state["draft_idea_id"],
+                            constraints="academic lab scale; evidence-traceable; include baselines, ablations, regime shifts, and falsification criteria",
+                        )
+                    )
+                    record_turn(f"round_3_methodology_attempt_{mingli_attempt}", "MingLi_AssistantAgent", summarize_output(experiment))
+
+                    final = json.loads(
+                        finalize_idea(
+                            project_id=project_id,
+                            idea_id=state["draft_idea_id"],
+                            live_search=live_search,
+                            providers=selected_providers,
+                        )
+                    )
+                    final_status = str(final.get("status") or "completed")
+                    record_turn(f"round_1_hypothesis_finalization_attempt_{mingli_attempt}", "MingLi_AssistantAgent", summarize_output(final), final_status)
+
+                    # Check if finalized successfully
+                    if final_status == "finalized":
+                        state["hypothesis_id"] = str(final.get("hypothesis_id") or final.get("stored_hypothesis", {}).get("hypothesis_id") or "")
+                        state["finalize_status"] = final_status
+                        state["mingli_attempts"] = mingli_attempt
+                        break
+                    elif final_status in ("rejected_template", "rejected_specificity"):
+                        # Retry with guidance
+                        log_event("AUTOGEN", "mingli_retry", attempt=mingli_attempt, reason=final_status)
+                        if mingli_attempt == mingli_max_attempts:
+                            state["finalize_status"] = final_status
+                            state["mingli_attempts"] = mingli_attempt
+                            state["hypothesis_id"] = ""
+                        continue
+                    else:
+                        # Other rejection (overlap, semantic plausibility, etc.) - don't retry
+                        state["hypothesis_id"] = str(final.get("hypothesis_id") or "")
+                        state["finalize_status"] = final_status
+                        state["mingli_attempts"] = mingli_attempt
+                        break
+                except Exception as mingli_exc:
+                    record_turn(f"mingli_error_attempt_{mingli_attempt}", "MingLi_AssistantAgent", {}, "error", str(mingli_exc))
+                    if mingli_attempt == mingli_max_attempts:
+                        state["finalize_status"] = "error"
+                        state["mingli_attempts"] = mingli_attempt
+                    continue
+
+        # GRADE knowledge sufficiency check: verify PaperGraph has enough evidence before YanZhen
         if "yanzhen" in autogen_agent_keys(groupchat_spec) and state.get("hypothesis_id"):
+            papergraph = project.get("papergraph", [])
+            paper_count = len([p for p in papergraph if isinstance(p, dict)])
+            evidence_count = len([e for e in project.get("evidence", []) if isinstance(e, dict)])
+            grade_sufficient = paper_count >= 5 and evidence_count >= 3
+            state["grade_knowledge_check"] = {
+                "paper_count": paper_count,
+                "evidence_count": evidence_count,
+                "sufficient": grade_sufficient,
+                "threshold": {"min_papers": 5, "min_evidence": 3},
+            }
+            record_turn(
+                "grade_knowledge_sufficiency",
+                "GRADE_CheckPoint",
+                {
+                    "paper_count": paper_count,
+                    "evidence_count": evidence_count,
+                    "sufficient": grade_sufficient,
+                    "decision": "proceed_to_yanzhen" if grade_sufficient else "skip_yanzhen_insufficient_knowledge",
+                },
+            )
+            if not grade_sufficient:
+                log_event("AUTOGEN", "grade_insufficient_knowledge", paper_count=paper_count, evidence_count=evidence_count)
+                state["yanzhen_skipped_reason"] = "insufficient_knowledge"
+
+        if "yanzhen" in autogen_agent_keys(groupchat_spec) and state.get("hypothesis_id") and not state.get("yanzhen_skipped_reason"):
             report = json.loads(
                 run_yanzhen_mechanism_verification(
                     project_id=project_id,
@@ -253,6 +400,30 @@ def run_autogen_research_flow(
                     )
                 )
                 record_turn("round_2_missing_hypothesis_interrogation", "DuZhi_AssistantAgent", summarize_output(critique), "revision_required")
+
+                # BianLun synthesis: synthesize the failed state and produce revision guidance
+                synthesis_state = project.get("papergraph", [])
+                gaps_state = project.get("knowledge_gaps", [])
+                mingli_runs = project.get("mingli_hypothesis_evolution_runs", [])
+                rejected_ideas = project.get("mingli_rejected_ideas", [])
+                synthesis = {
+                    "synthesis_type": "no_hypothesis_revision_guidance",
+                    "papergraph_size": len(synthesis_state),
+                    "knowledge_gaps_count": len(gaps_state),
+                    "mingli_evolution_runs": len(mingli_runs),
+                    "rejected_ideas_count": len(rejected_ideas),
+                    "revision_guidance": (
+                        f"Project has {len(synthesis_state)} papers and {len(gaps_state)} gaps. "
+                        f"MingLi made {len(mingli_runs)} evolution runs with {len(rejected_ideas)} rejected ideas. "
+                        "Recommended actions: (1) expand PaperGraph with more domain-specific literature, "
+                        "(2) refine gap descriptions with concrete mechanisms, "
+                        "(3) re-run MingLi with improved gap context and specificity requirements."
+                    ),
+                    "finalize_status": state.get("finalize_status", "unknown"),
+                    "mingli_attempts": state.get("mingli_attempts", 0),
+                }
+                record_turn("round_4_bianlun_synthesis", "BianLun_GroupChatManager", synthesis, "revision_required")
+                state["bianlun_synthesis"] = synthesis
                 state["final_decision"] = "revision_required"
 
         if state["final_decision"] == "not_started":
@@ -511,19 +682,107 @@ def autogen_gap_context(gaps: list[dict[str, Any]]) -> list[dict[str, Any]]:
                 "priority_score": gap.get("priority_score"),
                 "novelty_score": gap.get("novelty_score"),
                 "feasibility": gap.get("feasibility"),
+                "counterfactual_tree": gap.get("counterfactual_tree"),
+                "tabi_chain": gap.get("tabi_chain"),
+                "tabi_warrant": gap.get("tabi_warrant"),
+                "tabi_claim": gap.get("tabi_claim"),
+                "hypothesis_ingredients": gap.get("hypothesis_ingredients"),
+                "counterfactual_leaves": gap.get("counterfactual_leaves"),
             }
         )
     return compact
 
 
 def autogen_select_gap_for_mingli(state: dict[str, Any]) -> dict[str, Any]:
+    """Select and aggregate multiple gaps for MingLi hypothesis generation.
+
+    Instead of picking a single gap (which often leads to template rejections),
+    aggregate all available gaps into a synthetic super-gap that provides
+    cross-gap context: richer descriptions, more supporting references, and
+    domain-specific parameters from multiple angles.
+    """
     gaps = state.get("best_gap_context")
     if isinstance(gaps, list):
-        for gap in gaps:
-            if isinstance(gap, dict) and gap.get("description"):
-                return gap
+        valid = [g for g in gaps if isinstance(g, dict) and g.get("description")]
+        if valid:
+            return autogen_aggregate_gaps_for_mingli(valid)
     state["mingli_gap_handoff"] = "no_explicit_gap_from_tanxi; using PaperGraph fallback inside MingLi"
     return {}
+
+
+def autogen_aggregate_gaps_for_mingli(gaps: list[dict[str, Any]]) -> dict[str, Any]:
+    """Aggregate multiple gaps into a single synthetic gap for hypothesis generation.
+
+    Combines descriptions, supporting references, counterfactual trees, and TABI
+    chains from all input gaps so that MingLi receives enough domain-specific
+    context to produce concrete, non-template hypotheses.
+    """
+    if not gaps:
+        return {}
+    if len(gaps) == 1:
+        return gaps[0]
+
+    descriptions = [str(g.get("description", "")).strip() for g in gaps if g.get("description")]
+    all_refs: list[str] = []
+    all_gap_types: list[str] = []
+    all_counterfactual_trees: list[dict] = []
+    all_tabi_chains: list[dict] = []
+
+    for g in gaps:
+        refs = g.get("supporting_references", [])
+        if isinstance(refs, list):
+            all_refs.extend(refs[:5])
+        gt = g.get("gap_type", "")
+        if gt:
+            all_gap_types.append(gt)
+        ct = g.get("counterfactual_tree")
+        if ct and isinstance(ct, dict):
+            all_counterfactual_trees.append(ct)
+        tc = g.get("tabi_chain")
+        if tc and isinstance(tc, dict):
+            all_tabi_chains.append(tc)
+
+    # Build composite description: numbered per-gap summaries for clarity
+    combined_desc_parts = []
+    for i, d in enumerate(descriptions):
+        combined_desc_parts.append(f"[Gap {i + 1}] {d}")
+    combined_desc = " ; ".join(combined_desc_parts) if combined_desc_parts else descriptions[0] if descriptions else ""
+
+    # Deduplicate references while preserving order
+    seen: set[str] = set()
+    unique_refs: list[str] = []
+    for r in all_refs:
+        key = str(r).strip().lower()[:120]
+        if key and key not in seen:
+            seen.add(key)
+            unique_refs.append(str(r))
+
+    primary = gaps[0]
+    return {
+        "gap_id": str(primary.get("gap_id", "")),
+        "source_gap_ids": [str(g.get("gap_id", "")) for g in gaps],
+        "gap_type": primary.get("gap_type", ""),
+        "gap_types_aggregated": all_gap_types,
+        "description": combined_desc,
+        "supporting_references": unique_refs[:10],
+        "suggested_research_path": str(
+            max(
+                (g for g in gaps if g.get("supporting_references")),
+                key=lambda g: len(g.get("supporting_references", [])),
+                default=primary,
+            ).get("suggested_research_path")
+            or ""
+        ),
+        "value_argument": "Multi-gap synthesis from " + ", ".join(all_gap_types[:4]),
+        "novelty_score": max((g.get("novelty_score", 0) for g in gaps), default=0),
+        "feasibility": max(
+            (g.get("feasibility", "low") for g in gaps),
+            key=lambda f: {"high": 3, "medium": 2, "low": 1}.get(str(f).lower(), 0),
+            default="low",
+        ),
+        "counterfactual_trees": all_counterfactual_trees,
+        "tabi_chains": all_tabi_chains,
+    }
 
 
 def autogen_messages_from_turns(turns: list[dict[str, Any]]) -> list[dict[str, Any]]:

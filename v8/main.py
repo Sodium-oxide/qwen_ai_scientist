@@ -68,6 +68,53 @@ def tool_result(tool_use_id: str, output: str, is_error: bool = False) -> dict[s
     return result
 
 
+def resolve_tool_placeholders(
+    tool_input: dict[str, Any],
+    previous_results: list[dict[str, Any]],
+) -> dict[str, Any]:
+    """Resolve placeholder references in tool input values.
+
+    Supports patterns like:
+    - {{previous_tool_result.<field>}}
+    - ${previous_tool_result.<field>}
+    - ${<tool_name>.<field>}
+
+    Looks up field values from the most recent tool results in the same batch.
+    Returns a new dict with placeholders replaced by actual values.
+    """
+    import re as _re
+    if not previous_results:
+        return tool_input
+    # Build a lookup from all previous results in this batch
+    lookup: dict[str, str] = {}
+    for prev in previous_results:
+        content = str(prev.get("content", ""))
+        # Try to parse JSON content for field access
+        try:
+            parsed = json.loads(content)
+            if isinstance(parsed, dict):
+                for key, value in parsed.items():
+                    lookup[key] = str(value)
+                    lookup[f"previous_tool_result.{key}"] = str(value)
+        except (json.JSONDecodeError, TypeError):
+            pass
+    if not lookup:
+        return tool_input
+    # Resolve placeholders in each input value
+    resolved: dict[str, Any] = {}
+    placeholder_re = _re.compile(r'\{\{([^}]+)\}\}|\$\{([^}]+)\}')
+    for key, value in tool_input.items():
+        if isinstance(value, str):
+            def _replace(m):
+                ref = m.group(1) or m.group(2)
+                ref = ref.strip()
+                return lookup.get(ref, m.group(0))
+            new_value = placeholder_re.sub(_replace, value)
+            resolved[key] = new_value
+        else:
+            resolved[key] = value
+    return resolved
+
 def run_tool(
     block: Any,
     messages: list[dict[str, Any]],
@@ -454,7 +501,21 @@ def run_agent_locked(user_input: str) -> str:
                 "content": [block_to_dict(block) for block in response.content],
             }
         )
-        tool_results = [run_tool(block, messages, current_handlers) for block in tool_blocks]
+        tool_results: list[dict[str, Any]] = []
+        for block in tool_blocks:
+            # Resolve placeholders like {{previous_tool_result.project_id}} using earlier results in this batch
+            tool_input = block_attr(block, "input", {}) or {}
+            if tool_input and tool_results:
+                resolved_input = resolve_tool_placeholders(tool_input, tool_results)
+                if resolved_input != tool_input:
+                    log_event("AGENT", "placeholder_resolved", tool=block_attr(block, "name"), resolved_keys=[k for k in resolved_input if resolved_input.get(k) != tool_input.get(k)])
+                    # Patch the block's input with resolved values
+                    if hasattr(block, "input"):
+                        block.input = resolved_input
+                    elif isinstance(block, dict):
+                        block["input"] = resolved_input
+            result = run_tool(block, messages, current_handlers)
+            tool_results.append(result)
         for block, result in zip(tool_blocks, tool_results):
             if normalize_tool_name(block_attr(block, "name")) == "create_task":
                 tracked_task_ids.update(extract_task_ids(str(result.get("content", ""))))

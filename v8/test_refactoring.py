@@ -280,6 +280,103 @@ def t_schemas():
         assert isinstance(s, dict)
 test("Output schemas", t_schemas)
 
+# --- v3.0: Domain Exclusion ---
+print("\n-- Domain Exclusion (v3.0) --")
+
+def t_dem():
+    markers = sc.domain_exclusion_markers("Ultra-High Voltage Power Transmission")
+    assert isinstance(markers, (list, set, dict))
+test("domain_exclusion_markers (UHV)", t_dem)
+
+def t_dem_empty():
+    markers = sc.domain_exclusion_markers("")
+    assert isinstance(markers, (list, set, dict))
+test("domain_exclusion_markers (empty)", t_dem_empty)
+
+# --- v3.0: TABI Abductive Gap Detection ---
+print("\n-- TABI Abductive Gap Detection (v3.0) --")
+
+def t_tabi_fn():
+    assert callable(sc.tabi_abductive_gap_detection) and callable(sc.extract_evidence_pairs_from_records)
+test("TABI functions importable", t_tabi_fn)
+
+def t_tabi_empty():
+    r = sc.tabi_abductive_gap_detection({"papergraph": [], "evidence": []}, max_gaps=5)
+    assert isinstance(r, list) and len(r) == 0
+test("TABI empty project", t_tabi_empty)
+
+def t_evpairs():
+    proj = {"papergraph": [
+        {"method": "GNN", "scenario": "fault diagnosis", "benchmark": "accuracy",
+         "contribution": "GNN improves accuracy", "limitation": "low-voltage only", "title": "A", "citation": "A"},
+        {"method": "GNN", "scenario": "fault diagnosis", "benchmark": "recall",
+         "contribution": "GNN reduces false negatives", "limitation": "no UHV", "title": "B", "citation": "B"},
+    ], "evidence": []}
+    pairs = sc.extract_evidence_pairs_from_records(proj, limit=10)
+    assert isinstance(pairs, list)
+test("extract_evidence_pairs_from_records", t_evpairs)
+
+# --- v3.0: Counterfactual Gap Analysis ---
+print("\n-- Counterfactual Gap Analysis (v3.0) --")
+
+def t_cf_fn():
+    assert callable(sc.counterfactual_gap_analysis) and callable(sc.build_counterfactual_tree)
+test("CG functions importable", t_cf_fn)
+
+def t_cf_run():
+    proj = {"papergraph": [
+        {"method": "transformer", "scenario": "power grid", "benchmark": "reliability",
+         "contribution": "Improved design", "limitation": "low voltage only", "title": "T", "citation": "X"},
+    ], "evidence": []}
+    gaps = [sc.make_gap("combinatorial", "Transformer not at UHV", ["X"], "path", "val")]
+    enriched = sc.counterfactual_gap_analysis(proj, gaps, limit=5)
+    assert len(enriched) == 1 and "counterfactual_tree" in enriched[0]
+    assert enriched[0]["gap_resolution_type"] in ("complement_gap", "novel_concept_gap")
+test("counterfactual_gap_analysis", t_cf_run)
+
+def t_cf_type():
+    assert sc.classify_gap_counterfactual_type({"related_evidence_count": 0}) == "novel_concept_gap"
+    assert sc.classify_gap_counterfactual_type({"related_evidence_count": 3, "resolution_complexity": "low"}) == "complement_gap"
+test("classify_gap_counterfactual_type", t_cf_type)
+
+# --- v3.0: GRADE Knowledge Sufficiency ---
+print("\n-- GRADE Knowledge Sufficiency (v3.0) --")
+
+def t_grade_fn():
+    assert callable(sc.grade_knowledge_sufficiency) and callable(sc.extract_grade_key_terms)
+test("GRADE functions importable", t_grade_fn)
+
+def t_grade_empty():
+    r = sc.grade_knowledge_sufficiency("black hole formation", {"papergraph": [], "evidence": []})
+    assert r["verdict"] == "knowledge_insufficient"
+test("GRADE empty project", t_grade_empty)
+
+def t_grade_cover():
+    proj = {"papergraph": [
+        {"title": "Black hole formation via collapse", "abstract": "stellar mass collapse singularity",
+         "method": "simulation", "scenario": "collapse", "contribution": "demonstrated formation", "conclusion": "horizon forms"},
+    ], "evidence": []}
+    r = sc.grade_knowledge_sufficiency("black hole formation gravitational collapse", proj)
+    assert r["verdict"] in ("knowledge_sufficient", "knowledge_partial") and r["rank_ratio"] < 0.6
+test("GRADE with coverage", t_grade_cover)
+
+# --- v3.0: Specificity Enforcement ---
+print("\n-- Specificity Enforcement (v3.0) --")
+
+def t_spec_good():
+    idea = {"title": "UHV overvoltage", "hypothesis": "When impulse exceeds 1800 kV at 1000kV substation, resistor reduces overvoltage by 40%",
+            "abstract": "resistor causes dissipation which leads to damping during energization", "related_work": "UHV studies"}
+    r = sc.enforce_hypothesis_specificity(idea)
+    assert r["verdict"] in ("PASS", "pass", "valid") or len(r.get("missing_dimensions", [])) <= 1
+test("Specificity passes good hypothesis", t_spec_good)
+
+def t_spec_bad():
+    idea = {"title": "Performance study", "hypothesis": "The method improves the system outcome",
+            "abstract": "Changes may affect behavior", "related_work": "Various approaches"}
+    r = sc.enforce_hypothesis_specificity(idea)
+    assert r["verdict"] in ("REJECT", "reject", "requires_revision") or len(r.get("missing_dimensions", [])) >= 2
+test("Specificity rejects generic hypothesis", t_spec_bad)
+
 # --- Tools.py / autogen_collab.py compatibility ---
 print("\n-- Backward Compatibility --")
 
@@ -307,6 +404,11 @@ TOOLS_IMPORTS = [
     "ask_critical_questions", "find_counterexamples", "stress_test_assumptions",
     "moderate_round", "summarize_positions", "extract_emergent_method",
     "run_socratic_hypothesis_debate", "export_research_plan",
+    # v3.0
+    "tabi_abductive_gap_detection", "extract_evidence_pairs_from_records",
+    "counterfactual_gap_analysis", "build_counterfactual_tree",
+    "grade_knowledge_sufficiency", "enforce_hypothesis_specificity",
+    "domain_exclusion_markers",
 ]
 
 def t_tools_compat():
@@ -320,6 +422,9 @@ AUTOGEN_IMPORTS = [
     "extract_paper_keynote", "detect_knowledge_gaps", "run_tanxi_gap_exploration",
     "run_mingli_hypothesis_evolution", "run_yanzhen_mechanism_verification",
     "run_socratic_hypothesis_debate", "SCIENCE_AGENTS", "PHASES",
+    # v3.0
+    "tabi_abductive_gap_detection", "counterfactual_gap_analysis",
+    "grade_knowledge_sufficiency", "enforce_hypothesis_specificity",
 ]
 
 def t_autogen_compat():
