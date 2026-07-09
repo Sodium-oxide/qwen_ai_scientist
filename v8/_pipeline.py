@@ -1389,7 +1389,7 @@ def run_zhizhi_literature_analysis(
     project_id: str,
     domain: str,
     query: str,
-    max_results: int = 40,
+    max_results: int = 50,
     years: str = "last 5 years",
     providers: list[str] | None = None,
     import_top_k: int = SCIENCE_ZHIZHI_DEFAULT_IMPORT_TOP_K,

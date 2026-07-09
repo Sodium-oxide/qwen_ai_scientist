@@ -87,7 +87,7 @@ def run_autogen_research_flow(
     goal: str = "",
     groupchat_id: str = "",
     providers: list[str] | None = None,
-    max_results: int = 40,
+    max_results: int = 50,
     import_top_k: int = 20,
     use_llm: bool = True,
     live_search: bool = False,

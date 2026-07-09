@@ -68,7 +68,7 @@ ARXIV_429_COUNT = 0
 def search_papers(
     query: str,
     databases: list[str] | None = None,
-    max_results: int = 15,
+    max_results: int = 50,
     years: str = "",
 ) -> str:
     try:
@@ -88,7 +88,7 @@ def search_papers(
 def search_papers_stratified(
     query: str,
     databases: list[str] | None = None,
-    max_results: int = 15,
+    max_results: int = 50,
     years: str = "",
     domain: str = "",
     focus_branches: list[str] | None = None,
@@ -211,7 +211,7 @@ def search_literature_provider_block(provider: str, query: str, max_results: int
 def search_literature(
     query: str,
     providers: list[str] | None = None,
-    max_results: int = 40,
+    max_results: int = 50,
 ) -> str:
     try:
         from ._literature_import import import_literature_search_result
@@ -276,7 +276,7 @@ def search_literature(
 def search_literature_stratified(
     query: str,
     providers: list[str] | None = None,
-    max_results: int = 40,
+    max_results: int = 50,
     domain: str = "",
     focus_branches: list[str] | None = None,
     use_llm: bool = False,
