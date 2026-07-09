@@ -230,7 +230,25 @@ def run_autogen_research_flow(
             record_turn("round_0_gap_exploration", "TanXi_ToolAgent", summarize_output(output))
             explicit_gaps = autogen_extract_ranked_gaps(output)
             state["tanxi_gap_count"] = len(explicit_gaps)
-            state["best_gap_context"] = autogen_gap_context(explicit_gaps[:5])
+
+            # Multi-gap selector: pick best combination by ingredient richness + type diversity
+            try:
+                from ._gap_detection import select_gap_combination_for_hypothesis, prefilter_gap_combination
+            except ImportError:
+                from _gap_detection import select_gap_combination_for_hypothesis, prefilter_gap_combination
+            selected_gaps = select_gap_combination_for_hypothesis(project, explicit_gaps, strategy="auto")
+            state["selected_gap_count"] = len(selected_gaps)
+            state["best_gap_context"] = autogen_gap_context(selected_gaps if selected_gaps else explicit_gaps[:5])
+
+            # GRADE pre-screening: check literature coverage before hypothesis generation
+            if selected_gaps:
+                grade_ok, grade_reason, grade_coverage = prefilter_gap_combination(project, selected_gaps)
+                state["grade_prefilter"] = {
+                    "sufficient": grade_ok,
+                    "reason": grade_reason,
+                    "coverage": round(grade_coverage, 3),
+                }
+                log_event("AUTOGEN", "grade_gap_prefilter", sufficient=grade_ok, coverage=round(grade_coverage, 3), reason=grade_reason)
 
         if "mingli" in autogen_agent_keys(groupchat_spec):
             # Collect all valid gaps for multi-gap aggregation with rotation on retry
@@ -667,6 +685,8 @@ def autogen_gap_context(gaps: list[dict[str, Any]]) -> list[dict[str, Any]]:
                 "tabi_chain": gap.get("tabi_chain"),
                 "tabi_warrant": gap.get("tabi_warrant"),
                 "tabi_claim": gap.get("tabi_claim"),
+                "hypothesis_ingredients": gap.get("hypothesis_ingredients"),
+                "counterfactual_leaves": gap.get("counterfactual_leaves"),
             }
         )
     return compact
