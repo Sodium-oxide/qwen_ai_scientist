@@ -291,6 +291,13 @@ def extract_academic_keyword(text: str, *, max_keywords: int = 8) -> list[str]:
         "be", "is", "was", "were", "has", "have", "had", "do", "does", "did",
         "not", "no", "but", "if", "then", "than", "so", "its", "it", "their",
         "we", "our", "these", "those", "also", "more", "most", "very", "such",
+        # Template/hypothesis boilerplate that is NOT academic search content
+        "retested", "retest", "matched", "under", "reveal", "exposes", "boundary",
+        "claims", "claim", "predicted", "predict", "prediction", "hypothesis",
+        "intervention", "mechanism", "causal", "link", "unsupported",
+        "conditions", "condition", "scenarios", "scenario", "regime",
+        "observed", "observable", "controllable", "validity", "stated",
+        "detected", "unresolved", "contradiction", "migration",
     }
     keywords: list[str] = []
     for segment in segments:
@@ -310,6 +317,45 @@ def extract_academic_keyword(text: str, *, max_keywords: int = 8) -> list[str]:
                 keywords.append(phrase)
     return unique_preserve_order(keywords)[:max_keywords]
 
+def strip_audit_meta_language(text: str) -> str:
+    """Remove internal audit/report labels that should never appear in academic search queries.
+
+    YanZhen and DuZhi produce meta-labels like 'Unsupported causal link:', 'decisive prediction',
+    'conflicting claims' etc.  These are pipeline-internal jargon, not research keywords.
+    """
+    try:
+        from ._utils import normalize_space
+    except ImportError:
+        from _utils import normalize_space
+    clean = normalize_space(str(text or ""))
+    # Strip common audit prefixes (case-insensitive)
+    prefixes = [
+        r"^unsupported causal link:\s*",
+        r"^potential unresolved contradiction:\s*",
+        r"^cross-domain migration detected:\s*",
+        r"^no observable[,\s]+measurement[,\s]+benchmark[,\s]+or validation readout is stated\.?\s*",
+        r"^no controllable\s*(?:variable|variables)?.*?stated\.?\s*",
+        r"^no validity.*?stated\.?\s*",
+        r"^no cited\s*(?:evidence|support|reference).*?:\s*",
+        r"^low lexical overlap:\s*",
+        r"^method family\s*'[^']*'\s*applied to scenario family\s*'[^']*'\s*without explicit bridging evidence[:.]?\s*",
+    ]
+    for pat in prefixes:
+        clean = re.sub(pat, "", clean, flags=re.IGNORECASE)
+    # Remove inline audit labels that appear anywhere in the text
+    inline_labels = [
+        r"\bunsupported causal link\b",
+        r"\bdecisive prediction\b",
+        r"\bconflicting claims\b",
+        r"\bcawm\s*(?:risk|detected|level)\b",
+        r"\bmechanism[\s-]?stress intervention\b",
+        r"\bregime\s*shift\b",
+    ]
+    for pat in inline_labels:
+        clean = re.sub(pat, "", clean, flags=re.IGNORECASE)
+    return normalize_space(clean)
+
+
 def build_audit_supplement_query(domain: str, hypothesis_text: str, unsupported_claim: str) -> str:
     try:
         from ._utils import normalize_space, unique_preserve_order
@@ -320,20 +366,25 @@ def build_audit_supplement_query(domain: str, hypothesis_text: str, unsupported_
     Query structure (keyword priority):
       [domain_context] [causal_node_keywords] [method_keywords]
     No fixed boilerplate suffix — every term comes from the actual research content.
+    Audit meta-language (e.g. 'unsupported causal link', 'conflicting claims') is stripped
+    before keyword extraction so it never pollutes the search query.
     """
+    # Strip audit meta-language from all inputs
+    clean_claim = strip_audit_meta_language(unsupported_claim)
+    clean_hypothesis = strip_audit_meta_language(hypothesis_text)
     # Layer 1: Domain context keywords (anchor the search to the right field)
     domain_kws = extract_academic_keyword(domain, max_keywords=3)
     # Layer 2: Causal-link node keywords (the key concepts at each end of the causal chain)
-    causal_kws = extract_academic_keyword(unsupported_claim, max_keywords=5)
+    causal_kws = extract_academic_keyword(clean_claim, max_keywords=5)
     # Layer 3: Method/mechanism keywords from the hypothesis (filter domain overlap)
-    hypothesis_kws = extract_academic_keyword(hypothesis_text, max_keywords=6)
+    hypothesis_kws = extract_academic_keyword(clean_hypothesis, max_keywords=6)
     domain_set = set(domain_kws)
     hypothesis_kws = [kw for kw in hypothesis_kws if kw not in domain_set][:4]
     # Assemble: domain first (field anchor), then causal nodes, then method terms
     prioritized = unique_preserve_order(domain_kws + causal_kws + hypothesis_kws)
     query = " ".join(prioritized[:14])
     if not query:
-        query = normalize_space(f"{domain} {unsupported_claim}")[:240]
+        query = normalize_space(f"{domain} {clean_claim}")[:240]
     return normalize_space(query)
 
 def causal_link_terms(text: str) -> list[str]:

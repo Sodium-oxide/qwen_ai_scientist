@@ -920,23 +920,8 @@ def run_zhizhi_literature_analysis(
             f"suggested query: {spot.get('suggested_query')}; "
             f"live_probe_results={(spot.get('live_probe') or {}).get('total_results', 'not_run') if isinstance(spot.get('live_probe'), dict) else 'not_run'}"
         )
-    supplemental_imports: list[dict[str, Any]] = []
-    supplemental_report = zhizhi_auto_supplement_blind_spots(
-        project_id=project_id,
-        coverage_diagnostic=coverage_diagnostic,
-        providers=selected_providers,
-        domain=domain,
-        use_llm=use_llm,
-        max_branches=3,
-        per_branch_imports=2,
-    )
-    if supplemental_report.get("attempted"):
-        action["auto_supplement_blind_spots"] = supplemental_report
-        supplemental_imports = supplemental_report.get("imports", []) if isinstance(supplemental_report.get("imports"), list) else []
-        observations.append(
-            "Auto-supplemented confirmed retrieval blind spots before TanXi gap reasoning: "
-            f"branches={supplemental_report.get('branches_attempted', 0)}, imports={len(supplemental_imports)}."
-        )
+
+    # === IMPORT MAIN SEARCH PAPERS FIRST (before blind spot supplement burns SS quota) ===
     selected_payload = json.loads(select_literature_result(search_id, query=query, top_k=min(5, search_budget), use_llm=use_llm))
     selected = selected_payload.get("selected") or {}
     action["select_literature_result"] = selected
@@ -964,6 +949,25 @@ def run_zhizhi_literature_analysis(
         except Exception as exc:
             observations.append(f"import failed for result {result.get('result_index')}: {exc}")
     action["imported_records"] = len(imported_records)
+
+    # === BLIND SPOT SUPPLEMENT (runs after main import to avoid exhausting SS quota first) ===
+    supplemental_imports: list[dict[str, Any]] = []
+    supplemental_report = zhizhi_auto_supplement_blind_spots(
+        project_id=project_id,
+        coverage_diagnostic=coverage_diagnostic,
+        providers=selected_providers,
+        domain=domain,
+        use_llm=use_llm,
+        max_branches=3,
+        per_branch_imports=2,
+    )
+    if supplemental_report.get("attempted"):
+        action["auto_supplement_blind_spots"] = supplemental_report
+        supplemental_imports = supplemental_report.get("imports", []) if isinstance(supplemental_report.get("imports"), list) else []
+        observations.append(
+            "Auto-supplemented confirmed retrieval blind spots before TanXi gap reasoning: "
+            f"branches={supplemental_report.get('branches_attempted', 0)}, imports={len(supplemental_imports)}."
+        )
     if active_subspace_map is not None:
         subspace_coverage = post_retrieval_subspace_coverage(active_subspace_map, selected_subfields or focus_branches, imported_records)
         action["post_retrieval_subspace_coverage"] = subspace_coverage
