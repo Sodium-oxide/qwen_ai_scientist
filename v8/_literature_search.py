@@ -65,6 +65,8 @@ ARXIV_COOLDOWN_UNTIL = 0.0
 
 ARXIV_429_COUNT = 0
 
+ARXIV_TIMEOUT_COUNT = 0
+
 def search_papers(
     query: str,
     databases: list[str] | None = None,
@@ -2300,12 +2302,51 @@ def semantic_scholar_get_text(url: str, headers: dict[str, str] | None = None) -
 
 def arxiv_get_text(url: str, headers: dict[str, str] | None = None) -> str:
     wait_for_arxiv_rate_limit()
-    try:
-        return http_get_text(url, headers=headers)
-    except RuntimeError as exc:
-        if is_rate_limit_error(str(exc)):
-            register_arxiv_429(str(exc))
-        raise
+    global ARXIV_429_COUNT, ARXIV_TIMEOUT_COUNT
+    # Circuit breaker: skip arxiv after too many consecutive timeouts
+    if ARXIV_TIMEOUT_COUNT >= 15:
+        log_event("SCIENCE", "arxiv_circuit_breaker_open",
+                  timeout_count=ARXIV_TIMEOUT_COUNT, url=url[:80])
+        raise RuntimeError(f"arxiv circuit breaker: {ARXIV_TIMEOUT_COUNT} consecutive timeouts, skipping")
+    max_attempts = 3
+    last_exc: Exception | None = None
+    for attempt in range(1, max_attempts + 1):
+        try:
+            result = http_get_text(url, headers=headers, timeout=45.0)
+            # Success — reset consecutive timeout counter
+            ARXIV_TIMEOUT_COUNT = 0
+            return result
+        except RuntimeError as exc:
+            last_exc = exc
+            error_text = str(exc)
+            if is_rate_limit_error(error_text):
+                register_arxiv_429(error_text)
+                raise  # 429 propagates immediately
+            # Timeout or connection error — retry with exponential backoff
+            if attempt < max_attempts and is_arxiv_timeout(error_text):
+                ARXIV_TIMEOUT_COUNT += 1
+                delay = 2.0 * (2 ** (attempt - 1))  # 2s, 4s
+                log_event("SCIENCE", "arxiv_timeout_retry", attempt=attempt,
+                          max_attempts=max_attempts, delay_seconds=delay,
+                          consecutive_timeouts=ARXIV_TIMEOUT_COUNT,
+                          url=url[:80])
+                import time as _time
+                _time.sleep(delay)
+                continue
+            # Non-retryable error
+            ARXIV_TIMEOUT_COUNT += 1
+            raise
+    # Should not reach here, but just in case
+    ARXIV_TIMEOUT_COUNT += 1
+    if last_exc:
+        raise last_exc
+    raise RuntimeError("arxiv_get_text: unexpected fallthrough")
+
+
+def is_arxiv_timeout(error: str) -> bool:
+    """Check if an error message indicates an arxiv timeout."""
+    lower = error.lower()
+    return any(term in lower for term in ("timed out", "timeout", "read operation", "connection"))
 
 def semantic_scholar_retry_after_seconds(error: str) -> float | None:
     match = re.search(r"retry_after=([0-9]+(?:\.[0-9]+)?)", error, flags=re.IGNORECASE)
