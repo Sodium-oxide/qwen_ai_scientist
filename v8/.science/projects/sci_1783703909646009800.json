@@ -1,0 +1,150 @@
+{
+  "project_id": "sci_1783703909646009800",
+  "title": "Determining the End of the Periodic Table",
+  "domain": "Nuclear Physics and Chemistry",
+  "objective": "Identify key bottlenecks in determining the 'end' of the periodic table, including nuclear stability limits, technological boundaries of synthesis methods, evolution of IUPAC certification standards, and gaps between theoretical predictions and experimental validations. Generate verifiable and revisable research hypotheses from high-quality literature.",
+  "question": "",
+  "strategic_need": "Understanding the limits of the periodic table is crucial for fundamental science and has implications for materials science, energy, and technology.",
+  "phase": "Gap Discovery",
+  "createdAt": 1783703909.6460145,
+  "updatedAt": 1783703936.2881846,
+  "papergraph": [],
+  "evidence": [],
+  "coverage_matrix": {},
+  "knowledge_gaps": [],
+  "hypotheses": [],
+  "keynotes": [],
+  "keynote_knowledge_synthesis": {},
+  "mechanism_reports": [],
+  "pipeline_tasks": [
+    "task_1783703935892_5050",
+    "task_1783703936018_4565",
+    "task_1783703936071_3339",
+    "task_1783703936123_6308",
+    "task_1783703936176_6124",
+    "task_1783703936234_7203"
+  ],
+  "boxue_delegation_plans": [
+    {
+      "boxue_delegation_plan_id": "boxue_1783703935891943300",
+      "project_id": "sci_1783703909646009800",
+      "goal": "Identify key bottlenecks in determining the 'end' of the periodic table, including nuclear stability limits, technological boundaries of synthesis methods, evolution of IUPAC certification standards, and gaps between theoretical predictions and experimental validations. Generate verifiable and revisable research hypotheses from high-quality literature. The collaboration should follow the sequence: Boxue -> ZhiZhi -> TanXi -> GRADE -> Socrates -> MingLi -> YanZhen -> DuZhi -> BianLun.",
+      "createdAt": 1783703936.2878435,
+      "prompt_alignment": {
+        "comparison": {
+          "prompt_assign_task": "implemented as persistent create_task DAG entries with assigned agent, phase, dependency, deliverable, priority, and acceptance criteria",
+          "prompt_review_output": "implemented as reviewer_gate plus boxue_final dependency gates; Boxue can add revision tasks via the task system",
+          "prompt_synthesize": "implemented as bianlun_synthesis, paperwriter_draft, and boxue_final synthesis tasks",
+          "prompt_adjust_plan": "implemented operationally by creating additional tasks or new delegation plans after reviewing outputs",
+          "prompt_finalize": "implemented as boxue_final decision task, not as specialist execution"
+        },
+        "stronger_than_old_pipeline_tasks": [
+          "role-specific tasks instead of generic phase tasks",
+          "explicit acceptance criteria",
+          "risk constraints embedded in every task",
+          "dependencies mirror the research lifecycle",
+          "optional teammate spawning for unblocked specialist work"
+        ],
+        "remaining_manual_gate": "Boxue still needs to review outputs and decide whether to create revision tasks; this preserves human/lead control over shared project state."
+      },
+      "coordination_policy": {
+        "boxue_role": "decompose, assign, review, synthesize, adjust, finalize",
+        "specialist_role": "execute only the assigned scientific subtask",
+        "shared_state": "state-changing PaperGraph/project updates should be gated by lead/synthesis tasks",
+        "step_limit": 20
+      },
+      "tasks": [
+        {
+          "task_id": "task_1783703935892_5050",
+          "agent": "zhizhi",
+          "phase": "Gap Discovery",
+          "title": "Build grounded PaperGraph evidence substrate",
+          "blockedBy": [],
+          "priority": "high",
+          "acceptance_criteria": [
+            "At least one verifiable source or an explicit retrieval-failure report",
+            "Method/scenario/benchmark/contribution/limitation fields are populated or flagged unknown",
+            "Unsupported claims are marked for human review"
+          ]
+        },
+        {
+          "task_id": "task_1783703936018_4565",
+          "agent": "tanxi",
+          "phase": "Gap Discovery",
+          "title": "Rank high-value knowledge gaps",
+          "blockedBy": [
+            "task_1783703935892_5050"
+          ],
+          "priority": "high",
+          "acceptance_criteria": [
+            "Every reported gap has supporting references or is flagged as ungrounded",
+            "No more than 10 ranked gaps",
+            "Each gap includes novelty/value/feasibility rationale"
+          ]
+        },
+        {
+          "task_id": "task_1783703936071_3339",
+          "agent": "mingli",
+          "phase": "Hypothesis Generation",
+          "title": "Generate and evolve gap-grounded hypotheses",
+          "blockedBy": [
+            "task_1783703936018_4565"
+          ],
+          "priority": "high",
+          "acceptance_criteria": [
+            "Each hypothesis links to a gap_id",
+            "Each hypothesis contains mechanism and falsification condition",
+            "Overlap/novelty risk is reported"
+          ]
+        },
+        {
+          "task_id": "task_1783703936123_6308",
+          "agent": "duzhi",
+          "phase": "Socratic Debate",
+          "title": "Run Socratic critique",
+          "blockedBy": [
+            "task_1783703936071_3339"
+          ],
+          "priority": "medium",
+          "acceptance_criteria": [
+            "At least one counterexample per hypothesis",
+            "At least one alternative explanation per hypothesis",
+            "Actionable revision or rejection recommendation"
+          ]
+        },
+        {
+          "task_id": "task_1783703936176_6124",
+          "agent": "bianlun",
+          "phase": "Socratic Debate",
+          "title": "Moderate structured debate and synthesize refined hypothesis",
+          "blockedBy": [
+            "task_1783703936123_6308"
+          ],
+          "priority": "medium",
+          "acceptance_criteria": [
+            "Arguments are separated into factual vs conceptual disagreements",
+            "Refined hypothesis lists improvements from critique",
+            "Remaining risks are explicit"
+          ]
+        },
+        {
+          "task_id": "task_1783703936234_7203",
+          "agent": "yanzhen",
+          "phase": "Mechanism Verification",
+          "title": "Audit mechanism fidelity",
+          "blockedBy": [
+            "task_1783703936176_6124"
+          ],
+          "priority": "high",
+          "acceptance_criteria": [
+            "All three verification layers are addressed",
+            "Regime-shift conditions are explicit",
+            "High-risk mechanisms are routed to revision or human review"
+          ]
+        }
+      ],
+      "spawned_teammates": [],
+      "next_step": "Let unblocked specialist tasks run first. Boxue should review outputs at dependency gates, then adjust or unlock downstream phases."
+    }
+  ]
+}

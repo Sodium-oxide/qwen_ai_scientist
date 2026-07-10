@@ -89,7 +89,6 @@ def resolve_tool_placeholders(
     lookup: dict[str, str] = {}
     for prev in previous_results:
         content = str(prev.get("content", ""))
-        tool_name = str(prev.get("_tool_name", ""))
         # Try to parse JSON content for field access
         try:
             parsed = json.loads(content)
@@ -97,9 +96,6 @@ def resolve_tool_placeholders(
                 for key, value in parsed.items():
                     lookup[key] = str(value)
                     lookup[f"previous_tool_result.{key}"] = str(value)
-                    # Also add tool-name-prefixed key: e.g. create_research_project.project_id
-                    if tool_name:
-                        lookup[f"{tool_name}.{key}"] = str(value)
         except (json.JSONDecodeError, TypeError):
             pass
     if not lookup:
@@ -326,8 +322,6 @@ def normalize_tool_name(name: Any) -> str:
         "expand_literature_graph": "expand_literature_graph",
         "buildliteraturerelationgraph": "build_literature_relation_graph",
         "build_literature_relation_graph": "build_literature_relation_graph",
-        "buildkeynoteknowledgesynthesis": "build_keynote_knowledge_synthesis",
-        "build_keynote_knowledge_synthesis": "build_keynote_knowledge_synthesis",
         "createsciencepipelinetasks": "create_science_pipeline_tasks",
         "create_science_pipeline_tasks": "create_science_pipeline_tasks",
         "createsciencedelegationtasks": "create_science_delegation_tasks",
@@ -386,6 +380,8 @@ def normalize_tool_name(name: Any) -> str:
         "run_tanxi_gap_exploration": "run_tanxi_gap_exploration",
         "checksemanticplausibility": "check_semantic_plausibility",
         "check_semantic_plausibility": "check_semantic_plausibility",
+        "runsocratesmechanismenrichment": "run_socrates_mechanism_enrichment",
+        "run_socrates_mechanism_enrichment": "run_socrates_mechanism_enrichment",
         "generateidea": "generate_idea",
         "generate_idea": "generate_idea",
         "designexperiment": "design_experiment",
@@ -422,8 +418,6 @@ def normalize_tool_name(name: Any) -> str:
         "detect_selective_citation": "detect_selective_citation",
         "causalchainaudit": "causal_chain_audit",
         "causal_chain_audit": "causal_chain_audit",
-        "mechanismoperationalizationaudit": "mechanism_operationalization_audit",
-        "mechanism_operationalization_audit": "mechanism_operationalization_audit",
         "runyanzhenmechanismverification": "run_yanzhen_mechanism_verification",
         "run_yanzhen_mechanism_verification": "run_yanzhen_mechanism_verification",
         "exportresearchplan": "export_research_plan",
@@ -523,7 +517,6 @@ def run_agent_locked(user_input: str) -> str:
                     elif isinstance(block, dict):
                         block["input"] = resolved_input
             result = run_tool(block, messages, current_handlers)
-            result["_tool_name"] = normalize_tool_name(block_attr(block, "name"))
             tool_results.append(result)
         for block, result in zip(tool_blocks, tool_results):
             if normalize_tool_name(block_attr(block, "name")) == "create_task":

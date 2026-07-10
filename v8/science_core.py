@@ -16,6 +16,7 @@ try:
     from ._literature_import import *  # noqa: F401,F403
     from ._gap_detection import *  # noqa: F401,F403
     from ._hypothesis import *  # noqa: F401,F403
+    from ._socrates import *  # noqa: F401,F403
     from ._verification import *  # noqa: F401,F403
     from ._debate import *  # noqa: F401,F403
     from ._supplement import *  # noqa: F401,F403
@@ -31,6 +32,7 @@ except ImportError:
     from _literature_import import *  # noqa: F401,F403
     from _gap_detection import *  # noqa: F401,F403
     from _hypothesis import *  # noqa: F401,F403
+    from _socrates import *  # noqa: F401,F403
     from _verification import *  # noqa: F401,F403
     from _debate import *  # noqa: F401,F403
     from _supplement import *  # noqa: F401,F403
@@ -48,6 +50,7 @@ try:
     from . import _literature_import
     from . import _gap_detection
     from . import _hypothesis
+    from . import _socrates
     from . import _verification
     from . import _debate
     from . import _supplement
@@ -63,6 +66,7 @@ except ImportError:
     import _literature_import
     import _gap_detection
     import _hypothesis
+    import _socrates
     import _verification
     import _debate
     import _supplement

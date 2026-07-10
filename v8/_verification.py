@@ -87,20 +87,6 @@ def causal_chain_audit(
     report = yanzhen_causal_chain_report(causal_chain or [], evidence_for_each or [])
     return json.dumps(report, ensure_ascii=False, indent=2)
 
-
-def mechanism_operationalization_audit(
-    hypothesis: str,
-    mechanism_specification: dict[str, Any] | None = None,
-    original_sources: list[Any] | None = None,
-) -> str:
-    """Expose whether a claimed mediator is operational rather than rhetorical."""
-    report = yanzhen_mechanism_operationalization_audit(
-        hypothesis,
-        mechanism_specification or {},
-        original_sources or [],
-    )
-    return json.dumps(report, ensure_ascii=False, indent=2)
-
 def run_yanzhen_mechanism_verification(
     project_id: str,
     hypothesis_id: str = "",
@@ -127,7 +113,6 @@ def run_yanzhen_mechanism_verification(
     if not text:
         raise ValueError("YanZhen requires hypothesis text or hypothesis_id.")
     mechanism = yanzhen_mechanism_text(hypothesis_record) or text
-    mechanism_specification = yanzhen_mechanism_specification(hypothesis_record)
     chain = reasoning_chain or extract_causal_chain(text + " " + mechanism)
     project_sources = original_sources if original_sources is not None else yanzhen_sources_for_hypothesis(project, hypothesis_record)
     project_citations = cited_data if cited_data is not None else yanzhen_cited_data_for_hypothesis(project, hypothesis_record)
@@ -149,12 +134,7 @@ def run_yanzhen_mechanism_verification(
     layer_3 = yanzhen_regime_shift_report(mechanism, yanzhen_original_conditions(text + " " + mechanism), shifts)
     feasibility = yanzhen_feasibility_audit(text + " " + mechanism)
     adaptability = check_method_scenario_adaptability(text, mechanism, str(project.get("domain") or ""), project)
-    operationalization = yanzhen_mechanism_operationalization_audit(
-        text + " " + mechanism,
-        mechanism_specification,
-        project_sources,
-    )
-    overall = yanzhen_overall_verdict(layer_1, layer_2, layer_3, feasibility, adaptability, operationalization)
+    overall = yanzhen_overall_verdict(layer_1, layer_2, layer_3, feasibility, adaptability)
     detailed = yanzhen_detailed_reasoning(layer_1, layer_2, layer_3, chain_report, citation_report)
     mechanism_report = {
         "hypothesis_id": hypothesis_id or str(hypothesis_record.get("hypothesis_id") or ""),
@@ -165,7 +145,6 @@ def run_yanzhen_mechanism_verification(
         "selective_citation_audit": citation_report,
         "feasibility_audit": feasibility,
         "domain_adaptability_audit": adaptability,
-        "mechanism_operationalization_audit": operationalization,
         "overall_verdict": overall,
         "verdict": yanzhen_public_verdict(overall),
         "required_actions": [],
@@ -180,7 +159,7 @@ def run_yanzhen_mechanism_verification(
         "action": {
             "type": "run_yanzhen_mechanism_verification",
             "hypothesis_id": hypothesis_id,
-            "layers_executed": ["internal_consistency", "data_consistency", "regime_shift_test", "mechanism_operationalization"],
+            "layers_executed": ["internal_consistency", "data_consistency", "regime_shift_test"],
         },
         "mechanism_fidelity_report": mechanism_report,
     }
@@ -224,8 +203,6 @@ def ask_socratic_questions(
         raise ValueError("DuZhi requires hypothesis text or hypothesis_id.")
     mechanism = yanzhen_mechanism_text(record) or text
     sources = yanzhen_sources_for_hypothesis(project, record) if project else []
-    specification = yanzhen_mechanism_specification(record)
-    operationalization = yanzhen_mechanism_operationalization_audit(text + " " + mechanism, specification, sources)
     selected_types = [normalize_key(item) for item in (question_types or []) if str(item).strip()]
     questions = duzhi_generate_questions(
         hypothesis_text=text,
@@ -233,8 +210,6 @@ def ask_socratic_questions(
         sources=sources,
         allowed_types=selected_types,
         max_questions=max_questions,
-        mechanism_specification=specification,
-        operationalization_audit=operationalization,
     )
     report = {
         "thought": "DuZhi generated structured Socratic questions targeting definitions, constraints, causal links, evidence gaps, and counterexamples.",
@@ -933,7 +908,6 @@ def yanzhen_overall_verdict(
     layer_3: dict[str, Any],
     feasibility: dict[str, Any] | None = None,
     adaptability: dict[str, Any] | None = None,
-    operationalization: dict[str, Any] | None = None,
 ) -> str:
     if layer_3.get("verdict") == "FAIL" or layer_3.get("cawm_risk_level") == "HIGH":
         return "CAWM_DETECTED"
@@ -947,129 +921,9 @@ def yanzhen_overall_verdict(
         return "REQUIRES_HUMAN_REVIEW"
     if isinstance(adaptability, dict) and adaptability.get("verdict") == "WARN":
         return "REQUIRES_HUMAN_REVIEW"
-    if isinstance(operationalization, dict) and operationalization.get("verdict") != "PASS":
-        return "REQUIRES_HUMAN_REVIEW"
     if layer_3.get("cawm_risk_level") == "MEDIUM":
         return "REQUIRES_HUMAN_REVIEW"
     return "MECHANISM_VERIFIED"
-
-
-def yanzhen_mechanism_specification(hypothesis: dict[str, Any]) -> dict[str, Any]:
-    """Read the optional five-dimensional mechanism contract from an idea."""
-    final = hypothesis.get("mingli_final_idea", {}) if isinstance(hypothesis.get("mingli_final_idea"), dict) else hypothesis
-    value = final.get("mechanism_specification", hypothesis.get("mechanism_specification", {}))
-    return dict(value) if isinstance(value, dict) else {}
-
-
-def yanzhen_mechanism_operationalization_audit(
-    hypothesis_text: str,
-    specification: dict[str, Any] | None = None,
-    original_sources: list[Any] | None = None,
-) -> dict[str, Any]:
-    """Apply a field-neutral five-dimensional mechanism contract.
-
-    The dimensions are intentionally not chemistry-specific.  In a material
-    study, ``location_or_scope`` can be an interface and ``observability`` can
-    be spectroscopy.  In a clinical, computational, or mathematical study,
-    they can instead be a cohort/subgroup, representation/algorithmic state,
-    or independent proof/test.  What matters is that a claimed mediator has a
-    stable identity, scope, dynamics, recovery behaviour, and independent
-    ways to observe or test it.
-    """
-    try:
-        from ._utils import normalize_space, trim_text
-    except ImportError:
-        from _utils import normalize_space, trim_text
-    spec = dict(specification or {})
-    unresolved = {"", "unknown", "unspecified", "unresolved", "n/a", "none", "tbd"}
-
-    def complete(value: Any) -> bool:
-        text = normalize_space(str(value or "")).lower()
-        return len(text) >= 8 and text not in unresolved and "[fill" not in text
-
-    def concrete_identity(value: Any) -> bool:
-        text = normalize_space(str(value or "")).lower()
-        generic_markers = (
-            "cumulative damage", "latent damage", "damage or depletion", "depletion state",
-            "state change", "unknown mechanism", "generic regulation", "generic instability",
-        )
-        return complete(value) and not any(marker in text for marker in generic_markers)
-
-    observability = spec.get("observability", [])
-    observations = [item for item in observability if isinstance(item, dict)] if isinstance(observability, list) else []
-    independent_observations = []
-    seen_modalities: set[str] = set()
-    for item in observations:
-        modality = normalize_space(str(item.get("modality") or item.get("test") or item.get("method") or ""))
-        signal = normalize_space(str(item.get("signal") or item.get("expected_signal") or item.get("criterion") or ""))
-        if complete(modality) and complete(signal) and modality.lower() not in seen_modalities:
-            seen_modalities.add(modality.lower())
-            independent_observations.append({"modality": modality, "signal": trim_text(signal, 240)})
-
-    dimensions = {
-        "identity": {
-            "question": "What exact entity, state, variable, or mathematical object is claimed to mediate the effect?",
-            "value": spec.get("identity", ""),
-            "required": "Name a concrete, distinguishable mediator and its definition, composition, representation, or state variable.",
-        },
-        "location_or_scope": {
-            "question": "Where in the system, population, representation, or boundary does the mediator exist?",
-            "value": spec.get("location_or_scope", ""),
-            "required": "State the spatial, component, cohort, data, or boundary scope at a usable resolution.",
-        },
-        "dynamics": {
-            "question": "How does the mediator evolve under the intervention?",
-            "value": spec.get("dynamics", ""),
-            "required": "Provide a time/iteration/parameter relation, threshold, rate, or explicit qualitative regime with a planned discriminator.",
-        },
-        "reversibility": {
-            "question": "Does removing or reversing the intervention restore the mediator or outcome?",
-            "value": spec.get("reversibility", ""),
-            "required": "Specify an intervention-removal, recovery, rollback, washout, or counterfactual test and its expected result.",
-        },
-        "observability": {
-            "question": "Which two independent observations can distinguish the mediator from an endpoint correlation?",
-            "value": independent_observations,
-            "required": "Provide two non-identical modalities/tests, each with an expected signature or decision criterion.",
-        },
-    }
-    issues: list[str] = []
-    rendered: dict[str, Any] = {}
-    for name, item in dimensions.items():
-        if name == "observability":
-            valid = len(independent_observations) >= 2
-        elif name == "identity":
-            valid = concrete_identity(item["value"])
-        else:
-            valid = complete(item["value"])
-        rendered[name] = {
-            "provided": item["value"],
-            "question": item["question"],
-            "required": item["required"],
-            "verdict": "PASS" if valid else "FAIL",
-        }
-        if not valid:
-            issues.append(f"{name}: {item['required']}")
-    claim_scope = "mechanistic" if not issues else "phenomenological_only_until_operationalized"
-    return {
-        "protocol": "five_dimension_mechanism_contract",
-        "dimensions": rendered,
-        "issues_found": issues,
-        "required_response_template": {
-            "identity": "Concrete mediator/entity/state and formal definition:",
-            "location_or_scope": "System/component/cohort/representation scope and resolution:",
-            "dynamics": "Evolution rule, threshold, rate, or discriminating schedule:",
-            "reversibility": "Removal/recovery/rollback test and predicted result:",
-            "observability": [
-                {"modality": "independent observation 1", "signal": "expected signature/criterion"},
-                {"modality": "independent observation 2", "signal": "expected signature/criterion"},
-            ],
-        },
-        "claim_scope": claim_scope,
-        "verdict": "PASS" if not issues else "REQUIRES_REVISION",
-        "source_count": len(original_sources or []),
-        "hypothesis_excerpt": trim_text(normalize_space(hypothesis_text), 600),
-    }
 
 def yanzhen_public_verdict(overall: str) -> str:
     if overall == "MECHANISM_VERIFIED":
@@ -1086,11 +940,11 @@ def yanzhen_unsupported_claims(report: dict[str, Any]) -> list[str]:
     claims: list[str] = []
     chain = report.get("causal_chain_audit", {}) if isinstance(report.get("causal_chain_audit"), dict) else {}
     claims.extend(str(item) for item in chain.get("unsupported_links", []) if item)
-    for layer_key in ("layer_1_internal_consistency", "layer_2_data_consistency", "selective_citation_audit", "feasibility_audit", "mechanism_operationalization_audit"):
+    for layer_key in ("layer_1_internal_consistency", "layer_2_data_consistency", "selective_citation_audit", "feasibility_audit"):
         layer = report.get(layer_key, {}) if isinstance(report.get(layer_key), dict) else {}
         for issue in layer.get("issues_found", []) if isinstance(layer.get("issues_found"), list) else []:
             issue_text = str(issue)
-            if layer_key == "mechanism_operationalization_audit" or any(term in issue_text.lower() for term in ("unsupported", "no cited", "low lexical", "no observable", "no controllable", "no validity")):
+            if any(term in issue_text.lower() for term in ("unsupported", "no cited", "low lexical", "no observable", "no controllable", "no validity")):
                 claims.append(issue_text)
     # Include domain adaptability issues as unsupported claims
     adaptability = report.get("domain_adaptability_audit", {}) if isinstance(report.get("domain_adaptability_audit"), dict) else {}
@@ -1172,20 +1026,6 @@ def yanzhen_required_actions(report: dict[str, Any]) -> list[dict[str, Any]]:
                 "action": "pre_experiment_feasibility_check",
                 "reason": "Observable/control/boundary conditions are incomplete.",
                 "issues": feasibility.get("issues_found", [])[:5],
-            }
-        )
-    operationalization = report.get("mechanism_operationalization_audit", {}) if isinstance(report.get("mechanism_operationalization_audit"), dict) else {}
-    if operationalization.get("verdict") != "PASS":
-        actions.append(
-            {
-                "action": "mingli_operationalize_mediator_or_downgrade_claim",
-                "reason": "The mechanism is still a narrative label rather than an independently testable mediator.",
-                "issues": operationalization.get("issues_found", [])[:5],
-                "required_response_template": operationalization.get("required_response_template", {}),
-                "decision_rule": (
-                    "If the five fields cannot be completed from source evidence or a pre-registered measurement plan, "
-                    "downgrade the proposal to a phenomenological association study; do not claim a causal mechanism."
-                ),
             }
         )
     # Domain adaptability audit — the new check

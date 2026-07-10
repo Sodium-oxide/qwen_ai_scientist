@@ -508,8 +508,10 @@ def core_domain_alignment(result: dict[str, Any], domain: str = "", query: str =
     preprint = is_preprint_literature_result(result)
     min_hits = 3 if len(core_terms) >= 8 else 2
     min_specific = 2 if len(specific_terms) >= 4 else 1
-    if preprint:
-        min_hits += 1
+    # Preprints already go through the same core-domain and noise checks as
+    # journal papers. Requiring an extra lexical hit here made relevant early
+    # work with concise metadata systematically disappear from L3 while the
+    # identical semantic standard admitted it in L4.
     passes = len(hits) >= min_hits and (not specific_terms or len(specific_hits) >= min_specific)
     if is_review_like_paper(result) and len(hits) >= max(2, min_hits - 1):
         passes = True

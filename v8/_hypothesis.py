@@ -60,18 +60,7 @@ def run_mingli_hypothesis_evolution(
         if len(lineage) >= 3 and abs(lineage[-1]["best_score"] - lineage[-2]["best_score"]) < 0.01:
             break
 
-    for item in population:
-        item["mechanism_contract"] = mechanism_contract_for_candidate(item)
-        item["candidate_selection"] = candidate_papergraph_coverage(project, item)
-    mechanism_ready_population = [
-        item for item in population
-        if (item.get("mechanism_contract") or {}).get("verdict") == "READY"
-    ]
-    incomplete_population = [item for item in population if item not in mechanism_ready_population]
-    finalists = select_diverse_hypothesis_finalists(
-        mechanism_ready_population,
-        top_k=clamp_int(top_k, 1, 20),
-    )
+    finalists = select_diverse_hypothesis_finalists(population, top_k=clamp_int(top_k, 1, 20))
     persisted = []
     for item in finalists:
         hypothesis = Hypothesis(
@@ -93,33 +82,11 @@ def run_mingli_hypothesis_evolution(
                 "verification_plan": item.get("verification_plan", {}),
                 "source_gap": item.get("source_gap", {}),
                 "gap_ids": item.get("gap_ids", []),
-                "evidence_packets": item.get("evidence_packets", []),
-                "collision_source": item.get("collision_source", {}),
-                "cross_domain_bridge": item.get("cross_domain_bridge", {}),
-                "mechanism_specification": item.get("mechanism_specification", {}),
-                "mechanism_contract": item.get("mechanism_contract", {}),
-                "null_hypothesis": item.get("null_hypothesis", ""),
-                "alternative_hypothesis": item.get("alternative_hypothesis", ""),
-                "testable_subhypotheses": item.get("testable_subhypotheses", []),
                 "tournament_generation": item.get("generation", 0),
             }
         )
         project.setdefault("hypotheses", []).append(payload)
         persisted.append(payload)
-    failures = [
-        {
-            "failure_id": new_id("mfail"),
-            "project_id": project_id,
-            "gap_id": item.get("gap_id", ""),
-            "candidate_id": item.get("candidate_id", ""),
-            "mechanism_contract": item.get("mechanism_contract", {}),
-            "suggested_action": (item.get("mechanism_contract") or {}).get("suggested_action"),
-            "createdAt": time.time(),
-        }
-        for item in incomplete_population
-    ]
-    if failures:
-        project.setdefault("mingli_mechanism_generation_failures", []).extend(failures)
     run = {
         "mingli_run_id": new_id("mingli"),
         "project_id": project_id,
@@ -129,15 +96,11 @@ def run_mingli_hypothesis_evolution(
         "generations_completed": len(lineage) - 1,
         "lineage_summary": lineage,
         "top_hypotheses": persisted,
-        "mechanism_generation_failures": failures,
-        "method": "evidence-grounded complementary gaps + distant causal collision + tournament selection + mutation/crossover",
+        "method": "template_seed + tournament_selection + mutation/crossover + structural/temporal/analogy scoring",
         "constraints_checked": {
             "traceable_to_gap": True,
             "papergraph_grounded": True,
-            "requires_hypothesis_ready_gap": True,
-            "distant_lens_is_inspiration_not_evidence": True,
             "testability_scored": True,
-            "mechanism_contract_required_for_persistence": True,
             "novelty_overlap_local": True,
         },
     }
@@ -149,40 +112,28 @@ def run_mingli_hypothesis_evolution(
     return json.dumps(run, ensure_ascii=False, indent=2)
 
 def select_gaps_for_hypothesis(project: dict[str, Any], gap_ids: list[str] | None) -> list[dict[str, Any]]:
-    try:
-        from ._gap_detection import prepare_gap_for_hypothesis
-    except ImportError:
-        from _gap_detection import prepare_gap_for_hypothesis
-    gaps = [prepare_gap_for_hypothesis(project, gap) for gap in project.get("knowledge_gaps", []) if isinstance(gap, dict)]
+    gaps = [gap for gap in project.get("knowledge_gaps", []) if isinstance(gap, dict)]
 
     # Filter out gaps without substantive descriptions — they cause MingLi to generate templates
     valid_gaps = []
     for gap in gaps:
         desc = str(gap.get("description") or "").strip()
-        readiness = gap.get("hypothesis_readiness", {}) if isinstance(gap.get("hypothesis_readiness"), dict) else {}
-        # A prose description is not enough.  Passing an ungrounded gap to
-        # MingLi is the direct cause of template retries.
-        if len(desc) >= 20 and not desc.lower().startswith(("none", "null", "n/a", "todo")) and readiness.get("ready"):
+        # Must have at least 20 chars of real content (not just boilerplate)
+        if len(desc) >= 20 and not desc.lower().startswith(("none", "null", "n/a", "todo")):
             valid_gaps.append(gap)
         else:
+            # Mark incomplete gaps for downstream awareness
             gap["requires_human_review"] = True
-            log_event(
-                "WARN",
-                "gap_not_hypothesis_ready",
-                gap_id=gap.get("gap_id"),
-                desc_len=len(desc),
-                reasons=readiness.get("blocking_reasons", ["Incomplete description"]),
-            )
+            log_event("WARN", "gap_incomplete_description", gap_id=gap.get("gap_id"), desc_len=len(desc))
 
     if gap_ids:
         wanted = set(gap_ids)
         valid_gaps = [g for g in valid_gaps if g.get("gap_id") in wanted]
 
-    # Do not fall back to abstract gaps.  The caller should invoke ZhiZhi
-    # supplementation rather than retrying an empty prompt three times.
-    pool = valid_gaps
-    if not pool and gaps:
-        log_event("WARN", "no_hypothesis_ready_gaps", total=len(gaps), ready=0)
+    # Fall back to all gaps if filtering removed everything (don't break the pipeline)
+    pool = valid_gaps if valid_gaps else gaps
+    if not valid_gaps and gaps:
+        log_event("WARN", "no_valid_gaps_after_filter", total=len(gaps), valid=0)
 
     return sorted(
         pool,
@@ -193,664 +144,22 @@ def select_gaps_for_hypothesis(project: dict[str, Any], gap_ids: list[str] | Non
         ),
     )[:8]
 
-DISTANT_CAUSAL_LENSES: tuple[dict[str, Any], ...] = (
-    {
-        "name": "ecological succession",
-        "source_domain": "ecology",
-        "mechanism": "early changes alter the conditions that enable later states, producing path dependence and stage-specific stability",
-        "operation": "a staged state transition with path-dependent recovery",
-        "structure_tags": {"feedback", "transition", "recovery", "context"},
-    },
-    {
-        "name": "cumulative damage",
-        "source_domain": "materials science",
-        "mechanism": "repeated subcritical perturbations accumulate latent defects until a threshold response becomes visible",
-        "operation": "accumulation of a latent damage or depletion state",
-        "structure_tags": {"accumulation", "threshold", "stress", "failure"},
-    },
-    {
-        "name": "immune recognition and memory",
-        "source_domain": "immunology",
-        "mechanism": "selective recognition is updated by prior exposure while avoiding indiscriminate activation",
-        "operation": "selective state recognition with an adaptive memory term",
-        "structure_tags": {"heterogeneity", "adaptation", "recognition", "feedback"},
-    },
-    {
-        "name": "cascade and contagion",
-        "source_domain": "network science",
-        "mechanism": "a local perturbation propagates through connected components when buffering capacity is exceeded",
-        "operation": "local-to-global propagation through an interaction network",
-        "structure_tags": {"cascade", "threshold", "network", "propagation"},
-    },
-    {
-        "name": "selection under heterogeneity",
-        "source_domain": "evolutionary biology",
-        "mechanism": "heterogeneous subpopulations respond differently to a shared pressure, changing the population composition over time",
-        "operation": "selection among heterogeneous states under a shared perturbation",
-        "structure_tags": {"heterogeneity", "selection", "adaptation", "time"},
-    },
-    {
-        "name": "resource allocation under uncertainty",
-        "source_domain": "economics and operations research",
-        "mechanism": "limited resources are allocated using incomplete signals, creating trade-offs between immediate performance and resilience",
-        "operation": "a constrained allocation trade-off with delayed consequences",
-        "structure_tags": {"tradeoff", "uncertainty", "constraint", "feedback"},
-    },
-    {
-        "name": "spatial gradients and interfaces",
-        "source_domain": "developmental biology",
-        "mechanism": "small local gradients at an interface can organize divergent outcomes across a larger system",
-        "operation": "interface-mediated amplification of a spatial or relational gradient",
-        "structure_tags": {"interface", "gradient", "propagation", "heterogeneity"},
-    },
-)
-
-
 def seed_hypothesis_population(project: dict[str, Any], gaps: list[dict[str, Any]], population_size: int, use_llm: bool = False) -> list[dict[str, Any]]:
-    """Create a collision population from one evidence-complementary gap bundle.
-
-    This replaces one-abstract-gap retries with several grounded gaps plus a
-    structurally distant causal lens.  The lens is inspiration, never evidence;
-    all scientific anchors still come from PaperGraph packets.
-    """
-    try:
-        from ._gap_detection import select_gap_combination_for_hypothesis
-    except ImportError:
-        from _gap_detection import select_gap_combination_for_hypothesis
-    bundle = select_gap_combination_for_hypothesis(project, gaps, strategy="auto")
-    if not bundle:
-        return []
-    ingredients = merge_gap_hypothesis_ingredients(bundle)
-    lenses = select_distant_collision_lenses(bundle, count=min(4, max(2, len(bundle) + 1)))
     seeds: list[dict[str, Any]] = []
-    for variant in range(population_size):
-        primary_gap = bundle[variant % len(bundle)]
-        lens = lenses[variant % len(lenses)]
-        components = collision_components(project, primary_gap, ingredients, variant)
-        candidate = make_collision_hypothesis_seed(project, bundle, primary_gap, components, lens, variant)
-        if use_llm:
-            candidate = enrich_collision_candidate_with_llm(project, bundle, candidate, components, lens)
-        seeds.append(candidate)
-    return score_hypothesis_population(project, seeds)
-
-
-def merge_gap_hypothesis_ingredients(gaps: list[dict[str, Any]]) -> dict[str, list[Any]]:
-    try:
-        from ._utils import unique_preserve_order
-    except ImportError:
-        from _utils import unique_preserve_order
-    merged: dict[str, list[Any]] = {
-        "methods": [], "scenarios": [], "benchmarks": [], "numerical_bounds": [],
-        "operating_conditions": [], "measurable_metrics": [], "evidence_packets": [],
-    }
+    analogies = collect_project_analogies(project)
+    hotspots = collect_project_hotspots(project)
+    per_gap = max(1, population_size // max(1, len(gaps)))
     for gap in gaps:
-        ingredients = gap.get("hypothesis_ingredients", {}) if isinstance(gap.get("hypothesis_ingredients"), dict) else {}
-        for key in merged:
-            values = ingredients.get(key, [])
-            if isinstance(values, list):
-                merged[key].extend(item for item in values if item)
-    for key, values in merged.items():
-        if key == "evidence_packets":
-            deduped: list[dict[str, Any]] = []
-            seen: set[str] = set()
-            for packet in values:
-                if not isinstance(packet, dict):
-                    continue
-                identity = str(packet.get("citation") or packet.get("title") or "")
-                if identity and identity not in seen:
-                    seen.add(identity)
-                    deduped.append(packet)
-            merged[key] = deduped[:8]
-        else:
-            merged[key] = unique_preserve_order(values)[:8]
-    return merged
-
-
-def gap_structure_tags(gaps: list[dict[str, Any]]) -> set[str]:
-    text = " ".join(
-        f"{gap.get('gap_type', '')} {gap.get('description', '')} {gap.get('suggested_research_path', '')}".lower()
-        for gap in gaps
-    )
-    tag_rules = {
-        "threshold": ("threshold", "critical", "phase", "nonlinear", "regime"),
-        "accumulation": ("accumul", "aging", "longitudinal", "repeat", "history"),
-        "heterogeneity": ("heterogen", "subgroup", "variation", "diversity", "stratif"),
-        "feedback": ("feedback", "adapt", "response", "regulation", "control"),
-        "cascade": ("cascade", "propagat", "network", "spread", "systemic"),
-        "interface": ("interface", "boundary", "surface", "coupling", "interaction"),
-        "constraint": ("constraint", "safety", "limit", "trade-off", "resource"),
-        "uncertainty": ("uncertain", "noise", "robust", "generaliz", "distribution shift"),
-    }
-    return {tag for tag, terms in tag_rules.items() if any(term in text for term in terms)} or {"feedback", "constraint"}
-
-
-def collision_domain_family(text: str) -> str:
-    """Infer a broad epistemic family only to keep a collision genuinely distant."""
-    lowered = str(text or "").lower()
-    families = (
-        ("life_sciences", ("cell", "gene", "protein", "organism", "clinical", "disease", "biolog", "tissue", "microb")),
-        ("physical_materials", ("material", "battery", "chemical", "molecule", "reaction", "catalyst", "device", "alloy", "quantum", "nuclear")),
-        ("formal_computational", ("algorithm", "model", "machine learning", "artificial intelligence", "dataset", "software", "computation", "mathemat")),
-        ("earth_environment", ("climate", "ecolog", "environment", "geolog", "ocean", "atmospher", "agricultur")),
-        ("social_systems", ("economic", "finance", "policy", "market", "social", "organization", "education")),
-    )
-    for family, markers in families:
-        if any(marker in lowered for marker in markers):
-            return family
-    return "general_science"
-
-
-def lens_domain_family(source_domain: str) -> str:
-    return collision_domain_family(source_domain)
-
-
-def select_distant_collision_lenses(gaps: list[dict[str, Any]], count: int = 3) -> list[dict[str, Any]]:
-    tags = gap_structure_tags(gaps)
-    target_text = " ".join(
-        f"{gap.get('description', '')} {gap.get('hypothesis_ingredients', {})}"
-        for gap in gaps if isinstance(gap, dict)
-    )
-    target_family = collision_domain_family(target_text)
-    distant = [
-        lens for lens in DISTANT_CAUSAL_LENSES
-        if lens_domain_family(str(lens.get("source_domain") or "")) != target_family
-    ]
-    # A sparse or multidisciplinary project should still receive lenses rather
-    # than silently turning the collision engine off.
-    lens_pool = distant or list(DISTANT_CAUSAL_LENSES)
-    ranked = sorted(
-        lens_pool,
-        key=lambda lens: (-len(tags & set(lens["structure_tags"])), lens["name"]),
-    )
-    return [dict(lens) for lens in ranked[:max(1, min(count, len(ranked)))]]
-
-
-def collision_components(project: dict[str, Any], gap: dict[str, Any], ingredients: dict[str, list[Any]], variant: int) -> dict[str, str]:
-    fallback = infer_gap_components(project, gap)
-    def select(key: str, default: str) -> str:
-        values = [str(item) for item in ingredients.get(key, []) if str(item).strip()]
-        return values[variant % len(values)] if values else default
-    condition = select("operating_conditions", select("numerical_bounds", "the source-reported comparison condition"))
-    # Do not place a truncated abstract sentence or a citation fragment in a
-    # hypothesis as though it were an experimental condition.
-    if len(condition) > 180 or "[truncated]" in condition.lower():
-        condition = select("numerical_bounds", "the source-reported comparison condition")
-    return {
-        "method": select("methods", fallback["method"]),
-        "scenario": select("scenarios", fallback["scenario"]),
-        "benchmark": select("benchmarks", select("measurable_metrics", fallback["benchmark"])),
-        "condition": condition,
-        "numeric_anchor": select("numerical_bounds", ""),
-    }
-
-
-def source_grounded_mediator(gap: dict[str, Any], ingredients: dict[str, list[Any]]) -> str:
-    """Return an explicitly source-named mediator, never an analogy-invented one."""
-    try:
-        from ._utils import normalize_space, trim_text
-    except ImportError:
-        from _utils import normalize_space, trim_text
-    candidate_values: list[str] = []
-    for key in ("mechanism_claim", "mechanism_issue_signal", "tabi_warrant", "tabi_claim"):
-        value = gap.get(key)
-        if isinstance(value, dict):
-            candidate_values.extend(str(item) for item in value.values() if isinstance(item, (str, int, float)))
-        elif isinstance(value, (str, int, float)):
-            candidate_values.append(str(value))
-    vague = (
-        "latent damage", "depletion state", "state change", "unknown mechanism",
-        "unclear mechanism", "candidate mediator", "mechanism remains unclear",
-    )
-    for value in candidate_values:
-        clean = normalize_space(value)
-        lowered = clean.lower()
-        if len(clean) >= 12 and not any(marker in lowered for marker in vague):
-            return trim_text(clean, 220)
-    return ""
-
-
-def candidate_papergraph_coverage(project: dict[str, Any], candidate: dict[str, Any]) -> dict[str, Any]:
-    """Score candidates by evidence coverage before spending a model call on one."""
-    try:
-        from ._gap_detection import grade_knowledge_sufficiency
-    except ImportError:
-        from _gap_detection import grade_knowledge_sufficiency
-    text = " ".join(str(candidate.get(key) or "") for key in ("statement", "mechanism", "test_plan"))
-    grade = grade_knowledge_sufficiency(text, project)
-    coverage = max(0.0, min(1.0, 1.0 - float(grade.get("rank_ratio") or 1.0)))
-    packets = candidate.get("evidence_packets", []) if isinstance(candidate.get("evidence_packets"), list) else []
-    evidence_score = min(1.0, len(packets) / 3.0)
-    contract = candidate.get("mechanism_contract", {}) if isinstance(candidate.get("mechanism_contract"), dict) else mechanism_contract_for_candidate(candidate)
-    contract_checks = contract.get("checks", {}) if isinstance(contract.get("checks"), dict) else {}
-    mechanism_score = sum(1 for value in contract_checks.values() if value) / max(1, len(contract_checks))
-    contradiction = (candidate.get("source_gap") or {}).get("contradiction_validation", {})
-    comparable = contradiction.get("verdict") not in {"NOT_COMPARABLE", "NEEDS_EVIDENCE"}
-    if str((candidate.get("source_gap") or {}).get("gap_type") or "") == "contradiction" and not comparable:
-        coverage = 0.0
-    combined = round(0.45 * coverage + 0.20 * evidence_score + 0.20 * mechanism_score + 0.15 * float(candidate.get("score") or 0.0), 3)
-    return {
-        "papergraph_coverage": round(coverage, 3),
-        "evidence_packet_score": round(evidence_score, 3),
-        "mechanism_contract_score": round(mechanism_score, 3),
-        "mechanism_contract_verdict": contract.get("verdict"),
-        "contradiction_comparable": comparable,
-        "combined_selection_score": combined,
-        "grade": grade,
-    }
-
-
-def make_collision_hypothesis_seed(
-    project: dict[str, Any],
-    bundle: list[dict[str, Any]],
-    primary_gap: dict[str, Any],
-    components: dict[str, str],
-    lens: dict[str, Any],
-    variant: int,
-) -> dict[str, Any]:
-    try:
-        from ._gap_detection import semantic_plausibility_for_pair
-        from ._utils import new_id, trim_text, unique_preserve_order
-    except ImportError:
-        from _gap_detection import semantic_plausibility_for_pair
-        from _utils import new_id, trim_text, unique_preserve_order
-    method, scenario, benchmark = components["method"], components["scenario"], components["benchmark"]
-    condition, anchor = components["condition"], components["numeric_anchor"]
-    semantic_gate = semantic_plausibility_for_pair(project, method, scenario, primary_gap)
-    baseline = "the nearest evidence-backed baseline"
-    anchor_clause = f" near the evidence-reported anchor {anchor}" if anchor else " under a preregistered source-derived condition"
-    evidence_packets = merge_gap_hypothesis_ingredients(bundle).get("evidence_packets", [])
-    evidence_refs = unique_preserve_order(
-        str(packet.get("citation") or packet.get("title") or "") for packet in evidence_packets if isinstance(packet, dict)
-    )[:5]
-    mediator = source_grounded_mediator(primary_gap, merge_gap_hypothesis_ingredients(bundle))
-    if mediator:
-        claim_scope = "mechanistic"
-        statement = (
-            f"In {scenario}, test whether {method} changes the source-described mediator '{mediator}' under {condition}{anchor_clause}; "
-            f"the mediator must change before {benchmark} relative to {baseline}. "
-            f"Reject the mechanism if the temporal ordering or mediator-outcome dependency fails."
-        )
-        mechanism = (
-            f"PaperGraph anchors the target in {method}, {scenario}, and {benchmark}. "
-            f"The proposed mediator is limited to the source-described state '{mediator}'. "
-            f"The {lens['source_domain']} lens contributes only a test-structure analogy and supplies no scientific fact."
-        )
-    else:
-        claim_scope = "phenomenological_pending_mechanism"
-        statement = (
-            f"In {scenario}, compare {method} with {baseline} under {condition}{anchor_clause} and quantify {benchmark}. "
-            "Do not assign a new causal mediator until source evidence or an orthogonal measurement identifies one; "
-            "the result is initially a phenomenological boundary test, not a mechanism claim."
-        )
-        mechanism = (
-            f"PaperGraph supports testing {method} in {scenario} against {benchmark}, but does not yet name a verified mediator. "
-            f"The {lens['source_domain']} lens is inspiration for the stress-test design only and is not a claimed mechanism."
-        )
-    causal_chain = [
-        f"Input: evaluate {method} in {scenario} under {condition}{anchor_clause}.",
-        (f"Candidate mediator: measure the source-described state '{mediator}'." if mediator else "Candidate mediator: unresolved; no mechanism attribution is permitted before it is operationalized."),
-        f"Output: compare {benchmark} with {baseline} and test whether any proposed mediator precedes outcome change.",
-    ]
-    return {
-        "candidate_id": new_id("hcand"),
-        "gap_id": primary_gap.get("gap_id"),
-        "gap_ids": [str(gap.get("gap_id") or "") for gap in bundle if gap.get("gap_id")],
-        "statement": statement,
-        "mechanism": mechanism,
-        "causal_chain": causal_chain,
-        "expected_value": str(primary_gap.get("value_argument") or "A cross-structure hypothesis grounded in the selected PaperGraph evidence."),
-        "test_plan": (
-            f"Use {condition} as the primary condition; compare {method} with {baseline}; measure the candidate mediator and {benchmark}; "
-            "include a negative control, mediator ablation, and at least one shifted-condition test."
-        ),
-        "verification_plan": {
-            "primary_metric": benchmark,
-            "baselines": [baseline],
-            "falsification_condition": f"Reject the mechanism if the mediator-outcome ordering fails for {benchmark} under {condition}.",
-        },
-        "semantic_plausibility": semantic_gate,
-        "source_gap": primary_gap,
-        "evidence_packets": evidence_packets,
-        "claim_scope": claim_scope,
-        "mechanism_specification": {
-            "identity": mediator or "unresolved",
-            "location_or_scope": "unresolved",
-            "dynamics": "unresolved",
-            "reversibility": "unresolved",
-            "observability": [],
-            "intervention": "unresolved",
-            "counterfactual": "unresolved",
-            "status": "incomplete" if not mediator else "requires_operationalization",
-        },
-        "collision_source": {
-            "name": lens["name"], "source_domain": lens["source_domain"], "mechanism": lens["mechanism"],
-            "bridge_operation": lens["operation"], "structure_tags": sorted(lens["structure_tags"]),
-            "role": "inspiration_only_not_evidence",
-        },
-        "cross_domain_bridge": {
-            "status": "not_yet_mapped",
-            "source_domain": lens["source_domain"],
-            "abstract_structure": lens["mechanism"],
-            "target_role_mapping": [],
-            "novel_mechanism_claim": "unresolved",
-        },
-        "lineage": [{"generation": 0, "operation": "evidence_grounded_distant_collision", "gap_ids": [str(gap.get("gap_id") or "") for gap in bundle], "collision_lens": lens["name"]}],
-        "generation": 0,
-    }
-
-
-def build_collision_hypothesis_prompt(bundle: list[dict[str, Any]], candidate: dict[str, Any], components: dict[str, str], lens: dict[str, Any]) -> str:
-    evidence = candidate.get("evidence_packets", []) if isinstance(candidate.get("evidence_packets"), list) else []
-    evidence_text = "\n".join(
-        f"- {packet.get('citation') or packet.get('title')}: {str(packet.get('evidence_text') or '')[:320]}"
-        for packet in evidence[:4] if isinstance(packet, dict)
-    )
-    gaps = "\n".join(f"- {gap.get('gap_type')}: {str(gap.get('description') or '')[:240]}" for gap in bundle)
-    return f"""Generate one falsifiable scientific hypothesis from the evidence bundle below.\n\nPaperGraph evidence (the only scientific grounding):\n{evidence_text}\n\nComplementary gaps:\n{gaps}\n\nDistant causal lens for inspiration only, not evidence:\n- source domain: {lens['source_domain']}\n- permitted use: design a stress test or comparison structure only\n- forbidden use: introduce the lens concept as a scientific mediator unless the PaperGraph evidence explicitly names it\n\nRequired source-grounded entities:\n- method: {components['method']}\n- target scenario: {components['scenario']}\n- observable: {components['benchmark']}\n- condition: {components['condition']}\n- numeric anchor: {components['numeric_anchor'] or 'none reported; do not invent one'}\n\nReturn JSON with hypothesis, mechanism, causal_chain (three strings), controllable_variables, measurable_outputs, falsification_condition, mechanism_specification. mechanism_specification must contain identity, location_or_scope, dynamics, reversibility, and observability. Each field must be source-supported and operational; use the literal string 'unresolved' rather than inventing a species, location, number, equation, or instrument signal. observability must be a list of at least two independent measurement objects only when supported. If any mechanism_specification field is unresolved, explicitly limit the result to a phenomenological test rather than asserting a causal mechanism. The hypothesis must name the source-grounded method, scenario, observable, and condition; distinguish the distant lens from evidence; and must not use these phrases: mechanism-stress intervention, directional or non-monotonic boundary, open-ended improvement claim, retested under matched conditions."""
-
-
-def build_mechanistic_bridge_prompt(bundle: list[dict[str, Any]], candidate: dict[str, Any], components: dict[str, str], lens: dict[str, Any]) -> str:
-    """Ask for a real structural bridge, rather than a decorative analogy."""
-    evidence = candidate.get("evidence_packets", []) if isinstance(candidate.get("evidence_packets"), list) else []
-    evidence_text = "\n".join(
-        f"- {packet.get('citation') or packet.get('title')}: {str(packet.get('evidence_text') or '')[:360]}"
-        for packet in evidence[:5] if isinstance(packet, dict)
-    )
-    gap_text = "\n".join(
-        f"- {gap.get('gap_type')}: {str(gap.get('description') or '')[:280]}"
-        for gap in bundle
-    )
-    return f"""You are MingLi, a creative but falsification-first scientist.
-
-PaperGraph evidence (facts only):
-{evidence_text}
-
-Research gaps:
-{gap_text}
-
-Target problem entities:
-- intervention/method: {components['method']}
-- target scenario: {components['scenario']}
-- outcome: {components['benchmark']}
-- source condition: {components['condition']}
-
-Cross-domain lens:
-- source domain: {lens['source_domain']}
-- abstract causal structure: {lens['mechanism']}
-- bridge operation: {lens['operation']}
-
-Create ONE mechanism hypothesis, not a method-comparison proposal. A new mediator is allowed, but mark it as a novel_candidate; never claim a paper already proved it.
-
-Return strict JSON with these fields:
-{{
-  "hypothesis": "If X, then Y, because Z",
-  "mechanism": "one explicit causal explanation",
-  "causal_chain": [
-    {{"from": "X", "to": "Z", "relation": "causes", "evidence_status": "source_supported | novel_candidate"}},
-    {{"from": "Z", "to": "Y", "relation": "causes", "evidence_status": "source_supported | novel_candidate"}}
-  ],
-  "evidence_assignment": [{{"causal_link": "X -> Z", "citations": ["exact PaperGraph citation"], "support_level": "direct | partial | novel_candidate"}}, {{"causal_link": "Z -> Y", "citations": ["exact PaperGraph citation"], "support_level": "direct | partial | novel_candidate"}}],
-  "mechanism_specification": {{
-    "identity": "concrete mediator/entity/state or unresolved",
-    "location_or_scope": "where it exists or unresolved",
-    "dynamics": "rate/threshold/rule or unresolved",
-    "reversibility": "recovery/rollback prediction or unresolved",
-    "intervention": "how X is changed or blocked or unresolved",
-    "counterfactual": "if X is blocked/removed, predicted Z/Y result or unresolved",
-    "observability": [{{"modality": "independent measurement/test", "signal": "expected signature"}}, {{"modality": "second independent measurement/test", "signal": "expected signature"}}]
-  }},
-  "cross_domain_bridge": {{
-    "source_domain": "{lens['source_domain']}",
-    "abstract_structure": "the lens structure",
-    "target_role_mapping": [{{"lens_role": "role in source structure", "papergraph_entity": "exact target entity named above/evidence"}}, {{"lens_role": "second role", "papergraph_entity": "second exact target entity"}}],
-    "novel_mechanism_claim": "the new target-domain mechanism"
-  }},
-  "null_hypothesis": "what remains unchanged if Z is not causal",
-  "alternative_hypothesis": "what changes if Z is causal",
-  "testable_subhypotheses": ["X changes Z", "Z changes Y", "blocking X prevents the predicted Z/Y pattern"]
-}}
-
-Reject a mere comparison of methods. Reject a generic mediator such as damage, complexity, instability, regulation, or state change unless it is made concrete by the fields above. Do not invent numerical values or citations; write unresolved when evidence cannot yet specify them."""
-
-
-def enrich_collision_candidate_with_llm(project: dict[str, Any], bundle: list[dict[str, Any]], candidate: dict[str, Any], components: dict[str, str], lens: dict[str, Any]) -> dict[str, Any]:
-    """Optionally let Qwen phrase a collision candidate; keep deterministic evidence gates."""
-    try:
-        from ._llm import call_llm_json
-        from ._utils import normalize_space
-    except ImportError:
-        from _llm import call_llm_json
-        from _utils import normalize_space
-    try:
-        payload = call_llm_json(
-            "You are MingLi. Generate grounded hypotheses, never invent paper evidence or numeric values.",
-            build_mechanistic_bridge_prompt(bundle, candidate, components, lens),
-            max_tokens=1800,
-        )
-    except Exception as exc:
-        log_event("WARN", "mingli_collision_llm_failed", error=str(exc))
-        return candidate
-    statement = normalize_space(str(payload.get("hypothesis") or ""))
-    mechanism = normalize_space(str(payload.get("mechanism") or ""))
-    chain = payload.get("causal_chain") if isinstance(payload.get("causal_chain"), list) else []
-    required_terms = [components["method"].lower(), components["scenario"].lower(), components["benchmark"].lower()]
-    forbidden = ("mechanism-stress intervention", "directional or non-monotonic boundary", "open-ended improvement claim", "retested under matched conditions")
-    if not statement or any(term and term not in statement.lower() for term in required_terms) or any(term in statement.lower() for term in forbidden):
-        log_event("WARN", "mingli_collision_llm_ungrounded", lens=lens["name"])
-        return candidate
-    enriched = dict(candidate)
-    enriched["statement"] = statement
-    enriched["mechanism"] = mechanism or candidate["mechanism"]
-    enriched["causal_chain"] = [normalize_space(str(item)) for item in chain if normalize_space(str(item))][:5] or candidate["causal_chain"]
-    specification = payload.get("mechanism_specification")
-    if isinstance(specification, dict):
-        enriched["mechanism_specification"] = specification
-        if any(str(specification.get(key) or "").strip().lower() in {"", "unresolved", "unknown"} for key in ("identity", "location_or_scope", "dynamics", "reversibility", "intervention", "counterfactual")):
-            enriched["claim_scope"] = "phenomenological_pending_mechanism"
-    bridge = payload.get("cross_domain_bridge")
-    if isinstance(bridge, dict):
-        enriched["cross_domain_bridge"] = bridge
-    for key in ("null_hypothesis", "alternative_hypothesis", "testable_subhypotheses", "evidence_assignment"):
-        if key in payload:
-            enriched[key] = payload[key]
-    enriched["llm_collision_used"] = True
-    return enriched
-
-
-def build_grounded_candidate_pool(
-    project: dict[str, Any],
-    bundle: list[dict[str, Any]],
-    primary_gap: dict[str, Any],
-    ingredients: dict[str, list[Any]],
-    *,
-    candidate_count: int = 3,
-) -> list[dict[str, Any]]:
-    """Create several deterministic candidates, then rank them by evidence coverage.
-
-    This is deliberately done before any optional LLM call.  It gives MingLi
-    genuine alternatives without multiplying token/API cost, and ensures that
-    novelty cannot win over a candidate that the current PaperGraph cannot
-    even discuss.
-    """
-    lenses = select_distant_collision_lenses(bundle, count=max(1, candidate_count))
-    candidates: list[dict[str, Any]] = []
-    for variant in range(max(1, candidate_count)):
-        lens = lenses[variant % len(lenses)]
-        components = collision_components(project, primary_gap, ingredients, variant)
-        candidate = make_collision_hypothesis_seed(project, bundle, primary_gap, components, lens, variant)
-        candidate = score_hypothesis_candidate(project, candidate)
-        candidate["mechanism_contract"] = mechanism_contract_for_candidate(candidate)
-        candidate["candidate_selection"] = candidate_papergraph_coverage(project, candidate)
-        candidates.append(candidate)
-    return sorted(
-        candidates,
-        key=lambda item: (
-            -float((item.get("candidate_selection") or {}).get("combined_selection_score") or 0.0),
-            -float(item.get("score") or 0.0),
-            str(item.get("candidate_id") or ""),
-        ),
-    )
-
-
-def mechanism_contract_for_candidate(candidate: dict[str, Any]) -> dict[str, Any]:
-    """Formalize a candidate as a causal commitment or explain why it cannot yet be one."""
-    try:
-        from ._utils import normalize_space, trim_text
-    except ImportError:
-        from _utils import normalize_space, trim_text
-    spec = candidate.get("mechanism_specification", {}) if isinstance(candidate.get("mechanism_specification"), dict) else {}
-    unresolved = {"", "unknown", "unspecified", "unresolved", "n/a", "none", "tbd"}
-
-    def present(value: Any) -> bool:
-        text = normalize_space(str(value or "")).lower()
-        return len(text) >= 8 and text not in unresolved and "[fill" not in text
-
-    def concrete_mediator(value: Any) -> bool:
-        text = normalize_space(str(value or "")).lower()
-        generic_markers = (
-            "cumulative damage", "latent damage", "damage or depletion", "depletion state",
-            "state change", "unknown mechanism", "generic regulation", "generic instability",
-        )
-        return present(value) and not any(marker in text for marker in generic_markers)
-
-    valid_observations = []
-    seen_modalities: set[str] = set()
-    for item in spec.get("observability", []) if isinstance(spec.get("observability"), list) else []:
-        if not isinstance(item, dict):
-            continue
-        modality = normalize_space(str(item.get("modality") or item.get("test") or item.get("method") or ""))
-        signal = normalize_space(str(item.get("signal") or item.get("expected_signal") or item.get("criterion") or ""))
-        if present(modality) and present(signal) and modality.lower() not in seen_modalities:
-            seen_modalities.add(modality.lower())
-            valid_observations.append({"modality": modality, "signal": trim_text(signal, 240)})
-    bridge = candidate.get("cross_domain_bridge", {}) if isinstance(candidate.get("cross_domain_bridge"), dict) else {}
-    mappings = bridge.get("target_role_mapping", []) if isinstance(bridge.get("target_role_mapping"), list) else []
-    valid_mappings = [
-        item for item in mappings
-        if isinstance(item, dict) and present(item.get("lens_role")) and present(item.get("papergraph_entity"))
-    ]
-    assignments = candidate.get("evidence_assignment", []) if isinstance(candidate.get("evidence_assignment"), list) else []
-    valid_assignments = [
-        item for item in assignments
-        if isinstance(item, dict)
-        and present(item.get("causal_link"))
-        and isinstance(item.get("citations"), list)
-        and any(present(citation) for citation in item.get("citations", []))
-    ]
-    chain = candidate.get("causal_chain", []) if isinstance(candidate.get("causal_chain"), list) else []
-    null = str(candidate.get("null_hypothesis") or "")
-    alternative = str(candidate.get("alternative_hypothesis") or "")
-    subhypotheses = candidate.get("testable_subhypotheses", []) if isinstance(candidate.get("testable_subhypotheses"), list) else []
-    checks = {
-        "concrete_mediator": concrete_mediator(spec.get("identity")),
-        "scope": present(spec.get("location_or_scope")),
-        "dynamics": present(spec.get("dynamics")),
-        "intervention": present(spec.get("intervention")),
-        "counterfactual": present(spec.get("counterfactual")),
-        "reversibility": present(spec.get("reversibility")),
-        "two_independent_observations": len(valid_observations) >= 2,
-        "cross_domain_structure_mapping": len(valid_mappings) >= 2,
-        "causal_chain": len([item for item in chain if normalize_space(str(item))]) >= 2,
-        "causal_link_evidence_allocation": len(valid_assignments) >= 2,
-        "null_hypothesis": present(null),
-        "alternative_hypothesis": present(alternative),
-        "three_testable_subhypotheses": len([item for item in subhypotheses if present(item)]) >= 3,
-    }
-    missing = [name for name, accepted in checks.items() if not accepted]
-    ready = not missing
-    return {
-        "verdict": "READY" if ready else "NEEDS_MECHANISM_ENRICHMENT",
-        "claim_scope": "mechanistic" if ready else "phenomenological_only_until_operationalized",
-        "mechanism_claim": trim_text(str(bridge.get("novel_mechanism_claim") or spec.get("identity") or "unresolved"), 360),
-        "causal_chain": [normalize_space(str(item)) for item in chain if normalize_space(str(item))][:6],
-        "null_hypothesis": trim_text(null, 600) if null else "unresolved",
-        "alternative_hypothesis": trim_text(alternative, 600) if alternative else "unresolved",
-        "counterfactual": spec.get("counterfactual", "unresolved"),
-        "testable_subhypotheses": [trim_text(str(item), 400) for item in subhypotheses if normalize_space(str(item))][:5],
-        "cross_domain_bridge": {
-            "source_domain": bridge.get("source_domain") or (candidate.get("collision_source") or {}).get("source_domain", ""),
-            "abstract_structure": bridge.get("abstract_structure") or (candidate.get("collision_source") or {}).get("mechanism", ""),
-            "target_role_mapping": valid_mappings,
-            "novel_mechanism_claim": bridge.get("novel_mechanism_claim", "unresolved"),
-        },
-        "observability": valid_observations,
-        "evidence_assignment": valid_assignments,
-        "checks": checks,
-        "missing_knowledge": missing,
-        "suggested_action": (
-            "Run targeted ZhiZhi evidence supplementation for the missing causal entity or boundary, then regenerate."
-            if missing else "Proceed to YanZhen causal and counterfactual audit."
-        ),
-    }
-
-
-def mingli_mechanism_contract(candidate: dict[str, Any]) -> dict[str, Any]:
-    """Relaxed mechanism contract for MingLi hypothesis generation stage.
-
-    Only checks 3 core MingLi responsibilities:
-    1. causal_chain — at least 2 non-empty steps (hypothesis has causal structure)
-    2. mechanism_or_mediator — some mechanism/mediator text is present (not entirely empty)
-    3. falsification_condition — some falsification text exists
-
-    The remaining strict checks (scope, dynamics, intervention, counterfactual,
-    reversibility, two_independent_observations, cross_domain_structure_mapping,
-    null_hypothesis, alternative_hypothesis, three_testable_subhypotheses,
-    causal_link_evidence_allocation) are deferred to YanZhen's mechanism
-    verification stage.
-
-    This separation prevents MingLi from being blocked by criteria that belong
-    to downstream verification agents.
-    """
-    try:
-        from ._utils import normalize_space, trim_text
-    except ImportError:
-        from _utils import normalize_space, trim_text
-
-    spec = candidate.get("mechanism_specification", {}) if isinstance(candidate.get("mechanism_specification"), dict) else {}
-    chain = candidate.get("causal_chain", []) if isinstance(candidate.get("causal_chain"), list) else []
-    statement = normalize_space(str(candidate.get("statement") or ""))
-    mechanism = normalize_space(str(candidate.get("mechanism") or ""))
-
-    # Check 1: causal_chain has ≥2 non-empty steps
-    valid_chain_steps = [item for item in chain if len(normalize_space(str(item))) >= 8]
-    has_causal_chain = len(valid_chain_steps) >= 2
-
-    # Check 2: mechanism or mediator is mentioned somewhere
-    mediator_identity = normalize_space(str(spec.get("identity") or ""))
-    has_mechanism = (
-        len(mechanism) >= 20
-        or (len(mediator_identity) >= 8 and mediator_identity.lower() not in {"", "unresolved", "unknown", "tbd"})
-    )
-
-    # Check 3: falsification condition exists in statement or mechanism
-    falsification_markers = ("falsif", "reject", "disprov", "fail if", "refuted if", "the claim is falsified")
-    combined_text = f"{statement} {mechanism}".lower()
-    has_falsification = any(marker in combined_text for marker in falsification_markers)
-
-    checks = {
-        "causal_chain": has_causal_chain,
-        "mechanism_or_mediator": has_mechanism,
-        "falsification_condition": has_falsification,
-    }
-    missing = [name for name, accepted in checks.items() if not accepted]
-    ready = not missing
-    return {
-        "verdict": "READY" if ready else "NEEDS_MECHANISM_ENRICHMENT",
-        "claim_scope": "mechanistic" if ready else "phenomenological_pending_enrichment",
-        "checks": checks,
-        "missing_knowledge": missing,
-        "stage": "mingli_generation",
-        "deferred_to_yanzhen": [
-            "scope", "dynamics", "intervention", "counterfactual", "reversibility",
-            "two_independent_observations", "cross_domain_structure_mapping",
-            "null_hypothesis", "alternative_hypothesis", "three_testable_subhypotheses",
-            "causal_link_evidence_allocation",
-        ],
-        "suggested_action": (
-            "Enrich the causal chain, name a mediator, or add a falsification condition before retry."
-            if missing else "Pass to YanZhen for full mechanism verification."
-        ),
-    }
+        components = infer_gap_components(project, gap)
+        for variant in range(per_gap):
+            analogy = analogies[(len(seeds) + variant) % len(analogies)] if analogies else {}
+            hotspot = hotspots[(len(seeds) + variant) % len(hotspots)] if hotspots else {}
+            seeds.append(make_hypothesis_seed(project, gap, components, variant, analogy=analogy, hotspot=hotspot))
+            if len(seeds) >= population_size:
+                break
+        if len(seeds) >= population_size:
+            break
+    return score_hypothesis_population(project, seeds)
 
 def infer_gap_components(project: dict[str, Any], gap: dict[str, Any]) -> dict[str, str]:
     try:
@@ -860,16 +169,12 @@ def infer_gap_components(project: dict[str, Any], gap: dict[str, Any]) -> dict[s
         from _pipeline import project_records_for_mapping
         from _utils import is_unknown_value, normalize_label
     description = str(gap.get("description") or "")
-    ingredients = gap.get("hypothesis_ingredients", {}) if isinstance(gap.get("hypothesis_ingredients"), dict) else {}
     methods = sorted({normalize_label(record.get("method", "")) for record in project_records_for_mapping(project) if not is_unknown_value(record.get("method", ""))})
     scenarios = sorted({normalize_label(record.get("scenario", "")) for record in project_records_for_mapping(project) if not is_unknown_value(record.get("scenario", ""))})
     benchmarks = sorted({normalize_label(record.get("benchmark", "")) for record in project_records_for_mapping(project) if not is_unknown_value(record.get("benchmark", ""))})
-    ingredient_methods = [str(item) for item in ingredients.get("methods", []) if str(item).strip()]
-    ingredient_scenarios = [str(item) for item in ingredients.get("scenarios", []) if str(item).strip()]
-    ingredient_benchmarks = [str(item) for item in list(ingredients.get("benchmarks", [])) + list(ingredients.get("measurable_metrics", [])) if str(item).strip()]
-    method = first_matching_label(description, ingredient_methods) or (ingredient_methods[0] if ingredient_methods else first_matching_label(description, methods) or (methods[0] if methods else "targeted intervention"))
-    scenario = first_matching_label(description, ingredient_scenarios) or (ingredient_scenarios[0] if ingredient_scenarios else first_matching_label(description, scenarios) or (scenarios[0] if scenarios else str(project.get("domain") or "target scenario")))
-    benchmark = first_matching_label(description, ingredient_benchmarks) or (ingredient_benchmarks[0] if ingredient_benchmarks else first_matching_label(description, benchmarks) or (benchmarks[0] if benchmarks else "mechanistic validity"))
+    method = first_matching_label(description, methods) or (methods[0] if methods else "targeted intervention")
+    scenario = first_matching_label(description, scenarios) or (scenarios[0] if scenarios else str(project.get("domain") or "target scenario"))
+    benchmark = first_matching_label(description, benchmarks) or (benchmarks[0] if benchmarks else "mechanistic validity")
     benchmark = normalize_hypothesis_benchmark(benchmark, scenario, project)
     return {"method": method, "scenario": scenario, "benchmark": benchmark}
 
@@ -990,6 +295,31 @@ def scenario_target_description(scenario: str, project: dict[str, Any]) -> str:
         return "a controllable system state, stability margin, safety constraint, or operational performance metric"
     return "the scenario-specific measurable process named by the project evidence"
 
+
+def socrates_contract_for_gap(project: dict[str, Any], gap: dict[str, Any]) -> dict[str, Any]:
+    """Load the most recent evidence contract produced for this TanXi gap."""
+    contracts = project.get("socrates_mechanism_contracts", {})
+    if not isinstance(contracts, dict):
+        return {}
+    contract = contracts.get(str(gap.get("gap_id") or ""))
+    return dict(contract) if isinstance(contract, dict) else {}
+
+
+def socrates_contract_summary(contract: dict[str, Any]) -> str:
+    """Render source-cited Socrates excerpts without promoting them to fact."""
+    evidence = contract.get("evidence", {}) if isinstance(contract.get("evidence"), dict) else {}
+    parts: list[str] = []
+    for field in ("identity", "location_or_scope", "dynamics", "reversibility", "observability", "intervention", "counterfactual"):
+        entries = evidence.get(field, [])
+        if not isinstance(entries, list) or not entries:
+            continue
+        first = entries[0] if isinstance(entries[0], dict) else {}
+        excerpt = str(first.get("excerpt") or "").strip()
+        citation = str(first.get("citation") or "").strip()
+        if excerpt and citation:
+            parts.append(f"{field}: {excerpt} [{citation}]")
+    return " ".join(parts[:3])
+
 def make_hypothesis_seed(
     project: dict[str, Any],
     gap: dict[str, Any],
@@ -1022,6 +352,8 @@ def make_hypothesis_seed(
     if hotspot.get("concept") and variant % 2 == 1:
         condition = f"while tracking emerging hotspot '{hotspot.get('concept')}'"
     semantic_gate = semantic_plausibility_for_pair(project, method, scenario, gap)
+    socrates_contract = socrates_contract_for_gap(project, gap)
+    socrates_evidence = socrates_contract_summary(socrates_contract)
     variable = hypothesis_control_variable(gap, method, scenario)
     boundary = hypothesis_boundary_condition(gap)
     if str(gap.get("gap_type") or "") == "contradiction":
@@ -1031,15 +363,21 @@ def make_hypothesis_seed(
         )
     else:
         statement = (
-            f"Evaluate {method} in {scenario} {condition} while varying {variable}; "
-            f"the hypothesis predicts a measurable change in {benchmark} at the source-derived condition {boundary}."
+            f"If {method} is used to perturb or stratify {variable} in {scenario} {condition}, "
+            f"then {benchmark} will show a directional or non-monotonic boundary at {boundary}."
         )
     mechanism = specific_mechanism_text(project, method, scenario, benchmark, gap, semantic_gate)
+    if socrates_evidence:
+        mechanism += f" Socrates retrieved the following field-level source evidence: {socrates_evidence}"
     if analogy:
         mechanism += f" The structural analogy to {analogy.get('analog_source_scenario')} supports transfer because the encoded problem structures are similar."
     causal_chain = [
         f"Input/intervention: vary {variable} for {method} in {scenario}",
-        f"Mechanism: {method} must act through {method_capability_description(method)} on {scenario_target_description(scenario, project)}",
+        (
+            f"Mechanism: interpret {method} through the Socrates source-cited mechanism dossier before making a stronger causal claim."
+            if socrates_evidence
+            else f"Mechanism: {method} must act through {method_capability_description(method)} on {scenario_target_description(scenario, project)}"
+        ),
         f"Observable output: measure {benchmark} and locate boundary condition {boundary}",
     ]
     return {
@@ -1062,6 +400,7 @@ def make_hypothesis_seed(
             ),
         },
         "semantic_plausibility": semantic_gate,
+        "socrates_mechanism_contract": socrates_contract,
         "source_gap": gap,
         "lineage": [{"generation": 0, "operation": "seed", "gap_id": gap.get("gap_id"), "analogy_used": analogy.get("analog_source_scenario", "")}],
         "generation": 0,
@@ -1233,7 +572,7 @@ def hypothesis_boundary_condition(gap: dict[str, Any]) -> str:
         return normalize_space(numeric.group(0))
     if any(term in text.lower() for term in ("challenge", "contradict", "conflict", "debate", "unclear")):
         return "the condition where the competing explanations diverge"
-    return "a source-derived boundary condition with an explicit pass/fail criterion"
+    return "a preregistered stress threshold rather than an open-ended improvement claim"
 
 def non_negated_phrase_in_text(phrase: str, text: str) -> bool:
     try:
@@ -1396,7 +735,6 @@ def generate_idea(
     style: str = "innovative",
     parent_hypothesis_id: str = "",
     use_llm: bool = False,
-    candidate_pool_size: int = 3,
 ) -> str:
     try:
         from ._models import Hypothesis
@@ -1408,119 +746,58 @@ def generate_idea(
         from _utils import new_id, normalize_key
     project = load_project(project_id)
     selected_gap = mingli_resolve_gap(project, gap=gap, gap_id=gap_id)
-    try:
-        from ._gap_detection import prepare_gap_for_hypothesis, select_gap_combination_for_hypothesis
-    except ImportError:
-        from _gap_detection import prepare_gap_for_hypothesis, select_gap_combination_for_hypothesis
-    selected_gap = prepare_gap_for_hypothesis(project, selected_gap)
-    readiness = selected_gap.get("hypothesis_readiness", {}) if isinstance(selected_gap.get("hypothesis_readiness"), dict) else {}
-    if not readiness.get("ready"):
-        raise ValueError(
-            "Selected gap is not ready for hypothesis generation; run targeted literature supplementation first: "
-            + "; ".join(str(item) for item in readiness.get("blocking_reasons", []))
-        )
-    bundle = select_gap_combination_for_hypothesis(project, [selected_gap] + select_gaps_for_hypothesis(project, None), strategy="auto") or [selected_gap]
-    ingredients = merge_gap_hypothesis_ingredients(bundle)
-    try:
-        pool_size = max(1, min(int(candidate_pool_size or 3), 5))
-    except (TypeError, ValueError):
-        pool_size = 3
-    candidates = build_grounded_candidate_pool(project, bundle, selected_gap, ingredients, candidate_count=pool_size)
-    lenses = select_distant_collision_lenses(bundle, count=pool_size)
-    enriched_candidates: list[dict[str, Any]] = []
-    for index, seeded_candidate in enumerate(candidates):
-        selected_lens = seeded_candidate.get("collision_source", {}) if isinstance(seeded_candidate.get("collision_source"), dict) else {}
-        lens = next(
-            (item for item in lenses if item.get("name") == selected_lens.get("name")),
-            lenses[index % len(lenses)],
-        )
-        components = collision_components(project, selected_gap, ingredients, index)
-        candidate_variant = dict(seeded_candidate)
-        if use_llm:
-            candidate_variant = enrich_collision_candidate_with_llm(project, bundle, candidate_variant, components, lens)
-        candidate_variant = score_hypothesis_candidate(project, candidate_variant)
-        candidate_variant["mechanism_contract"] = mechanism_contract_for_candidate(candidate_variant)
-        candidate_variant["candidate_selection"] = candidate_papergraph_coverage(project, candidate_variant)
-        enriched_candidates.append(candidate_variant)
-
-    # A novel but undefined idea is a useful research lead, not a hypothesis
-    # ready for verification.  Prefer a complete causal commitment over a
-    # prettier candidate with no mediator, intervention, or counterfactual.
-    candidates = sorted(
-        enriched_candidates,
-        key=lambda item: (
-            0 if (item.get("mechanism_contract") or {}).get("verdict") == "READY" else 1,
-            -float((item.get("candidate_selection") or {}).get("combined_selection_score") or 0.0),
-            -float(item.get("score") or 0.0),
-            str(item.get("candidate_id") or ""),
-        ),
+    components = infer_gap_components(project, selected_gap)
+    analogies = collect_project_analogies(project)
+    hotspots = collect_project_hotspots(project)
+    variant = 1 if normalize_key(style) == "innovative" else 0
+    candidate = make_hypothesis_seed(
+        project,
+        selected_gap,
+        components,
+        variant,
+        analogy=analogies[0] if analogies else {},
+        hotspot=hotspots[0] if hotspots else {},
     )
-    candidate = candidates[0]
     candidate["style"] = style
     candidate["parent_hypothesis_id"] = parent_hypothesis_id or None
     if parent_hypothesis_id:
         candidate.setdefault("lineage", []).append(
             {"generation": 0, "operation": "manual_parent_link", "parent_hypothesis_id": parent_hypothesis_id}
         )
+    if normalize_key(style) == "conservative":
+        candidate["statement"] = conservative_hypothesis_statement(candidate, components)
+        candidate["mechanism"] = (
+            f"The conservative mechanism tests the most direct pathway suggested by the gap: {components['method']} in "
+            f"{components['scenario']}, with {components['benchmark']} as the decisive readout. "
+            f"It must vary {hypothesis_control_variable(selected_gap, components['method'], components['scenario'])} and report the "
+            f"boundary condition {hypothesis_boundary_condition(selected_gap)} rather than only a broad improvement claim."
+        )
+    else:
+        candidate["statement"] = innovative_hypothesis_statement(candidate, components, selected_gap)
+        candidate["mechanism"] += " MingLi treats this as a structural mutation rather than a surface rephrasing."
     candidate = score_hypothesis_candidate(project, candidate)
-    candidate["mechanism_contract"] = mechanism_contract_for_candidate(candidate)
-    candidate["candidate_selection"] = candidate_papergraph_coverage(project, candidate)
     idea = mingli_candidate_to_idea_json(project, candidate)
-    mechanism_contract = candidate["mechanism_contract"]
-    draft_status = "draft" if mechanism_contract.get("verdict") == "READY" else "needs_mechanism_enrichment"
     draft = {
         "draft_idea_id": new_id("idea"),
         "project_id": project_id,
         "gap_id": selected_gap.get("gap_id", ""),
         "style": style,
         "candidate": candidate,
-        "candidate_pool": [
-            {
-                "candidate_id": item.get("candidate_id"),
-                "collision_lens": (item.get("collision_source") or {}).get("name"),
-                "claim_scope": item.get("claim_scope"),
-                "selection": item.get("candidate_selection", {}),
-                "mechanism_contract": item.get("mechanism_contract", {}),
-                "score": item.get("score"),
-            }
-            for item in candidates
-        ],
         "idea_json": idea,
         "use_llm_requested": bool(use_llm),
-        "mechanism_contract": mechanism_contract,
-        "status": draft_status,
+        "status": "draft",
         "createdAt": time.time(),
     }
     project.setdefault("mingli_draft_ideas", []).append(draft)
-    if draft_status != "draft":
-        project.setdefault("mingli_mechanism_generation_failures", []).append(
-            {
-                "failure_id": new_id("mfail"),
-                "project_id": project_id,
-                "gap_id": selected_gap.get("gap_id", ""),
-                "candidate_id": candidate.get("candidate_id", ""),
-                "mechanism_contract": mechanism_contract,
-                "suggested_action": mechanism_contract.get("suggested_action"),
-                "createdAt": time.time(),
-            }
-        )
     project["phase"] = "Hypothesis Generation"
     project["updatedAt"] = time.time()
     save_project(project)
     return json.dumps(
         {
-            "thought": (
-                "Generated and ranked several gap-traceable MingLi candidates. "
-                "A candidate may advance as a mechanism hypothesis only after its intervention, mediator, counterfactual, "
-                "operational scope, dynamics, reversibility, observations, and cross-domain role mapping are explicit."
-            ),
+            "thought": "Generated a gap-traceable MingLi draft idea and scored it for novelty, plausibility, grounding, testability, impact, and surprise.",
             "action": {"type": "generate_idea", "gap_id": selected_gap.get("gap_id", ""), "style": style},
             **draft,
-            "next_step": (
-                "Call design_experiment and finalize_idea."
-                if draft_status == "draft"
-                else "Run targeted ZhiZhi supplementation for the missing mechanism-contract fields, then regenerate rather than designing an experiment around a narrative placeholder."
-            ),
+            "next_step": "Call design_experiment with the draft idea, then finalize_idea to run mandatory uniqueness verification.",
         },
         ensure_ascii=False,
         indent=2,
@@ -1540,39 +817,6 @@ def design_experiment(
         from _utils import new_id
     project = load_project(project_id)
     idea_json = mingli_resolve_idea_json(project, idea=idea, idea_id=idea_id)
-    mechanism_contract = idea_json.get("mechanism_contract", {}) if isinstance(idea_json.get("mechanism_contract"), dict) else {}
-    if not mechanism_contract:
-        mechanism_contract = mingli_mechanism_contract(
-            {
-                "statement": idea_json.get("hypothesis", ""),
-                "mechanism": idea_json.get("abstract", ""),
-                "causal_chain": idea_json.get("causal_chain", []),
-                "mechanism_specification": idea_json.get("mechanism_specification", {}),
-                "cross_domain_bridge": idea_json.get("cross_domain_bridge", {}),
-                "collision_source": idea_json.get("collision_source", {}),
-                "null_hypothesis": idea_json.get("null_hypothesis", ""),
-                "alternative_hypothesis": idea_json.get("alternative_hypothesis", ""),
-                "testable_subhypotheses": idea_json.get("testable_subhypotheses", []),
-                "evidence_assignment": idea_json.get("evidence_assignment", []),
-            }
-        )
-        idea_json["mechanism_contract"] = mechanism_contract
-    if mechanism_contract.get("verdict") != "READY":
-        missing = mechanism_contract.get("missing_knowledge", []) if isinstance(mechanism_contract.get("missing_knowledge"), list) else []
-        return json.dumps(
-            {
-                "status": "blocked_mechanism_contract",
-                "reason": "Experiment design is deferred because the proposal does not yet state a testable causal mechanism.",
-                "missing_knowledge": missing,
-                "suggested_action": mechanism_contract.get(
-                    "suggested_action",
-                    "Run targeted literature supplementation and regenerate a concrete mediator hypothesis.",
-                ),
-                "idea_json": idea_json,
-            },
-            ensure_ascii=False,
-            indent=2,
-        )
     gap = mingli_resolve_gap(project, gap_id=str(idea_json.get("gap_id") or ""))
     components = infer_gap_components(project, gap)
     experiment = {
@@ -1598,6 +842,7 @@ def design_experiment(
         "setup": experiment["setup"],
         "metrics": experiment["metrics"],
         "baselines": experiment["baselines"],
+        "falsification_criteria": experiment["falsification_criteria"],
     }
     idea_json["risks"] = mingli_risk_text(gap, experiment)
     record = {
@@ -1652,15 +897,7 @@ def detect_hypothesis_template(idea: dict[str, Any]) -> dict[str, Any]:
         if pattern in hyp_text:
             matched.append(label)
 
-    # Baseline, control, ablation, and metrics are normal experimental-design
-    # vocabulary.  They are deliberately recorded but never treated as template
-    # evidence by themselves.
-    experimental_structure_terms = [
-        term for term in ("baseline", "baselines", "control", "controls", "ablation", "ablations", "metric", "metrics")
-        if term in hyp_text
-    ]
-    # Check for extreme genericness: hypothesis has no numeric/formula anchor
-    # and no structured evidence-derived observable.
+    # Check for extreme genericness: hypothesis has no numbers, no units, no chemical formulas
     import re as _re
     has_specifics = bool(
         _re.search(r"\d+\.?\d*\s*(nm|μm|mm|°c|°C|mV|V|A|mol|wt%|at%|hrs?|hours?|cycles?|ppm|K)", hyp_text)
@@ -1668,16 +905,11 @@ def detect_hypothesis_template(idea: dict[str, Any]) -> dict[str, Any]:
         or _re.search(r"\b\d+\s*%", hyp_text)
     )
 
-    explicit_observables = idea.get("measurable_outputs", []) if isinstance(idea.get("measurable_outputs"), list) else []
-    evidence_packets = idea.get("evidence_packets", []) if isinstance(idea.get("evidence_packets"), list) else []
-    evidence_grounded = bool(explicit_observables and evidence_packets)
-    is_template = bool(matched) or (not has_specifics and not evidence_grounded and len(hyp_text) > 50)
+    is_template = bool(matched) or (not has_specifics and len(hyp_text) > 50)
     return {
         "is_template": is_template,
         "matched_patterns": matched,
-        "experimental_structure_terms": experimental_structure_terms,
         "has_domain_specifics": has_specifics,
-        "evidence_grounded": evidence_grounded,
         "severity": "REJECT" if matched else ("WARN" if not has_specifics and len(hyp_text) > 50 else "OK"),
     }
 
@@ -1716,7 +948,6 @@ def enforce_hypothesis_specificity(idea: dict[str, Any]) -> dict[str, Any]:
     has_condition = any(marker in hyp_text for marker in condition_markers)
 
     # --- measurable_metric ---
-    explicit_outputs = idea.get("measurable_outputs", []) if isinstance(idea.get("measurable_outputs"), list) else []
     generic_metric_lists = [
         "reaction yield, rate constant, selectivity",
         "stability, and functional outcome",
@@ -1728,8 +959,6 @@ def enforce_hypothesis_specificity(idea: dict[str, Any]) -> dict[str, Any]:
         if generic in hyp_text:
             has_specific_metric = False
             break
-    if explicit_outputs:
-        has_specific_metric = True
     if not has_specific_metric:
         # Check if there is at least one non-generic measurable term
         specific_metric_markers = [
@@ -1779,6 +1008,69 @@ def enforce_hypothesis_specificity(idea: dict[str, Any]) -> dict[str, Any]:
             "Add concrete numbers/units, a named operating condition, a domain-specific metric, "
             "and an explicit causal pathway."
             if missing else "Hypothesis passes all specificity checks."
+        ),
+    }
+
+
+def mingli_acceptance_check(idea: dict[str, Any], gap: dict[str, Any]) -> dict[str, Any]:
+    """Apply only the generation-stage contract for a MingLi hypothesis.
+
+    MingLi must make a grounded, falsifiable scientific claim, but it must not
+    be asked to complete YanZhen's mechanism audit.  In particular, detailed
+    dynamics, reversibility, counterfactual stress tests, and independent
+    observations are deliberately deferred to the verifier and debate stages.
+    """
+    hypothesis_text = " ".join(
+        str(idea.get(key) or "")
+        for key in ("hypothesis", "abstract")
+    ).lower()
+    causal_chain = idea.get("causal_chain")
+    chain_items = [str(item).strip() for item in causal_chain] if isinstance(causal_chain, list) else []
+    experiments = idea.get("experiments") if isinstance(idea.get("experiments"), dict) else {}
+
+    causal_markers = (
+        "mechanism", "pathway", "mediated", "through", "because", "leads to",
+        "results in", "triggers", "causal", "bridge",
+    )
+    falsification_markers = (
+        "falsif", "reject", "refute", "negative control", "does not", "fail if",
+    )
+    has_mechanism = (
+        len(chain_items) >= 2
+        and any(marker in hypothesis_text for marker in causal_markers)
+    )
+    has_falsification = (
+        any(marker in hypothesis_text for marker in falsification_markers)
+        or bool(str(experiments.get("falsification_criteria") or "").strip())
+    )
+    has_grounding = bool([
+        ref for ref in gap.get("supporting_references", [])
+        if str(ref).strip()
+    ])
+    has_test_plan = all(str(experiments.get(key) or "").strip() for key in ("setup", "metrics", "baselines"))
+
+    checks = {
+        "testable_mechanism": has_mechanism,
+        "falsification_condition": has_falsification,
+        "papergraph_grounding": has_grounding,
+        "executable_test_plan": has_test_plan,
+    }
+    missing = [name for name, passed in checks.items() if not passed]
+    return {
+        "verdict": "PASS" if not missing else "REJECT",
+        "checks": checks,
+        "missing": missing,
+        "deferred_to_yanzhen": [
+            "concrete_mediator", "scope", "dynamics", "intervention",
+            "counterfactual", "reversibility", "two_independent_observations",
+            "cross_domain_structure_mapping", "null_hypothesis",
+            "alternative_hypothesis", "three_testable_subhypotheses",
+        ],
+        "guidance": (
+            "MingLi needs only a testable mechanism, a falsification condition, at least one PaperGraph reference, and an executable test plan. "
+            "Detailed mechanism operationalization belongs to YanZhen and the Socratic debate."
+            if not missing
+            else "Complete only these MingLi-stage requirements: " + ", ".join(missing)
         ),
     }
 
@@ -1895,48 +1187,6 @@ def finalize_idea(
         save_project(project)
         return json.dumps(rejected, ensure_ascii=False, indent=2)
 
-    candidate_like = {
-        "statement": idea.get("hypothesis", ""),
-        "mechanism": idea.get("abstract", ""),
-        "causal_chain": idea.get("causal_chain", []),
-        "mechanism_specification": idea.get("mechanism_specification", {}),
-        "cross_domain_bridge": idea.get("cross_domain_bridge", {}),
-        "collision_source": idea.get("collision_source", {}),
-        "null_hypothesis": idea.get("null_hypothesis", ""),
-        "alternative_hypothesis": idea.get("alternative_hypothesis", ""),
-        "testable_subhypotheses": idea.get("testable_subhypotheses", []),
-        "evidence_assignment": idea.get("evidence_assignment", []),
-    }
-    mechanism_contract = mingli_mechanism_contract(candidate_like)
-    if mechanism_contract.get("verdict") != "READY":
-        rejected = {
-            "status": "rejected_mechanism_contract",
-            "reason": "MingLi output lacks a causal chain, mechanism text, or falsification condition. These 3 are required; remaining checks are deferred to YanZhen.",
-            "mechanism_contract": mechanism_contract,
-            "idea_json": idea,
-            "gap_id": gap_id,
-        }
-        project.setdefault("mingli_rejected_ideas", []).append(rejected)
-        project.setdefault("mingli_mechanism_generation_failures", []).append(
-            {
-                "failure_id": new_id("mfail"),
-                "project_id": project_id,
-                "gap_id": gap_id,
-                "mechanism_contract": mechanism_contract,
-                "suggested_action": mechanism_contract.get("suggested_action"),
-                "createdAt": time.time(),
-            }
-        )
-        if idea_id:
-            for draft in project.get("mingli_draft_ideas", []):
-                if isinstance(draft, dict) and draft.get("draft_idea_id") == idea_id:
-                    draft["status"] = "rejected_mechanism_contract"
-                    break
-        project["updatedAt"] = time.time()
-        save_project(project)
-        log_event("WARN", "hypothesis_rejected_mechanism_contract", gap_id=gap_id, missing=mechanism_contract.get("missing_knowledge", []))
-        return json.dumps(rejected, ensure_ascii=False, indent=2)
-
     verification_text = " ".join(str(idea.get(key) or "") for key in ("title", "hypothesis", "abstract", "related_work"))
     uniqueness = json.loads(
         verify_uniqueness(
@@ -1993,17 +1243,19 @@ def finalize_idea(
         log_event("WARN", "hypothesis_rejected_template", gap_id=gap_id, patterns=template_check.get("matched_patterns"))
         return json.dumps(rejected, ensure_ascii=False, indent=2)
 
-    # Specificity enforcement: reject hypotheses that lack domain-specific content
+    # Specificity is a useful diagnostic, but numerical/detail requirements belong
+    # to YanZhen and the debate rather than MingLi's initial acceptance gate.
     specificity_check = enforce_hypothesis_specificity(idea)
-    if specificity_check.get("verdict") == "REJECT":
+    mingli_acceptance = mingli_acceptance_check(idea, gap)
+    if mingli_acceptance.get("verdict") == "REJECT":
         rejected = {
-            "status": "rejected_specificity",
+            "status": "rejected_mingli_acceptance",
             "reason": (
-                "Hypothesis lacks domain-specific content. "
-                f"Missing dimensions: {', '.join(specificity_check.get('missing_dimensions', []))}. "
-                "Regenerate with concrete numbers, named operating conditions, domain-specific metrics, "
-                "and an explicit causal pathway."
+                "Hypothesis is missing a required MingLi-stage element. "
+                f"Missing: {', '.join(mingli_acceptance.get('missing', []))}. "
+                "Do not attempt the YanZhen mechanism-audit checklist at this stage."
             ),
+            "mingli_acceptance": mingli_acceptance,
             "specificity_check": specificity_check,
             "template_check": template_check,
             "idea_json": idea,
@@ -2012,8 +1264,15 @@ def finalize_idea(
         project.setdefault("mingli_rejected_ideas", []).append(rejected)
         project["updatedAt"] = time.time()
         save_project(project)
-        log_event("WARN", "hypothesis_rejected_specificity", gap_id=gap_id, missing=specificity_check.get("missing_dimensions"))
+        log_event("WARN", "hypothesis_rejected_mingli_acceptance", gap_id=gap_id, missing=mingli_acceptance.get("missing"))
         return json.dumps(rejected, ensure_ascii=False, indent=2)
+    if specificity_check.get("verdict") == "REJECT":
+        log_event(
+            "WARN",
+            "mingli_specificity_deferred",
+            gap_id=gap_id,
+            missing=specificity_check.get("missing_dimensions"),
+        )
 
     hypothesis = Hypothesis(
         hypothesis_id=new_id("hyp"),
@@ -2042,13 +1301,14 @@ def finalize_idea(
             "mingli_final_idea": idea,
             "uniqueness_check": uniqueness,
             "source_gap": gap,
+            "socrates_mechanism_contract": idea.get("socrates_mechanism_contract", {}),
             "parent_hypothesis_id": idea.get("parent_hypothesis_id"),
             "tournament_generation": idea.get("tournament_generation", 1),
             "lineage": idea.get("lineage", []),
             "evidence_alignment": alignment,
             "template_check": template_check,
             "specificity_check": specificity_check,
-            "mechanism_contract": mechanism_contract,
+            "mingli_acceptance": mingli_acceptance,
             "constraints_checked": {
                 "traceable_to_gap": bool(gap_id),
                 "papergraph_grounded": bool(gap.get("supporting_references")),
@@ -2061,8 +1321,8 @@ def finalize_idea(
                 "has_domain_specifics": template_check.get("has_domain_specifics"),
                 "specificity_verdict": specificity_check.get("verdict"),
                 "specificity_missing": specificity_check.get("missing_dimensions", []),
-                "mechanism_contract_verdict": mechanism_contract.get("verdict"),
-                "mechanism_contract_missing": mechanism_contract.get("missing_knowledge", []),
+                "mingli_acceptance_verdict": mingli_acceptance.get("verdict"),
+                "mingli_acceptance_missing": mingli_acceptance.get("missing", []),
             },
         }
     )
@@ -2227,22 +1487,11 @@ def mingli_candidate_to_idea_json(project: dict[str, Any], candidate: dict[str, 
         "lineage": candidate.get("lineage", []),
         "scores": candidate.get("scores", {}),
         "semantic_plausibility": candidate.get("semantic_plausibility", {}),
+        "socrates_mechanism_contract": candidate.get("socrates_mechanism_contract", {}),
         "causal_chain": candidate.get("causal_chain", []),
-        "evidence_packets": candidate.get("evidence_packets", []),
-        "collision_source": candidate.get("collision_source", {}),
-        "cross_domain_bridge": candidate.get("cross_domain_bridge", {}),
-        "claim_scope": candidate.get("claim_scope", "mechanistic"),
-        "mechanism_specification": candidate.get("mechanism_specification", {}),
-        "mechanism_contract": candidate.get("mechanism_contract", {}),
-        "null_hypothesis": candidate.get("null_hypothesis", ""),
-        "alternative_hypothesis": candidate.get("alternative_hypothesis", ""),
-        "testable_subhypotheses": candidate.get("testable_subhypotheses", []),
-        "evidence_assignment": candidate.get("evidence_assignment", []),
-        "candidate_selection": candidate.get("candidate_selection", {}),
         "controllable_variables": [control_variable],
         "measurable_outputs": [components["benchmark"]],
         "boundary_conditions": [boundary],
-        "falsification_condition": str(experiments.get("falsification_condition") or ""),
     }
 
 def mingli_title_from_statement(statement: str) -> str:
@@ -2263,8 +1512,8 @@ def conservative_hypothesis_statement(candidate: dict[str, Any], components: dic
     variable = hypothesis_control_variable(gap, components["method"], components["scenario"])
     boundary = hypothesis_boundary_condition(gap)
     return (
-        f"Evaluate {components['method']} in {components['scenario']} while varying {variable}; "
-        f"compare {components['benchmark']} against a domain-standard baseline at {boundary}."
+        f"If {components['method']} is evaluated in {components['scenario']} while explicitly varying {variable}, "
+        f"then {components['benchmark']} should identify the limiting boundary {boundary} against domain-standard baselines."
     )
 
 def innovative_hypothesis_statement(candidate: dict[str, Any], components: dict[str, str], gap: dict[str, Any]) -> str:
@@ -2276,12 +1525,12 @@ def innovative_hypothesis_statement(candidate: dict[str, Any], components: dict[
     boundary = hypothesis_boundary_condition(gap)
     if str(gap.get("gap_type") or "") == "contradiction":
         return (
-            f"Use a controlled comparison in {components['scenario']} to vary {variable}; "
-            f"measure {components['benchmark']} to determine which mechanism remains consistent at {boundary}."
+            f"If the conflicting claims in {components['scenario']} are retested under matched {variable} conditions, "
+            f"then {components['benchmark']} will reveal which mechanism is valid and where the disagreement boundary lies: {boundary}."
         )
     return (
-        f"Test {components['method']} in {components['scenario']} under {boundary}; "
-        f"measure {components['benchmark']} while isolating the candidate mediator described by the source gap: "
+        f"If {components['method']} is coupled with a mechanism-stress intervention that varies {variable} in {components['scenario']}, "
+        f"then {components['benchmark']} will expose a directional or non-monotonic boundary at {boundary}: "
         f"{trim_text(str(gap.get('description', '')), 140)}"
     )
 
