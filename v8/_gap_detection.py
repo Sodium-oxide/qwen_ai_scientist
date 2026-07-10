@@ -3420,9 +3420,9 @@ def extract_hypothesis_ingredients(project, method, scenario, refs):
 def generate_counterfactual_leaves(method, scenario, refs):
     """Generate 'if X holds, gap disappears' leaf conditions."""
     try:
-        from ._utils import unique_preserve_order
+        from ._utils import trim_text, unique_preserve_order
     except ImportError:
-        from _utils import unique_preserve_order
+        from _utils import trim_text, unique_preserve_order
     leaves = []
     m = str(method or "").strip()
     s = str(scenario or "").strip()
