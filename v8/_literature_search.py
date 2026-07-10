@@ -317,7 +317,7 @@ def search_literature_stratified(
         raw_candidates = rank_literature_results(ranking_query, dedupe_literature_results(flatten_literature_results(blocks)))
         candidates = [item for item in raw_candidates if stratified_candidate_matches(layer["layer"], item)]
         recovery_used = ""
-        if not candidates and layer["layer"] in {"L1_milestone", "L2_top_latest"}:
+        if not candidates and layer["layer"] in {"L0_review", "L1_milestone", "L2_top_latest", "L3_preprint"}:
             candidates, recovery_used = recover_stratified_layer_candidates(layer["layer"], raw_candidates)
         picked: list[dict[str, Any]] = []
         rejected_for_domain = 0
@@ -516,7 +516,7 @@ def stratified_literature_layers(quotas: dict[str, int]) -> list[dict[str, Any]]
             "layer": "L0_review",
             "label": "high-impact review / field map",
             "quota": int(quotas.get("L0_review", 0)),
-            "query_suffix": "review survey progress perspective tutorial systematic review meta-analysis",
+            "query_suffix": "review survey systematic",
         },
         {
             "layer": "L1_milestone",
@@ -687,17 +687,33 @@ def fetch_stratified_layer_blocks(
         planned_query = str(plan.get("query") or query)
         layer_query = stratified_layer_retrieval_query(layer_name, planned_query, suffix)
         if layer_name == "L3_preprint":
+            preprint_blocks: list[dict[str, Any]] = []
             if "arxiv" in providers:
                 block = arxiv_skip_block(planned_query) or search_arxiv(planned_query, max_results=per_query_limit, sort_by="submittedDate")
                 block["query_branch"] = branch
                 block["retrieval_strategy"] = "latest_preprint_query"
-                blocks.append(block)
+                preprint_blocks.append(block)
             for provider in ("biorxiv", "medrxiv", "chemrxiv"):
                 if provider in providers:
                     block = search_preprint_api(provider, planned_query, max_results=min(per_query_limit, 20))
                     block["query_branch"] = branch
                     block["retrieval_strategy"] = "latest_preprint_query"
-                    blocks.append(block)
+                    preprint_blocks.append(block)
+            # Check if any preprint block returned actual results
+            has_preprint_results = any(
+                block.get("status") == "ok" and block.get("results")
+                for block in preprint_blocks
+            )
+            blocks.extend(preprint_blocks)
+            # Fallback: if all preprint providers failed, use S2 (which indexes arxiv papers with arxiv_id)
+            if not has_preprint_results and "semantic_scholar" in providers:
+                log_event("SCIENCE", "stratified_l3_s2_fallback",
+                          reason="preprint_providers_empty_or_circuit_broken",
+                          query=planned_query[:80])
+                block = search_semantic_scholar(planned_query, max_results=per_query_limit)
+                block["query_branch"] = branch
+                block["retrieval_strategy"] = "preprint_s2_fallback"
+                blocks.append(block)
             continue
         if "semantic_scholar" in providers:
             block = search_semantic_scholar(layer_query, max_results=per_query_limit)
@@ -709,18 +725,7 @@ def fetch_stratified_layer_blocks(
             block["query_branch"] = branch
             block["retrieval_strategy"] = stratified_layer_retrieval_strategy(layer_name)
             blocks.append(block)
-        if layer_name == "L0_review" and "arxiv" in providers:
-            block = arxiv_skip_block(layer_query) or search_arxiv(layer_query, max_results=min(per_query_limit, 20))
-            block["query_branch"] = branch
-            block["retrieval_strategy"] = "review_query"
-            blocks.append(block)
-        if layer_name == "L0_review":
-            for provider in ("biorxiv", "medrxiv", "chemrxiv"):
-                if provider in providers:
-                    block = search_preprint_api(provider, layer_query, max_results=min(per_query_limit, 20))
-                    block["query_branch"] = branch
-                    block["retrieval_strategy"] = "review_query"
-                    blocks.append(block)
+        # L0_review: only use S2/PubMed — do NOT call arxiv here to preserve rate budget for L3_preprint
         if layer_name == "L4_regular" and "arxiv" in providers:
             block = arxiv_skip_block(planned_query) or search_arxiv(planned_query, max_results=min(per_query_limit, 20))
             block["query_branch"] = branch
@@ -888,10 +893,10 @@ def has_suspicious_literature_flags(item: dict[str, Any]) -> bool:
 def recover_stratified_layer_candidates(layer: str, raw_candidates: list[dict[str, Any]]) -> tuple[list[dict[str, Any]], str]:
     try:
         from ._literature_scoring import is_recent_paper, literature_recency_score, publication_channel_is_strong
-        from ._utils import numeric_value
+        from ._utils import normalize_space, numeric_value
     except ImportError:
         from _literature_scoring import is_recent_paper, literature_recency_score, publication_channel_is_strong
-        from _utils import numeric_value
+        from _utils import normalize_space, numeric_value
     usable = [item for item in raw_candidates if not is_low_quality_literature_result(item)]
     if not usable:
         return [], ""
@@ -927,6 +932,32 @@ def recover_stratified_layer_candidates(layer: str, raw_candidates: list[dict[st
             ),
         )
         return ranked[:20], "relaxed_top_latest_recent_or_high_quality_available"
+    if layer == "L0_review":
+        # Relaxed: any high-quality paper with review-like title markers
+        review_markers = ("review", "survey", "overview", "progress", "perspective", "tutorial", "meta-analysis", "systematic")
+        review_like = [
+            item for item in usable
+            if any(marker in normalize_space(str(item.get("title") or "")).lower() for marker in review_markers)
+        ]
+        ranked = sorted(
+            review_like or usable,
+            key=lambda item: (
+                -numeric_value(item.get("citation_count")),
+                -float(item.get("publication_quality_score") or 0.0),
+            ),
+        )
+        return ranked[:10], "relaxed_review_high_citation_or_quality"
+    if layer == "L3_preprint":
+        # Relaxed: any paper with arxiv_id in externalIds or preprint provider
+        preprint_like = [item for item in usable if is_preprint_literature_result(item)]
+        ranked = sorted(
+            preprint_like or usable,
+            key=lambda item: (
+                -literature_recency_score(item),
+                -float(item.get("relevance_score") or 0.0),
+            ),
+        )
+        return ranked[:10], "relaxed_preprint_or_recent_available"
     return [], ""
 
 def is_review_like_paper(item: dict[str, Any]) -> bool:
