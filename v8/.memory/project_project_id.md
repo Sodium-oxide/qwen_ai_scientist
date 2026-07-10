@@ -1,7 +1,7 @@
 ---
 name: project_id
-description: stable project identifier
+description: 科学研究项目的ID
 type: project
 ---
 
-sci_1783541582585393700
+sci_1783694961337118900

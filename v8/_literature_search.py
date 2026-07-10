@@ -65,6 +65,8 @@ ARXIV_COOLDOWN_UNTIL = 0.0
 
 ARXIV_429_COUNT = 0
 
+ARXIV_TIMEOUT_COUNT = 0
+
 def search_papers(
     query: str,
     databases: list[str] | None = None,
@@ -222,6 +224,9 @@ def search_literature(
         from _project import default_literature_providers, live_literature_provider_names, save_search
         from _utils import new_id, unique_preserve_order
     search_id = new_id("search")
+    # Sanitize tag-soup queries for better provider recall.
+    original_query = query
+    query = sanitize_search_query(query)
     selected = [database_to_provider(provider) for provider in (providers or default_literature_providers(query=query))]
     selected = unique_preserve_order([provider for provider in selected if provider in live_literature_provider_names()])
     if not selected:
@@ -273,6 +278,219 @@ def search_literature(
     log_event("SCIENCE", "literature_search", query=query, providers=",".join(selected), max_results=max_results)
     return json.dumps(response, ensure_ascii=False, indent=2)
 
+
+# ---------------------------------------------------------------------------
+# Query sanitization: detect and repair "tag-soup" queries that produce
+# near-zero recall on semantic search APIs.
+# ---------------------------------------------------------------------------
+
+_TAG_SOUP_STOPWORDS = {
+    "elements", "physics", "chemistry", "science", "theory", "research",
+    "study", "analysis", "technology", "model", "system", "methods",
+    "method", "applications", "application", "criteria", "reactions",
+    "reaction", "properties", "property", "effects", "effect", "nuclear",
+    "quantum", "experimental", "theoretical", "computational", "molecular",
+    "structural", "chemical", "physical", "biological", "materials",
+}
+
+_COMPOUND_PHRASE_PATTERNS = [
+    # Superheavy / nuclear physics
+    "superheavy elements", "island of stability", "nuclear shell model",
+    "shell closure", "magic number", "fusion reaction", "fusion-evaporation",
+    "cold fusion", "hot fusion", "actinide target", "actinide targets",
+    "recoil separator", "gas-filled recoil separator", "alpha decay",
+    "spontaneous fission", "superheavy nuclei", "synthesis reaction",
+    "compound nucleus", "evaporation residue", "cross section",
+    "discovery criteria", "IUPAC criteria", "element discovery",
+    "critical charge", "quantum electrodynamics", "relativistic effects",
+    "electronic structure", "nuclear shell", "shell gap",
+    # Materials / energy
+    "solid-state battery", "lithium ion battery", "solid electrolyte",
+    "garnet electrolyte", "sulfide electrolyte", "oxide electrolyte",
+    "polymer electrolyte", "halide electrolyte", "cathode coating",
+    "interface engineering", "dendrite suppression", "ionic conductivity",
+    "critical current density", "coulombic efficiency", "rate capability",
+    "interface resistance", "molecular dynamics simulation",
+    "density functional theory", "machine learning model",
+    # Catalysis / electrochemistry
+    "bifunctional electrocatalyst", "layered double hydroxide",
+    "transition metal phosphide", "single-atom catalyst",
+    "hydrogen evolution reaction", "oxygen evolution reaction",
+    "overall water splitting", "tafel slope", "faradaic efficiency",
+    "operational stability", "overpotential",
+    # Climate / ecology
+    "regime shift", "compound extreme event", "ecological disturbance",
+    "agricultural stress", "hydrological deficit", "meteorological anomaly",
+    "vapor pressure deficit", "soil moisture", "drought characteristics",
+    "drought duration", "drought frequency", "drought severity",
+    "model ensemble", "remote sensing", "extreme event attribution",
+    # AI for Science
+    "large language model", "knowledge graph", "multi-agent system",
+    "autonomous agent", "scientific discovery", "ai for science",
+    # Biomedical
+    "protein structure prediction", "drug discovery", "clinical trial",
+    "single-cell sequencing", "gene expression", "binding affinity",
+]
+
+
+def is_tag_soup_query(query: str, threshold_words: int = 7) -> bool:
+    """Return True when *query* looks like a concatenation of domain tags
+    rather than a natural-language retrieval phrase.
+
+    Heuristics:
+    - Many Title-Cased tokens in a row (e.g. ``Superheavy Elements Nuclear
+      Physics …``) signal tag concatenation.
+    - Total word count exceeds *threshold_words* AND more than half the words
+      are capitalised.
+    - No boolean operators or punctuation suggesting a structured query.
+    """
+    if not query:
+        return False
+    words = query.split()
+    if len(words) < threshold_words:
+        return False
+    title_case = sum(1 for w in words if w[:1].isupper() and len(w) > 1)
+    ratio = title_case / max(1, len(words))
+    if ratio >= 0.5 and len(words) >= threshold_words:
+        return True
+    # Very long query with no natural-language connectors
+    connectors = {"the", "a", "an", "of", "in", "on", "for", "with", "and", "or", "to", "from", "is", "are", "by", "that", "which", "how", "what", "why"}
+    lower_words = [w.lower() for w in words]
+    connector_count = sum(1 for w in lower_words if w in connectors)
+    if len(words) >= 10 and connector_count <= 1:
+        return True
+    return False
+
+
+def extract_compound_phrases(query: str) -> list[str]:
+    """Extract known compound noun phrases from *query* (case-insensitive)."""
+    lower = query.lower()
+    found: list[str] = []
+    for phrase in _COMPOUND_PHRASE_PATTERNS:
+        if phrase in lower:
+            found.append(phrase)
+    return found
+
+
+def sanitize_search_query(query: str, domain: str = "", max_phrases: int = 4, max_terms: int = 6) -> str:
+    """Reduce a tag-soup or overly-broad query into a compact, effective
+    retrieval string.
+
+    Strategy:
+    1. If the query is *not* a tag soup, return it unchanged.
+    2. Extract known compound phrases first (preserves scientific meaning).
+    3. Fall back to filtering stop-words and keeping the most specific tokens.
+    4. Prepend the *domain* if it is non-empty and not already covered.
+    """
+    if not is_tag_soup_query(query):
+        # Even non-tag-soup queries can benefit from length capping for
+        # provider APIs that silently truncate.
+        words = query.split()
+        if len(words) <= max_terms + 2:
+            return query
+        # Check for compound phrases even in non-tag-soup queries — they
+        # carry much more semantic weight than individual tokens.
+        phrases = extract_compound_phrases(query)
+        if phrases:
+            result = " ".join(phrases[:max_phrases])
+            if domain:
+                domain_tokens = [w for w in domain.lower().split() if w not in _TAG_SOUP_STOPWORDS and len(w) > 2]
+                phrase_text = " ".join(p.lower() for p in phrases[:max_phrases])
+                covered = sum(1 for t in domain_tokens if t in phrase_text)
+                if covered < max(1, len(domain_tokens) // 2):
+                    result = f"{domain} {result}"
+            log_event("SCIENCE", "query_sanitized", original_words=len(words), method="non_tag_soup_phrases", result_words=len(result.split()))
+            return result
+        # Mild truncation: keep first max_terms meaningful words.
+        filtered = [w for w in words if w.lower() not in _TAG_SOUP_STOPWORDS and len(w) > 2]
+        if len(filtered) <= max_terms:
+            return query
+        return " ".join(filtered[:max_terms])
+
+    # ---- Tag-soup path ----
+    phrases = extract_compound_phrases(query)
+    if phrases:
+        result = " ".join(phrases[:max_phrases])
+        # Prepend domain only if its significant tokens are not already
+        # covered by the selected phrases.  A simple substring check on
+        # the full domain string is too strict — we compare the domain's
+        # non-stopword tokens against the phrases.
+        if domain:
+            domain_tokens = [w for w in domain.lower().split() if w not in _TAG_SOUP_STOPWORDS and len(w) > 2]
+            phrase_text = " ".join(p.lower() for p in phrases[:max_phrases])
+            covered = sum(1 for t in domain_tokens if t in phrase_text)
+            if covered < max(1, len(domain_tokens) // 2):
+                result = f"{domain} {result}"
+        log_event("SCIENCE", "query_sanitized", original_words=len(query.split()), method="compound_phrases", result_words=len(result.split()))
+        return result
+
+    # No known compound phrases — filter to specific tokens.
+    words = query.lower().split()
+    specific = [w for w in words if w not in _TAG_SOUP_STOPWORDS and len(w) > 2]
+    # Preserve original casing for the first occurrence.
+    original_tokens = {w.lower(): w for w in query.split()}
+    kept = [original_tokens.get(w, w) for w in specific[:max_terms]]
+    if domain:
+        domain_lower = domain.lower()
+        if not any(domain_lower in w.lower() for w in kept):
+            kept.insert(0, domain)
+    result = " ".join(kept) if kept else query[:120]
+    log_event("SCIENCE", "query_sanitized", original_words=len(query.split()), method="token_filter", result_words=len(result.split()))
+    return result
+
+
+_SYNONYM_MAP: dict[str, list[str]] = {
+    # Nuclear / superheavy
+    "superheavy": ["superheavy", "transactinide", "transuranium", "super-heavy"],
+    "elements": ["elements", "nuclei", "atoms", "nuclides"],
+    "shell": ["shell", "shell closure", "magic number", "shell gap"],
+    "fusion": ["fusion", "fusion-evaporation", "compound nucleus"],
+    "detection": ["detection", "spectroscopy", "spectrometry", "recoil separator"],
+    "IUPAC": ["IUPAC", "discovery criteria", "element verification"],
+    "decay": ["decay", "alpha decay", "spontaneous fission", "half-life"],
+    # Materials / energy
+    "battery": ["battery", "cell", "accumulator"],
+    "electrolyte": ["electrolyte", "ionic conductor", "solid conductor"],
+    "cathode": ["cathode", "positive electrode", "cathode material"],
+    "dendrite": ["dendrite", "lithium dendrite", "metal dendrite"],
+    "conductivity": ["conductivity", "ionic conductivity", "ion transport"],
+    # Catalysis
+    "catalyst": ["catalyst", "electrocatalyst", "cocatalyst"],
+    "overpotential": ["overpotential", "eta10", "activation overpotential"],
+    "stability": ["stability", "durability", "long-term performance"],
+    # Climate
+    "drought": ["drought", "dry spell", "moisture deficit", "aridity"],
+    "regime": ["regime", "regime shift", "climate regime", "climate state"],
+    # AI / CS
+    "agent": ["agent", "autonomous agent", "AI agent", "LLM agent"],
+    "hypothesis": ["hypothesis", "research idea", "scientific hypothesis"],
+}
+
+
+def expand_query_with_synonyms(query: str, max_extra: int = 3) -> str:
+    """Append OR-expanded synonym terms when the initial search yields too
+    few results.  Returns the original query plus up to *max_extra* synonym
+    phrases joined by spaces (not strict boolean OR, since most provider
+    APIs treat spaces as soft-AND/semantic match).
+    """
+    words = query.lower().split()
+    expansions: list[str] = []
+    seen: set[str] = set(words)
+    for word in words:
+        if word in _SYNONYM_MAP:
+            for syn in _SYNONYM_MAP[word]:
+                if syn.lower() not in seen and syn.lower() != word:
+                    expansions.append(syn)
+                    seen.add(syn.lower())
+                    if len(expansions) >= max_extra:
+                        break
+        if len(expansions) >= max_extra:
+            break
+    if expansions:
+        log_event("SCIENCE", "query_expanded_synonyms", original=query[:80], additions=expansions)
+    return query if not expansions else f"{query} {' '.join(expansions)}"
+
+
 def search_literature_stratified(
     query: str,
     providers: list[str] | None = None,
@@ -292,6 +510,10 @@ def search_literature_stratified(
         from _project import default_literature_providers, live_literature_provider_names, save_search
         from _utils import new_id, unique_preserve_order
     search_id = new_id("search")
+    # Sanitize tag-soup queries before any provider API call.  The original
+    # raw query is preserved in the search record for auditability.
+    original_query = query
+    query = sanitize_search_query(query, domain=domain)
     selected = [database_to_provider(provider) for provider in (providers or default_literature_providers(domain=domain, query=query))]
     selected = unique_preserve_order([provider for provider in selected if provider in live_literature_provider_names()])
     if not selected:
@@ -310,7 +532,7 @@ def search_literature_stratified(
         if target <= 0:
             strata_reports.append({**layer, "target": target, "selected": 0, "carried_to_next": 0})
             continue
-        blocks = fetch_stratified_layer_blocks(query, selected, layer, query_plan=query_plan)
+        blocks = fetch_stratified_layer_blocks(query, selected, layer, query_plan=query_plan, domain=domain)
         provider_blocks.extend(blocks)
         raw_candidates = rank_literature_results(ranking_query, dedupe_literature_results(flatten_literature_results(blocks)))
         candidates = [item for item in raw_candidates if stratified_candidate_matches(layer["layer"], item)]
@@ -392,6 +614,53 @@ def search_literature_stratified(
             }
         )
 
+    # ---- Low-result fallback: synonym expansion ----
+    # If we still have fewer than 25 % of the requested results after the
+    # full stratified cascade + regular backfill, try one more pass with an
+    # expanded query that includes synonyms.  This helps when the original
+    # domain tags are too specific for the provider's semantic index.
+    low_result_threshold = max(3, max_results // 4)
+    synonym_expansion_used = False
+    if len(selected_results) < low_result_threshold:
+        expanded = expand_query_with_synonyms(query)
+        if expanded != query:
+            synonym_expansion_used = True
+            log_event("SCIENCE", "synonym_expansion_fallback", original_results=len(selected_results), expanded_query=expanded[:120])
+            try:
+                expanded_blocks: list[dict[str, Any]] = []
+                for provider in selected:
+                    exp_q = sanitize_search_query(expanded, domain=domain, max_terms=8)
+                    try:
+                        block = search_literature_provider_block(provider, exp_q, max_results=max(8, max_results // len(selected)))
+                    except Exception:
+                        continue
+                    expanded_blocks.append(block)
+                for candidate in rank_literature_results(expanded, dedupe_literature_results(flatten_literature_results(expanded_blocks))):
+                    key = literature_result_unique_key(candidate)
+                    if key in seen:
+                        continue
+                    seen.add(key)
+                    item = dict(candidate)
+                    item["stratified_layer"] = "L4_regular"
+                    item["stratified_label"] = "synonym-expanded backfill"
+                    item["_why_selected"] = "synonym_expansion_fallback"
+                    selected_results.append(item)
+                    if len(selected_results) >= max_results:
+                        break
+                provider_blocks.extend(expanded_blocks)
+                strata_reports.append(
+                    {
+                        "layer": "synonym_expansion",
+                        "label": "synonym-expanded backfill",
+                        "quota": max_results,
+                        "target": max_results - len(selected_results) + low_result_threshold,
+                        "selected": max(0, len(selected_results) - low_result_threshold),
+                        "expanded_query": expanded[:200],
+                    }
+                )
+            except Exception as exc:
+                log_event("WARN", "synonym_expansion_failed", error=str(exc)[:200])
+
     final_results = diverse_rerank_literature_results(selected_results, max_results=max_results)
     for index, item in enumerate(final_results):
         item["result_index"] = index
@@ -400,6 +669,9 @@ def search_literature_stratified(
     search_record = {
         "search_id": search_id,
         "query": query,
+        "original_query": original_query if original_query != query else "",
+        "query_sanitized": original_query != query,
+        "synonym_expansion_used": synonym_expansion_used,
         "domain": domain,
         "focus_branches": focus_branches or [],
         "providers": selected,
@@ -416,6 +688,9 @@ def search_literature_stratified(
     response = {
         "search_id": search_id,
         "query": query,
+        "original_query": original_query if original_query != query else "",
+        "query_sanitized": original_query != query,
+        "synonym_expansion_used": synonym_expansion_used,
         "domain": domain,
         "focus_branches": focus_branches or [],
         "providers": selected,
@@ -434,6 +709,12 @@ def search_literature_stratified(
             "Each result has stratified_layer and _why_selected explaining its role in the literature map."
         ),
     }
+    if original_query != query:
+        response["sanitization_note"] = (
+            f"The original query ({len(original_query.split())} words) was sanitized to a compact form "
+            f"({len(query.split())} words) because tag-soup queries produce near-zero recall on semantic "
+            f"search APIs. Original: '{original_query[:120]}...'. Sanitized: '{query}'."
+        )
     log_event(
         "SCIENCE",
         "literature_search_stratified",
@@ -556,18 +837,24 @@ def build_domain_query_plan(
         from _literature_scoring import domain_topic_profile, slug_label
         from _utils import normalize_space
     primary = normalize_space(query)
-    plan: list[dict[str, str]] = [{"branch": "primary", "query": primary}]
+    # Sanitize tag-soup queries so branch queries sent to provider APIs
+    # are compact and semantically coherent.
+    sanitized_primary = sanitize_search_query(primary, domain=domain)
+    plan: list[dict[str, str]] = [{"branch": "primary", "query": sanitized_primary}]
     profile = domain_topic_profile(domain or query, query=query, use_llm=use_llm)
     focus_branches = [normalize_space(item) for item in (focus_branches or []) if normalize_space(item)]
     for focus in focus_branches:
-        plan.append({"branch": slug_label(focus), "query": normalize_space(f"{primary} {focus}")})
+        # Use sanitized primary when building branch queries so we do not
+        # re-introduce the tag-soup string into sub-branch retrievals.
+        branch_query = normalize_space(f"{sanitized_primary} {focus}")
+        plan.append({"branch": slug_label(focus), "query": branch_query})
     topics = list(profile.get("core_topics", [])) + list(profile.get("retrieval_facets", []))
     for topic in topics[: max(0, max_branches)]:
         branch = str(topic.get("branch") or "subfield")
         terms = str(topic.get("query") or "")
         if not terms:
             continue
-        branch_query = normalize_space(terms if primary.lower() in terms.lower() else f"{primary} {terms}")
+        branch_query = normalize_space(terms if sanitized_primary.lower() in terms.lower() else f"{sanitized_primary} {terms}")
         plan.append({"branch": branch, "query": branch_query, "topic_type": str(topic.get("topic_type") or "subfield")})
     deduped: list[dict[str, str]] = []
     seen: set[str] = set()
@@ -668,6 +955,7 @@ def fetch_stratified_layer_blocks(
     providers: list[str],
     layer: dict[str, Any],
     query_plan: list[dict[str, str]] | None = None,
+    domain: str = "",
 ) -> list[dict[str, Any]]:
     try:
         from ._utils import clamp_int
@@ -685,49 +973,77 @@ def fetch_stratified_layer_blocks(
         planned_query = str(plan.get("query") or query)
         layer_query = stratified_layer_retrieval_query(layer_name, planned_query, suffix)
         if layer_name == "L3_preprint":
+            # Preprint endpoints do not perform the same semantic expansion as
+            # Semantic Scholar. Passing an entire user objective or every
+            # sub-branch token into arXiv makes it silently return unrelated
+            # newest papers. Use a compact, provider-safe query instead.
+            preprint_query = compact_preprint_retrieval_query(planned_query, domain=domain)
             if "arxiv" in providers:
-                block = arxiv_skip_block(planned_query) or search_arxiv(planned_query, max_results=per_query_limit, sort_by="submittedDate")
+                block = arxiv_skip_block(preprint_query) or search_arxiv(preprint_query, max_results=per_query_limit, sort_by="submittedDate")
                 block["query_branch"] = branch
                 block["retrieval_strategy"] = "latest_preprint_query"
+                block["source_query"] = planned_query
                 blocks.append(block)
             for provider in ("biorxiv", "medrxiv", "chemrxiv"):
                 if provider in providers:
-                    block = search_preprint_api(provider, planned_query, max_results=min(per_query_limit, 20))
+                    block = search_preprint_api(provider, preprint_query, max_results=min(per_query_limit, 20))
                     block["query_branch"] = branch
                     block["retrieval_strategy"] = "latest_preprint_query"
+                    block["source_query"] = planned_query
                     blocks.append(block)
+            # arXiv can occasionally acknowledge an overly broad query yet
+            # return a newest-feed slice unrelated to it. Semantic Scholar's
+            # external ArXiv identifiers provide an independent, metadata-rich
+            # preprint fallback. Limit it to one request per L3 layer to honor
+            # the shared provider rate limiter.
+            if "semantic_scholar" in providers and plan is plans[0]:
+                block = search_semantic_scholar(preprint_query, max_results=per_query_limit)
+                block["query_branch"] = branch
+                block["retrieval_strategy"] = "preprint_metadata_fallback"
+                block["source_query"] = planned_query
+                blocks.append(block)
             continue
         if "semantic_scholar" in providers:
-            block = search_semantic_scholar(layer_query, max_results=per_query_limit)
+            # Semantic Scholar is a semantic search API: long tag-soup queries
+            # produce near-zero recall.  Cap the query to a compact form.
+            ss_query = sanitize_search_query(layer_query, domain=domain, max_terms=8)
+            block = search_semantic_scholar(ss_query, max_results=per_query_limit)
             block["query_branch"] = branch
             block["retrieval_strategy"] = stratified_layer_retrieval_strategy(layer_name)
             blocks.append(block)
         if "pubmed" in providers:
-            block = search_pubmed(layer_query, max_results=per_query_limit)
+            # PubMed E-utilities use lexical matching; overly long queries
+            # are silently truncated.  Keep it compact.
+            pm_query = sanitize_search_query(layer_query, domain=domain, max_terms=8)
+            block = search_pubmed(pm_query, max_results=per_query_limit)
             block["query_branch"] = branch
             block["retrieval_strategy"] = stratified_layer_retrieval_strategy(layer_name)
             blocks.append(block)
         if layer_name == "L0_review" and "arxiv" in providers:
-            block = arxiv_skip_block(layer_query) or search_arxiv(layer_query, max_results=min(per_query_limit, 20))
+            arxiv_q = compact_preprint_retrieval_query(layer_query, domain=domain)
+            block = arxiv_skip_block(arxiv_q) or search_arxiv(arxiv_q, max_results=min(per_query_limit, 20))
             block["query_branch"] = branch
             block["retrieval_strategy"] = "review_query"
             blocks.append(block)
         if layer_name == "L0_review":
             for provider in ("biorxiv", "medrxiv", "chemrxiv"):
                 if provider in providers:
-                    block = search_preprint_api(provider, layer_query, max_results=min(per_query_limit, 20))
+                    pre_q = compact_preprint_retrieval_query(layer_query, domain=domain)
+                    block = search_preprint_api(provider, pre_q, max_results=min(per_query_limit, 20))
                     block["query_branch"] = branch
                     block["retrieval_strategy"] = "review_query"
                     blocks.append(block)
         if layer_name == "L4_regular" and "arxiv" in providers:
-            block = arxiv_skip_block(planned_query) or search_arxiv(planned_query, max_results=min(per_query_limit, 20))
+            arxiv_q = compact_preprint_retrieval_query(planned_query, domain=domain)
+            block = arxiv_skip_block(arxiv_q) or search_arxiv(arxiv_q, max_results=min(per_query_limit, 20))
             block["query_branch"] = branch
             block["retrieval_strategy"] = "regular_backfill_query"
             blocks.append(block)
         if layer_name == "L4_regular":
             for provider in ("biorxiv", "medrxiv", "chemrxiv"):
                 if provider in providers:
-                    block = search_preprint_api(provider, planned_query, max_results=min(per_query_limit, 20))
+                    pre_q = compact_preprint_retrieval_query(planned_query, domain=domain)
+                    block = search_preprint_api(provider, pre_q, max_results=min(per_query_limit, 20))
                     block["query_branch"] = branch
                     block["retrieval_strategy"] = "regular_backfill_query"
                     blocks.append(block)
@@ -742,6 +1058,89 @@ def stratified_layer_retrieval_query(layer_name: str, planned_query: str, suffix
     if layer_name in {"L1_milestone", "L2_top_latest"}:
         return base
     return normalize_space(f"{base} {suffix}".strip())
+
+
+PREPRINT_LOW_SIGNAL_TERMS = {
+    "agent", "analysis", "approach", "benchmark", "case", "collaboration",
+    "dataset", "evaluation", "experiment", "framework", "hypothesis", "latest",
+    "literature", "method", "model", "paper", "preprint", "prediction", "recent",
+    "research", "review", "science", "search", "study", "survey", "system",
+    "testing", "validation", "workflow",
+}
+
+
+def preprint_query_tokens(text: str) -> list[str]:
+    """Extract provider-safe Latin/scientific tokens from a free-form query."""
+    raw = re.findall(r"[A-Za-z][A-Za-z0-9_-]{1,}|\d+(?:\.\d+)?[A-Za-z]+", str(text or ""))
+    tokens: list[str] = []
+    seen: set[str] = set()
+    for value in raw:
+        normalized = value.lower().strip("_-")
+        if len(normalized) < 3 and not any(char.isdigit() for char in normalized):
+            continue
+        if normalized in PREPRINT_LOW_SIGNAL_TERMS or normalized in seen:
+            continue
+        seen.add(normalized)
+        tokens.append(normalized)
+    return tokens
+
+
+def compact_preprint_retrieval_query(planned_query: str, domain: str = "", max_terms: int = 6) -> str:
+    """Reduce a broad research instruction to stable preprint search anchors.
+
+    The function is domain-general: it prefers specific scientific tokens and
+    uses the declared domain as an anchor, while excluding orchestration words
+    such as ``agent`` or ``hypothesis``. It deliberately preserves only a
+    small number of terms because preprint APIs rank lexical queries, not a
+    full natural-language research brief.
+    """
+    domain_tokens = preprint_query_tokens(domain)
+    query_tokens = preprint_query_tokens(planned_query)
+    domain_set = set(domain_tokens)
+    query_positions = {token: index for index, token in enumerate(query_tokens)}
+    candidates = list(dict.fromkeys(query_tokens + domain_tokens))
+
+    def score(token: str) -> tuple[float, int, int]:
+        value = float(min(len(token), 14)) / 6.0
+        if any(char.isdigit() for char in token):
+            value += 1.2
+        if token in domain_set:
+            value += 0.75
+        # Subspace plans append the concrete focus terms at the end. Favoring
+        # those terms prevents a long project objective from drowning out the
+        # actual scientific branch being searched.
+        if token in query_positions:
+            value += 0.9 * (query_positions[token] / max(1, len(query_tokens)))
+        # Prefer concrete scientific words over extremely generic prose, but
+        # retain source order as a deterministic final tiebreaker.
+        return value, int(token in domain_set), -query_positions.get(token, 10_000)
+
+    ranked = sorted(candidates, key=score, reverse=True)
+    chosen = ranked[: max(2, min(int(max_terms), 8))]
+    return " ".join(chosen)
+
+
+def arxiv_search_query_expression(query: str) -> str:
+    """Build a valid arXiv API expression from compact lexical anchors."""
+    tokens = preprint_query_tokens(query)
+    if not tokens:
+        return ""
+    # Two broad-but-specific anchors have materially better recall than an
+    # accidental conjunction of every word in a user instruction.
+    non_formula = [token for token in tokens if not any(char.isdigit() for char in token)]
+    anchors = (non_formula or tokens)[:2]
+    return " AND ".join(f"all:{token}" for token in anchors)
+
+
+def preprint_result_matches_query(result: dict[str, Any], query: str) -> bool:
+    """Defend L3 against a provider returning an unrelated newest-feed page."""
+    tokens = preprint_query_tokens(query)
+    if not tokens:
+        return False
+    text = " ".join(str(result.get(key) or "") for key in ("title", "abstract")).lower()
+    hits = sum(1 for token in tokens if token in text)
+    required = 2 if len(tokens) >= 4 else 1
+    return hits >= required
 
 def stratified_layer_retrieval_strategy(layer_name: str) -> str:
     if layer_name == "L1_milestone":
@@ -873,8 +1272,10 @@ def is_preprint_literature_result(item: dict[str, Any]) -> bool:
     payload = item.get("papergraph_input") if isinstance(item.get("papergraph_input"), dict) else {}
     payload_provider = normalize_space(str(payload.get("provider") or "")).lower()
     payload_venue = normalize_space(str(payload.get("venue") or "")).lower()
-    candidates = {provider, venue, payload_provider, payload_venue}
-    return bool(candidates & PREPRINT_API_PROVIDERS) or any(
+    arxiv_id = normalize_space(str(item.get("arxiv_id") or payload.get("arxiv_id") or "")).lower()
+    url = normalize_space(str(item.get("url") or payload.get("url") or item.get("open_access_pdf") or "")).lower()
+    candidates = {provider, venue, payload_provider, payload_venue, arxiv_id, url}
+    return bool(arxiv_id) or bool(candidates & PREPRINT_API_PROVIDERS) or any(
         marker in " ".join(candidates)
         for marker in ("preprint", "arxiv", "biorxiv", "medrxiv", "chemrxiv")
     )
@@ -1052,14 +1453,10 @@ def select_literature_result(search_id: str, query: str = "", top_k: int = 5, us
     search_record = load_search(search_id)
     results = search_record.get("results", [])
     if query:
+        # Keep result_index stable. Pipelines hold these indexes while they
+        # import their stratified candidates; rewriting the cached ordering
+        # here can turn an L3 preprint import into an unrelated L0/L4 record.
         results = rank_literature_results(query, [result for result in results if isinstance(result, dict)])
-        for index, item in enumerate(results):
-            item["result_index"] = index
-            item["search_id"] = search_id
-        search_record["query"] = query
-        search_record["results"] = results
-        search_record["total_results"] = len(results)
-        save_search(search_record)
     ranked = [result for result in results if isinstance(result, dict)]
     if not ranked:
         return json.dumps(
@@ -1319,9 +1716,21 @@ def search_arxiv(query: str, max_results: int = 10, sort_by: str = "relevance") 
     if skipped:
         return skipped
     selected_sort = sort_by if sort_by in {"relevance", "lastUpdatedDate", "submittedDate"} else "relevance"
+    compact_query = compact_preprint_retrieval_query(query)
+    api_query = arxiv_search_query_expression(compact_query)
+    if not api_query:
+        return {
+            "provider": "arxiv",
+            "query": query,
+            "compact_query": compact_query,
+            "status": "ok",
+            "results": [],
+            "warning": "No provider-safe lexical anchors could be derived from the query.",
+            "next_step": "Use a domain or focus branch containing concrete scientific terms before retrying arXiv.",
+        }
     params = urlencode(
         {
-            "search_query": f"all:{query}",
+            "search_query": api_query,
             "start": 0,
             "max_results": clamp_int(max_results, 1, 50),
             "sortBy": selected_sort,
@@ -1333,12 +1742,17 @@ def search_arxiv(query: str, max_results: int = 10, sort_by: str = "relevance") 
         raw = arxiv_get_text(url, headers={"User-Agent": "qwen-zhikan-papergraph/0.1"})
         root = ET.fromstring(raw)
         ns = {"atom": "http://www.w3.org/2005/Atom", "arxiv": "http://arxiv.org/schemas/atom"}
-        papers = [arxiv_entry_to_result(entry, ns) for entry in root.findall("atom:entry", ns)]
+        raw_papers = [arxiv_entry_to_result(entry, ns) for entry in root.findall("atom:entry", ns)]
+        papers = [paper for paper in raw_papers if preprint_result_matches_query(paper, compact_query)]
         return {
             "provider": "arxiv",
             "query": query,
+            "compact_query": compact_query,
+            "api_query": api_query,
             "status": "ok",
             "results": papers,
+            "raw_result_count": len(raw_papers),
+            "local_rejected_count": max(0, len(raw_papers) - len(papers)),
             "next_step": "Pass a result's papergraph_input fields into import_papergraph_record, or paste abstract into import_literature_text.",
         }
     except Exception as exc:
@@ -2300,12 +2714,51 @@ def semantic_scholar_get_text(url: str, headers: dict[str, str] | None = None) -
 
 def arxiv_get_text(url: str, headers: dict[str, str] | None = None) -> str:
     wait_for_arxiv_rate_limit()
-    try:
-        return http_get_text(url, headers=headers)
-    except RuntimeError as exc:
-        if is_rate_limit_error(str(exc)):
-            register_arxiv_429(str(exc))
-        raise
+    global ARXIV_429_COUNT, ARXIV_TIMEOUT_COUNT
+    # Circuit breaker: skip arxiv after too many consecutive timeouts
+    if ARXIV_TIMEOUT_COUNT >= 15:
+        log_event("SCIENCE", "arxiv_circuit_breaker_open",
+                  timeout_count=ARXIV_TIMEOUT_COUNT, url=url[:80])
+        raise RuntimeError(f"arxiv circuit breaker: {ARXIV_TIMEOUT_COUNT} consecutive timeouts, skipping")
+    max_attempts = 3
+    last_exc: Exception | None = None
+    for attempt in range(1, max_attempts + 1):
+        try:
+            result = http_get_text(url, headers=headers, timeout=45.0)
+            # Success — reset consecutive timeout counter
+            ARXIV_TIMEOUT_COUNT = 0
+            return result
+        except RuntimeError as exc:
+            last_exc = exc
+            error_text = str(exc)
+            if is_rate_limit_error(error_text):
+                register_arxiv_429(error_text)
+                raise  # 429 propagates immediately
+            # Timeout or connection error — retry with exponential backoff
+            if attempt < max_attempts and is_arxiv_timeout(error_text):
+                ARXIV_TIMEOUT_COUNT += 1
+                delay = 2.0 * (2 ** (attempt - 1))  # 2s, 4s
+                log_event("SCIENCE", "arxiv_timeout_retry", attempt=attempt,
+                          max_attempts=max_attempts, delay_seconds=delay,
+                          consecutive_timeouts=ARXIV_TIMEOUT_COUNT,
+                          url=url[:80])
+                import time as _time
+                _time.sleep(delay)
+                continue
+            # Non-retryable error
+            ARXIV_TIMEOUT_COUNT += 1
+            raise
+    # Should not reach here, but just in case
+    ARXIV_TIMEOUT_COUNT += 1
+    if last_exc:
+        raise last_exc
+    raise RuntimeError("arxiv_get_text: unexpected fallthrough")
+
+
+def is_arxiv_timeout(error: str) -> bool:
+    """Check if an error message indicates an arxiv timeout."""
+    lower = error.lower()
+    return any(term in lower for term in ("timed out", "timeout", "read operation", "connection"))
 
 def semantic_scholar_retry_after_seconds(error: str) -> float | None:
     match = re.search(r"retry_after=([0-9]+(?:\.[0-9]+)?)", error, flags=re.IGNORECASE)

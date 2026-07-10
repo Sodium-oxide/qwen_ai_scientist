@@ -79,6 +79,16 @@ def run_socratic_hypothesis_debate(
     working_mechanism = mechanism
     yanzhen_body: dict[str, Any] = {}
 
+    # AHOIS-style quality tracking across rounds
+    quality_history: list[dict[str, Any]] = []
+    initial_quality = evaluate_hypothesis_quality(working_text, working_mechanism, sources)
+    quality_history.append({"round": 0, "phase": "initial", **initial_quality})
+    log_event("SCIENCE", "socratic_quality_baseline",
+              overall=initial_quality["overall"],
+              pc=initial_quality["physics_consistency"],
+              hc=initial_quality["hypothesis_completeness"],
+              uc=initial_quality["uncertainty_calibration"])
+
     round1_questions = duzhi_generate_questions(
         working_text,
         working_mechanism,
@@ -97,6 +107,8 @@ def run_socratic_hypothesis_debate(
     )
     working_text = str(round1_revision.get("revised_hypothesis") or working_text)
     working_mechanism = str(round1_revision.get("revised_mechanism") or working_mechanism)
+    r1_quality = evaluate_hypothesis_quality(working_text, working_mechanism, sources)
+    quality_history.append({"round": 1, "phase": "Socratic Clarification", **r1_quality})
     rounds.append(
         {
             "round": 1,
@@ -104,6 +116,8 @@ def run_socratic_hypothesis_debate(
             "proponent_position": debate_proponent_position(text, mechanism, record),
             "opponent_questions": round1_questions,
             "proponent_response": round1_revision,
+            "quality_scores": r1_quality,
+            "quality_delta": round(r1_quality["overall"] - quality_history[-2]["overall"], 2),
             "moderator_verdict": "revise" if any(q.get("severity") in {"high", "fatal"} for q in round1_questions) else "advance",
         }
     )
@@ -138,6 +152,10 @@ def run_socratic_hypothesis_debate(
         )
         working_text = str(round2_revision.get("revised_hypothesis") or working_text)
         working_mechanism = str(round2_revision.get("revised_mechanism") or working_mechanism)
+        r2_quality = evaluate_hypothesis_quality(working_text, working_mechanism, sources)
+        quality_history.append({"round": 2, "phase": "Evidence and CAWM Layer 1-2", **r2_quality})
+        r2_delta = round(r2_quality["overall"] - quality_history[-2]["overall"], 2)
+        log_event("SCIENCE", "socratic_quality_round", round=2, overall=r2_quality["overall"], delta=r2_delta)
         rounds.append(
             {
                 "round": 2,
@@ -145,6 +163,8 @@ def run_socratic_hypothesis_debate(
                 "yanzhen_report": yanzhen_body,
                 "opponent_questions": round2_questions,
                 "proponent_response": round2_revision,
+                "quality_scores": r2_quality,
+                "quality_delta": r2_delta,
                 "moderator_verdict": "revise" if yanzhen_body.get("overall_verdict") in {"CAWM_DETECTED", "REQUIRES_HUMAN_REVIEW"} else "advance",
             }
         )
@@ -169,6 +189,20 @@ def run_socratic_hypothesis_debate(
         )
         working_text = str(round3_revision.get("revised_hypothesis") or working_text)
         working_mechanism = str(round3_revision.get("revised_mechanism") or working_mechanism)
+        r3_quality = evaluate_hypothesis_quality(working_text, working_mechanism, sources)
+        quality_history.append({"round": 3, "phase": "Methodology and Regime Shift", **r3_quality})
+        r3_delta = round(r3_quality["overall"] - quality_history[-2]["overall"], 2)
+        # Convergence detection: if last 2 deltas are both < 0.1, quality has plateaued
+        convergence_detected = False
+        if len(quality_history) >= 3:
+            prev_delta = quality_history[-2]["overall"] - quality_history[-3]["overall"]
+            if r3_delta < 0.1 and prev_delta < 0.1:
+                convergence_detected = True
+                log_event("SCIENCE", "socratic_convergence_detected",
+                          round=3, overall=r3_quality["overall"],
+                          last_two_deltas=[round(prev_delta, 2), r3_delta])
+        else:
+            log_event("SCIENCE", "socratic_quality_round", round=3, overall=r3_quality["overall"], delta=r3_delta)
         layer3 = yanzhen_body.get("layer_3_regime_shift_test", {}) if isinstance(yanzhen_body, dict) else {}
         rounds.append(
             {
@@ -178,7 +212,10 @@ def run_socratic_hypothesis_debate(
                 "regime_shift_summary": layer3,
                 "opponent_questions": round3_questions,
                 "proponent_response": round3_revision,
-                "moderator_verdict": "revise" if layer3.get("cawm_risk_level") == "HIGH" or any(q.get("severity") in {"high", "fatal"} for q in round3_questions) else "advance",
+                "quality_scores": r3_quality,
+                "quality_delta": r3_delta,
+                "convergence_detected": convergence_detected,
+                "moderator_verdict": "converge" if convergence_detected else ("revise" if layer3.get("cawm_risk_level") == "HIGH" or any(q.get("severity") in {"high", "fatal"} for q in round3_questions) else "advance"),
             }
         )
     if max_rounds >= 4:
@@ -302,6 +339,8 @@ def run_socratic_hypothesis_debate(
         },
         "rounds": rounds,
         "debate_state": {},
+        "quality_trajectory": quality_history,
+        "final_quality": quality_history[-1] if quality_history else {},
         "safety_gates": safety,
         "refined_hypothesis": refined,
         "unresolved_issues": unresolved,
@@ -640,6 +679,114 @@ def socratic_overall_severity(questions: list[dict[str, Any]]) -> str:
         except ValueError:
             continue
     return order[best]
+
+
+def evaluate_hypothesis_quality(hypothesis_text: str, mechanism: str = "", sources: list | None = None) -> dict[str, Any]:
+    """Evaluate hypothesis on three AHOIS-inspired dimensions (0.0-5.0 each).
+
+    Dimensions:
+    - physics_consistency: absence of internal contradictions, presence of domain constraints,
+      causal chain completeness.
+    - hypothesis_completeness: coverage of method/scenario/benchmark components, evidence
+      linkage to PaperGraph sources, causal chain length.
+    - uncertainty_calibration: distinguishing established facts from assumptions and
+      unresolved propositions, hedging language, falsification criteria.
+
+    Returns dict with per-dimension scores, overall score, and convergence-ready flag.
+    """
+    try:
+        from ._utils import normalize_space
+    except ImportError:
+        from _utils import normalize_space
+    text = normalize_space(f"{hypothesis_text} {mechanism}").lower()
+    if not text.strip():
+        return {"physics_consistency": 0.0, "hypothesis_completeness": 0.0,
+                "uncertainty_calibration": 0.0, "overall": 0.0, "convergence_ready": False}
+
+    # --- Physics Consistency (0-5) ---
+    pc_score = 2.0  # baseline
+    # Constraint/boundary terms → positive signal
+    constraint_terms = ["constraint", "assumption", "boundary", "regime", "limit",
+                        "condition", "threshold", "conservation", "equilibrium"]
+    constraint_hits = sum(1 for t in constraint_terms if t in text)
+    pc_score += min(constraint_hits * 0.3, 1.5)
+    # Contradiction markers → negative signal
+    contradiction_terms = ["contradicts", "inconsistent", "conflicts with", "paradox",
+                           "however", "although", "despite", "nevertheless"]
+    contradiction_hits = sum(1 for t in contradiction_terms if t in text)
+    if contradiction_hits >= 3:
+        pc_score -= 0.5  # many hedging terms without resolution
+    elif contradiction_hits == 0:
+        pc_score += 0.3  # clean logic
+    # Causal chain presence
+    causal_markers = ["because", "leads to", "causes", "results in", "therefore",
+                      "consequently", "triggers", "mechanism"]
+    causal_hits = sum(1 for t in causal_markers if t in text)
+    pc_score += min(causal_hits * 0.3, 1.0)
+    pc_score = max(0.0, min(5.0, pc_score))
+
+    # --- Hypothesis Completeness (0-5) ---
+    hc_score = 1.5  # baseline
+    # Method/scenario/benchmark coverage
+    component_terms = {
+        "method": ["method", "technique", "algorithm", "model", "approach", "framework",
+                    "simulation", "experiment", "measurement", "analysis"],
+        "scenario": ["scenario", "system", "environment", "condition", "setup",
+                      "application", "domain", "context", "case"],
+        "benchmark": ["benchmark", "metric", "measure", "indicator", "criterion",
+                       "accuracy", "efficiency", "performance", "yield", "rate"],
+    }
+    for component, terms in component_terms.items():
+        hits = sum(1 for t in terms if t in text)
+        hc_score += min(hits * 0.2, 0.5)
+    # Evidence linkage
+    source_count = len(sources) if sources else 0
+    if source_count >= 3:
+        hc_score += 0.5
+    elif source_count >= 1:
+        hc_score += 0.25
+    # Numerical specificity
+    if re.search(r"\b\d+\.?\d*\s*(?:%|fold|times|sigma|units|score|kV|MW|km|°C)\b", text):
+        hc_score += 0.5
+    # Causal chain length (from extract_causal_chain)
+    chain = extract_causal_chain(text)
+    chain_steps = len(chain.get("steps", []))
+    if chain_steps >= 3:
+        hc_score += 0.5
+    elif chain_steps >= 2:
+        hc_score += 0.25
+    hc_score = max(0.0, min(5.0, hc_score))
+
+    # --- Uncertainty Calibration (0-5) ---
+    uc_score = 1.5  # baseline
+    # Hedging/uncertainty markers → positive (distinguishes known from assumed)
+    hedge_terms = ["assumed", "hypothesized", "predicted", "likely", "possible",
+                   "uncertain", "unresolved", "to be determined", "pending",
+                   "preliminary", "tentative", "estimated"]
+    hedge_hits = sum(1 for t in hedge_terms if t in text)
+    uc_score += min(hedge_hits * 0.3, 1.0)
+    # Falsification criteria
+    falsification_terms = ["falsif", "refut", "disprov", "test criterion",
+                           "pass criterion", "fail if", "reject if"]
+    falsification_hits = sum(1 for t in falsification_terms if t in text)
+    uc_score += min(falsification_hits * 0.5, 1.0)
+    # Established vs assumed distinction
+    distinction_terms = ["established", "known", "shown", "demonstrated",
+                         "we assume", "we hypothesize", "it is proposed"]
+    distinction_hits = sum(1 for t in distinction_terms if t in text)
+    uc_score += min(distinction_hits * 0.3, 0.5)
+    uc_score = max(0.0, min(5.0, uc_score))
+
+    overall = round((pc_score + hc_score + uc_score) / 3.0, 2)
+    convergence_ready = pc_score >= 4.0 and hc_score >= 3.5 and uc_score >= 3.0
+
+    return {
+        "physics_consistency": round(pc_score, 2),
+        "hypothesis_completeness": round(hc_score, 2),
+        "uncertainty_calibration": round(uc_score, 2),
+        "overall": overall,
+        "convergence_ready": convergence_ready,
+    }
 
 def debate_safety_gates(
     *,

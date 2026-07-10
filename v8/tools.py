@@ -1038,6 +1038,30 @@ def run_mingli_hypothesis_evolution(
     return science_mingli(project_id, gap_ids, population_size, generations, top_k, use_llm)
 
 
+def run_socrates_mechanism_enrichment(
+    project_id: str,
+    gap: dict[str, object] | str = "",
+    gap_id: str = "",
+    mechanism_contract: dict[str, object] | None = None,
+    domain: str = "",
+    providers: list[str] | None = None,
+    max_iterations: int = 3,
+    max_fields_per_iteration: int = 2,
+    max_results_per_query: int = 12,
+    imports_per_query: int = 2,
+    use_llm: bool = False,
+) -> str:
+    try:
+        from .science_core import run_socrates_mechanism_enrichment as science_socrates
+    except ImportError:
+        from science_core import run_socrates_mechanism_enrichment as science_socrates
+    return science_socrates(
+        project_id, gap, gap_id, mechanism_contract, domain, providers,
+        max_iterations, max_fields_per_iteration, max_results_per_query,
+        imports_per_query, use_llm,
+    )
+
+
 def generate_idea(
     project_id: str,
     gap: dict[str, object] | str = "",
@@ -2342,6 +2366,27 @@ SCIENCE_TOOLS = [
         },
     },
     {
+        "name": "run_socrates_mechanism_enrichment",
+        "description": "Socrates: repeatedly inspect PaperGraph evidence and run bounded, targeted ZhiZhi searches to resolve an incomplete mechanism contract. It returns INSUFFICIENT_EVIDENCE rather than inventing unresolved mechanism fields.",
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "project_id": {"type": "string", "description": "Science project id."},
+                "gap": {"description": "Optional TanXi gap object. Omit when using gap_id."},
+                "gap_id": {"type": "string", "description": "Target TanXi knowledge gap id."},
+                "mechanism_contract": {"description": "Optional incomplete mechanism draft. Fields without cited evidence are searched and remain unresolved if evidence is absent."},
+                "domain": {"type": "string", "description": "Optional domain override for the targeted ZhiZhi query."},
+                "providers": {"type": "array", "items": {"type": "string"}, "description": "Optional providers: semantic_scholar, arxiv, biorxiv, chemrxiv, medrxiv, pubmed."},
+                "max_iterations": {"type": "integer", "description": "Maximum bounded enrichment iterations, default 3 and capped at 5."},
+                "max_fields_per_iteration": {"type": "integer", "description": "Maximum unresolved mechanism fields to search in one iteration, default 2."},
+                "max_results_per_query": {"type": "integer", "description": "Maximum ranked ZhiZhi candidates per field query, default 12."},
+                "imports_per_query": {"type": "integer", "description": "Maximum papers imported per targeted query, default 2."},
+                "use_llm": {"type": "boolean", "description": "Use LLM-assisted structured extraction for imported papers when available."},
+            },
+            "required": ["project_id"],
+        },
+    },
+    {
         "name": "generate_idea",
         "description": "MingLi action: generate one gap-traceable research idea from a TanXi/ZhiZhi knowledge gap, with auditable lineage and preliminary scores.",
         "input_schema": {
@@ -2712,6 +2757,7 @@ TOOL_HANDLERS: dict[str, Callable[..., str]] = {
     "detect_structural_knowledge_gaps": detect_structural_knowledge_gaps,
     "find_structural_analogy_transfers": find_structural_analogy_transfers,
     "run_mingli_hypothesis_evolution": run_mingli_hypothesis_evolution,
+    "run_socrates_mechanism_enrichment": run_socrates_mechanism_enrichment,
     "generate_idea": generate_idea,
     "design_experiment": design_experiment,
     "finalize_idea": finalize_idea,

@@ -295,6 +295,31 @@ def scenario_target_description(scenario: str, project: dict[str, Any]) -> str:
         return "a controllable system state, stability margin, safety constraint, or operational performance metric"
     return "the scenario-specific measurable process named by the project evidence"
 
+
+def socrates_contract_for_gap(project: dict[str, Any], gap: dict[str, Any]) -> dict[str, Any]:
+    """Load the most recent evidence contract produced for this TanXi gap."""
+    contracts = project.get("socrates_mechanism_contracts", {})
+    if not isinstance(contracts, dict):
+        return {}
+    contract = contracts.get(str(gap.get("gap_id") or ""))
+    return dict(contract) if isinstance(contract, dict) else {}
+
+
+def socrates_contract_summary(contract: dict[str, Any]) -> str:
+    """Render source-cited Socrates excerpts without promoting them to fact."""
+    evidence = contract.get("evidence", {}) if isinstance(contract.get("evidence"), dict) else {}
+    parts: list[str] = []
+    for field in ("identity", "location_or_scope", "dynamics", "reversibility", "observability", "intervention", "counterfactual"):
+        entries = evidence.get(field, [])
+        if not isinstance(entries, list) or not entries:
+            continue
+        first = entries[0] if isinstance(entries[0], dict) else {}
+        excerpt = str(first.get("excerpt") or "").strip()
+        citation = str(first.get("citation") or "").strip()
+        if excerpt and citation:
+            parts.append(f"{field}: {excerpt} [{citation}]")
+    return " ".join(parts[:3])
+
 def make_hypothesis_seed(
     project: dict[str, Any],
     gap: dict[str, Any],
@@ -327,6 +352,8 @@ def make_hypothesis_seed(
     if hotspot.get("concept") and variant % 2 == 1:
         condition = f"while tracking emerging hotspot '{hotspot.get('concept')}'"
     semantic_gate = semantic_plausibility_for_pair(project, method, scenario, gap)
+    socrates_contract = socrates_contract_for_gap(project, gap)
+    socrates_evidence = socrates_contract_summary(socrates_contract)
     variable = hypothesis_control_variable(gap, method, scenario)
     boundary = hypothesis_boundary_condition(gap)
     if str(gap.get("gap_type") or "") == "contradiction":
@@ -340,11 +367,17 @@ def make_hypothesis_seed(
             f"then {benchmark} will show a directional or non-monotonic boundary at {boundary}."
         )
     mechanism = specific_mechanism_text(project, method, scenario, benchmark, gap, semantic_gate)
+    if socrates_evidence:
+        mechanism += f" Socrates retrieved the following field-level source evidence: {socrates_evidence}"
     if analogy:
         mechanism += f" The structural analogy to {analogy.get('analog_source_scenario')} supports transfer because the encoded problem structures are similar."
     causal_chain = [
         f"Input/intervention: vary {variable} for {method} in {scenario}",
-        f"Mechanism: {method} must act through {method_capability_description(method)} on {scenario_target_description(scenario, project)}",
+        (
+            f"Mechanism: interpret {method} through the Socrates source-cited mechanism dossier before making a stronger causal claim."
+            if socrates_evidence
+            else f"Mechanism: {method} must act through {method_capability_description(method)} on {scenario_target_description(scenario, project)}"
+        ),
         f"Observable output: measure {benchmark} and locate boundary condition {boundary}",
     ]
     return {
@@ -367,6 +400,7 @@ def make_hypothesis_seed(
             ),
         },
         "semantic_plausibility": semantic_gate,
+        "socrates_mechanism_contract": socrates_contract,
         "source_gap": gap,
         "lineage": [{"generation": 0, "operation": "seed", "gap_id": gap.get("gap_id"), "analogy_used": analogy.get("analog_source_scenario", "")}],
         "generation": 0,
@@ -808,6 +842,7 @@ def design_experiment(
         "setup": experiment["setup"],
         "metrics": experiment["metrics"],
         "baselines": experiment["baselines"],
+        "falsification_criteria": experiment["falsification_criteria"],
     }
     idea_json["risks"] = mingli_risk_text(gap, experiment)
     record = {
@@ -973,6 +1008,69 @@ def enforce_hypothesis_specificity(idea: dict[str, Any]) -> dict[str, Any]:
             "Add concrete numbers/units, a named operating condition, a domain-specific metric, "
             "and an explicit causal pathway."
             if missing else "Hypothesis passes all specificity checks."
+        ),
+    }
+
+
+def mingli_acceptance_check(idea: dict[str, Any], gap: dict[str, Any]) -> dict[str, Any]:
+    """Apply only the generation-stage contract for a MingLi hypothesis.
+
+    MingLi must make a grounded, falsifiable scientific claim, but it must not
+    be asked to complete YanZhen's mechanism audit.  In particular, detailed
+    dynamics, reversibility, counterfactual stress tests, and independent
+    observations are deliberately deferred to the verifier and debate stages.
+    """
+    hypothesis_text = " ".join(
+        str(idea.get(key) or "")
+        for key in ("hypothesis", "abstract")
+    ).lower()
+    causal_chain = idea.get("causal_chain")
+    chain_items = [str(item).strip() for item in causal_chain] if isinstance(causal_chain, list) else []
+    experiments = idea.get("experiments") if isinstance(idea.get("experiments"), dict) else {}
+
+    causal_markers = (
+        "mechanism", "pathway", "mediated", "through", "because", "leads to",
+        "results in", "triggers", "causal", "bridge",
+    )
+    falsification_markers = (
+        "falsif", "reject", "refute", "negative control", "does not", "fail if",
+    )
+    has_mechanism = (
+        len(chain_items) >= 2
+        and any(marker in hypothesis_text for marker in causal_markers)
+    )
+    has_falsification = (
+        any(marker in hypothesis_text for marker in falsification_markers)
+        or bool(str(experiments.get("falsification_criteria") or "").strip())
+    )
+    has_grounding = bool([
+        ref for ref in gap.get("supporting_references", [])
+        if str(ref).strip()
+    ])
+    has_test_plan = all(str(experiments.get(key) or "").strip() for key in ("setup", "metrics", "baselines"))
+
+    checks = {
+        "testable_mechanism": has_mechanism,
+        "falsification_condition": has_falsification,
+        "papergraph_grounding": has_grounding,
+        "executable_test_plan": has_test_plan,
+    }
+    missing = [name for name, passed in checks.items() if not passed]
+    return {
+        "verdict": "PASS" if not missing else "REJECT",
+        "checks": checks,
+        "missing": missing,
+        "deferred_to_yanzhen": [
+            "concrete_mediator", "scope", "dynamics", "intervention",
+            "counterfactual", "reversibility", "two_independent_observations",
+            "cross_domain_structure_mapping", "null_hypothesis",
+            "alternative_hypothesis", "three_testable_subhypotheses",
+        ],
+        "guidance": (
+            "MingLi needs only a testable mechanism, a falsification condition, at least one PaperGraph reference, and an executable test plan. "
+            "Detailed mechanism operationalization belongs to YanZhen and the Socratic debate."
+            if not missing
+            else "Complete only these MingLi-stage requirements: " + ", ".join(missing)
         ),
     }
 
@@ -1145,17 +1243,19 @@ def finalize_idea(
         log_event("WARN", "hypothesis_rejected_template", gap_id=gap_id, patterns=template_check.get("matched_patterns"))
         return json.dumps(rejected, ensure_ascii=False, indent=2)
 
-    # Specificity enforcement: reject hypotheses that lack domain-specific content
+    # Specificity is a useful diagnostic, but numerical/detail requirements belong
+    # to YanZhen and the debate rather than MingLi's initial acceptance gate.
     specificity_check = enforce_hypothesis_specificity(idea)
-    if specificity_check.get("verdict") == "REJECT":
+    mingli_acceptance = mingli_acceptance_check(idea, gap)
+    if mingli_acceptance.get("verdict") == "REJECT":
         rejected = {
-            "status": "rejected_specificity",
+            "status": "rejected_mingli_acceptance",
             "reason": (
-                "Hypothesis lacks domain-specific content. "
-                f"Missing dimensions: {', '.join(specificity_check.get('missing_dimensions', []))}. "
-                "Regenerate with concrete numbers, named operating conditions, domain-specific metrics, "
-                "and an explicit causal pathway."
+                "Hypothesis is missing a required MingLi-stage element. "
+                f"Missing: {', '.join(mingli_acceptance.get('missing', []))}. "
+                "Do not attempt the YanZhen mechanism-audit checklist at this stage."
             ),
+            "mingli_acceptance": mingli_acceptance,
             "specificity_check": specificity_check,
             "template_check": template_check,
             "idea_json": idea,
@@ -1164,8 +1264,15 @@ def finalize_idea(
         project.setdefault("mingli_rejected_ideas", []).append(rejected)
         project["updatedAt"] = time.time()
         save_project(project)
-        log_event("WARN", "hypothesis_rejected_specificity", gap_id=gap_id, missing=specificity_check.get("missing_dimensions"))
+        log_event("WARN", "hypothesis_rejected_mingli_acceptance", gap_id=gap_id, missing=mingli_acceptance.get("missing"))
         return json.dumps(rejected, ensure_ascii=False, indent=2)
+    if specificity_check.get("verdict") == "REJECT":
+        log_event(
+            "WARN",
+            "mingli_specificity_deferred",
+            gap_id=gap_id,
+            missing=specificity_check.get("missing_dimensions"),
+        )
 
     hypothesis = Hypothesis(
         hypothesis_id=new_id("hyp"),
@@ -1194,12 +1301,14 @@ def finalize_idea(
             "mingli_final_idea": idea,
             "uniqueness_check": uniqueness,
             "source_gap": gap,
+            "socrates_mechanism_contract": idea.get("socrates_mechanism_contract", {}),
             "parent_hypothesis_id": idea.get("parent_hypothesis_id"),
             "tournament_generation": idea.get("tournament_generation", 1),
             "lineage": idea.get("lineage", []),
             "evidence_alignment": alignment,
             "template_check": template_check,
             "specificity_check": specificity_check,
+            "mingli_acceptance": mingli_acceptance,
             "constraints_checked": {
                 "traceable_to_gap": bool(gap_id),
                 "papergraph_grounded": bool(gap.get("supporting_references")),
@@ -1212,6 +1321,8 @@ def finalize_idea(
                 "has_domain_specifics": template_check.get("has_domain_specifics"),
                 "specificity_verdict": specificity_check.get("verdict"),
                 "specificity_missing": specificity_check.get("missing_dimensions", []),
+                "mingli_acceptance_verdict": mingli_acceptance.get("verdict"),
+                "mingli_acceptance_missing": mingli_acceptance.get("missing", []),
             },
         }
     )
@@ -1376,6 +1487,7 @@ def mingli_candidate_to_idea_json(project: dict[str, Any], candidate: dict[str, 
         "lineage": candidate.get("lineage", []),
         "scores": candidate.get("scores", {}),
         "semantic_plausibility": candidate.get("semantic_plausibility", {}),
+        "socrates_mechanism_contract": candidate.get("socrates_mechanism_contract", {}),
         "causal_chain": candidate.get("causal_chain", []),
         "controllable_variables": [control_variable],
         "measurable_outputs": [components["benchmark"]],

@@ -769,7 +769,7 @@ def get_science_agent_prompt(agent: str) -> str:
         from ._gap_detection import build_knowledge_map, detect_knowledge_gaps, run_tanxi_gap_exploration
         from ._hypothesis import design_experiment, finalize_idea, generate_idea, run_mingli_hypothesis_evolution
         from ._literature_search import extract_structured_info, search_literature, search_papers, search_papers_stratified
-        from ._models import BIANLUN_FULL_PROMPT, BOXUE_FULL_PROMPT, DUZHI_FULL_PROMPT, Hypothesis, MINGLI_FULL_PROMPT, SCIENCE_AGENTS, TANXI_FULL_PROMPT, YANZHEN_FULL_PROMPT, ZHIZHI_FULL_PROMPT
+        from ._models import BIANLUN_FULL_PROMPT, BOXUE_FULL_PROMPT, DUZHI_FULL_PROMPT, Hypothesis, MINGLI_FULL_PROMPT, SCIENCE_AGENTS, SOCRATES_FULL_PROMPT, TANXI_FULL_PROMPT, YANZHEN_FULL_PROMPT, ZHIZHI_FULL_PROMPT
         from ._pipeline import assess_novelty, create_boxue_delegation_tasks, create_science_delegation_tasks, create_science_pipeline_tasks, run_zhizhi_literature_analysis, verify_uniqueness
         from ._utils import normalize_key
         from ._verification import ask_critical_questions, ask_socratic_questions, causal_chain_audit, check_data_consistency, check_internal_consistency, detect_selective_citation, extract_emergent_method, find_counterexamples, moderate_round, regime_shift_test, run_yanzhen_mechanism_verification, stress_test_assumptions, summarize_positions
@@ -778,7 +778,7 @@ def get_science_agent_prompt(agent: str) -> str:
         from _gap_detection import build_knowledge_map, detect_knowledge_gaps, run_tanxi_gap_exploration
         from _hypothesis import design_experiment, finalize_idea, generate_idea, run_mingli_hypothesis_evolution
         from _literature_search import extract_structured_info, search_literature, search_papers, search_papers_stratified
-        from _models import BIANLUN_FULL_PROMPT, BOXUE_FULL_PROMPT, DUZHI_FULL_PROMPT, Hypothesis, MINGLI_FULL_PROMPT, SCIENCE_AGENTS, TANXI_FULL_PROMPT, YANZHEN_FULL_PROMPT, ZHIZHI_FULL_PROMPT
+        from _models import BIANLUN_FULL_PROMPT, BOXUE_FULL_PROMPT, DUZHI_FULL_PROMPT, Hypothesis, MINGLI_FULL_PROMPT, SCIENCE_AGENTS, SOCRATES_FULL_PROMPT, TANXI_FULL_PROMPT, YANZHEN_FULL_PROMPT, ZHIZHI_FULL_PROMPT
         from _pipeline import assess_novelty, create_boxue_delegation_tasks, create_science_delegation_tasks, create_science_pipeline_tasks, run_zhizhi_literature_analysis, verify_uniqueness
         from _utils import normalize_key
         from _verification import ask_critical_questions, ask_socratic_questions, causal_chain_audit, check_data_consistency, check_internal_consistency, detect_selective_citation, extract_emergent_method, find_counterexamples, moderate_round, regime_shift_test, run_yanzhen_mechanism_verification, stress_test_assumptions, summarize_positions
@@ -882,6 +882,31 @@ def get_science_agent_prompt(agent: str) -> str:
                 "Rank no more than 10 gaps per scan.",
                 "Avoid trivial gaps and already-saturated areas.",
                 "Prioritize scientific significance, tractability, strategic value, and downstream impact.",
+            ],
+        }
+        return json.dumps(prompt, ensure_ascii=False, indent=2)
+    if key == "socrates":
+        prompt = {
+            "agent": key,
+            **spec,
+            "full_system_prompt": SOCRATES_FULL_PROMPT,
+            "tao_workflow": {
+                "thought": "Audit mechanism fields against PaperGraph citations and identify the smallest unresolved evidence question.",
+                "action_tools": ["run_socrates_mechanism_enrichment", "search_literature_stratified", "import_literature_search_result", "extract_paper_keynote"],
+                "observation": "Store field-level source excerpts, report unresolved fields, and stop rather than inventing a mechanism.",
+            },
+            "output_schema": {
+                "gap_id": "string",
+                "mechanism_contract": {"evidence": {}},
+                "verdict": "COMPLETE | INSUFFICIENT_EVIDENCE",
+                "remaining_unresolved": [],
+                "next_step": "string",
+            },
+            "global_constraints": [
+                "Use existing PaperGraph records before running a new literature search.",
+                "Every resolved field must contain a citation and a direct evidence excerpt.",
+                "Do not claim that missing evidence proves the mechanism false or true.",
+                "Respect the configured iteration, query, and import limits.",
             ],
         }
         return json.dumps(prompt, ensure_ascii=False, indent=2)

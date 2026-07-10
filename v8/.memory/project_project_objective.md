@@ -1,7 +1,7 @@
 ---
 name: project_objective
-description: Core validation goal
+description: 项目目标
 type: project
 ---
 
-Verify end-to-end multi-agent scientific collaboration: literature reading → knowledge graph → gap exploration → hypothesis generation → Socratic debate → mechanism audit → final adjudication
+从高质量文献中识别高电压运行下正极结构退化、界面副反应、氧释放、电解液氧化、容量衰减和安全性之间的机制缺口，生成可验证且可修订的研究假设。

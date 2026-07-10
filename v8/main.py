@@ -380,6 +380,8 @@ def normalize_tool_name(name: Any) -> str:
         "run_tanxi_gap_exploration": "run_tanxi_gap_exploration",
         "checksemanticplausibility": "check_semantic_plausibility",
         "check_semantic_plausibility": "check_semantic_plausibility",
+        "runsocratesmechanismenrichment": "run_socrates_mechanism_enrichment",
+        "run_socrates_mechanism_enrichment": "run_socrates_mechanism_enrichment",
         "generateidea": "generate_idea",
         "generate_idea": "generate_idea",
         "designexperiment": "design_experiment",

@@ -143,6 +143,65 @@ def t_dr():
     assert isinstance(r, dict)
 test("domain_relevance_assessment", t_dr)
 
+def t_preprint_l3_query_and_classification():
+    import _literature_search as ls
+    import _literature_scoring as scoring
+    noisy_instruction = (
+        "agent literature hypothesis debate validation cathode voltage degradation mechanism "
+        "4.5V LiCoO2 NMC811 electrolyte interface"
+    )
+    compact = ls.compact_preprint_retrieval_query(
+        noisy_instruction,
+        domain="high-voltage lithium batteries cathode electrolyte interface stability",
+    )
+    assert "agent" not in compact and "hypothesis" not in compact
+    expression = ls.arxiv_search_query_expression(compact)
+    assert expression.startswith("all:") and " AND all:" in expression
+
+    preprint = {
+        "title": "High-voltage lithium battery cathode electrolyte interface stability",
+        "abstract": "Operando studies of lithium battery cathode degradation and interphase stability.",
+        "provider": "arxiv",
+        "venue": "arXiv",
+        "year": "2026",
+        "publication_quality_score": 0.6,
+        "quality_flags": [],
+    }
+    journal = {**preprint, "provider": "semantic_scholar", "venue": "Journal of Energy Storage"}
+    assert ls.is_preprint_literature_result(preprint)
+    assert ls.is_preprint_literature_result({**journal, "arxiv_id": "2601.01234"})
+    assert ls.stratified_candidate_matches("L3_preprint", preprint)
+    assert ls.preprint_result_matches_query(preprint, "lithium battery cathode electrolyte")
+    assert not ls.preprint_result_matches_query({"title": "Unrelated robotics preprint", "abstract": "robot manipulation"}, "lithium battery cathode electrolyte")
+    preprint_alignment = scoring.core_domain_alignment(preprint, domain="high voltage lithium battery cathode", query="high voltage lithium battery cathode")
+    journal_alignment = scoring.core_domain_alignment(journal, domain="high voltage lithium battery cathode", query="high voltage lithium battery cathode")
+    assert preprint_alignment["min_core_hits"] == journal_alignment["min_core_hits"]
+
+    original_arxiv = ls.search_arxiv
+    original_semantic = ls.search_semantic_scholar
+    try:
+        ls.search_arxiv = lambda *_args, **_kwargs: {"provider": "arxiv", "status": "ok", "results": []}
+        ls.search_semantic_scholar = lambda *_args, **_kwargs: {
+            "provider": "semantic_scholar",
+            "status": "ok",
+            "results": [{**journal, "arxiv_id": "2601.01234"}],
+        }
+        blocks = ls.fetch_stratified_layer_blocks(
+            "lithium battery cathode degradation",
+            ["arxiv", "semantic_scholar"],
+            {"layer": "L3_preprint", "quota": 1, "query_suffix": ""},
+            query_plan=[{"branch": "primary", "query": "lithium battery cathode degradation"}],
+            domain="high-voltage lithium batteries",
+        )
+        fallback = [block for block in blocks if block.get("retrieval_strategy") == "preprint_metadata_fallback"]
+        candidates = ls.flatten_literature_results(blocks)
+        assert len(fallback) == 1
+        assert any(ls.stratified_candidate_matches("L3_preprint", item) for item in candidates)
+    finally:
+        ls.search_arxiv = original_arxiv
+        ls.search_semantic_scholar = original_semantic
+test("L3 preprint uses compact provider query without stricter lexical gate", t_preprint_l3_query_and_classification)
+
 # --- Supplement ---
 print("\n-- Supplement --")
 
@@ -377,6 +436,114 @@ def t_spec_bad():
     assert r["verdict"] in ("REJECT", "reject", "requires_revision") or len(r.get("missing_dimensions", [])) >= 2
 test("Specificity rejects generic hypothesis", t_spec_bad)
 
+def t_autogen_project_reload_uses_persisted_snapshot():
+    import autogen_collab
+    persisted = {"project_id": "sci_test", "papergraph": [{"paper_id": "paper_1"}]}
+    reloaded = autogen_collab.autogen_reload_project_state("sci_test", lambda _: persisted)
+    assert len(reloaded["papergraph"]) == 1
+test("AutoGen reloads persisted PaperGraph after specialist writes", t_autogen_project_reload_uses_persisted_snapshot)
+
+def t_mingli_acceptance_boundary():
+    idea = {
+        "hypothesis": "If the catalyst loading changes the surface intermediate coverage, then conversion will change; reject the claim if the intermediate does not precede conversion.",
+        "abstract": "The proposed pathway is a measurable mechanism rather than a method comparison.",
+        "causal_chain": ["Input: vary catalyst loading", "Mechanism: surface intermediate coverage", "Output: conversion"],
+        "experiments": {"setup": "matched reactor study", "metrics": "conversion", "baselines": "uncatalyzed control"},
+    }
+    gap = {"supporting_references": ["Example et al. (2025)"]}
+    r = sc.mingli_acceptance_check(idea, gap)
+    assert r["verdict"] == "PASS"
+    assert "dynamics" in r["deferred_to_yanzhen"]
+test("MingLi accepts a grounded falsifiable draft without YanZhen checklist", t_mingli_acceptance_boundary)
+
+def t_socrates_offline_evidence_flow():
+    import _socrates as soc
+    draft = soc.mechanism_draft_from_gap(
+        {
+            "gap_id": "gap_socrates",
+            "description": "High-voltage lithium battery cathode interphase degradation",
+            "hypothesis_ingredients": {
+                "methods": ["interphase engineering"],
+                "scenarios": ["high-voltage lithium batteries"],
+                "benchmarks": ["capacity retention"],
+            },
+        },
+        "high-voltage lithium batteries",
+    )
+    plan = soc.translate_unresolved_to_queries(["identity"], "high-voltage lithium batteries", mediator="interphase degradation")
+    first = soc.select_untried_socrates_queries(["identity"], plan, set(), 1)
+    second = soc.select_untried_socrates_queries(["identity"], plan, set(first), 1)
+    assert first and second and first[0][1] != second[0][1]
+
+    project = {"papergraph": [{
+        "paper_id": "paper_socrates",
+        "citation": "Example et al. (2025)",
+        "title": "Operando XPS of high-voltage lithium battery interphases",
+        "abstract": "In high-voltage lithium batteries, cathode electrolyte interphase formation at the cathode surface was characterized by operando XPS.",
+    }]}
+    evidence = soc.extract_mechanism_evidence(
+        project, ["identity", "location_or_scope", "observability"],
+        domain="high-voltage lithium batteries", method="interphase engineering", scenario="high-voltage lithium batteries", mediator="interphase",
+    )
+    assert evidence["identity"] and evidence["location_or_scope"] and evidence["observability"]
+    assert soc._apply_evidence(draft, evidence) >= 3
+    assert "identity" not in soc.unresolved_mechanism_fields(draft)
+
+    gap = {
+        "gap_id": "gap_socrates",
+        "description": "High-voltage lithium battery cathode interphase degradation",
+        "supporting_references": ["Example et al. (2025)"],
+        "hypothesis_ingredients": {
+            "methods": ["interphase engineering"],
+            "scenarios": ["high-voltage lithium batteries"],
+            "benchmarks": ["capacity retention"],
+        },
+    }
+    candidate = sc.make_hypothesis_seed(
+        {"domain": "high-voltage lithium batteries", "socrates_mechanism_contracts": {"gap_socrates": draft}},
+        gap,
+        {"method": "interphase engineering", "scenario": "high-voltage lithium batteries", "benchmark": "capacity retention"},
+        0,
+        analogy={},
+        hotspot={},
+    )
+    assert candidate["socrates_mechanism_contract"] == draft
+    assert "Example et al. (2025)" in candidate["mechanism"]
+test("Socrates offline evidence loop retries queries and reaches MingLi", t_socrates_offline_evidence_flow)
+
+def t_tanxi_mechanism_draft_is_source_bounded():
+    draft = sc.build_tanxi_mechanism_draft({
+        "gap_id": "gap_tanxi_draft",
+        "description": "A mechanism tension requires source-grounded resolution.",
+        "hypothesis_ingredients": {
+            "methods": ["operando spectroscopy"],
+            "scenarios": ["electrochemical interface"],
+            "benchmarks": ["interfacial resistance"],
+        },
+        "mechanism_issue_signal": {"source_text": "The interphase formation pathway remains unresolved."},
+    })
+    assert draft["input"] == "operando spectroscopy electrochemical interface"
+    assert draft["output"] == "interfacial resistance"
+    assert draft["proposed_mediator"] == "The interphase formation pathway remains unresolved."
+    assert draft["status"] == "draft_requires_socrates_evidence"
+    assert len(draft["unresolved_fields"]) == 7
+test("TanXi emits a conservative mechanism draft for Socrates", t_tanxi_mechanism_draft_is_source_bounded)
+
+def t_autogen_includes_socrates_stage():
+    import autogen_collab
+    assert "socrates" in autogen_collab.DEFAULT_AUTOGEN_AGENTS
+    assert any(tool["name"] == "run_socrates_mechanism_enrichment" for tool in autogen_collab.build_autogen_tool_registry())
+    assert any(step["speaker"] == "Socrates_ToolAgent" for step in autogen_collab.build_socratic_groupchat_protocol())
+test("AutoGen registers Socrates between TanXi and MingLi", t_autogen_includes_socrates_stage)
+
+def t_autogen_requires_complete_socrates_contract_for_mingli():
+    import autogen_collab
+    assert autogen_collab.autogen_socrates_allows_mingli("COMPLETE")
+    assert not autogen_collab.autogen_socrates_allows_mingli("INSUFFICIENT_EVIDENCE")
+    assert not autogen_collab.autogen_socrates_allows_mingli("NO_GAP_AVAILABLE")
+    assert not autogen_collab.autogen_socrates_allows_mingli("")
+test("AutoGen blocks MingLi until Socrates returns COMPLETE", t_autogen_requires_complete_socrates_contract_for_mingli)
+
 # --- Tools.py / autogen_collab.py compatibility ---
 print("\n-- Backward Compatibility --")
 
@@ -397,6 +564,7 @@ TOOLS_IMPORTS = [
     "semantic_plausibility_for_pair", "evolve_domain_subspaces",
     "build_temporal_knowledge_graph", "detect_structural_knowledge_gaps",
     "find_structural_analogy_transfers", "run_mingli_hypothesis_evolution",
+    "run_socrates_mechanism_enrichment",
     "generate_idea", "design_experiment", "finalize_idea", "create_hypothesis",
     "run_mechanism_check", "check_internal_consistency", "check_data_consistency",
     "regime_shift_test", "detect_selective_citation", "causal_chain_audit",
@@ -407,7 +575,7 @@ TOOLS_IMPORTS = [
     # v3.0
     "tabi_abductive_gap_detection", "extract_evidence_pairs_from_records",
     "counterfactual_gap_analysis", "build_counterfactual_tree",
-    "grade_knowledge_sufficiency", "enforce_hypothesis_specificity",
+    "grade_knowledge_sufficiency", "enforce_hypothesis_specificity", "mingli_acceptance_check",
     "domain_exclusion_markers",
 ]
 
@@ -421,10 +589,11 @@ AUTOGEN_IMPORTS = [
     "select_zhizhi_import_results", "import_literature_search_result",
     "extract_paper_keynote", "detect_knowledge_gaps", "run_tanxi_gap_exploration",
     "run_mingli_hypothesis_evolution", "run_yanzhen_mechanism_verification",
+    "run_socrates_mechanism_enrichment",
     "run_socratic_hypothesis_debate", "SCIENCE_AGENTS", "PHASES",
     # v3.0
     "tabi_abductive_gap_detection", "counterfactual_gap_analysis",
-    "grade_knowledge_sufficiency", "enforce_hypothesis_specificity",
+    "grade_knowledge_sufficiency", "enforce_hypothesis_specificity", "mingli_acceptance_check",
 ]
 
 def t_autogen_compat():

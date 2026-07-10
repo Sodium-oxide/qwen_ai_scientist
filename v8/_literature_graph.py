@@ -82,6 +82,8 @@ def expand_literature_graph(
             try:
                 edges = fetch_semantic_scholar_edges(candidate_lookup_id, edge_kind, limit=per_edge_limit)
                 raw_edges.extend(edges)
+                log_event("SCIENCE", "graph_expand_edges_loaded",
+                          edge=edge_kind, count=len(edges), lookup_id=candidate_lookup_id[:60])
                 lookup_id = candidate_lookup_id
                 edge_loaded = True
                 if candidate_lookup_id != lookup_ids[0]:
@@ -179,10 +181,81 @@ def expand_literature_graph(
         if second_layer_results:
             graph_results = dedupe_literature_results(graph_results + second_layer_results)
             ranked = rank_literature_results(graph_query, graph_results)[: clamp_int(max_results, 1, 200)]
+
+    # --- Seed rotation: try alternative seeds if primary produced empty graph ---
+    seed_rotation_used = False
+    if not ranked and allow_fallback and len(results) > 1:
+        max_alt_attempts = min(2, len(results) - 1)
+        for alt_offset in range(1, max_alt_attempts + 1):
+            alt_index = (result_index + alt_offset) % len(results)
+            alt_seed = results[alt_index]
+            if not isinstance(alt_seed, dict):
+                continue
+            alt_lookup_ids = semantic_scholar_lookup_ids(alt_seed)
+            if not alt_lookup_ids:
+                continue
+            log_event("SCIENCE", "graph_expand_seed_rotation", search_id=search_id,
+                      original_index=result_index, alt_index=alt_index,
+                      alt_title=str(alt_seed.get("title", ""))[:120], attempt=alt_offset)
+            alt_raw_edges: list[dict[str, Any]] = []
+            alt_rate_limited: list[str] = []
+            alt_not_indexed = False
+            for alt_edge_kind in edge_kinds:
+                for alt_candidate_id in alt_lookup_ids:
+                    try:
+                        alt_edges = fetch_semantic_scholar_edges(alt_candidate_id, alt_edge_kind, limit=per_edge_limit)
+                        log_event("SCIENCE", "graph_expand_alt_edges_loaded",
+                                  edge=alt_edge_kind, count=len(alt_edges), alt_index=alt_index)
+                        alt_raw_edges.extend(alt_edges)
+                        break
+                    except Exception as alt_exc:
+                        alt_err = str(alt_exc)
+                        if is_semantic_scholar_not_found_error(alt_err):
+                            alt_not_indexed = True
+                            continue
+                        if is_semantic_scholar_rate_limit_error(alt_err):
+                            alt_rate_limited.append(f"{alt_candidate_id}:{alt_edge_kind}")
+                            continue
+                        break
+            # Delayed retry for rate-limited alt fetches
+            if alt_rate_limited and not alt_raw_edges:
+                import time as _alt_time
+                _alt_time.sleep(2)
+                for rl_entry in alt_rate_limited:
+                    rl_id, rl_kind = rl_entry.rsplit(":", 1)
+                    try:
+                        alt_edges = fetch_semantic_scholar_edges(rl_id, rl_kind, limit=per_edge_limit)
+                        alt_raw_edges.extend(alt_edges)
+                    except Exception:
+                        pass
+            alt_graph_results = dedupe_literature_results(
+                [semantic_scholar_edge_to_result(e) for e in alt_raw_edges if isinstance(e, dict)]
+            )
+            alt_ranked = rank_literature_results(graph_query, alt_graph_results)[:clamp_int(max_results, 1, 200)]
+            if not alt_ranked:
+                log_event("SCIENCE", "graph_expand_alt_empty", alt_index=alt_index, attempt=alt_offset)
+                continue
+            # Alternative seed succeeded — use its results
+            seed_rotation_used = True
+            ranked = alt_ranked
+            graph_results = alt_graph_results
+            seed = alt_seed
+            lookup_id = alt_lookup_ids[0]
+            lookup_ids = alt_lookup_ids
+            result_index = alt_index
+            seed_not_indexed = alt_not_indexed
+            rate_limited_ids = alt_rate_limited
+            errors.append({"edge": "seed_rotation", "alt_index": alt_index, "edges_found": len(alt_raw_edges)})
+            log_event("SCIENCE", "graph_expand_seed_rotation_success",
+                      search_id=search_id, alt_index=alt_index,
+                      edges_found=len(alt_raw_edges), count=len(alt_ranked))
+            break
+
     fallback_used = False
     if not ranked and allow_fallback:
         fallback_used = True
-        fallback_block = search_semantic_scholar(graph_query, max_results=max_results)
+        fallback_max = min(max_results, 30)
+        fallback_block = search_semantic_scholar(graph_query, max_results=fallback_max)
         fallback_results = flatten_literature_results([fallback_block])
         seed_key = literature_result_unique_key(seed)
         fallback_results = [item for item in fallback_results if literature_result_unique_key(item) != seed_key]

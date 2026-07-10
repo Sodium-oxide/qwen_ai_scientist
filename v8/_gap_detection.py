@@ -582,11 +582,54 @@ def run_tanxi_gap_exploration(
         strategic_domains=strategic_domains or default_strategic_domains(project),
         max_gaps=max_gaps,
     )
+    ranked = report.get("ranked_gaps", []) if isinstance(report.get("ranked_gaps"), list) else []
+    for gap in ranked:
+        if isinstance(gap, dict):
+            gap["mechanism_draft"] = build_tanxi_mechanism_draft(gap)
+    # Keep the canonical project gaps and the ranked TanXi view in sync so
+    # Socrates can resolve a gap by id without relying on transient tool output.
+    draft_by_id = {
+        str(gap.get("gap_id") or ""): gap.get("mechanism_draft")
+        for gap in ranked
+        if isinstance(gap, dict) and gap.get("gap_id")
+    }
+    for gap in project.get("knowledge_gaps", []):
+        if isinstance(gap, dict) and str(gap.get("gap_id") or "") in draft_by_id:
+            gap["mechanism_draft"] = draft_by_id[str(gap.get("gap_id") or "")]
     project["tanxi_gap_analysis"] = report
     project["updatedAt"] = time.time()
     save_project(project)
     log_event("SCIENCE", "tanxi_gap_exploration", project_id=project_id, ranked=len(report.get("ranked_gaps", [])))
     return json.dumps(report, ensure_ascii=False, indent=2)
+
+
+def build_tanxi_mechanism_draft(gap: dict[str, Any]) -> dict[str, Any]:
+    """Create an explicitly incomplete, source-bounded handoff to Socrates.
+
+    TanXi may identify the evidence tension, but it must not fabricate a
+    mediator. The source signal is retained as a candidate clue and every
+    operational mechanism dimension remains unresolved until Socrates finds a
+    cited excerpt.
+    """
+    ingredients = gap.get("hypothesis_ingredients", {}) if isinstance(gap.get("hypothesis_ingredients"), dict) else {}
+    methods = ingredients.get("methods", []) if isinstance(ingredients.get("methods"), list) else []
+    scenarios = ingredients.get("scenarios", []) if isinstance(ingredients.get("scenarios"), list) else []
+    benchmarks = ingredients.get("benchmarks", []) if isinstance(ingredients.get("benchmarks"), list) else []
+    issue = gap.get("mechanism_issue_signal", {}) if isinstance(gap.get("mechanism_issue_signal"), dict) else {}
+    signal = gap.get("gap_signal", {}) if isinstance(gap.get("gap_signal"), dict) else {}
+    candidate_clue = str(issue.get("source_text") or signal.get("text") or issue.get("axis") or "").strip()
+    return {
+        "gap_id": str(gap.get("gap_id") or ""),
+        "input": " ".join(str(item) for item in (methods[:1] + scenarios[:1]) if str(item).strip()) or str(gap.get("description") or ""),
+        "proposed_mediator": candidate_clue or "unresolved",
+        "output": str(benchmarks[0]) if benchmarks else "unresolved",
+        "source_clue": candidate_clue,
+        "unresolved_fields": [
+            "identity", "location_or_scope", "dynamics", "reversibility",
+            "observability", "intervention", "counterfactual",
+        ],
+        "status": "draft_requires_socrates_evidence",
+    }
 
 def tanxi_gap_exploration_report(
     project: dict[str, Any],
@@ -618,6 +661,11 @@ def tanxi_gap_exploration_report(
     )
     ranked = prioritize_gaps(project, candidates, coverage_analysis, strategic_domains, max_gaps=max_gaps)
     ranked = counterfactual_gap_analysis(project, ranked, limit=min(max_gaps, 10))
+    for gap in ranked:
+        if isinstance(gap, dict):
+            # Native TanXi output: a conservative handoff, not an asserted
+            # mechanism. Socrates must resolve every field with citations.
+            gap["mechanism_draft"] = build_tanxi_mechanism_draft(gap)
     return {
         "agent": "tanxi",
         "target_domain": target_domain,
@@ -3420,9 +3468,9 @@ def extract_hypothesis_ingredients(project, method, scenario, refs):
 def generate_counterfactual_leaves(method, scenario, refs):
     """Generate 'if X holds, gap disappears' leaf conditions."""
     try:
-        from ._utils import unique_preserve_order
+        from ._utils import trim_text, unique_preserve_order
     except ImportError:
-        from _utils import unique_preserve_order
+        from _utils import trim_text, unique_preserve_order
     leaves = []
     m = str(method or "").strip()
     s = str(scenario or "").strip()

@@ -1568,6 +1568,38 @@ def run_zhizhi_literature_analysis(
     log_event("SCIENCE", "import_phase_start", search_id=search_id, total_candidates=len(import_candidates),
               layers={layer: len(items) for layer, items in by_layer.items() if items})
 
+    # Build pre-filter set from existing papergraph to avoid duplicate imports
+    project = load_project(project_id)
+    existing_ids: set[str] = set()
+    existing_titles: set[str] = set()
+    for record in project.get("papergraph", []):
+        if not isinstance(record, dict):
+            continue
+        for field in ("doi", "semantic_scholar_id", "arxiv_id"):
+            val = str(record.get(field) or "").strip().lower()
+            if val and val not in ("unknown", "unspecified", "none"):
+                existing_ids.add(val)
+        title = str(record.get("title") or "").strip().lower()
+        if title:
+            existing_titles.add(title)
+            existing_titles.add(re.sub(r"[^a-z0-9 ]", "", title))  # normalized form
+
+    def _candidate_already_imported(candidate: dict) -> bool:
+        """Check if a candidate matches an existing papergraph record."""
+        pg_input = candidate.get("papergraph_input") or candidate
+        for field in ("doi", "semantic_scholar_id", "arxiv_id"):
+            val = str(pg_input.get(field) or candidate.get(field) or "").strip().lower()
+            if val and val not in ("unknown", "unspecified", "none") and val in existing_ids:
+                return True
+        title = str(candidate.get("title") or "").strip().lower()
+        if title:
+            if title in existing_titles:
+                return True
+            norm_title = re.sub(r"[^a-z0-9 ]", "", title)
+            if norm_title and norm_title in existing_titles:
+                return True
+        return False
+
     for layer_name in layer_order:
         layer_candidates = by_layer.get(layer_name, [])
         if not layer_candidates:
@@ -1578,12 +1610,21 @@ def run_zhizhi_literature_analysis(
         for result in layer_candidates:
             result_index = int(result.get("result_index") or 0)
             result_title = str(result.get("title") or "untitled")[:120]
+            # Pre-filter: skip candidates already in papergraph
+            if _candidate_already_imported(result):
+                log_event("SCIENCE", "paper_skipped_prefilter", layer=layer_name, title=result_title, result_index=result_index)
+                continue
             log_event("SCIENCE", "import_paper_attempt", layer=layer_name, title=result_title, result_index=result_index)
             try:
                 imported = json.loads(import_literature_search_result(project_id, search_id, result_index, use_llm=use_llm))
+                import_status = str(imported.get("status") or "imported")
+                if import_status == "duplicate":
+                    log_event("SCIENCE", "paper_skipped_duplicate", layer=layer_name, title=result_title, result_index=result_index,
+                              existing_id=str((imported.get("existing_record") or {}).get("paper_id") or ""))
+                    continue
                 imported_records.append(imported)
                 layer_imported += 1
-                record = imported.get("record") or imported.get("existing_record") or {}
+                record = imported.get("record") or {}
                 paper_id = record.get("paper_id")
                 log_event("SCIENCE", "paper_imported", layer=layer_name, title=result_title, paper_id=paper_id, result_index=result_index)
                 if paper_id:
