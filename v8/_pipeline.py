@@ -1401,13 +1401,14 @@ def run_zhizhi_literature_analysis(
     subspace_map_id: str = "",
     selected_subfields: list[str] | None = None,
     interactive_mode: bool = False,
+    use_subspace_search: bool = True,
 ) -> str:
     try:
         from ._gap_detection import build_knowledge_map, detect_knowledge_gaps, knowledge_map_unknown_summary, zhizhi_standard_output
         from ._literature_graph import build_keynote_knowledge_synthesis, build_literature_relation_graph, expand_literature_graph
         from ._literature_import import extract_paper_keynote, import_literature_search_result, select_zhizhi_import_results
         from ._literature_scoring import literature_domain_coverage_diagnostic
-        from ._literature_search import build_branch_user_interaction, database_to_provider, search_papers_stratified, select_literature_result
+        from ._literature_search import build_branch_user_interaction, database_to_provider, run_subspace_literature_search, search_papers_stratified, select_literature_result
         from ._project import default_literature_providers, explore_domain_subspaces, live_literature_provider_names, load_project, load_subspace_map, post_retrieval_subspace_coverage, query_plan_from_subspace_map, save_project
         from ._supplement import zhizhi_auto_supplement_blind_spots
         from ._utils import clamp_int, unique_preserve_order
@@ -1416,7 +1417,7 @@ def run_zhizhi_literature_analysis(
         from _literature_graph import build_keynote_knowledge_synthesis, build_literature_relation_graph, expand_literature_graph
         from _literature_import import extract_paper_keynote, import_literature_search_result, select_zhizhi_import_results
         from _literature_scoring import literature_domain_coverage_diagnostic
-        from _literature_search import build_branch_user_interaction, database_to_provider, search_papers_stratified, select_literature_result
+        from _literature_search import build_branch_user_interaction, database_to_provider, run_subspace_literature_search, search_papers_stratified, select_literature_result
         from _project import default_literature_providers, explore_domain_subspaces, live_literature_provider_names, load_project, load_subspace_map, post_retrieval_subspace_coverage, query_plan_from_subspace_map, save_project
         from _supplement import zhizhi_auto_supplement_blind_spots
         from _utils import clamp_int, unique_preserve_order
@@ -1480,29 +1481,81 @@ def run_zhizhi_literature_analysis(
             indent=2,
         )
 
-    search_payload = json.loads(
-        search_papers_stratified(
-            query,
-            databases=selected_providers,
-            max_results=search_budget,
-            years=years,
-            domain=domain,
-            focus_branches=focus_branches,
-            use_llm=use_llm,
+    # === SEARCH PHASE ===
+    subspace_payload: dict[str, Any] | None = None
+    if use_subspace_search:
+        # Subspace-based search: decompose domain → serial subspace searches
+        subspace_payload = run_subspace_literature_search(
+            domain=domain, query=query, providers=selected_providers,
+            max_subspaces=8, use_llm=use_llm, years=years,
         )
-    )
-    action["search_papers_stratified"] = {
-        "search_id": search_payload.get("search_id"),
-        "total_results": search_payload.get("total_results", 0),
-        "requested_max_results": max_results,
-        "effective_search_budget": search_budget,
-        "providers": search_payload.get("providers", []),
-        "strategy": search_payload.get("strategy", ""),
-        "query_plan": search_payload.get("query_plan", []),
-        "focus_branches": focus_branches or [],
-        "strata": search_payload.get("strata", []),
-        "errors": [block for block in search_payload.get("provider_blocks", []) if block.get("status") != "ok"],
-    }
+        # Convert subspace results into a search_payload compatible with downstream import
+        subspace_results = subspace_payload.get("results", [])
+        # Create a synthetic search record for import compatibility
+        from ._utils import new_id
+        search_id = new_id("search")
+        search_payload = {
+            "search_id": search_id,
+            "query": query,
+            "domain": domain,
+            "providers": selected_providers,
+            "strategy": "subspace_decomposition",
+            "total_results": len(subspace_results),
+            "results": subspace_results,
+            "subspace_reports": subspace_payload.get("subspace_reports", []),
+            "decomposition": subspace_payload.get("decomposition", {}),
+        }
+        # Persist the search record for import compatibility
+        try:
+            from ._project import save_search
+        except ImportError:
+            from _project import save_search
+        save_search({
+            "search_id": search_id,
+            "kind": "subspace_decomposition",
+            "query": query,
+            "domain": domain,
+            "results": subspace_results,
+            "createdAt": time.time(),
+        })
+        action["subspace_decomposition"] = {
+            "search_id": search_id,
+            "total_results": len(subspace_results),
+            "subspace_count": subspace_payload.get("decomposition", {}).get("subspace_count", 0),
+            "review_count": subspace_payload.get("decomposition", {}).get("review_count", 0),
+            "subspace_reports": subspace_payload.get("subspace_reports", []),
+        }
+        log_event("SCIENCE", "search_phase_complete", search_id=search_id,
+                  total_results=len(subspace_results), providers=selected_providers,
+                  strategy="subspace_decomposition",
+                  subspace_count=subspace_payload.get("decomposition", {}).get("subspace_count", 0))
+    else:
+        search_payload = json.loads(
+            search_papers_stratified(
+                query,
+                databases=selected_providers,
+                max_results=search_budget,
+                years=years,
+                domain=domain,
+                focus_branches=focus_branches,
+                use_llm=use_llm,
+            )
+        )
+        search_id = str(search_payload.get("search_id"))
+
+    if not use_subspace_search:
+        action["search_papers_stratified"] = {
+            "search_id": search_payload.get("search_id"),
+            "total_results": search_payload.get("total_results", 0),
+            "requested_max_results": max_results,
+            "effective_search_budget": search_budget,
+            "providers": search_payload.get("providers", []),
+            "strategy": search_payload.get("strategy", ""),
+            "query_plan": search_payload.get("query_plan", []),
+            "focus_branches": focus_branches or [],
+            "strata": search_payload.get("strata", []),
+            "errors": [block for block in search_payload.get("provider_blocks", []) if block.get("status") != "ok"],
+        }
     if int(search_payload.get("total_results") or 0) <= 0:
         observations.append("No retrieved papers; stopped before import to avoid invented evidence.")
         return json.dumps(
@@ -1544,102 +1597,194 @@ def run_zhizhi_literature_analysis(
     selected = selected_payload.get("selected") or {}
     action["select_literature_result"] = selected
 
-    import_candidates, import_plan = select_zhizhi_import_results(search_payload.get("results", []), import_limit)
-    action["stratified_import_plan"] = import_plan
-    for missing in import_plan.get("missing_layers", []):
-        observations.append(
-            "Layer import target not met: "
-            f"{missing.get('layer')} selected={missing.get('selected')}/target={missing.get('target')} "
-            f"from candidates={missing.get('candidates')}. This indicates retrieval/candidate scarcity rather than top-K truncation."
-        )
-    # === STRATIFIED LAYER-BY-LAYER IMPORT ===
-    # Separate search results from import: search is already done, now import layer by layer
     imported_records: list[dict[str, Any]] = []
-    layer_order = ["L0_review", "L1_milestone", "L2_top_latest", "L3_preprint", "L4_regular"]
-    # Group candidates by stratified_layer
-    by_layer: dict[str, list[dict[str, Any]]] = {layer: [] for layer in layer_order}
-    for candidate in import_candidates:
-        layer = str(candidate.get("stratified_layer") or "L4_regular")
-        if layer in by_layer:
-            by_layer[layer].append(candidate)
-        else:
-            by_layer["L4_regular"].append(candidate)
 
-    log_event("SCIENCE", "import_phase_start", search_id=search_id, total_candidates=len(import_candidates),
-              layers={layer: len(items) for layer, items in by_layer.items() if items})
+    if use_subspace_search and subspace_payload:
+        # === SUBSPACE-BASED IMPORT: 5-7 papers per subspace ===
+        subspace_results = search_payload.get("results", [])
+        # Group by subspace
+        by_subspace: dict[str, list[dict[str, Any]]] = {}
+        for paper in subspace_results:
+            subspace_name = str(paper.get("subspace") or "unassigned")
+            by_subspace.setdefault(subspace_name, []).append(paper)
 
-    # Build pre-filter set from existing papergraph to avoid duplicate imports
-    project = load_project(project_id)
-    existing_ids: set[str] = set()
-    existing_titles: set[str] = set()
-    for record in project.get("papergraph", []):
-        if not isinstance(record, dict):
-            continue
-        for field in ("doi", "semantic_scholar_id", "arxiv_id"):
-            val = str(record.get(field) or "").strip().lower()
-            if val and val not in ("unknown", "unspecified", "none"):
-                existing_ids.add(val)
-        title = str(record.get("title") or "").strip().lower()
-        if title:
-            existing_titles.add(title)
-            existing_titles.add(re.sub(r"[^a-z0-9 ]", "", title))  # normalized form
-
-    def _candidate_already_imported(candidate: dict) -> bool:
-        """Check if a candidate matches an existing papergraph record."""
-        pg_input = candidate.get("papergraph_input") or candidate
-        for field in ("doi", "semantic_scholar_id", "arxiv_id"):
-            val = str(pg_input.get(field) or candidate.get(field) or "").strip().lower()
-            if val and val not in ("unknown", "unspecified", "none") and val in existing_ids:
-                return True
-        title = str(candidate.get("title") or "").strip().lower()
-        if title:
-            if title in existing_titles:
-                return True
-            norm_title = re.sub(r"[^a-z0-9 ]", "", title)
-            if norm_title and norm_title in existing_titles:
-                return True
-        return False
-
-    for layer_name in layer_order:
-        layer_candidates = by_layer.get(layer_name, [])
-        if not layer_candidates:
-            continue
-        log_event("SCIENCE", "import_layer_start", layer=layer_name, candidates=len(layer_candidates))
-        layer_imported = 0
-        layer_failed = 0
-        for result in layer_candidates:
-            result_index = int(result.get("result_index") or 0)
-            result_title = str(result.get("title") or "untitled")[:120]
-            # Pre-filter: skip candidates already in papergraph
-            if _candidate_already_imported(result):
-                log_event("SCIENCE", "paper_skipped_prefilter", layer=layer_name, title=result_title, result_index=result_index)
+        # Build pre-filter set from existing papergraph
+        project = load_project(project_id)
+        existing_ids: set[str] = set()
+        existing_titles: set[str] = set()
+        for record in project.get("papergraph", []):
+            if not isinstance(record, dict):
                 continue
-            log_event("SCIENCE", "import_paper_attempt", layer=layer_name, title=result_title, result_index=result_index)
-            try:
-                imported = json.loads(import_literature_search_result(project_id, search_id, result_index, use_llm=use_llm))
-                import_status = str(imported.get("status") or "imported")
-                if import_status == "duplicate":
-                    log_event("SCIENCE", "paper_skipped_duplicate", layer=layer_name, title=result_title, result_index=result_index,
-                              existing_id=str((imported.get("existing_record") or {}).get("paper_id") or ""))
-                    continue
-                imported_records.append(imported)
-                layer_imported += 1
-                record = imported.get("record") or {}
-                paper_id = record.get("paper_id")
-                log_event("SCIENCE", "paper_imported", layer=layer_name, title=result_title, paper_id=paper_id, result_index=result_index)
-                if paper_id:
-                    try:
-                        extract_paper_keynote(project_id, paper_id=str(paper_id), use_llm=use_llm)
-                    except Exception as exc:
-                        observations.append(f"keynote extraction failed for {paper_id}: {exc}")
-            except Exception as exc:
-                layer_failed += 1
-                log_event("SCIENCE", "import_paper_failed", layer=layer_name, title=result_title, result_index=result_index, error=str(exc)[:200])
-                observations.append(f"import failed for {layer_name} result {result_index} ({result_title}): {exc}")
-        log_event("SCIENCE", "import_layer_complete", layer=layer_name, imported=layer_imported, failed=layer_failed, total=len(layer_candidates))
+            for field in ("doi", "semantic_scholar_id", "arxiv_id"):
+                val = str(record.get(field) or "").strip().lower()
+                if val and val not in ("unknown", "unspecified", "none"):
+                    existing_ids.add(val)
+            title = str(record.get("title") or "").strip().lower()
+            if title:
+                existing_titles.add(title)
+                existing_titles.add(re.sub(r"[^a-z0-9 ]", "", title))
 
-    log_event("SCIENCE", "import_phase_complete", search_id=search_id, total_imported=len(imported_records), total_candidates=len(import_candidates))
-    action["imported_records"] = len(imported_records)
+        log_event("SCIENCE", "import_phase_start", search_id=search_id,
+                  total_candidates=len(subspace_results),
+                  strategy="subspace_import", subspace_count=len(by_subspace))
+
+        for subspace_name, papers in by_subspace.items():
+            log_event("SCIENCE", "import_subspace_start", subspace=subspace_name, candidates=len(papers))
+            subspace_imported = 0
+            # Prioritize: milestone > top_venue > preprint > regular
+            type_order = {"milestone": 0, "top_venue": 1, "preprint": 2, "regular": 3}
+            sorted_papers = sorted(papers, key=lambda p: type_order.get(str(p.get("paper_type", "")), 9))
+            # Import up to 7 papers per subspace
+            for paper in sorted_papers[:7]:
+                paper_title = str(paper.get("title") or "untitled")[:120]
+                paper_type = str(paper.get("paper_type") or "unknown")
+                # Pre-filter: skip if already in papergraph
+                paper_doi = str(paper.get("doi") or "").strip().lower()
+                paper_s2id = str(paper.get("semantic_scholar_id") or "").strip().lower()
+                paper_title_lower = paper_title.strip().lower()
+                paper_title_norm = re.sub(r"[^a-z0-9 ]", "", paper_title_lower)
+                if (paper_doi and paper_doi in existing_ids) or \
+                   (paper_s2id and paper_s2id in existing_ids) or \
+                   (paper_title_lower and paper_title_lower in existing_titles) or \
+                   (paper_title_norm and paper_title_norm in existing_titles):
+                    log_event("SCIENCE", "paper_skipped_prefilter",
+                              subspace=subspace_name, title=paper_title, paper_type=paper_type)
+                    continue
+                # Write paper to search record for import compatibility
+                result_index = paper.get("result_index", len(imported_records))
+                paper["result_index"] = result_index
+                paper["search_id"] = search_id
+                log_event("SCIENCE", "import_paper_attempt",
+                          subspace=subspace_name, paper_type=paper_type, title=paper_title)
+                try:
+                    # Direct import via papergraph record creation
+                    imported_json = json.loads(import_literature_search_result(
+                        project_id, search_id, result_index, use_llm=use_llm
+                    ))
+                    import_status = str(imported_json.get("status") or "imported")
+                    if import_status == "duplicate":
+                        log_event("SCIENCE", "paper_skipped_duplicate",
+                                  subspace=subspace_name, title=paper_title)
+                        continue
+                    imported_records.append(imported_json)
+                    subspace_imported += 1
+                    record_data = imported_json.get("record") or {}
+                    paper_id = record_data.get("paper_id")
+                    log_event("SCIENCE", "paper_imported",
+                              subspace=subspace_name, paper_type=paper_type,
+                              title=paper_title, paper_id=paper_id)
+                    if paper_id:
+                        try:
+                            extract_paper_keynote(project_id, paper_id=str(paper_id), use_llm=use_llm)
+                        except Exception as exc:
+                            observations.append(f"keynote extraction failed for {paper_id}: {exc}")
+                except Exception as exc:
+                    log_event("SCIENCE", "import_paper_failed",
+                              subspace=subspace_name, title=paper_title,
+                              error=str(exc)[:200])
+            log_event("SCIENCE", "import_subspace_complete",
+                      subspace=subspace_name, imported=subspace_imported, total=len(papers[:7]))
+
+        log_event("SCIENCE", "import_phase_complete", search_id=search_id,
+                  total_imported=len(imported_records), total_candidates=len(subspace_results))
+        action["imported_records"] = len(imported_records)
+
+    else:
+        # === STRATIFIED LAYER-BY-LAYER IMPORT (original flow) ===
+        import_candidates, import_plan = select_zhizhi_import_results(search_payload.get("results", []), import_limit)
+        action["stratified_import_plan"] = import_plan
+        for missing in import_plan.get("missing_layers", []):
+            observations.append(
+                "Layer import target not met: "
+                f"{missing.get('layer')} selected={missing.get('selected')}/target={missing.get('target')} "
+                f"from candidates={missing.get('candidates')}. This indicates retrieval/candidate scarcity rather than top-K truncation."
+            )
+        # === STRATIFIED LAYER-BY-LAYER IMPORT ===
+        layer_order = ["L0_review", "L1_milestone", "L2_top_latest", "L3_preprint", "L4_regular"]
+        # Group candidates by stratified_layer
+        by_layer: dict[str, list[dict[str, Any]]] = {layer: [] for layer in layer_order}
+        for candidate in import_candidates:
+            layer = str(candidate.get("stratified_layer") or "L4_regular")
+            if layer in by_layer:
+                by_layer[layer].append(candidate)
+            else:
+                by_layer["L4_regular"].append(candidate)
+
+        log_event("SCIENCE", "import_phase_start", search_id=search_id, total_candidates=len(import_candidates),
+                  layers={layer: len(items) for layer, items in by_layer.items() if items})
+
+        # Build pre-filter set from existing papergraph to avoid duplicate imports
+        project = load_project(project_id)
+        existing_ids: set[str] = set()
+        existing_titles: set[str] = set()
+        for record in project.get("papergraph", []):
+            if not isinstance(record, dict):
+                continue
+            for field in ("doi", "semantic_scholar_id", "arxiv_id"):
+                val = str(record.get(field) or "").strip().lower()
+                if val and val not in ("unknown", "unspecified", "none"):
+                    existing_ids.add(val)
+            title = str(record.get("title") or "").strip().lower()
+            if title:
+                existing_titles.add(title)
+                existing_titles.add(re.sub(r"[^a-z0-9 ]", "", title))  # normalized form
+
+        def _candidate_already_imported(candidate: dict) -> bool:
+            """Check if a candidate matches an existing papergraph record."""
+            pg_input = candidate.get("papergraph_input") or candidate
+            for field in ("doi", "semantic_scholar_id", "arxiv_id"):
+                val = str(pg_input.get(field) or candidate.get(field) or "").strip().lower()
+                if val and val not in ("unknown", "unspecified", "none") and val in existing_ids:
+                    return True
+            title = str(candidate.get("title") or "").strip().lower()
+            if title:
+                if title in existing_titles:
+                    return True
+                norm_title = re.sub(r"[^a-z0-9 ]", "", title)
+                if norm_title and norm_title in existing_titles:
+                    return True
+            return False
+
+        for layer_name in layer_order:
+            layer_candidates = by_layer.get(layer_name, [])
+            if not layer_candidates:
+                continue
+            log_event("SCIENCE", "import_layer_start", layer=layer_name, candidates=len(layer_candidates))
+            layer_imported = 0
+            layer_failed = 0
+            for result in layer_candidates:
+                result_index = int(result.get("result_index") or 0)
+                result_title = str(result.get("title") or "untitled")[:120]
+                # Pre-filter: skip candidates already in papergraph
+                if _candidate_already_imported(result):
+                    log_event("SCIENCE", "paper_skipped_prefilter", layer=layer_name, title=result_title, result_index=result_index)
+                    continue
+                log_event("SCIENCE", "import_paper_attempt", layer=layer_name, title=result_title, result_index=result_index)
+                try:
+                    imported = json.loads(import_literature_search_result(project_id, search_id, result_index, use_llm=use_llm))
+                    import_status = str(imported.get("status") or "imported")
+                    if import_status == "duplicate":
+                        log_event("SCIENCE", "paper_skipped_duplicate", layer=layer_name, title=result_title, result_index=result_index,
+                                  existing_id=str((imported.get("existing_record") or {}).get("paper_id") or ""))
+                        continue
+                    imported_records.append(imported)
+                    layer_imported += 1
+                    record = imported.get("record") or {}
+                    paper_id = record.get("paper_id")
+                    log_event("SCIENCE", "paper_imported", layer=layer_name, title=result_title, paper_id=paper_id, result_index=result_index)
+                    if paper_id:
+                        try:
+                            extract_paper_keynote(project_id, paper_id=str(paper_id), use_llm=use_llm)
+                        except Exception as exc:
+                            observations.append(f"keynote extraction failed for {paper_id}: {exc}")
+                except Exception as exc:
+                    layer_failed += 1
+                    log_event("SCIENCE", "import_paper_failed", layer=layer_name, title=result_title, result_index=result_index, error=str(exc)[:200])
+                    observations.append(f"import failed for {layer_name} result {result_index} ({result_title}): {exc}")
+            log_event("SCIENCE", "import_layer_complete", layer=layer_name, imported=layer_imported, failed=layer_failed, total=len(layer_candidates))
+
+        log_event("SCIENCE", "import_phase_complete", search_id=search_id, total_imported=len(imported_records), total_candidates=len(import_candidates))
+        action["imported_records"] = len(imported_records)
 
     # === BLIND SPOT SUPPLEMENT (runs after main import to avoid exhausting SS quota first) ===
     supplemental_imports: list[dict[str, Any]] = []

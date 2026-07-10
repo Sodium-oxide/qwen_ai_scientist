@@ -446,6 +446,366 @@ def search_literature_stratified(
     )
     return json.dumps(response, ensure_ascii=False, indent=2)
 
+
+# ---------------------------------------------------------------------------
+# Subspace-Based Literature Search (review-driven domain decomposition)
+# ---------------------------------------------------------------------------
+
+def decompose_domain_into_subspaces(
+    domain: str,
+    query: str,
+    providers: list[str],
+    max_reviews: int = 4,
+    target_subspaces: int = 8,
+    use_llm: bool = False,
+) -> dict[str, Any]:
+    """Search review papers and decompose a broad domain into 6-8 focused subspaces.
+
+    Step 1: Search 3-4 review/survey papers in the domain.
+    Step 2: Extract key topics from review abstracts to define subspaces.
+    Step 3: Return subspace definitions with search queries.
+
+    Each subspace has: name, query, rationale, review_sources.
+    """
+    try:
+        from ._utils import normalize_space, trim_text, unique_preserve_order
+    except ImportError:
+        from _utils import normalize_space, trim_text, unique_preserve_order
+
+    review_query = normalize_space(f"{query} review survey")
+    review_blocks: list[dict[str, Any]] = []
+    if "semantic_scholar" in providers:
+        block = search_semantic_scholar(review_query, max_results=max_reviews * 3)
+        review_blocks.append(block)
+
+    # Select review-like papers from results
+    all_review_candidates = flatten_literature_results(review_blocks)
+    review_candidates = [
+        item for item in all_review_candidates
+        if is_review_like_paper(item) and not is_low_quality_literature_result(item)
+    ]
+    # Fallback: if strict review filter yields too few, use top-cited papers
+    if len(review_candidates) < 2:
+        review_candidates = sorted(
+            [item for item in all_review_candidates if not is_low_quality_literature_result(item)],
+            key=lambda item: -numeric_value(item.get("citation_count")),
+        )
+    selected_reviews = review_candidates[:max_reviews]
+
+    # Extract topics from review abstracts for subspace decomposition
+    review_texts = []
+    for rev in selected_reviews:
+        title = str(rev.get("title") or "")
+        abstract = str(rev.get("abstract") or "")[:800]
+        review_texts.append(f"Review: {title}\nAbstract: {abstract}")
+
+    # Build subspaces from review content
+    subspaces: list[dict[str, str]] = []
+    if use_llm and review_texts:
+        subspaces = _llm_extract_subspaces(domain, query, review_texts, target_subspaces)
+    else:
+        subspaces = _rule_based_subspaces(domain, query, selected_reviews, target_subspaces)
+
+    # Ensure we have at least 6 subspaces
+    if len(subspaces) < 6:
+        fallback_topics = [
+            f"{query} methodology", f"{query} applications",
+            f"{query} challenges", f"{query} recent advances",
+            f"{query} theoretical framework", f"{query} experimental techniques",
+        ]
+        for topic in fallback_topics:
+            if len(subspaces) >= target_subspaces:
+                break
+            name = topic.replace(query, "").strip().title() or "Additional Facet"
+            if not any(s.get("query", "").lower() == topic.lower() for s in subspaces):
+                subspaces.append({"name": name, "query": topic, "rationale": "domain facet"})
+
+    subspaces = subspaces[:target_subspaces]
+    log_event("SCIENCE", "domain_decomposed",
+              domain=domain[:80], subspace_count=len(subspaces),
+              review_count=len(selected_reviews),
+              subspace_names=[s.get("name", "") for s in subspaces])
+
+    return {
+        "domain": domain,
+        "query": query,
+        "reviews": [summarize_literature_result(rev) for rev in selected_reviews],
+        "review_count": len(selected_reviews),
+        "subspaces": subspaces,
+        "subspace_count": len(subspaces),
+    }
+
+
+def _rule_based_subspaces(
+    domain: str, query: str, reviews: list[dict[str, Any]], target: int
+) -> list[dict[str, str]]:
+    """Extract subspaces from review paper titles/abstracts using keyword frequency."""
+    try:
+        from ._utils import normalize_space
+    except ImportError:
+        from _utils import normalize_space
+    term_freq: dict[str, int] = {}
+    stop_words = {
+        "review", "survey", "paper", "study", "research", "method", "approach",
+        "based", "using", "proposed", "results", "analysis", "system", "model",
+        "data", "application", "performance", "design", "control", "power",
+        "this", "that", "with", "from", "have", "been", "were", "which", "their",
+        "recent", "novel", "efficient", "high", "low", "new", "large", "small",
+    }
+    for rev in reviews:
+        text = normalize_space(f"{rev.get('title', '')} {rev.get('abstract', '')}").lower()
+        terms = re.findall(r"[a-z][a-z0-9\-]{3,}", text)
+        for term in terms:
+            if term not in stop_words and len(term) >= 4:
+                term_freq[term] = term_freq.get(term, 0) + 1
+    ranked_terms = sorted(term_freq.items(), key=lambda x: -x[1])
+    subspaces: list[dict[str, str]] = []
+    seen: set[str] = set()
+    for term, freq in ranked_terms:
+        if len(subspaces) >= target:
+            break
+        if term in seen:
+            continue
+        seen.add(term)
+        subspace_query = normalize_space(f"{query} {term}")
+        name = term.replace("-", " ").title()
+        subspaces.append({
+            "name": name,
+            "query": subspace_query,
+            "rationale": f"High-frequency topic '{term}' (freq={freq}) from {len(reviews)} reviews",
+        })
+    return subspaces
+
+
+def _llm_extract_subspaces(
+    domain: str, query: str, review_texts: list[str], target: int
+) -> list[dict[str, str]]:
+    """Use LLM to extract subspace topics from review paper abstracts."""
+    try:
+        from ._utils import normalize_space
+    except ImportError:
+        from _utils import normalize_space
+    reviews_block = "\n\n".join(review_texts[:4])
+    prompt = (
+        f"Based on these review papers about '{domain}', identify {target} distinct research subspaces.\n\n"
+        f"{reviews_block}\n\n"
+        f"Return a JSON array of exactly {target} objects, each with:\n"
+        f'  "name": short subspace name (2-4 words),\n'
+        f'  "query": specific search query for this subspace (include "{query}" context),\n'
+        f'  "rationale": why this is an important subspace\n'
+        f"Focus on distinct, non-overlapping subspaces that cover the breadth of the domain."
+    )
+    try:
+        from ._llm import call_llm_json
+        response = call_llm_json(
+            system="You are a research librarian decomposing a domain into search subspaces.",
+            prompt=prompt,
+        )
+        items = response if isinstance(response, list) else response.get("subspaces", [])
+        subspaces = []
+        for item in items[:target]:
+            if isinstance(item, dict) and item.get("query"):
+                subspaces.append({
+                    "name": str(item.get("name", "Subspace")),
+                    "query": normalize_space(str(item["query"])),
+                    "rationale": str(item.get("rationale", "")),
+                })
+        if subspaces:
+            return subspaces
+    except Exception:
+        pass
+    return []
+
+
+def search_subspace_stratified(
+    subspace_query: str,
+    providers: list[str],
+    subspace_name: str = "",
+    years: str = "",
+) -> dict[str, Any]:
+    """Search one subspace with type-based quotas.
+
+    Quotas per subspace (10-14 papers total):
+    - 2 milestone (highest cited)
+    - 3-5 top venue (Nature/Science/Cell/PNAS + sub-journals, JCR Q1)
+    - 4-5 regular papers
+    - 1-2 latest preprints (arxiv)
+    """
+    try:
+        from ._utils import clamp_int, normalize_space
+    except ImportError:
+        from _utils import clamp_int, normalize_space
+
+    blocks: list[dict[str, Any]] = []
+    base_query = normalize_space(subspace_query)
+
+    # 1. Milestone: search for highly cited papers
+    if "semantic_scholar" in providers:
+        milestone_block = search_semantic_scholar(base_query, max_results=8)
+        milestone_block["retrieval_strategy"] = "subspace_milestone"
+        milestone_block["subspace"] = subspace_name
+        blocks.append(milestone_block)
+
+    # 2. Top venue: search with journal emphasis
+    if "semantic_scholar" in providers:
+        top_venue_query = normalize_space(f"{base_query} journal")
+        top_block = search_semantic_scholar(top_venue_query, max_results=12)
+        top_block["retrieval_strategy"] = "subspace_top_venue"
+        top_block["subspace"] = subspace_name
+        blocks.append(top_block)
+
+    # 3. Regular: standard relevance search
+    if "semantic_scholar" in providers:
+        regular_block = search_semantic_scholar(base_query, max_results=10)
+        regular_block["retrieval_strategy"] = "subspace_regular"
+        regular_block["subspace"] = subspace_name
+        blocks.append(regular_block)
+
+    # 4. Preprints: latest from arxiv
+    if "arxiv" in providers:
+        preprint_block = arxiv_skip_block(base_query) or search_arxiv(
+            base_query, max_results=4, sort_by="submittedDate"
+        )
+        preprint_block["retrieval_strategy"] = "subspace_preprint"
+        preprint_block["subspace"] = subspace_name
+        blocks.append(preprint_block)
+
+    # Flatten, dedupe, rank
+    all_results = flatten_literature_results(blocks)
+    deduped = dedupe_literature_results(all_results)
+    ranked = rank_literature_results(base_query, deduped)
+
+    # Classify results by type
+    milestone_papers = sorted(
+        [r for r in ranked if numeric_value(r.get("citation_count")) >= 50],
+        key=lambda r: -numeric_value(r.get("citation_count")),
+    )[:2]
+    top_venue_papers = [
+        r for r in ranked
+        if is_top_venue_result(r) and r not in milestone_papers
+    ][:5]
+    preprint_papers = [
+        r for r in ranked
+        if is_preprint_literature_result(r) and r not in milestone_papers and r not in top_venue_papers
+    ][:2]
+    used_keys = {literature_result_unique_key(r) for r in milestone_papers + top_venue_papers + preprint_papers}
+    regular_papers = [
+        r for r in ranked
+        if literature_result_unique_key(r) not in used_keys
+        and not is_low_quality_literature_result(r)
+    ][:5]
+
+    # Combine with type labels
+    final_results: list[dict[str, Any]] = []
+    for paper in milestone_papers:
+        paper["subspace"] = subspace_name
+        paper["paper_type"] = "milestone"
+        final_results.append(paper)
+    for paper in top_venue_papers:
+        paper["subspace"] = subspace_name
+        paper["paper_type"] = "top_venue"
+        final_results.append(paper)
+    for paper in regular_papers:
+        paper["subspace"] = subspace_name
+        paper["paper_type"] = "regular"
+        final_results.append(paper)
+    for paper in preprint_papers:
+        paper["subspace"] = subspace_name
+        paper["paper_type"] = "preprint"
+        final_results.append(paper)
+
+    log_event("SCIENCE", "subspace_searched",
+              subspace=subspace_name, query=base_query[:80],
+              milestone=len(milestone_papers), top_venue=len(top_venue_papers),
+              regular=len(regular_papers), preprint=len(preprint_papers),
+              total=len(final_results))
+
+    return {
+        "subspace": subspace_name,
+        "query": base_query,
+        "providers": providers,
+        "total_results": len(final_results),
+        "results": final_results,
+        "type_breakdown": {
+            "milestone": len(milestone_papers),
+            "top_venue": len(top_venue_papers),
+            "regular": len(regular_papers),
+            "preprint": len(preprint_papers),
+        },
+        "blocks": blocks,
+    }
+
+
+def run_subspace_literature_search(
+    domain: str,
+    query: str,
+    providers: list[str],
+    max_subspaces: int = 8,
+    use_llm: bool = False,
+    years: str = "",
+) -> dict[str, Any]:
+    """Orchestrate the full serial subspace search flow.
+
+    1. Decompose domain into subspaces via review papers
+    2. For each subspace (serial): search with type-based quotas
+    3. Return all results grouped by subspace
+    """
+    decomposition = decompose_domain_into_subspaces(
+        domain=domain, query=query, providers=providers,
+        max_reviews=4, target_subspaces=max_subspaces, use_llm=use_llm,
+    )
+    subspaces = decomposition.get("subspaces", [])
+    all_results: list[dict[str, Any]] = []
+    subspace_reports: list[dict[str, Any]] = []
+
+    for idx, subspace in enumerate(subspaces):
+        subspace_name = str(subspace.get("name", f"Subspace {idx + 1}"))
+        subspace_query = str(subspace.get("query", query))
+        log_event("SCIENCE", "subspace_search_start",
+                  subspace_index=idx + 1, total_subspaces=len(subspaces),
+                  name=subspace_name, query=subspace_query[:80])
+
+        result = search_subspace_stratified(
+            subspace_query=subspace_query,
+            providers=providers,
+            subspace_name=subspace_name,
+            years=years,
+        )
+        subspace_results = result.get("results", [])
+        all_results.extend(subspace_results)
+
+        # Log each paper title for visibility
+        for paper in subspace_results:
+            title = str(paper.get("title") or "untitled")[:120]
+            paper_type = str(paper.get("paper_type") or "unknown")
+            log_event("SCIENCE", "subspace_paper_found",
+                      subspace=subspace_name, paper_type=paper_type,
+                      title=title,
+                      citations=int(paper.get("citation_count") or 0))
+
+        subspace_reports.append({
+            "subspace": subspace_name,
+            "query": subspace_query,
+            "rationale": subspace.get("rationale", ""),
+            "total_results": len(subspace_results),
+            "type_breakdown": result.get("type_breakdown", {}),
+        })
+
+    log_event("SCIENCE", "subspace_search_complete",
+              domain=domain[:80], subspace_count=len(subspaces),
+              total_papers=len(all_results))
+
+    return {
+        "strategy": "subspace_decomposition",
+        "domain": domain,
+        "query": query,
+        "decomposition": decomposition,
+        "subspace_reports": subspace_reports,
+        "total_results": len(all_results),
+        "results": all_results,
+    }
+
+
 def diverse_rerank_literature_results(results: list[dict[str, Any]], max_results: int) -> list[dict[str, Any]]:
     try:
         from ._literature_scoring import literature_result_text_similarity, literature_selection_base_score
