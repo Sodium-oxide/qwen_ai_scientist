@@ -89,6 +89,7 @@ def resolve_tool_placeholders(
     lookup: dict[str, str] = {}
     for prev in previous_results:
         content = str(prev.get("content", ""))
+        tool_name = str(prev.get("_tool_name", ""))
         # Try to parse JSON content for field access
         try:
             parsed = json.loads(content)
@@ -96,6 +97,9 @@ def resolve_tool_placeholders(
                 for key, value in parsed.items():
                     lookup[key] = str(value)
                     lookup[f"previous_tool_result.{key}"] = str(value)
+                    # Also add tool-name-prefixed key: e.g. create_research_project.project_id
+                    if tool_name:
+                        lookup[f"{tool_name}.{key}"] = str(value)
         except (json.JSONDecodeError, TypeError):
             pass
     if not lookup:
@@ -519,6 +523,7 @@ def run_agent_locked(user_input: str) -> str:
                     elif isinstance(block, dict):
                         block["input"] = resolved_input
             result = run_tool(block, messages, current_handlers)
+            result["_tool_name"] = normalize_tool_name(block_attr(block, "name"))
             tool_results.append(result)
         for block, result in zip(tool_blocks, tool_results):
             if normalize_tool_name(block_attr(block, "name")) == "create_task":
