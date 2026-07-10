@@ -257,6 +257,65 @@ def run_autogen_research_flow(
                 }
                 log_event("AUTOGEN", "grade_gap_prefilter", sufficient=grade_ok, coverage=round(grade_coverage, 3), reason=grade_reason)
 
+        # === SOCRATES: mechanism enrichment via targeted literature search ===
+        if "tanxi" in autogen_agent_keys(groupchat_spec) and "mingli" in autogen_agent_keys(groupchat_spec):
+            try:
+                from ._socrates import socrates_mechanism_enrichment, check_mechanism_contract_completeness
+                from ._hypothesis import mechanism_contract_for_candidate
+            except ImportError:
+                from _socrates import socrates_mechanism_enrichment, check_mechanism_contract_completeness
+                from _hypothesis import mechanism_contract_for_candidate
+
+            enrichment_gaps = state.get("best_gap_context") or []
+            socrates_reports: list[dict[str, Any]] = []
+            for gap_ctx in enrichment_gaps[:3]:  # Enrich top 3 gaps
+                if not isinstance(gap_ctx, dict) or not gap_ctx.get("description"):
+                    continue
+                # Build a candidate-like dict for mechanism contract check
+                candidate_like = {
+                    "statement": str(gap_ctx.get("description", "")),
+                    "mechanism": str(gap_ctx.get("value_argument", "")),
+                    "causal_chain": [],
+                    "mechanism_specification": gap_ctx.get("mechanism_specification", {}),
+                }
+                contract = mechanism_contract_for_candidate(candidate_like)
+                unresolved = check_mechanism_contract_completeness(contract)
+                if unresolved:
+                    log_event("AUTOGEN", "socrates_enrichment_start",
+                              gap_id=gap_ctx.get("gap_id", ""),
+                              unresolved_count=len(unresolved),
+                              unresolved_fields=unresolved[:5])
+                    result = socrates_mechanism_enrichment(
+                        project_id=project_id,
+                        gap=gap_ctx,
+                        mechanism_contract=contract,
+                        domain=domain,
+                        providers=selected_providers,
+                        max_iterations=2,
+                        use_llm=use_llm,
+                    )
+                    enriched_contract = result.get("mechanism_contract", {})
+                    report = result.get("enrichment_report", {})
+                    socrates_reports.append({
+                        "gap_id": gap_ctx.get("gap_id", ""),
+                        "verdict": report.get("verdict", ""),
+                        "total_searches": report.get("total_searches", 0),
+                        "total_imports": report.get("total_imports", 0),
+                        "remaining_unresolved": report.get("remaining_unresolved", []),
+                    })
+                    # Update gap context with enriched mechanism info
+                    if enriched_contract:
+                        gap_ctx["mechanism_specification"] = enriched_contract
+                        gap_ctx["socrates_enrichment"] = report
+                    log_event("AUTOGEN", "socrates_enrichment_done",
+                              gap_id=gap_ctx.get("gap_id", ""),
+                              verdict=report.get("verdict", ""),
+                              searches=report.get("total_searches", 0),
+                              imports=report.get("total_imports", 0),
+                              remaining=len(report.get("remaining_unresolved", [])))
+            if socrates_reports:
+                state["socrates_enrichment"] = socrates_reports
+
         if "mingli" in autogen_agent_keys(groupchat_spec):
             # Collect all valid gaps for multi-gap aggregation with rotation on retry
             all_valid_gaps = [
