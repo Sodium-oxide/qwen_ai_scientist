@@ -4,6 +4,7 @@ import json
 import sys
 
 import science_core as sc
+import autogen_collab as ac
 
 print("=" * 60)
 print("FULL TEST SUITE -- science_core refactoring verification")
@@ -339,6 +340,75 @@ def t_cf_type():
     assert sc.classify_gap_counterfactual_type({"related_evidence_count": 3, "resolution_complexity": "low"}) == "complement_gap"
 test("classify_gap_counterfactual_type", t_cf_type)
 
+def t_cf_plan_validation():
+    proj = {"papergraph": [
+        {"method": "simulation", "scenario": "reaction dynamics", "benchmark": "trajectory error",
+         "contribution": "Simulation explains the observed transition through an intermediate state.",
+         "title": "A", "citation": "A"},
+    ], "evidence": []}
+    gap = sc.make_gap("mechanism_problem", "Mechanism remains unclear for reaction dynamics", ["A"], "path", "value")
+    result = sc.validate_gap_resolution_plan(gap, proj["papergraph"])
+    assert result["verdict"] == "INVALID_RESOLUTION_PATH"
+    assert result["first_failed_step"] and result["minimal_missing_capabilities"]
+    assert result["repair_classification"] in ("complement_or_composition", "out_of_distribution_capability")
+test("counterfactual plan validation", t_cf_plan_validation)
+
+def t_gap_hypothesis_preparation():
+    project = {"papergraph": [
+        {"title": "A", "citation": "A", "method": "time-resolved measurement", "scenario": "coupled process",
+         "benchmark": "transition probability", "abstract": "Under 5 mM input, the measurement quantified transition probability.",
+         "contribution": "An intermediate state precedes the outcome."},
+    ], "evidence": []}
+    gap = sc.make_gap("mechanism_problem", "The intermediate mechanism remains unclear in the coupled process.", ["A"], "path", "value")
+    prepared = sc.prepare_gap_for_hypothesis(project, gap)
+    assert prepared["hypothesis_readiness"]["ready"]
+    assert prepared["evidence_packets"] and prepared["counterfactual_leaves"]
+test("evidence-grounded gap preparation", t_gap_hypothesis_preparation)
+
+def t_contradiction_gap_comparability():
+    project = {"papergraph": [
+        {"title": "Method A under target condition", "citation": "A doi:10.1000/demo-a", "scenario": "target system", "benchmark": "primary outcome", "abstract": "Method A improves the primary outcome in the target system."},
+        {"title": "Method B under target condition", "citation": "B doi:10.1000/demo-b", "scenario": "target system", "benchmark": "primary outcome", "abstract": "Method B fails and degrades the primary outcome in the target system."},
+    ]}
+    gap = sc.make_gap("contradiction", "Two studies report opposing outcome claims.", ["A doi:10.1000/demo-a", "B doi:10.1000/demo-b"], "compare", "resolve")
+    result = sc.validate_contradiction_gap(project, gap)
+    assert result["verdict"] == "COMPARABLE_CONTRADICTION"
+test("Contradiction validator accepts comparable opposing claims", t_contradiction_gap_comparability)
+
+def t_contradiction_scope_mismatch():
+    project = {"papergraph": [
+        {"title": "Method A success", "citation": "A", "scenario": "system one", "benchmark": "outcome one", "abstract": "Method A improves outcome one."},
+        {"title": "Method B success", "citation": "B", "scenario": "system two", "benchmark": "outcome two", "abstract": "Method B improves outcome two."},
+    ]}
+    gap = sc.make_gap("contradiction", "Potential conclusion conflict.", ["A", "B"], "compare", "resolve")
+    result = sc.validate_contradiction_gap(project, gap)
+    assert result["verdict"] == "NOT_COMPARABLE"
+test("Contradiction validator rejects scope mismatch", t_contradiction_scope_mismatch)
+
+def t_prefilter_resolves_citation_identity():
+    project = {"papergraph": [
+        {"title": "A source-grounded result", "citation": "Author (2024) A source-grounded result doi:10.1000/demo-c", "abstract": "The target variable changes under the stated condition."},
+    ]}
+    gap = sc.make_gap("mechanism_problem", "The target variable remains unclear under the stated condition.", ["Author (2024) A source-grounded result doi:10.1000/demo-c"], "test", "resolve")
+    sufficient, _reason, coverage = sc.prefilter_gap_combination(project, [gap])
+    assert sufficient and coverage >= 0.5
+test("GRADE prefilter resolves DOI/title citation identity", t_prefilter_resolves_citation_identity)
+
+def t_collision_population():
+    project = {"domain": "generic scientific system", "papergraph": [
+        {"title": "A", "citation": "A", "method": "time-resolved measurement", "scenario": "coupled process",
+         "benchmark": "transition probability", "abstract": "Under 5 mM input, the measurement quantified transition probability.",
+         "contribution": "An intermediate state precedes the outcome."},
+    ], "evidence": []}
+    gap = sc.prepare_gap_for_hypothesis(project, sc.make_gap("mechanism_problem", "The intermediate mechanism remains unclear in the coupled process.", ["A"], "path", "value"))
+    population = sc.seed_hypothesis_population(project, [gap], population_size=2, use_llm=False)
+    assert len(population) == 2
+    assert population[0]["collision_source"]["role"] == "inspiration_only_not_evidence"
+    assert "mechanism-stress intervention" not in population[0]["statement"].lower()
+    assert "latent damage" not in population[0]["statement"].lower()
+    assert population[0]["claim_scope"] == "phenomenological_pending_mechanism"
+test("evidence-grounded collision population", t_collision_population)
+
 # --- v3.0: GRADE Knowledge Sufficiency ---
 print("\n-- GRADE Knowledge Sufficiency (v3.0) --")
 
@@ -377,6 +447,182 @@ def t_spec_bad():
     assert r["verdict"] in ("REJECT", "reject", "requires_revision") or len(r.get("missing_dimensions", [])) >= 2
 test("Specificity rejects generic hypothesis", t_spec_bad)
 
+def t_template_allows_experimental_terms():
+    idea = {
+        "title": "Time-resolved perturbation test of an intermediate state",
+        "hypothesis": "At 5 mM input, perturbing the intermediate state changes transition probability before the final outcome.",
+        "abstract": "The experiment uses matched baselines, negative controls, ablations, and calibrated metrics to test the causal ordering.",
+        "related_work": "Prior measurements report the intermediate state before the transition.",
+        "measurable_outputs": ["transition probability", "time to outcome"],
+        "evidence_packets": [{"citation": "Paper A", "evidence": "The intermediate state precedes the outcome."}],
+    }
+    result = sc.detect_hypothesis_template(idea)
+    assert not result["is_template"]
+    assert result["severity"] != "REJECT"
+    assert "baseline" in result["experimental_structure_terms"]
+    assert result["evidence_grounded"]
+test("Template checker permits normal experimental terminology", t_template_allows_experimental_terms)
+
+def t_mechanism_operationalization_audit():
+    incomplete = sc.mechanism_operationalization_audit("An intervention changes an unspecified mediator.", {})
+    assert json.loads(incomplete)["verdict"] == "REQUIRES_REVISION"
+    complete = sc.mechanism_operationalization_audit(
+        "A controlled intervention changes state X before outcome Y.",
+        {
+            "identity": "State X is the normalized concentration difference between the treated and control components.",
+            "location_or_scope": "The measured interface between the treated and control components at the defined observation boundary.",
+            "dynamics": "State X is sampled every ten iterations and tested for a threshold change before outcome Y.",
+            "reversibility": "Remove the intervention for one recovery interval; State X should return toward its pre-intervention value.",
+            "observability": [
+                {"modality": "time-resolved sensor", "signal": "State X exceeds the preregistered threshold before outcome Y changes."},
+                {"modality": "independent assay", "signal": "The assay reproduces the direction of the State X change."},
+            ],
+        },
+    )
+    assert json.loads(complete)["verdict"] == "PASS"
+test("Five-dimension mechanism operationalization audit", t_mechanism_operationalization_audit)
+
+def t_mechanism_contract_rejects_generic_mediator():
+    candidate = {
+        "statement": "If an intervention is applied, outcome Y changes because cumulative damage mediates the effect.",
+        "mechanism": "A narrative description of cumulative damage.",
+        "causal_chain": ["intervention -> cumulative damage", "cumulative damage -> outcome Y"],
+        "mechanism_specification": {
+            "identity": "cumulative damage", "location_or_scope": "the defined interface",
+            "dynamics": "increases over repeated cycles", "reversibility": "does not recover after removal",
+            "intervention": "block the intervention", "counterfactual": "blocking intervention prevents the outcome",
+            "observability": [
+                {"modality": "measurement A", "signal": "damage marker increases"},
+                {"modality": "measurement B", "signal": "independent damage marker increases"},
+            ],
+        },
+        "cross_domain_bridge": {"source_domain": "ecology", "abstract_structure": "state transition", "target_role_mapping": [
+            {"lens_role": "initial state", "papergraph_entity": "intervention"},
+            {"lens_role": "later state", "papergraph_entity": "outcome Y"},
+        ], "novel_mechanism_claim": "cumulative damage"},
+    }
+    result = sc.mechanism_contract_for_candidate(candidate)
+    assert result["verdict"] == "NEEDS_MECHANISM_ENRICHMENT"
+    assert not result["checks"]["concrete_mediator"]
+test("Mechanism contract rejects generic mediator", t_mechanism_contract_rejects_generic_mediator)
+
+def t_mechanism_contract_accepts_causal_commitment():
+    candidate = {
+        "statement": "If a controllable input is blocked, mediator X will not change and outcome Y remains at the matched baseline.",
+        "mechanism": "Input changes the concentration difference X at the observation boundary, which in turn changes outcome Y.",
+        "causal_chain": ["input blockade -> concentration difference X", "concentration difference X -> outcome Y"],
+        "mechanism_specification": {
+            "identity": "normalized concentration difference X between treated and control components",
+            "location_or_scope": "the defined interface between treated and control components",
+            "dynamics": "sample X every ten iterations and test whether it crosses the preregistered threshold before Y",
+            "reversibility": "remove the input for one recovery interval; X should return toward the matched baseline",
+            "intervention": "block the controllable input while holding the matched baseline fixed",
+            "counterfactual": "if the input is blocked, X and outcome Y remain at the matched baseline",
+            "observability": [
+                {"modality": "time-resolved sensor", "signal": "X crosses the preregistered threshold before outcome Y changes"},
+                {"modality": "independent assay", "signal": "the assay confirms the direction and timing of the X change"},
+            ],
+        },
+        "cross_domain_bridge": {"source_domain": "ecology", "abstract_structure": "early changes enable later states", "target_role_mapping": [
+            {"lens_role": "early state", "papergraph_entity": "concentration difference X"},
+            {"lens_role": "later state", "papergraph_entity": "outcome Y"},
+        ], "novel_mechanism_claim": "input-induced concentration difference X causes outcome Y"},
+        "null_hypothesis": "Blocking the input leaves X and outcome Y unchanged.",
+        "alternative_hypothesis": "The input changes X before outcome Y changes.",
+        "testable_subhypotheses": ["input changes X", "X precedes outcome Y", "blocking input prevents X and outcome Y changes"],
+        "evidence_assignment": [
+            {"causal_link": "input -> concentration difference X", "citations": ["Paper Alpha 2024"], "support_level": "partial"},
+            {"causal_link": "concentration difference X -> outcome Y", "citations": ["Paper Beta 2023"], "support_level": "novel_candidate"},
+        ],
+    }
+    result = sc.mechanism_contract_for_candidate(candidate)
+    assert result["verdict"] == "READY"
+    assert result["claim_scope"] == "mechanistic"
+test("Mechanism contract accepts causal commitment", t_mechanism_contract_accepts_causal_commitment)
+
+def t_collision_lenses_are_cross_family():
+    gaps = [{
+        "description": "A high-voltage material interface shows an unresolved reaction and transport trade-off.",
+        "hypothesis_ingredients": {"methods": ["controlled intervention"], "scenarios": ["material interface"]},
+    }]
+    lenses = sc.select_distant_collision_lenses(gaps, count=4)
+    assert lenses
+    assert all(item["source_domain"] != "materials science" for item in lenses)
+test("Collision engine excludes same-family lenses", t_collision_lenses_are_cross_family)
+
+def t_debate_brief_context():
+    project = {"papergraph": [
+        {
+            "title": "Measurement of an intermediate state", "citation": "Paper A",
+            "method": "time-resolved measurement", "scenario": "coupled process", "benchmark": "transition probability",
+            "abstract": "The intermediate state precedes the outcome under 5 mM input.",
+            "contribution": "Quantified the transition mechanism.",
+        },
+        {
+            "title": "Limitation under shifted conditions", "citation": "Paper B",
+            "method": "time-resolved measurement", "scenario": "coupled process", "benchmark": "transition probability",
+            "abstract": "However, the effect fails under a shifted environment and remains unclear.",
+            "contribution": "Reported a limitation of the proposed mechanism.",
+        },
+    ], "evidence": []}
+    gap = sc.make_gap("mechanism_problem", "The intermediate mechanism remains unclear.", ["Paper A", "Paper B"], "path", "value")
+    gap["counterfactual_leaves"] = ["If the intermediate is blocked, transition probability should not change."]
+    record = {"source_gap": gap, "evidence_packets": [{"citation": "Paper A"}, {"citation": "Paper B"}]}
+    brief = sc.generate_debate_brief(project, "The intermediate state causally controls transition probability.", record)
+    assert brief["context_validation"]["ready"]
+    assert brief["supporting_evidence"] and brief["contradicting_evidence"]
+    questions = sc.duzhi_generate_questions(
+        "The intermediate state causally controls transition probability.",
+        "The intermediate causes the transition.",
+        [],
+        allowed_types=["constraint_check", "counterexample_challenge"],
+        debate_brief=brief,
+    )
+    assert any("Paper B" in question["question"] for question in questions)
+test("Debate brief supplies evidence-bounded counterarguments", t_debate_brief_context)
+
+def t_deepsurvey_keynote_normalization():
+    keynote = sc.normalize_keynote({
+        "title": "Mechanism paper",
+        "key_contributions": ["Contribution A"],
+        "methodology": {"approach": ["Method A"], "design_choices": ["Choice A"], "assumptions": ["Assumption A"]},
+        "experiments": {"setup": ["Setup A"], "baselines": ["Baseline A"], "main_results": ["Result A"], "additional_studies": ["Ablation A"]},
+        "significance": "Significance A",
+        "limitations": ["Limitation A"],
+        "future_directions": [{"direction": "Test boundary B", "evidence": "Outlook sentence", "status": "author_stated"}],
+        "critical_reflections": [{"reflection": "Result needs a matched control", "evidence": "Limitation A", "status": "source_supported"}],
+        "tldr": "One-sentence summary.",
+        "repository_artifacts": [{"url_or_name": "https://example.org/repo", "artifact_type": "repository", "evidence": "Code available", "analysis_status": "not_fetched"}],
+    })
+    assert keynote["key_contributions"] == ["Contribution A"]
+    assert keynote["experiments"]["baselines"] == ["Baseline A"]
+    assert keynote["future_directions"][0]["status"] == "author_stated"
+    assert keynote["repository_artifacts"][0]["analysis_status"] == "not_fetched"
+test("DeepSurvey Keynote normalization", t_deepsurvey_keynote_normalization)
+
+def t_keynote_cluster_gap_is_evidence_bounded():
+    project = {"keynote_knowledge_synthesis": {"cluster_level": [{
+        "cluster_id": "cluster_a", "label": "target scenario", "methods": ["Method A", "Method B"],
+        "scenarios": ["target scenario"], "benchmarks": ["metric A"], "citations": ["Paper A", "Paper B"],
+        "comparison_table": [], "relations": [],
+        "cluster_insights": {"common_limitations": ["The boundary mechanism remains unresolved."], "future_directions": []},
+    }]}, "papergraph": [], "evidence": []}
+    gaps = sc.detect_keynote_cluster_gaps(project, limit=2)
+    assert len(gaps) == 1
+    assert gaps[0]["gap_type"] == "cluster_comparison"
+    assert gaps[0]["supporting_references"] == ["Paper A", "Paper B"]
+test("Keynote cluster gaps retain evidence references", t_keynote_cluster_gap_is_evidence_bounded)
+
+def t_autogen_hypothesis_text():
+    project = {"hypotheses": [{
+        "hypothesis_id": "hyp_demo",
+        "statement": "A controllable input changes an intermediate state.",
+        "mechanism": "The intermediate precedes the measurable outcome.",
+    }]}
+    text = ac.autogen_hypothesis_text(project, "hyp_demo")
+    assert "controllable input" in text and "intermediate" in text
+test("AutoGen reads persisted hypothesis before GRADE", t_autogen_hypothesis_text)
+
 # --- Tools.py / autogen_collab.py compatibility ---
 print("\n-- Backward Compatibility --")
 
@@ -391,6 +637,7 @@ TOOLS_IMPORTS = [
     "build_knowledge_map", "add_literature_evidence", "import_literature_text",
     "import_literature_file", "import_literature_search_result",
     "extract_paper_keynote", "import_papergraph_record", "list_papergraph_records",
+    "build_keynote_knowledge_synthesis",
     "verify_citation_uniqueness", "assess_novelty", "verify_uniqueness",
     "run_zhizhi_literature_analysis", "parse_literature_text", "build_coverage_matrix",
     "detect_knowledge_gaps", "run_tanxi_gap_exploration", "load_project",
@@ -399,7 +646,7 @@ TOOLS_IMPORTS = [
     "find_structural_analogy_transfers", "run_mingli_hypothesis_evolution",
     "generate_idea", "design_experiment", "finalize_idea", "create_hypothesis",
     "run_mechanism_check", "check_internal_consistency", "check_data_consistency",
-    "regime_shift_test", "detect_selective_citation", "causal_chain_audit",
+    "regime_shift_test", "detect_selective_citation", "causal_chain_audit", "mechanism_operationalization_audit",
     "run_yanzhen_mechanism_verification", "ask_socratic_questions",
     "ask_critical_questions", "find_counterexamples", "stress_test_assumptions",
     "moderate_round", "summarize_positions", "extract_emergent_method",
@@ -407,7 +654,7 @@ TOOLS_IMPORTS = [
     # v3.0
     "tabi_abductive_gap_detection", "extract_evidence_pairs_from_records",
     "counterfactual_gap_analysis", "build_counterfactual_tree",
-    "grade_knowledge_sufficiency", "enforce_hypothesis_specificity",
+    "grade_knowledge_sufficiency", "enforce_hypothesis_specificity", "generate_debate_brief",
     "domain_exclusion_markers",
 ]
 

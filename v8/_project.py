@@ -55,6 +55,7 @@ def create_research_project(
         "knowledge_gaps": [],
         "hypotheses": [],
         "keynotes": [],
+        "keynote_knowledge_synthesis": {},
         "mechanism_reports": [],
         "pipeline_tasks": [],
     }
@@ -976,6 +977,7 @@ def get_science_agent_prompt(agent: str) -> str:
                     "regime_shift_test",
                     "detect_selective_citation",
                     "causal_chain_audit",
+                    "mechanism_operationalization_audit",
                     "run_yanzhen_mechanism_verification",
                 ],
                 "observation": "Return layer verdicts, detailed reasoning, CAWM risk, selective citation risk, and human-review flags.",
@@ -983,6 +985,7 @@ def get_science_agent_prompt(agent: str) -> str:
             "output_schema": yanzhen_output_schema(),
             "global_constraints": [
                 "All three layers must be executed.",
+                "Every claimed mediator must pass the five-dimension operationalization audit or be downgraded to a phenomenological claim.",
                 "Regime shift testing must include at least two shifted conditions.",
                 "Do not pass hypotheses with missing evidence, unstated assumptions, or brittle mechanisms.",
                 "The audit must be domain-general and avoid field-specific hardcoding.",

@@ -472,6 +472,14 @@ def build_literature_relation_graph(
     return science_relation_graph(search_id, query, max_nodes, min_quality, max_clusters)
 
 
+def build_keynote_knowledge_synthesis(project_id: str, max_clusters: int = 8) -> str:
+    try:
+        from .science_core import build_keynote_knowledge_synthesis as science_keynote_synthesis
+    except ImportError:
+        from science_core import build_keynote_knowledge_synthesis as science_keynote_synthesis
+    return science_keynote_synthesis(project_id, max_clusters)
+
+
 def create_science_pipeline_tasks(project_id: str) -> str:
     try:
         from .science_core import create_science_pipeline_tasks as science_pipeline
@@ -1045,12 +1053,13 @@ def generate_idea(
     style: str = "innovative",
     parent_hypothesis_id: str = "",
     use_llm: bool = False,
+    candidate_pool_size: int = 3,
 ) -> str:
     try:
         from .science_core import generate_idea as science_generate_idea
     except ImportError:
         from science_core import generate_idea as science_generate_idea
-    return science_generate_idea(project_id, gap, gap_id, style, parent_hypothesis_id, use_llm)
+    return science_generate_idea(project_id, gap, gap_id, style, parent_hypothesis_id, use_llm, candidate_pool_size)
 
 
 def design_experiment(
@@ -1162,6 +1171,18 @@ def causal_chain_audit(
     except ImportError:
         from science_core import causal_chain_audit as science_chain
     return science_chain(causal_chain, evidence_for_each)
+
+
+def mechanism_operationalization_audit(
+    hypothesis: str,
+    mechanism_specification: dict[str, object] | None = None,
+    original_sources: list[object] | None = None,
+) -> str:
+    try:
+        from .science_core import mechanism_operationalization_audit as science_operationalization
+    except ImportError:
+        from science_core import mechanism_operationalization_audit as science_operationalization
+    return science_operationalization(hypothesis, mechanism_specification, original_sources)
 
 
 def run_yanzhen_mechanism_verification(
@@ -1280,6 +1301,7 @@ def run_socratic_hypothesis_debate(
     shifted_conditions: list[object] | None = None,
     auto_literature_supplement: bool = True,
     supplement_providers: list[str] | None = None,
+    use_llm_revisions: bool = True,
 ) -> str:
     try:
         from .science_core import run_socratic_hypothesis_debate as science_debate
@@ -1297,6 +1319,7 @@ def run_socratic_hypothesis_debate(
         shifted_conditions,
         auto_literature_supplement,
         supplement_providers,
+        use_llm_revisions,
     )
 
 
@@ -2336,14 +2359,14 @@ SCIENCE_TOOLS = [
                 "population_size": {"type": "integer", "description": "Initial hypothesis population size."},
                 "generations": {"type": "integer", "description": "Tournament evolution generations."},
                 "top_k": {"type": "integer", "description": "Number of final hypotheses to persist."},
-                "use_llm": {"type": "boolean", "description": "Reserved for future LLM seed generation; v1 uses auditable templates."},
+                "use_llm": {"type": "boolean", "description": "Use Qwen to generate evidence-bound mechanistic collision candidates; candidates without a complete causal contract are retained only as evidence-debt reports."},
             },
             "required": ["project_id"],
         },
     },
     {
         "name": "generate_idea",
-        "description": "MingLi action: generate one gap-traceable research idea from a TanXi/ZhiZhi knowledge gap, with auditable lineage and preliminary scores.",
+        "description": "MingLi action: generate and rank gap-traceable mechanism hypotheses. A candidate advances only when it states X -> Z -> Y, intervention, counterfactual, independent observations, and a mapped cross-domain causal bridge.",
         "input_schema": {
             "type": "object",
             "properties": {
@@ -2352,7 +2375,8 @@ SCIENCE_TOOLS = [
                 "gap_id": {"type": "string", "description": "Specific TanXi/ZhiZhi knowledge gap id."},
                 "style": {"type": "string", "description": "innovative or conservative."},
                 "parent_hypothesis_id": {"type": "string", "description": "Optional parent id for tournament mutation lineage."},
-                "use_llm": {"type": "boolean", "description": "Reserved flag for LLM-assisted generation; deterministic fallback remains auditable."},
+                "use_llm": {"type": "boolean", "description": "Use Qwen for evidence-bound mechanistic collision generation; false returns only auditable seeds and their missing mechanism knowledge."},
+                "candidate_pool_size": {"type": "integer", "description": "Number of collision candidates to rank (1-5; default 3). Larger pools cost more model calls when use_llm is true."},
             },
             "required": ["project_id"],
         },
@@ -2519,6 +2543,7 @@ SCIENCE_TOOLS = [
                 "shifted_conditions": {"type": "array", "items": {}, "description": "Optional regime shift tests."},
                 "auto_literature_supplement": {"type": "boolean", "description": "If true, YanZhen unsupported claims trigger capped ZhiZhi evidence completion."},
                 "supplement_providers": {"type": "array", "items": {"type": "string"}, "description": "Optional providers for audit-triggered literature completion."},
+                "use_llm_revisions": {"type": "boolean", "description": "If true, MingLi must generate a question-specific causal rewrite after DuZhi/YanZhen feedback; false records an evidence debt without pretending a template rewrite occurred."},
             },
             "required": ["project_id"],
         },
@@ -2607,6 +2632,31 @@ SCIENCE_TOOLS = [
         },
     },
     {
+        "name": "build_keynote_knowledge_synthesis",
+        "description": "Build DeepSurvey-style knowledge layers from extracted Keynotes: paper-level notes, cluster comparison tables/relations, and a review-level claim-to-evidence index. Repository references remain pointers unless separately analyzed.",
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "project_id": {"type": "string", "description": "Science project id."},
+                "max_clusters": {"type": "integer", "description": "Maximum Keynote clusters (1-20; default 8)."},
+            },
+            "required": ["project_id"],
+        },
+    },
+    {
+        "name": "mechanism_operationalization_audit",
+        "description": "YanZhen five-dimension audit: require a concrete mediator identity, location/scope, dynamics, reversibility test, and two independent observations before treating a mechanism as causal.",
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "hypothesis": {"type": "string", "description": "Hypothesis or mechanism text."},
+                "mechanism_specification": {"type": "object", "description": "Optional structured mechanism contract with identity, location_or_scope, dynamics, reversibility, and observability."},
+                "original_sources": {"type": "array", "items": {}, "description": "PaperGraph records or source snippets used to ground the contract."},
+            },
+            "required": ["hypothesis"],
+        },
+    },
+    {
         "name": "run_yanzhen_mechanism_verification",
         "description": "YanZhen full protocol: execute internal consistency, data consistency, selective citation, causal-chain, and regime-shift CAWM verification.",
         "input_schema": {
@@ -2678,6 +2728,7 @@ TOOL_HANDLERS: dict[str, Callable[..., str]] = {
     "select_literature_result": select_literature_result,
     "expand_literature_graph": expand_literature_graph,
     "build_literature_relation_graph": build_literature_relation_graph,
+    "build_keynote_knowledge_synthesis": build_keynote_knowledge_synthesis,
     "create_science_pipeline_tasks": create_science_pipeline_tasks,
     "create_science_delegation_tasks": create_science_delegation_tasks,
     "create_boxue_delegation_tasks": create_boxue_delegation_tasks,
@@ -2730,6 +2781,7 @@ TOOL_HANDLERS: dict[str, Callable[..., str]] = {
     "regime_shift_test": regime_shift_test,
     "detect_selective_citation": detect_selective_citation,
     "causal_chain_audit": causal_chain_audit,
+    "mechanism_operationalization_audit": mechanism_operationalization_audit,
     "run_yanzhen_mechanism_verification": run_yanzhen_mechanism_verification,
     "export_research_plan": export_research_plan,
 }

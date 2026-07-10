@@ -539,7 +539,7 @@ def extract_paper_keynote(
         source = find_by_id(project.get("papergraph", []), "paper_id", paper_id) or {}
         if not source:
             raise ValueError(f"Paper not found in project PaperGraph: {paper_id}")
-        source_text = "\n\n".join(
+        source_text = record_source_text(source) or "\n\n".join(
             part for part in [source.get("title", ""), source.get("abstract", ""), source.get("conclusion", ""), source.get("limitation", "")] if part
         )
     elif search_id:
@@ -574,7 +574,23 @@ def extract_paper_keynote(
         "createdAt": time.time(),
         "keynote": keynote,
     }
-    project.setdefault("keynotes", []).append(item)
+    # Keynotes are a paper-level knowledge unit.  Re-extraction replaces the
+    # previous unit for the same paper instead of growing a stale duplicate set.
+    existing = project.setdefault("keynotes", [])
+    replaced = False
+    for index, prior in enumerate(existing):
+        if isinstance(prior, dict) and paper_id and prior.get("paper_id") == paper_id:
+            existing[index] = item
+            replaced = True
+            break
+    if not replaced:
+        existing.append(item)
+    if paper_id:
+        for record in project.get("papergraph", []):
+            if isinstance(record, dict) and record.get("paper_id") == paper_id:
+                record["keynote_id"] = item["keynote_id"]
+                record["keynote_tldr"] = str(keynote.get("tldr") or "")
+                break
     save_project(project)
     return json.dumps(item, ensure_ascii=False, indent=2)
 
@@ -812,15 +828,21 @@ def extract_keynote_with_llm(text: str) -> dict[str, Any]:
         from _utils import trim_text
     schema = {
         "title": "string",
+        "authors": ["string"],
+        "abstract": "string",
         "core_problem": "string",
-        "contributions": ["string"],
-        "methods": ["string"],
-        "experiments_or_evidence": ["string"],
+        "key_contributions": ["string"],
+        "methodology": {"approach": ["string"], "design_choices": ["string"], "assumptions": ["string"]},
+        "experiments": {"setup": ["string"], "baselines": ["string"], "main_results": ["string"], "additional_studies": ["string"]},
+        "significance": "string",
         "assumptions": ["string"],
         "limitations": ["string"],
+        "future_directions": [{"direction": "string", "evidence": "string", "status": "author_stated | analyst_inference"}],
+        "critical_reflections": [{"reflection": "string", "evidence": "string", "status": "source_supported | analyst_inference"}],
+        "tldr": "string",
         "gap_signals": [{"signal_type": "string", "text": "string"}],
         "datasets_or_materials": ["string"],
-        "code_or_implementation": ["string"],
+        "repository_artifacts": [{"url_or_name": "string", "artifact_type": "repository | code | dataset | protocol | unknown", "evidence": "string", "analysis_status": "not_fetched | user_provided | analyzed"}],
         "important_claims": [{"claim": "string", "evidence": "string"}],
         "reuse_value_for_research": "string",
     }
@@ -829,7 +851,10 @@ def extract_keynote_with_llm(text: str) -> dict[str, Any]:
         max_tokens=2500,
         prompt=(
             "Extract a structured keynote for cross-paper comparison. Do not invent facts. "
-            "If only abstract is provided, mark missing details as empty arrays.\n\n"
+            "If only abstract is provided, mark unreported details as empty arrays or empty strings. "
+            "critical_reflections may be analyst_inference only when their evidence quotes a source passage; otherwise leave them empty. "
+            "future_directions must distinguish author_stated from analyst_inference. "
+            "Repository artifacts are evidence pointers only; never claim that a repository was inspected unless the supplied text contains its implementation details.\n\n"
             f"Schema:\n{json.dumps(schema, ensure_ascii=False, indent=2)}\n\n"
             f"Paper text:\n{trim_text(text, 14000)}"
         ),
@@ -844,15 +869,36 @@ def extract_keynote_heuristic(text: str) -> dict[str, Any]:
     parsed = parse_paper_text(text)
     return {
         "title": parsed.get("title", ""),
+        "authors": [],
+        "abstract": parsed.get("abstract", ""),
         "core_problem": first_sentences(parsed.get("abstract", "") or text, 1),
-        "contributions": string_list(parsed.get("contribution")),
-        "methods": string_list(parsed.get("method")) if parsed.get("method") != "unknown method" else [],
-        "experiments_or_evidence": extract_bullets_or_sentences(text, ["experiment", "evaluate", "result", "dataset", "case study"], limit=5),
+        "key_contributions": string_list(parsed.get("contribution")),
+        "methodology": {
+            "approach": string_list(parsed.get("method")) if parsed.get("method") != "unknown method" else [],
+            "design_choices": extract_bullets_or_sentences(text, ["we use", "we propose", "design", "framework", "architecture"], limit=5),
+            "assumptions": extract_bullets_or_sentences(text, ["assume", "assumption", "under the condition"], limit=5),
+        },
+        "experiments": {
+            "setup": extract_bullets_or_sentences(text, ["experiment", "evaluate", "dataset", "case study", "measurement"], limit=5),
+            "baselines": extract_bullets_or_sentences(text, ["baseline", "compared", "comparison", "control"], limit=5),
+            "main_results": extract_bullets_or_sentences(text, ["result", "improve", "increase", "decrease", "demonstrate"], limit=5),
+            "additional_studies": extract_bullets_or_sentences(text, ["ablation", "sensitivity", "robust", "supplementary"], limit=5),
+        },
+        "significance": first_sentences(parsed.get("contribution", ""), 1),
         "assumptions": extract_bullets_or_sentences(text, ["assume", "assumption", "under the condition"], limit=5),
         "limitations": string_list(parsed.get("limitation")) if parsed.get("limitation") else [],
+        "future_directions": [
+            {"direction": item, "evidence": item, "status": "author_stated"}
+            for item in extract_bullets_or_sentences(text, ["future work", "future direction", "remain", "challenge", "outlook"], limit=5)
+        ],
+        "critical_reflections": [],
+        "tldr": first_sentences(parsed.get("contribution", "") or parsed.get("abstract", "") or text, 1),
         "gap_signals": parsed.get("gap_signals", []),
         "datasets_or_materials": extract_bullets_or_sentences(text, ["dataset", "benchmark", "data", "material", "sample"], limit=5),
-        "code_or_implementation": extract_bullets_or_sentences(text, ["code", "repository", "implementation", "github"], limit=5),
+        "repository_artifacts": [
+            {"url_or_name": item, "artifact_type": "unknown", "evidence": item, "analysis_status": "not_fetched"}
+            for item in extract_bullets_or_sentences(text, ["code", "repository", "implementation", "github"], limit=5)
+        ],
         "important_claims": [{"claim": parsed.get("contribution", ""), "evidence": parsed.get("abstract", "")} if parsed.get("contribution") else {}],
         "reuse_value_for_research": "Useful as structured evidence if quality and citation checks pass.",
     }
@@ -860,10 +906,10 @@ def extract_keynote_heuristic(text: str) -> dict[str, Any]:
 def normalize_keynote(payload: dict[str, Any]) -> dict[str, Any]:
     try:
         from ._gap_detection import normalize_gap_signals
-        from ._utils import scalar, string_list
+        from ._utils import scalar, string_list, unique_preserve_order
     except ImportError:
         from _gap_detection import normalize_gap_signals
-        from _utils import scalar, string_list
+        from _utils import scalar, string_list, unique_preserve_order
     claims = payload.get("important_claims", [])
     normalized_claims: list[dict[str, str]] = []
     if isinstance(claims, list):
@@ -872,14 +918,67 @@ def normalize_keynote(payload: dict[str, Any]) -> dict[str, Any]:
                 normalized_claims.append({"claim": scalar(item.get("claim")), "evidence": scalar(item.get("evidence"))})
             elif scalar(item):
                 normalized_claims.append({"claim": scalar(item), "evidence": ""})
+    methodology = payload.get("methodology", {}) if isinstance(payload.get("methodology"), dict) else {}
+    experiments = payload.get("experiments", {}) if isinstance(payload.get("experiments"), dict) else {}
+    legacy_methods = string_list(payload.get("methods"))
+    legacy_evidence = string_list(payload.get("experiments_or_evidence"))
+
+    def normalized_annotations(value: Any, text_key: str) -> list[dict[str, str]]:
+        normalized: list[dict[str, str]] = []
+        for item in value if isinstance(value, list) else []:
+            if isinstance(item, dict):
+                text = scalar(item.get(text_key))
+                if text:
+                    normalized.append({
+                        text_key: text,
+                        "evidence": scalar(item.get("evidence")),
+                        "status": scalar(item.get("status")) or "analyst_inference",
+                    })
+            elif scalar(item):
+                normalized.append({text_key: scalar(item), "evidence": "", "status": "analyst_inference"})
+        return normalized
+
+    artifacts: list[dict[str, str]] = []
+    raw_artifacts = payload.get("repository_artifacts", payload.get("code_or_implementation", []))
+    for item in raw_artifacts if isinstance(raw_artifacts, list) else []:
+        if isinstance(item, dict):
+            name = scalar(item.get("url_or_name"))
+            if name:
+                artifacts.append({
+                    "url_or_name": name,
+                    "artifact_type": scalar(item.get("artifact_type")) or "unknown",
+                    "evidence": scalar(item.get("evidence")),
+                    "analysis_status": scalar(item.get("analysis_status")) or "not_fetched",
+                })
+        elif scalar(item):
+            artifacts.append({"url_or_name": scalar(item), "artifact_type": "unknown", "evidence": scalar(item), "analysis_status": "not_fetched"})
+
+    contributions = string_list(payload.get("key_contributions")) or string_list(payload.get("contributions"))
+    approach = string_list(methodology.get("approach")) or legacy_methods
+    experiment_setup = string_list(experiments.get("setup")) or legacy_evidence
     return {
         "title": scalar(payload.get("title")),
+        "authors": string_list(payload.get("authors")),
+        "abstract": scalar(payload.get("abstract")),
         "core_problem": scalar(payload.get("core_problem")),
-        "contributions": string_list(payload.get("contributions")),
-        "methods": string_list(payload.get("methods")),
-        "experiments_or_evidence": string_list(payload.get("experiments_or_evidence")),
+        "key_contributions": contributions,
+        "methodology": {
+            "approach": approach,
+            "design_choices": string_list(methodology.get("design_choices")),
+            "assumptions": string_list(methodology.get("assumptions")) or string_list(payload.get("assumptions")),
+        },
+        "experiments": {
+            "setup": experiment_setup,
+            "baselines": string_list(experiments.get("baselines")),
+            "main_results": string_list(experiments.get("main_results")),
+            "additional_studies": string_list(experiments.get("additional_studies")),
+        },
+        "significance": scalar(payload.get("significance")),
         "assumptions": string_list(payload.get("assumptions")),
         "limitations": string_list(payload.get("limitations")),
+        "future_directions": normalized_annotations(payload.get("future_directions"), "direction"),
+        "critical_reflections": normalized_annotations(payload.get("critical_reflections"), "reflection"),
+        "tldr": scalar(payload.get("tldr")),
         "gap_signals": normalize_gap_signals(
             [
                 item if isinstance(item, dict) else {"signal_type": "gap_signal", "text": scalar(item)}
@@ -891,9 +990,15 @@ def normalize_keynote(payload: dict[str, Any]) -> dict[str, Any]:
             ]
         ),
         "datasets_or_materials": string_list(payload.get("datasets_or_materials")),
-        "code_or_implementation": string_list(payload.get("code_or_implementation")),
+        "repository_artifacts": artifacts,
         "important_claims": normalized_claims,
         "reuse_value_for_research": scalar(payload.get("reuse_value_for_research")),
+        # Legacy aliases keep existing callers compatible while consumers move
+        # to the richer DeepSurvey-style sections above.
+        "contributions": contributions,
+        "methods": approach,
+        "experiments_or_evidence": unique_preserve_order(experiment_setup + string_list(experiments.get("main_results"))),
+        "code_or_implementation": [item["url_or_name"] for item in artifacts],
         "extractor": f"{SCIENCE_LLM_EXTRACTOR}_keynote",
     }
 

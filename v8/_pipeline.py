@@ -1404,7 +1404,7 @@ def run_zhizhi_literature_analysis(
 ) -> str:
     try:
         from ._gap_detection import build_knowledge_map, detect_knowledge_gaps, knowledge_map_unknown_summary, zhizhi_standard_output
-        from ._literature_graph import build_literature_relation_graph, expand_literature_graph
+        from ._literature_graph import build_keynote_knowledge_synthesis, build_literature_relation_graph, expand_literature_graph
         from ._literature_import import extract_paper_keynote, import_literature_search_result, select_zhizhi_import_results
         from ._literature_scoring import literature_domain_coverage_diagnostic
         from ._literature_search import build_branch_user_interaction, database_to_provider, search_papers_stratified, select_literature_result
@@ -1413,7 +1413,7 @@ def run_zhizhi_literature_analysis(
         from ._utils import clamp_int, unique_preserve_order
     except ImportError:
         from _gap_detection import build_knowledge_map, detect_knowledge_gaps, knowledge_map_unknown_summary, zhizhi_standard_output
-        from _literature_graph import build_literature_relation_graph, expand_literature_graph
+        from _literature_graph import build_keynote_knowledge_synthesis, build_literature_relation_graph, expand_literature_graph
         from _literature_import import extract_paper_keynote, import_literature_search_result, select_zhizhi_import_results
         from _literature_scoring import literature_domain_coverage_diagnostic
         from _literature_search import build_branch_user_interaction, database_to_provider, search_papers_stratified, select_literature_result
@@ -1709,6 +1709,18 @@ def run_zhizhi_literature_analysis(
             }
         except Exception as exc:
             observations.append(f"relation graph failed: {exc}")
+
+    # Keynotes become a three-level evidence structure before gap detection:
+    # paper notes -> comparable clusters -> review-level claim allocation.
+    try:
+        keynote_synthesis = json.loads(build_keynote_knowledge_synthesis(project_id, max_clusters=8))
+        action["build_keynote_knowledge_synthesis"] = {
+            "status": keynote_synthesis.get("status"),
+            "paper_count": keynote_synthesis.get("paper_count", 0),
+            "cluster_count": keynote_synthesis.get("cluster_count", 0),
+        }
+    except Exception as exc:
+        observations.append(f"keynote knowledge synthesis failed: {exc}")
 
     knowledge_map = json.loads(build_knowledge_map(project_id))
     unknown_summary = knowledge_map_unknown_summary(knowledge_map)

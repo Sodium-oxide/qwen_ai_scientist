@@ -108,6 +108,7 @@ def run_autogen_research_flow(
             design_experiment,
             finalize_idea,
             generate_idea,
+            grade_knowledge_sufficiency,
             load_project,
             run_socratic_hypothesis_debate,
             run_tanxi_gap_exploration,
@@ -121,6 +122,7 @@ def run_autogen_research_flow(
             design_experiment,
             finalize_idea,
             generate_idea,
+            grade_knowledge_sufficiency,
             load_project,
             run_socratic_hypothesis_debate,
             run_tanxi_gap_exploration,
@@ -225,10 +227,14 @@ def run_autogen_research_flow(
             )
             record_turn("round_0_literature_reading", "ZhiZhi_ToolAgent", summarize_output(output))
             state["zhizhi_status"] = output.get("status", "completed")
+            # ZhiZhi mutates the persisted PaperGraph.  Reload before any
+            # downstream gate, otherwise the same run evaluates stale state.
+            project = load_project(project_id)
 
         if "tanxi" in autogen_agent_keys(groupchat_spec):
             output = json.loads(run_tanxi_gap_exploration(project_id=project_id, target_domain=domain, max_gaps=10))
             record_turn("round_0_gap_exploration", "TanXi_ToolAgent", summarize_output(output))
+            project = load_project(project_id)
             explicit_gaps = autogen_extract_ranked_gaps(output)
             state["tanxi_gap_count"] = len(explicit_gaps)
 
@@ -278,6 +284,13 @@ def run_autogen_research_flow(
                             "a specific operating condition, a measurable domain-specific outcome, "
                             "and a named causal mechanism. Avoid generic cross-domain metric lists."
                         ),
+                        "mechanism_contract_requirements": (
+                            "Your hypothesis must contain 3 elements: (1) a causal chain with at least 2 steps "
+                            "(Input→Mediator→Output), (2) a mechanism paragraph explaining how the intervention "
+                            "produces the outcome, (3) a falsification condition stating what observation would "
+                            "refute the claim. Scope, dynamics, null/alternative hypotheses, and subhypotheses "
+                            "are verified later by YanZhen — do not block on them here."
+                        ),
                         "attempt_number": mingli_attempt,
                     }
                     if isinstance(gap_context, dict):
@@ -289,6 +302,28 @@ def run_autogen_research_flow(
                     draft = json.loads(generate_idea(project_id=project_id, gap=gap_context, style="innovative", use_llm=use_llm))
                     state["draft_idea_id"] = str(draft.get("draft_idea_id") or "")
                     record_turn(f"round_1_proponent_position_attempt_{mingli_attempt}", "MingLi_AssistantAgent", summarize_output(draft))
+
+                    contract = draft.get("mechanism_contract", {}) if isinstance(draft.get("mechanism_contract"), dict) else {}
+                    if contract.get("verdict") != "READY":
+                        final_status = "rejected_mechanism_contract"
+                        record_turn(
+                            f"round_1_mechanism_contract_attempt_{mingli_attempt}",
+                            "MingLi_AssistantAgent",
+                            summarize_output(contract),
+                            final_status,
+                        )
+                        log_event(
+                            "AUTOGEN",
+                            "mingli_retry",
+                            attempt=mingli_attempt,
+                            reason=final_status,
+                            missing=contract.get("missing_knowledge", []),
+                        )
+                        if mingli_attempt == mingli_max_attempts:
+                            state["finalize_status"] = final_status
+                            state["mingli_attempts"] = mingli_attempt
+                            state["hypothesis_id"] = ""
+                        continue
 
                     experiment = json.loads(
                         design_experiment(
@@ -316,7 +351,7 @@ def run_autogen_research_flow(
                         state["finalize_status"] = final_status
                         state["mingli_attempts"] = mingli_attempt
                         break
-                    elif final_status in ("rejected_template", "rejected_specificity"):
+                    elif final_status in ("rejected_template", "rejected_specificity", "rejected_mechanism_contract"):
                         # Retry with guidance
                         log_event("AUTOGEN", "mingli_retry", attempt=mingli_attempt, reason=final_status)
                         if mingli_attempt == mingli_max_attempts:
@@ -337,17 +372,24 @@ def run_autogen_research_flow(
                         state["mingli_attempts"] = mingli_attempt
                     continue
 
-        # GRADE knowledge sufficiency check: verify PaperGraph has enough evidence before YanZhen
+        # GRADE is an audit signal, not a gate that suppresses verification.
+        # PaperGraph records already hold primary evidence for many providers, so
+        # a separate legacy ``evidence`` list must not make a well-read project
+        # look empty and skip the very audit intended to catch that uncertainty.
         if "yanzhen" in autogen_agent_keys(groupchat_spec) and state.get("hypothesis_id"):
+            project = load_project(project_id)
             papergraph = project.get("papergraph", [])
             paper_count = len([p for p in papergraph if isinstance(p, dict)])
             evidence_count = len([e for e in project.get("evidence", []) if isinstance(e, dict)])
-            grade_sufficient = paper_count >= 5 and evidence_count >= 3
+            hypothesis_text = autogen_hypothesis_text(project, state["hypothesis_id"])
+            grade_report = grade_knowledge_sufficiency(hypothesis_text, project)
+            grade_sufficient = paper_count >= 5 and grade_report.get("verdict") != "knowledge_insufficient"
             state["grade_knowledge_check"] = {
                 "paper_count": paper_count,
                 "evidence_count": evidence_count,
                 "sufficient": grade_sufficient,
-                "threshold": {"min_papers": 5, "min_evidence": 3},
+                "coverage": grade_report,
+                "threshold": {"min_papers": 5, "hypothesis_coverage": "knowledge_partial_or_better"},
             }
             record_turn(
                 "grade_knowledge_sufficiency",
@@ -356,14 +398,15 @@ def run_autogen_research_flow(
                     "paper_count": paper_count,
                     "evidence_count": evidence_count,
                     "sufficient": grade_sufficient,
-                    "decision": "proceed_to_yanzhen" if grade_sufficient else "skip_yanzhen_insufficient_knowledge",
+                    "coverage": grade_report,
+                    "decision": "proceed_to_yanzhen" if grade_sufficient else "proceed_to_yanzhen_with_context_warning",
                 },
             )
             if not grade_sufficient:
-                log_event("AUTOGEN", "grade_insufficient_knowledge", paper_count=paper_count, evidence_count=evidence_count)
-                state["yanzhen_skipped_reason"] = "insufficient_knowledge"
+                log_event("AUTOGEN", "grade_insufficient_knowledge", paper_count=paper_count, evidence_count=evidence_count, action="audit_not_skipped")
+                state["knowledge_context_warning"] = grade_report
 
-        if "yanzhen" in autogen_agent_keys(groupchat_spec) and state.get("hypothesis_id") and not state.get("yanzhen_skipped_reason"):
+        if "yanzhen" in autogen_agent_keys(groupchat_spec) and state.get("hypothesis_id"):
             report = json.loads(
                 run_yanzhen_mechanism_verification(
                     project_id=project_id,
@@ -376,22 +419,45 @@ def run_autogen_research_flow(
 
         if run_debate and {"duzhi", "bianlun"} & set(autogen_agent_keys(groupchat_spec)):
             if state.get("hypothesis_id"):
-                debate = json.loads(
-                    run_socratic_hypothesis_debate(
-                        project_id=project_id,
-                        hypothesis_id=state["hypothesis_id"],
-                        max_rounds=min(clamp_int(max_round, 5, 40), 5),
-                        proponent_model_family=proponent_model_family,
-                        opponent_model_family=opponent_model_family,
-                        judge_model_family=judge_model_family,
-                        verifier_model_family=verifier_model_family,
-                        auto_literature_supplement=True,
-                        supplement_providers=selected_providers,
+                try:
+                    debate = json.loads(
+                        run_socratic_hypothesis_debate(
+                            project_id=project_id,
+                            hypothesis_id=state["hypothesis_id"],
+                            max_rounds=min(clamp_int(max_round, 5, 40), 7),
+                            proponent_model_family=proponent_model_family,
+                            opponent_model_family=opponent_model_family,
+                            judge_model_family=judge_model_family,
+                            verifier_model_family=verifier_model_family,
+                            auto_literature_supplement=True,
+                            supplement_providers=selected_providers,
+                            use_llm_revisions=use_llm,
+                        )
                     )
-                )
-                report = debate.get("debate_report", {})
-                record_turn("round_4_groupchat_synthesis", "BianLun_GroupChatManager", summarize_output(debate), str(report.get("final_decision") or "completed"))
-                state["final_decision"] = str(report.get("final_decision") or "debate_completed")
+                    report = debate.get("debate_report", {})
+                    record_turn("round_4_groupchat_synthesis", "BianLun_GroupChatManager", summarize_output(debate), str(report.get("final_decision") or "completed"))
+                    state["final_decision"] = str(report.get("final_decision") or "debate_completed")
+                except Exception as debate_exc:
+                    # A debate implementation fault must not erase the research
+                    # run after ZhiZhi/TanXi/MingLi/YanZhen have completed.
+                    # Preserve an evidence-backed DuZhi handoff for a retry.
+                    critique = json.loads(
+                        ask_socratic_questions(
+                            project_id=project_id,
+                            hypothesis_id=state["hypothesis_id"],
+                            question_types=["conceptual_clarification", "constraint_check", "causal_probe", "counterexample_challenge"],
+                            max_questions=12,
+                        )
+                    )
+                    record_turn(
+                        "round_4_debate_runtime_recovery",
+                        "DuZhi_Opponent",
+                        summarize_output(critique),
+                        "revision_required",
+                        str(debate_exc),
+                    )
+                    state["debate_runtime_error"] = str(debate_exc)
+                    state["final_decision"] = "revision_required"
             else:
                 critique = json.loads(
                     ask_socratic_questions(
@@ -651,6 +717,24 @@ def summarize_output(output: Any) -> Any:
             }
         return summary or trim_text(json.dumps(output, ensure_ascii=False), 2000)
     return trim_text(str(output), 2000)
+
+
+def autogen_hypothesis_text(project: dict[str, Any], hypothesis_id: str) -> str:
+    """Read the persisted hypothesis text without assuming one storage shape."""
+    candidates = list(project.get("hypotheses", [])) + list(project.get("mingli_finalized_ideas", []))
+    for item in candidates:
+        if not isinstance(item, dict) or str(item.get("hypothesis_id") or "") != str(hypothesis_id or ""):
+            continue
+        final = item.get("mingli_final_idea") if isinstance(item.get("mingli_final_idea"), dict) else item
+        parts = [
+            final.get("title", ""),
+            final.get("hypothesis", ""),
+            final.get("abstract", ""),
+            item.get("statement", ""),
+            item.get("mechanism", ""),
+        ]
+        return " ".join(str(part).strip() for part in parts if part).strip()
+    return ""
 
 
 def autogen_extract_ranked_gaps(tanxi_output: dict[str, Any]) -> list[dict[str, Any]]:

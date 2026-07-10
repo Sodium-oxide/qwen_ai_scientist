@@ -1045,3 +1045,248 @@ def summarize_mechanism_lineage(clusters: list[dict[str, Any]]) -> list[dict[str
         )
     return lineage
 
+
+def build_keynote_knowledge_synthesis(project_id: str, max_clusters: int = 8) -> str:
+    """Build a DeepSurvey-style paper -> cluster -> review knowledge layer.
+
+    This is intentionally deterministic and evidence-preserving.  It organizes
+    existing Keynotes for cross-paper reasoning; it does not manufacture a
+    review or claim that a repository was inspected.
+    """
+    try:
+        from ._project import load_project, save_project
+        from ._utils import clamp_int, normalize_key, normalize_space, trim_text, unique_preserve_order
+    except ImportError:
+        from _project import load_project, save_project
+        from _utils import clamp_int, normalize_key, normalize_space, trim_text, unique_preserve_order
+
+    project = load_project(project_id)
+    records = {
+        str(item.get("paper_id") or ""): item
+        for item in project.get("papergraph", [])
+        if isinstance(item, dict) and item.get("paper_id")
+    }
+    raw_keynotes = [item for item in project.get("keynotes", []) if isinstance(item, dict)]
+    units: list[dict[str, Any]] = []
+    for item in raw_keynotes:
+        keynote = item.get("keynote", {}) if isinstance(item.get("keynote"), dict) else {}
+        paper_id = str(item.get("paper_id") or "")
+        record = records.get(paper_id, {})
+        title = str(item.get("title") or record.get("title") or keynote.get("title") or "")
+        citation = str(record.get("citation") or title)
+        methodology = keynote.get("methodology", {}) if isinstance(keynote.get("methodology"), dict) else {}
+        experiments = keynote.get("experiments", {}) if isinstance(keynote.get("experiments"), dict) else {}
+        if not methodology:
+            methodology = {"approach": keynote.get("methods", []), "design_choices": [], "assumptions": keynote.get("assumptions", [])}
+        if not experiments:
+            experiments = {"setup": keynote.get("experiments_or_evidence", []), "baselines": [], "main_results": [], "additional_studies": []}
+        units.append(
+            {
+                "paper_id": paper_id,
+                "keynote_id": item.get("keynote_id"),
+                "citation": citation,
+                "title": title,
+                "year": record.get("year", ""),
+                "method": str(record.get("method") or ""),
+                "scenario": str(record.get("scenario") or ""),
+                "benchmark": str(record.get("benchmark") or ""),
+                "tldr": str(keynote.get("tldr") or ""),
+                "key_contributions": [str(value) for value in keynote.get("key_contributions", keynote.get("contributions", [])) if str(value).strip()],
+                "methodology": methodology,
+                "experiments": experiments,
+                "limitations": [str(value) for value in keynote.get("limitations", []) if str(value).strip()],
+                "future_directions": [item for item in keynote.get("future_directions", []) if isinstance(item, dict)],
+                "critical_reflections": [item for item in keynote.get("critical_reflections", []) if isinstance(item, dict)],
+                "important_claims": [item for item in keynote.get("important_claims", []) if isinstance(item, dict)],
+                "repository_artifacts": [
+                    item if isinstance(item, dict) else {"url_or_name": str(item), "artifact_type": "unknown", "evidence": str(item), "analysis_status": "not_fetched"}
+                    for item in keynote.get("repository_artifacts", keynote.get("code_or_implementation", []))
+                    if isinstance(item, dict) or str(item).strip()
+                ],
+            }
+        )
+
+    target_clusters = clamp_int(max_clusters, 1, 20)
+    grouped: dict[str, list[dict[str, Any]]] = defaultdict(list)
+    for unit in units:
+        focus = normalize_space(unit.get("scenario") or "") or normalize_space(unit.get("method") or "") or "general"
+        grouped[normalize_key(focus) or "general"].append(unit)
+    if len(grouped) > target_clusters:
+        merged: dict[str, list[dict[str, Any]]] = defaultdict(list)
+        ordered = sorted(grouped.items(), key=lambda pair: (-len(pair[1]), pair[0]))
+        for index, (key, members) in enumerate(ordered):
+            merged[key if index < target_clusters - 1 else "other_related_work"].extend(members)
+        grouped = dict(merged)
+
+    clusters: list[dict[str, Any]] = []
+    claim_evidence_index: list[dict[str, Any]] = []
+    for cluster_key, members in grouped.items():
+        citations = unique_preserve_order(str(item.get("citation") or "") for item in members if item.get("citation"))
+        methods = unique_preserve_order(str(item.get("method") or "") for item in members if item.get("method"))
+        scenarios = unique_preserve_order(str(item.get("scenario") or "") for item in members if item.get("scenario"))
+        benchmarks = unique_preserve_order(str(item.get("benchmark") or "") for item in members if item.get("benchmark"))
+        limitations = unique_preserve_order(
+            str(value) for item in members for value in item.get("limitations", []) if str(value).strip()
+        )
+        futures = [
+            direction
+            for item in members
+            for direction in item.get("future_directions", [])
+            if isinstance(direction, dict) and str(direction.get("direction") or "").strip()
+        ]
+        comparison_table = []
+        for item in members:
+            experiment = item.get("experiments", {}) if isinstance(item.get("experiments"), dict) else {}
+            methodology = item.get("methodology", {}) if isinstance(item.get("methodology"), dict) else {}
+            comparison_table.append(
+                {
+                    "citation": item.get("citation"),
+                    "method": item.get("method"),
+                    "scenario": item.get("scenario"),
+                    "benchmark": item.get("benchmark"),
+                    "contributions": item.get("key_contributions", [])[:3],
+                    "design_choices": methodology.get("design_choices", [])[:3],
+                    "setup": experiment.get("setup", [])[:3],
+                    "baselines": experiment.get("baselines", [])[:3],
+                    "main_results": experiment.get("main_results", [])[:3],
+                    "limitations": item.get("limitations", [])[:3],
+                }
+            )
+            for claim in item.get("important_claims", []):
+                if str(claim.get("claim") or "").strip():
+                    claim_evidence_index.append(
+                        {
+                            "claim": trim_text(str(claim.get("claim") or ""), 420),
+                            "evidence": trim_text(str(claim.get("evidence") or ""), 500),
+                            "citation": item.get("citation"),
+                            "paper_id": item.get("paper_id"),
+                            "cluster_id": normalize_key(cluster_key),
+                        }
+                    )
+        relations = keynote_cluster_relations(members)
+        clusters.append(
+            {
+                "cluster_id": normalize_key(cluster_key),
+                "label": scenarios[0] if scenarios else (methods[0] if methods else "general related work"),
+                "paper_count": len(members),
+                "paper_ids": [item.get("paper_id") for item in members if item.get("paper_id")],
+                "citations": citations,
+                "methods": methods,
+                "scenarios": scenarios,
+                "benchmarks": benchmarks,
+                "comparison_table": comparison_table,
+                "relations": relations,
+                "cluster_insights": {
+                    "common_limitations": limitations[:8],
+                    "future_directions": futures[:8],
+                    "questions_for_gap_detection": keynote_cluster_questions(methods, scenarios, benchmarks, limitations, relations),
+                },
+            }
+        )
+
+    clusters.sort(key=lambda item: (-int(item.get("paper_count") or 0), str(item.get("cluster_id") or "")))
+    cross_cluster_comparisons = keynote_cross_cluster_comparisons(clusters)
+    repository_artifacts = [
+        {**artifact, "citation": unit.get("citation"), "paper_id": unit.get("paper_id")}
+        for unit in units for artifact in unit.get("repository_artifacts", [])
+        if isinstance(artifact, dict)
+    ]
+    synthesis = {
+        "kind": "deepsurvey_keynote_knowledge_layers",
+        "createdAt": time.time(),
+        "paper_level": units,
+        "cluster_level": clusters,
+        "review_level": {
+            "paper_count": len(units),
+            "cluster_count": len(clusters),
+            "cross_cluster_comparisons": cross_cluster_comparisons,
+            "claim_evidence_index": claim_evidence_index[:120],
+            "repository_artifacts": repository_artifacts[:80],
+            "repository_analysis_notice": "Artifacts are pointers extracted from supplied literature. No remote repository inspection is claimed unless analysis_status is analyzed.",
+        },
+    }
+    project["keynote_knowledge_synthesis"] = synthesis
+    project["updatedAt"] = time.time()
+    save_project(project)
+    log_event("SCIENCE", "keynote_knowledge_synthesis_built", project_id=project_id, papers=len(units), clusters=len(clusters))
+    return json.dumps(
+        {
+            "status": "built",
+            "project_id": project_id,
+            "paper_count": len(units),
+            "cluster_count": len(clusters),
+            "synthesis": synthesis,
+            "next_step": "Use cluster_insights and claim_evidence_index for TanXi gap reasoning and assign evidence to causal links before MingLi writes a hypothesis.",
+        },
+        ensure_ascii=False,
+        indent=2,
+    )
+
+
+def keynote_cluster_relations(members: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """State only inspectable relation types; never infer a contradiction from topic overlap alone."""
+    relations: list[dict[str, Any]] = []
+    for index, left in enumerate(members):
+        for right in members[index + 1:]:
+            same_method = bool(left.get("method") and left.get("method") == right.get("method"))
+            same_scenario = bool(left.get("scenario") and left.get("scenario") == right.get("scenario"))
+            if same_method and same_scenario:
+                relation = "replication_or_complementary_evidence"
+                reason = "The papers share the recorded method and scenario; compare their conditions and outcomes before treating them as agreement."
+            elif same_scenario:
+                relation = "alternative_approaches_same_scenario"
+                reason = "The papers address the same recorded scenario with different methods."
+            elif same_method:
+                relation = "method_transfer_across_scenarios"
+                reason = "The papers use the same recorded method in different scenarios."
+            else:
+                continue
+            relations.append(
+                {
+                    "source_citation": left.get("citation"),
+                    "target_citation": right.get("citation"),
+                    "relation": relation,
+                    "reason": reason,
+                    "evidence_status": "metadata_and_keynote_comparison",
+                }
+            )
+    return relations[:30]
+
+
+def keynote_cluster_questions(
+    methods: list[str],
+    scenarios: list[str],
+    benchmarks: list[str],
+    limitations: list[str],
+    relations: list[dict[str, Any]],
+) -> list[str]:
+    questions: list[str] = []
+    if limitations:
+        questions.append(f"Which causal mechanism or boundary condition explains the recurring limitation: {limitations[0]}?")
+    if len(methods) >= 2 and scenarios:
+        questions.append(f"Under which conditions do {methods[0]} and {methods[1]} produce different outcomes in {scenarios[0]}?")
+    if relations and benchmarks:
+        questions.append(f"Are the reported conclusions comparable on a shared benchmark family such as {benchmarks[0]}?")
+    return questions[:4]
+
+
+def keynote_cross_cluster_comparisons(clusters: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    comparisons: list[dict[str, Any]] = []
+    for index, left in enumerate(clusters):
+        for right in clusters[index + 1:]:
+            shared_methods = sorted(set(left.get("methods", [])) & set(right.get("methods", [])))
+            shared_benchmarks = sorted(set(left.get("benchmarks", [])) & set(right.get("benchmarks", [])))
+            if not shared_methods and not shared_benchmarks:
+                continue
+            comparisons.append(
+                {
+                    "left_cluster_id": left.get("cluster_id"),
+                    "right_cluster_id": right.get("cluster_id"),
+                    "shared_methods": shared_methods,
+                    "shared_benchmarks": shared_benchmarks,
+                    "question": "Does the shared method or benchmark retain the same interpretation across these distinct research clusters?",
+                    "evidence_status": "comparison_prompt_not_a_conclusion",
+                }
+            )
+    return comparisons[:30]
+

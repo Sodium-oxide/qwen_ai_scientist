@@ -394,6 +394,12 @@ def detect_knowledge_gaps(project_id: str, max_gaps: int = 10) -> str:
     if len(gaps) < max_gaps:
         gaps.extend(detect_reasoning_gaps(project, min(per_type_quota + 1, max_gaps - len(gaps))))
 
+    # Keynote clusters retain the comparison context that a flat
+    # method/scenario matrix loses.  Prefer their author-grounded limitations
+    # and comparable-method questions before scanning untried combinations.
+    if len(gaps) < max_gaps:
+        gaps.extend(detect_keynote_cluster_gaps(project, min(per_type_quota + 1, max_gaps - len(gaps))))
+
     if len(gaps) < max_gaps:
         gaps.extend(detect_mechanism_issue_gaps(project, max_gaps - len(gaps)))
 
@@ -504,6 +510,7 @@ def detect_knowledge_gaps(project_id: str, max_gaps: int = 10) -> str:
 
     gaps = dedupe_knowledge_gaps(gaps)
     filtered_gaps, rejected_gaps = filter_low_value_gaps(gaps, min_novelty=4)
+    filtered_gaps = [prepare_gap_for_hypothesis(project, gap) for gap in filtered_gaps]
     tanxi_report = tanxi_gap_exploration_report(
         project,
         filtered_gaps,
@@ -535,6 +542,10 @@ def detect_knowledge_gaps(project_id: str, max_gaps: int = 10) -> str:
             str(item.get("gap_id", "")),
         )
     )
+    # Validate each proposed resolution path before persisting it.  This keeps
+    # counterfactual analysis attached to the actual gaps consumed downstream,
+    # rather than only to TanXi's presentation-only ranking view.
+    prioritized_gaps = counterfactual_gap_analysis(project, prioritized_gaps, limit=max_gaps)
     project["knowledge_gap_filter"] = {
         "min_novelty": 4,
         "input_count": len(gaps),
@@ -546,6 +557,7 @@ def detect_knowledge_gaps(project_id: str, max_gaps: int = 10) -> str:
     project["semantic_rejected_knowledge_gaps"] = semantic_rejected_gaps
     project["tanxi_gap_analysis"] = tanxi_report
     project["knowledge_gaps"] = prioritized_gaps[:max_gaps]
+    project["counterfactual_gap_summary"] = summarize_counterfactual_missing_capabilities(project["knowledge_gaps"])
     project["updatedAt"] = time.time()
     save_project(project)
     log_event(
@@ -557,6 +569,72 @@ def detect_knowledge_gaps(project_id: str, max_gaps: int = 10) -> str:
         rejected_semantic=len(semantic_rejected_gaps),
     )
     return json.dumps(project["knowledge_gaps"], ensure_ascii=False, indent=2)
+
+
+def detect_keynote_cluster_gaps(project: dict[str, Any], limit: int = 4) -> list[dict[str, Any]]:
+    """Turn evidence-bounded cluster comparisons into mechanism questions.
+
+    A cluster comparison is not evidence of a contradiction.  It becomes a
+    candidate gap only when its Keynotes contain an author-reported limitation
+    or multiple approaches under a shared recorded scenario.
+    """
+    synthesis = project.get("keynote_knowledge_synthesis", {})
+    if not isinstance(synthesis, dict):
+        return []
+    clusters = synthesis.get("cluster_level", [])
+    if not isinstance(clusters, list):
+        return []
+    gaps: list[dict[str, Any]] = []
+    for cluster in clusters:
+        if not isinstance(cluster, dict) or len(gaps) >= max(1, int(limit)):
+            continue
+        insights = cluster.get("cluster_insights", {}) if isinstance(cluster.get("cluster_insights"), dict) else {}
+        limitations = [str(item) for item in insights.get("common_limitations", []) if str(item).strip()]
+        methods = [str(item) for item in cluster.get("methods", []) if str(item).strip()]
+        scenarios = [str(item) for item in cluster.get("scenarios", []) if str(item).strip()]
+        benchmarks = [str(item) for item in cluster.get("benchmarks", []) if str(item).strip()]
+        references = [str(item) for item in cluster.get("citations", []) if str(item).strip()]
+        if limitations:
+            description = (
+                f"Cluster-level unresolved mechanism in '{cluster.get('label') or 'related work'}': "
+                f"multiple papers report or inherit the limitation '{limitations[0]}', but the Keynote comparison does not identify "
+                "which controllable condition or mediator explains when it appears."
+            )
+            path = "Compare the cited studies under matched, source-reported conditions; assign evidence to each causal link and test a mediator-specific counterfactual."
+            value = "This gap is grounded in a cross-paper recurrence of an author-reported limitation, not a missing matrix cell."
+        elif len(methods) >= 2 and scenarios:
+            description = (
+                f"Cluster-level comparison gap: methods '{methods[0]}' and '{methods[1]}' address '{scenarios[0]}', "
+                "but the Keynotes do not establish the boundary condition or mechanism that determines their divergent applicability."
+            )
+            path = "Build a comparison table with matched controls, identify the differing design choice, and test the resulting causal mechanism rather than only ranking methods."
+            value = "The gap arises from comparable papers in one scenario and can reveal an explanatory boundary condition."
+        else:
+            continue
+        gap = make_gap(
+            gap_type="cluster_comparison",
+            description=description,
+            supporting_references=references[:6],
+            suggested_research_path=path,
+            value_argument=value,
+            hypothesis_ingredients={
+                "methods": methods[:4],
+                "scenarios": scenarios[:4],
+                "benchmarks": benchmarks[:4],
+                "evidence_packets": [
+                    {"citation": item, "evidence_text": limitations[0] if limitations else description}
+                    for item in references[:4]
+                ],
+            },
+        )
+        gap["cluster_context"] = {
+            "cluster_id": cluster.get("cluster_id"),
+            "label": cluster.get("label"),
+            "comparison_table": cluster.get("comparison_table", [])[:8],
+            "relations": cluster.get("relations", [])[:12],
+        }
+        gaps.append(assess_gap_dict(project, gap))
+    return gaps
 
 def run_tanxi_gap_exploration(
     project_id: str,
@@ -635,12 +713,16 @@ def tanxi_gap_exploration_report(
             "detect_suspended_problems": {"min_citation_threshold": 50},
             "prioritize_gaps": {"criteria": ["importance", "tractability", "strategic_value"]},
             "align_with_strategic_needs": {"strategic_domains": strategic_domains},
+            "counterfactual_plan_validation": {
+                "checks": ["first_failed_step", "failed_precondition", "minimal_repair_set"],
+            },
         },
         "coverage_analysis": coverage_analysis,
         "reasoning_gaps": reasoning_gap_candidates[:10],
         "cross_disciplinary_unconnected_pairs": unconnected_pairs[:10],
         "suspended_problems": suspended[:10],
         "ranked_gaps": ranked[:max_gaps],
+        "counterfactual_capability_summary": summarize_counterfactual_missing_capabilities(ranked),
         "constraints_checked": {
             "requires_supporting_reference": True,
             "filters_trivial_low_novelty": True,
@@ -2011,6 +2093,12 @@ def make_gap(
         "createdAt": time.time(),
         "hypothesis_ingredients": default_ingredients,
         "counterfactual_leaves": counterfactual_leaves or [],
+        "evidence_packets": [],
+        "hypothesis_readiness": {
+            "status": "unprepared",
+            "ready": False,
+            "blocking_reasons": ["Gap has not yet been grounded in PaperGraph evidence."],
+        },
     }
 
 def semantic_plausibility_for_pair(
@@ -3157,6 +3245,8 @@ def counterfactual_gap_analysis(project, gaps, limit=10):
         gap["gap_resolution_type"] = classify_gap_counterfactual_type(tree)
         gap["leaf_conditions"] = tree.get("leaf_conditions", [])
         gap["resolution_complexity"] = tree.get("resolution_complexity", "unknown")
+        gap["counterfactual_validation"] = tree.get("plan_validation", {})
+        gap["missing_capabilities"] = tree.get("minimal_missing_capabilities", [])
         enriched.append(gap)
     log_event(
         "SCIENCE", "counterfactual_gap_analysis",
@@ -3300,6 +3390,7 @@ def build_counterfactual_tree(gap, records):
         root, cx = f"{len(leaves)} evidence conditions unmet", "medium"
     else:
         root, cx = f"{len(leaves)} evidence conditions unmet across dimensions", "high"
+    plan_validation = validate_gap_resolution_plan(gap, records)
     return {
         "root": trim_text(root, 300),
         "branches": branches[:6],
@@ -3309,20 +3400,245 @@ def build_counterfactual_tree(gap, records):
         "missing_evidence_count": len(missing),
         "gap_method": gm,
         "gap_scenario": gs,
+        # Inspired by justification-based counterfactual generation: identify
+        # the first invalid resolution action and trace it to its unmet facts.
+        "plan_validation": plan_validation,
+        "first_failed_step": plan_validation.get("first_failed_step"),
+        "justification_tree": plan_validation.get("justification_tree", {}),
+        "minimal_missing_capabilities": plan_validation.get("minimal_missing_capabilities", []),
+        "repair_classification": plan_validation.get("repair_classification", "unknown"),
     }
 
 
 def classify_gap_counterfactual_type(tree):
+    repair_classification = str(tree.get("repair_classification") or "")
+    if repair_classification == "complement_or_composition":
+        return "complement_gap"
+    if repair_classification == "out_of_distribution_capability":
+        return "novel_concept_gap"
     if tree.get("related_evidence_count", 0) == 0:
         return "novel_concept_gap"
     return "complement_gap"
+
+
+def validate_gap_resolution_plan(gap: dict[str, Any], records: list[dict[str, Any]]) -> dict[str, Any]:
+    """Validate a candidate gap-resolution path and explain its first failure.
+
+    The paper's Counterfactual Generation module validates an ordered plan,
+    stops at the first invalid action, and returns a justification tree whose
+    leaves identify what knowledge is missing.  A research gap is not a robot
+    plan, but its proposed resolution still has ordered prerequisites: source
+    evidence, a causal warrant, a measurable discriminator, and (when needed)
+    explicit validity boundaries.  This domain-neutral analogue deliberately
+    reports an unmet prerequisite instead of fabricating a complete experiment.
+    """
+    try:
+        from ._utils import normalize_space, trim_text, unique_preserve_order
+    except ImportError:
+        from _utils import normalize_space, trim_text, unique_preserve_order
+
+    description = normalize_space(str(gap.get("description") or ""))
+    gap_type = normalize_space(str(gap.get("gap_type") or "problem")).lower()
+    references = [str(item).strip() for item in gap.get("supporting_references", []) if str(item).strip()]
+    method, scenario = infer_method_scenario_from_gap(gap, records)
+    ingredients = gap.get("hypothesis_ingredients") or {}
+    related = find_related_records(method, scenario, records)
+
+    def has_values(key: str) -> bool:
+        value = ingredients.get(key, []) if isinstance(ingredients, dict) else []
+        return bool(value if isinstance(value, list) else [value])
+
+    def record_has_mechanism_signal(record: dict[str, Any]) -> bool:
+        text = " ".join(
+            str(record.get(key) or "")
+            for key in ("contribution", "conclusion", "limitation", "full_text_excerpt", "abstract")
+        ).lower()
+        return any(token in text for token in (
+            "mechanism", "caus", "mediated", "driven by", "through", "because", "pathway", "explains",
+        ))
+
+    tabi_chain = gap.get("tabi_chain") if isinstance(gap.get("tabi_chain"), dict) else {}
+    mechanism_signal = gap.get("mechanism_issue_signal") if isinstance(gap.get("mechanism_issue_signal"), dict) else {}
+    has_warrant = bool(tabi_chain.get("warrant") or mechanism_signal.get("source_text")) or any(
+        record_has_mechanism_signal(record) for record in related
+    )
+    has_measure = has_values("benchmarks") or has_values("measurable_metrics") or any(
+        str(record.get("benchmark") or "").strip() not in {"", "unknown", "unspecified"}
+        for record in related
+    )
+    needs_boundary = gap_type in {"contradiction", "anomaly", "migration", "implicit_tabi", "mechanism_problem"}
+    has_boundary = has_values("numerical_bounds") or has_values("operating_conditions") or any(
+        token in description.lower()
+        for token in ("under ", "when ", "above ", "below ", "across ", "temperature", "pressure", "scale", "time", "condition")
+    )
+    has_bridge = bool(method and scenario) or gap_type in {"problem", "anomaly", "contradiction"}
+
+    steps = [
+        {
+            "step_id": "ground_claim",
+            "action": "Anchor the target claim in traceable source evidence",
+            "preconditions": {"defined_gap": bool(description), "supporting_reference": bool(references)},
+            "missing_capability": "traceable_source_evidence",
+        },
+        {
+            "step_id": "state_mechanistic_warrant",
+            "action": "State the mechanism or causal warrant linking evidence to the proposed resolution",
+            "preconditions": {"method_or_target_context": has_bridge, "mechanistic_warrant": has_warrant},
+            "missing_capability": "mechanistic_warrant_or_causal_bridge",
+        },
+        {
+            "step_id": "define_discriminating_measurement",
+            "action": "Specify an observable or benchmark that can discriminate success from failure",
+            "preconditions": {"measurable_outcome": has_measure},
+            "missing_capability": "discriminating_measurement_or_benchmark",
+        },
+    ]
+    if needs_boundary:
+        steps.append(
+            {
+                "step_id": "bound_validity_regime",
+                "action": "Specify the condition range in which the mechanism is claimed to hold",
+                "preconditions": {"boundary_condition": has_boundary},
+                "missing_capability": "validity_boundary_specification",
+            }
+        )
+
+    for index, step in enumerate(steps, 1):
+        unmet = [name for name, passed in step["preconditions"].items() if not passed]
+        if not unmet:
+            continue
+        missing_capability = step["missing_capability"]
+        repair = classify_counterfactual_repair_capability(
+            missing_capability,
+            method,
+            scenario,
+            related,
+            gap_type,
+        )
+        leaves = [
+            {
+                "fact": condition,
+                "status": "missing",
+                "why_required": f"Required before '{step['action']}' can be executed.",
+            }
+            for condition in unmet
+        ]
+        return {
+            "verdict": "INVALID_RESOLUTION_PATH",
+            "plan_steps": [{"step_id": item["step_id"], "action": item["action"]} for item in steps],
+            "first_failed_step": {"index": index, "step_id": step["step_id"], "action": step["action"]},
+            "failed_preconditions": unmet,
+            "justification_tree": {
+                "claim": f"Resolution plan cannot execute step {index}: {step['action']}",
+                "because": f"Required preconditions are not established: {', '.join(unmet)}.",
+                "leaves": leaves,
+            },
+            "minimal_missing_capabilities": [missing_capability],
+            "repair_classification": repair["classification"],
+            "repair_rationale": repair["rationale"],
+            "repair_action": repair["repair_action"],
+            "related_evidence_count": len(related),
+            "supporting_reference_count": len(references),
+        }
+
+    return {
+        "verdict": "VALID_RESOLUTION_PATH",
+        "plan_steps": [{"step_id": item["step_id"], "action": item["action"]} for item in steps],
+        "first_failed_step": None,
+        "failed_preconditions": [],
+        "justification_tree": {
+            "claim": "All declared resolution-path preconditions are satisfied.",
+            "because": "The current evidence graph contains a traceable claim, warrant, measurement, and required boundary statement.",
+            "leaves": [],
+        },
+        "minimal_missing_capabilities": [],
+        "repair_classification": "not_applicable",
+        "repair_rationale": "The declared plan is auditable; this does not prove the scientific claim is true.",
+        "repair_action": "Run the proposed discriminating study and update the evidence graph with both supporting and disconfirming results.",
+        "related_evidence_count": len(related),
+        "supporting_reference_count": len(references),
+    }
+
+
+def classify_counterfactual_repair_capability(
+    missing_capability: str,
+    method: str,
+    scenario: str,
+    related_records: list[dict[str, Any]],
+    gap_type: str,
+) -> dict[str, str]:
+    """Classify a repair as a known-capability complement or an OOD capability.
+
+    This mirrors the paper's distinction between a missing action that can be
+    composed from the known action space and a genuinely unseen concept.  We do
+    not pretend that lexical similarity proves scientific feasibility: ambiguous
+    cases stay explicitly marked for review.
+    """
+    has_local_context = bool(related_records) or bool(method and scenario)
+    complementary_types = {
+        "contradiction", "anomaly", "mechanism_problem", "implicit_tabi", "improvement", "migration", "combinatorial",
+    }
+    if has_local_context and gap_type in complementary_types:
+        return {
+            "classification": "complement_or_composition",
+            "rationale": (
+                "The target has neighboring evidence or an explicit method-scenario context; the missing capability is a bounded "
+                "measurement, warrant, or condition needed to repair that existing evidence chain."
+            ),
+            "repair_action": f"Add and validate '{missing_capability}' while retaining the existing target context.",
+        }
+    return {
+        "classification": "out_of_distribution_capability",
+        "rationale": (
+            "No sufficiently grounded local context identifies how this prerequisite could be composed from the current evidence graph; "
+            "treat it as a new capability rather than silently inferring it."
+        ),
+        "repair_action": f"Acquire or define the new capability '{missing_capability}' and request human review before hypothesis generation.",
+    }
+
+
+def summarize_counterfactual_missing_capabilities(gaps: list[dict[str, Any]]) -> dict[str, Any]:
+    """Aggregate first-failure repairs so one missing capability can repair many gaps."""
+    capability_to_gaps: dict[str, list[str]] = defaultdict(list)
+    invalid_paths = 0
+    valid_paths = 0
+    for gap in gaps:
+        validation = gap.get("counterfactual_validation")
+        if not isinstance(validation, dict):
+            validation = (gap.get("counterfactual_tree") or {}).get("plan_validation", {})
+        if not isinstance(validation, dict):
+            continue
+        if validation.get("verdict") == "VALID_RESOLUTION_PATH":
+            valid_paths += 1
+            continue
+        if validation.get("verdict") != "INVALID_RESOLUTION_PATH":
+            continue
+        invalid_paths += 1
+        for capability in validation.get("minimal_missing_capabilities", []):
+            if capability:
+                capability_to_gaps[str(capability)].append(str(gap.get("gap_id") or ""))
+    recurring = [
+        {
+            "missing_capability": capability,
+            "affected_gap_count": len({gap_id for gap_id in gap_ids if gap_id}),
+            "affected_gap_ids": list(dict.fromkeys(gap_id for gap_id in gap_ids if gap_id))[:8],
+        }
+        for capability, gap_ids in capability_to_gaps.items()
+    ]
+    recurring.sort(key=lambda item: (-int(item["affected_gap_count"]), item["missing_capability"]))
+    return {
+        "invalid_resolution_paths": invalid_paths,
+        "valid_resolution_paths": valid_paths,
+        "recurring_missing_capabilities": recurring[:10],
+        "interpretation": "A recurring capability is a candidate knowledge-base repair with leverage across multiple gap-resolution paths.",
+    }
 
 
 # ---------------------------------------------------------------------------
 # Hypothesis Ingredients Extraction
 # ---------------------------------------------------------------------------
 
-def extract_hypothesis_ingredients(project, method, scenario, refs):
+def _legacy_extract_hypothesis_ingredients(project, method, scenario, refs):
     """Extract domain-specific 'hypothesis raw materials' from PaperGraph records.
 
     Returns a dict with methods, scenarios, benchmarks, numerical_bounds,
@@ -3417,7 +3733,7 @@ def extract_hypothesis_ingredients(project, method, scenario, refs):
     return ingredients
 
 
-def generate_counterfactual_leaves(method, scenario, refs):
+def _legacy_generate_counterfactual_leaves(method, scenario, refs):
     """Generate 'if X holds, gap disappears' leaf conditions."""
     try:
         from ._utils import trim_text, unique_preserve_order
@@ -3438,6 +3754,263 @@ def generate_counterfactual_leaves(method, scenario, refs):
 
 
 # ---------------------------------------------------------------------------
+# Evidence-grounded hypothesis preparation
+# ---------------------------------------------------------------------------
+
+def validate_contradiction_gap(project: dict[str, Any], gap: dict[str, Any]) -> dict[str, Any]:
+    """Reject apparent contradictions that merely compare unlike studies.
+
+    A positive result from one method and a review describing challenges in a
+    neighbouring system are not opposing claims.  This check is intentionally
+    domain-neutral: it looks for opposite claim polarity plus a shared target
+    context, rather than any field-specific vocabulary.
+    """
+    try:
+        from ._pipeline import project_records_for_mapping
+        from ._utils import normalize_space, split_sentences
+    except ImportError:
+        from _pipeline import project_records_for_mapping
+        from _utils import normalize_space, split_sentences
+    if str(gap.get("gap_type") or "").lower() != "contradiction":
+        return {"verdict": "NOT_APPLICABLE", "reason": "Gap is not a contradiction candidate.", "records": []}
+
+    refs = {normalize_space(str(item)).lower() for item in gap.get("supporting_references", []) if item}
+    records = []
+    seen_records: set[str] = set()
+    for record in project_records_for_mapping(project):
+        if not isinstance(record, dict):
+            continue
+        citation = normalize_space(record_reference(record)).lower()
+        if citation in refs and citation not in seen_records:
+            records.append(record)
+            seen_records.add(citation)
+    if len(records) < 2:
+        return {
+            "verdict": "NEEDS_EVIDENCE",
+            "reason": "At least two cited records are required before treating a contradiction as a mechanism gap.",
+            "records": [record_reference(record) for record in records],
+        }
+
+    positive = ("improve", "improved", "enhance", "enhanced", "enable", "enabled", "stabil", "increase", "reduce", "successful", "retain")
+    negative = ("fail", "failed", "unstable", "degrad", "limit", "challenge", "insufficient", "poor", "cannot", "not support", "incompatible")
+    polarities: list[str] = []
+    contexts: list[set[str]] = []
+    for record in records[:4]:
+        abstract = normalize_space(str(record.get("abstract") or ""))
+        claim_sentences = [
+            sentence for sentence in split_sentences(abstract)
+            if any(marker in sentence.lower() for marker in ("here we report", "we report", "this work", "these findings", "we demonstrate", "we show", "authors develop"))
+        ]
+        claim_text = normalize_space(" ".join(
+            str(record.get(key) or "") for key in ("contribution", "conclusion")
+            if normalize_space(str(record.get(key) or "")).lower() not in {"", "full text excerpt:"}
+        ))
+        claim_parts = ([claim_text] if claim_text else []) + claim_sentences[-3:]
+        if not claim_parts:
+            claim_parts = split_sentences(abstract)[-2:]
+        claim_text = normalize_space(" ".join(claim_parts)).lower()
+        positive_hits = sum(claim_text.count(marker) for marker in positive)
+        negative_hits = sum(claim_text.count(marker) for marker in negative)
+        polarity = "positive" if positive_hits > negative_hits else "negative" if negative_hits > positive_hits else "ambiguous"
+        polarities.append(polarity)
+        contexts.append(set(re.findall(r"[a-z][a-z0-9-]{3,}", normalize_space(
+            f"{record.get('scenario', '')} {record.get('benchmark', '')}"
+        ).lower())))
+
+    opposed = "positive" in polarities and "negative" in polarities
+    shared_context = max((len(left & right) for index, left in enumerate(contexts) for right in contexts[index + 1 :]), default=0)
+    if opposed and shared_context >= 2:
+        return {
+            "verdict": "COMPARABLE_CONTRADICTION",
+            "reason": "Cited records contain opposing polarity under a sufficiently shared scenario/benchmark context.",
+            "shared_context_terms": shared_context,
+            "records": [record_reference(record) for record in records],
+        }
+    return {
+        "verdict": "NOT_COMPARABLE",
+        "reason": "The cited records do not establish opposite claims under a shared target context; treat this as a scope comparison, not a contradiction.",
+        "shared_context_terms": shared_context,
+        "polarities": polarities,
+        "records": [record_reference(record) for record in records],
+    }
+
+def extract_hypothesis_ingredients(project, method="", scenario="", refs=None, gap=None):
+    """Extract evidence-bound hypothesis material without assuming a field.
+
+    The old extractor used a narrow high-voltage vocabulary.  This version
+    treats cited PaperGraph records as the source of methods, settings,
+    measurements, and numeric anchors, so it works across experimental,
+    observational, computational, mathematical, and clinical research.
+    """
+    try:
+        from ._pipeline import project_records_for_mapping
+        from ._utils import normalize_space, split_sentences, trim_text, unique_preserve_order
+    except ImportError:
+        from _pipeline import project_records_for_mapping
+        from _utils import normalize_space, split_sentences, trim_text, unique_preserve_order
+
+    refs = [str(ref).strip() for ref in (refs or []) if str(ref).strip()]
+    ingredients = {
+        "methods": [method] if method else [],
+        "scenarios": [scenario] if scenario else [],
+        "benchmarks": [],
+        "numerical_bounds": [],
+        "operating_conditions": [],
+        "measurable_metrics": [],
+        "evidence_packets": [],
+    }
+    records = [record for record in project_records_for_mapping(project) if isinstance(record, dict)]
+    method_key, scenario_key = normalize_space(method).lower(), normalize_space(scenario).lower()
+    ref_keys = {normalize_space(ref).lower() for ref in refs}
+    related: list[dict[str, Any]] = []
+    for record in records:
+        citation = normalize_space(record_reference(record)).lower()
+        record_method = normalize_space(str(record.get("method") or "")).lower()
+        record_scenario = normalize_space(str(record.get("scenario") or "")).lower()
+        if citation in ref_keys or (method_key and method_key == record_method) or (scenario_key and scenario_key == record_scenario):
+            related.append(record)
+    if not related and isinstance(gap, dict):
+        description_terms = set(re.findall(r"[a-z][a-z0-9_-]{3,}", normalize_space(str(gap.get("description") or "")).lower()))
+        for record in records:
+            record_terms = set(re.findall(
+                r"[a-z][a-z0-9_-]{3,}",
+                normalize_space(f"{record.get('title', '')} {record.get('method', '')} {record.get('scenario', '')}").lower(),
+            ))
+            if len(description_terms & record_terms) >= 2:
+                related.append(record)
+
+    numeric_pattern = re.compile(
+        r"(?<![\w.])(?:[<>~=]|about\s+|approximately\s+)?\d+(?:\.\d+)?(?:\s*(?:%|‰|×|x|fold|[A-Za-zµμ°Ω][A-Za-z0-9µμ°Ω/^._-]*))?",
+        re.IGNORECASE,
+    )
+    condition_markers = ("under ", "during ", "when ", "while ", "at ", "between ", "after ", "before ", "across ", "in the presence", "in vivo", "in vitro", "ex vivo")
+    measurement_markers = ("measur", "evaluat", "quantif", "observ", "assess", "estimate", "detect", "compare", "endpoint", "outcome", "readout", "metric")
+    for record in related[:12]:
+        record_method = normalize_space(str(record.get("method") or ""))
+        record_scenario = normalize_space(str(record.get("scenario") or ""))
+        record_benchmark = normalize_space(str(record.get("benchmark") or ""))
+        if record_method and record_method.lower() not in {"unknown", "unspecified"}:
+            ingredients["methods"].append(record_method)
+        if record_scenario and record_scenario.lower() not in {"unknown", "unspecified"}:
+            ingredients["scenarios"].append(record_scenario)
+        if record_benchmark and record_benchmark.lower() not in {"unknown", "unspecified"}:
+            ingredients["benchmarks"].append(record_benchmark)
+            ingredients["measurable_metrics"].append(record_benchmark)
+        text = normalize_space(" ".join(
+            str(record.get(key) or "")
+            for key in ("title", "abstract", "contribution", "conclusion", "limitation", "full_text_excerpt")
+        ))
+        ingredients["numerical_bounds"].extend(
+            normalize_space(match.group(0)) for match in numeric_pattern.finditer(text) if any(char.isdigit() for char in match.group(0))
+        )
+        sentences = split_sentences(text)
+        conditions = [sentence for sentence in sentences if any(marker in sentence.lower() for marker in condition_markers)]
+        measurements = [sentence for sentence in sentences if any(marker in sentence.lower() for marker in measurement_markers)]
+        ingredients["operating_conditions"].extend(trim_text(sentence, 180) for sentence in conditions[:3])
+        ingredients["measurable_metrics"].extend(trim_text(sentence, 140) for sentence in measurements[:2])
+        evidence_text = next(
+            (sentence for sentence in sentences if any(marker in sentence.lower() for marker in ("conclusion", "result", "limitation", "however", "whereas"))),
+            trim_text(text, 320),
+        )
+        ingredients["evidence_packets"].append(
+            {
+                "citation": record_reference(record),
+                "title": str(record.get("title") or ""),
+                "method": record_method,
+                "scenario": record_scenario,
+                "benchmark": record_benchmark,
+                "evidence_text": trim_text(evidence_text, 360),
+            }
+        )
+    for key, values in ingredients.items():
+        if not isinstance(values, list):
+            continue
+        if key == "evidence_packets":
+            seen_packets: set[str] = set()
+            packets: list[dict[str, Any]] = []
+            for packet in values:
+                if not isinstance(packet, dict):
+                    continue
+                identity = normalize_space(str(packet.get("citation") or packet.get("title") or ""))
+                if identity and identity not in seen_packets:
+                    seen_packets.add(identity)
+                    packets.append(packet)
+            ingredients[key] = packets[:8]
+        else:
+            ingredients[key] = unique_preserve_order(item for item in values if item)[:8]
+    return ingredients
+
+
+def generate_counterfactual_leaves(method="", scenario="", refs=None, *, ingredients=None, gap_type=""):
+    """Generate evidence-specific conditions under which a gap would disappear."""
+    try:
+        from ._utils import trim_text, unique_preserve_order
+    except ImportError:
+        from _utils import trim_text, unique_preserve_order
+    ingredients = ingredients if isinstance(ingredients, dict) else {}
+    methods = list(ingredients.get("methods") or ([method] if method else []))
+    scenarios = list(ingredients.get("scenarios") or ([scenario] if scenario else []))
+    metrics = list(ingredients.get("measurable_metrics") or ingredients.get("benchmarks") or [])
+    anchors = list(ingredients.get("numerical_bounds") or ingredients.get("operating_conditions") or [])
+    leaves: list[str] = []
+    if methods and scenarios and metrics:
+        leaves.append(f"If '{methods[0]}' is independently tested in '{scenarios[0]}' and changes '{metrics[0]}' against a matched baseline, this gap is resolved.")
+    if anchors and metrics:
+        leaves.append(f"If '{metrics[0]}' is measured under the source-reported condition '{trim_text(str(anchors[0]), 120)}', this gap can be confirmed or refuted.")
+    if gap_type == "contradiction" and methods:
+        leaves.append(f"If a controlled comparison isolates the differing condition for '{methods[0]}', the competing explanations can be separated.")
+    if gap_type in {"anomaly", "mechanism_problem", "implicit_tabi"} and metrics:
+        leaves.append(f"If an intervention changes the proposed mediator before '{metrics[0]}' changes, the claimed mechanism gains direct support.")
+    if refs and scenarios:
+        leaves.append(f"If the evidence from '{trim_text(str(list(refs)[0]), 90)}' is replicated in '{scenarios[0]}', the reported gap can be reassessed.")
+    return unique_preserve_order(leaves)[:5]
+
+
+def prepare_gap_for_hypothesis(project: dict[str, Any], gap: dict[str, Any]) -> dict[str, Any]:
+    """Attach evidence packets and block template generation from abstract gaps."""
+    try:
+        from ._pipeline import project_records_for_mapping
+        from ._utils import unique_preserve_order
+    except ImportError:
+        from _pipeline import project_records_for_mapping
+        from _utils import unique_preserve_order
+    prepared = dict(gap)
+    contradiction_validation = validate_contradiction_gap(project, prepared)
+    records = project_records_for_mapping(project)
+    method, scenario = infer_method_scenario_from_gap(prepared, records)
+    refs = list(prepared.get("supporting_references") or [])
+    ingredients = extract_hypothesis_ingredients(project, method, scenario, refs, gap=prepared)
+    leaves = generate_counterfactual_leaves(
+        method, scenario, refs, ingredients=ingredients, gap_type=str(prepared.get("gap_type") or "")
+    )
+    blocking: list[str] = []
+    if contradiction_validation.get("verdict") in {"NOT_COMPARABLE", "NEEDS_EVIDENCE"}:
+        blocking.append(str(contradiction_validation.get("reason") or "Contradiction claim lacks comparable source evidence."))
+    if not ingredients.get("evidence_packets"):
+        blocking.append("No cited PaperGraph record could be resolved for this gap.")
+    if not ingredients.get("methods"):
+        blocking.append("No evidence-derived method or intervention is available.")
+    if not ingredients.get("scenarios"):
+        blocking.append("No evidence-derived target scenario is available.")
+    if not (ingredients.get("benchmarks") or ingredients.get("measurable_metrics")):
+        blocking.append("No evidence-derived observable or benchmark is available.")
+    if not leaves:
+        blocking.append("No evidence-specific counterfactual condition can yet be stated.")
+    prepared["hypothesis_ingredients"] = ingredients
+    prepared["contradiction_validation"] = contradiction_validation
+    prepared["evidence_packets"] = ingredients.get("evidence_packets", [])
+    prepared["counterfactual_leaves"] = unique_preserve_order(list(prepared.get("counterfactual_leaves") or []) + leaves)[:6]
+    prepared["hypothesis_readiness"] = {
+        "status": "ready" if not blocking else "needs_evidence_enrichment",
+        "ready": not blocking,
+        "blocking_reasons": blocking,
+        "evidence_packet_count": len(ingredients.get("evidence_packets") or []),
+        "counterfactual_leaf_count": len(prepared["counterfactual_leaves"]),
+    }
+    return prepared
+
+
+# ---------------------------------------------------------------------------
 # Multi-Gap Combination Selector
 # ---------------------------------------------------------------------------
 
@@ -3449,6 +4022,12 @@ def select_gap_combination_for_hypothesis(project, ranked_gaps, strategy="auto")
     - 'top_k': pick top-3 by existing rank
     - 'complementary': pick one gap per distinct type
     """
+    ranked_gaps = [
+        prepare_gap_for_hypothesis(project, gap)
+        for gap in ranked_gaps
+        if isinstance(gap, dict)
+    ]
+    ranked_gaps = [gap for gap in ranked_gaps if (gap.get("hypothesis_readiness") or {}).get("ready")]
     if not ranked_gaps:
         return []
     if len(ranked_gaps) <= 3:
@@ -3474,7 +4053,8 @@ def select_gap_combination_for_hypothesis(project, ranked_gaps, strategy="auto")
                 selected.append(gap)
         return selected
 
-    # 'auto': score by ingredient richness
+    # 'auto': score evidence richness, then prefer gaps that add a missing
+    # hypothesis role instead of repeatedly selecting the same kind of hole.
     scored = []
     for gap in ranked_gaps:
         ingredients = gap.get("hypothesis_ingredients", {})
@@ -3487,18 +4067,39 @@ def select_gap_combination_for_hypothesis(project, ranked_gaps, strategy="auto")
         score += len(ingredients.get("operating_conditions", [])) * 2
         # Bonus for having supporting references
         score += len(gap.get("supporting_references", [])) * 1
+        score += len(gap.get("evidence_packets", [])) * 2
+        score += len(gap.get("counterfactual_leaves", [])) * 2
         scored.append((score, gap))
     scored.sort(key=lambda x: -x[0])
 
-    # Pick top-3 ensuring at least 2 different gap_types
-    selected, types_seen = [], set()
+    selected, types_seen, covered_roles = [], set(), set()
     for _, gap in scored:
         if len(selected) >= 3:
             break
+        ingredients = gap.get("hypothesis_ingredients", {}) if isinstance(gap.get("hypothesis_ingredients"), dict) else {}
+        roles = {
+            role
+            for role, values in {
+                "method": ingredients.get("methods", []),
+                "scenario": ingredients.get("scenarios", []),
+                "measurement": list(ingredients.get("benchmarks", [])) + list(ingredients.get("measurable_metrics", [])),
+                "condition": list(ingredients.get("numerical_bounds", [])) + list(ingredients.get("operating_conditions", [])),
+            }.items()
+            if values
+        }
+        adds_role = bool(roles - covered_roles)
+        adds_type = str(gap.get("gap_type") or "") not in types_seen
+        if selected and not (adds_role or adds_type):
+            continue
         selected.append(gap)
-        types_seen.add(gap.get("gap_type", ""))
-    # If all same type, swap last with first different type from remaining
-    if len(types_seen) == 1 and len(scored) > 3:
+        types_seen.add(str(gap.get("gap_type") or ""))
+        covered_roles.update(roles)
+    for _, gap in scored:
+        if len(selected) >= 3:
+            break
+        if gap not in selected:
+            selected.append(gap)
+    if len(types_seen) == 1 and len(scored) > 3 and selected:
         for _, gap in scored[3:]:
             if gap.get("gap_type", "") not in types_seen:
                 selected[-1] = gap
@@ -3519,8 +4120,10 @@ def prefilter_gap_combination(project, gaps):
     - coverage < 0.3 → insufficient (recommend supplement first)
     """
     try:
+        from ._pipeline import project_records_for_mapping
         from ._utils import normalize_space
     except ImportError:
+        from _pipeline import project_records_for_mapping
         from _utils import normalize_space
 
     all_refs = []
@@ -3537,15 +4140,20 @@ def prefilter_gap_combination(project, gaps):
         return False, "Gap combination has no references and no descriptions", 0.0
 
     # Build corpus from PaperGraph records
-    papergraph = project.get("papergraph", [])
+    papergraph = project_records_for_mapping(project)
     if not papergraph:
         return False, "PaperGraph is empty; need literature first", 0.0
 
     corpus_parts = []
+    record_identities: list[tuple[str, str]] = []
     for record in papergraph:
         if isinstance(record, dict):
             corpus_parts.append(str(record.get("title", "")))
             corpus_parts.append(str(record.get("abstract", "")))
+            record_identities.append((
+                normalize_space(record_reference(record)).lower(),
+                normalize_space(str(record.get("title") or "")).lower(),
+            ))
     corpus = " ".join(corpus_parts).lower()
 
     if not corpus.strip():
@@ -3556,7 +4164,15 @@ def prefilter_gap_combination(project, gaps):
     total = len(all_refs) if all_refs else 1
     for ref in all_refs:
         ref_key = normalize_space(str(ref)).lower()[:80]
-        if ref_key and ref_key in corpus:
+        ref_doi = next(iter(re.findall(r"10\.\d{4,9}/[-._;()/:a-z0-9]+", str(ref).lower())), "")
+        ref_tokens = set(re.findall(r"[a-z][a-z0-9-]{4,}", ref_key))
+        matched = any(
+            (ref_doi and ref_doi in identity)
+            or (ref_key and (ref_key in identity or identity in ref_key))
+            or (len(ref_tokens & set(re.findall(r"[a-z][a-z0-9-]{4,}", title))) >= min(4, max(2, len(ref_tokens) // 2)))
+            for identity, title in record_identities
+        )
+        if matched:
             covered += 1
     ref_coverage = covered / total if total > 0 else 0.0
 
