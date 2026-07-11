@@ -93,6 +93,12 @@ def mechanism_draft_from_gap(gap: dict[str, Any], domain: str = "") -> dict[str,
     benchmark = _first_text(ingredients.get("benchmarks"))
     description = _clean_text(gap.get("description"))
     context = _clean_text(" ".join(part for part in (method, scenario, domain, description) if part))
+    tabi = gap.get("tabi_checks") if isinstance(gap.get("tabi_checks"), dict) else {}
+    if tabi and not tabi.get("substantive"):
+        # This is a retrieval instruction, not an asserted contradiction. It
+        # steers the next Socrates/ZhiZhi passes toward the two evidence types
+        # a real TABI audit needs instead of merely filling a matrix hole.
+        context = _clean_text(f"{context} theory prediction experimental observation matched conditions")
     draft = {
         "gap_id": str(gap.get("gap_id") or ""),
         "input": _clean_text(supplied.get("input")) or _clean_text(" ".join(part for part in (method, scenario) if part)) or description,
@@ -101,6 +107,7 @@ def mechanism_draft_from_gap(gap: dict[str, Any], domain: str = "") -> dict[str,
         "context": context,
         "evidence": {},
         "tanxi_mechanism_draft": supplied,
+        "tabi_required_retrieval": tabi.get("required_directed_retrieval", []) if tabi else [],
     }
     for field in MECHANISM_FIELDS:
         draft[field] = "unresolved"
@@ -192,6 +199,12 @@ def extract_mechanism_evidence(
     for paper in project.get("papergraph", []):
         if not isinstance(paper, dict):
             continue
+        if paper.get("active", True) is False:
+            continue
+        if str(paper.get("retrieval_phase") or "") == "boundary_extension":
+            continue
+        if str(paper.get("domain_review_verdict") or "keep") in {"review", "reject"}:
+            continue
         paper_id = str(paper.get("paper_id") or "")
         if allowed_ids and paper_id not in allowed_ids:
             continue
@@ -199,6 +212,9 @@ def extract_mechanism_evidence(
             str(paper.get(key) or "")
             for key in ("title", "abstract", "conclusion", "limitation", "full_text_excerpt")
         )
+        alignment = socrates_paper_alignment(project, paper, anchors)
+        if not alignment["passes"]:
+            continue
         for sentence in _sentences(source_text):
             lowered = sentence.lower()
             anchor_hits = sum(1 for term in anchors if term in lowered)
@@ -213,6 +229,7 @@ def extract_mechanism_evidence(
                     "field": field,
                     "excerpt": sentence,
                     "score": round(marker_hits * 2 + min(anchor_hits, 3), 2),
+                    "alignment": alignment,
                 }
                 evidence[field].append(record)
     for field, entries in evidence.items():
@@ -221,6 +238,30 @@ def extract_mechanism_evidence(
             unique[(entry["citation"], entry["excerpt"])] = entry
         evidence[field] = sorted(unique.values(), key=lambda item: -float(item["score"]))[:max_per_field]
     return evidence
+
+
+def socrates_paper_alignment(project: dict[str, Any], paper: dict[str, Any], anchors: set[str]) -> dict[str, Any]:
+    """Require evidence papers to share the project-local mechanism vocabulary.
+
+    This catches the tempting but invalid move of filling an ``intervention``
+    field with a paper from another application merely because it uses the word
+    "control". The vocabulary is learned from the core PaperGraph, not a
+    field-specific denylist.
+    """
+    try:
+        from ._gap_detection import mechanism_entity_profile
+    except ImportError:
+        from _gap_detection import mechanism_entity_profile
+    profile = mechanism_entity_profile(project)
+    text_terms = _context_terms(" ".join(str(paper.get(field) or "") for field in (
+        "title", "abstract", "method", "scenario", "benchmark", "contribution", "limitation",
+    )))
+    core_hits = sorted(text_terms & set(profile.get("entities", [])))
+    anchor_hits = sorted(text_terms & anchors)
+    # Two core terms, or one core plus one query/gap anchor, keeps a short but
+    # genuinely on-topic paper usable without admitting a broad boundary case.
+    passes = len(core_hits) >= 2 or (len(core_hits) >= 1 and len(anchor_hits) >= 1)
+    return {"passes": passes, "core_hits": core_hits[:10], "anchor_hits": anchor_hits[:10]}
 
 
 def run_socrates_mechanism_enrichment(
@@ -274,6 +315,7 @@ def run_socrates_mechanism_enrichment(
     attempted_queries: set[tuple[str, str]] = set()
     for iteration in range(1, max_iterations + 1):
         project = load_project(project_id)
+        validate_mechanism_contract_evidence(project, contract)
         unresolved = unresolved_mechanism_fields(contract)
         if not unresolved:
             break
@@ -283,6 +325,7 @@ def run_socrates_mechanism_enrichment(
             project, unresolved, domain=actual_domain, method=method, scenario=scenario, mediator=mediator,
         )
         updated_from_existing = _apply_evidence(contract, existing)
+        validate_mechanism_contract_evidence(project, contract)
         unresolved = unresolved_mechanism_fields(contract)
         query_plan = translate_unresolved_to_queries(
             unresolved, actual_domain, method, scenario, mediator, str(contract.get("context") or ""),
@@ -318,7 +361,9 @@ def run_socrates_mechanism_enrichment(
                 mediator=mediator, paper_ids=report.get("paper_ids", []),
             )
             updated_from_new += _apply_evidence(contract, new_evidence)
+            validate_mechanism_contract_evidence(project, contract)
 
+        validate_mechanism_contract_evidence(project, contract)
         remaining = unresolved_mechanism_fields(contract)
         iteration_report = {
             "iteration": iteration,
@@ -342,8 +387,11 @@ def run_socrates_mechanism_enrichment(
         if updated_from_existing + updated_from_new == 0 and not queries_remain:
             break
 
+    project = load_project(project_id)
+    validate_mechanism_contract_evidence(project, contract)
     remaining = unresolved_mechanism_fields(contract)
     verdict = "COMPLETE" if not remaining else "INSUFFICIENT_EVIDENCE"
+    causal_inference_plan = build_causal_inference_plan(selected_gap, contract)
     report = {
         "project_id": project_id,
         "gap_id": str(selected_gap.get("gap_id") or ""),
@@ -354,6 +402,7 @@ def run_socrates_mechanism_enrichment(
         "imports": imports,
         "remaining_unresolved": remaining,
         "reading_focus": _reading_focus(remaining),
+        "causal_inference_plan": causal_inference_plan,
         "next_step": (
             "Pass this evidence-cited mechanism contract to MingLi."
             if verdict == "COMPLETE"
@@ -367,6 +416,7 @@ def run_socrates_mechanism_enrichment(
         "imports": imports,
         "remaining_unresolved": remaining,
     }
+    contract["causal_inference_plan"] = causal_inference_plan
     project = load_project(project_id)
     project.setdefault("socrates_mechanism_contracts", {})[str(selected_gap.get("gap_id") or "unassigned")] = contract
     project.setdefault("socrates_reports", []).append(report)
@@ -374,6 +424,44 @@ def run_socrates_mechanism_enrichment(
     save_project(project)
     log_event("SCIENCE", "socrates_enrichment_finished", project_id=project_id, verdict=verdict, searches=searches, imports=imports, remaining=len(remaining))
     return json.dumps(report, ensure_ascii=False, indent=2)
+
+
+def build_causal_inference_plan(gap: dict[str, Any], contract: dict[str, Any]) -> dict[str, Any]:
+    input_variable = _clean_text(contract.get("input")) or _clean_text(gap.get("description"))
+    mediator = _clean_text(contract.get("proposed_mediator")) or "the proposed mediator"
+    outcome = _clean_text(contract.get("output")) or "the outcome"
+    alternatives = [
+        _clean_text(item)
+        for item in gap.get("alternative_mechanisms", [])
+        if _clean_text(item)
+    ] if isinstance(gap.get("alternative_mechanisms"), list) else []
+    return {
+        "counterfactual_experiments": [
+            {
+                "question": f"If {input_variable} is changed while the proposed mediator is suppressed or absent, does {outcome} still change?",
+                "design": f"Use matched control, intervention, and mediator-suppression or absence conditions; measure both {mediator} and {outcome}.",
+                "prediction_if_mechanism_true": f"Changing {input_variable} changes {mediator}, and the {outcome} effect weakens when {mediator} is blocked or absent.",
+                "prediction_if_mechanism_false": f"{outcome} changes independently of {mediator}, or does not respond reproducibly to the intervention.",
+                "observability_requirement": "Use a direct measurement of the mediator plus an independent outcome measurement; proxies alone are insufficient.",
+            }
+        ],
+        "first_principles_derivation": [
+            {
+                "step": f"State the conservation law, thermodynamic potential, kinetic rate law, or governing equation that could connect {input_variable} to {mediator}.",
+                "status": "requires domain-specific source or calculation",
+            },
+            {
+                "step": f"Derive a directional prediction for {mediator} -> {outcome} under the intervention and a matched null condition.",
+                "status": "requires parameter assumptions and uncertainty bounds",
+            },
+        ],
+        "mechanism_competition": {
+            "primary": f"{input_variable} -> {mediator} -> {outcome}",
+            "alternatives": alternatives,
+            "discriminator": f"Measure the temporal or conditional ordering of {mediator} and {outcome} under independently chosen controls; retain competing mechanisms when the data do not separate them.",
+        },
+        "evidence_boundary": "This is an experimental and derivational plan, not evidence that the causal claim is already true.",
+    }
 
 
 def select_untried_socrates_queries(
@@ -411,10 +499,10 @@ def socrates_call_zhizhi_targeted_search(
 ) -> dict[str, Any]:
     """Run one small, persisted ZhiZhi retrieval pass for one evidence question."""
     try:
-        from ._literature_import import extract_paper_keynote, import_literature_search_result
+        from ._literature_import import domain_review_paper, extract_paper_keynote, import_literature_search_result
         from ._literature_search import search_literature_stratified
     except ImportError:
-        from _literature_import import extract_paper_keynote, import_literature_search_result
+        from _literature_import import domain_review_paper, extract_paper_keynote, import_literature_search_result
         from _literature_search import search_literature_stratified
     output = {"field": field, "question": question, "query": query, "searches": 0, "imports": 0, "paper_ids": [], "errors": []}
     try:
@@ -439,6 +527,10 @@ def socrates_call_zhizhi_targeted_search(
                 record = imported.get("record") or {}
                 paper_id = str(record.get("paper_id") or "") if isinstance(record, dict) else ""
                 if paper_id:
+                    review = domain_review_paper(project_id, paper_id, target_domain_profile=domain, min_confidence=0.6)
+                    if str(review.get("verdict") or "") != "keep":
+                        output["errors"].append(f"domain_review[{result_index}]:{review.get('verdict')}")
+                        continue
                     output["paper_ids"].append(paper_id)
                     output["imports"] += 1
                     try:
@@ -450,6 +542,60 @@ def socrates_call_zhizhi_targeted_search(
     except Exception as exc:
         output["errors"].append(f"search:{exc}")
     return output
+
+
+def validate_mechanism_contract_evidence(project: dict[str, Any], contract: dict[str, Any]) -> dict[str, Any]:
+    """Remove cited entries that do not belong to the same mechanism context.
+
+    A citation is not accepted merely because it contains a generic field
+    marker such as ``control`` or ``intervention``. Invalid evidence is kept in
+    an audit trail and the field becomes unresolved, which makes the normal
+    Socrates query loop retrieve a targeted replacement.
+    """
+    evidence = contract.get("evidence") if isinstance(contract.get("evidence"), dict) else {}
+    if not evidence:
+        return {"valid_fields": [], "rejected": []}
+    by_id = {
+        str(record.get("paper_id") or ""): record
+        for record in project.get("papergraph", [])
+        if isinstance(record, dict)
+    }
+    anchors = _context_terms(
+        str(contract.get("context") or ""), str(contract.get("input") or ""),
+        str(contract.get("proposed_mediator") or ""), str(contract.get("output") or ""),
+    )
+    rejected: list[dict[str, Any]] = []
+    valid_fields: list[str] = []
+    for field in MECHANISM_FIELDS:
+        entries = evidence.get(field, []) if isinstance(evidence.get(field), list) else []
+        valid: list[dict[str, Any]] = []
+        for entry in entries:
+            paper = by_id.get(str(entry.get("paper_id") or ""))
+            alignment = socrates_paper_alignment(project, paper or {}, anchors) if paper else {"passes": False}
+            if paper and alignment.get("passes"):
+                item = dict(entry)
+                item["alignment"] = alignment
+                valid.append(item)
+            else:
+                rejected.append({
+                    "field": field,
+                    "citation": str(entry.get("citation") or ""),
+                    "reason": "evidence paper does not share the core mechanism context",
+                })
+        if valid:
+            evidence[field] = valid
+            valid_fields.append(field)
+        elif entries:
+            evidence[field] = []
+            contract[field] = "unresolved"
+    if rejected:
+        contract.setdefault("rejected_evidence", []).extend(rejected)
+    contract["evidence_alignment_audit"] = {
+        "valid_fields": valid_fields,
+        "rejected_count": len(rejected),
+        "status": "pass" if not rejected else "replacement_retrieval_required",
+    }
+    return {"valid_fields": valid_fields, "rejected": rejected}
 
 
 def _apply_evidence(contract: dict[str, Any], evidence: dict[str, list[dict[str, Any]]]) -> int:
@@ -473,9 +619,11 @@ def _resolve_gap(project: dict[str, Any], *, gap: dict[str, Any] | str, gap_id: 
     if isinstance(gap, dict) and gap:
         return dict(gap)
     wanted = str(gap_id or gap or "").strip()
-    candidates = [item for item in project.get("knowledge_gaps", []) if isinstance(item, dict)]
     tanxi = project.get("tanxi_gap_analysis", {}) if isinstance(project.get("tanxi_gap_analysis"), dict) else {}
-    candidates.extend(item for item in tanxi.get("ranked_gaps", []) if isinstance(item, dict))
+    # Ranked TanXi gaps preserve mechanism relevance, TABI and ingredients;
+    # prefer them over the older canonical list when both share an id.
+    candidates = [item for item in tanxi.get("ranked_gaps", []) if isinstance(item, dict)]
+    candidates.extend(item for item in project.get("knowledge_gaps", []) if isinstance(item, dict))
     if wanted:
         for item in candidates:
             if str(item.get("gap_id") or "") == wanted:

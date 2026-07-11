@@ -41,6 +41,7 @@ except ImportError:
 # Make submodule references available for internal use
 try:
     from . import _utils
+    from . import _pdf_extraction
     from . import _models
     from . import _project
     from . import _llm
@@ -57,6 +58,7 @@ try:
     from . import _pipeline
 except ImportError:
     import _utils
+    import _pdf_extraction
     import _models
     import _project
     import _llm

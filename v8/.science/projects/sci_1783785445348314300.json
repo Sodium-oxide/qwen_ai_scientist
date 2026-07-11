@@ -1,0 +1,2892 @@
+{
+  "project_id": "sci_1783785445348314300",
+  "title": "Can we design and manufacture medicines customized for individual people? 从个体分子表型、剂量响应到可制造性的精准医疗因果证据闭环验证",
+  "domain": "Personalized Medicine / Precision Medicine / Pharmacogenomics / Cancer Genomics / Clinical Pharmacology / Multi-omics / Patient-derived Models / Cell and Gene Therapy Manufacturing / Biostatistics / Regulatory Science",
+  "objective": "在定义明确的患者群体、疾病类型和治疗类别中，个体的遗传变异、肿瘤或疾病分子表型、器官功能、免疫状态、既往治疗史以及制造过程参数，是否能够以可重复、可校准、因果上可解释的方式预测：1. 某一治疗方案的药代动力学暴露、毒性和适宜剂量；2. 某一靶向药物、免疫治疗、细胞治疗或核酸药物的临床获益与耐药风险；3. 个体化制剂或自体细胞产品能否在身份、纯度、效力、无菌性、批间一致性、周转时间和成本约束下稳定制造；4. 上述预测在不同祖源、年龄、肝肾功能、疾病分期、医疗中心和检测平台迁移时是否仍成立。禁止将统计相关、患者画像匹配或模型准确率直接解释为因果治疗获益；禁止将实验室样本、类器官、动物模型或单中心回顾性结果直接外推为临床个体化治疗有效；禁止将技术尚不成熟误判为生物学上绝对不可行。",
+  "strategic_need": "",
+  "phase": "Gap Discovery",
+  "createdAt": 1783785445.348316,
+  "updatedAt": 1783786044.606993,
+  "papergraph": [
+    {
+      "paper_id": "paper_1783785649492678100",
+      "unique_key": "arxiv:2512_00137v1",
+      "title": "HyperADRs: A Hierarchical Hypergraph Framework for Drug-Gene-ADR Prediction",
+      "citation": "Ze Cai et al. (2025) HyperADRs: A Hierarchical Hypergraph Framework for Drug-Gene-ADR Prediction arXiv:2512.00137v1",
+      "authors": [
+        "Ze Cai"
+      ],
+      "year": "2025",
+      "venue": "arXiv",
+      "provider": "arxiv",
+      "source_type": "api",
+      "doi": "",
+      "arxiv_id": "2512.00137v1",
+      "semantic_scholar_id": "",
+      "url": "http://arxiv.org/abs/2512.00137v1",
+      "abstract": "Adverse drug reactions (ADRs) are a major barrier to safe and effective pharmacotherapy and increasingly reflect higher order interactions between drugs, genetic background, and clinical phenotypes. Existing graph based approaches usually predict ADRs as properties of drugs or drug pairs, leaving the causal gene implicit and limiting their value for pharmacogenomic decision making. We introduce HyperADRs, a hierarchical hypergraph framework that predicts ADR risk at the level of drug-gene-ADR triads. Starting from curated pharmacogenomic annotations in PharmGKB and the pharmacogenomics subdatabase of DrugBank, we construct high confidence triplets and integrate them with auxiliary molecular, functional, and disease relations from precision-medicine-oriented knowledge graphs. Drugs, genes, and ADR concepts are embedded with modality appropriate pretrained models (UniMol, ESM2, SapBERT) and propagated through a hypergraph convolutional network. A FiLM based, query conditioned contrastive learning module learns context specific representations so that, given any two entities, the model retrieves the correct third entity against many candidates. To improve robustness and interpretability, we propose a nine category ADR macro system scheme that reduces large heterogeneous 'other' bins while aligning with organ system reasoning in clinical pharmacology. Across drug-, gene-, and ADR-held-out evaluations on PharmGKB, HyperADRs matches or exceeds strong baselines on ranking based metrics. When trained on PharmGKB and tested on unseen DrugBank triplets, HyperADRs maintains its ranking advantage, indicating that the learned representations capture transferable biological mechanisms and can support mechanistically grounded pharmacogenomic hypothesis generation.",
+      "full_text_excerpt": "",
+      "conclusion": "Full text excerpt:",
+      "strengths": [
+        "Abstract: Adverse drug reactions (ADRs) are a major barrier to safe and effective pharmacotherapy and increasingly reflect higher order interactions between drugs, genetic background, and clinical phenotypes. Existing graph based approaches usually predict ADRs as properties of drugs or drug pairs,...[truncated]"
+      ],
+      "improvements": [
+        "No explicit limitation extracted."
+      ],
+      "method": "the model",
+      "scenario": "drug-gene-ADR prediction",
+      "benchmark": "ranking based metrics",
+      "contribution": "introduction of HyperADRs, which predicts ADR risk at the level of drug-gene-ADR triads and improves robustness and interpretability with a nine-category ADR macro system",
+      "limitation": "HyperADRs: A Hierarchical Hypergraph Framework for Drug-Gene-ADR Prediction Adverse drug reactions (ADRs) are a major barrier to safe and effective pharmacotherapy and increasingly reflect higher order interactions between drugs, genetic background, and clinical phenotypes.",
+      "credibility_score": 0.72,
+      "credibility_reasons": [
+        "base record",
+        "has title and citation",
+        "has scholarly identifier",
+        "has URL",
+        "has substantial abstract",
+        "provider recorded",
+        "preprint venue",
+        "has publication year"
+      ],
+      "extraction_quality": {
+        "score": 1.0,
+        "unknown_ratio": 0.0,
+        "unknown_fields": [],
+        "abstract_chars": 1779,
+        "flags": [],
+        "needs_enrichment": false,
+        "needs_llm_retry": false,
+        "requires_human_review": false,
+        "initial": {
+          "score": 0.28,
+          "unknown_ratio": 1.0,
+          "unknown_fields": [
+            "method",
+            "scenario",
+            "benchmark"
+          ],
+          "abstract_chars": 1779,
+          "flags": [
+            "missing_conclusion",
+            "unknown_fields",
+            "unknown_fields_high",
+            "missing_benchmark"
+          ],
+          "needs_enrichment": false,
+          "needs_llm_retry": true,
+          "requires_human_review": true
+        },
+        "llm_retry": {
+          "attempted": true,
+          "succeeded": true,
+          "error": "",
+          "extractor": "qwen_json"
+        }
+      },
+      "enrichment_sources": [],
+      "gap_signals": [
+        {
+          "signal_id": "sig_1783785649466699900",
+          "signal_type": "mechanism_issue",
+          "text": "HyperADRs: A Hierarchical Hypergraph Framework for Drug-Gene-ADR Prediction Adverse drug reactions (ADRs) are a major barrier to safe and effective pharmacotherapy and increasingly reflect higher order interactions between drugs, genetic background, and clinical phenotypes.",
+          "evidence_type": "problem_statement",
+          "supporting_reference": "Ze Cai et al. (2025) HyperADRs: A Hierarchical Hypergraph Framework for Drug-Gene-ADR Prediction arXiv:2512.00137v1",
+          "confidence": 0.89
+        },
+        {
+          "signal_id": "sig_1783785649466807400",
+          "signal_type": "mechanism_issue",
+          "text": "To improve robustness and interpretability, we propose a nine category ADR macro system scheme that reduces large heterogeneous 'other' bins while aligning with organ system reasoning in clinical pharmacology.",
+          "evidence_type": "problem_statement",
+          "supporting_reference": "Ze Cai et al. (2025) HyperADRs: A Hierarchical Hypergraph Framework for Drug-Gene-ADR Prediction arXiv:2512.00137v1",
+          "confidence": 0.89
+        },
+        {
+          "signal_id": "sig_1783785649466733100",
+          "signal_type": "mechanism_issue",
+          "text": "We introduce HyperADRs, a hierarchical hypergraph framework that predicts ADR risk at the level of drug-gene-ADR triads.",
+          "evidence_type": "problem_statement",
+          "supporting_reference": "Ze Cai et al. (2025) HyperADRs: A Hierarchical Hypergraph Framework for Drug-Gene-ADR Prediction arXiv:2512.00137v1",
+          "confidence": 0.89
+        },
+        {
+          "signal_id": "sig_1783785649466791600",
+          "signal_type": "mechanism_issue",
+          "text": "A FiLM based, query conditioned contrastive learning module learns context specific representations so that, given any two entities, the model retrieves the correct third entity against many candidates.",
+          "evidence_type": "problem_statement",
+          "supporting_reference": "Ze Cai et al. (2025) HyperADRs: A Hierarchical Hypergraph Framework for Drug-Gene-ADR Prediction arXiv:2512.00137v1",
+          "confidence": 0.84
+        },
+        {
+          "signal_id": "sig_1783785649466864900",
+          "signal_type": "mechanism_issue",
+          "text": "Full text excerpt: introduction of HyperADRs, which predicts ADR risk at the level of drug-gene-ADR triads and improves robustness and interpretability with a nine-category ADR macro system No explicit limitation extracted.",
+          "evidence_type": "problem_statement",
+          "supporting_reference": "Ze Cai et al. (2025) HyperADRs: A Hierarchical Hypergraph Framework for Drug-Gene-ADR Prediction arXiv:2512.00137v1",
+          "confidence": 0.84
+        },
+        {
+          "signal_id": "sig_1783785649466849300",
+          "signal_type": "mechanism_issue",
+          "text": "When trained on PharmGKB and tested on unseen DrugBank triplets, HyperADRs maintains its ranking advantage, indicating that the learned representations capture transferable biological mechanisms and can support mechanistically grounded pharmacogenomic hypothesis generation.",
+          "evidence_type": "problem_statement",
+          "supporting_reference": "Ze Cai et al. (2025) HyperADRs: A Hierarchical Hypergraph Framework for Drug-Gene-ADR Prediction arXiv:2512.00137v1",
+          "confidence": 0.84
+        }
+      ],
+      "causal_chains": [
+        {
+          "chain_id": "chain_1",
+          "trigger": "High-confidence triplets from curated pharmacogenomic annotations",
+          "trigger_evidence": "",
+          "steps": [
+            {
+              "claim": "Triplets are integrated with auxiliary molecular, functional, and disease relations from precision-medicine-oriented knowledge graphs.",
+              "evidence": "Starting from curated pharmacogenomic annotations in PharmGKB and the pharmacogenomics subdatabase of DrugBank, we construct high confidence triplets and integrate them with auxiliary molecular, functional, and disease relations from precision-medicine-oriented knowledge graphs.",
+              "evidence_type": "observational"
+            },
+            {
+              "claim": "Drugs, genes, and ADR concepts are embedded and propagated through a hypergraph convolutional network.",
+              "evidence": "Drugs, genes, and ADR concepts are embedded with modality appropriate pretrained models (UniMol, ESM2, SapBERT) and propagated through a hypergraph convolutional network.",
+              "evidence_type": "experimental"
+            },
+            {
+              "claim": "A FiLM-based, query-conditioned contrastive learning module learns context-specific representations.",
+              "evidence": "A FiLM based, query conditioned contrastive learning module learns context specific representations so that, given any two entities, the model retrieves the correct third entity against many candidates.",
+              "evidence_type": "theoretical"
+            }
+          ],
+          "outcome": "HyperADRs matches or exceeds strong baselines on ranking-based metrics and maintains its ranking advantage in transfer learning settings.",
+          "outcome_evidence": "",
+          "observables": [
+            "Ranking-based metrics on PharmGKB and DrugBank datasets"
+          ],
+          "interventions": [
+            "Training on PharmGKB and testing on unseen DrugBank triplets"
+          ],
+          "confidence": null
+        }
+      ],
+      "importedAt": 1783785649.4926982,
+      "active": true,
+      "domain_review": {
+        "verdict": "review",
+        "score": 0.5833,
+        "target_field": "biology",
+        "result_field": "biology",
+        "foreign_field": false,
+        "target_terms": [
+          "personalized",
+          "medicine",
+          "precision",
+          "pharmacogenomics",
+          "cancer",
+          "genomics",
+          "clinical",
+          "pharmacology",
+          "multi-omics",
+          "patient-derived",
+          "models",
+          "cell"
+        ],
+        "target_hits": [
+          "medicine",
+          "precision",
+          "pharmacogenomics",
+          "genomics",
+          "clinical",
+          "pharmacology",
+          "models"
+        ],
+        "reason": "Some target evidence exists, but the field context or anchor coverage remains ambiguous.",
+        "paper_id": "paper_1783785649492678100",
+        "title": "HyperADRs: A Hierarchical Hypergraph Framework for Drug-Gene-ADR Prediction",
+        "target_domain": "Personalized Medicine / Precision Medicine / Pharmacogenomics / Cancer Genomics / Clinical Pharmacology / Multi-omics / Patient-derived Models / Cell and Gene Therapy Manufacturing / Biostatistics / Regulatory Science",
+        "reviewedAt": 1783785786.4444304
+      },
+      "domain_review_verdict": "review",
+      "domain_review_score": 0.5833,
+      "retrieval_phase": "subhypothesis_evidence",
+      "retrieval_branch": "SH1"
+    },
+    {
+      "paper_id": "paper_1783785687271405300",
+      "unique_key": "doi:10_2174_0113862073376167250527025217",
+      "title": "Elucidating the Action Mechanism of Shenling Baizhu Powder in the Treatment of Ulcerative Colitis Based on Network Pharmacology and Experimental Validation",
+      "citation": "Mei Wang et al. (2025) Elucidating the Action Mechanism of Shenling Baizhu Powder in the Treatment of Ulcerative Colitis Based on Network Pharmacology and Experimental Validation. doi:10.2174/0113862073376167250527025217",
+      "authors": [
+        "Mei Wang"
+      ],
+      "year": "2025",
+      "venue": "Combinatorial chemistry & high throughput screening",
+      "provider": "pubmed",
+      "source_type": "pubmed_eutils",
+      "doi": "10.2174/0113862073376167250527025217",
+      "arxiv_id": "",
+      "semantic_scholar_id": "",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/40525448/",
+      "abstract": "OBJECTIVE: To elucidate the therapeutic mechanisms of Shenling Baizhu Powder (SLBZ) in treating ulcerative colitis (UC) through an integrated approach combining network pharmacology and experimental validation, highlighting its potential as an alternative or complementary therapy. METHODS: The active constituents and corresponding targets of SLBZ were identified using the Traditional Chinese Medicine Systems Pharmacology Database and Analysis Platform (TCMSP). UC-related targets were obtained from DrugBank and the Comparative Toxicogenomics Database (CTD). Overlapping targets were visualized using a Venn diagram, and protein- protein interactions were mapped using the STRING database. The \"compound-componentdisease- target\" network was constructed through GO function analysis and KEGG pathway enrichment analysis. Molecular docking was performed using Discovery Studio 4.5 software. A UC mouse model was induced with dextran sodium sulfate (DSS), and mice were divided into normal, UC, SLBZ (low, medium, high doses), and mesalazine groups, treated for 14 days. Histopathological changes in colon tissues were assessed, and serum levels of IL-4, TNF-α, and HIF-1α were measured by immunohistochemistry to verify SLBZ's targets in UC treatment. RESULTS: A total of 408 active ingredients and 2118 corresponding targets were identified in SLBZ, with 2052 targets associated with UC, resulting in 610 overlapping targets. Further refinement identified 54 active ingredients and 86 targets, with quercetin, betulin, catharanthamine, and glyasperin B as key components. Core targets included TP53, AKT1, JUN, and HSP90AA1. KEGG analysis suggested SLBZ's involvement in PI3K/Akt, JAK2/STAT3, and TNF signaling pathways. Molecular docking confirmed strong binding affinities between key targets and main components. Histological analysis showed that SLBZ alleviated DSS-induced colonic tissue injury, while immunohistochemistry revealed reduced expression of TNF-α and STAT3, and upregulated IL-4, indicating modulation of the JAK/STAT3 pathway. CONCLUSION: SLBZ exerts therapeutic effects on UC by targeting key proteins (e.g., TP53, AKT1, JUN) and modulating critical pathways (e.g., JAK2/STAT3). This study provides a theoretical basis for the potential of SLBZ as a multi-targeted therapeutic agent for UC, which can be further explored through clinical trials and multi-omics analyses to validate its efficacy and safety.",
+      "full_text_excerpt": "",
+      "conclusion": "SLBZ exerts therapeutic effects on UC by targeting key proteins (e.g., TP53, AKT1, JUN) and modulating critical pathways (e.g., JAK2/STAT3). This study provides a theoretical basis for the potential of SLBZ as a multi-targeted therapeutic agent for UC, which can be further explored through clinical trials and multi-omics analyses to validate its efficacy and safety.",
+      "strengths": [],
+      "improvements": [],
+      "method": "network pharmacology and experimental validation",
+      "scenario": "treatment of ulcerative colitis",
+      "benchmark": "histopathological changes, serum levels of IL-4, TNF-α, and HIF-1α",
+      "contribution": "SLBZ exerts therapeutic effects on UC by targeting key proteins and modulating critical pathways, providing a theoretical basis for its use as a multi-targeted therapeutic agent",
+      "limitation": "Further exploration through clinical trials and multi-omics analyses is needed to validate its efficacy and safety",
+      "credibility_score": 0.85,
+      "credibility_reasons": [
+        "base record",
+        "has title and citation",
+        "has DOI",
+        "has URL",
+        "has substantial abstract",
+        "has conclusion/discussion",
+        "provider recorded",
+        "has publication year"
+      ],
+      "extraction_quality": {
+        "score": 1.0,
+        "unknown_ratio": 0.0,
+        "unknown_fields": [],
+        "abstract_chars": 2430,
+        "flags": [],
+        "needs_enrichment": false,
+        "needs_llm_retry": false,
+        "requires_human_review": false,
+        "initial": {
+          "score": 0.28,
+          "unknown_ratio": 1.0,
+          "unknown_fields": [
+            "method",
+            "scenario",
+            "benchmark"
+          ],
+          "abstract_chars": 2430,
+          "flags": [
+            "missing_conclusion",
+            "unknown_fields",
+            "unknown_fields_high",
+            "missing_benchmark"
+          ],
+          "needs_enrichment": false,
+          "needs_llm_retry": true,
+          "requires_human_review": true
+        },
+        "llm_retry": {
+          "attempted": true,
+          "succeeded": true,
+          "error": "",
+          "extractor": "qwen_json"
+        }
+      },
+      "enrichment_sources": [],
+      "gap_signals": [
+        {
+          "signal_id": "sig_1783785687270713000",
+          "signal_type": "mechanism_issue",
+          "text": "UC-related targets were obtained from DrugBank and the Comparative Toxicogenomics Database (CTD).",
+          "evidence_type": "problem_statement",
+          "supporting_reference": "Mei Wang et al. (2025) Elucidating the Action Mechanism of Shenling Baizhu Powder in the Treatment of Ulcerative Colitis Based on Network Pharmacology and Experimental Validation. doi:10.2174/0113862073376167250527025217",
+          "confidence": 0.89
+        },
+        {
+          "signal_id": "sig_1783785687270674500",
+          "signal_type": "mechanism_issue",
+          "text": "Elucidating the Action Mechanism of Shenling Baizhu Powder in the Treatment of Ulcerative Colitis Based on Network Pharmacology and Experimental Validation OBJECTIVE: To elucidate the therapeutic mechanisms of Shenling Baizhu Powder (SLBZ) in treating ulcerative colitis (UC) through an integrated approach combining network pharmacology and experimental valid...[truncated]",
+          "evidence_type": "problem_statement",
+          "supporting_reference": "Mei Wang et al. (2025) Elucidating the Action Mechanism of Shenling Baizhu Powder in the Treatment of Ulcerative Colitis Based on Network Pharmacology and Experimental Validation. doi:10.2174/0113862073376167250527025217",
+          "confidence": 0.84
+        },
+        {
+          "signal_id": "sig_1783785687270977800",
+          "signal_type": "mechanism_issue",
+          "text": "SLBZ exerts therapeutic effects on UC by targeting key proteins and modulating critical pathways, providing a theoretical basis for its use as a multi-targeted therapeutic agent Further exploration through clinical trials and multi-omics analyses is needed to validate its efficacy and safety",
+          "evidence_type": "problem_statement",
+          "supporting_reference": "Mei Wang et al. (2025) Elucidating the Action Mechanism of Shenling Baizhu Powder in the Treatment of Ulcerative Colitis Based on Network Pharmacology and Experimental Validation. doi:10.2174/0113862073376167250527025217",
+          "confidence": 0.84
+        },
+        {
+          "signal_id": "sig_1783785687257520000",
+          "signal_type": "future_work",
+          "text": "This study provides a theoretical basis for the potential of SLBZ as a multi-targeted therapeutic agent for UC, which can be further explored through clinical trials and multi-omics analyses to validate its efficacy and safety.",
+          "evidence_type": "author_opinion",
+          "supporting_reference": "Mei Wang et al. (2025) Elucidating the Action Mechanism of Shenling Baizhu Powder in the Treatment of Ulcerative Colitis Based on Network Pharmacology and Experimental Validation. doi:10.2174/0113862073376167250527025217",
+          "confidence": 0.83
+        }
+      ],
+      "causal_chains": [
+        {
+          "chain_id": "chain_1",
+          "trigger": "SLBZ administration",
+          "trigger_evidence": "",
+          "steps": [
+            {
+              "claim": "SLBZ targets key proteins (TP53, AKT1, JUN, HSP90AA1) and modulates critical pathways (PI3K/Akt, JAK2/STAT3, TNF).",
+              "evidence": "KEGG analysis and molecular docking results.",
+              "evidence_type": "theoretical"
+            },
+            {
+              "claim": "Modulation of these pathways leads to reduced expression of TNF-α and STAT3, and upregulation of IL-4.",
+              "evidence": "Immunohistochemistry results.",
+              "evidence_type": "experimental"
+            },
+            {
+              "claim": "These changes result in alleviation of DSS-induced colonic tissue injury.",
+              "evidence": "Histological analysis results.",
+              "evidence_type": "experimental"
+            }
+          ],
+          "outcome": "SLBZ exerts therapeutic effects on UC.",
+          "outcome_evidence": "",
+          "observables": [
+            "Reduced expression of TNF-α and STAT3, upregulation of IL-4, and alleviation of colonic tissue injury."
+          ],
+          "interventions": [
+            "SLBZ treatment at different doses (low, medium, high)"
+          ],
+          "confidence": null
+        }
+      ],
+      "importedAt": 1783785687.2714167,
+      "active": true,
+      "domain_review": {
+        "verdict": "review",
+        "score": 0.4167,
+        "target_field": "biology",
+        "result_field": "biology",
+        "foreign_field": false,
+        "target_terms": [
+          "personalized",
+          "medicine",
+          "precision",
+          "pharmacogenomics",
+          "cancer",
+          "genomics",
+          "clinical",
+          "pharmacology",
+          "multi-omics",
+          "patient-derived",
+          "models",
+          "cell"
+        ],
+        "target_hits": [
+          "medicine",
+          "genomics",
+          "clinical",
+          "pharmacology",
+          "multi-omics"
+        ],
+        "reason": "Some target evidence exists, but the field context or anchor coverage remains ambiguous.",
+        "paper_id": "paper_1783785687271405300",
+        "title": "Elucidating the Action Mechanism of Shenling Baizhu Powder in the Treatment of Ulcerative Colitis Based on Network Pharmacology and Experimental Validation",
+        "target_domain": "Personalized Medicine / Precision Medicine / Pharmacogenomics / Cancer Genomics / Clinical Pharmacology / Multi-omics / Patient-derived Models / Cell and Gene Therapy Manufacturing / Biostatistics / Regulatory Science",
+        "reviewedAt": 1783785786.4489667
+      },
+      "domain_review_verdict": "review",
+      "domain_review_score": 0.4167,
+      "retrieval_phase": "subhypothesis_evidence",
+      "retrieval_branch": "SH1"
+    },
+    {
+      "paper_id": "paper_1783785723230783000",
+      "unique_key": "doi:10_1016_j_vaccine_2023_04_030",
+      "title": "Within-host modeling to measure dynamics of antibody responses after natural infection or vaccination: A systematic review.",
+      "citation": "Irene Garcia-Fogeda et al. (2023) Within-host modeling to measure dynamics of antibody responses after natural infection or vaccination: A systematic review. doi:10.1016/j.vaccine.2023.04.030",
+      "authors": [
+        "Irene Garcia-Fogeda"
+      ],
+      "year": "2023",
+      "venue": "Vaccine",
+      "provider": "pubmed",
+      "source_type": "pubmed_eutils",
+      "doi": "10.1016/j.vaccine.2023.04.030",
+      "arxiv_id": "",
+      "semantic_scholar_id": "",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/37198016/",
+      "abstract": "BACKGROUND: Within-host models describe the dynamics of immune cells when encountering a pathogen, and how these dynamics can lead to an individual-specific immune response. This systematic review aims to summarize which within-host methodology has been used to study and quantify antibody kinetics after infection or vaccination. In particular, we focus on data-driven and theory-driven mechanistic models. MATERIALS: PubMed and Web of Science databases were used to identify eligible papers published until May 2022. Eligible publications included those studying mathematical models that measure antibody kinetics as the primary outcome (ranging from phenomenological to mechanistic models). RESULTS: We identified 78 eligible publications, of which 8 relied on an Ordinary Differential Equations (ODEs)-based modelling approach to describe antibody kinetics after vaccination, and 12 studies used such models in the context of humoral immunity induced by natural infection. Mechanistic modeling studies were summarized in terms of type of study, sample size, measurements collected, antibody half-life, compartments and parameters included, inferential or analytical method, and model selection. CONCLUSIONS: Despite the importance of investigating antibody kinetics and underlying mechanisms of (waning of) the humoral immunity, few publications explicitly account for this in a mathematical model. In particular, most research focuses on phenomenological rather than mechanistic models. The limited information on the age groups or other risk factors that might impact antibody kinetics, as well as a lack of experimental or observational data remain important concerns regarding the interpretation of mathematical modeling results. We reviewed the similarities between the kinetics following vaccination and infection, emphasising that it may be worth translating some features from one setting to another. However, we also stress that some biological mechanisms need to be distinguished. We found that data-driven mechanistic models tend to be more simplistic, and theory-driven approaches lack representative data to validate model results.",
+      "full_text_excerpt": "",
+      "conclusion": "Despite the importance of investigating antibody kinetics and underlying mechanisms of (waning of) the humoral immunity, few publications explicitly account for this in a mathematical model. In particular, most research focuses on phenomenological rather than mechanistic models. The limited information on the age groups or other risk factors that might impact antibody kinetics, as well as a lack of experimental or observational data remain important concerns regarding the interpretation of mathematical modeling results. We reviewed the similarities between the kinetics following vaccination and infection, emphasising that it may be worth translating some features from one setting to another. However, we also stress that some biological mechanisms need to be distinguished. We found that data-driven mechanistic models tend to be more simplistic, and theory-driven approaches lack representative data to validate model results.",
+      "strengths": [],
+      "improvements": [
+        "CONCLUSIONS: Despite the importance of investigating antibody kinetics and underlying mechanisms of (waning of) the humoral immunity, few publications explicitly account for this in a mathematical model. In particular, most research focuses on phenomenological rather than mechanistic models. The lim...[truncated]"
+      ],
+      "method": "systematic review",
+      "scenario": "antibody kinetics after natural infection or vaccination",
+      "benchmark": "unknown benchmark",
+      "contribution": "summarized within-host methodology used to study and quantify antibody kinetics, highlighting the use of ODEs-based models and the distinction between data-driven and theory-driven approaches",
+      "limitation": "limited information on age groups or other risk factors, lack of experimental or observational data, simplistic data-driven models, and lack of representative data for theory-driven models",
+      "credibility_score": 0.85,
+      "credibility_reasons": [
+        "base record",
+        "has title and citation",
+        "has DOI",
+        "has URL",
+        "has substantial abstract",
+        "has conclusion/discussion",
+        "provider recorded",
+        "has publication year"
+      ],
+      "extraction_quality": {
+        "score": 1.0,
+        "unknown_ratio": 0.0,
+        "unknown_fields": [],
+        "abstract_chars": 2148,
+        "flags": [],
+        "needs_enrichment": false,
+        "needs_llm_retry": false,
+        "requires_human_review": false,
+        "initial": {
+          "score": 0.28,
+          "unknown_ratio": 1.0,
+          "unknown_fields": [
+            "method",
+            "scenario",
+            "benchmark"
+          ],
+          "abstract_chars": 2148,
+          "flags": [
+            "missing_conclusion",
+            "unknown_fields",
+            "unknown_fields_high",
+            "missing_benchmark"
+          ],
+          "needs_enrichment": false,
+          "needs_llm_retry": true,
+          "requires_human_review": true
+        },
+        "llm_retry": {
+          "attempted": true,
+          "succeeded": true,
+          "error": "",
+          "extractor": "qwen_json"
+        }
+      },
+      "enrichment_sources": [],
+      "gap_signals": [
+        {
+          "signal_id": "sig_1783785723190013300",
+          "signal_type": "mechanism_issue",
+          "text": "However, we also stress that some biological mechanisms need to be distinguished.",
+          "evidence_type": "problem_statement",
+          "supporting_reference": "Irene Garcia-Fogeda et al. (2023) Within-host modeling to measure dynamics of antibody responses after natural infection or vaccination: A systematic review. doi:10.1016/j.vaccine.2023.04.030",
+          "confidence": 0.89
+        },
+        {
+          "signal_id": "sig_1783785723189852200",
+          "signal_type": "mechanism_issue",
+          "text": "RESULTS: We identified 78 eligible publications, of which 8 relied on an Ordinary Differential Equations (ODEs)-based modelling approach to describe antibody kinetics after vaccination, and 12 studies used such models in the context of humoral immunity induced by natural infection.",
+          "evidence_type": "problem_statement",
+          "supporting_reference": "Irene Garcia-Fogeda et al. (2023) Within-host modeling to measure dynamics of antibody responses after natural infection or vaccination: A systematic review. doi:10.1016/j.vaccine.2023.04.030",
+          "confidence": 0.89
+        },
+        {
+          "signal_id": "sig_1783785723190199200",
+          "signal_type": "mechanism_issue",
+          "text": "summarized within-host methodology used to study and quantify antibody kinetics, highlighting the use of ODEs-based models and the distinction between data-driven and theory-driven approaches limited information on age groups or other risk factors, lack of experimental or observational data, simplistic data-driven models, and lack of representative data for....[truncated]",
+          "evidence_type": "problem_statement",
+          "supporting_reference": "Irene Garcia-Fogeda et al. (2023) Within-host modeling to measure dynamics of antibody responses after natural infection or vaccination: A systematic review. doi:10.1016/j.vaccine.2023.04.030",
+          "confidence": 0.89
+        },
+        {
+          "signal_id": "sig_1783785723189924200",
+          "signal_type": "mechanism_issue",
+          "text": "CONCLUSIONS: Despite the importance of investigating antibody kinetics and underlying mechanisms of (waning of) the humoral immunity, few publications explicitly account for this in a mathematical model.",
+          "evidence_type": "problem_statement",
+          "supporting_reference": "Irene Garcia-Fogeda et al. (2023) Within-host modeling to measure dynamics of antibody responses after natural infection or vaccination: A systematic review. doi:10.1016/j.vaccine.2023.04.030",
+          "confidence": 0.84
+        },
+        {
+          "signal_id": "sig_1783785723190068100",
+          "signal_type": "mechanism_issue",
+          "text": "Despite the importance of investigating antibody kinetics and underlying mechanisms of (waning of) the humoral immunity, few publications explicitly account for this in a mathematical model.",
+          "evidence_type": "problem_statement",
+          "supporting_reference": "Irene Garcia-Fogeda et al. (2023) Within-host modeling to measure dynamics of antibody responses after natural infection or vaccination: A systematic review. doi:10.1016/j.vaccine.2023.04.030",
+          "confidence": 0.84
+        },
+        {
+          "signal_id": "sig_1783785723189969900",
+          "signal_type": "mechanism_issue",
+          "text": "The limited information on the age groups or other risk factors that might impact antibody kinetics, as well as a lack of experimental or observational data remain important concerns regarding the interpretation of mathematical modeling results.",
+          "evidence_type": "problem_statement",
+          "supporting_reference": "Irene Garcia-Fogeda et al. (2023) Within-host modeling to measure dynamics of antibody responses after natural infection or vaccination: A systematic review. doi:10.1016/j.vaccine.2023.04.030",
+          "confidence": 0.84
+        },
+        {
+          "signal_id": "sig_1783785723170442800",
+          "signal_type": "limitation",
+          "text": "data-driven mechanistic models tend to be more simplistic",
+          "evidence_type": "author_opinion",
+          "supporting_reference": "Irene Garcia-Fogeda et al. (2023) Within-host modeling to measure dynamics of antibody responses after natural infection or vaccination: A systematic review. doi:10.1016/j.vaccine.2023.04.030",
+          "confidence": 0.82
+        },
+        {
+          "signal_id": "sig_1783785723170384700",
+          "signal_type": "limitation",
+          "text": "few publications explicitly account for [investigating antibody kinetics and underlying mechanisms] in a mathematical model",
+          "evidence_type": "author_opinion",
+          "supporting_reference": "Irene Garcia-Fogeda et al. (2023) Within-host modeling to measure dynamics of antibody responses after natural infection or vaccination: A systematic review. doi:10.1016/j.vaccine.2023.04.030",
+          "confidence": 0.82
+        },
+        {
+          "signal_id": "sig_1783785723170433700",
+          "signal_type": "limitation",
+          "text": "lack of experimental or observational data remain important concerns regarding the interpretation of mathematical modeling results",
+          "evidence_type": "author_opinion",
+          "supporting_reference": "Irene Garcia-Fogeda et al. (2023) Within-host modeling to measure dynamics of antibody responses after natural infection or vaccination: A systematic review. doi:10.1016/j.vaccine.2023.04.030",
+          "confidence": 0.82
+        },
+        {
+          "signal_id": "sig_1783785723170408100",
+          "signal_type": "limitation",
+          "text": "most research focuses on phenomenological rather than mechanistic models",
+          "evidence_type": "author_opinion",
+          "supporting_reference": "Irene Garcia-Fogeda et al. (2023) Within-host modeling to measure dynamics of antibody responses after natural infection or vaccination: A systematic review. doi:10.1016/j.vaccine.2023.04.030",
+          "confidence": 0.82
+        },
+        {
+          "signal_id": "sig_1783785723170451900",
+          "signal_type": "limitation",
+          "text": "theory-driven approaches lack representative data to validate model results",
+          "evidence_type": "author_opinion",
+          "supporting_reference": "Irene Garcia-Fogeda et al. (2023) Within-host modeling to measure dynamics of antibody responses after natural infection or vaccination: A systematic review. doi:10.1016/j.vaccine.2023.04.030",
+          "confidence": 0.82
+        },
+        {
+          "signal_id": "sig_1783785723170420800",
+          "signal_type": "limitation",
+          "text": "limited information on the age groups or other risk factors that might impact antibody kinetics",
+          "evidence_type": "author_opinion",
+          "supporting_reference": "Irene Garcia-Fogeda et al. (2023) Within-host modeling to measure dynamics of antibody responses after natural infection or vaccination: A systematic review. doi:10.1016/j.vaccine.2023.04.030",
+          "confidence": 0.77
+        }
+      ],
+      "causal_chains": [
+        {
+          "chain_id": "chain_1",
+          "trigger": "Use of phenomenological models over mechanistic models",
+          "trigger_evidence": "",
+          "steps": [
+            {
+              "claim": "Phenomenological models are more commonly used in research.",
+              "evidence": "In particular, most research focuses on phenomenological rather than mechanistic models.",
+              "evidence_type": "observational"
+            }
+          ],
+          "outcome": "Limitation in understanding the underlying biological mechanisms of antibody kinetics",
+          "outcome_evidence": "",
+          "observables": [],
+          "interventions": [],
+          "confidence": null
+        },
+        {
+          "chain_id": "chain_2",
+          "trigger": "Limited information on age groups or other risk factors",
+          "trigger_evidence": "",
+          "steps": [
+            {
+              "claim": "There is limited information on age groups or other risk factors that might impact antibody kinetics.",
+              "evidence": "The limited information on the age groups or other risk factors that might impact antibody kinetics, as well as a lack of experimental or observational data remain important concerns regarding the interpretation of mathematical modeling results.",
+              "evidence_type": "observational"
+            }
+          ],
+          "outcome": "Important concerns regarding the interpretation of mathematical modeling results",
+          "outcome_evidence": "",
+          "observables": [],
+          "interventions": [],
+          "confidence": null
+        }
+      ],
+      "importedAt": 1783785723.2307937,
+      "active": true,
+      "domain_review": {
+        "verdict": "review",
+        "score": 0.1667,
+        "target_field": "biology",
+        "result_field": "general",
+        "foreign_field": false,
+        "target_terms": [
+          "personalized",
+          "medicine",
+          "precision",
+          "pharmacogenomics",
+          "cancer",
+          "genomics",
+          "clinical",
+          "pharmacology",
+          "multi-omics",
+          "patient-derived",
+          "models",
+          "cell"
+        ],
+        "target_hits": [
+          "models",
+          "cell"
+        ],
+        "reason": "Some target evidence exists, but the field context or anchor coverage remains ambiguous.",
+        "paper_id": "paper_1783785723230783000",
+        "title": "Within-host modeling to measure dynamics of antibody responses after natural infection or vaccination: A systematic review.",
+        "target_domain": "Personalized Medicine / Precision Medicine / Pharmacogenomics / Cancer Genomics / Clinical Pharmacology / Multi-omics / Patient-derived Models / Cell and Gene Therapy Manufacturing / Biostatistics / Regulatory Science",
+        "reviewedAt": 1783785786.4534836
+      },
+      "domain_review_verdict": "review",
+      "domain_review_score": 0.1667,
+      "retrieval_phase": "subhypothesis_evidence",
+      "retrieval_branch": "SH1"
+    },
+    {
+      "paper_id": "paper_1783785748620497600",
+      "unique_key": "doi:10_1038_s41583_023_00740_7",
+      "title": "Reconstructing computational system dynamics from neural data with recurrent neural networks",
+      "citation": "Daniel Durstewitz et al. (2023) Reconstructing computational system dynamics from neural data with recurrent neural networks. doi:10.1038/s41583-023-00740-7",
+      "authors": [
+        "Daniel Durstewitz"
+      ],
+      "year": "2023",
+      "venue": "Nature reviews. Neuroscience",
+      "provider": "pubmed",
+      "source_type": "pubmed_eutils",
+      "doi": "10.1038/s41583-023-00740-7",
+      "arxiv_id": "",
+      "semantic_scholar_id": "",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/37794121/",
+      "abstract": "Computational models in neuroscience usually take the form of systems of differential equations. The behaviour of such systems is the subject of dynamical systems theory. Dynamical systems theory provides a powerful mathematical toolbox for analysing neurobiological processes and has been a mainstay of computational neuroscience for decades. Recently, recurrent neural networks (RNNs) have become a popular machine learning tool for studying the non-linear dynamics of neural and behavioural processes by emulating an underlying system of differential equations. RNNs have been routinely trained on similar behavioural tasks to those used for animal subjects to generate hypotheses about the underlying computational mechanisms. By contrast, RNNs can also be trained on the measured physiological and behavioural data, thereby directly inheriting their temporal and geometrical properties. In this way they become a formal surrogate for the experimentally probed system that can be further analysed, perturbed and simulated. This powerful approach is called dynamical system reconstruction. In this Perspective, we focus on recent trends in artificial intelligence and machine learning in this exciting and rapidly expanding field, which may be less well known in neuroscience. We discuss formal prerequisites, different model architectures and training approaches for RNN-based dynamical system reconstructions, ways to evaluate and validate model performance, how to interpret trained models in a neuroscience context, and current challenges.",
+      "full_text_excerpt": "",
+      "conclusion": "Full text excerpt:",
+      "strengths": [],
+      "improvements": [
+        "Abstract: Computational models in neuroscience usually take the form of systems of differential equations. The behaviour of such systems is the subject of dynamical systems theory. Dynamical systems theory provides a powerful mathematical toolbox for analysing neurobiological processes and has been...[truncated]"
+      ],
+      "method": "recurrent neural networks (RNNs)",
+      "scenario": "neural and behavioural processes",
+      "benchmark": "temporal and geometrical properties, model performance",
+      "contribution": "dynamical system reconstruction using RNNs to emulate and analyze the underlying computational mechanisms of neural and behavioural processes",
+      "limitation": "Abstract: Computational models in neuroscience usually take the form of systems of differential equations. The behaviour of such systems is the subject of dynamical systems theory. Dynamical systems theory provides a powerful mathematical toolbox for analysing neurobiological processes and has been...[truncated]",
+      "credibility_score": 0.8,
+      "credibility_reasons": [
+        "base record",
+        "has title and citation",
+        "has DOI",
+        "has URL",
+        "has substantial abstract",
+        "provider recorded",
+        "has publication year"
+      ],
+      "extraction_quality": {
+        "score": 1.0,
+        "unknown_ratio": 0.0,
+        "unknown_fields": [],
+        "abstract_chars": 1546,
+        "flags": [],
+        "needs_enrichment": false,
+        "needs_llm_retry": false,
+        "requires_human_review": false,
+        "initial": {
+          "score": 0.28,
+          "unknown_ratio": 1.0,
+          "unknown_fields": [
+            "method",
+            "scenario",
+            "benchmark"
+          ],
+          "abstract_chars": 1546,
+          "flags": [
+            "missing_conclusion",
+            "unknown_fields",
+            "unknown_fields_high",
+            "missing_benchmark"
+          ],
+          "needs_enrichment": false,
+          "needs_llm_retry": true,
+          "requires_human_review": true
+        },
+        "llm_retry": {
+          "attempted": true,
+          "succeeded": true,
+          "error": "",
+          "extractor": "qwen_json"
+        }
+      },
+      "enrichment_sources": [],
+      "gap_signals": [
+        {
+          "signal_id": "sig_1783785748599028000",
+          "signal_type": "mechanism_issue",
+          "text": "Full text excerpt: dynamical system reconstruction using RNNs to emulate and analyze the underlying computational mechanisms of neural and behavioural processes Abstract: Computational models in neuroscience usually take the form of systems of differential equations.",
+          "evidence_type": "problem_statement",
+          "supporting_reference": "Daniel Durstewitz et al. (2023) Reconstructing computational system dynamics from neural data with recurrent neural networks. doi:10.1038/s41583-023-00740-7",
+          "confidence": 0.89
+        },
+        {
+          "signal_id": "sig_1783785748598908600",
+          "signal_type": "mechanism_issue",
+          "text": "RNNs have been routinely trained on similar behavioural tasks to those used for animal subjects to generate hypotheses about the underlying computational mechanisms.",
+          "evidence_type": "problem_statement",
+          "supporting_reference": "Daniel Durstewitz et al. (2023) Reconstructing computational system dynamics from neural data with recurrent neural networks. doi:10.1038/s41583-023-00740-7",
+          "confidence": 0.89
+        },
+        {
+          "signal_id": "sig_1783785748599001100",
+          "signal_type": "mechanism_issue",
+          "text": "We discuss formal prerequisites, different model architectures and training approaches for RNN-based dynamical system reconstructions, ways to evaluate and validate model performance, how to interpret trained models in a neuroscience context, and current challenges.",
+          "evidence_type": "problem_statement",
+          "supporting_reference": "Daniel Durstewitz et al. (2023) Reconstructing computational system dynamics from neural data with recurrent neural networks. doi:10.1038/s41583-023-00740-7",
+          "confidence": 0.89
+        }
+      ],
+      "causal_chains": [
+        {
+          "chain_id": "chain_1",
+          "trigger": "Training RNNs on physiological and behavioral data",
+          "trigger_evidence": "",
+          "steps": [
+            {
+              "claim": "RNNs directly inherit the temporal and geometrical properties of the data.",
+              "evidence": "In this way they become a formal surrogate for the experimentally probed system that can be further analysed, perturbed and simulated.",
+              "evidence_type": "theoretical"
+            }
+          ],
+          "outcome": "RNNs serve as a formal surrogate for the experimentally probed system, enabling further analysis, perturbation, and simulation.",
+          "outcome_evidence": "",
+          "observables": [
+            "Temporal and geometrical properties of the data"
+          ],
+          "interventions": [
+            "Training RNNs on physiological and behavioral data"
+          ],
+          "confidence": null
+        }
+      ],
+      "importedAt": 1783785748.6205087,
+      "active": true,
+      "domain_review": {
+        "verdict": "review",
+        "score": 0.0833,
+        "target_field": "biology",
+        "result_field": "biology",
+        "foreign_field": false,
+        "target_terms": [
+          "personalized",
+          "medicine",
+          "precision",
+          "pharmacogenomics",
+          "cancer",
+          "genomics",
+          "clinical",
+          "pharmacology",
+          "multi-omics",
+          "patient-derived",
+          "models",
+          "cell"
+        ],
+        "target_hits": [
+          "models"
+        ],
+        "reason": "Some target evidence exists, but the field context or anchor coverage remains ambiguous.",
+        "paper_id": "paper_1783785748620497600",
+        "title": "Reconstructing computational system dynamics from neural data with recurrent neural networks",
+        "target_domain": "Personalized Medicine / Precision Medicine / Pharmacogenomics / Cancer Genomics / Clinical Pharmacology / Multi-omics / Patient-derived Models / Cell and Gene Therapy Manufacturing / Biostatistics / Regulatory Science",
+        "reviewedAt": 1783785786.4588704
+      },
+      "domain_review_verdict": "review",
+      "domain_review_score": 0.0833,
+      "retrieval_phase": "subhypothesis_evidence",
+      "retrieval_branch": "SH1"
+    },
+    {
+      "paper_id": "paper_1783785771586554900",
+      "unique_key": "doi:10_3389_fnins_2021_753356",
+      "title": "Melodic Intonation Therapy on Non-fluent Aphasia After Stroke: A Systematic Review and Analysis on Clinical Trials",
+      "citation": "Xiaoying Zhang et al. (2021) Melodic Intonation Therapy on Non-fluent Aphasia After Stroke: A Systematic Review and Analysis on Clinical Trials. doi:10.3389/fnins.2021.753356",
+      "authors": [
+        "Xiaoying Zhang"
+      ],
+      "year": "2021",
+      "venue": "Frontiers in neuroscience",
+      "provider": "pubmed",
+      "source_type": "pubmed_eutils",
+      "doi": "10.3389/fnins.2021.753356",
+      "arxiv_id": "",
+      "semantic_scholar_id": "",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/35153655/",
+      "abstract": "Melodic intonation therapy (MIT) is a melodic musical training method that could be combined with language rehabilitation. However, some of the existing literature focuses on theoretical mechanism research, while others only focus on clinical behavioral evidence. Few clinical experimental studies can combine the two for behavioral and mechanism analysis. This review aimed at systematizing recent results from studies that have delved explicitly into the MIT effect on non-fluent aphasia by their study design properties, summarizing the findings, and identifying knowledge gaps for future work. MIT clinical trials and case studies were retrieved and teased out the results to explore the validity and relevance of these results. These studies focused on MIT intervention for patients with non-fluent aphasia in stroke recovery period. After retrieving 128 MIT-related articles, 39 valid RCT studies and case reports were provided for analysis. Our summary shows that behavioral measurements at MIT are excessive and provide insufficient evidence of MRI imaging structure. This proves that MIT still needs many MRI studies to determine its clinical evidence and intervention targets. The strengthening of large-scale clinical evidence of imaging observations will result in the clear neural circuit prompts and prediction models proposed for the MIT treatment and its prognosis.",
+      "full_text_excerpt": "",
+      "conclusion": "Full text excerpt:",
+      "strengths": [
+        "Abstract: Melodic intonation therapy (MIT) is a melodic musical training method that could be combined with language rehabilitation. However, some of the existing literature focuses on theoretical mechanism research, while others only focus on clinical behavioral evidence. Few clinical experimental...[truncated]"
+      ],
+      "improvements": [
+        "Abstract: Melodic intonation therapy (MIT) is a melodic musical training method that could be combined with language rehabilitation. However, some of the existing literature focuses on theoretical mechanism research, while others only focus on clinical behavioral evidence. Few clinical experimental...[truncated]"
+      ],
+      "method": "systematic review and analysis of clinical trials",
+      "scenario": "non-fluent aphasia after stroke",
+      "benchmark": "behavioral measurements and MRI imaging structure",
+      "contribution": "systematized recent results from studies on the MIT effect on non-fluent aphasia, summarized findings, and identified knowledge gaps for future work",
+      "limitation": "insufficient MRI imaging studies to determine clinical evidence and intervention targets for MIT",
+      "credibility_score": 0.8,
+      "credibility_reasons": [
+        "base record",
+        "has title and citation",
+        "has DOI",
+        "has URL",
+        "has substantial abstract",
+        "provider recorded",
+        "has publication year"
+      ],
+      "extraction_quality": {
+        "score": 1.0,
+        "unknown_ratio": 0.0,
+        "unknown_fields": [],
+        "abstract_chars": 1381,
+        "flags": [],
+        "needs_enrichment": false,
+        "needs_llm_retry": false,
+        "requires_human_review": false,
+        "initial": {
+          "score": 0.28,
+          "unknown_ratio": 1.0,
+          "unknown_fields": [
+            "method",
+            "scenario",
+            "benchmark"
+          ],
+          "abstract_chars": 1381,
+          "flags": [
+            "missing_conclusion",
+            "unknown_fields",
+            "unknown_fields_high",
+            "missing_benchmark"
+          ],
+          "needs_enrichment": false,
+          "needs_llm_retry": true,
+          "requires_human_review": true
+        },
+        "llm_retry": {
+          "attempted": true,
+          "succeeded": true,
+          "error": "",
+          "extractor": "qwen_json"
+        }
+      },
+      "enrichment_sources": [],
+      "gap_signals": [
+        {
+          "signal_id": "sig_1783785771572398300",
+          "signal_type": "mechanism_issue",
+          "text": "However, some of the existing literature focuses on theoretical mechanism research, while others only focus on clinical behavioral evidence.",
+          "evidence_type": "problem_statement",
+          "supporting_reference": "Xiaoying Zhang et al. (2021) Melodic Intonation Therapy on Non-fluent Aphasia After Stroke: A Systematic Review and Analysis on Clinical Trials. doi:10.3389/fnins.2021.753356",
+          "confidence": 0.89
+        },
+        {
+          "signal_id": "sig_1783785771572509800",
+          "signal_type": "mechanism_issue",
+          "text": "Our summary shows that behavioral measurements at MIT are excessive and provide insufficient evidence of MRI imaging structure.",
+          "evidence_type": "problem_statement",
+          "supporting_reference": "Xiaoying Zhang et al. (2021) Melodic Intonation Therapy on Non-fluent Aphasia After Stroke: A Systematic Review and Analysis on Clinical Trials. doi:10.3389/fnins.2021.753356",
+          "confidence": 0.89
+        },
+        {
+          "signal_id": "sig_1783785771572418100",
+          "signal_type": "mechanism_issue",
+          "text": "Few clinical experimental studies can combine the two for behavioral and mechanism analysis.",
+          "evidence_type": "problem_statement",
+          "supporting_reference": "Xiaoying Zhang et al. (2021) Melodic Intonation Therapy on Non-fluent Aphasia After Stroke: A Systematic Review and Analysis on Clinical Trials. doi:10.3389/fnins.2021.753356",
+          "confidence": 0.84
+        },
+        {
+          "signal_id": "sig_1783785771572575400",
+          "signal_type": "mechanism_issue",
+          "text": "Full text excerpt: systematized recent results from studies on the MIT effect on non-fluent aphasia, summarized findings, and identified knowledge gaps for future work insufficient MRI imaging studies to determine clinical evidence and intervention targets for MIT",
+          "evidence_type": "problem_statement",
+          "supporting_reference": "Xiaoying Zhang et al. (2021) Melodic Intonation Therapy on Non-fluent Aphasia After Stroke: A Systematic Review and Analysis on Clinical Trials. doi:10.3389/fnins.2021.753356",
+          "confidence": 0.84
+        },
+        {
+          "signal_id": "sig_1783785771572551600",
+          "signal_type": "mechanism_issue",
+          "text": "The strengthening of large-scale clinical evidence of imaging observations will result in the clear neural circuit prompts and prediction models proposed for the MIT treatment and its prognosis.",
+          "evidence_type": "problem_statement",
+          "supporting_reference": "Xiaoying Zhang et al. (2021) Melodic Intonation Therapy on Non-fluent Aphasia After Stroke: A Systematic Review and Analysis on Clinical Trials. doi:10.3389/fnins.2021.753356",
+          "confidence": 0.84
+        },
+        {
+          "signal_id": "sig_1783785771563239700",
+          "signal_type": "limitation",
+          "text": "behavioral measurements at MIT are excessive and provide insufficient evidence of MRI imaging structure",
+          "evidence_type": "author_opinion",
+          "supporting_reference": "Xiaoying Zhang et al. (2021) Melodic Intonation Therapy on Non-fluent Aphasia After Stroke: A Systematic Review and Analysis on Clinical Trials. doi:10.3389/fnins.2021.753356",
+          "confidence": 0.82
+        },
+        {
+          "signal_id": "sig_1783785771563263800",
+          "signal_type": "future_work",
+          "text": "MIT still needs many MRI studies to determine its clinical evidence and intervention targets",
+          "evidence_type": "author_opinion",
+          "supporting_reference": "Xiaoying Zhang et al. (2021) Melodic Intonation Therapy on Non-fluent Aphasia After Stroke: A Systematic Review and Analysis on Clinical Trials. doi:10.3389/fnins.2021.753356",
+          "confidence": 0.78
+        },
+        {
+          "signal_id": "sig_1783785771572448200",
+          "signal_type": "future_work",
+          "text": "This review aimed at systematizing recent results from studies that have delved explicitly into the MIT effect on non-fluent aphasia by their study design properties, summarizing the findings, and identifying knowledge gaps for future work.",
+          "evidence_type": "author_opinion",
+          "supporting_reference": "Xiaoying Zhang et al. (2021) Melodic Intonation Therapy on Non-fluent Aphasia After Stroke: A Systematic Review and Analysis on Clinical Trials. doi:10.3389/fnins.2021.753356",
+          "confidence": 0.78
+        },
+        {
+          "signal_id": "sig_1783785771572532500",
+          "signal_type": "missing_evidence",
+          "text": "This proves that MIT still needs many MRI studies to determine its clinical evidence and intervention targets.",
+          "evidence_type": "problem_statement",
+          "supporting_reference": "Xiaoying Zhang et al. (2021) Melodic Intonation Therapy on Non-fluent Aphasia After Stroke: A Systematic Review and Analysis on Clinical Trials. doi:10.3389/fnins.2021.753356",
+          "confidence": 0.72
+        }
+      ],
+      "causal_chains": [
+        {
+          "chain_id": "chain_1",
+          "trigger": "Lack of combined behavioral and MRI studies",
+          "trigger_evidence": "",
+          "steps": [
+            {
+              "claim": "Current studies focus primarily on behavioral outcomes",
+              "evidence": "After retrieving 128 MIT-related articles, 39 valid RCT studies and case reports were provided for analysis. Our summary shows that behavioral measurements at MIT are excessive and provide insufficient evidence of MRI imaging structure.",
+              "evidence_type": "observational"
+            },
+            {
+              "claim": "There is a need for more MRI studies",
+              "evidence": "This proves that MIT still needs many MRI studies to determine its clinical evidence and intervention targets.",
+              "evidence_type": "theoretical"
+            }
+          ],
+          "outcome": "Strengthening of large-scale clinical evidence with imaging will result in clear neural circuit prompts and prediction models for MIT treatment and prognosis",
+          "outcome_evidence": "",
+          "observables": [
+            "Increased number of MRI studies",
+            "Clearer understanding of neural circuits involved in MIT"
+          ],
+          "interventions": [
+            "Conducting more MRI studies alongside behavioral assessments"
+          ],
+          "confidence": null
+        }
+      ],
+      "importedAt": 1783785771.5865626,
+      "active": true,
+      "domain_review": {
+        "verdict": "review",
+        "score": 0.1667,
+        "target_field": "biology",
+        "result_field": "biology",
+        "foreign_field": false,
+        "target_terms": [
+          "personalized",
+          "medicine",
+          "precision",
+          "pharmacogenomics",
+          "cancer",
+          "genomics",
+          "clinical",
+          "pharmacology",
+          "multi-omics",
+          "patient-derived",
+          "models",
+          "cell"
+        ],
+        "target_hits": [
+          "clinical",
+          "models"
+        ],
+        "reason": "Some target evidence exists, but the field context or anchor coverage remains ambiguous.",
+        "paper_id": "paper_1783785771586554900",
+        "title": "Melodic Intonation Therapy on Non-fluent Aphasia After Stroke: A Systematic Review and Analysis on Clinical Trials",
+        "target_domain": "Personalized Medicine / Precision Medicine / Pharmacogenomics / Cancer Genomics / Clinical Pharmacology / Multi-omics / Patient-derived Models / Cell and Gene Therapy Manufacturing / Biostatistics / Regulatory Science",
+        "reviewedAt": 1783785786.4630587
+      },
+      "domain_review_verdict": "review",
+      "domain_review_score": 0.1667,
+      "retrieval_phase": "subhypothesis_evidence",
+      "retrieval_branch": "SH1"
+    },
+    {
+      "paper_id": "paper_1783785883711820800",
+      "unique_key": "doi:10_1213_ane_0000000000001683",
+      "title": "Trends in Tramadol: Pharmacology, Metabolism, and Misuse",
+      "citation": "Karen Miotto et al. (2017) Trends in Tramadol: Pharmacology, Metabolism, and Misuse. doi:10.1213/ANE.0000000000001683",
+      "authors": [
+        "Karen Miotto"
+      ],
+      "year": "2017",
+      "venue": "Anesthesia and analgesia",
+      "provider": "pubmed",
+      "source_type": "pubmed_eutils",
+      "doi": "10.1213/ANE.0000000000001683",
+      "arxiv_id": "",
+      "semantic_scholar_id": "",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/27861439/",
+      "abstract": "Tramadol is a unique analgesic medication, available in variety of formulations, with both monoaminergic reuptake inhibitory and opioid receptor agonist activity increasingly prescribed worldwide as an alternative for high-affinity opioid medication in the treatment of acute and chronic pain. It is a prodrug that is metabolized by cytochrome P450 (CYP) enzymes CYP2D6 and CYP3A4 to its more potent opioid analgesic metabolites, particularly the O-demethylation product M1. The opioid analgesic potency of a given dose of tramadol is influenced by an individual's CYP genetics, with poor metabolizers experiencing little conversion to the active M1 opioid metabolite and individuals with a high metabolic profile, or ultra-metabolizers, experiencing the greatest opioid analgesic effects. The importance of the CYP metabolism has led to the adoption of computer clinical decision support with pharmacogenomics tools guiding tramadol treatment in major medical centers. Tramadol's simultaneous opioid agonist action and serotonin (5-HT) and norepinephrine reuptake inhibitory effects result in a unique side effect profile and important drug interactions that must be considered. Abrupt cessation of tramadol increases the risk for both opioid and serotonin-norepinephrine reuptake inhibitor withdrawal syndromes. This review provides updated important information on the pharmacology, pharmacokinetics, CYP genetic polymorphisms, drug interactions, toxicity, withdrawal, and illicit use of tramadol.",
+      "full_text_excerpt": "",
+      "conclusion": "Full text excerpt:",
+      "strengths": [],
+      "improvements": [
+        "No explicit limitation extracted."
+      ],
+      "method": "literature review",
+      "scenario": "tramadol pharmacology and misuse",
+      "benchmark": "opioid analgesic potency, side effect profile, withdrawal syndromes",
+      "contribution": "updated information on tramadol including pharmacology, metabolism, and misuse",
+      "limitation": "Abrupt cessation of tramadol increases the risk for both opioid and serotonin-norepinephrine reuptake inhibitor withdrawal syndromes.",
+      "credibility_score": 0.8,
+      "credibility_reasons": [
+        "base record",
+        "has title and citation",
+        "has DOI",
+        "has URL",
+        "has substantial abstract",
+        "provider recorded",
+        "has publication year"
+      ],
+      "extraction_quality": {
+        "score": 1.0,
+        "unknown_ratio": 0.0,
+        "unknown_fields": [],
+        "abstract_chars": 1500,
+        "flags": [],
+        "needs_enrichment": false,
+        "needs_llm_retry": false,
+        "requires_human_review": false,
+        "initial": {
+          "score": 0.28,
+          "unknown_ratio": 1.0,
+          "unknown_fields": [
+            "method",
+            "scenario",
+            "benchmark"
+          ],
+          "abstract_chars": 1500,
+          "flags": [
+            "missing_conclusion",
+            "unknown_fields",
+            "unknown_fields_high",
+            "missing_benchmark"
+          ],
+          "needs_enrichment": false,
+          "needs_llm_retry": true,
+          "requires_human_review": true
+        },
+        "llm_retry": {
+          "attempted": true,
+          "succeeded": true,
+          "error": "",
+          "extractor": "qwen_json"
+        }
+      },
+      "enrichment_sources": [],
+      "gap_signals": [
+        {
+          "signal_id": "sig_1783785883692700000",
+          "signal_type": "mechanism_issue",
+          "text": "Abrupt cessation of tramadol increases the risk for both opioid and serotonin-norepinephrine reuptake inhibitor withdrawal syndromes.",
+          "evidence_type": "problem_statement",
+          "supporting_reference": "Karen Miotto et al. (2017) Trends in Tramadol: Pharmacology, Metabolism, and Misuse. doi:10.1213/ANE.0000000000001683",
+          "confidence": 0.84
+        },
+        {
+          "signal_id": "sig_1783785883692713600",
+          "signal_type": "mechanism_issue",
+          "text": "This review provides updated important information on the pharmacology, pharmacokinetics, CYP genetic polymorphisms, drug interactions, toxicity, withdrawal, and illicit use of tramadol.",
+          "evidence_type": "problem_statement",
+          "supporting_reference": "Karen Miotto et al. (2017) Trends in Tramadol: Pharmacology, Metabolism, and Misuse. doi:10.1213/ANE.0000000000001683",
+          "confidence": 0.84
+        },
+        {
+          "signal_id": "sig_1783785883692681800",
+          "signal_type": "mechanism_issue",
+          "text": "Tramadol's simultaneous opioid agonist action and serotonin (5-HT) and norepinephrine reuptake inhibitory effects result in a unique side effect profile and important drug interactions that must be considered.",
+          "evidence_type": "problem_statement",
+          "supporting_reference": "Karen Miotto et al. (2017) Trends in Tramadol: Pharmacology, Metabolism, and Misuse. doi:10.1213/ANE.0000000000001683",
+          "confidence": 0.84
+        },
+        {
+          "signal_id": "sig_1783785883692736000",
+          "signal_type": "limitation",
+          "text": "Full text excerpt: updated information on tramadol including pharmacology, metabolism, and misuse No explicit limitation extracted.",
+          "evidence_type": "author_opinion",
+          "supporting_reference": "Karen Miotto et al. (2017) Trends in Tramadol: Pharmacology, Metabolism, and Misuse. doi:10.1213/ANE.0000000000001683",
+          "confidence": 0.82
+        }
+      ],
+      "causal_chains": [
+        {
+          "chain_id": "chain_1",
+          "trigger": "Individual's CYP genetics",
+          "trigger_evidence": "",
+          "steps": [
+            {
+              "claim": "Poor metabolizers experience little conversion to the active M1 opioid metabolite.",
+              "evidence": "The opioid analgesic potency of a given dose of tramadol is influenced by an individual's CYP genetics, with poor metabolizers experiencing little conversion to the active M1 opioid metabolite.",
+              "evidence_type": "theoretical"
+            },
+            {
+              "claim": "Ultra-metabolizers experience the greatest opioid analgesic effects.",
+              "evidence": "individuals with a high metabolic profile, or ultra-metabolizers, experiencing the greatest opioid analgesic effects.",
+              "evidence_type": "theoretical"
+            }
+          ],
+          "outcome": "Opioid analgesic potency of tramadol varies based on CYP genetics",
+          "outcome_evidence": "",
+          "observables": [
+            "Opioid analgesic potency"
+          ],
+          "interventions": [
+            "Genetic testing for CYP2D6 and CYP3A4 activity"
+          ],
+          "confidence": null
+        },
+        {
+          "chain_id": "chain_2",
+          "trigger": "Abrupt cessation of tramadol",
+          "trigger_evidence": "",
+          "steps": [
+            {
+              "claim": "Increased risk for opioid withdrawal syndrome.",
+              "evidence": "Abrupt cessation of tramadol increases the risk for both opioid and serotonin-norepinephrine reuptake inhibitor withdrawal syndromes.",
+              "evidence_type": "theoretical"
+            },
+            {
+              "claim": "Increased risk for serotonin-norepinephrine reuptake inhibitor withdrawal syndrome.",
+              "evidence": "Abrupt cessation of tramadol increases the risk for both opioid and serotonin-norepinephrine reuptake inhibitor withdrawal syndromes.",
+              "evidence_type": "theoretical"
+            }
+          ],
+          "outcome": "Risk for both opioid and serotonin-norepinephrine reuptake inhibitor withdrawal syndromes",
+          "outcome_evidence": "",
+          "observables": [
+            "Withdrawal symptoms"
+          ],
+          "interventions": [
+            "Gradual tapering of tramadol"
+          ],
+          "confidence": null
+        }
+      ],
+      "importedAt": 1783785883.7118294,
+      "active": true
+    },
+    {
+      "paper_id": "paper_1783785915970789000",
+      "unique_key": "doi:10_1016_j_semperi_2020_151222",
+      "title": "Pharmacogenomics in pregnancy",
+      "citation": "Hannah K Betcher et al. (2020) Pharmacogenomics in pregnancy. doi:10.1016/j.semperi.2020.151222",
+      "authors": [
+        "Hannah K Betcher"
+      ],
+      "year": "2020",
+      "venue": "Seminars in perinatology",
+      "provider": "pubmed",
+      "source_type": "pubmed_eutils",
+      "doi": "10.1016/j.semperi.2020.151222",
+      "arxiv_id": "",
+      "semantic_scholar_id": "",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/32081407/",
+      "abstract": "Pregnant women frequently take prescription and over the counter medications. The efficacy of medications is affected by the many physiological changes during pregnancy, and these events may be further impacted by genetic factors. Research on pharmacogenomic and pharmacokinetic influences on drug disposition during pregnancy has lagged behind other fields. Clinical investigators have demonstrated altered activity of several drug metabolizing enzymes during pregnancy. Emerging evidence also supports the influence of pharmacogenomic variability in drug response for many important classes of drugs commonly used in pregnancy. Prescribing medications during pregnancy requires an understanding of the substantial dynamic physiologic and metabolic changes that occur during gestation. Pharmacogenomics also contributes to the inter-individual variability in response to many medications, and more research is needed to understand how best to manage drug therapy in pregnant women.",
+      "full_text_excerpt": "",
+      "conclusion": "Full text excerpt:",
+      "strengths": [],
+      "improvements": [],
+      "method": "unknown method",
+      "scenario": "drug response in pregnancy",
+      "benchmark": "drug efficacy and safety",
+      "contribution": "Review of pharmacogenomic and pharmacokinetic influences on drug disposition during pregnancy and the need for more research in this area.",
+      "limitation": "More research is needed to understand how best to manage drug therapy in pregnant women.",
+      "credibility_score": 0.8,
+      "credibility_reasons": [
+        "base record",
+        "has title and citation",
+        "has DOI",
+        "has URL",
+        "has substantial abstract",
+        "provider recorded",
+        "has publication year"
+      ],
+      "extraction_quality": {
+        "score": 0.76,
+        "unknown_ratio": 0.333,
+        "unknown_fields": [
+          "method"
+        ],
+        "abstract_chars": 982,
+        "flags": [
+          "unknown_fields"
+        ],
+        "needs_enrichment": false,
+        "needs_llm_retry": true,
+        "requires_human_review": false,
+        "initial": {
+          "score": 0.28,
+          "unknown_ratio": 1.0,
+          "unknown_fields": [
+            "method",
+            "scenario",
+            "benchmark"
+          ],
+          "abstract_chars": 982,
+          "flags": [
+            "missing_conclusion",
+            "unknown_fields",
+            "unknown_fields_high",
+            "missing_benchmark"
+          ],
+          "needs_enrichment": false,
+          "needs_llm_retry": true,
+          "requires_human_review": true
+        },
+        "llm_retry": {
+          "attempted": true,
+          "succeeded": true,
+          "error": "",
+          "extractor": "qwen_json"
+        }
+      },
+      "enrichment_sources": [],
+      "gap_signals": [
+        {
+          "signal_id": "sig_1783785915959304500",
+          "signal_type": "mechanism_issue",
+          "text": "Emerging evidence also supports the influence of pharmacogenomic variability in drug response for many important classes of drugs commonly used in pregnancy.",
+          "evidence_type": "problem_statement",
+          "supporting_reference": "Hannah K Betcher et al. (2020) Pharmacogenomics in pregnancy. doi:10.1016/j.semperi.2020.151222",
+          "confidence": 0.84
+        },
+        {
+          "signal_id": "sig_1783785915959366900",
+          "signal_type": "mechanism_issue",
+          "text": "Pharmacogenomics also contributes to the inter-individual variability in response to many medications, and more research is needed to understand how best to manage drug therapy in pregnant women.",
+          "evidence_type": "problem_statement",
+          "supporting_reference": "Hannah K Betcher et al. (2020) Pharmacogenomics in pregnancy. doi:10.1016/j.semperi.2020.151222",
+          "confidence": 0.84
+        },
+        {
+          "signal_id": "sig_1783785915948786300",
+          "signal_type": "future_work",
+          "text": "more research is needed to understand how best to manage drug therapy in pregnant women.",
+          "evidence_type": "author_opinion",
+          "supporting_reference": "Hannah K Betcher et al. (2020) Pharmacogenomics in pregnancy. doi:10.1016/j.semperi.2020.151222",
+          "confidence": 0.78
+        },
+        {
+          "signal_id": "sig_1783785915959348900",
+          "signal_type": "missing_evidence",
+          "text": "Prescribing medications during pregnancy requires an understanding of the substantial dynamic physiologic and metabolic changes that occur during gestation.",
+          "evidence_type": "problem_statement",
+          "supporting_reference": "Hannah K Betcher et al. (2020) Pharmacogenomics in pregnancy. doi:10.1016/j.semperi.2020.151222",
+          "confidence": 0.72
+        }
+      ],
+      "causal_chains": [
+        {
+          "chain_id": "chain_1",
+          "trigger": "Physiological changes during pregnancy",
+          "trigger_evidence": "",
+          "steps": [
+            {
+              "claim": "Altered activity of several drug metabolizing enzymes during pregnancy",
+              "evidence": "Clinical investigators have demonstrated altered activity of several drug metabolizing enzymes during pregnancy.",
+              "evidence_type": "observational"
+            }
+          ],
+          "outcome": "Affects the efficacy of medications in pregnant women",
+          "outcome_evidence": "",
+          "observables": [
+            "Changes in drug metabolizing enzyme activity"
+          ],
+          "interventions": [],
+          "confidence": null
+        },
+        {
+          "chain_id": "chain_2",
+          "trigger": "Genetic factors (pharmacogenomic variability)",
+          "trigger_evidence": "",
+          "steps": [
+            {
+              "claim": "Influence of pharmacogenomic variability in drug response for many important classes of drugs commonly used in pregnancy",
+              "evidence": "Emerging evidence also supports the influence of pharmacogenomic variability in drug response for many important classes of drugs commonly used in pregnancy.",
+              "evidence_type": "observational"
+            }
+          ],
+          "outcome": "Contributes to inter-individual variability in response to many medications",
+          "outcome_evidence": "",
+          "observables": [
+            "Variability in drug response among pregnant women"
+          ],
+          "interventions": [],
+          "confidence": null
+        }
+      ],
+      "importedAt": 1783785915.9707959,
+      "active": true
+    },
+    {
+      "paper_id": "paper_1783786031619261500",
+      "unique_key": "arxiv:2403_03274v1",
+      "title": "From Noise to Signal: Unveiling Treatment Effects from Digital Health Data through Pharmacology-Informed Neural-SDE",
+      "citation": "Samira Pakravan et al. (2024) From Noise to Signal: Unveiling Treatment Effects from Digital Health Data through Pharmacology-Informed Neural-SDE arXiv:2403.03274v1",
+      "authors": [
+        "Samira Pakravan"
+      ],
+      "year": "2024",
+      "venue": "arXiv",
+      "provider": "arxiv",
+      "source_type": "api",
+      "doi": "",
+      "arxiv_id": "2403.03274v1",
+      "semantic_scholar_id": "",
+      "url": "http://arxiv.org/abs/2403.03274v1",
+      "abstract": "Digital health technologies (DHT), such as wearable devices, provide personalized, continuous, and real-time monitoring of patient. These technologies are contributing to the development of novel therapies and personalized medicine. Gaining insight from these technologies requires appropriate modeling techniques to capture clinically-relevant changes in disease state. The data generated from these devices is characterized by being stochastic in nature, may have missing elements, and exhibits considerable inter-individual variability - thereby making it difficult to analyze using traditional longitudinal modeling techniques. We present a novel pharmacology-informed neural stochastic differential equation (SDE) model capable of addressing these challenges. Using synthetic data, we demonstrate that our approach is effective in identifying treatment effects and learning causal relationships from stochastic data, thereby enabling counterfactual simulation.",
+      "full_text_excerpt": "",
+      "conclusion": "Full text excerpt:",
+      "strengths": [
+        "Abstract: Digital health technologies (DHT), such as wearable devices, provide personalized, continuous, and real-time monitoring of patient. These technologies are contributing to the development of novel therapies and personalized medicine. Gaining insight from these technologies requires appropri...[truncated]"
+      ],
+      "improvements": [
+        "Abstract: Digital health technologies (DHT), such as wearable devices, provide personalized, continuous, and real-time monitoring of patient. These technologies are contributing to the development of novel therapies and personalized medicine. Gaining insight from these technologies requires appropri...[truncated]"
+      ],
+      "method": "pharmacology-informed neural stochastic differential equation (SDE) model",
+      "scenario": "digital health data analysis",
+      "benchmark": "identification of treatment effects and learning causal relationships",
+      "contribution": "a novel pharmacology-informed neural SDE model for analyzing stochastic and variable digital health data, enabling the identification of treatment effects and causal relationship learning",
+      "limitation": "Abstract: Digital health technologies (DHT), such as wearable devices, provide personalized, continuous, and real-time monitoring of patient. These technologies are contributing to the development of novel therapies and personalized medicine. Gaining insight from these technologies requires appropri...[truncated]",
+      "credibility_score": 0.72,
+      "credibility_reasons": [
+        "base record",
+        "has title and citation",
+        "has scholarly identifier",
+        "has URL",
+        "has substantial abstract",
+        "provider recorded",
+        "preprint venue",
+        "has publication year"
+      ],
+      "extraction_quality": {
+        "score": 1.0,
+        "unknown_ratio": 0.0,
+        "unknown_fields": [],
+        "abstract_chars": 965,
+        "flags": [],
+        "needs_enrichment": false,
+        "needs_llm_retry": false,
+        "requires_human_review": false,
+        "initial": {
+          "score": 0.28,
+          "unknown_ratio": 1.0,
+          "unknown_fields": [
+            "method",
+            "scenario",
+            "benchmark"
+          ],
+          "abstract_chars": 965,
+          "flags": [
+            "missing_conclusion",
+            "unknown_fields",
+            "unknown_fields_high",
+            "missing_benchmark"
+          ],
+          "needs_enrichment": false,
+          "needs_llm_retry": true,
+          "requires_human_review": true
+        },
+        "llm_retry": {
+          "attempted": true,
+          "succeeded": true,
+          "error": "",
+          "extractor": "qwen_json"
+        }
+      },
+      "enrichment_sources": [],
+      "gap_signals": [
+        {
+          "signal_id": "sig_1783786031600328600",
+          "signal_type": "challenge",
+          "text": "We present a novel pharmacology-informed neural stochastic differential equation (SDE) model capable of addressing these challenges.",
+          "evidence_type": "problem_statement",
+          "supporting_reference": "Samira Pakravan et al. (2024) From Noise to Signal: Unveiling Treatment Effects from Digital Health Data through Pharmacology-Informed Neural-SDE arXiv:2403.03274v1",
+          "confidence": 0.81
+        },
+        {
+          "signal_id": "sig_1783786031600293100",
+          "signal_type": "mechanism_issue",
+          "text": "The data generated from these devices is characterized by being stochastic in nature, may have missing elements, and exhibits considerable inter-individual variability - thereby making it difficult to analyze using traditional longitudinal modeling techniques.",
+          "evidence_type": "problem_statement",
+          "supporting_reference": "Samira Pakravan et al. (2024) From Noise to Signal: Unveiling Treatment Effects from Digital Health Data through Pharmacology-Informed Neural-SDE arXiv:2403.03274v1",
+          "confidence": 0.79
+        },
+        {
+          "signal_id": "sig_1783786031600429000",
+          "signal_type": "missing_evidence",
+          "text": "Gaining insight from these technologies requires appropri...[truncated]",
+          "evidence_type": "problem_statement",
+          "supporting_reference": "Samira Pakravan et al. (2024) From Noise to Signal: Unveiling Treatment Effects from Digital Health Data through Pharmacology-Informed Neural-SDE arXiv:2403.03274v1",
+          "confidence": 0.72
+        },
+        {
+          "signal_id": "sig_1783786031600264100",
+          "signal_type": "missing_evidence",
+          "text": "Gaining insight from these technologies requires appropriate modeling techniques to capture clinically-relevant changes in disease state.",
+          "evidence_type": "problem_statement",
+          "supporting_reference": "Samira Pakravan et al. (2024) From Noise to Signal: Unveiling Treatment Effects from Digital Health Data through Pharmacology-Informed Neural-SDE arXiv:2403.03274v1",
+          "confidence": 0.72
+        }
+      ],
+      "causal_chains": [
+        {
+          "chain_id": "chain_1",
+          "trigger": "Use of pharmacology-informed neural SDE model on digital health data",
+          "trigger_evidence": "",
+          "steps": [
+            {
+              "claim": "The model processes the stochastic and variable data.",
+              "evidence": "We present a novel pharmacology-informed neural stochastic differential equation (SDE) model capable of addressing these challenges.",
+              "evidence_type": "theoretical"
+            },
+            {
+              "claim": "The model identifies treatment effects and learns causal relationships.",
+              "evidence": "Using synthetic data, we demonstrate that our approach is effective in identifying treatment effects and learning causal relationships from stochastic data, thereby enabling counterfactual simulation.",
+              "evidence_type": "experimental"
+            }
+          ],
+          "outcome": "Effective identification of treatment effects and causal relationships in digital health data",
+          "outcome_evidence": "",
+          "observables": [
+            "Identified treatment effects",
+            "Learned causal relationships"
+          ],
+          "interventions": [
+            "Application of the pharmacology-informed neural SDE model"
+          ],
+          "confidence": null
+        }
+      ],
+      "importedAt": 1783786031.6192687,
+      "active": true
+    }
+  ],
+  "evidence": [
+    {
+      "evidence_id": "ev_1783785649492751900",
+      "title": "HyperADRs: A Hierarchical Hypergraph Framework for Drug-Gene-ADR Prediction",
+      "citation": "Ze Cai et al. (2025) HyperADRs: A Hierarchical Hypergraph Framework for Drug-Gene-ADR Prediction arXiv:2512.00137v1",
+      "method": "the model",
+      "scenario": "drug-gene-ADR prediction",
+      "benchmark": "ranking based metrics",
+      "contribution": "introduction of HyperADRs, which predicts ADR risk at the level of drug-gene-ADR triads and improves robustness and interpretability with a nine-category ADR macro system",
+      "limitation": "HyperADRs: A Hierarchical Hypergraph Framework for Drug-Gene-ADR Prediction Adverse drug reactions (ADRs) are a major barrier to safe and effective pharmacotherapy and increasingly reflect higher order interactions between drugs, genetic background, and clinical phenotypes.",
+      "url": "http://arxiv.org/abs/2512.00137v1",
+      "createdAt": 1783785649.492757,
+      "paper_id": "paper_1783785649492678100",
+      "active": true,
+      "causal_chains": [],
+      "retrieval_phase": "subhypothesis_evidence",
+      "retrieval_branch": "SH1"
+    },
+    {
+      "evidence_id": "ev_1783785687271462000",
+      "title": "Elucidating the Action Mechanism of Shenling Baizhu Powder in the Treatment of Ulcerative Colitis Based on Network Pharmacology and Experimental Validation",
+      "citation": "Mei Wang et al. (2025) Elucidating the Action Mechanism of Shenling Baizhu Powder in the Treatment of Ulcerative Colitis Based on Network Pharmacology and Experimental Validation. doi:10.2174/0113862073376167250527025217",
+      "method": "network pharmacology and experimental validation",
+      "scenario": "treatment of ulcerative colitis",
+      "benchmark": "histopathological changes, serum levels of IL-4, TNF-α, and HIF-1α",
+      "contribution": "SLBZ exerts therapeutic effects on UC by targeting key proteins and modulating critical pathways, providing a theoretical basis for its use as a multi-targeted therapeutic agent",
+      "limitation": "Further exploration through clinical trials and multi-omics analyses is needed to validate its efficacy and safety",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/40525448/",
+      "createdAt": 1783785687.2714658,
+      "paper_id": "paper_1783785687271405300",
+      "active": true,
+      "causal_chains": [
+        {
+          "chain_id": "cc1",
+          "trigger": "SLBZ treatment",
+          "trigger_evidence": "Histological analysis showed that SLBZ alleviated DSS-induced colonic tissue injury, while immunohistochemistry revealed reduced expression of TNF-α and STAT3, and upregulated IL-4, indicating modulation of the JAK/STAT3 pathway.",
+          "steps": [
+            {
+              "claim": "SLBZ reduces colonic tissue injury",
+              "evidence": "Histological analysis showed that SLBZ alleviated DSS-induced colonic tissue injury",
+              "evidence_type": "experimental"
+            },
+            {
+              "claim": "SLBZ reduces TNF-α and STAT3 expression",
+              "evidence": "immunohistochemistry revealed reduced expression of TNF-α and STAT3",
+              "evidence_type": "experimental"
+            },
+            {
+              "claim": "SLBZ upregulates IL-4",
+              "evidence": "upregulated IL-4, indicating modulation of the JAK/STAT3 pathway",
+              "evidence_type": "experimental"
+            }
+          ],
+          "outcome": "modulation of the JAK/STAT3 pathway",
+          "outcome_evidence": "indicating modulation of the JAK/STAT3 pathway",
+          "observables": [
+            "colonic tissue injury",
+            "TNF-α expression",
+            "STAT3 expression",
+            "IL-4 expression"
+          ],
+          "interventions": [
+            "SLBZ treatment"
+          ],
+          "confidence": 0.9
+        }
+      ],
+      "retrieval_phase": "subhypothesis_evidence",
+      "retrieval_branch": "SH1"
+    },
+    {
+      "evidence_id": "ev_1783785723230866900",
+      "title": "Within-host modeling to measure dynamics of antibody responses after natural infection or vaccination: A systematic review.",
+      "citation": "Irene Garcia-Fogeda et al. (2023) Within-host modeling to measure dynamics of antibody responses after natural infection or vaccination: A systematic review. doi:10.1016/j.vaccine.2023.04.030",
+      "method": "systematic review",
+      "scenario": "antibody kinetics after natural infection or vaccination",
+      "benchmark": "unknown benchmark",
+      "contribution": "summarized within-host methodology used to study and quantify antibody kinetics, highlighting the use of ODEs-based models and the distinction between data-driven and theory-driven approaches",
+      "limitation": "limited information on age groups or other risk factors, lack of experimental or observational data, simplistic data-driven models, and lack of representative data for theory-driven models",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/37198016/",
+      "createdAt": 1783785723.2308702,
+      "paper_id": "paper_1783785723230783000",
+      "active": true,
+      "causal_chains": [
+        {
+          "chain_id": "heuristic_1",
+          "trigger": "BACKGROUND: Within-host models describe the dynamics of immune cells when encountering a pathogen, and how these dynamics can",
+          "trigger_evidence": "BACKGROUND: Within-host models describe the dynamics of immune cells when encountering a pathogen, and how these dynamics can lead to an individual-specific immune response.",
+          "steps": [],
+          "outcome": "an individual-specific immune response.",
+          "outcome_evidence": "BACKGROUND: Within-host models describe the dynamics of immune cells when encountering a pathogen, and how these dynamics can lead to an individual-specific immune response.",
+          "observables": [],
+          "interventions": [],
+          "confidence": 0.3
+        }
+      ],
+      "retrieval_phase": "subhypothesis_evidence",
+      "retrieval_branch": "SH1"
+    },
+    {
+      "evidence_id": "ev_1783785748620570700",
+      "title": "Reconstructing computational system dynamics from neural data with recurrent neural networks",
+      "citation": "Daniel Durstewitz et al. (2023) Reconstructing computational system dynamics from neural data with recurrent neural networks. doi:10.1038/s41583-023-00740-7",
+      "method": "recurrent neural networks (RNNs)",
+      "scenario": "neural and behavioural processes",
+      "benchmark": "temporal and geometrical properties, model performance",
+      "contribution": "dynamical system reconstruction using RNNs to emulate and analyze the underlying computational mechanisms of neural and behavioural processes",
+      "limitation": "Abstract: Computational models in neuroscience usually take the form of systems of differential equations. The behaviour of such systems is the subject of dynamical systems theory. Dynamical systems theory provides a powerful mathematical toolbox for analysing neurobiological processes and has been...[truncated]",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/37794121/",
+      "createdAt": 1783785748.6205747,
+      "paper_id": "paper_1783785748620497600",
+      "active": true,
+      "causal_chains": [],
+      "retrieval_phase": "subhypothesis_evidence",
+      "retrieval_branch": "SH1"
+    },
+    {
+      "evidence_id": "ev_1783785771586617100",
+      "title": "Melodic Intonation Therapy on Non-fluent Aphasia After Stroke: A Systematic Review and Analysis on Clinical Trials",
+      "citation": "Xiaoying Zhang et al. (2021) Melodic Intonation Therapy on Non-fluent Aphasia After Stroke: A Systematic Review and Analysis on Clinical Trials. doi:10.3389/fnins.2021.753356",
+      "method": "systematic review and analysis of clinical trials",
+      "scenario": "non-fluent aphasia after stroke",
+      "benchmark": "behavioral measurements and MRI imaging structure",
+      "contribution": "systematized recent results from studies on the MIT effect on non-fluent aphasia, summarized findings, and identified knowledge gaps for future work",
+      "limitation": "insufficient MRI imaging studies to determine clinical evidence and intervention targets for MIT",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/35153655/",
+      "createdAt": 1783785771.5866199,
+      "paper_id": "paper_1783785771586554900",
+      "active": true,
+      "causal_chains": [
+        {
+          "chain_id": "heuristic_1",
+          "trigger": "The strengthening of large-scale clinical evidence of imaging observations will",
+          "trigger_evidence": "The strengthening of large-scale clinical evidence of imaging observations will result in the clear neural circuit prompts and prediction models proposed for the MIT treatment and its prognosis.",
+          "steps": [],
+          "outcome": "the clear neural circuit prompts and prediction models proposed for the MIT treatment and its prognosis.",
+          "outcome_evidence": "The strengthening of large-scale clinical evidence of imaging observations will result in the clear neural circuit prompts and prediction models proposed for the MIT treatment and its prognosis.",
+          "observables": [],
+          "interventions": [],
+          "confidence": 0.3
+        }
+      ],
+      "retrieval_phase": "subhypothesis_evidence",
+      "retrieval_branch": "SH1"
+    },
+    {
+      "evidence_id": "ev_1783785883711881200",
+      "title": "Trends in Tramadol: Pharmacology, Metabolism, and Misuse",
+      "citation": "Karen Miotto et al. (2017) Trends in Tramadol: Pharmacology, Metabolism, and Misuse. doi:10.1213/ANE.0000000000001683",
+      "method": "literature review",
+      "scenario": "tramadol pharmacology and misuse",
+      "benchmark": "opioid analgesic potency, side effect profile, withdrawal syndromes",
+      "contribution": "updated information on tramadol including pharmacology, metabolism, and misuse",
+      "limitation": "Abrupt cessation of tramadol increases the risk for both opioid and serotonin-norepinephrine reuptake inhibitor withdrawal syndromes.",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/27861439/",
+      "createdAt": 1783785883.7118847,
+      "paper_id": "paper_1783785883711820800",
+      "active": true,
+      "causal_chains": [
+        {
+          "chain_id": "heuristic_1",
+          "trigger": "Tramadol's simultaneous opioid agonist action and serotonin (5-HT) and norepinephrine reuptake inhibitory effects",
+          "trigger_evidence": "Tramadol's simultaneous opioid agonist action and serotonin (5-HT) and norepinephrine reuptake inhibitory effects result in a unique side effect profile and important drug interactions that must be considered.",
+          "steps": [],
+          "outcome": "a unique side effect profile and important drug interactions that must be considered.",
+          "outcome_evidence": "Tramadol's simultaneous opioid agonist action and serotonin (5-HT) and norepinephrine reuptake inhibitory effects result in a unique side effect profile and important drug interactions that must be considered.",
+          "observables": [],
+          "interventions": [],
+          "confidence": 0.3
+        }
+      ]
+    },
+    {
+      "evidence_id": "ev_1783785915970837200",
+      "title": "Pharmacogenomics in pregnancy",
+      "citation": "Hannah K Betcher et al. (2020) Pharmacogenomics in pregnancy. doi:10.1016/j.semperi.2020.151222",
+      "method": "unknown method",
+      "scenario": "drug response in pregnancy",
+      "benchmark": "drug efficacy and safety",
+      "contribution": "Review of pharmacogenomic and pharmacokinetic influences on drug disposition during pregnancy and the need for more research in this area.",
+      "limitation": "More research is needed to understand how best to manage drug therapy in pregnant women.",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/32081407/",
+      "createdAt": 1783785915.9708397,
+      "paper_id": "paper_1783785915970789000",
+      "active": true,
+      "causal_chains": []
+    },
+    {
+      "evidence_id": "ev_1783786031619316600",
+      "title": "From Noise to Signal: Unveiling Treatment Effects from Digital Health Data through Pharmacology-Informed Neural-SDE",
+      "citation": "Samira Pakravan et al. (2024) From Noise to Signal: Unveiling Treatment Effects from Digital Health Data through Pharmacology-Informed Neural-SDE arXiv:2403.03274v1",
+      "method": "pharmacology-informed neural stochastic differential equation (SDE) model",
+      "scenario": "digital health data analysis",
+      "benchmark": "identification of treatment effects and learning causal relationships",
+      "contribution": "a novel pharmacology-informed neural SDE model for analyzing stochastic and variable digital health data, enabling the identification of treatment effects and causal relationship learning",
+      "limitation": "Abstract: Digital health technologies (DHT), such as wearable devices, provide personalized, continuous, and real-time monitoring of patient. These technologies are contributing to the development of novel therapies and personalized medicine. Gaining insight from these technologies requires appropri...[truncated]",
+      "url": "http://arxiv.org/abs/2403.03274v1",
+      "createdAt": 1783786031.6193194,
+      "paper_id": "paper_1783786031619261500",
+      "active": true,
+      "causal_chains": []
+    }
+  ],
+  "coverage_matrix": {},
+  "knowledge_gaps": [],
+  "hypotheses": [],
+  "keynotes": [
+    {
+      "keynote_id": "keynote_1783785668993887800",
+      "paper_id": "paper_1783785649492678100",
+      "search_id": "",
+      "result_index": null,
+      "title": "HyperADRs: A Hierarchical Hypergraph Framework for Drug-Gene-ADR Prediction",
+      "createdAt": 1783785668.9938903,
+      "keynote": {
+        "title": "HyperADRs: A Hierarchical Hypergraph Framework for Drug-Gene-ADR Prediction",
+        "core_problem": "Adverse drug reactions (ADRs) are a major barrier to safe and effective pharmacotherapy, and existing graph-based approaches often do not account for the causal gene, limiting their value for pharmacogenomic decision making.",
+        "contributions": [
+          "Introduction of HyperADRs, a hierarchical hypergraph framework that predicts ADR risk at the level of drug-gene-ADR triads.",
+          "Development of a nine-category ADR macro system to improve robustness and interpretability, aligning with organ system reasoning in clinical pharmacology."
+        ],
+        "methods": [
+          "Construction of high-confidence triplets from curated pharmacogenomic annotations in PharmGKB and the pharmacogenomics subdatabase of DrugBank.",
+          "Integration of these triplets with auxiliary molecular, functional, and disease relations from precision-medicine-oriented knowledge graphs.",
+          "Embedding of drugs, genes, and ADR concepts using modality-appropriate pretrained models (UniMol, ESM2, SapBERT).",
+          "Propagation of embeddings through a hypergraph convolutional network.",
+          "Use of a FiLM-based, query-conditioned contrastive learning module to learn context-specific representations."
+        ],
+        "experiments_or_evidence": [
+          "Evaluation on PharmGKB across drug-, gene-, and ADR-held-out scenarios, where HyperADRs matches or exceeds strong baselines on ranking-based metrics.",
+          "Transfer learning evaluation, where HyperADRs trained on PharmGKB and tested on unseen DrugBank triplets maintains its ranking advantage."
+        ],
+        "assumptions": [],
+        "limitations": [],
+        "gap_signals": [
+          {
+            "signal_id": "sig_1783785668993761900",
+            "signal_type": "methodological_gap",
+            "text": "Existing graph-based approaches usually predict ADRs as properties of drugs or drug pairs, leaving the causal gene implicit and limiting their value for pharmacogenomic decision making.",
+            "evidence_type": "problem_statement",
+            "supporting_reference": "",
+            "confidence": 0.6
+          }
+        ],
+        "datasets_or_materials": [
+          "PharmGKB",
+          "DrugBank"
+        ],
+        "code_or_implementation": [],
+        "important_claims": [
+          {
+            "claim": "HyperADRs can predict ADR risk at the level of drug-gene-ADR triads.",
+            "evidence": "The model is evaluated on PharmGKB and shows performance matching or exceeding strong baselines on ranking-based metrics."
+          },
+          {
+            "claim": "The nine-category ADR macro system improves robustness and interpretability.",
+            "evidence": "This system reduces large heterogeneous 'other' bins and aligns with organ system reasoning in clinical pharmacology."
+          }
+        ],
+        "causal_chains": [
+          {
+            "chain_id": "chain_1",
+            "trigger": "High-confidence triplets from curated pharmacogenomic annotations",
+            "trigger_evidence": "",
+            "steps": [
+              {
+                "claim": "Triplets are integrated with auxiliary molecular, functional, and disease relations from precision-medicine-oriented knowledge graphs.",
+                "evidence": "Starting from curated pharmacogenomic annotations in PharmGKB and the pharmacogenomics subdatabase of DrugBank, we construct high confidence triplets and integrate them with auxiliary molecular, functional, and disease relations from precision-medicine-oriented knowledge graphs.",
+                "evidence_type": "observational"
+              },
+              {
+                "claim": "Drugs, genes, and ADR concepts are embedded and propagated through a hypergraph convolutional network.",
+                "evidence": "Drugs, genes, and ADR concepts are embedded with modality appropriate pretrained models (UniMol, ESM2, SapBERT) and propagated through a hypergraph convolutional network.",
+                "evidence_type": "experimental"
+              },
+              {
+                "claim": "A FiLM-based, query-conditioned contrastive learning module learns context-specific representations.",
+                "evidence": "A FiLM based, query conditioned contrastive learning module learns context specific representations so that, given any two entities, the model retrieves the correct third entity against many candidates.",
+                "evidence_type": "theoretical"
+              }
+            ],
+            "outcome": "HyperADRs matches or exceeds strong baselines on ranking-based metrics and maintains its ranking advantage in transfer learning settings.",
+            "outcome_evidence": "",
+            "observables": [
+              "Ranking-based metrics on PharmGKB and DrugBank datasets"
+            ],
+            "interventions": [
+              "Training on PharmGKB and testing on unseen DrugBank triplets"
+            ],
+            "confidence": null
+          }
+        ],
+        "reuse_value_for_research": "The hierarchical hypergraph framework and the nine-category ADR macro system provide a robust and interpretable method for predicting ADR risk, which can support mechanistically grounded pharmacogenomic hypothesis generation.",
+        "extractor": "qwen_keynote"
+      }
+    },
+    {
+      "keynote_id": "keynote_1783785711689118100",
+      "paper_id": "paper_1783785687271405300",
+      "search_id": "",
+      "result_index": null,
+      "title": "Elucidating the Action Mechanism of Shenling Baizhu Powder in the Treatment of Ulcerative Colitis Based on Network Pharmacology and Experimental Validation",
+      "createdAt": 1783785711.6891196,
+      "keynote": {
+        "title": "Elucidating the Action Mechanism of Shenling Baizhu Powder in the Treatment of Ulcerative Colitis Based on Network Pharmacology and Experimental Validation",
+        "core_problem": "To elucidate the therapeutic mechanisms of Shenling Baizhu Powder (SLBZ) in treating ulcerative colitis (UC) and highlight its potential as an alternative or complementary therapy.",
+        "contributions": [
+          "Identification of active constituents and corresponding targets of SLBZ using TCMSP, DrugBank, and CTD.",
+          "Construction of a 'compound-component-disease-target' network through GO function analysis and KEGG pathway enrichment.",
+          "Experimental validation of SLBZ's therapeutic effects in a DSS-induced UC mouse model."
+        ],
+        "methods": [
+          "Identification of active constituents and corresponding targets of SLBZ using TCMSP.",
+          "Obtaining UC-related targets from DrugBank and CTD.",
+          "Visualization of overlapping targets using a Venn diagram and protein-protein interactions using the STRING database.",
+          "Network construction and analysis through GO function and KEGG pathway enrichment.",
+          "Molecular docking using Discovery Studio 4.5 software.",
+          "Induction of UC in mice with DSS and treatment with SLBZ (low, medium, high doses), mesalazine, or no treatment (normal and UC groups).",
+          "Histopathological assessment of colon tissues and measurement of serum levels of IL-4, TNF-α, and HIF-1α by immunohistochemistry."
+        ],
+        "experiments_or_evidence": [
+          "A total of 408 active ingredients and 2118 corresponding targets were identified in SLBZ, with 2052 targets associated with UC, resulting in 610 overlapping targets.",
+          "Refinement identified 54 active ingredients and 86 targets, with key components including quercetin, betulin, catharanthamine, and glyasperin B.",
+          "Core targets included TP53, AKT1, JUN, and HSP90AA1.",
+          "KEGG analysis suggested SLBZ's involvement in PI3K/Akt, JAK2/STAT3, and TNF signaling pathways.",
+          "Molecular docking confirmed strong binding affinities between key targets and main components.",
+          "Histological analysis showed that SLBZ alleviated DSS-induced colonic tissue injury, while immunohistochemistry revealed reduced expression of TNF-α and STAT3, and upregulated IL-4, indicating modulation of the JAK/STAT3 pathway."
+        ],
+        "assumptions": [
+          "The active constituents and targets identified in the databases are accurate and relevant to the therapeutic action of SLBZ in UC."
+        ],
+        "limitations": [
+          "The study is based on a mouse model, and further clinical trials are needed to validate the efficacy and safety of SLBZ in humans."
+        ],
+        "gap_signals": [
+          {
+            "signal_id": "sig_1783785711689009500",
+            "signal_type": "limitation",
+            "text": "The study is based on a mouse model, and further clinical trials are needed to validate the efficacy and safety of SLBZ in humans.",
+            "evidence_type": "author_opinion",
+            "supporting_reference": "",
+            "confidence": 0.82
+          },
+          {
+            "signal_id": "sig_1783785711688979800",
+            "signal_type": "Further Research Needed",
+            "text": "Further exploration through clinical trials and multi-omics analyses is needed to validate its efficacy and safety.",
+            "evidence_type": "problem_statement",
+            "supporting_reference": "",
+            "confidence": 0.6
+          }
+        ],
+        "datasets_or_materials": [
+          "TCMSP (Traditional Chinese Medicine Systems Pharmacology Database and Analysis Platform)",
+          "DrugBank",
+          "CTD (Comparative Toxicogenomics Database)",
+          "STRING database"
+        ],
+        "code_or_implementation": [],
+        "important_claims": [
+          {
+            "claim": "SLBZ exerts therapeutic effects on UC by targeting key proteins (e.g., TP53, AKT1, JUN) and modulating critical pathways (e.g., JAK2/STAT3).",
+            "evidence": "KEGG analysis suggested SLBZ's involvement in PI3K/Akt, JAK2/STAT3, and TNF signaling pathways. Molecular docking confirmed strong binding affinities between key targets and main components. Histological and immunohistochemical analyses supported the claim."
+          }
+        ],
+        "causal_chains": [
+          {
+            "chain_id": "chain_1",
+            "trigger": "SLBZ administration",
+            "trigger_evidence": "",
+            "steps": [
+              {
+                "claim": "SLBZ targets key proteins (TP53, AKT1, JUN, HSP90AA1) and modulates critical pathways (PI3K/Akt, JAK2/STAT3, TNF).",
+                "evidence": "KEGG analysis and molecular docking results.",
+                "evidence_type": "theoretical"
+              },
+              {
+                "claim": "Modulation of these pathways leads to reduced expression of TNF-α and STAT3, and upregulation of IL-4.",
+                "evidence": "Immunohistochemistry results.",
+                "evidence_type": "experimental"
+              },
+              {
+                "claim": "These changes result in alleviation of DSS-induced colonic tissue injury.",
+                "evidence": "Histological analysis results.",
+                "evidence_type": "experimental"
+              }
+            ],
+            "outcome": "SLBZ exerts therapeutic effects on UC.",
+            "outcome_evidence": "",
+            "observables": [
+              "Reduced expression of TNF-α and STAT3, upregulation of IL-4, and alleviation of colonic tissue injury."
+            ],
+            "interventions": [
+              "SLBZ treatment at different doses (low, medium, high)"
+            ],
+            "confidence": null
+          }
+        ],
+        "reuse_value_for_research": "This study provides a theoretical and experimental basis for the potential of SLBZ as a multi-targeted therapeutic agent for UC, which can be further explored through clinical trials and multi-omics analyses to validate its efficacy and safety.",
+        "extractor": "qwen_keynote"
+      }
+    },
+    {
+      "keynote_id": "keynote_1783785741236794600",
+      "paper_id": "paper_1783785723230783000",
+      "search_id": "",
+      "result_index": null,
+      "title": "Within-host modeling to measure dynamics of antibody responses after natural infection or vaccination: A systematic review.",
+      "createdAt": 1783785741.2367957,
+      "keynote": {
+        "title": "Within-host modeling to measure dynamics of antibody responses after natural infection or vaccination: A systematic review",
+        "core_problem": "Investigating the dynamics of antibody responses and underlying mechanisms of (waning of) humoral immunity, with a focus on the use of within-host models for studying and quantifying antibody kinetics after infection or vaccination.",
+        "contributions": [
+          "Summarized within-host methodology used to study and quantify antibody kinetics, highlighting the use of ODEs-based models and the distinction between data-driven and theory-driven approaches."
+        ],
+        "methods": [
+          "Systematic review using PubMed and Web of Science databases to identify eligible papers published until May 2022 that study mathematical models measuring antibody kinetics as the primary outcome."
+        ],
+        "experiments_or_evidence": [
+          "78 eligible publications identified, with 8 studies using ODEs-based models for vaccination and 12 for natural infection. Summarized in terms of type of study, sample size, measurements collected, antibody half-life, compartments and parameters included, inferential or analytical method, and model s...[truncated]"
+        ],
+        "assumptions": [],
+        "limitations": [
+          "Limited information on age groups or other risk factors that might impact antibody kinetics.",
+          "Lack of experimental or observational data.",
+          "Data-driven mechanistic models tend to be more simplistic.",
+          "Theory-driven approaches lack representative data to validate model results."
+        ],
+        "gap_signals": [
+          {
+            "signal_id": "sig_1783785741236698200",
+            "signal_type": "limitation",
+            "text": "Data-driven mechanistic models tend to be more simplistic.",
+            "evidence_type": "author_opinion",
+            "supporting_reference": "",
+            "confidence": 0.82
+          },
+          {
+            "signal_id": "sig_1783785741236689200",
+            "signal_type": "limitation",
+            "text": "Lack of experimental or observational data.",
+            "evidence_type": "author_opinion",
+            "supporting_reference": "",
+            "confidence": 0.82
+          },
+          {
+            "signal_id": "sig_1783785741236707900",
+            "signal_type": "limitation",
+            "text": "Theory-driven approaches lack representative data to validate model results.",
+            "evidence_type": "author_opinion",
+            "supporting_reference": "",
+            "confidence": 0.82
+          },
+          {
+            "signal_id": "sig_1783785741236679300",
+            "signal_type": "limitation",
+            "text": "Limited information on age groups or other risk factors that might impact antibody kinetics.",
+            "evidence_type": "author_opinion",
+            "supporting_reference": "",
+            "confidence": 0.77
+          },
+          {
+            "signal_id": "sig_1783785741236662800",
+            "signal_type": "Methodological Gap",
+            "text": "Most research focuses on phenomenological rather than mechanistic models.",
+            "evidence_type": "problem_statement",
+            "supporting_reference": "",
+            "confidence": 0.6
+          },
+          {
+            "signal_id": "sig_1783785741236636500",
+            "signal_type": "Research Gap",
+            "text": "Few publications explicitly account for investigating antibody kinetics and underlying mechanisms of (waning of) the humoral immunity in a mathematical model.",
+            "evidence_type": "problem_statement",
+            "supporting_reference": "",
+            "confidence": 0.6
+          }
+        ],
+        "datasets_or_materials": [
+          "PubMed and Web of Science databases"
+        ],
+        "code_or_implementation": [],
+        "important_claims": [
+          {
+            "claim": "Few publications explicitly account for investigating antibody kinetics and underlying mechanisms of (waning of) the humoral immunity in a mathematical model.",
+            "evidence": "Despite the importance of investigating antibody kinetics and underlying mechanisms of (waning of) the humoral immunity, few publications explicitly account for this in a mathematical model."
+          },
+          {
+            "claim": "Most research focuses on phenomenological rather than mechanistic models.",
+            "evidence": "In particular, most research focuses on phenomenological rather than mechanistic models."
+          }
+        ],
+        "causal_chains": [
+          {
+            "chain_id": "chain_1",
+            "trigger": "Use of phenomenological models over mechanistic models",
+            "trigger_evidence": "",
+            "steps": [
+              {
+                "claim": "Phenomenological models are more commonly used in research.",
+                "evidence": "In particular, most research focuses on phenomenological rather than mechanistic models.",
+                "evidence_type": "observational"
+              }
+            ],
+            "outcome": "Limitation in understanding the underlying biological mechanisms of antibody kinetics",
+            "outcome_evidence": "",
+            "observables": [],
+            "interventions": [],
+            "confidence": null
+          },
+          {
+            "chain_id": "chain_2",
+            "trigger": "Limited information on age groups or other risk factors",
+            "trigger_evidence": "",
+            "steps": [
+              {
+                "claim": "There is limited information on age groups or other risk factors that might impact antibody kinetics.",
+                "evidence": "The limited information on the age groups or other risk factors that might impact antibody kinetics, as well as a lack of experimental or observational data remain important concerns regarding the interpretation of mathematical modeling results.",
+                "evidence_type": "observational"
+              }
+            ],
+            "outcome": "Important concerns regarding the interpretation of mathematical modeling results",
+            "outcome_evidence": "",
+            "observables": [],
+            "interventions": [],
+            "confidence": null
+          }
+        ],
+        "reuse_value_for_research": "This review provides a comprehensive summary of existing within-host models for studying antibody kinetics, which can guide future research in developing more sophisticated and validated models, particularly focusing on mechanistic approaches and incorporating diverse demographic and risk factor data.",
+        "extractor": "qwen_keynote"
+      }
+    },
+    {
+      "keynote_id": "keynote_1783785759103417000",
+      "paper_id": "paper_1783785748620497600",
+      "search_id": "",
+      "result_index": null,
+      "title": "Reconstructing computational system dynamics from neural data with recurrent neural networks",
+      "createdAt": 1783785759.103418,
+      "keynote": {
+        "title": "Reconstructing computational system dynamics from neural data with recurrent neural networks",
+        "core_problem": "The need for advanced methods to reconstruct and analyze the underlying computational mechanisms of neural and behavioral processes using dynamical systems theory and machine learning, specifically RNNs.",
+        "contributions": [
+          "Introduction of RNNs as a tool for dynamical system reconstruction in neuroscience.",
+          "Discussion on the formal prerequisites, model architectures, and training approaches for RNN-based dynamical system reconstructions.",
+          "Evaluation and validation methods for RNN models in a neuroscience context."
+        ],
+        "methods": [
+          "Training RNNs on physiological and behavioral data to emulate an underlying system of differential equations.",
+          "Using RNNs to generate hypotheses about the underlying computational mechanisms by emulating similar tasks to those used for animal subjects."
+        ],
+        "experiments_or_evidence": [],
+        "assumptions": [
+          "RNNs can effectively emulate the non-linear dynamics of neural and behavioral processes.",
+          "Dynamical systems theory is a powerful mathematical framework for analyzing neurobiological processes."
+        ],
+        "limitations": [
+          "The full text does not provide specific limitations, but it mentions current challenges in the field."
+        ],
+        "gap_signals": [
+          {
+            "signal_id": "sig_1783785759103354200",
+            "signal_type": "limitation",
+            "text": "The full text does not provide specific limitations, but it mentions current challenges in the field.",
+            "evidence_type": "author_opinion",
+            "supporting_reference": "",
+            "confidence": 0.82
+          },
+          {
+            "signal_id": "sig_1783785759103327700",
+            "signal_type": "Research Gap",
+            "text": "Current challenges in the use of RNNs for dynamical system reconstruction in neuroscience.",
+            "evidence_type": "problem_statement",
+            "supporting_reference": "",
+            "confidence": 0.6
+          }
+        ],
+        "datasets_or_materials": [],
+        "code_or_implementation": [],
+        "important_claims": [
+          {
+            "claim": "RNNs can be trained on measured physiological and behavioral data to directly inherit their temporal and geometrical properties.",
+            "evidence": "By contrast, RNNs can also be trained on the measured physiological and behavioural data, thereby directly inheriting their temporal and geometrical properties. In this way they become a formal surrogate for the experimentally probed system that can be further analysed, perturbed and simulated."
+          },
+          {
+            "claim": "Dynamical systems theory provides a powerful mathematical toolbox for analyzing neurobiological processes.",
+            "evidence": "Dynamical systems theory provides a powerful mathematical toolbox for analysing neurobiological processes and has been a mainstay of computational neuroscience for decades."
+          }
+        ],
+        "causal_chains": [
+          {
+            "chain_id": "chain_1",
+            "trigger": "Training RNNs on physiological and behavioral data",
+            "trigger_evidence": "",
+            "steps": [
+              {
+                "claim": "RNNs directly inherit the temporal and geometrical properties of the data.",
+                "evidence": "In this way they become a formal surrogate for the experimentally probed system that can be further analysed, perturbed and simulated.",
+                "evidence_type": "theoretical"
+              }
+            ],
+            "outcome": "RNNs serve as a formal surrogate for the experimentally probed system, enabling further analysis, perturbation, and simulation.",
+            "outcome_evidence": "",
+            "observables": [
+              "Temporal and geometrical properties of the data"
+            ],
+            "interventions": [
+              "Training RNNs on physiological and behavioral data"
+            ],
+            "confidence": null
+          }
+        ],
+        "reuse_value_for_research": "The paper provides a comprehensive overview of the use of RNNs for dynamical system reconstruction in neuroscience, including theoretical foundations, practical applications, and current challenges, making it a valuable resource for researchers in the field.",
+        "extractor": "qwen_keynote"
+      }
+    },
+    {
+      "keynote_id": "keynote_1783785786437723700",
+      "paper_id": "paper_1783785771586554900",
+      "search_id": "",
+      "result_index": null,
+      "title": "Melodic Intonation Therapy on Non-fluent Aphasia After Stroke: A Systematic Review and Analysis on Clinical Trials",
+      "createdAt": 1783785786.4377244,
+      "keynote": {
+        "title": "Melodic Intonation Therapy on Non-fluent Aphasia After Stroke: A Systematic Review and Analysis on Clinical Trials",
+        "core_problem": "There is a lack of combined behavioral and mechanistic (neuroimaging) analysis in studies evaluating the effectiveness of Melodic Intonation Therapy (MIT) for non-fluent aphasia post-stroke, leading to insufficient evidence for clinical application and intervention targets.",
+        "contributions": [
+          "Systematized recent results from studies on the MIT effect on non-fluent aphasia",
+          "Summarized findings from both RCTs and case reports",
+          "Identified knowledge gaps for future research"
+        ],
+        "methods": [
+          "Retrieved and analyzed 128 MIT-related articles, focusing on 39 valid RCT studies and case reports"
+        ],
+        "experiments_or_evidence": [
+          "Behavioral measurements in MIT interventions",
+          "Limited MRI imaging studies to support clinical evidence"
+        ],
+        "assumptions": [
+          "The effectiveness of MIT can be better understood through a combination of behavioral and neuroimaging data"
+        ],
+        "limitations": [
+          "Excessive reliance on behavioral measures without sufficient MRI imaging to support clinical evidence",
+          "Need for more large-scale clinical evidence with imaging observations"
+        ],
+        "gap_signals": [
+          {
+            "signal_id": "sig_1783785786437616600",
+            "signal_type": "limitation",
+            "text": "Excessive reliance on behavioral measures without sufficient MRI imaging to support clinical evidence",
+            "evidence_type": "author_opinion",
+            "supporting_reference": "",
+            "confidence": 0.82
+          },
+          {
+            "signal_id": "sig_1783785786437627900",
+            "signal_type": "limitation",
+            "text": "Need for more large-scale clinical evidence with imaging observations",
+            "evidence_type": "author_opinion",
+            "supporting_reference": "",
+            "confidence": 0.82
+          },
+          {
+            "signal_id": "sig_1783785786437592300",
+            "signal_type": "Knowledge Gap",
+            "text": "Insufficient MRI imaging studies to determine clinical evidence and intervention targets for MIT",
+            "evidence_type": "problem_statement",
+            "supporting_reference": "",
+            "confidence": 0.6
+          }
+        ],
+        "datasets_or_materials": [
+          "128 MIT-related articles, including 39 valid RCT studies and case reports"
+        ],
+        "code_or_implementation": [],
+        "important_claims": [
+          {
+            "claim": "MIT still needs many MRI studies to determine its clinical evidence and intervention targets",
+            "evidence": "Our summary shows that behavioral measurements at MIT are excessive and provide insufficient evidence of MRI imaging structure."
+          }
+        ],
+        "causal_chains": [
+          {
+            "chain_id": "chain_1",
+            "trigger": "Lack of combined behavioral and MRI studies",
+            "trigger_evidence": "",
+            "steps": [
+              {
+                "claim": "Current studies focus primarily on behavioral outcomes",
+                "evidence": "After retrieving 128 MIT-related articles, 39 valid RCT studies and case reports were provided for analysis. Our summary shows that behavioral measurements at MIT are excessive and provide insufficient evidence of MRI imaging structure.",
+                "evidence_type": "observational"
+              },
+              {
+                "claim": "There is a need for more MRI studies",
+                "evidence": "This proves that MIT still needs many MRI studies to determine its clinical evidence and intervention targets.",
+                "evidence_type": "theoretical"
+              }
+            ],
+            "outcome": "Strengthening of large-scale clinical evidence with imaging will result in clear neural circuit prompts and prediction models for MIT treatment and prognosis",
+            "outcome_evidence": "",
+            "observables": [
+              "Increased number of MRI studies",
+              "Clearer understanding of neural circuits involved in MIT"
+            ],
+            "interventions": [
+              "Conducting more MRI studies alongside behavioral assessments"
+            ],
+            "confidence": null
+          }
+        ],
+        "reuse_value_for_research": "The review highlights the importance of integrating neuroimaging with behavioral measures in future studies to better understand the mechanisms and efficacy of MIT, providing a clear direction for researchers to enhance the clinical evidence and intervention strategies for non-fluent aphasia.",
+        "extractor": "qwen_keynote"
+      }
+    },
+    {
+      "keynote_id": "keynote_1783785905907467100",
+      "paper_id": "paper_1783785883711820800",
+      "search_id": "",
+      "result_index": null,
+      "title": "Trends in Tramadol: Pharmacology, Metabolism, and Misuse",
+      "createdAt": 1783785905.9074683,
+      "keynote": {
+        "title": "Trends in Tramadol: Pharmacology, Metabolism, and Misuse",
+        "core_problem": "Understanding the pharmacology, metabolism, and potential misuse of tramadol, including its unique side effect profile and withdrawal syndromes.",
+        "contributions": [
+          "Updated information on the pharmacology, pharmacokinetics, CYP genetic polymorphisms, drug interactions, toxicity, withdrawal, and illicit use of tramadol."
+        ],
+        "methods": [],
+        "experiments_or_evidence": [],
+        "assumptions": [],
+        "limitations": [],
+        "gap_signals": [
+          {
+            "signal_id": "sig_1783785905907331600",
+            "signal_type": "informational",
+            "text": "This review provides updated important information on the pharmacology, pharmacokinetics, CYP genetic polymorphisms, drug interactions, toxicity, withdrawal, and illicit use of tramadol.",
+            "evidence_type": "problem_statement",
+            "supporting_reference": "",
+            "confidence": 0.6
+          }
+        ],
+        "datasets_or_materials": [],
+        "code_or_implementation": [],
+        "important_claims": [
+          {
+            "claim": "Tramadol is a prodrug metabolized by CYP2D6 and CYP3A4 to its more potent opioid analgesic metabolites, particularly M1.",
+            "evidence": "It is a prodrug that is metabolized by cytochrome P450 (CYP) enzymes CYP2D6 and CYP3A4 to its more potent opioid analgesic metabolites, particularly the O-demethylation product M1."
+          },
+          {
+            "claim": "The opioid analgesic potency of tramadol is influenced by an individual's CYP genetics.",
+            "evidence": "The opioid analgesic potency of a given dose of tramadol is influenced by an individual's CYP genetics, with poor metabolizers experiencing little conversion to the active M1 opioid metabolite and individuals with a high metabolic profile, or ultra-metabolizers, experiencing the greatest opioid analgesic effects."
+          },
+          {
+            "claim": "Abrupt cessation of tramadol increases the risk for both opioid and serotonin-norepinephrine reuptake inhibitor withdrawal syndromes.",
+            "evidence": "Abrupt cessation of tramadol increases the risk for both opioid and serotonin-norepinephrine reuptake inhibitor withdrawal syndromes."
+          }
+        ],
+        "causal_chains": [
+          {
+            "chain_id": "chain_1",
+            "trigger": "Individual's CYP genetics",
+            "trigger_evidence": "",
+            "steps": [
+              {
+                "claim": "Poor metabolizers experience little conversion to the active M1 opioid metabolite.",
+                "evidence": "The opioid analgesic potency of a given dose of tramadol is influenced by an individual's CYP genetics, with poor metabolizers experiencing little conversion to the active M1 opioid metabolite.",
+                "evidence_type": "theoretical"
+              },
+              {
+                "claim": "Ultra-metabolizers experience the greatest opioid analgesic effects.",
+                "evidence": "individuals with a high metabolic profile, or ultra-metabolizers, experiencing the greatest opioid analgesic effects.",
+                "evidence_type": "theoretical"
+              }
+            ],
+            "outcome": "Opioid analgesic potency of tramadol varies based on CYP genetics",
+            "outcome_evidence": "",
+            "observables": [
+              "Opioid analgesic potency"
+            ],
+            "interventions": [
+              "Genetic testing for CYP2D6 and CYP3A4 activity"
+            ],
+            "confidence": null
+          },
+          {
+            "chain_id": "chain_2",
+            "trigger": "Abrupt cessation of tramadol",
+            "trigger_evidence": "",
+            "steps": [
+              {
+                "claim": "Increased risk for opioid withdrawal syndrome.",
+                "evidence": "Abrupt cessation of tramadol increases the risk for both opioid and serotonin-norepinephrine reuptake inhibitor withdrawal syndromes.",
+                "evidence_type": "theoretical"
+              },
+              {
+                "claim": "Increased risk for serotonin-norepinephrine reuptake inhibitor withdrawal syndrome.",
+                "evidence": "Abrupt cessation of tramadol increases the risk for both opioid and serotonin-norepinephrine reuptake inhibitor withdrawal syndromes.",
+                "evidence_type": "theoretical"
+              }
+            ],
+            "outcome": "Risk for both opioid and serotonin-norepinephrine reuptake inhibitor withdrawal syndromes",
+            "outcome_evidence": "",
+            "observables": [
+              "Withdrawal symptoms"
+            ],
+            "interventions": [
+              "Gradual tapering of tramadol"
+            ],
+            "confidence": null
+          }
+        ],
+        "reuse_value_for_research": "The detailed pharmacological and metabolic information, along with the discussion on the genetic factors influencing tramadol's efficacy and the risks associated with its abrupt cessation, can be valuable for further research into personalized pain management and the development of guidelines for safe tramadol use.",
+        "extractor": "qwen_keynote"
+      }
+    },
+    {
+      "keynote_id": "keynote_1783785926350893400",
+      "paper_id": "paper_1783785915970789000",
+      "search_id": "",
+      "result_index": null,
+      "title": "Pharmacogenomics in pregnancy",
+      "createdAt": 1783785926.3508947,
+      "keynote": {
+        "title": "Pharmacogenomics in pregnancy",
+        "core_problem": "The efficacy of medications in pregnant women is affected by physiological changes and genetic factors, but research on pharmacogenomic and pharmacokinetic influences during pregnancy lags behind other fields.",
+        "contributions": [
+          "Review of the current understanding of pharmacogenomic and pharmacokinetic influences on drug disposition during pregnancy."
+        ],
+        "methods": [],
+        "experiments_or_evidence": [
+          "Clinical investigators have demonstrated altered activity of several drug metabolizing enzymes during pregnancy.",
+          "Emerging evidence supports the influence of pharmacogenomic variability in drug response for many important classes of drugs commonly used in pregnancy."
+        ],
+        "assumptions": [
+          "Prescribing medications during pregnancy requires an understanding of the substantial dynamic physiologic and metabolic changes that occur during gestation."
+        ],
+        "limitations": [
+          "Research on pharmacogenomic and pharmacokinetic influences on drug disposition during pregnancy has lagged behind other fields."
+        ],
+        "gap_signals": [
+          {
+            "signal_id": "sig_1783785926350809700",
+            "signal_type": "limitation",
+            "text": "Research on pharmacogenomic and pharmacokinetic influences on drug disposition during pregnancy has lagged behind other fields.",
+            "evidence_type": "author_opinion",
+            "supporting_reference": "",
+            "confidence": 0.82
+          },
+          {
+            "signal_id": "sig_1783785926350781800",
+            "signal_type": "need_for_research",
+            "text": "More research is needed to understand how best to manage drug therapy in pregnant women.",
+            "evidence_type": "problem_statement",
+            "supporting_reference": "",
+            "confidence": 0.6
+          }
+        ],
+        "datasets_or_materials": [],
+        "code_or_implementation": [],
+        "important_claims": [
+          {
+            "claim": "Pregnant women frequently take prescription and over the counter medications.",
+            "evidence": "Pharmacogenomics also contributes to the inter-individual variability in response to many medications, and more research is needed to understand how best to manage drug therapy in pregnant women."
+          },
+          {
+            "claim": "Physiological changes during pregnancy affect the efficacy of medications, which may be further impacted by genetic factors.",
+            "evidence": "The efficacy of medications is affected by the many physiological changes during pregnancy, and these events may be further impacted by genetic factors."
+          }
+        ],
+        "causal_chains": [
+          {
+            "chain_id": "chain_1",
+            "trigger": "Physiological changes during pregnancy",
+            "trigger_evidence": "",
+            "steps": [
+              {
+                "claim": "Altered activity of several drug metabolizing enzymes during pregnancy",
+                "evidence": "Clinical investigators have demonstrated altered activity of several drug metabolizing enzymes during pregnancy.",
+                "evidence_type": "observational"
+              }
+            ],
+            "outcome": "Affects the efficacy of medications in pregnant women",
+            "outcome_evidence": "",
+            "observables": [
+              "Changes in drug metabolizing enzyme activity"
+            ],
+            "interventions": [],
+            "confidence": null
+          },
+          {
+            "chain_id": "chain_2",
+            "trigger": "Genetic factors (pharmacogenomic variability)",
+            "trigger_evidence": "",
+            "steps": [
+              {
+                "claim": "Influence of pharmacogenomic variability in drug response for many important classes of drugs commonly used in pregnancy",
+                "evidence": "Emerging evidence also supports the influence of pharmacogenomic variability in drug response for many important classes of drugs commonly used in pregnancy.",
+                "evidence_type": "observational"
+              }
+            ],
+            "outcome": "Contributes to inter-individual variability in response to many medications",
+            "outcome_evidence": "",
+            "observables": [
+              "Variability in drug response among pregnant women"
+            ],
+            "interventions": [],
+            "confidence": null
+          }
+        ],
+        "reuse_value_for_research": "This review highlights the need for more comprehensive studies on the pharmacogenomic and pharmacokinetic aspects of drug metabolism in pregnant women, providing a foundation for future research to improve medication management during pregnancy.",
+        "extractor": "qwen_keynote"
+      }
+    },
+    {
+      "keynote_id": "keynote_1783786044606725200",
+      "paper_id": "paper_1783786031619261500",
+      "search_id": "",
+      "result_index": null,
+      "title": "From Noise to Signal: Unveiling Treatment Effects from Digital Health Data through Pharmacology-Informed Neural-SDE",
+      "createdAt": 1783786044.6067264,
+      "keynote": {
+        "title": "From Noise to Signal: Unveiling Treatment Effects from Digital Health Data through Pharmacology-Informed Neural-SDE",
+        "core_problem": "Analyzing stochastic and variable digital health data, which is difficult with traditional longitudinal modeling techniques, to identify treatment effects and learn causal relationships.",
+        "contributions": [
+          "A novel pharmacology-informed neural SDE model for analyzing digital health data."
+        ],
+        "methods": [
+          "Development of a pharmacology-informed neural SDE model."
+        ],
+        "experiments_or_evidence": [
+          "Demonstration using synthetic data to show the effectiveness of the model in identifying treatment effects and learning causal relationships."
+        ],
+        "assumptions": [],
+        "limitations": [],
+        "gap_signals": [
+          {
+            "signal_id": "sig_1783786044606636000",
+            "signal_type": "technological_gap",
+            "text": "Traditional longitudinal modeling techniques are inadequate for analyzing the stochastic and variable nature of digital health data.",
+            "evidence_type": "problem_statement",
+            "supporting_reference": "",
+            "confidence": 0.6
+          }
+        ],
+        "datasets_or_materials": [
+          "Synthetic data"
+        ],
+        "code_or_implementation": [],
+        "important_claims": [
+          {
+            "claim": "The pharmacology-informed neural SDE model can effectively identify treatment effects and learn causal relationships from stochastic data.",
+            "evidence": "Using synthetic data, we demonstrate that our approach is effective in identifying treatment effects and learning causal relationships from stochastic data, thereby enabling counterfactual simulation."
+          }
+        ],
+        "causal_chains": [
+          {
+            "chain_id": "chain_1",
+            "trigger": "Use of pharmacology-informed neural SDE model on digital health data",
+            "trigger_evidence": "",
+            "steps": [
+              {
+                "claim": "The model processes the stochastic and variable data.",
+                "evidence": "We present a novel pharmacology-informed neural stochastic differential equation (SDE) model capable of addressing these challenges.",
+                "evidence_type": "theoretical"
+              },
+              {
+                "claim": "The model identifies treatment effects and learns causal relationships.",
+                "evidence": "Using synthetic data, we demonstrate that our approach is effective in identifying treatment effects and learning causal relationships from stochastic data, thereby enabling counterfactual simulation.",
+                "evidence_type": "experimental"
+              }
+            ],
+            "outcome": "Effective identification of treatment effects and causal relationships in digital health data",
+            "outcome_evidence": "",
+            "observables": [
+              "Identified treatment effects",
+              "Learned causal relationships"
+            ],
+            "interventions": [
+              "Application of the pharmacology-informed neural SDE model"
+            ],
+            "confidence": null
+          }
+        ],
+        "reuse_value_for_research": "The proposed model and methodology can be used by researchers to analyze other types of stochastic and variable health data, potentially leading to new insights and personalized treatments.",
+        "extractor": "qwen_keynote"
+      }
+    }
+  ],
+  "sub_hypotheses": [
+    {
+      "id": "SH1",
+      "focus": "遗传变异对药代动力学的影响",
+      "causal_chain": [
+        "个体的遗传变异",
+        "药物代谢酶活性改变",
+        "治疗方案的药代动力学暴露"
+      ],
+      "independent_variable": "特定基因型",
+      "dependent_variables": [
+        "药物血浆浓度"
+      ],
+      "controls": [
+        "相同治疗方案但不同基因型的患者"
+      ],
+      "quantifiable_bounds": "",
+      "threshold_to_test": "",
+      "falsification_condition": "不同基因型患者的药物血浆浓度无显著差异",
+      "retrieval_query": "遗传变异 影响 药物代谢酶活性 治疗方案 药代动力学暴露",
+      "query_variants": [
+        "遗传变异 影响 药物代谢酶活性 治疗方案 药代动力学暴露",
+        "Personalized Medicine / Precision Medicine / Pharmacogenomics / Cancer Genomics / Clinical Pharmacology / Multi-omics / Patient-derived Models / Cell and Gene Therapy Manufacturing / Biostatistics / Regulatory Science 遗传变异对药代动力学的影响 causal mechanism experimental evidence",
+        "遗传变异对药代动力学的影响 intervention observable outcome preprint"
+      ],
+      "evidence_window": {
+        "P0_latest_preprint": "最近一年内关于遗传变异与药代动力学相关性的预印本",
+        "P1_recent_primary": "过去五年内发表的关于遗传变异影响药代动力学的临床研究",
+        "P2_mechanism_or_theory": "已知药物代谢途径及其受遗传因素影响的机制",
+        "minimum_evidence_types": [
+          "observable",
+          "intervention_or_natural_experiment"
+        ]
+      },
+      "alternative_mechanisms": [
+        "环境因素或生活方式导致药物代谢差异"
+      ],
+      "status": "pending_retrieval",
+      "source_objective": "在定义明确的患者群体、疾病类型和治疗类别中，个体的遗传变异、肿瘤或疾病分子表型、器官功能、免疫状态、既往治疗史以及制造过程参数，是否能够以可重复、可校准、因果上可解释的方式预测：1. 某一治疗方案的药代动力学暴露、毒性和适宜剂量；2. 某一靶向药物、免疫治疗、细胞治疗或核酸药物的临床获益与耐药风险；3. 个体化制剂或自体细胞产品能否在身份、纯度、效力、无菌性、批间一致性、周转时间和成本约束下稳定制造；4. 上述预测在不同祖源、年龄、肝肾功能、疾病分期、医疗中心和检测平台迁移时是否仍成立。禁止将统计相关、患者画像匹配或模型准确率直接解释为因果治疗获益；禁止将实验室样本、类器官、动物模型或单中心回顾性结果直接外推为临床个体化治疗有效；禁止将技术尚不成熟误判为生物学上绝对不可行。"
+    },
+    {
+      "id": "SH2",
+      "focus": "肿瘤分子表型预测靶向药物疗效",
+      "causal_chain": [
+        "肿瘤分子表型",
+        "靶点表达水平变化",
+        "靶向药物的临床获益"
+      ],
+      "independent_variable": "肿瘤分子特征（如突变、表达谱）",
+      "dependent_variables": [
+        "疾病进展时间"
+      ],
+      "controls": [
+        "具有相似临床特征但不同分子表型的患者"
+      ],
+      "quantifiable_bounds": "",
+      "threshold_to_test": "",
+      "falsification_condition": "不同分子表型组间疾病进展时间无显著差异",
+      "retrieval_query": "肿瘤分子表型 预测 靶向药物 疗效",
+      "query_variants": [
+        "肿瘤分子表型 预测 靶向药物 疗效",
+        "Personalized Medicine / Precision Medicine / Pharmacogenomics / Cancer Genomics / Clinical Pharmacology / Multi-omics / Patient-derived Models / Cell and Gene Therapy Manufacturing / Biostatistics / Regulatory Science 肿瘤分子表型预测靶向药物疗效 causal mechanism experimental evidence",
+        "肿瘤分子表型预测靶向药物疗效 intervention observable outcome preprint"
+      ],
+      "evidence_window": {
+        "P0_latest_preprint": "最近一年内关于肿瘤分子表型与靶向治疗反应性的预印本",
+        "P1_recent_primary": "过去五年内发表的关于肿瘤分子表型指导靶向治疗选择的研究",
+        "P2_mechanism_or_theory": "靶点在肿瘤中的作用机制以及其作为治疗靶点的有效性",
+        "minimum_evidence_types": [
+          "observable",
+          "intervention_or_natural_experiment"
+        ]
+      },
+      "alternative_mechanisms": [
+        "非靶向治疗相关的免疫反应或其他生物学过程影响疗效"
+      ],
+      "status": "pending_retrieval",
+      "source_objective": "在定义明确的患者群体、疾病类型和治疗类别中，个体的遗传变异、肿瘤或疾病分子表型、器官功能、免疫状态、既往治疗史以及制造过程参数，是否能够以可重复、可校准、因果上可解释的方式预测：1. 某一治疗方案的药代动力学暴露、毒性和适宜剂量；2. 某一靶向药物、免疫治疗、细胞治疗或核酸药物的临床获益与耐药风险；3. 个体化制剂或自体细胞产品能否在身份、纯度、效力、无菌性、批间一致性、周转时间和成本约束下稳定制造；4. 上述预测在不同祖源、年龄、肝肾功能、疾病分期、医疗中心和检测平台迁移时是否仍成立。禁止将统计相关、患者画像匹配或模型准确率直接解释为因果治疗获益；禁止将实验室样本、类器官、动物模型或单中心回顾性结果直接外推为临床个体化治疗有效；禁止将技术尚不成熟误判为生物学上绝对不可行。"
+    },
+    {
+      "id": "SH3",
+      "focus": "制造过程参数对自体细胞产品质量的影响",
+      "causal_chain": [
+        "制造过程参数",
+        "细胞产品特性改变",
+        "自体细胞产品的纯度和效力"
+      ],
+      "independent_variable": "特定生产条件（如温度、pH值）",
+      "dependent_variables": [
+        "细胞纯度",
+        "细胞活力"
+      ],
+      "controls": [
+        "标准生产条件下制备的细胞产品"
+      ],
+      "quantifiable_bounds": "",
+      "threshold_to_test": "",
+      "falsification_condition": "调整生产条件后，细胞纯度和活力没有显著变化",
+      "retrieval_query": "制造过程参数 自体细胞产品 纯度 力效",
+      "query_variants": [
+        "制造过程参数 自体细胞产品 纯度 力效",
+        "Personalized Medicine / Precision Medicine / Pharmacogenomics / Cancer Genomics / Clinical Pharmacology / Multi-omics / Patient-derived Models / Cell and Gene Therapy Manufacturing / Biostatistics / Regulatory Science 制造过程参数对自体细胞产品质量的影响 causal mechanism experimental evidence",
+        "制造过程参数对自体细胞产品质量的影响 intervention observable outcome preprint"
+      ],
+      "evidence_window": {
+        "P0_latest_preprint": "最近一年内关于生物制品制造工艺改进的预印本",
+        "P1_recent_primary": "过去五年内发表的关于优化细胞疗法生产过程的研究",
+        "P2_mechanism_or_theory": "细胞培养过程中关键参数的作用机制",
+        "minimum_evidence_types": [
+          "observable",
+          "intervention_or_natural_experiment"
+        ]
+      },
+      "alternative_mechanisms": [
+        "原材料质量或操作人员技术差异导致产品质量波动"
+      ],
+      "status": "pending_retrieval",
+      "source_objective": "在定义明确的患者群体、疾病类型和治疗类别中，个体的遗传变异、肿瘤或疾病分子表型、器官功能、免疫状态、既往治疗史以及制造过程参数，是否能够以可重复、可校准、因果上可解释的方式预测：1. 某一治疗方案的药代动力学暴露、毒性和适宜剂量；2. 某一靶向药物、免疫治疗、细胞治疗或核酸药物的临床获益与耐药风险；3. 个体化制剂或自体细胞产品能否在身份、纯度、效力、无菌性、批间一致性、周转时间和成本约束下稳定制造；4. 上述预测在不同祖源、年龄、肝肾功能、疾病分期、医疗中心和检测平台迁移时是否仍成立。禁止将统计相关、患者画像匹配或模型准确率直接解释为因果治疗获益；禁止将实验室样本、类器官、动物模型或单中心回顾性结果直接外推为临床个体化治疗有效；禁止将技术尚不成熟误判为生物学上绝对不可行。"
+    }
+  ],
+  "objective_decomposition": {
+    "objective": "在定义明确的患者群体、疾病类型和治疗类别中，个体的遗传变异、肿瘤或疾病分子表型、器官功能、免疫状态、既往治疗史以及制造过程参数，是否能够以可重复、可校准、因果上可解释的方式预测：1. 某一治疗方案的药代动力学暴露、毒性和适宜剂量；2. 某一靶向药物、免疫治疗、细胞治疗或核酸药物的临床获益与耐药风险；3. 个体化制剂或自体细胞产品能否在身份、纯度、效力、无菌性、批间一致性、周转时间和成本约束下稳定制造；4. 上述预测在不同祖源、年龄、肝肾功能、疾病分期、医疗中心和检测平台迁移时是否仍成立。禁止将统计相关、患者画像匹配或模型准确率直接解释为因果治疗获益；禁止将实验室样本、类器官、动物模型或单中心回顾性结果直接外推为临床个体化治疗有效；禁止将技术尚不成熟误判为生物学上绝对不可行。",
+    "domain": "Personalized Medicine / Precision Medicine / Pharmacogenomics / Cancer Genomics / Clinical Pharmacology / Multi-omics / Patient-derived Models / Cell and Gene Therapy Manufacturing / Biostatistics / Regulatory Science",
+    "status": "ready_for_subhypothesis_retrieval",
+    "extractor": "llm",
+    "sub_hypotheses": [
+      {
+        "id": "SH1",
+        "focus": "遗传变异对药代动力学的影响",
+        "causal_chain": [
+          "个体的遗传变异",
+          "药物代谢酶活性改变",
+          "治疗方案的药代动力学暴露"
+        ],
+        "independent_variable": "特定基因型",
+        "dependent_variables": [
+          "药物血浆浓度"
+        ],
+        "controls": [
+          "相同治疗方案但不同基因型的患者"
+        ],
+        "quantifiable_bounds": "",
+        "threshold_to_test": "",
+        "falsification_condition": "不同基因型患者的药物血浆浓度无显著差异",
+        "retrieval_query": "遗传变异 影响 药物代谢酶活性 治疗方案 药代动力学暴露",
+        "query_variants": [
+          "遗传变异 影响 药物代谢酶活性 治疗方案 药代动力学暴露",
+          "Personalized Medicine / Precision Medicine / Pharmacogenomics / Cancer Genomics / Clinical Pharmacology / Multi-omics / Patient-derived Models / Cell and Gene Therapy Manufacturing / Biostatistics / Regulatory Science 遗传变异对药代动力学的影响 causal mechanism experimental evidence",
+          "遗传变异对药代动力学的影响 intervention observable outcome preprint"
+        ],
+        "evidence_window": {
+          "P0_latest_preprint": "最近一年内关于遗传变异与药代动力学相关性的预印本",
+          "P1_recent_primary": "过去五年内发表的关于遗传变异影响药代动力学的临床研究",
+          "P2_mechanism_or_theory": "已知药物代谢途径及其受遗传因素影响的机制",
+          "minimum_evidence_types": [
+            "observable",
+            "intervention_or_natural_experiment"
+          ]
+        },
+        "alternative_mechanisms": [
+          "环境因素或生活方式导致药物代谢差异"
+        ],
+        "status": "pending_retrieval",
+        "source_objective": "在定义明确的患者群体、疾病类型和治疗类别中，个体的遗传变异、肿瘤或疾病分子表型、器官功能、免疫状态、既往治疗史以及制造过程参数，是否能够以可重复、可校准、因果上可解释的方式预测：1. 某一治疗方案的药代动力学暴露、毒性和适宜剂量；2. 某一靶向药物、免疫治疗、细胞治疗或核酸药物的临床获益与耐药风险；3. 个体化制剂或自体细胞产品能否在身份、纯度、效力、无菌性、批间一致性、周转时间和成本约束下稳定制造；4. 上述预测在不同祖源、年龄、肝肾功能、疾病分期、医疗中心和检测平台迁移时是否仍成立。禁止将统计相关、患者画像匹配或模型准确率直接解释为因果治疗获益；禁止将实验室样本、类器官、动物模型或单中心回顾性结果直接外推为临床个体化治疗有效；禁止将技术尚不成熟误判为生物学上绝对不可行。"
+      },
+      {
+        "id": "SH2",
+        "focus": "肿瘤分子表型预测靶向药物疗效",
+        "causal_chain": [
+          "肿瘤分子表型",
+          "靶点表达水平变化",
+          "靶向药物的临床获益"
+        ],
+        "independent_variable": "肿瘤分子特征（如突变、表达谱）",
+        "dependent_variables": [
+          "疾病进展时间"
+        ],
+        "controls": [
+          "具有相似临床特征但不同分子表型的患者"
+        ],
+        "quantifiable_bounds": "",
+        "threshold_to_test": "",
+        "falsification_condition": "不同分子表型组间疾病进展时间无显著差异",
+        "retrieval_query": "肿瘤分子表型 预测 靶向药物 疗效",
+        "query_variants": [
+          "肿瘤分子表型 预测 靶向药物 疗效",
+          "Personalized Medicine / Precision Medicine / Pharmacogenomics / Cancer Genomics / Clinical Pharmacology / Multi-omics / Patient-derived Models / Cell and Gene Therapy Manufacturing / Biostatistics / Regulatory Science 肿瘤分子表型预测靶向药物疗效 causal mechanism experimental evidence",
+          "肿瘤分子表型预测靶向药物疗效 intervention observable outcome preprint"
+        ],
+        "evidence_window": {
+          "P0_latest_preprint": "最近一年内关于肿瘤分子表型与靶向治疗反应性的预印本",
+          "P1_recent_primary": "过去五年内发表的关于肿瘤分子表型指导靶向治疗选择的研究",
+          "P2_mechanism_or_theory": "靶点在肿瘤中的作用机制以及其作为治疗靶点的有效性",
+          "minimum_evidence_types": [
+            "observable",
+            "intervention_or_natural_experiment"
+          ]
+        },
+        "alternative_mechanisms": [
+          "非靶向治疗相关的免疫反应或其他生物学过程影响疗效"
+        ],
+        "status": "pending_retrieval",
+        "source_objective": "在定义明确的患者群体、疾病类型和治疗类别中，个体的遗传变异、肿瘤或疾病分子表型、器官功能、免疫状态、既往治疗史以及制造过程参数，是否能够以可重复、可校准、因果上可解释的方式预测：1. 某一治疗方案的药代动力学暴露、毒性和适宜剂量；2. 某一靶向药物、免疫治疗、细胞治疗或核酸药物的临床获益与耐药风险；3. 个体化制剂或自体细胞产品能否在身份、纯度、效力、无菌性、批间一致性、周转时间和成本约束下稳定制造；4. 上述预测在不同祖源、年龄、肝肾功能、疾病分期、医疗中心和检测平台迁移时是否仍成立。禁止将统计相关、患者画像匹配或模型准确率直接解释为因果治疗获益；禁止将实验室样本、类器官、动物模型或单中心回顾性结果直接外推为临床个体化治疗有效；禁止将技术尚不成熟误判为生物学上绝对不可行。"
+      },
+      {
+        "id": "SH3",
+        "focus": "制造过程参数对自体细胞产品质量的影响",
+        "causal_chain": [
+          "制造过程参数",
+          "细胞产品特性改变",
+          "自体细胞产品的纯度和效力"
+        ],
+        "independent_variable": "特定生产条件（如温度、pH值）",
+        "dependent_variables": [
+          "细胞纯度",
+          "细胞活力"
+        ],
+        "controls": [
+          "标准生产条件下制备的细胞产品"
+        ],
+        "quantifiable_bounds": "",
+        "threshold_to_test": "",
+        "falsification_condition": "调整生产条件后，细胞纯度和活力没有显著变化",
+        "retrieval_query": "制造过程参数 自体细胞产品 纯度 力效",
+        "query_variants": [
+          "制造过程参数 自体细胞产品 纯度 力效",
+          "Personalized Medicine / Precision Medicine / Pharmacogenomics / Cancer Genomics / Clinical Pharmacology / Multi-omics / Patient-derived Models / Cell and Gene Therapy Manufacturing / Biostatistics / Regulatory Science 制造过程参数对自体细胞产品质量的影响 causal mechanism experimental evidence",
+          "制造过程参数对自体细胞产品质量的影响 intervention observable outcome preprint"
+        ],
+        "evidence_window": {
+          "P0_latest_preprint": "最近一年内关于生物制品制造工艺改进的预印本",
+          "P1_recent_primary": "过去五年内发表的关于优化细胞疗法生产过程的研究",
+          "P2_mechanism_or_theory": "细胞培养过程中关键参数的作用机制",
+          "minimum_evidence_types": [
+            "observable",
+            "intervention_or_natural_experiment"
+          ]
+        },
+        "alternative_mechanisms": [
+          "原材料质量或操作人员技术差异导致产品质量波动"
+        ],
+        "status": "pending_retrieval",
+        "source_objective": "在定义明确的患者群体、疾病类型和治疗类别中，个体的遗传变异、肿瘤或疾病分子表型、器官功能、免疫状态、既往治疗史以及制造过程参数，是否能够以可重复、可校准、因果上可解释的方式预测：1. 某一治疗方案的药代动力学暴露、毒性和适宜剂量；2. 某一靶向药物、免疫治疗、细胞治疗或核酸药物的临床获益与耐药风险；3. 个体化制剂或自体细胞产品能否在身份、纯度、效力、无菌性、批间一致性、周转时间和成本约束下稳定制造；4. 上述预测在不同祖源、年龄、肝肾功能、疾病分期、医疗中心和检测平台迁移时是否仍成立。禁止将统计相关、患者画像匹配或模型准确率直接解释为因果治疗获益；禁止将实验室样本、类器官、动物模型或单中心回顾性结果直接外推为临床个体化治疗有效；禁止将技术尚不成熟误判为生物学上绝对不可行。"
+      }
+    ],
+    "combination_hypothesis": {
+      "statement": "如果SH1、SH2和SH3各自独立地得到证实，则可以推断出个体化医疗方案能够基于遗传信息、肿瘤分子表型及制造过程控制来有效预测并优化治疗效果。",
+      "required_sub_hypothesis_ids": [
+        "SH1",
+        "SH2",
+        "SH3"
+      ],
+      "integration_test": "跨多个独立验证的子假设进行综合分析，以评估它们之间的相互作用是否增强了整体预测能力。",
+      "status": "blocked_on_component_evidence"
+    },
+    "decomposition_rules": [
+      "Each sub-hypothesis must expose an intervention, observable outcome, falsification condition, and evidence window.",
+      "A combined conclusion is admissible only after the relevant component hypotheses are independently evaluated.",
+      "Missing quantitative bounds remain explicitly unresolved; they must not be fabricated from the objective."
+    ],
+    "createdAt": 1783785481.284459
+  },
+  "causal_evidence_graph": {
+    "nodes": [],
+    "edges": [],
+    "chains": []
+  },
+  "mechanism_reports": [],
+  "pipeline_tasks": [],
+  "domain_reviews": {
+    "paper_1783785649492678100": {
+      "verdict": "review",
+      "score": 0.5833,
+      "target_field": "biology",
+      "result_field": "biology",
+      "foreign_field": false,
+      "target_terms": [
+        "personalized",
+        "medicine",
+        "precision",
+        "pharmacogenomics",
+        "cancer",
+        "genomics",
+        "clinical",
+        "pharmacology",
+        "multi-omics",
+        "patient-derived",
+        "models",
+        "cell"
+      ],
+      "target_hits": [
+        "medicine",
+        "precision",
+        "pharmacogenomics",
+        "genomics",
+        "clinical",
+        "pharmacology",
+        "models"
+      ],
+      "reason": "Some target evidence exists, but the field context or anchor coverage remains ambiguous.",
+      "paper_id": "paper_1783785649492678100",
+      "title": "HyperADRs: A Hierarchical Hypergraph Framework for Drug-Gene-ADR Prediction",
+      "target_domain": "Personalized Medicine / Precision Medicine / Pharmacogenomics / Cancer Genomics / Clinical Pharmacology / Multi-omics / Patient-derived Models / Cell and Gene Therapy Manufacturing / Biostatistics / Regulatory Science",
+      "reviewedAt": 1783785786.4444304
+    },
+    "paper_1783785687271405300": {
+      "verdict": "review",
+      "score": 0.4167,
+      "target_field": "biology",
+      "result_field": "biology",
+      "foreign_field": false,
+      "target_terms": [
+        "personalized",
+        "medicine",
+        "precision",
+        "pharmacogenomics",
+        "cancer",
+        "genomics",
+        "clinical",
+        "pharmacology",
+        "multi-omics",
+        "patient-derived",
+        "models",
+        "cell"
+      ],
+      "target_hits": [
+        "medicine",
+        "genomics",
+        "clinical",
+        "pharmacology",
+        "multi-omics"
+      ],
+      "reason": "Some target evidence exists, but the field context or anchor coverage remains ambiguous.",
+      "paper_id": "paper_1783785687271405300",
+      "title": "Elucidating the Action Mechanism of Shenling Baizhu Powder in the Treatment of Ulcerative Colitis Based on Network Pharmacology and Experimental Validation",
+      "target_domain": "Personalized Medicine / Precision Medicine / Pharmacogenomics / Cancer Genomics / Clinical Pharmacology / Multi-omics / Patient-derived Models / Cell and Gene Therapy Manufacturing / Biostatistics / Regulatory Science",
+      "reviewedAt": 1783785786.4489667
+    },
+    "paper_1783785723230783000": {
+      "verdict": "review",
+      "score": 0.1667,
+      "target_field": "biology",
+      "result_field": "general",
+      "foreign_field": false,
+      "target_terms": [
+        "personalized",
+        "medicine",
+        "precision",
+        "pharmacogenomics",
+        "cancer",
+        "genomics",
+        "clinical",
+        "pharmacology",
+        "multi-omics",
+        "patient-derived",
+        "models",
+        "cell"
+      ],
+      "target_hits": [
+        "models",
+        "cell"
+      ],
+      "reason": "Some target evidence exists, but the field context or anchor coverage remains ambiguous.",
+      "paper_id": "paper_1783785723230783000",
+      "title": "Within-host modeling to measure dynamics of antibody responses after natural infection or vaccination: A systematic review.",
+      "target_domain": "Personalized Medicine / Precision Medicine / Pharmacogenomics / Cancer Genomics / Clinical Pharmacology / Multi-omics / Patient-derived Models / Cell and Gene Therapy Manufacturing / Biostatistics / Regulatory Science",
+      "reviewedAt": 1783785786.4534836
+    },
+    "paper_1783785748620497600": {
+      "verdict": "review",
+      "score": 0.0833,
+      "target_field": "biology",
+      "result_field": "biology",
+      "foreign_field": false,
+      "target_terms": [
+        "personalized",
+        "medicine",
+        "precision",
+        "pharmacogenomics",
+        "cancer",
+        "genomics",
+        "clinical",
+        "pharmacology",
+        "multi-omics",
+        "patient-derived",
+        "models",
+        "cell"
+      ],
+      "target_hits": [
+        "models"
+      ],
+      "reason": "Some target evidence exists, but the field context or anchor coverage remains ambiguous.",
+      "paper_id": "paper_1783785748620497600",
+      "title": "Reconstructing computational system dynamics from neural data with recurrent neural networks",
+      "target_domain": "Personalized Medicine / Precision Medicine / Pharmacogenomics / Cancer Genomics / Clinical Pharmacology / Multi-omics / Patient-derived Models / Cell and Gene Therapy Manufacturing / Biostatistics / Regulatory Science",
+      "reviewedAt": 1783785786.4588704
+    },
+    "paper_1783785771586554900": {
+      "verdict": "review",
+      "score": 0.1667,
+      "target_field": "biology",
+      "result_field": "biology",
+      "foreign_field": false,
+      "target_terms": [
+        "personalized",
+        "medicine",
+        "precision",
+        "pharmacogenomics",
+        "cancer",
+        "genomics",
+        "clinical",
+        "pharmacology",
+        "multi-omics",
+        "patient-derived",
+        "models",
+        "cell"
+      ],
+      "target_hits": [
+        "clinical",
+        "models"
+      ],
+      "reason": "Some target evidence exists, but the field context or anchor coverage remains ambiguous.",
+      "paper_id": "paper_1783785771586554900",
+      "title": "Melodic Intonation Therapy on Non-fluent Aphasia After Stroke: A Systematic Review and Analysis on Clinical Trials",
+      "target_domain": "Personalized Medicine / Precision Medicine / Pharmacogenomics / Cancer Genomics / Clinical Pharmacology / Multi-omics / Patient-derived Models / Cell and Gene Therapy Manufacturing / Biostatistics / Regulatory Science",
+      "reviewedAt": 1783785786.4630587
+    }
+  }
+}

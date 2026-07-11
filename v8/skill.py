@@ -73,6 +73,15 @@ run. Delegate branch scouting to parallel tasks/subagents that write compact
 artifacts, then let the lead or synthesis gate perform shared PaperGraph imports
 serially. This avoids one brittle agent accumulating too many tool calls,
 oversized outputs, and shared project writes.
+
+For a user request that says "run", "execute", "closed loop", "end-to-end",
+or "create and run" a Boxue research workflow, creating a Boxue delegation DAG
+is not completion. You MUST call run_boxue_research_round in the same turn with
+execution_mode="pipeline". On the first call, omit plan_id: the run tool reuses
+an active plan or creates one automatically. Supply plan_id only when it is the
+exact identifier returned by an earlier successful Boxue tool call; never invent
+or infer a plan id. Never claim that specialists started unless the run tool was
+actually called and returned a pipeline execution.
 """
 
 SUBAGENT_SYSTEM_APPENDIX = """Sub-agent mode:

@@ -1,7 +1,11 @@
 """Full test suite for refactored science_core."""
 from __future__ import annotations
+import argparse
+import io
 import json
 import sys
+from contextlib import redirect_stdout
+from unittest.mock import patch
 
 import science_core as sc
 
@@ -119,6 +123,65 @@ def t_bal():
     assert isinstance(r, str) and r.startswith("{")
 test("first_balanced_object", t_bal)
 
+def t_partial_subhypothesis_json_recovery():
+    import _llm
+    truncated = '{"sub_hypotheses":[{"focus":"dose rule","causal_chain":["genotype","exposure"]},{"focus":"response\nheterogeneity","causal_chain":["biomarker","outcome"]}],"combination_hypothesis":'
+    parsed = _llm.parse_json_object_from_text(truncated, fallback_list_key="sub_hypotheses")
+    assert len(parsed["sub_hypotheses"]) == 2
+    assert parsed["sub_hypotheses"][1]["focus"] == "response\nheterogeneity"
+test("partial sub-hypothesis JSON recovery", t_partial_subhypothesis_json_recovery)
+
+def t_qwen_long_research_request_budget():
+    import qwen_adapter as qa
+    from tools import TOOLS
+
+    original_prompt = "Boxue 科研闭环：" + "个体化医疗验证方案。" * 4_000
+    source_messages = [{"role": "user", "content": original_prompt}]
+    rendered, selected_tools, budget = qa.prepare_qwen_request("system", source_messages, TOOLS)
+
+    selected_names = {tool["name"] for tool in selected_tools}
+    assert budget["tool_mode"] == "contextual_compact"
+    assert budget["estimated_input_units"] <= qa.DASHSCOPE_SAFE_INPUT_UNITS
+    assert qa.estimate_qwen_messages_units(rendered) <= qa.DASHSCOPE_SAFE_INPUT_UNITS
+    assert "create_research_project" in selected_names
+    assert "decompose_research_objective" in selected_names
+    assert source_messages[0]["content"] == original_prompt
+test("Qwen long research request stays within context budget", t_qwen_long_research_request_budget)
+
+def t_qwen_medium_research_request_uses_compact_tools():
+    import qwen_adapter as qa
+    from tools import TOOLS
+
+    prompt = "Boxue 科研闭环：" + "个体化医疗验证方案。" * 1_500
+    rendered, selected_tools, budget = qa.prepare_qwen_request("system", [{"role": "user", "content": prompt}], TOOLS)
+
+    assert budget["tool_mode"] == "contextual_compact"
+    assert not budget["messages_compacted_for_transport"]
+    assert len(selected_tools) < len(TOOLS)
+    assert qa.estimate_qwen_messages_units(rendered) <= qa.DASHSCOPE_SAFE_INPUT_UNITS
+test("Qwen medium research request avoids the full tool catalog", t_qwen_medium_research_request_uses_compact_tools)
+
+def t_qwen_project_tool_omits_auto_injected_brief():
+    import qwen_adapter as qa
+    from tools import TOOLS
+
+    project_tool = next(tool for tool in TOOLS if tool["name"] == "create_research_project")
+    full_definition = qa.transport_tool_definition(project_tool)
+    compact_definition = qa.compact_tool_catalog([project_tool])[0]
+    assert "research_brief" not in full_definition["input_schema"]["properties"]
+    assert "research_brief" not in compact_definition["parameters"]
+    assert "omit research_brief" in full_definition["description"]
+test("Qwen project tool hides the auto-injected research brief", t_qwen_project_tool_omits_auto_injected_brief)
+
+def t_qwen_truncated_tool_json_requires_retry():
+    import qwen_adapter as qa
+
+    truncated = '{"tool_uses":[{"name":"create_research_project","input":{"title":"T","research_brief":"long'
+    valid = '{"tool_uses":[{"name":"create_research_project","input":{"title":"T","domain":"D","objective":"O"}}]}'
+    assert qa.is_incomplete_tool_json(truncated)
+    assert not qa.is_incomplete_tool_json(valid)
+test("Qwen truncated tool JSON is retried instead of finalized", t_qwen_truncated_tool_json_requires_retry)
+
 # --- Literature Scoring ---
 print("\n-- Literature Scoring --")
 
@@ -142,6 +205,33 @@ def t_dr():
     )
     assert isinstance(r, dict)
 test("domain_relevance_assessment", t_dr)
+
+def t_domain_reviewer_rejects_surface_word_collisions():
+    import _literature_scoring as scoring
+    target = "superheavy element synthesis nuclear decay spectroscopy"
+    optical = {
+        "title": "High precision micro-optical elements on fiber facets",
+        "abstract": "Focused-ion beam machining creates optical fiber elements.",
+        "venue": "Optics Express",
+    }
+    kilonova = {
+        "title": "A constraint on superheavy elements of a GRB-kilonova",
+        "abstract": "Neutron-star merger r-process nucleosynthesis in an astrophysical transient.",
+        "venue": "Astrophysical Journal",
+    }
+    nuclear = {
+        "title": "Decay spectroscopy of heavy and superheavy nuclei",
+        "abstract": "Nuclear decay chains and spectroscopy for transactinide nuclei.",
+        "venue": "Nuclear Physics A",
+    }
+    assert scoring.domain_review_assessment(optical, target)["verdict"] == "reject"
+    assert scoring.domain_review_assessment(kilonova, target)["verdict"] == "reject"
+    assert scoring.domain_review_assessment(nuclear, target)["verdict"] != "reject"
+    assert scoring.infer_research_field(nuclear) == "nuclear_physics"
+    assert scoring.should_reject_for_domain(optical, target)
+    assert scoring.should_reject_for_domain(kilonova, target)
+    assert not scoring.should_reject_for_domain(nuclear, target)
+test("domain reviewer rejects cross-field surface-word collisions", t_domain_reviewer_rejects_surface_word_collisions)
 
 def t_preprint_l3_query_and_classification():
     import _literature_search as ls
@@ -169,22 +259,36 @@ def t_preprint_l3_query_and_classification():
     }
     journal = {**preprint, "provider": "semantic_scholar", "venue": "Journal of Energy Storage"}
     assert ls.is_preprint_literature_result(preprint)
-    assert ls.is_preprint_literature_result({**journal, "arxiv_id": "2601.01234"})
+    assert not ls.is_preprint_literature_result({**journal, "arxiv_id": "2601.01234"})
+    assert not ls.is_preprint_literature_result({**preprint, "doi": "10.1103/PhysRevC.99.012345"})
     assert ls.stratified_candidate_matches("L3_preprint", preprint)
     assert ls.preprint_result_matches_query(preprint, "lithium battery cathode electrolyte")
     assert not ls.preprint_result_matches_query({"title": "Unrelated robotics preprint", "abstract": "robot manipulation"}, "lithium battery cathode electrolyte")
+    treg_query = "genetic background Treg proliferation human studies"
+    assert not ls.preprint_result_matches_query(
+        {
+            "title": "ALS-linked genetic variants in human motor neurons",
+            "abstract": "Background studies examine genetic disease mechanisms in human neurons.",
+        },
+        treg_query,
+    )
+    assert ls.preprint_result_matches_query(
+        {
+            "title": "Genetic control of Treg proliferation in human immune homeostasis",
+            "abstract": "Treg proliferation was quantified after cytokine stimulation.",
+        },
+        treg_query,
+    )
     preprint_alignment = scoring.core_domain_alignment(preprint, domain="high voltage lithium battery cathode", query="high voltage lithium battery cathode")
     journal_alignment = scoring.core_domain_alignment(journal, domain="high voltage lithium battery cathode", query="high voltage lithium battery cathode")
     assert preprint_alignment["min_core_hits"] == journal_alignment["min_core_hits"]
 
     original_arxiv = ls.search_arxiv
-    original_semantic = ls.search_semantic_scholar
     try:
-        ls.search_arxiv = lambda *_args, **_kwargs: {"provider": "arxiv", "status": "ok", "results": []}
-        ls.search_semantic_scholar = lambda *_args, **_kwargs: {
-            "provider": "semantic_scholar",
+        ls.search_arxiv = lambda *_args, **_kwargs: {
+            "provider": "arxiv",
             "status": "ok",
-            "results": [{**journal, "arxiv_id": "2601.01234"}],
+            "results": [preprint],
         }
         blocks = ls.fetch_stratified_layer_blocks(
             "lithium battery cathode degradation",
@@ -193,14 +297,361 @@ def t_preprint_l3_query_and_classification():
             query_plan=[{"branch": "primary", "query": "lithium battery cathode degradation"}],
             domain="high-voltage lithium batteries",
         )
-        fallback = [block for block in blocks if block.get("retrieval_strategy") == "preprint_metadata_fallback"]
         candidates = ls.flatten_literature_results(blocks)
-        assert len(fallback) == 1
+        assert all(block.get("provider") != "semantic_scholar" for block in blocks)
         assert any(ls.stratified_candidate_matches("L3_preprint", item) for item in candidates)
     finally:
         ls.search_arxiv = original_arxiv
-        ls.search_semantic_scholar = original_semantic
 test("L3 preprint uses compact provider query without stricter lexical gate", t_preprint_l3_query_and_classification)
+
+def t_preprint_domain_gate_uses_query_and_never_citation_count():
+    import _literature_scoring as scoring
+
+    domain = (
+        "Immunology / Systems Biology / T Cell Biology / Cytokine Signaling / "
+        "Regulatory T Cells (Tregs) / Inflammation / Autoimmunity"
+    )
+    query = "genetic background Treg proliferation human studies"
+    relevant_preprint = {
+        "title": "SIRPG modulates effector differentiation of human CD8 T Cells",
+        "abstract": (
+            "Genetic variation in SIRPG regulates cytokine production, immune homeostasis, "
+            "and autoimmune T-cell differentiation."
+        ),
+        "provider": "biorxiv",
+        "venue": "biorxiv",
+        "year": "2025",
+        "citation_count": 0,
+    }
+    primary = scoring.domain_relevance_assessment(relevant_preprint, domain=domain, query=query)
+    relevant_preprint["domain_relevance"] = primary
+    review = scoring.domain_review_assessment(relevant_preprint, domain=domain, query=query)
+    assert primary["verdict"] == "keep"
+    assert review["foreign_field"] is False
+    assert review["verdict"] != "reject"
+    assert not scoring.should_reject_for_domain(relevant_preprint, domain=domain, query=query)
+
+    low_score_p0 = {
+        "title": "Treg proliferation and cytokine signaling",
+        "abstract": "Treg proliferation under IL-2 stimulation was measured in human cells.",
+        "provider": "medrxiv",
+        "venue": "medrxiv",
+        "year": "2025",
+        "citation_count": 0,
+        "publication_quality_score": 0.4,
+        "domain_relevance": {"verdict": "keep", "score": 0.05, "flags": ["field_mismatch"]},
+    }
+    assert not scoring.should_reject_for_domain(low_score_p0, domain=domain, query=query)
+    quality = scoring.publication_quality_assessment(relevant_preprint)
+    assert quality["quality_score"] >= 0.65
+    assert "new_paper_protection" in quality["flags"]
+test("P0 domain gate preserves relevant zero-citation preprints", t_preprint_domain_gate_uses_query_and_never_citation_count)
+
+def t_medrxiv_paginates_before_local_query_filtering():
+    import _literature_search as ls
+
+    def make_item(index, matching):
+        return {
+            "title": "Genetic variants predict pharmacokinetics" if matching else f"Unrelated clinical preprint {index}",
+            "abstract": "Genetic variants and pharmacokinetics determine drug exposure" if matching else "Unrelated topic",
+            "authors": "Researcher A",
+            "date": "2026-06-01",
+            "doi": f"10.1101/2026.06.01.{index}",
+            "category": "pharmacology",
+        }
+
+    def fake_get_json(url, headers=None, timeout=20.0):
+        cursor = int(url.rsplit("/", 1)[-1])
+        collection = [make_item(index + cursor, cursor >= 100) for index in range(100)]
+        return {"collection": collection, "messages": [{"total": "200"}]}
+
+    with patch.object(ls, "http_get_json", side_effect=fake_get_json):
+        result = ls.search_biorxiv_or_medrxiv(
+            "medrxiv",
+            "genetic variants pharmacokinetics",
+            max_results=5,
+            days_back=365,
+        )
+    assert result["pages_scanned"] == 2
+    assert result["scanned_result_count"] == 200
+    assert result["matched_result_count"] >= 5
+    assert len(result["results"]) == 5
+test("medRxiv paginates beyond the first metadata page", t_medrxiv_paginates_before_local_query_filtering)
+
+def t_preprint_recovery_retries_medrxiv_before_arxiv():
+    import _literature_search as ls
+    calls = []
+
+    def fake_preprint(provider, query, max_results=10, days_back=365):
+        calls.append((provider, days_back))
+        return {"provider": provider, "query": query, "status": "ok", "results": [{"title": "match"}]}
+
+    with patch.object(ls, "search_preprint_api", side_effect=fake_preprint), patch.object(ls, "search_arxiv") as arxiv:
+        _, report = ls.recover_preprint_layer_candidates(
+            query="genetic variants pharmacokinetics",
+            query_plan=[],
+            domain="precision medicine",
+            max_results=5,
+            providers=["medrxiv", "arxiv"],
+        )
+    assert calls[0] == ("medrxiv", 186)
+    assert not arxiv.called
+    assert report["outcome"] == "recovered"
+test("P0 recovery retries medRxiv before arXiv", t_preprint_recovery_retries_medrxiv_before_arxiv)
+
+def t_open_access_pdf_excerpt_is_not_gated_by_abstract_quality():
+    import _literature_search as literature_search
+
+    payload = {
+        "title": "Complete abstract paper",
+        "abstract": "A" * 500,
+        "method": "clinical cohort study",
+        "scenario": "precision medicine",
+        "benchmark": "treatment response",
+    }
+    result = {"open_access_pdf": "https://example.org/open-paper.pdf"}
+    with patch.object(literature_search, "fetch_pdf_text_excerpt", return_value="PDF methods and results excerpt.") as fetch:
+        enriched, sources = literature_search.enrich_papergraph_payload(payload, result)
+    assert fetch.called
+    assert enriched["full_text_excerpt"] == "PDF methods and results excerpt."
+    assert enriched["_full_text_enrichment"]["status"] == "extracted"
+    assert "open_access_pdf_text" in sources
+test("Open-access PDF excerpts are independent of abstract-quality repair", t_open_access_pdf_excerpt_is_not_gated_by_abstract_quality)
+
+def t_arxiv_detail_supplies_pdf_for_full_text_extraction():
+    import _literature_search as literature_search
+
+    payload = {
+        "title": "ArXiv paper",
+        "abstract": "B" * 500,
+        "method": "simulation",
+        "scenario": "materials system",
+        "benchmark": "transport coefficient",
+        "arxiv_id": "2601.12345",
+    }
+    with (
+        patch.object(literature_search, "fetch_arxiv_by_id", return_value={"open_access_pdf": "https://arxiv.org/pdf/2601.12345"}),
+        patch.object(literature_search, "fetch_pdf_text_excerpt", return_value="ArXiv full-text excerpt."),
+    ):
+        enriched, sources = literature_search.enrich_papergraph_payload(payload, {})
+    assert enriched["full_text_excerpt"] == "ArXiv full-text excerpt."
+    assert enriched["_full_text_enrichment"]["source_url"] == "https://arxiv.org/pdf/2601.12345"
+    assert "arxiv_detail" in sources and "open_access_pdf_text" in sources
+test("arXiv detail can supply a missing full-text PDF link", t_arxiv_detail_supplies_pdf_for_full_text_extraction)
+
+def t_failed_metadata_lookup_is_not_mislabeled_as_no_open_access():
+    import _literature_search as literature_search
+
+    payload = {
+        "title": "Lookup-failure paper",
+        "abstract": "D" * 500,
+        "method": "clinical cohort study",
+        "scenario": "precision medicine",
+        "benchmark": "treatment response",
+        "semantic_scholar_id": "unavailable-id",
+    }
+    with patch.object(literature_search, "fetch_semantic_scholar_paper_detail", side_effect=RuntimeError("network denied")):
+        enriched, _ = literature_search.enrich_papergraph_payload(payload, {})
+    assert enriched["_full_text_enrichment"]["status"] == "metadata_lookup_failed"
+    assert "network denied" in enriched["_full_text_enrichment"]["error"]
+test("Failed metadata lookup remains distinguishable from absent open access", t_failed_metadata_lookup_is_not_mislabeled_as_no_open_access)
+
+def t_full_text_metadata_probe_uses_fast_fail_semantic_scholar_path():
+    import _literature_search as literature_search
+
+    with (
+        patch.object(literature_search, "semantic_scholar_cache_get", return_value=None),
+        patch.object(literature_search, "wait_for_semantic_scholar_rate_limit"),
+        patch.object(literature_search, "http_get_json", return_value={"paperId": "paper-id"}) as fetch,
+        patch.object(literature_search, "semantic_scholar_cache_put"),
+        patch.object(literature_search, "semantic_scholar_get_json", side_effect=AssertionError("slow retry path used")),
+    ):
+        detail = literature_search.fetch_semantic_scholar_paper_detail("paper-id", fast_fail=True)
+    assert detail["paperId"] == "paper-id"
+    assert fetch.call_args.kwargs["timeout"] == 8.0
+test("Full-text metadata probes bypass Semantic Scholar's long retry loop", t_full_text_metadata_probe_uses_fast_fail_semantic_scholar_path)
+
+def t_full_text_backfill_repairs_existing_papergraph_records():
+    import _literature_import as literature_import
+    import _literature_search as literature_search
+    import _utils as utils
+
+    record = {
+        "paper_id": "paper_full_text_backfill",
+        "title": "Existing paper",
+        "abstract": "C" * 500,
+        "conclusion": "",
+        "full_text_excerpt": "",
+        "method": "clinical cohort study",
+        "scenario": "precision medicine",
+        "benchmark": "treatment response",
+        "contribution": "Existing clinical evidence.",
+        "limitation": "No explicit limitation extracted.",
+        "semantic_scholar_id": "semantic-id",
+        "enrichment_sources": [],
+    }
+    project = {"papergraph": [record], "evidence": []}
+    llm_calls = []
+
+    def fake_enrich(payload, _result, **_kwargs):
+        enriched = dict(payload)
+        enriched["open_access_pdf"] = "https://example.org/paper.pdf"
+        enriched["full_text_excerpt"] = "Directly extracted full-text evidence."
+        enriched["_full_text_enrichment"] = {
+            "status": "extracted",
+            "attempted": True,
+            "source_url": "https://example.org/paper.pdf",
+            "excerpt_chars": 38,
+        }
+        return enriched, ["open_access_pdf_available", "open_access_pdf_text"]
+
+    def fake_reextract(payload, *, force=False):
+        llm_calls.append(force)
+        return payload, {"attempted": True, "succeeded": True, "error": "", "extractor": "test"}
+
+    with (
+        patch.object(literature_search, "enrich_papergraph_payload", side_effect=fake_enrich),
+        patch.object(literature_import, "maybe_llm_reextract_structure", side_effect=fake_reextract),
+    ):
+        _, report = utils.repair_project_extraction_quality(project)
+    assert report["attempted"] == 1
+    assert record["full_text_excerpt"] == "Directly extracted full-text evidence."
+    assert record["full_text_enrichment"]["status"] == "extracted"
+    assert "open_access_pdf_text" in record["enrichment_sources"]
+    assert llm_calls == [True]
+test("Extraction repair backfills missing PaperGraph full-text excerpts", t_full_text_backfill_repairs_existing_papergraph_records)
+
+def t_llm_retry_omits_empty_full_text_field_labels():
+    import _literature_import as literature_import
+
+    captured = {}
+
+    def fake_extract(text, use_llm=True):
+        captured["text"] = text
+        return {"method": "clinical cohort study", "scenario": "precision medicine", "benchmark": "treatment response"}
+
+    with patch.object(literature_import, "extract_paper_structure", side_effect=fake_extract):
+        literature_import.maybe_llm_reextract_structure(
+            {"title": "Paper", "abstract": "Abstract text", "conclusion": "", "full_text_excerpt": ""},
+            force=True,
+        )
+    assert "Full text excerpt:" not in captured["text"]
+    assert "Conclusion:" not in captured["text"]
+test("LLM retry does not turn empty excerpt labels into conclusions", t_llm_retry_omits_empty_full_text_field_labels)
+
+def t_full_text_backfill_is_bounded_per_repair_round():
+    import _literature_search as literature_search
+    import _utils as utils
+
+    project = {
+        "papergraph": [
+            {
+                "paper_id": f"paper_{index}",
+                "title": f"Paper {index}",
+                "abstract": "E" * 500,
+                "method": "clinical cohort study",
+                "scenario": "precision medicine",
+                "benchmark": "treatment response",
+                "contribution": "Existing evidence.",
+                "limitation": "No explicit limitation extracted.",
+                "semantic_scholar_id": f"semantic-{index}",
+                "full_text_excerpt": "",
+            }
+            for index in range(4)
+        ],
+        "evidence": [],
+    }
+    calls = []
+
+    def fake_enrich(payload, _result, **_kwargs):
+        calls.append(payload["paper_id"])
+        enriched = dict(payload)
+        enriched["_full_text_enrichment"] = {"status": "no_open_access_pdf", "attempted": False}
+        return enriched, []
+
+    with patch.object(literature_search, "enrich_papergraph_payload", side_effect=fake_enrich):
+        _, report = utils.repair_project_extraction_quality(project, max_full_text_attempts=3)
+    assert len(calls) == 3
+    assert report["full_text_attempted"] == 3
+    assert report["full_text_deferred"] == 1
+test("Full-text backfill is bounded per automatic repair round", t_full_text_backfill_is_bounded_per_repair_round)
+
+def t_full_text_lookup_failures_retry_only_after_cooldown():
+    import _utils as utils
+
+    state = {
+        "status": "metadata_lookup_failed",
+        "attempted_at": 1_000.0,
+        "retry_after_seconds": 900,
+    }
+    assert not utils.full_text_enrichment_retry_due(state, now=1_899.0)
+    assert utils.full_text_enrichment_retry_due(state, now=1_900.0)
+    assert not utils.full_text_enrichment_retry_due({"status": "no_open_access_pdf"}, now=9_999.0)
+test("Full-text metadata failures respect a retry cooldown", t_full_text_lookup_failures_retry_only_after_cooldown)
+
+
+def t_serial_subspace_retrieval_plan_and_quotas():
+    import _literature_import as li
+    import _literature_search as ls
+    import _project as project_module
+
+    subspace_map = {
+        "generated_by": "test",
+        "subspaces": [
+            {"subspace_id": f"s{i}", "name": f"Subspace {i}", "keywords": [f"anchor{i}", "battery"]}
+            for i in range(12)
+        ],
+    }
+    plan = project_module.build_serial_subspace_query_plan(
+        "energy storage",
+        "A long brief whose explicit coverage must be decomposed before provider queries.",
+        max_core_rounds=8,
+        boundary_extension_rounds=3,
+        subspace_map=subspace_map,
+    )
+    assert len(plan["core_branches"]) == 8
+    assert len(plan["boundary_extensions"]) == 3
+    assert all(item["phase"] == "core_subspace" for item in plan["core_branches"])
+    assert all(item["phase"] == "boundary_extension" for item in plan["boundary_extensions"])
+    assert sum(ls.normalize_stratified_layer_quotas(
+        {"L0_review": 0, "L1_milestone": 2, "L2_top_latest": 4, "L3_preprint": 1, "L4_regular": 5},
+        max_results=12,
+    ).values()) == 12
+
+    candidates = [
+        {"title": f"{layer}-{index}", "stratified_layer": layer, "result_index": index}
+        for index, layer in enumerate(("L1_milestone", "L2_top_latest", "L2_top_latest", "L3_preprint", "L4_regular", "L4_regular"))
+    ]
+    selected, report = li.select_zhizhi_import_results(
+        candidates,
+        6,
+        layer_minimums={"L0_review": 0, "L1_milestone": 1, "L2_top_latest": 2, "L3_preprint": 1, "L4_regular": 2},
+    )
+    assert len(selected) == 6
+    assert report["custom_layer_minimums"] is True
+    assert report["selected_counts_by_layer"] == {"L1_milestone": 1, "L2_top_latest": 2, "L3_preprint": 1, "L4_regular": 2}
+test("serial subspace retrieval uses independent quotas and import budgets", t_serial_subspace_retrieval_plan_and_quotas)
+
+
+def t_search_query_is_not_globally_sanitized():
+    import _literature_search as ls
+    query = "superheavy elements island of stability nuclear shell model synthesis reaction"
+    assert not hasattr(ls, "sanitize_search_query")
+    plan = ls.build_domain_query_plan(query, domain="nuclear physics", max_branches=0)
+    assert plan == [{"branch": "primary", "query": query}]
+test("search preserves the supplied query without global sanitization", t_search_query_is_not_globally_sanitized)
+
+def t_provider_queries_are_english_only():
+    import _literature_search as ls
+    source = "遗传变异 AND 药物代谢酶活性 AND 药代动力学参数"
+    translated = ls.english_provider_query(source, domain="Personalized Medicine", allow_llm=False)
+    assert translated["query"] == "genetic variation drug metabolizing enzyme activity pharmacokinetic parameters"
+    assert translated["translation_method"] == "glossary"
+    assert ls.is_english_provider_query(translated["query"])
+    plan = ls.normalize_english_query_plan([{"branch": "pk", "query": source}], domain="Personalized Medicine", allow_llm=False)
+    assert plan[0]["query"] == translated["query"]
+    assert plan[0]["source_query"] == source
+test("provider queries translate Chinese scientific terms to English", t_provider_queries_are_english_only)
 
 # --- Supplement ---
 print("\n-- Supplement --")
@@ -332,6 +783,55 @@ def t_afp():
     assert "zhizhi" in agents or "tanxi" in agents
 test("agents_for_phase", t_afp)
 
+def t_inactive_domain_review_records_are_excluded():
+    import _pipeline as pipeline
+    records = pipeline.project_records_for_mapping({
+        "papergraph": [
+            {"paper_id": "keep", "title": "Relevant", "active": True},
+            {"paper_id": "reject", "title": "Noise", "active": False},
+        ],
+        "evidence": [
+            {"paper_id": "keep", "citation": "Relevant", "active": True},
+            {"paper_id": "reject", "citation": "Noise", "active": False},
+        ],
+    })
+    assert {record.get("paper_id") for record in records} == {"keep"}
+test("inactive domain-review records stay out of PaperGraph reasoning", t_inactive_domain_review_records_are_excluded)
+
+def t_boxue_recovers_from_a_stale_requested_plan_id():
+    import _pipeline as pipeline
+
+    active_plan = {
+        "boxue_delegation_plan_id": "boxue_current_plan",
+        "tasks": [{"task_id": "task_1", "phase": "ZhiZhi"}],
+    }
+    with patch.object(pipeline, "boxue_find_active_plan", return_value=active_plan):
+        payload = pipeline.boxue_load_or_create_plan(
+            project={"boxue_delegation_plans": []},
+            project_id="project_1",
+            goal="test",
+            phases=None,
+            plan_id="boxue_plan_stale_identifier",
+            max_steps=10,
+            max_parallel_agents=3,
+        )
+    assert payload["boxue_delegation_plan_id"] == "boxue_current_plan"
+    assert payload["reused_existing_plan"] is True
+    assert payload["requested_plan_id"] == "boxue_plan_stale_identifier"
+    assert payload["missing_plan_recovered"] is True
+    assert payload["plan_recovery_reason"] == "requested_plan_id_not_found"
+test("Boxue recovers a stale requested plan id", t_boxue_recovers_from_a_stale_requested_plan_id)
+
+def t_boxue_first_run_instruction_forbids_invented_plan_ids():
+    import skill
+    import tools
+
+    round_tool = next(tool for tool in tools.TOOLS if tool["name"] == "run_boxue_research_round")
+    plan_description = round_tool["input_schema"]["properties"]["plan_id"]["description"]
+    assert "Never invent" in plan_description
+    assert "omit plan_id" in skill.BASE_SYSTEM_PROMPT
+test("Boxue first-run guidance forbids invented plan ids", t_boxue_first_run_instruction_forbids_invented_plan_ids)
+
 def t_schemas():
     for fn in [sc.zhizhi_output_schema, sc.mingli_output_schema, sc.duzhi_output_schema,
                sc.bianlun_output_schema, sc.yanzhen_output_schema]:
@@ -363,6 +863,16 @@ def t_tabi_empty():
     r = sc.tabi_abductive_gap_detection({"papergraph": [], "evidence": []}, max_gaps=5)
     assert isinstance(r, list) and len(r) == 0
 test("TABI empty project", t_tabi_empty)
+
+def t_tabi_substantive_audit():
+    project = {"papergraph": [
+        {"paper_id": "theory", "citation": "Theory (2024)", "title": "Model prediction for interface transport", "method": "interface transport", "scenario": "target material", "abstract": "A theoretical model predicts a threshold transport transition."},
+        {"paper_id": "experiment", "citation": "Experiment (2025)", "title": "Operando measurement of interface transport", "method": "interface transport", "scenario": "target material", "abstract": "An operando experiment measured an unexpected transition under the same conditions."},
+    ]}
+    gap = sc.make_gap("contradiction", "Theory and experiment report conflicting interface transport thresholds.", ["Theory (2024)", "Experiment (2025)"], "matched test", "resolve tension")
+    audit = sc.tabi_mechanism_assessment(project, gap)
+    assert audit["substantive"] and audit["contradiction_score"] >= 8
+test("TABI distinguishes substantive theory-evidence tension", t_tabi_substantive_audit)
 
 def t_evpairs():
     proj = {"papergraph": [
@@ -511,6 +1021,28 @@ def t_socrates_offline_evidence_flow():
     assert "Example et al. (2025)" in candidate["mechanism"]
 test("Socrates offline evidence loop retries queries and reaches MingLi", t_socrates_offline_evidence_flow)
 
+def t_core_mechanism_filter_blocks_boundary_drift():
+    project = {"papergraph": [
+        {"paper_id": "core", "citation": "Core", "title": "Electrode interface transport", "abstract": "Electrode interface transport controls cycle stability.", "method": "interface engineering", "scenario": "electrode cycling", "benchmark": "cycle stability", "retrieval_phase": "core_subspace", "domain_review_verdict": "keep"},
+        {"paper_id": "boundary", "citation": "Boundary", "title": "Auction optimization in a seafood supply chain", "abstract": "Auction optimization improves logistics.", "method": "electronic auction", "scenario": "supply chain", "benchmark": "cost", "retrieval_phase": "boundary_extension", "domain_review_verdict": "review"},
+    ]}
+    drifting = sc.make_gap("migration", "Cross-disciplinary unconnected pair: electronic auction and cycle stability.", ["Boundary", "Core"], "bridge", "novel")
+    grounded = sc.make_gap("contradiction", "Interface transport and electrode cycle stability show conflicting threshold observations.", ["Core"], "matched test", "resolve")
+    chosen = sc.select_mechanism_hypothesis_gaps(project, [drifting, grounded], limit=3)
+    assert len(chosen) == 1 and chosen[0]["gap_id"] == grounded["gap_id"]
+test("core mechanism selector excludes boundary-extension drift", t_core_mechanism_filter_blocks_boundary_drift)
+
+def t_socrates_rejects_cross_context_evidence():
+    import _socrates as soc
+    project = {"papergraph": [
+        {"paper_id": "core", "citation": "Core", "title": "Electrode interface measurement", "abstract": "Electrode interface transport was measured by operando spectroscopy.", "method": "interface engineering", "scenario": "electrode cycling", "benchmark": "cycle stability", "domain_review_verdict": "keep"},
+        {"paper_id": "noise", "citation": "Noise", "title": "Solar stadium control economics", "abstract": "A control intervention reduces photovoltaic costs.", "method": "economic control", "scenario": "stadium photovoltaics", "benchmark": "cost", "domain_review_verdict": "review"},
+    ]}
+    contract = {"context": "electrode interface transport", "input": "interface engineering electrode cycling", "proposed_mediator": "interface transport", "output": "cycle stability", "evidence": {"intervention": [{"paper_id": "noise", "citation": "Noise", "excerpt": "A control intervention reduces photovoltaic costs."}]}}
+    audit = soc.validate_mechanism_contract_evidence(project, contract)
+    assert audit["rejected"] and not contract["evidence"]["intervention"]
+test("Socrates rejects cross-context contract evidence", t_socrates_rejects_cross_context_evidence)
+
 def t_tanxi_mechanism_draft_is_source_bounded():
     draft = sc.build_tanxi_mechanism_draft({
         "gap_id": "gap_tanxi_draft",
@@ -544,11 +1076,341 @@ def t_autogen_requires_complete_socrates_contract_for_mingli():
     assert not autogen_collab.autogen_socrates_allows_mingli("")
 test("AutoGen blocks MingLi until Socrates returns COMPLETE", t_autogen_requires_complete_socrates_contract_for_mingli)
 
+# --- Causal decomposition and evidence-first flow ---
+print("\n-- Causal Decomposition and Evidence Flow --")
+
+def t_objective_decomposition_splits_composite_problem():
+    objective = "电极材料稳定性、电解液分解电位、离子迁移动力学以及SEI演化，是否共同决定能量密度上限和循环寿命阈值"
+    brief = "完整任务书：只使用指定文献源；必须覆盖四个子空间；禁止把方法组合直接作为高价值Gap。"
+    decomposition = sc.build_objective_decomposition(
+        objective,
+        domain="lithium-ion batteries",
+        research_brief=brief,
+        max_subhypotheses=6,
+        use_llm=False,
+    )
+    sub_hypotheses = decomposition["sub_hypotheses"]
+    assert len(sub_hypotheses) == 4
+    assert [item["id"] for item in sub_hypotheses] == ["SH1", "SH2", "SH3", "SH4"]
+    assert all(item["retrieval_query"] and item["evidence_window"]["P0_latest_preprint"] for item in sub_hypotheses)
+    assert decomposition["combination_hypothesis"]["status"] == "blocked_on_component_evidence"
+    assert decomposition["research_brief"] == brief
+test("Decomposer splits a composite objective before retrieval", t_objective_decomposition_splits_composite_problem)
+
+def t_cli_preserves_verbatim_research_brief_for_project_creation():
+    import main
+    raw_prompt = "创建项目。\n检索要求：只使用指定来源。\nGap要求：不要用组合空洞。"
+    input_without_brief = {"title": "T", "domain": "D", "objective": "O"}
+    enriched = main.inject_verbatim_research_brief("create_research_project", input_without_brief, raw_prompt)
+    assert enriched["research_brief"] == raw_prompt
+    assert input_without_brief.get("research_brief") is None
+    explicit = main.inject_verbatim_research_brief(
+        "create_research_project", {**input_without_brief, "research_brief": "explicit"}, raw_prompt
+    )
+    assert explicit["research_brief"] == "explicit"
+test("CLI preserves the full task brief for project creation", t_cli_preserves_verbatim_research_brief_for_project_creation)
+
+def t_cli_prints_agent_final_response():
+    import main
+    output = io.StringIO()
+    args = argparse.Namespace(serve_cron=False, prompt=["status"])
+    with patch.object(main, "parse_args", return_value=args), patch.object(main, "run_agent", return_value="completed response"):
+        with redirect_stdout(output):
+            main.main()
+    assert output.getvalue().strip() == "completed response"
+test("CLI prints the completed agent response", t_cli_prints_agent_final_response)
+
+def t_causal_chain_normalization_and_break_detection():
+    normalized = sc.normalize_causal_chains([{
+        "trigger": "raise cutoff voltage",
+        "steps": [{"claim": "cation mixing increases", "evidence": "operando XRD", "evidence_type": "experimental"}],
+        "outcome": "capacity retention decreases",
+        "observables": ["XRD peak ratio"],
+        "interventions": ["cutoff voltage"],
+    }])
+    record = {"paper_id": "p1", "citation": "Example (2026)", "causal_chains": normalized}
+    graph = sc.build_causal_evidence_graph([record])
+    assert len(graph["nodes"]) >= 3 and any(edge["relation"] == "leads_to" for edge in graph["edges"])
+    incomplete = {"paper_id": "p2", "citation": "Incomplete (2026)", "causal_chains": [{"chain_id": "C2", "trigger": "temperature", "outcome": "rate capability"}]}
+    incomplete_graph = sc.build_causal_evidence_graph([incomplete])
+    project = {"papergraph": [incomplete], "hypotheses": [], "sub_hypotheses": [], "causal_evidence_graph": incomplete_graph}
+    gaps = sc.detect_causal_chain_break_gaps(project, limit=2)
+    assert gaps and gaps[0]["gap_type"] == "causal_chain_break"
+    assert gaps[0]["causal_gap"]["missing_kind"] == "intermediate_mechanism"
+test("Causal graph retains evidence and TanXi detects broken links", t_causal_chain_normalization_and_break_detection)
+
+def t_causal_gap_preserves_subhypothesis_provenance():
+    import _gap_detection as gaps
+    record = {
+        "paper_id": "p1",
+        "citation": "Example (2026)",
+        "retrieval_branch": "SH2",
+        "causal_chains": [{"trigger": "biomarker", "outcome": "drug response"}],
+    }
+    graph = gaps.build_causal_evidence_graph([record])
+    project = {"sub_hypotheses": [{"id": "SH2", "focus": "response biomarker"}], "causal_evidence_graph": graph}
+    detected = gaps.detect_causal_chain_break_gaps(project, limit=1)
+    assert graph["chains"][0]["sub_hypothesis_id"] == "SH2"
+    assert detected[0]["sub_hypothesis_id"] == "SH2"
+test("TanXi causal gaps retain the retrieval sub-hypothesis", t_causal_gap_preserves_subhypothesis_provenance)
+
+def t_preprint_priority_and_counterfactual_plan():
+    import _literature_search as literature_search
+    import _socrates as soc
+    layers = literature_search.stratified_literature_layers(literature_search.stratified_literature_quotas(20))
+    assert layers[0]["layer"] == "L3_preprint" and layers[0]["priority"] == "P0"
+    plan = soc.build_causal_inference_plan(
+        {"description": "mixed-cation degradation", "alternative_mechanisms": ["electrolyte oxidation"]},
+        {"input": "cutoff voltage", "proposed_mediator": "cation mixing", "output": "capacity retention"},
+    )
+    assert plan["counterfactual_experiments"] and plan["mechanism_competition"]["alternatives"] == ["electrolyte oxidation"]
+test("P0 preprints lead retrieval and Socrates emits causal experiments", t_preprint_priority_and_counterfactual_plan)
+
+def t_subhypothesis_retrieval_uses_independent_branch_budget():
+    import _pipeline as pipeline
+
+    quotas = pipeline.subhypothesis_retrieval_layer_quotas(12)
+    minimums = pipeline.subhypothesis_import_layer_minimums(5)
+    payload = {
+        "action": {
+            "search_papers_stratified": {
+                "search_id": "search_branch",
+                "total_results": 12,
+                "strata": [{"layer": "L3_preprint", "selected": 1}],
+            }
+        }
+    }
+    search = pipeline.zhizhi_search_action_from_output(payload)
+    assert sum(quotas.values()) == 12
+    assert quotas["L3_preprint"] >= 1 and quotas["L2_top_latest"] >= 2
+    assert sum(minimums.values()) == 5
+    assert search["search_id"] == "search_branch" and search["strata"][0]["layer"] == "L3_preprint"
+test("sub-hypothesis retrieval has independent layer budgets", t_subhypothesis_retrieval_uses_independent_branch_budget)
+
+def t_standard_fifteen_result_search_imports_at_least_ten_candidates():
+    import _pipeline as pipeline
+
+    assert pipeline.standard_retrieval_import_limit(5, 15) == 10
+    assert pipeline.standard_retrieval_import_limit(8, 20) == 10
+    assert pipeline.standard_retrieval_import_limit(12, 15) == 12
+    assert pipeline.standard_retrieval_import_limit(5, 14) == 5
+    assert pipeline.standard_retrieval_import_limit(5, 15, retrieval_phase="subhypothesis_evidence") == 5
+test("standard 15-to-20-result retrieval enforces a ten-paper import floor", t_standard_fifteen_result_search_imports_at_least_ten_candidates)
+
+def t_subhypothesis_preprints_are_independent_and_nonblocking():
+    import _gap_detection as gaps
+    import _literature_search as literature_search
+    import _pipeline as pipeline
+    import _project as project_module
+
+    project = {
+        "project_id": "project_preprint_policy",
+        "domain": "precision medicine",
+        "objective": "Determine whether genetic variants improve drug dosing.",
+        "research_brief": "Preprints are an independent frontier-signal search and must not gate branch eligibility.",
+        "sub_hypotheses": [
+            {
+                "id": "SH1",
+                "focus": "genotype-guided dosing",
+                "retrieval_query": "genetic variants pharmacokinetics drug dosing toxicity",
+                "evidence_window": {"P0_latest_preprint": {"minimum": 1}},
+            }
+        ],
+    }
+    primary_calls = []
+    preprint_calls = []
+
+    def fake_primary(**kwargs):
+        primary_calls.append(kwargs)
+        return json.dumps(
+            {
+                "action": {
+                    "imported_records": 3,
+                    "search_papers_stratified": {
+                        "search_id": "primary_search",
+                        "total_results": 3,
+                        "strata": [{"layer": "L4_regular", "selected": 3}],
+                    },
+                }
+            }
+        )
+
+    def fake_preprint(query, providers=None, max_results=50):
+        preprint_calls.append({"query": query, "providers": providers, "max_results": max_results})
+        return json.dumps(
+            {
+                "search_id": "preprint_search",
+                "total_results": 0,
+                "provider_blocks": [],
+            }
+        )
+
+    with (
+        patch.object(project_module, "load_project", side_effect=lambda _project_id: project),
+        patch.object(project_module, "save_project", side_effect=lambda _project: None),
+        patch.object(pipeline, "run_zhizhi_literature_analysis", side_effect=fake_primary),
+        patch.object(literature_search, "search_literature", side_effect=fake_preprint),
+        patch.object(gaps, "build_knowledge_map", return_value={}),
+        patch.object(gaps, "detect_knowledge_gaps", return_value=[]),
+    ):
+        result = json.loads(
+            pipeline.run_zhizhi_subhypothesis_analysis(
+                "project_preprint_policy",
+                providers=["semantic_scholar", "pubmed", "arxiv", "medrxiv", "biorxiv"],
+            )
+        )
+
+    retrieval = result["reports"][0]
+    assert primary_calls and set(primary_calls[0]["providers"]) == {"semantic_scholar", "pubmed"}
+    assert primary_calls[0]["layer_quotas"]["L3_preprint"] == 0
+    assert preprint_calls and set(preprint_calls[0]["providers"]) == {"arxiv", "medrxiv", "biorxiv"}
+    assert retrieval["preprint_evidence"]["status"] == "not_available"
+    assert retrieval["preprint_gate_enforced"] is False
+    assert retrieval["status"] == "ready_for_causal_gap_detection"
+    assert project["sub_hypotheses"][0]["status"] == "ready_for_causal_gap_detection"
+test("Preprint retrieval is independent and does not reject a supported sub-hypothesis", t_subhypothesis_preprints_are_independent_and_nonblocking)
+
+def t_subhypothesis_imports_preprints_before_peer_reviewed_search():
+    import _gap_detection as gaps
+    import _literature_import as literature_import
+    import _literature_search as literature_search
+    import _pipeline as pipeline
+    import _project as project_module
+
+    project = {
+        "project_id": "project_preprint_import_order",
+        "domain": "immunology",
+        "objective": "Determine how IL-2 concentration affects Treg and Teff balance.",
+        "sub_hypotheses": [
+            {
+                "id": "SH2",
+                "focus": "IL-2 concentration and T-cell balance",
+                "retrieval_query": "IL-2 concentration Treg Teff balance",
+                "evidence_window": {"P0_latest_preprint": {"minimum": 1}},
+            }
+        ],
+    }
+    call_order = []
+    primary_calls = []
+    import_calls = []
+
+    def fake_preprint(query, providers=None, max_results=50):
+        call_order.append("preprint_search")
+        return json.dumps(
+            {
+                "search_id": "preprint_search",
+                "total_results": 4,
+                "results": [
+                    {
+                        "result_index": index,
+                        "title": f"IL-2 frontier preprint {index}",
+                        "provider": "medrxiv",
+                        "doi": f"10.1101/2026.01.01.{index}",
+                    }
+                    for index in range(4)
+                ],
+                "provider_blocks": [{"provider": "medrxiv", "status": "ok", "result_count": 4}],
+            }
+        )
+
+    def fake_import(project_id, search_id, result_index=0, use_llm=False, **kwargs):
+        call_order.append(f"preprint_import_{result_index}")
+        import_calls.append({"project_id": project_id, "search_id": search_id, "result_index": result_index, **kwargs})
+        return json.dumps(
+            {
+                "status": "imported",
+                "record": {"paper_id": f"paper_preprint_{result_index}"},
+            }
+        )
+
+    def fake_primary(**kwargs):
+        call_order.append("peer_reviewed_search")
+        primary_calls.append(kwargs)
+        return json.dumps(
+            {
+                "action": {
+                    "imported_records": 4,
+                    "search_papers_stratified": {
+                        "search_id": "peer_reviewed_search",
+                        "total_results": 10,
+                        "strata": [{"layer": "L4_regular", "selected": 10}],
+                    },
+                }
+            }
+        )
+
+    with (
+        patch.object(project_module, "load_project", side_effect=lambda _project_id: project),
+        patch.object(project_module, "save_project", side_effect=lambda _project: None),
+        patch.object(literature_search, "search_literature", side_effect=fake_preprint),
+        patch.object(literature_import, "import_literature_search_result", side_effect=fake_import),
+        patch.object(pipeline, "run_zhizhi_literature_analysis", side_effect=fake_primary),
+        patch.object(gaps, "build_knowledge_map", return_value={}),
+        patch.object(gaps, "detect_knowledge_gaps", return_value=[]),
+    ):
+        result = json.loads(
+            pipeline.run_zhizhi_subhypothesis_analysis(
+                "project_preprint_import_order",
+                import_top_k_per_hypothesis=8,
+                providers=["semantic_scholar", "pubmed", "medrxiv", "biorxiv"],
+            )
+        )
+
+    retrieval = result["reports"][0]
+    assert call_order == ["preprint_search", "preprint_import_0", "preprint_import_1", "preprint_import_2", "peer_reviewed_search"]
+    assert len(import_calls) == 3
+    assert all(call["search_id"] == "preprint_search" for call in import_calls)
+    assert all(call["stratified_layer_override"] == "L3_preprint" for call in import_calls)
+    assert all(call["query_branch_override"] == "SH2" for call in import_calls)
+    assert primary_calls and set(primary_calls[0]["providers"]) == {"semantic_scholar", "pubmed"}
+    assert primary_calls[0]["import_top_k"] == 5
+    assert primary_calls[0]["layer_quotas"]["L3_preprint"] == 0
+    assert primary_calls[0]["import_layer_minimums"]["L3_preprint"] == 0
+    assert retrieval["p0_preprint_imported"] == 3
+    assert retrieval["p0_preprint_selected"] == 3
+    assert retrieval["peer_reviewed_imported_records"] == 4
+    assert retrieval["imported_records"] == 7
+    assert retrieval["preprint_evidence"]["status"] == "imported"
+test("Sub-hypothesis imports up to three P0 preprints before peer-reviewed retrieval", t_subhypothesis_imports_preprints_before_peer_reviewed_search)
+
+def t_legacy_preprint_status_is_nonblocking_when_primary_evidence_exists():
+    import _hypothesis as hypothesis
+
+    gap = {
+        "gap_id": "G1",
+        "sub_hypothesis_id": "SH1",
+        "description": "A causal mechanism needs an intervention-based validation experiment.",
+        "mechanism_relevance": {"eligible_for_mechanism_hypothesis": True, "score": 1.0},
+    }
+    selected = hypothesis.select_gaps_for_hypothesis(
+        {
+            "sub_hypotheses": [
+                {
+                    "id": "SH1",
+                    "status": "evidence_insufficient_preprint",
+                    "retrieval": {"total_results": 4},
+                }
+            ],
+            "knowledge_gaps": [gap],
+        },
+        None,
+    )
+    assert selected and selected[0]["gap_id"] == "G1"
+    assert gap["preprint_evidence_nonblocking"] is True
+    assert "requires_human_review" not in gap
+test("Legacy preprint-only status does not block MingLi when primary evidence exists", t_legacy_preprint_status_is_nonblocking_when_primary_evidence_exists)
+
+def t_new_causal_tools_are_exposed():
+    import tools
+    assert "decompose_research_objective" in tools.TOOL_HANDLERS
+    assert "run_zhizhi_subhypothesis_analysis" in tools.TOOL_HANDLERS
+test("Decomposition and sub-hypothesis retrieval tools are exposed", t_new_causal_tools_are_exposed)
+
 # --- Tools.py / autogen_collab.py compatibility ---
 print("\n-- Backward Compatibility --")
 
 TOOLS_IMPORTS = [
-    "create_research_project", "list_research_projects", "get_research_project",
+    "create_research_project", "list_research_projects", "get_research_project", "decompose_research_objective", "set_research_brief",
     "list_science_agents", "get_science_agent_prompt", "list_literature_providers",
     "explore_domain_subspaces", "search_literature", "search_literature_stratified",
     "search_papers", "search_papers_stratified", "extract_structured_info",
@@ -556,10 +1418,10 @@ TOOLS_IMPORTS = [
     "create_science_pipeline_tasks", "create_science_delegation_tasks",
     "create_boxue_delegation_tasks", "run_boxue_research_round",
     "build_knowledge_map", "add_literature_evidence", "import_literature_text",
-    "import_literature_file", "import_literature_search_result",
+    "import_literature_file", "import_literature_search_result", "domain_review_paper",
     "extract_paper_keynote", "import_papergraph_record", "list_papergraph_records",
     "verify_citation_uniqueness", "assess_novelty", "verify_uniqueness",
-    "run_zhizhi_literature_analysis", "parse_literature_text", "build_coverage_matrix",
+    "run_zhizhi_literature_analysis", "run_zhizhi_subhypothesis_analysis", "parse_literature_text", "build_coverage_matrix",
     "detect_knowledge_gaps", "run_tanxi_gap_exploration", "load_project",
     "semantic_plausibility_for_pair", "evolve_domain_subspaces",
     "build_temporal_knowledge_graph", "detect_structural_knowledge_gaps",
@@ -585,9 +1447,9 @@ def t_tools_compat():
 test(f"tools.py compatibility ({len(TOOLS_IMPORTS)} imports)", t_tools_compat)
 
 AUTOGEN_IMPORTS = [
-    "create_research_project", "load_project", "search_literature_stratified",
+    "create_research_project", "load_project", "decompose_research_objective", "search_literature_stratified",
     "select_zhizhi_import_results", "import_literature_search_result",
-    "extract_paper_keynote", "detect_knowledge_gaps", "run_tanxi_gap_exploration",
+    "extract_paper_keynote", "detect_knowledge_gaps", "run_tanxi_gap_exploration", "run_zhizhi_subhypothesis_analysis",
     "run_mingli_hypothesis_evolution", "run_yanzhen_mechanism_verification",
     "run_socrates_mechanism_enrichment",
     "run_socratic_hypothesis_debate", "SCIENCE_AGENTS", "PHASES",

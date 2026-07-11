@@ -295,12 +295,43 @@ def cancel_cron(job_id: str) -> str:
     return cron_cancel(job_id)
 
 
-def create_research_project(title: str, domain: str, objective: str, strategic_need: str = "") -> str:
+def create_research_project(
+    title: str,
+    domain: str,
+    objective: str,
+    strategic_need: str = "",
+    research_brief: str = "",
+) -> str:
     try:
         from .science_core import create_research_project as science_create
     except ImportError:
         from science_core import create_research_project as science_create
-    return science_create(title, domain, objective, strategic_need)
+    return science_create(title, domain, objective, strategic_need, research_brief)
+
+
+def decompose_research_objective(
+    project_id: str,
+    max_subhypotheses: int = 6,
+    use_llm: bool = True,
+) -> str:
+    try:
+        from .science_core import decompose_research_objective as science_decompose
+    except ImportError:
+        from science_core import decompose_research_objective as science_decompose
+    return science_decompose(project_id, max_subhypotheses, use_llm)
+
+
+def set_research_brief(
+    project_id: str,
+    research_brief: str,
+    redecompose: bool = False,
+    use_llm: bool = True,
+) -> str:
+    try:
+        from .science_core import set_research_brief as science_set_brief
+    except ImportError:
+        from science_core import set_research_brief as science_set_brief
+    return science_set_brief(project_id, research_brief, redecompose, use_llm)
 
 
 def list_research_projects() -> str:
@@ -521,7 +552,7 @@ def run_boxue_research_round(
     goal: str = "",
     phases: list[str] | None = None,
     plan_id: str = "",
-    execution_mode: str = "async",
+    execution_mode: str = "pipeline",
     max_steps: int = 20,
     max_parallel_agents: int = 3,
     max_runtime_seconds: int = 45,
@@ -751,12 +782,13 @@ def import_literature_file(
     provider: str = "manual_file",
     source_type: str = "file",
     use_llm: bool = False,
+    sub_hypothesis: str = "",
 ) -> str:
     try:
         from .science_core import import_literature_file as science_import_file
     except ImportError:
         from science_core import import_literature_file as science_import_file
-    return science_import_file(project_id, path, title, citation, provider, source_type, use_llm)
+    return science_import_file(project_id, path, title, citation, provider, source_type, use_llm, sub_hypothesis)
 
 
 def import_literature_search_result(
@@ -770,6 +802,20 @@ def import_literature_search_result(
     except ImportError:
         from science_core import import_literature_search_result as science_import_search_result
     return science_import_search_result(project_id, search_id, result_index, use_llm)
+
+
+def domain_review_paper(
+    project_id: str,
+    paper_id: str,
+    target_domain_profile: list[str] | str | None = None,
+    min_confidence: float = 0.6,
+) -> dict[str, Any]:
+    """Audit an already imported paper and deactivate clear domain noise."""
+    try:
+        from .science_core import domain_review_paper as science_domain_review
+    except ImportError:
+        from science_core import domain_review_paper as science_domain_review
+    return science_domain_review(project_id, paper_id, target_domain_profile, min_confidence)
 
 
 def extract_paper_keynote(
@@ -906,26 +952,60 @@ def run_zhizhi_literature_analysis(
     subspace_map_id: str = "",
     selected_subfields: list[str] | None = None,
     interactive_mode: bool = False,
+    serial_subspace_search: bool | None = None,
+    retrieval_brief: str = "",
+    subspace_rounds: int = 8,
+    boundary_extension_rounds: int = 3,
+    per_subspace_results: int = 12,
+    per_subspace_imports: int = 6,
 ) -> str:
     try:
         from .science_core import run_zhizhi_literature_analysis as science_zhizhi
     except ImportError:
         from science_core import run_zhizhi_literature_analysis as science_zhizhi
     return science_zhizhi(
+        project_id=project_id,
+        domain=domain,
+        query=query,
+        max_results=max_results,
+        years=years,
+        providers=providers,
+        import_top_k=import_top_k,
+        graph_depth=graph_depth,
+        use_llm=use_llm,
+        focus_branches=focus_branches,
+        live_coverage_check=live_coverage_check,
+        subspace_map_id=subspace_map_id,
+        selected_subfields=selected_subfields,
+        interactive_mode=interactive_mode,
+        serial_subspace_search=serial_subspace_search,
+        retrieval_brief=retrieval_brief,
+        subspace_rounds=subspace_rounds,
+        boundary_extension_rounds=boundary_extension_rounds,
+        per_subspace_results=per_subspace_results,
+        per_subspace_imports=per_subspace_imports,
+    )
+
+
+def run_zhizhi_subhypothesis_analysis(
+    project_id: str,
+    sub_hypothesis_ids: list[str] | None = None,
+    max_results_per_hypothesis: int = 24,
+    import_top_k_per_hypothesis: int = 10,
+    providers: list[str] | None = None,
+    use_llm: bool = True,
+) -> str:
+    try:
+        from .science_core import run_zhizhi_subhypothesis_analysis as science_zhizhi_subhypothesis
+    except ImportError:
+        from science_core import run_zhizhi_subhypothesis_analysis as science_zhizhi_subhypothesis
+    return science_zhizhi_subhypothesis(
         project_id,
-        domain,
-        query,
-        max_results,
-        years,
+        sub_hypothesis_ids,
+        max_results_per_hypothesis,
+        import_top_k_per_hypothesis,
         providers,
-        import_top_k,
-        graph_depth,
         use_llm,
-        focus_branches,
-        live_coverage_check,
-        subspace_map_id,
-        selected_subfields,
-        interactive_mode,
     )
 
 
@@ -1662,8 +1742,36 @@ SCIENCE_TOOLS = [
                 "domain": {"type": "string", "description": "Scientific domain."},
                 "objective": {"type": "string", "description": "Research objective."},
                 "strategic_need": {"type": "string", "description": "Optional strategic or application need."},
+                "research_brief": {"type": "string", "description": "Complete original user task, preserved verbatim as the authoritative downstream specification. The runtime injects the current user prompt when omitted."},
             },
             "required": ["title", "domain", "objective"],
+        },
+    },
+    {
+        "name": "decompose_research_objective",
+        "description": "Boxue Decomposer gate: split a composite objective into independently falsifiable causal sub-hypotheses before retrieval or task delegation.",
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "project_id": {"type": "string", "description": "Science project id."},
+                "max_subhypotheses": {"type": "integer", "description": "Maximum independently testable sub-hypotheses; default 6."},
+                "use_llm": {"type": "boolean", "description": "Use Qwen JSON decomposition when configured; otherwise use a conservative heuristic fallback."},
+            },
+            "required": ["project_id"],
+        },
+    },
+    {
+        "name": "set_research_brief",
+        "description": "Attach the complete original task instructions verbatim to an existing project, optionally then rerun decomposition so retrieval and gap discovery use the restored constraints.",
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "project_id": {"type": "string", "description": "Science project id."},
+                "research_brief": {"type": "string", "description": "Complete original user task; do not summarize or omit constraints."},
+                "redecompose": {"type": "boolean", "description": "Immediately regenerate the decomposition from the restored brief."},
+                "use_llm": {"type": "boolean", "description": "Use Qwen JSON decomposition when configured."},
+            },
+            "required": ["project_id", "research_brief"],
         },
     },
     {
@@ -1887,7 +1995,7 @@ SCIENCE_TOOLS = [
     },
     {
         "name": "create_boxue_delegation_tasks",
-        "description": "Implement Boxue's Chief Research Scheduler prompt as a persistent multi-agent DAG: assign role-bound tasks to ZhiZhi, TanXi, MingLi, DuZhi, BianLun, YanZhen, GeWu, CodeEngineer, MingBian, PaperWriter, Reviewer, and Boxue final synthesis, each with dependencies, deliverables, acceptance criteria, and risks.",
+        "description": "Plan only: create Boxue's persistent multi-agent DAG with role-bound tasks, dependencies, deliverables, acceptance criteria, and risks. This does not start specialists or a closed loop. For a user request to run a workflow, call run_boxue_research_round with execution_mode='pipeline' immediately afterwards.",
         "input_schema": {
             "type": "object",
             "properties": {
@@ -1906,7 +2014,7 @@ SCIENCE_TOOLS = [
     },
     {
         "name": "run_boxue_research_round",
-        "description": "Run Boxue's automatic scheduling loop for one bounded research round. Recommended: execution_mode='pipeline' or 'autogen' runs the AutoGen 2.0-style GroupChat layer ZhiZhi -> TanXi -> MingLi -> YanZhen -> DuZhi -> BianLun without CrewAI, worktrees, or background teammates. Legacy async mode still creates/monitors teammate tasks.",
+        "description": "Run Boxue's automatic closed-loop research round. Default execution_mode='pipeline' runs the AutoGen 2.0-style ZhiZhi -> TanXi -> Socrates -> MingLi -> YanZhen -> DuZhi -> BianLun pipeline without CrewAI or worktrees. Use execution_mode='async' only to monitor legacy persistent tasks; it does not execute specialists by itself.",
         "input_schema": {
             "type": "object",
             "properties": {
@@ -1919,7 +2027,7 @@ SCIENCE_TOOLS = [
                 },
                 "plan_id": {
                     "type": "string",
-                    "description": "Optional existing boxue_delegation_plan_id to continue; if omitted, an active unfinished plan is reused or a new one is created.",
+                    "description": "Optional exact boxue_delegation_plan_id returned by an earlier successful Boxue tool call. Never invent this value. For a first run, omit plan_id: an active unfinished plan is reused or a new plan is created automatically.",
                 },
                 "execution_mode": {
                     "type": "string",
@@ -2070,7 +2178,7 @@ SCIENCE_TOOLS = [
     },
     {
         "name": "import_literature_file",
-        "description": "Import a workspace text/PDF file into PaperGraph. PDF extraction uses optional pypdf and mines limitations/future-work/open-problem sections into gap_signals for TanXi.",
+        "description": "Import a workspace text/PDF file into PaperGraph. PDF import uses structure-aware section selection, causal-keyword evidence, optional table extraction, and an extraction coverage report for TanXi/Socrates.",
         "input_schema": {
             "type": "object",
             "properties": {
@@ -2081,6 +2189,7 @@ SCIENCE_TOOLS = [
                 "provider": {"type": "string", "description": "Optional provider."},
                 "source_type": {"type": "string", "description": "Optional source type."},
                 "use_llm": {"type": "boolean", "description": "Use Qwen/LLM JSON extraction after text/PDF extraction."},
+                "sub_hypothesis": {"type": "string", "description": "Optional SH identifier or causal focus used to validate PDF evidence coverage."},
             },
             "required": ["project_id", "path"],
         },
@@ -2232,8 +2341,30 @@ SCIENCE_TOOLS = [
                     "description": "User-selected subspace names/ids from the DSE map. Custom user-entered subspaces are allowed and become custom retrieval branches.",
                 },
                 "interactive_mode": {"type": "boolean", "description": "If true and no subspace_map_id is provided, stop after DSE and return user_interaction before importing papers."},
+                "serial_subspace_search": {"type": "boolean", "description": "Default true. Search each scientific subspace serially with its own cache and import budget rather than one broad mixed query."},
+                "retrieval_brief": {"type": "string", "description": "Full user research brief used only to derive explicit subspaces; provider queries remain compact per subspace."},
+                "subspace_rounds": {"type": "integer", "description": "Core subspace rounds, constrained to 6-10; default 8."},
+                "boundary_extension_rounds": {"type": "integer", "description": "Boundary-extension rounds after core coverage, constrained to 3-4; default 3."},
+                "per_subspace_results": {"type": "integer", "description": "Candidate budget per subspace, constrained to 10-14; default 12."},
+                "per_subspace_imports": {"type": "integer", "description": "Imported papers per subspace, constrained to 5-7; default 6."},
             },
             "required": ["project_id", "domain", "query"],
+        },
+    },
+    {
+        "name": "run_zhizhi_subhypothesis_analysis",
+        "description": "Run ZhiZhi retrieval separately for each decomposed sub-hypothesis, enforce its P0-P4 evidence window, and mark a branch evidence-insufficient instead of filling a missing P0 preprint with older literature.",
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "project_id": {"type": "string", "description": "Science project id."},
+                "sub_hypothesis_ids": {"type": "array", "items": {"type": "string"}, "description": "Optional SH identifiers; default runs all decomposed branches."},
+                "max_results_per_hypothesis": {"type": "integer", "description": "Candidate budget per sub-hypothesis."},
+                "import_top_k_per_hypothesis": {"type": "integer", "description": "Import budget per sub-hypothesis."},
+                "providers": {"type": "array", "items": {"type": "string"}, "description": "Optional literature providers; arXiv is used for P0 recovery."},
+                "use_llm": {"type": "boolean", "description": "Use Qwen for extraction and judging when configured."},
+            },
+            "required": ["project_id"],
         },
     },
     {
@@ -2363,6 +2494,20 @@ SCIENCE_TOOLS = [
                 "use_llm": {"type": "boolean", "description": "Reserved for future LLM seed generation; v1 uses auditable templates."},
             },
             "required": ["project_id"],
+        },
+    },
+    {
+        "name": "domain_review_paper",
+        "description": "Re-audit one imported PaperGraph record against the project's domain. Clear mismatches are retained for audit but marked inactive so knowledge maps and TanXi ignore them.",
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "project_id": {"type": "string", "description": "Science project id."},
+                "paper_id": {"type": "string", "description": "Imported PaperGraph paper_id."},
+                "target_domain_profile": {"description": "Optional domain string or keyword list; defaults to the project domain."},
+                "min_confidence": {"type": "number", "description": "Minimum target-anchor coverage for cross-field records; default 0.6."},
+            },
+            "required": ["project_id", "paper_id"],
         },
     },
     {
@@ -2735,11 +2880,14 @@ TOOL_HANDLERS: dict[str, Callable[..., str]] = {
     "run_science_crew_flow": run_science_crew_flow,
     "list_science_crews": list_science_crews,
     "get_science_crew_run": get_science_crew_run,
+    "decompose_research_objective": decompose_research_objective,
+    "set_research_brief": set_research_brief,
     "build_knowledge_map": build_knowledge_map,
     "add_literature_evidence": add_literature_evidence,
     "import_literature_text": import_literature_text,
     "import_literature_file": import_literature_file,
     "import_literature_search_result": import_literature_search_result,
+    "domain_review_paper": domain_review_paper,
     "extract_paper_keynote": extract_paper_keynote,
     "import_papergraph_record": import_papergraph_record,
     "list_papergraph_records": list_papergraph_records,
@@ -2747,6 +2895,7 @@ TOOL_HANDLERS: dict[str, Callable[..., str]] = {
     "assess_novelty": assess_novelty,
     "verify_uniqueness": verify_uniqueness,
     "run_zhizhi_literature_analysis": run_zhizhi_literature_analysis,
+    "run_zhizhi_subhypothesis_analysis": run_zhizhi_subhypothesis_analysis,
     "parse_literature_text": parse_literature_text,
     "build_coverage_matrix": build_coverage_matrix,
     "detect_knowledge_gaps": detect_knowledge_gaps,

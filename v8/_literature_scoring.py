@@ -374,18 +374,24 @@ def domain_relevance_assessment(result: dict[str, Any], domain: str = "", query:
         "requires_human_review": bool((is_preprint and score < 0.16 and verdict != "reject") or (field_mismatch and verdict != "reject")),
     }
 
-def should_reject_for_domain(result: dict[str, Any], domain: str = "") -> bool:
+def should_reject_for_domain(result: dict[str, Any], domain: str = "", query: str = "") -> bool:
     try:
+        from ._literature_search import is_preprint_literature_result
         from ._utils import numeric_value
     except ImportError:
+        from _literature_search import is_preprint_literature_result
         from _utils import numeric_value
     if not domain:
         return False
     assessment = result.get("domain_relevance")
     if not isinstance(assessment, dict):
-        assessment = domain_relevance_assessment(result, domain=domain, query="")
+        assessment = domain_relevance_assessment(result, domain=domain, query=query)
         result["domain_relevance"] = assessment
     if assessment.get("verdict") == "reject":
+        return True
+    review = domain_review_assessment(result, domain=domain, query=query)
+    result["domain_review"] = review
+    if review.get("verdict") == "reject":
         return True
     # Domain exclusion marker check: reject papers from clearly different disciplines
     exclusion_markers = domain_exclusion_markers(domain)
@@ -404,12 +410,92 @@ def should_reject_for_domain(result: dict[str, Any], domain: str = "") -> bool:
                 markers=matched_exclusions,
             )
             return True
+    # Preprint providers generally cannot supply a meaningful citation count at
+    # first posting. Semantic and reviewer gates above still reject irrelevant
+    # material; zero citations must not become a second P0 rejection criterion.
+    if is_preprint_literature_result(result):
+        return False
     score = float(assessment.get("score") or 0.0)
     quality = float(result.get("publication_quality_score") or publication_quality_assessment(result)["quality_score"])
     citations = numeric_value(result.get("citation_count"))
     if "field_mismatch" in set(assessment.get("flags") or []) and score < 0.18 and citations <= 5:
         return True
     return score < 0.1 and quality < 0.55 and citations <= 0
+
+
+def domain_review_assessment(
+    result: dict[str, Any],
+    domain: str,
+    query: str = "",
+    min_confidence: float = 0.6,
+) -> dict[str, Any]:
+    """Perform a second, domain-general audit before or after import.
+
+    The retrieval gate answers "does this text loosely match?". This reviewer
+    additionally checks whether the candidate has enough *target-domain*
+    anchors to justify a different detected field. It catches surface-word
+    collisions such as a target term reused by astrophysics, optics, or quantum
+    materials without hard-coding one research topic's vocabulary.
+    """
+    try:
+        from ._literature_search import query_terms
+        from ._utils import normalize_space, unique_preserve_order
+    except ImportError:
+        from _literature_search import query_terms
+        from _utils import normalize_space, unique_preserve_order
+    text = normalize_space(
+        " ".join(
+            str(result.get(key) or "")
+            for key in ("title", "abstract", "scenario", "contribution", "limitation", "venue")
+        )
+    ).lower()
+    low_signal_terms = {
+        "analysis", "background", "data", "evidence", "human", "humans", "latest", "method", "model",
+        "paper", "recent", "research", "review", "science", "study", "studies", "survey", "system", "systems",
+    }
+    query_first = [term for term in query_terms(query) if term not in low_signal_terms]
+    domain_terms = [term for term in query_terms(domain) if term not in low_signal_terms]
+    target_terms = unique_preserve_order(query_first + domain_terms)[:12]
+    target_hits = [term for term in target_terms if term in text]
+    coverage = len(target_hits) / max(1, len(target_terms))
+    relevance = result.get("domain_relevance")
+    if not isinstance(relevance, dict):
+        relevance = domain_relevance_assessment(result, domain=domain, query=query)
+    target_field = infer_research_field({"title": domain, "abstract": query, "venue": ""})
+    result_field = infer_research_field(result)
+    life_science_fields = {"biology", "biomedical", "medicine", "digital_medicine", "biophysics", "plant_biology"}
+    same_life_science_family = target_field in life_science_fields and result_field in life_science_fields
+    foreign_field = fields_are_incompatible(target_field, result_field) or (
+        target_field not in {"", "general", "multidisciplinary"}
+        and result_field not in {"", "general", "multidisciplinary"}
+        and target_field != result_field
+        and not same_life_science_family
+    )
+    threshold = max(0.25, min(0.9, float(min_confidence)))
+    verdict = "keep"
+    reason = "Target-domain anchors and field context are consistent."
+    if relevance.get("verdict") == "reject":
+        verdict = "reject"
+        reason = "Primary domain-relevance gate rejected the candidate."
+    elif foreign_field and coverage < threshold:
+        verdict = "reject"
+        reason = "Detected field differs from the target and the paper lacks sufficient target-domain anchors."
+    elif not target_hits and foreign_field:
+        verdict = "reject"
+        reason = "No target-domain anchors were found in a paper classified to another field."
+    elif foreign_field or coverage < threshold:
+        verdict = "review"
+        reason = "Some target evidence exists, but the field context or anchor coverage remains ambiguous."
+    return {
+        "verdict": verdict,
+        "score": round(coverage, 4),
+        "target_field": target_field,
+        "result_field": result_field,
+        "foreign_field": foreign_field,
+        "target_terms": target_terms,
+        "target_hits": target_hits,
+        "reason": reason,
+    }
 
 def domain_exclusion_markers(domain: str = "") -> set[str]:
     """Return exclusion markers for the given domain.
@@ -1071,14 +1157,20 @@ def infer_research_field(result: dict[str, Any]) -> str:
         return metric["field"]
     if any(term in text for term in ("battery", "lithium", "electrolyte", "electrode", "ionic conductor", "solid-state")):
         return "materials_energy"
+    if any(term in text for term in ("black hole", "accretion disk", "accretion disc", "gravitational wave", "quasar", "active galactic", "galaxy", "cosmology", "supernova", "neutron star", "pulsar", "kilonova", "magnetar", "gamma-ray burst", "grb")):
+        return "astrophysics"
+    # Named nuclear phenomena are more specific than the cross-disciplinary
+    # method word "spectroscopy", so classify them before chemistry.
+    if any(term in text for term in ("superheavy", "transactinide", "nuclear fission", "nuclear fusion", "nuclear decay", "radioactive decay", "nuclear shell", "isotope production")):
+        return "nuclear_physics"
     if any(term in text for term in ("catalyst", "catalysis", "organic synthesis", "inorganic", "organometallic", "spectroscopy")):
         return "chemistry"
-    if any(term in text for term in ("polymer", "nanomaterial", "materials chemistry", "crystal", "semiconductor")):
+    if any(term in text for term in ("polymer", "nanomaterial", "materials chemistry", "crystal", "semiconductor", "superconducting")):
         return "materials"
     if any(term in text for term in ("plant", "biodiversity", "ecosystem", "community biomass", "ecology")):
         return "ecology"
-    if any(term in text for term in ("black hole", "accretion disk", "accretion disc", "gravitational wave", "quasar", "active galactic", "galaxy", "cosmology", "supernova", "neutron star", "pulsar")):
-        return "astrophysics"
+    if any(term in text for term in ("optical fiber", "micro-optical", "photonics", "laser", "waveguide", "photon detector")):
+        return "photonics"
     if any(term in text for term in ("particle physics", "collider", "standard model", "quantum chromodynamics", "qcd", "hadron", "neutrino", "higgs", "lattice gauge")):
         return "high_energy_physics"
     if any(term in text for term in ("wave equation", "partial differential equation", "stability theorem", "functional analysis", "topology", "algebraic", "number theory")):

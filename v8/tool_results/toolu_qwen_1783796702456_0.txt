@@ -1,0 +1,651 @@
+{
+  "mingli_run_id": "mingli_1783797382507330500",
+  "project_id": "sci_1783794866010820900",
+  "createdAt": 1783797382.5073314,
+  "gap_ids": [
+    "gap_1783797376683333000",
+    "gap_1783797376702234600",
+    "gap_1783797376839384800",
+    "gap_1783797376927840400"
+  ],
+  "population_size": 8,
+  "generations_completed": 2,
+  "lineage_summary": [
+    {
+      "generation": 0,
+      "population_size": 8,
+      "best_score": 0.6433
+    },
+    {
+      "generation": 1,
+      "population_size": 8,
+      "best_score": 0.6466
+    },
+    {
+      "generation": 2,
+      "population_size": 8,
+      "best_score": 0.6466
+    }
+  ],
+  "top_hypotheses": [
+    {
+      "hypothesis_id": "hyp_1783797382507288400",
+      "gap_id": "gap_1783797376839384800",
+      "statement": "If the competing claims about personalized medicine are evaluated under matched the experimental, observational, or simulation conditions that differ between the claims conditions, then cancer progression, tumor evolution, drug resistance will separate which mechanism holds and identify the boundary condition the condition where the competing explanations diverge. The decisive test is constrained to classification performance under an explicit stress regime.",
+      "mechanism": "Concrete mechanism chain: (1) method capability: Manufacturing Execution Systems (MES) contributes through controlling spatial organization, material architecture, and process-structure-property relationships; (2) scenario target: in personalized medicine, the affected process is a measurable biological or clinical mechanism such as expression, pathway activation, response, adverse effect, or persistence; (3) measurable consequence: the bridge must produce a preregistered change in cancer progression, tumor evolution, drug resistance. The method's input requirements are broad or not clearly specified; the experiment must make them explicit. The required bridge is multi-omics, simulation. The decisive prediction is that this concrete bridge, not a generic representation change, will alter cancer progression, tumor evolution, drug resistance; if the bridge data or causal link is absent, the hypothesis should fail rather than be reinterpreted post hoc.",
+      "expected_value": "Contradiction gaps are high-value because resolving them can update mechanism understanding, not merely fill a sparse method-scenario cell.",
+      "test_plan": "Build a minimal benchmark for personalized medicine; compare Manufacturing Execution Systems (MES) against canonical baselines; measure cancer progression, tumor evolution, drug resistance; include negative controls, ablations, and failure-mode analysis. Add a preregistered stress test for classification performance.",
+      "status": "draft",
+      "sub_hypothesis_id": "",
+      "createdAt": 1783797382.5072973,
+      "mingli_scores": {
+        "novelty": 0.439,
+        "plausibility": 0.775,
+        "grounding": 0.667,
+        "testability": 0.75,
+        "impact": 0.6,
+        "surprise": 0.675,
+        "strongest_local_overlap": 0.244
+      },
+      "plausibility_check": {
+        "score": 0.9,
+        "issues": [],
+        "suggestions": [],
+        "semantic_plausibility": {
+          "verdict": "PASS",
+          "score": 0.61,
+          "requirements": [],
+          "scenario_affordances": [
+            "graph",
+            "image",
+            "intervention",
+            "molecular",
+            "omics",
+            "sequence",
+            "spatial_context",
+            "spatial_coordinates"
+          ],
+          "bridge_terms": [
+            "multi-omics",
+            "simulation"
+          ],
+          "score_breakdown": [
+            {
+              "factor": "base_prior",
+              "delta": 0.45,
+              "reason": "default prior before evidence checks"
+            },
+            {
+              "factor": "bridge_terms",
+              "delta": 0.16,
+              "reason": "2 bridge concept(s) detected"
+            }
+          ],
+          "reason": "bridge concepts detected: multi-omics, simulation"
+        },
+        "requires_human_review": false
+      },
+      "score": 0.6466,
+      "lineage": [
+        {
+          "generation": 0,
+          "operation": "seed",
+          "gap_id": "gap_1783797376839384800",
+          "analogy_used": ""
+        },
+        {
+          "generation": 1,
+          "operation": "constraint_insertion",
+          "parent_candidate_id": "hcand_1783797382384895300"
+        }
+      ],
+      "competition_advantage": "Ranks well because it is traceable to a high-value gap, has an explicit mechanism, passes generic disciplinary plausibility checks, and includes falsifiable validation criteria.",
+      "verification_plan": {
+        "primary_metric": "cancer progression, tumor evolution, drug resistance",
+        "baselines": [
+          "nearest dense PaperGraph method",
+          "domain-standard baseline"
+        ],
+        "falsification_condition": "No directional, non-monotonic, or mechanism-separating change in cancer progression, tumor evolution, drug resistance when the experimental, observational, or simulation conditions that differ between the claims crosses the condition where the competing explanations diverge.",
+        "counterfactual_experiments": [
+          {
+            "experiment_id": "cf_gap_178379737683",
+            "question": "Does changing the experimental, observational, or simulation conditions that differ between the claims alter cancer progression, tumor evolution, drug resistance through the proposed mediator, rather than only correlating with it?",
+            "design": "Compare matched control and intervention conditions that vary the experimental, observational, or simulation conditions that differ between the claims while measuring the proposed mediator and cancer progression, tumor evolution, drug resistance; include a negative control that leaves the experimental, observational, or simulation conditions that differ between the claims unchanged.",
+            "predicted_outcome_if_mechanism_true": "The intervention changes the proposed mediator before or together with a reproducible directional change in cancer progression, tumor evolution, drug resistance.",
+            "predicted_outcome_if_mechanism_false": "cancer progression, tumor evolution, drug resistance does not change systematically when the experimental, observational, or simulation conditions that differ between the claims is varied, or it changes without the predicted mediator response.",
+            "observability": "cancer progression, tumor evolution, drug resistance",
+            "intervention": "the experimental, observational, or simulation conditions that differ between the claims",
+            "source_boundary": "Proposal generated for Potential conclusion conflict: personalized medicine contains opposing claims: Finally, we touch upon the challenges in both fields towards the translation of nano-personalized medicine. vs Extracellular Vesicles: A Novel Tool Facilitating Personalized Medicine and Pharmacogenomics in Oncology Biomarkers that can guide cancer therapy based on patients’ individual canc...[truncated].; concrete instruments and thresholds require source-backed evidence."
+          }
+        ],
+        "mechanism_competition": {
+          "phenomenon": "cancer progression, tumor evolution, drug resistance",
+          "candidates": [
+            {
+              "id": "M1",
+              "mechanism": "Potential conclusion conflict: personalized medicine contains opposing claims: Finally, we touch upon the challenges in both fields towards the translation of nano-personalized medicine. vs Extracellular Vesicles: A Novel Tool Facilitating Personalized Medicine and Pharmacogenomics in Oncology Biomarkers that can guide cancer therapy based on patients’ individual canc...[truncated].",
+              "prediction": "Varying the experimental, observational, or simulation conditions that differ between the claims changes the named mediator before cancer progression, tumor evolution, drug resistance."
+            }
+          ],
+          "discriminating_experiment": "Use matched interventions and measurements that separately observe the primary mediator and cancer progression, tumor evolution, drug resistance; compare their ordering and effect sizes across controls.",
+          "decision_rule": "Favor the mechanism whose preregistered mediator and outcome pattern is observed; retain multiple mechanisms when effects are non-additive or no discriminator is decisive."
+        }
+      },
+      "source_gap": {
+        "gap_id": "gap_1783797376839384800",
+        "gap_type": "contradiction",
+        "description": "Potential conclusion conflict: personalized medicine contains opposing claims: Finally, we touch upon the challenges in both fields towards the translation of nano-personalized medicine. vs Extracellular Vesicles: A Novel Tool Facilitating Personalized Medicine and Pharmacogenomics in Oncology Biomarkers that can guide cancer therapy based on patients’ individual canc...[truncated].",
+        "supporting_references": [
+          "M. A. Alghamdi et al. (2022) The Promise of Nanotechnology in Personalized Medicine doi:10.3390/jpm12050673",
+          "K. Goričar et al. (2021) Extracellular Vesicles: A Novel Tool Facilitating Personalized Medicine and Pharmacogenomics in Oncology doi:10.3389/fphar.2021.671298"
+        ],
+        "novelty_score": 5,
+        "application_value": "medium",
+        "feasibility": "high",
+        "suggested_research_path": "Extract the exact claim sentences, verify citation contexts/full text, then design a discriminating experiment, simulation, benchmark, or theoretical derivation that can separate the competing explanations.",
+        "value_argument": "Contradiction gaps are high-value because resolving them can update mechanism understanding, not merely fill a sparse method-scenario cell.",
+        "status": "candidate",
+        "createdAt": 1783797376.8393886,
+        "hypothesis_ingredients": {
+          "methods": [],
+          "scenarios": [],
+          "benchmarks": [],
+          "numerical_bounds": [],
+          "operating_conditions": [],
+          "measurable_metrics": []
+        },
+        "counterfactual_leaves": [],
+        "assessment_dimensions": [
+          "academic novelty",
+          "application value",
+          "implementation feasibility"
+        ],
+        "overlap_risk": "medium",
+        "strongest_overlap": 0.5429,
+        "literature_coverage_factor": 0.9,
+        "assessment_reason": "refs=2, gap_type=contradiction, strongest_local_overlap=0.543, coverage=0.9, feasibility=high, application_value=medium, semantic_plausibility=not_run",
+        "requires_human_review": false,
+        "reasoning_signal": {
+          "type": "claim_contradiction",
+          "shared_context": "personalized medicine",
+          "left_polarity": "negative",
+          "right_polarity": "positive"
+        },
+        "dedupe_signature": "claims conclusion conflict contains finally medicine opposing personalized potential we"
+      },
+      "gap_ids": [
+        "gap_1783797376839384800"
+      ],
+      "counterfactual_experiments": [
+        {
+          "experiment_id": "cf_gap_178379737683",
+          "question": "Does changing the experimental, observational, or simulation conditions that differ between the claims alter cancer progression, tumor evolution, drug resistance through the proposed mediator, rather than only correlating with it?",
+          "design": "Compare matched control and intervention conditions that vary the experimental, observational, or simulation conditions that differ between the claims while measuring the proposed mediator and cancer progression, tumor evolution, drug resistance; include a negative control that leaves the experimental, observational, or simulation conditions that differ between the claims unchanged.",
+          "predicted_outcome_if_mechanism_true": "The intervention changes the proposed mediator before or together with a reproducible directional change in cancer progression, tumor evolution, drug resistance.",
+          "predicted_outcome_if_mechanism_false": "cancer progression, tumor evolution, drug resistance does not change systematically when the experimental, observational, or simulation conditions that differ between the claims is varied, or it changes without the predicted mediator response.",
+          "observability": "cancer progression, tumor evolution, drug resistance",
+          "intervention": "the experimental, observational, or simulation conditions that differ between the claims",
+          "source_boundary": "Proposal generated for Potential conclusion conflict: personalized medicine contains opposing claims: Finally, we touch upon the challenges in both fields towards the translation of nano-personalized medicine. vs Extracellular Vesicles: A Novel Tool Facilitating Personalized Medicine and Pharmacogenomics in Oncology Biomarkers that can guide cancer therapy based on patients’ individual canc...[truncated].; concrete instruments and thresholds require source-backed evidence."
+        }
+      ],
+      "mechanism_competition": {
+        "phenomenon": "cancer progression, tumor evolution, drug resistance",
+        "candidates": [
+          {
+            "id": "M1",
+            "mechanism": "Potential conclusion conflict: personalized medicine contains opposing claims: Finally, we touch upon the challenges in both fields towards the translation of nano-personalized medicine. vs Extracellular Vesicles: A Novel Tool Facilitating Personalized Medicine and Pharmacogenomics in Oncology Biomarkers that can guide cancer therapy based on patients’ individual canc...[truncated].",
+            "prediction": "Varying the experimental, observational, or simulation conditions that differ between the claims changes the named mediator before cancer progression, tumor evolution, drug resistance."
+          }
+        ],
+        "discriminating_experiment": "Use matched interventions and measurements that separately observe the primary mediator and cancer progression, tumor evolution, drug resistance; compare their ordering and effect sizes across controls.",
+        "decision_rule": "Favor the mechanism whose preregistered mediator and outcome pattern is observed; retain multiple mechanisms when effects are non-additive or no discriminator is decisive."
+      },
+      "tournament_generation": 1
+    },
+    {
+      "hypothesis_id": "hyp_1783797382507314200",
+      "gap_id": "gap_1783797376927840400",
+      "statement": "If Manufacturing Execution Systems (MES) is used to perturb or stratify the key controllable variable named by the source evidence in BRAF-mutant metastatic non-small cell lung cancer while tracking emerging hotspot 'cancer treatment', then cancer progression, tumor evolution, drug resistance will show a directional or non-monotonic boundary at a preregistered stress threshold rather than an open-ended improvement claim.",
+      "mechanism": "Concrete mechanism chain: (1) method capability: Manufacturing Execution Systems (MES) contributes through controlling spatial organization, material architecture, and process-structure-property relationships; (2) scenario target: in BRAF-mutant metastatic non-small cell lung cancer, the affected process is a measurable biological or clinical mechanism such as expression, pathway activation, response, adverse effect, or persistence; (3) measurable consequence: the bridge must produce a preregistered change in cancer progression, tumor evolution, drug resistance. The method's input requirements are broad or not clearly specified; the experiment must make them explicit. The required bridge is multi-omics, simulation. The decisive prediction is that this concrete bridge, not a generic representation change, will alter cancer progression, tumor evolution, drug resistance; if the bridge data or causal link is absent, the hypothesis should fail rather than be reinterpreted post hoc.",
+      "expected_value": "The combination may expose method-scenario boundary conditions rather than simply adding another benchmark.",
+      "test_plan": "Build a minimal benchmark for BRAF-mutant metastatic non-small cell lung cancer; compare Manufacturing Execution Systems (MES) against canonical baselines; measure cancer progression, tumor evolution, drug resistance; include negative controls, ablations, and failure-mode analysis.",
+      "status": "draft",
+      "sub_hypothesis_id": "",
+      "createdAt": 1783797382.5073168,
+      "mingli_scores": {
+        "novelty": 0.436,
+        "plausibility": 0.775,
+        "grounding": 0.667,
+        "testability": 0.75,
+        "impact": 0.6,
+        "surprise": 0.505,
+        "strongest_local_overlap": 0.256
+      },
+      "plausibility_check": {
+        "score": 0.9,
+        "issues": [],
+        "suggestions": [],
+        "semantic_plausibility": {
+          "verdict": "PASS",
+          "score": 0.61,
+          "requirements": [],
+          "scenario_affordances": [
+            "graph",
+            "image",
+            "intervention",
+            "molecular",
+            "omics",
+            "sequence",
+            "spatial_context",
+            "spatial_coordinates"
+          ],
+          "bridge_terms": [
+            "multi-omics",
+            "simulation"
+          ],
+          "score_breakdown": [
+            {
+              "factor": "base_prior",
+              "delta": 0.45,
+              "reason": "default prior before evidence checks"
+            },
+            {
+              "factor": "bridge_terms",
+              "delta": 0.16,
+              "reason": "2 bridge concept(s) detected"
+            }
+          ],
+          "reason": "bridge concepts detected: multi-omics, simulation"
+        },
+        "requires_human_review": false
+      },
+      "score": 0.6357,
+      "lineage": [
+        {
+          "generation": 0,
+          "operation": "seed",
+          "gap_id": "gap_1783797376927840400",
+          "analogy_used": ""
+        }
+      ],
+      "competition_advantage": "Ranks well because it is traceable to a high-value gap, has an explicit mechanism, passes generic disciplinary plausibility checks, and includes falsifiable validation criteria.",
+      "verification_plan": {
+        "primary_metric": "cancer progression, tumor evolution, drug resistance",
+        "baselines": [
+          "nearest dense PaperGraph method",
+          "domain-standard baseline"
+        ],
+        "falsification_condition": "No directional, non-monotonic, or mechanism-separating change in cancer progression, tumor evolution, drug resistance when the key controllable variable named by the source evidence crosses a preregistered stress threshold rather than an open-ended improvement claim.",
+        "counterfactual_experiments": [
+          {
+            "experiment_id": "cf_gap_178379737692",
+            "question": "Does changing the key controllable variable named by the source evidence alter cancer progression, tumor evolution, drug resistance through the proposed mediator, rather than only correlating with it?",
+            "design": "Compare matched control and intervention conditions that vary the key controllable variable named by the source evidence while measuring the proposed mediator and cancer progression, tumor evolution, drug resistance; include a negative control that leaves the key controllable variable named by the source evidence unchanged.",
+            "predicted_outcome_if_mechanism_true": "The intervention changes the proposed mediator before or together with a reproducible directional change in cancer progression, tumor evolution, drug resistance.",
+            "predicted_outcome_if_mechanism_false": "cancer progression, tumor evolution, drug resistance does not change systematically when the key controllable variable named by the source evidence is varied, or it changes without the predicted mediator response.",
+            "observability": "cancer progression, tumor evolution, drug resistance",
+            "intervention": "the key controllable variable named by the source evidence",
+            "source_boundary": "Proposal generated for Method 'Manufacturing Execution Systems (MES)' has no recorded validation in scenario 'BRAF-mutant metastatic non-small cell lung cancer' in the current PaperGraph map.; concrete instruments and thresholds require source-backed evidence."
+          }
+        ],
+        "mechanism_competition": {
+          "phenomenon": "cancer progression, tumor evolution, drug resistance",
+          "candidates": [
+            {
+              "id": "M1",
+              "mechanism": "Method 'Manufacturing Execution Systems (MES)' has no recorded validation in scenario 'BRAF-mutant metastatic non-small cell lung cancer' in the current PaperGraph map.",
+              "prediction": "Varying the key controllable variable named by the source evidence changes the named mediator before cancer progression, tumor evolution, drug resistance."
+            }
+          ],
+          "discriminating_experiment": "Use matched interventions and measurements that separately observe the primary mediator and cancer progression, tumor evolution, drug resistance; compare their ordering and effect sizes across controls.",
+          "decision_rule": "Favor the mechanism whose preregistered mediator and outcome pattern is observed; retain multiple mechanisms when effects are non-additive or no discriminator is decisive."
+        }
+      },
+      "source_gap": {
+        "gap_id": "gap_1783797376927840400",
+        "gap_type": "combinatorial",
+        "description": "Method 'Manufacturing Execution Systems (MES)' has no recorded validation in scenario 'BRAF-mutant metastatic non-small cell lung cancer' in the current PaperGraph map.",
+        "supporting_references": [
+          "S. Ortiz-Cuàran et al. (2020) Circulating Tumor DNA Genomics Reveal Potential Mechanisms of Resistance to BRAF-Targeted Therapies in Patients with BRAF-Mutant Metastatic Non–Small Cell Lung Cancer doi:10.1158/1078-0432.CCR-20-1037",
+          "Sarita Santosh Dhage (2025) MES in Pharmaceutical Manufacturing: Enabling the Future of Personalized Medicine doi:10.37745/ejcsit.2013/vol13n28110"
+        ],
+        "novelty_score": 5,
+        "application_value": "medium",
+        "feasibility": "high",
+        "suggested_research_path": "Run a targeted validation study with explicit benchmarks, baselines, and failure-mode analysis.",
+        "value_argument": "The combination may expose method-scenario boundary conditions rather than simply adding another benchmark.",
+        "status": "candidate",
+        "createdAt": 1783797376.9278433,
+        "hypothesis_ingredients": {
+          "methods": [
+            "Manufacturing Execution Systems (MES)"
+          ],
+          "scenarios": [
+            "BRAF-mutant metastatic non-small cell lung cancer"
+          ],
+          "benchmarks": [
+            "regulatory compliance, data-driven decision making, supply chain optimization"
+          ],
+          "numerical_bounds": [
+            "74%",
+            "29%",
+            "46%",
+            "2A"
+          ],
+          "operating_conditions": [],
+          "measurable_metrics": []
+        },
+        "counterfactual_leaves": [
+          "If 'Manufacturing Execution Systems (MES)' were validated in 'BRAF-mutant metastatic non-small cell lung cancer', this gap would not exist",
+          "If 'BRAF-mutant metastatic non-small cell lung cancer' had a standardized test benchmark, this gap could be directly assessed",
+          "If a published study confirmed 'Manufacturing Execution Systems (MES)' effectiveness in 'BRAF-mutant metastatic non-small cell lung cancer', the gap is resolved",
+          "If the method from 'S. Ortiz-Cuàran et al. (2020) Circulating Tumor DNA Genomics Reveal Potential Me...[truncated]' were replicated in 'BRAF-mutant metastatic non-small cell lung cancer', this gap would be filled"
+        ],
+        "semantic_plausibility": {
+          "verdict": "PASS",
+          "score": 0.61,
+          "requirements": [],
+          "scenario_affordances": [
+            "graph",
+            "image",
+            "intervention",
+            "molecular",
+            "omics",
+            "sequence",
+            "spatial_context",
+            "spatial_coordinates"
+          ],
+          "bridge_terms": [
+            "multi-omics",
+            "simulation"
+          ],
+          "score_breakdown": [
+            {
+              "factor": "base_prior",
+              "delta": 0.45,
+              "reason": "default prior before evidence checks"
+            },
+            {
+              "factor": "bridge_terms",
+              "delta": 0.16,
+              "reason": "2 bridge concept(s) detected"
+            }
+          ],
+          "reason": "bridge concepts detected: multi-omics, simulation"
+        },
+        "assessment_dimensions": [
+          "academic novelty",
+          "application value",
+          "implementation feasibility"
+        ],
+        "overlap_risk": "low",
+        "strongest_overlap": 0.3889,
+        "literature_coverage_factor": 0.7784,
+        "assessment_reason": "refs=2, gap_type=combinatorial, strongest_local_overlap=0.389, coverage=0.778, feasibility=high, application_value=medium, semantic_plausibility=PASS",
+        "requires_human_review": false,
+        "dedupe_signature": "braf-mutant cell execution in manufacturing mes metastatic no non-small systems"
+      },
+      "gap_ids": [
+        "gap_1783797376927840400"
+      ],
+      "counterfactual_experiments": [
+        {
+          "experiment_id": "cf_gap_178379737692",
+          "question": "Does changing the key controllable variable named by the source evidence alter cancer progression, tumor evolution, drug resistance through the proposed mediator, rather than only correlating with it?",
+          "design": "Compare matched control and intervention conditions that vary the key controllable variable named by the source evidence while measuring the proposed mediator and cancer progression, tumor evolution, drug resistance; include a negative control that leaves the key controllable variable named by the source evidence unchanged.",
+          "predicted_outcome_if_mechanism_true": "The intervention changes the proposed mediator before or together with a reproducible directional change in cancer progression, tumor evolution, drug resistance.",
+          "predicted_outcome_if_mechanism_false": "cancer progression, tumor evolution, drug resistance does not change systematically when the key controllable variable named by the source evidence is varied, or it changes without the predicted mediator response.",
+          "observability": "cancer progression, tumor evolution, drug resistance",
+          "intervention": "the key controllable variable named by the source evidence",
+          "source_boundary": "Proposal generated for Method 'Manufacturing Execution Systems (MES)' has no recorded validation in scenario 'BRAF-mutant metastatic non-small cell lung cancer' in the current PaperGraph map.; concrete instruments and thresholds require source-backed evidence."
+        }
+      ],
+      "mechanism_competition": {
+        "phenomenon": "cancer progression, tumor evolution, drug resistance",
+        "candidates": [
+          {
+            "id": "M1",
+            "mechanism": "Method 'Manufacturing Execution Systems (MES)' has no recorded validation in scenario 'BRAF-mutant metastatic non-small cell lung cancer' in the current PaperGraph map.",
+            "prediction": "Varying the key controllable variable named by the source evidence changes the named mediator before cancer progression, tumor evolution, drug resistance."
+          }
+        ],
+        "discriminating_experiment": "Use matched interventions and measurements that separately observe the primary mediator and cancer progression, tumor evolution, drug resistance; compare their ordering and effect sizes across controls.",
+        "decision_rule": "Favor the mechanism whose preregistered mediator and outcome pattern is observed; retain multiple mechanisms when effects are non-additive or no discriminator is decisive."
+      },
+      "tournament_generation": 0
+    },
+    {
+      "hypothesis_id": "hyp_1783797382507323600",
+      "gap_id": "gap_1783797376683333000",
+      "statement": "If review is used to perturb or stratify genetic variants and molecular phenotypes in BRAF-mutant metastatic non-small cell lung cancer under explicit failure-mode stress tests, then drug exposure levels, toxicity incidence, appropriate dosing will show a directional or non-monotonic boundary at a preregistered stress threshold rather than an open-ended improvement claim. A cross-gap variant tests whether the mechanism remains valid when the second gap's boundary condition is imposed: If the competing claims about personalized medicine are evaluated under matched the experimental, observational, or simulation conditions that differ between the claims conditions,...[truncated]",
+      "mechanism": "Concrete mechanism chain: (1) method capability: review contributes through a specified operation that must be mapped to observable inputs and outputs before validation; (2) scenario target: in BRAF-mutant metastatic non-small cell lung cancer, the affected process is a measurable biological or clinical mechanism such as expression, pathway activation, response, adverse effect, or persistence; (3) measurable consequence: the bridge must produce a preregistered change in cancer progression, tumor evolution, drug resistance. The method's input requirements are broad or not clearly specified; the experiment must make them explicit. The required bridge is multi-omics, simulation. The decisive prediction is that this concrete bridge, not a generic representation change, will alter cancer progression, tumor evolution, drug resistance; if the bridge data or causal link is absent, the hypothesis should fail rather than be reinterpreted post hoc. Cross-gap crossover combines evidence from gap_1783797376683333000 and gap_1783797376839384800 to test whether one gap resolves or sharpens the other.",
+      "expected_value": "A broken causal link is a direct, falsifiable research opening rather than a sparse method-scenario combination.",
+      "test_plan": "Build a minimal benchmark for BRAF-mutant metastatic non-small cell lung cancer; compare review against canonical baselines; measure cancer progression, tumor evolution, drug resistance; include negative controls, ablations, and failure-mode analysis.",
+      "status": "draft",
+      "sub_hypothesis_id": "SH1",
+      "createdAt": 1783797382.5073252,
+      "mingli_scores": {
+        "novelty": 0.458,
+        "plausibility": 0.775,
+        "grounding": 0.333,
+        "testability": 0.75,
+        "impact": 1.0,
+        "surprise": 0.486,
+        "strongest_local_overlap": 0.169
+      },
+      "plausibility_check": {
+        "score": 0.9,
+        "issues": [],
+        "suggestions": [],
+        "semantic_plausibility": {
+          "verdict": "PASS",
+          "score": 0.61,
+          "requirements": [],
+          "scenario_affordances": [
+            "graph",
+            "image",
+            "intervention",
+            "molecular",
+            "omics",
+            "sequence",
+            "spatial_context",
+            "spatial_coordinates"
+          ],
+          "bridge_terms": [
+            "multi-omics",
+            "simulation"
+          ],
+          "score_breakdown": [
+            {
+              "factor": "base_prior",
+              "delta": 0.45,
+              "reason": "default prior before evidence checks"
+            },
+            {
+              "factor": "bridge_terms",
+              "delta": 0.16,
+              "reason": "2 bridge concept(s) detected"
+            }
+          ],
+          "reason": "bridge concepts detected: multi-omics, simulation"
+        },
+        "requires_human_review": false
+      },
+      "score": 0.6354,
+      "lineage": [
+        {
+          "generation": 0,
+          "operation": "seed",
+          "gap_id": "gap_1783797376683333000",
+          "analogy_used": ""
+        },
+        {
+          "generation": 2,
+          "operation": "cross_gap_crossover",
+          "parent_candidate_id": "hcand_1783797382360223900"
+        }
+      ],
+      "competition_advantage": "Ranks well because it is traceable to a high-value gap, has an explicit mechanism, passes generic disciplinary plausibility checks, and includes falsifiable validation criteria.",
+      "verification_plan": {
+        "primary_metric": "cancer progression, tumor evolution, drug resistance",
+        "baselines": [
+          "nearest dense PaperGraph method",
+          "domain-standard baseline"
+        ],
+        "falsification_condition": "No directional, non-monotonic, or mechanism-separating change in cancer progression, tumor evolution, drug resistance when genetic variants and molecular phenotypes crosses a preregistered stress threshold rather than an open-ended improvement claim.",
+        "counterfactual_experiments": [
+          {
+            "experiment_id": "cf_gap_178379737668",
+            "question": "Does changing genetic variants and molecular phenotypes alter drug exposure levels, toxicity incidence, appropriate dosing through pharmacokinetics and toxicity profiles, rather than only correlating with it?",
+            "design": "Compare matched control and intervention conditions that vary genetic variants and molecular phenotypes while measuring pharmacokinetics and toxicity profiles and drug exposure levels, toxicity incidence, appropriate dosing; include a negative control that leaves genetic variants and molecular phenotypes unchanged.",
+            "predicted_outcome_if_mechanism_true": "The intervention changes pharmacokinetics and toxicity profiles before or together with a reproducible directional change in drug exposure levels, toxicity incidence, appropriate dosing.",
+            "predicted_outcome_if_mechanism_false": "drug exposure levels, toxicity incidence, appropriate dosing does not change systematically when genetic variants and molecular phenotypes is varied, or it changes without the predicted mediator response.",
+            "observability": "drug exposure levels, toxicity incidence, appropriate dosing",
+            "intervention": "genetic variants and molecular phenotypes",
+            "source_boundary": "Proposal generated for genetic variants and molecular phenotypes predict pharmacokinetics and toxicity; concrete instruments and thresholds require source-backed evidence."
+          }
+        ],
+        "mechanism_competition": {
+          "phenomenon": "drug exposure levels, toxicity incidence, appropriate dosing",
+          "candidates": [
+            {
+              "id": "M1",
+              "mechanism": "genetic variants and molecular phenotypes → pharmacokinetics and toxicity profiles → drug exposure, toxicity, and appropriate dosing",
+              "prediction": "Varying genetic variants and molecular phenotypes changes the named mediator before drug exposure levels, toxicity incidence, appropriate dosing."
+            },
+            {
+              "id": "M2",
+              "mechanism": "environmental factors influencing drug metabolism",
+              "prediction": "Produces the outcome without the primary mediator pattern."
+            },
+            {
+              "id": "M3",
+              "mechanism": "disease state affecting drug response",
+              "prediction": "Produces the outcome without the primary mediator pattern."
+            }
+          ],
+          "discriminating_experiment": "Use matched interventions and measurements that separately observe the primary mediator and drug exposure levels, toxicity incidence, appropriate dosing; compare their ordering and effect sizes across controls.",
+          "decision_rule": "Favor the mechanism whose preregistered mediator and outcome pattern is observed; retain multiple mechanisms when effects are non-additive or no discriminator is decisive."
+        }
+      },
+      "source_gap": {
+        "gap_id": "gap_1783797376683333000",
+        "gap_type": "causal_chain_break",
+        "description": "Causal chain 'chain_1' from Olivier Sibomana (2024) Genetic Diversity Landscape in African Population: A Review of Implications for Personalized and Precision Medicine doi:10.2147/PGPM.S485452 has a missing intervention: genetic variants and molecular phenotypes predict pharmacokinetics and toxicity. The chain cannot support a causal hypothesis until this link is independently evidenced.",
+        "supporting_references": [
+          "Olivier Sibomana (2024) Genetic Diversity Landscape in African Population: A Review of Implications for Personalized and Precision Medicine doi:10.2147/PGPM.S485452"
+        ],
+        "novelty_score": 5,
+        "application_value": "medium",
+        "feasibility": "medium",
+        "suggested_research_path": "Collect a feasible intervention or natural experiment that varies the causal input; then test an intervention and a matched control that can distinguish this chain from competing explanations.",
+        "value_argument": "A broken causal link is a direct, falsifiable research opening rather than a sparse method-scenario combination.",
+        "status": "candidate",
+        "createdAt": 1783797376.683338,
+        "hypothesis_ingredients": {
+          "methods": [
+            "High genetic diversity in African populations"
+          ],
+          "scenarios": [
+            "genetic variants and molecular phenotypes predict pharmacokinetics and toxicity"
+          ],
+          "benchmarks": [
+            "Improved pharmacogenomics",
+            "Discovery of new genetic variants",
+            "Better understanding of gene interactions"
+          ],
+          "numerical_bounds": [],
+          "operating_conditions": [],
+          "measurable_metrics": [
+            "Improved pharmacogenomics",
+            "Discovery of new genetic variants",
+            "Better understanding of gene interactions"
+          ]
+        },
+        "counterfactual_leaves": [],
+        "causal_gap": {
+          "chain_id": "chain_1",
+          "paper_id": "paper_1783795303371954700",
+          "missing_kind": "intervention",
+          "evidence_needed": "a feasible intervention or natural experiment that varies the causal input",
+          "trigger": "High genetic diversity in African populations",
+          "outcome": "Opportunities for personalized and precision medicine"
+        },
+        "sub_hypothesis_id": "SH1",
+        "priority": "high",
+        "assessment_dimensions": [
+          "academic novelty",
+          "application value",
+          "implementation feasibility"
+        ],
+        "overlap_risk": "low",
+        "strongest_overlap": 0.3514,
+        "literature_coverage_factor": 0.8556,
+        "assessment_reason": "refs=1, gap_type=causal_chain_break, strongest_local_overlap=0.351, coverage=0.856, feasibility=medium, application_value=medium, semantic_plausibility=not_run",
+        "requires_human_review": false,
+        "dedupe_signature": "2024 causal chain chain_1 diversity from genetic landscape olivier sibomana",
+        "deduped_from": 1,
+        "tanxi_rank": 1,
+        "exploration_value_score": 10,
+        "ranking_reason": "novelty=5, refs=1, application=medium, feasibility=medium, type=causal_chain_break, strategic_matches=1, density_bonus=2 Gap is grounded in core mechanism evidence.",
+        "strategic_alignment": [
+          {
+            "strategic_domain": "ai for science",
+            "matched_keywords": [
+              "ai"
+            ],
+            "alignment_score": 6
+          }
+        ],
+        "recommended_approach": "Collect a feasible intervention or natural experiment that varies the causal input; then test an intervention and a matched control that can distinguish this chain from competing explanations."
+      },
+      "gap_ids": [
+        "gap_1783797376683333000",
+        "gap_1783797376839384800"
+      ],
+      "counterfactual_experiments": [
+        {
+          "experiment_id": "cf_gap_178379737668",
+          "question": "Does changing genetic variants and molecular phenotypes alter drug exposure levels, toxicity incidence, appropriate dosing through pharmacokinetics and toxicity profiles, rather than only correlating with it?",
+          "design": "Compare matched control and intervention conditions that vary genetic variants and molecular phenotypes while measuring pharmacokinetics and toxicity profiles and drug exposure levels, toxicity incidence, appropriate dosing; include a negative control that leaves genetic variants and molecular phenotypes unchanged.",
+          "predicted_outcome_if_mechanism_true": "The intervention changes pharmacokinetics and toxicity profiles before or together with a reproducible directional change in drug exposure levels, toxicity incidence, appropriate dosing.",
+          "predicted_outcome_if_mechanism_false": "drug exposure levels, toxicity incidence, appropriate dosing does not change systematically when genetic variants and molecular phenotypes is varied, or it changes without the predicted mediator response.",
+          "observability": "drug exposure levels, toxicity incidence, appropriate dosing",
+          "intervention": "genetic variants and molecular phenotypes",
+          "source_boundary": "Proposal generated for genetic variants and molecular phenotypes predict pharmacokinetics and toxicity; concrete instruments and thresholds require source-backed evidence."
+        }
+      ],
+      "mechanism_competition": {
+        "phenomenon": "drug exposure levels, toxicity incidence, appropriate dosing",
+        "candidates": [
+          {
+            "id": "M1",
+            "mechanism": "genetic variants and molecular phenotypes → pharmacokinetics and toxicity profiles → drug exposure, toxicity, and appropriate dosing",
+            "prediction": "Varying genetic variants and molecular phenotypes changes the named mediator before drug exposure levels, toxicity incidence, appropriate dosing."
+          },
+          {
+            "id": "M2",
+            "mechanism": "environmental factors influencing drug metabolism",
+            "prediction": "Produces the outcome without the primary mediator pattern."
+          },
+          {
+            "id": "M3",
+            "mechanism": "disease state affecting drug response",
+            "prediction": "Produces the outcome without the primary mediator pattern."
+          }
+        ],
+        "discriminating_experiment": "Use matched interventions and measurements that separately observe the primary mediator and drug exposure levels, toxicity incidence, appropriate dosing; compare their ordering and effect sizes across controls.",
+        "decision_rule": "Favor the mechanism whose preregistered mediator and outcome pattern is observed; retain multiple mechanisms when effects are non-additive or no discriminator is decisive."
+      },
+      "tournament_generation": 2
+    }
+  ],
+  "method": "template_seed + tournament_selection + mutation/crossover + structural/temporal/analogy scoring",
+  "constraints_checked": {
+    "traceable_to_gap": true,
+    "papergraph_grounded": true,
+    "testability_scored": true,
+    "novelty_overlap_local": true
+  }
+}

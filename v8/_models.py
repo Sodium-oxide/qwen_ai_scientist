@@ -30,8 +30,9 @@ SCIENCE_AGENTS: dict[str, dict[str, Any]] = {
     "boxue": {
         "title": "Chief Research Scheduler",
         "phase": "all",
-        "mission": "Decompose research goals into verifiable tasks and coordinate the full AI Scientist pipeline.",
+        "mission": "Decompose composite research objectives into independently falsifiable sub-hypotheses, then coordinate their evidence, causal validation, and synthesis.",
         "tools": [
+            "decompose_research_objective",
             "create_autogen_groupchat",
             "run_autogen_research_flow",
             "run_boxue_research_round",
@@ -48,13 +49,13 @@ SCIENCE_AGENTS: dict[str, dict[str, Any]] = {
     "zhizhi": {
         "title": "Literature Mining and PaperGraph Expert",
         "phase": "Gap Discovery",
-        "mission": "Retrieve literature, extract structured evidence, and build the PaperGraph substrate.",
-        "tools": ["search_papers_stratified", "search_papers", "extract_structured_info", "build_knowledge_map", "verify_uniqueness"],
+        "mission": "Retrieve evidence for each falsifiable sub-hypothesis, extract causal chains and evidence windows, and build the PaperGraph substrate.",
+        "tools": ["run_zhizhi_subhypothesis_analysis", "search_papers_stratified", "search_papers", "extract_structured_info", "build_knowledge_map", "verify_uniqueness"],
     },
     "tanxi": {
         "title": "Knowledge Gap Discovery Agent",
         "phase": "Gap Discovery",
-        "mission": "Detect coverage holes, suspended problems, and high-value unexplored method-scenario pairs.",
+        "mission": "Detect missing causal links, unobserved mediators, competing mechanisms, and insufficient evidence windows for each sub-hypothesis.",
         "tools": ["run_tanxi_gap_exploration", "detect_knowledge_gaps", "check_semantic_plausibility", "assess_novelty", "verify_uniqueness"],
     },
     "socrates": {
@@ -156,7 +157,7 @@ Operational principles:
 
 TAO workflow:
 Thought: review project state, dependencies, output quality, gap lifecycle status, and risks.
-Action: use create_boxue_delegation_tasks for full PI-style role DAGs, create_science_delegation_tasks for broad retrieval branch scouting, create_science_pipeline_tasks for coarse phase scaffolding, then review/synthesize/adjust/finalize through task gates.
+Action: use create_boxue_delegation_tasks only to create a PI-style role DAG. If the user asks to run, execute, or close the workflow, immediately call run_boxue_research_round with execution_mode="pipeline" and the created plan id in the same turn. Do not claim specialist execution after DAG creation alone. Use create_science_delegation_tasks for broad retrieval branch scouting, create_science_pipeline_tasks for coarse phase scaffolding, then review/synthesize/adjust/finalize through task gates.
 Observation: receive specialist deliverables, record progress, and update the next decision point.
 """.strip()
 
@@ -571,6 +572,7 @@ JOURNAL_METRICS = {
     "science": {"quartile": "Q1", "source": "curated", "field": "multidisciplinary"},
     "proceedings of the national academy of sciences": {"quartile": "Q1", "source": "curated", "field": "multidisciplinary"},
     "pnas": {"quartile": "Q1", "source": "curated", "field": "multidisciplinary"},
+    "experimental & molecular medicine": {"quartile": "Q1", "source": "curated", "field": "medicine"},
     "global change biology": {"quartile": "Q1", "source": "curated", "field": "ecology"},
     "new phytologist": {"quartile": "Q1", "source": "curated", "field": "ecology"},
     "journal of ecology": {"quartile": "Q1", "source": "curated", "field": "ecology"},
@@ -1180,7 +1182,10 @@ class PaperGraphRecord:
     credibility_reasons: list[str]
     extraction_quality: dict[str, Any] = field(default_factory=dict)
     enrichment_sources: list[str] = field(default_factory=list)
+    open_access_pdf: str = ""
+    full_text_enrichment: dict[str, Any] = field(default_factory=dict)
     gap_signals: list[dict[str, Any]] = field(default_factory=list)
+    causal_chains: list[dict[str, Any]] = field(default_factory=list)
     importedAt: float = field(default_factory=time.time)
 
 @dataclass
@@ -1194,6 +1199,8 @@ class KnowledgeGap:
     feasibility: str
     suggested_research_path: str
     status: str = "candidate"
+    sub_hypothesis_id: str = ""
+    causal_gap: dict[str, Any] = field(default_factory=dict)
     createdAt: float = field(default_factory=time.time)
 
 @dataclass
@@ -1205,6 +1212,7 @@ class Hypothesis:
     expected_value: str
     test_plan: str
     status: str = "draft"
+    sub_hypothesis_id: str = ""
     createdAt: float = field(default_factory=time.time)
 
 @dataclass

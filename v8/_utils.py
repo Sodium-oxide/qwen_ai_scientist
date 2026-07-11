@@ -21,7 +21,11 @@ except ImportError:
 
 
 
-def repair_project_extraction_quality(project: dict[str, Any]) -> tuple[dict[str, Any], dict[str, Any]]:
+def repair_project_extraction_quality(
+    project: dict[str, Any],
+    *,
+    max_full_text_attempts: int = 3,
+) -> tuple[dict[str, Any], dict[str, Any]]:
     try:
         from ._literature_import import extraction_quality_report, maybe_llm_reextract_structure, repair_payload_fields, sync_evidence_from_record
         from ._literature_search import enrich_papergraph_payload
@@ -31,10 +35,21 @@ def repair_project_extraction_quality(project: dict[str, Any]) -> tuple[dict[str
     repaired = 0
     attempted = 0
     still_low_quality = 0
+    full_text_attempted = 0
+    full_text_deferred = 0
     errors: list[str] = []
     records = project.get("papergraph", [])
     if not isinstance(records, list):
-        return project, {"attempted": 0, "repaired": 0, "still_low_quality": 0, "errors": []}
+        return project, {
+            "attempted": 0,
+            "repaired": 0,
+            "still_low_quality": 0,
+            "full_text_attempted": 0,
+            "full_text_deferred": 0,
+            "errors": [],
+        }
+
+    full_text_budget = max(0, int(max_full_text_attempts or 0))
 
     for record in records:
         if not isinstance(record, dict):
@@ -42,7 +57,21 @@ def repair_project_extraction_quality(project: dict[str, Any]) -> tuple[dict[str
         before_quality = extraction_quality_report(record)
         record["extraction_quality"] = before_quality
         payload = dict(record)
-        needs_expensive_repair = bool(before_quality.get("needs_enrichment") or before_quality.get("needs_llm_retry"))
+        full_text_state = record.get("full_text_enrichment") if isinstance(record.get("full_text_enrichment"), dict) else {}
+        full_text_status = str(full_text_state.get("status") or "")
+        needs_full_text_repair = (
+            not normalize_space(str(record.get("full_text_excerpt") or ""))
+            and (not full_text_status or full_text_enrichment_retry_due(full_text_state))
+            and bool(record.get("open_access_pdf") or record.get("semantic_scholar_id") or record.get("arxiv_id"))
+        )
+        include_full_text = needs_full_text_repair and full_text_attempted < full_text_budget
+        if needs_full_text_repair and not include_full_text:
+            full_text_deferred += 1
+        needs_expensive_repair = bool(
+            before_quality.get("needs_enrichment")
+            or before_quality.get("needs_llm_retry")
+            or include_full_text
+        )
         before_core = {
             key: normalize_label(record.get(key, ""))
             for key in ("method", "scenario", "benchmark", "contribution", "limitation")
@@ -66,14 +95,18 @@ def repair_project_extraction_quality(project: dict[str, Any]) -> tuple[dict[str
             continue
         attempted += 1
         sources: list[str] = []
-        if before_quality.get("needs_enrichment"):
+        if before_quality.get("needs_enrichment") or include_full_text:
             try:
-                payload, sources = enrich_papergraph_payload(payload, record)
+                payload, sources = enrich_papergraph_payload(payload, record, include_full_text=include_full_text)
+                if include_full_text:
+                    full_text_attempted += 1
             except Exception as exc:
                 errors.append(f"{record.get('paper_id')}: enrichment failed: {exc}")
         llm_retry: dict[str, Any] = {"attempted": False, "succeeded": False, "error": ""}
-        if extraction_quality_report(payload).get("needs_llm_retry"):
-            payload, llm_retry = maybe_llm_reextract_structure(payload)
+        full_text_result = payload.get("_full_text_enrichment") if isinstance(payload.get("_full_text_enrichment"), dict) else {}
+        full_text_extracted = str(full_text_result.get("status") or "") == "extracted"
+        if extraction_quality_report(payload).get("needs_llm_retry") or full_text_extracted:
+            payload, llm_retry = maybe_llm_reextract_structure(payload, force=full_text_extracted)
             if llm_retry.get("error"):
                 errors.append(f"{record.get('paper_id')}: llm retry failed: {llm_retry.get('error')}")
 
@@ -84,7 +117,11 @@ def repair_project_extraction_quality(project: dict[str, Any]) -> tuple[dict[str
         if repaired_payload.get("_enrichment_errors"):
             after_quality["enrichment_errors"] = repaired_payload.get("_enrichment_errors")
         repaired_payload.pop("_enrichment_errors", None)
+        full_text_result = repaired_payload.pop("_full_text_enrichment", full_text_result)
         record.update(repaired_payload)
+        if isinstance(full_text_result, dict):
+            record["full_text_enrichment"] = full_text_result
+            after_quality["full_text"] = full_text_result
         record["extraction_quality"] = after_quality
         existing_sources = record.get("enrichment_sources") if isinstance(record.get("enrichment_sources"), list) else []
         record["enrichment_sources"] = unique_preserve_order([*existing_sources, *sources])
@@ -98,8 +135,20 @@ def repair_project_extraction_quality(project: dict[str, Any]) -> tuple[dict[str
         "attempted": attempted,
         "repaired": repaired,
         "still_low_quality": still_low_quality,
+        "full_text_attempted": full_text_attempted,
+        "full_text_deferred": full_text_deferred,
         "errors": errors[:10],
     }
+
+
+def full_text_enrichment_retry_due(state: dict[str, Any], now: float | None = None) -> bool:
+    status = str(state.get("status") or "")
+    if status not in {"metadata_lookup_failed", "fetch_failed"}:
+        return False
+    retry_after = max(60.0, float(state.get("retry_after_seconds") or 900.0))
+    attempted_at = float(state.get("attempted_at") or 0.0)
+    current_time = time.time() if now is None else float(now)
+    return attempted_at <= 0 or current_time - attempted_at >= retry_after
 
 def science_term_in_text(term: str, lowered_text: str) -> bool:
     clean = normalize_space(term).lower()

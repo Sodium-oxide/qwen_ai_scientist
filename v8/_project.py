@@ -18,6 +18,7 @@ try:
         SCIENCE_SUBSPACE_PROBE_MAX_CALLS_PER_PROVIDER,
     )
     from .log import log_event
+    from ._utils import normalize_space
 except ImportError:
     from config import (
         SCIENCE_DIR,
@@ -25,6 +26,7 @@ except ImportError:
         SCIENCE_SUBSPACE_PROBE_MAX_CALLS_PER_PROVIDER,
     )
     from log import log_event
+    from _utils import normalize_space
 
 
 
@@ -33,6 +35,7 @@ def create_research_project(
     domain: str,
     objective: str,
     strategic_need: str = "",
+    research_brief: str = "",
 ) -> str:
     try:
         from ._models import PHASES
@@ -40,12 +43,15 @@ def create_research_project(
     except ImportError:
         from _models import PHASES
         from _utils import new_id
+    raw_research_brief = str(research_brief or objective)
     project = {
         "project_id": new_id("sci"),
         "title": title,
         "domain": domain,
         "objective": objective,
         "strategic_need": strategic_need,
+        "research_brief": raw_research_brief,
+        "research_brief_source": "verbatim_user_prompt" if research_brief else "objective_fallback",
         "phase": PHASES[0],
         "createdAt": time.time(),
         "updatedAt": time.time(),
@@ -55,12 +61,348 @@ def create_research_project(
         "knowledge_gaps": [],
         "hypotheses": [],
         "keynotes": [],
+        "sub_hypotheses": [],
+        "objective_decomposition": {"status": "not_run", "sub_hypotheses": []},
+        "causal_evidence_graph": {"nodes": [], "edges": [], "chains": []},
         "mechanism_reports": [],
         "pipeline_tasks": [],
     }
     save_project(project)
     log_event("SCIENCE", "project_created", project_id=project["project_id"], domain=domain)
     return json.dumps(project, ensure_ascii=False, indent=2)
+
+
+def decompose_research_objective(
+    project_id: str,
+    max_subhypotheses: int = 6,
+    use_llm: bool = True,
+) -> str:
+    project = load_project(project_id)
+    limit = max(1, min(int(max_subhypotheses or 6), 12))
+    decomposition = build_objective_decomposition(
+        objective=str(project.get("objective") or ""),
+        domain=str(project.get("domain") or ""),
+        research_brief=str(project.get("research_brief") or ""),
+        max_subhypotheses=limit,
+        use_llm=use_llm,
+    )
+    project["objective_decomposition"] = decomposition
+    project["sub_hypotheses"] = decomposition["sub_hypotheses"]
+    project["updatedAt"] = time.time()
+    save_project(project)
+    log_event(
+        "SCIENCE",
+        "objective_decomposed",
+        project_id=project_id,
+        count=len(decomposition["sub_hypotheses"]),
+        extractor=decomposition.get("extractor"),
+    )
+    return json.dumps(decomposition, ensure_ascii=False, indent=2)
+
+
+def set_research_brief(
+    project_id: str,
+    research_brief: str,
+    redecompose: bool = False,
+    use_llm: bool = True,
+) -> str:
+    raw_research_brief = str(research_brief or "")
+    if not raw_research_brief.strip():
+        raise ValueError("research_brief must contain the complete original task instructions.")
+    project = load_project(project_id)
+    project["research_brief"] = raw_research_brief
+    project["research_brief_source"] = "verbatim_user_prompt"
+    project["updatedAt"] = time.time()
+    save_project(project)
+    result: dict[str, Any] = {
+        "project_id": project_id,
+        "research_brief_chars": len(raw_research_brief),
+        "research_brief_source": "verbatim_user_prompt",
+        "redecomposed": False,
+    }
+    if redecompose:
+        decomposition = json.loads(decompose_research_objective(project_id, use_llm=use_llm))
+        result["redecomposed"] = True
+        result["objective_decomposition"] = decomposition
+    log_event("SCIENCE", "research_brief_saved", project_id=project_id, chars=len(raw_research_brief), redecompose=redecompose)
+    return json.dumps(result, ensure_ascii=False, indent=2)
+
+
+def build_objective_decomposition(
+    objective: str,
+    domain: str = "",
+    research_brief: str = "",
+    max_subhypotheses: int = 6,
+    use_llm: bool = True,
+) -> dict[str, Any]:
+    clean_objective = normalize_space(objective)
+    clean_domain = normalize_space(domain)
+    raw_research_brief = str(research_brief or objective)
+    if not clean_objective:
+        raise ValueError("A non-empty research objective is required before decomposition.")
+    raw: dict[str, Any] = {}
+    extractor = "heuristic"
+    llm_error = ""
+    if use_llm:
+        try:
+            raw = decompose_objective_with_llm(
+                clean_objective,
+                clean_domain,
+                raw_research_brief,
+                max_subhypotheses,
+            )
+            extractor = "llm"
+        except Exception as exc:
+            llm_error = str(exc)
+            log_event("WARN", "objective_decomposition_llm_failed", error=llm_error[:240])
+    sub_hypotheses = normalize_sub_hypotheses(
+        raw.get("sub_hypotheses") if isinstance(raw, dict) else [],
+        objective=clean_objective,
+        domain=clean_domain,
+        max_subhypotheses=max_subhypotheses,
+    )
+    if not sub_hypotheses:
+        sub_hypotheses = heuristic_sub_hypotheses(clean_objective, clean_domain, max_subhypotheses)
+        extractor = "heuristic_fallback" if llm_error else "heuristic"
+    decomposition = {
+        "objective": clean_objective,
+        "domain": clean_domain,
+        "research_brief": raw_research_brief,
+        "research_brief_source": "verbatim_project_brief" if research_brief else "objective_fallback",
+        "status": "ready_for_subhypothesis_retrieval" if sub_hypotheses else "needs_human_decomposition",
+        "extractor": extractor,
+        "sub_hypotheses": sub_hypotheses,
+        "combination_hypothesis": normalize_combination_hypothesis(raw.get("combination_hypothesis") if isinstance(raw, dict) else {}, sub_hypotheses),
+        "execution_constraints": normalize_execution_constraints(raw.get("execution_constraints") if isinstance(raw, dict) else {}),
+        "decomposition_rules": [
+            "Each sub-hypothesis must expose an intervention, observable outcome, falsification condition, and evidence window.",
+            "A combined conclusion is admissible only after the relevant component hypotheses are independently evaluated.",
+            "Missing quantitative bounds remain explicitly unresolved; they must not be fabricated from the objective.",
+        ],
+        "createdAt": time.time(),
+    }
+    if llm_error:
+        decomposition["llm_error"] = llm_error
+    return decomposition
+
+
+def decompose_objective_with_llm(
+    objective: str,
+    domain: str,
+    research_brief: str,
+    max_subhypotheses: int,
+) -> dict[str, Any]:
+    try:
+        from ._llm import call_llm_json
+    except ImportError:
+        from _llm import call_llm_json
+    schema = {
+        "sub_hypotheses": [
+            {
+                "id": "SH1",
+                "focus": "one mechanism or independently manipulable factor",
+                "causal_chain": ["trigger", "intermediate mechanism", "observable outcome"],
+                "independent_variable": "manipulated variable",
+                "dependent_variables": ["quantitative readout"],
+                "controls": ["matched control or confounder"],
+                "quantifiable_bounds": "only bounds stated in the objective or empty string",
+                "threshold_to_test": "specific threshold or empty string",
+                "falsification_condition": "result that would refute the chain",
+                "retrieval_query": "English-only precise retrieval query for this mechanism; no Chinese characters or Boolean syntax",
+                "evidence_window": {
+                    "P0_latest_preprint": "recent preprint evidence requirement",
+                    "P1_recent_primary": "recent primary-study requirement",
+                    "P2_mechanism_or_theory": "mechanistic or theoretical evidence requirement"
+                },
+                "alternative_mechanisms": ["competing explanation"]
+            }
+        ],
+        "combination_hypothesis": {
+            "statement": "conditional synthesis across independently tested components",
+            "required_sub_hypothesis_ids": ["SH1"],
+            "integration_test": "test that distinguishes additive from coupled effects"
+        },
+        "execution_constraints": {
+            "retrieval": ["verbatim task constraints for sources, required coverage, and exclusions"],
+            "gap_detection": ["verbatim task constraints for high-value gaps and forbidden pseudo-gaps"],
+            "hypothesis": ["verbatim task constraints for admissible claims and required falsification"],
+            "verification": ["verbatim task constraints for audits, regime shifts, and final decisions"],
+        },
+    }
+    prompt = (
+        "Decompose the supplied composite scientific objective into independently falsifiable causal sub-hypotheses. "
+        "The raw task brief below is authoritative and must be read in full before planning. Do not summarize it away, ignore explicit source restrictions, or replace its required coverage with a generic domain search. "
+        "Do not restate the objective as a single broad hypothesis. Each item must isolate one manipulable mechanism, "
+        "name a measurable outcome, specify what would falsify it, and give a focused English-only evidence-retrieval query. "
+        "The retrieval_query field is sent verbatim to Semantic Scholar, arXiv, and PubMed: it must use 4-12 English academic keywords or phrases, contain no Chinese characters, and omit Boolean operators such as AND/OR. "
+        "Preserve numeric thresholds only when supplied by the user; otherwise leave them empty. "
+        "Do not invent papers, measurements, effect sizes, or domain facts. "
+        f"Return at most {max_subhypotheses} items and JSON only.\n\n"
+        f"Domain: {domain}\nObjective: {objective}\n\n"
+        f"Raw task brief (verbatim and authoritative):\n{research_brief}\n\n"
+        f"Schema:\n{json.dumps(schema, ensure_ascii=False, indent=2)}"
+    )
+    return call_llm_json(
+        system="You are a scientific principal investigator who converts composite objectives into causal, falsifiable research units.",
+        prompt=prompt,
+        max_tokens=4800,
+        fallback_list_key="sub_hypotheses",
+    )
+
+
+def normalize_sub_hypotheses(
+    raw_items: Any,
+    *,
+    objective: str,
+    domain: str,
+    max_subhypotheses: int,
+) -> list[dict[str, Any]]:
+    items = raw_items if isinstance(raw_items, list) else []
+    normalized: list[dict[str, Any]] = []
+    for item in items:
+        if not isinstance(item, dict):
+            continue
+        focus = normalize_space(str(item.get("focus") or item.get("domain") or item.get("mechanism") or ""))
+        if not focus:
+            continue
+        causal_chain = normalize_text_list(item.get("causal_chain") or item.get("causal_steps"))
+        independent_variable = normalize_space(str(item.get("independent_variable") or item.get("intervention") or ""))
+        dependent_variables = normalize_text_list(item.get("dependent_variables") or item.get("dependent_variable") or item.get("observables"))
+        threshold = normalize_space(str(item.get("threshold_to_test") or item.get("threshold") or ""))
+        bounds = normalize_space(str(item.get("quantifiable_bounds") or item.get("bounds") or ""))
+        query = normalize_space(str(item.get("retrieval_query") or item.get("query") or ""))
+        if not query:
+            query = focused_subhypothesis_query(domain, focus, causal_chain, independent_variable, dependent_variables)
+        normalized.append(
+            {
+                "id": f"SH{len(normalized) + 1}",
+                "focus": focus,
+                "causal_chain": causal_chain,
+                "independent_variable": independent_variable,
+                "dependent_variables": dependent_variables,
+                "controls": normalize_text_list(item.get("controls") or item.get("control_variables")),
+                "quantifiable_bounds": bounds,
+                "threshold_to_test": threshold,
+                "falsification_condition": normalize_space(str(item.get("falsification_condition") or "")) or default_falsification_condition(focus, dependent_variables),
+                "retrieval_query": query,
+                "query_variants": focused_query_variants(query, focus, domain),
+                "evidence_window": normalize_evidence_window(item.get("evidence_window")),
+                "alternative_mechanisms": normalize_text_list(item.get("alternative_mechanisms")),
+                "status": "pending_retrieval",
+                "source_objective": objective,
+            }
+        )
+        if len(normalized) >= max_subhypotheses:
+            break
+    return normalized
+
+
+def heuristic_sub_hypotheses(objective: str, domain: str, max_subhypotheses: int) -> list[dict[str, Any]]:
+    components = objective_components(objective, max_subhypotheses)
+    return [
+        {
+            "id": f"SH{index}",
+            "focus": component,
+            "causal_chain": [],
+            "independent_variable": "",
+            "dependent_variables": [],
+            "controls": [],
+            "quantifiable_bounds": "",
+            "threshold_to_test": "",
+            "falsification_condition": default_falsification_condition(component, []),
+            "retrieval_query": focused_subhypothesis_query(domain, component, [], "", []),
+            "query_variants": focused_query_variants("", component, domain),
+            "evidence_window": normalize_evidence_window({}),
+            "alternative_mechanisms": [],
+            "status": "pending_retrieval_needs_causal_specification",
+            "source_objective": objective,
+        }
+        for index, component in enumerate(components, 1)
+    ]
+
+
+def objective_components(objective: str, max_subhypotheses: int) -> list[str]:
+    prefix = re.split(r"是否|能否|would|whether", objective, maxsplit=1, flags=re.IGNORECASE)[0]
+    candidates = re.split(r"[、,，;；]|以及|并且| and ", prefix, flags=re.IGNORECASE)
+    components: list[str] = []
+    for candidate in candidates:
+        clean = normalize_space(candidate).strip("：:- ")
+        clean = re.sub(r"^(?:研究|探究|评估|验证|分析|the|whether)\s+", "", clean, flags=re.IGNORECASE)
+        if len(clean) < 4 or clean in components:
+            continue
+        components.append(clean)
+        if len(components) >= max_subhypotheses:
+            break
+    return components or [normalize_space(objective)]
+
+
+def normalize_text_list(value: Any) -> list[str]:
+    if isinstance(value, (str, int, float)):
+        value = [value]
+    if not isinstance(value, list):
+        return []
+    output: list[str] = []
+    for item in value:
+        clean = normalize_space(str(item or ""))
+        if clean and clean not in output:
+            output.append(clean)
+    return output
+
+
+def normalize_evidence_window(value: Any) -> dict[str, Any]:
+    supplied = value if isinstance(value, dict) else {}
+    return {
+        "P0_latest_preprint": supplied.get("P0_latest_preprint") or {"minimum": 1, "max_age_months": 12, "purpose": "frontier signal"},
+        "P1_recent_primary": supplied.get("P1_recent_primary") or {"minimum": 2, "max_age_years": 2, "purpose": "recent primary evidence"},
+        "P2_mechanism_or_theory": supplied.get("P2_mechanism_or_theory") or {"minimum": 1, "purpose": "causal mechanism or theory"},
+        "minimum_evidence_types": supplied.get("minimum_evidence_types") or ["observable", "intervention_or_natural_experiment"],
+    }
+
+
+def focused_subhypothesis_query(
+    domain: str,
+    focus: str,
+    causal_chain: list[str],
+    independent_variable: str,
+    dependent_variables: list[str],
+) -> str:
+    terms = [focus, independent_variable, *causal_chain[:2], *dependent_variables[:2], "mechanism", "intervention", "measurement"]
+    return normalize_space(" ".join(item for item in terms if item))
+
+
+def focused_query_variants(query: str, focus: str, domain: str) -> list[str]:
+    base = normalize_space(query or f"{domain} {focus}")
+    variants = [
+        base,
+        normalize_space(f"{domain} {focus} causal mechanism experimental evidence"),
+        normalize_space(f"{focus} intervention observable outcome preprint"),
+    ]
+    return list(dict.fromkeys(item for item in variants if item))
+
+
+def default_falsification_condition(focus: str, dependent_variables: list[str]) -> str:
+    outcome = ", ".join(dependent_variables) if dependent_variables else "the proposed observable outcome"
+    return f"Matched interventions on {focus} do not produce a reproducible directional change in {outcome}, or a competing mechanism explains the result better."
+
+
+def normalize_combination_hypothesis(value: Any, sub_hypotheses: list[dict[str, Any]]) -> dict[str, Any]:
+    payload = value if isinstance(value, dict) else {}
+    valid_ids = [item["id"] for item in sub_hypotheses]
+    required = [str(item) for item in payload.get("required_sub_hypothesis_ids", []) if str(item) in valid_ids]
+    return {
+        "statement": normalize_space(str(payload.get("statement") or "")) or "Synthesize a multi-mechanism conclusion only after the component causal hypotheses have independent evidence.",
+        "required_sub_hypothesis_ids": required or valid_ids,
+        "integration_test": normalize_space(str(payload.get("integration_test") or "")) or "Compare single-factor interventions, joint interventions, and matched controls to distinguish additive from coupled effects.",
+        "status": "blocked_on_component_evidence",
+    }
+
+
+def normalize_execution_constraints(value: Any) -> dict[str, list[str]]:
+    payload = value if isinstance(value, dict) else {}
+    return {
+        name: normalize_text_list(payload.get(name))
+        for name in ("retrieval", "gap_detection", "hypothesis", "verification")
+    }
 
 def list_literature_providers() -> str:
     try:
@@ -598,6 +940,121 @@ def query_plan_from_subspace_map(subspace_map: dict[str, Any], selected_subfield
             }
         )
     return plan
+
+
+def build_serial_subspace_query_plan(
+    domain: str,
+    retrieval_brief: str = "",
+    *,
+    max_core_rounds: int = 8,
+    boundary_extension_rounds: int = 3,
+    use_llm: bool = False,
+    focus_branches: list[str] | None = None,
+    subspace_map: dict[str, Any] | None = None,
+) -> dict[str, Any]:
+    """Create an auditable serial plan from the full research brief.
+
+    The brief is deliberately retained for decomposition, while provider calls
+    later receive only the concise keyword query for one subspace at a time.
+    """
+    try:
+        from ._utils import clamp_int, normalize_space, unique_preserve_order
+    except ImportError:
+        from _utils import clamp_int, normalize_space, unique_preserve_order
+    core_limit = clamp_int(max_core_rounds, 6, 10)
+    boundary_limit = clamp_int(boundary_extension_rounds, 3, 4)
+    brief = normalize_space("\n".join(part for part in (domain, retrieval_brief) if normalize_space(part)))
+    if subspace_map:
+        all_branches = query_plan_from_subspace_map(subspace_map, selected_subfields=focus_branches)
+        generated_by = str(subspace_map.get("generated_by") or "subspace_map")
+        # Older DSE maps commonly contain ten entries. When the user has not
+        # narrowed the selection, enrich that map just enough to preserve the
+        # requested 3-4 post-core boundary probes.
+        if not focus_branches and len(all_branches) < core_limit + boundary_limit:
+            generated = query_plan_from_subspace_map(
+                {"subspaces": generate_domain_subspaces(
+                    brief or domain,
+                    max_subspaces=core_limit + boundary_limit,
+                    use_llm=use_llm,
+                )}
+            )
+            known = {normalize_space(str(item.get("query") or "")).lower() for item in all_branches}
+            all_branches.extend(
+                item for item in generated
+                if normalize_space(str(item.get("query") or "")).lower() not in known
+            )
+    else:
+        # Ask the cartographer to read the full user brief, not the later
+        # compact retrieval query. User-specified coverage areas survive here.
+        subspaces = generate_domain_subspaces(
+            brief or domain,
+            max_subspaces=core_limit + boundary_limit,
+            use_llm=use_llm,
+            user_hints=focus_branches,
+        )
+        transient_map = {"subspaces": subspaces}
+        all_branches = query_plan_from_subspace_map(transient_map)
+        generated_by = "full_brief_llm" if use_llm else "full_brief_profile"
+    seen: set[str] = set()
+    branches: list[dict[str, Any]] = []
+    for item in all_branches:
+        key = normalize_space(str(item.get("query") or "")).lower()
+        if not key or key in seen:
+            continue
+        seen.add(key)
+        branches.append(dict(item))
+    # Explicit user focus terms are never silently discarded, even when the
+    # subspace generator chooses a different label for the same science.
+    for raw in focus_branches or []:
+        label = normalize_space(str(raw))
+        key = label.lower()
+        if label and key not in seen:
+            seen.add(key)
+            branches.insert(0, {"branch": label.replace(" ", "_"), "name": label, "query": label, "custom": True})
+    # Governance, markets, supply/logistics, policy and techno-economic work
+    # can be essential context, but they rarely provide the direct causal
+    # evidence needed by a mechanism hypothesis.  Keep them as planned boundary
+    # extensions unless the user explicitly selected the branch.
+    explicit_focus = {normalize_space(str(item)).lower() for item in (focus_branches or []) if normalize_space(str(item))}
+    mechanism_first = [item for item in branches if not _is_system_boundary_branch(item, explicit_focus)]
+    system_boundary = [item for item in branches if _is_system_boundary_branch(item, explicit_focus)]
+    core = mechanism_first[:core_limit]
+    # Do not promote a system-context branch to core merely because the
+    # generated plan happened to contain fewer than ``core_limit`` mechanism
+    # branches. Extra mechanism branches are still preferred before boundary
+    # context when the extension budget is limited.
+    boundary = (mechanism_first[core_limit:] + system_boundary)[:boundary_limit]
+    for item in core:
+        item["phase"] = "core_subspace"
+    for item in boundary:
+        item["phase"] = "boundary_extension"
+    return {
+        "strategy": "serial_subspace_cascade",
+        "generated_by": generated_by,
+        "retrieval_brief": retrieval_brief,
+        "core_rounds_requested": core_limit,
+        "boundary_rounds_requested": boundary_limit,
+        "core_branches": core,
+        "boundary_extensions": boundary,
+        "all_branches": core + boundary,
+        "unplanned_subspaces": max(0, len(branches) - len(core) - len(boundary)),
+    }
+
+
+def _is_system_boundary_branch(item: dict[str, Any], explicit_focus: set[str]) -> bool:
+    """Classify generic system-context branches without hard-coding a science field."""
+    try:
+        from ._utils import normalize_space
+    except ImportError:
+        from _utils import normalize_space
+    label = normalize_space(" ".join(str(item.get(key) or "") for key in ("branch", "name", "query"))).lower()
+    if not label or item.get("custom") or any(focus and focus in label for focus in explicit_focus):
+        return False
+    context_markers = (
+        "supply chain", "logistics", "procurement", "market", "econom", "policy", "governance",
+        "management", "finance", "cost", "lifecycle", "life cycle", "techno-economic", "social acceptance",
+    )
+    return any(marker in label for marker in context_markers)
 
 def build_subspace_selection_interaction(subspace_map: dict[str, Any]) -> dict[str, Any]:
     try:

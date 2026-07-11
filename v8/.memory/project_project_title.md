@@ -1,7 +1,7 @@
 ---
 name: project_title
-description: 项目标题
+description: The title of the research project
 type: project
 ---
 
-4.5V以上高压锂电池机制与稳定性研究
+Can we design and manufacture medicines customized for individual people? 从个体分子表型、剂量响应到可制造性的精准医疗因果证据闭环验证

@@ -104,8 +104,13 @@ def build_knowledge_map(project_id: str, dimension: str = "method-scenario-bench
             }
         )
 
+    causal_evidence_graph = build_causal_evidence_graph(records)
     knowledge_map = {
         "dimension": dimension,
+        "active_papergraph_count": sum(
+            1 for record in project.get("papergraph", [])
+            if isinstance(record, dict) and record.get("active", True) is not False
+        ),
         "main_methods": sorted(method_scenario_coverage),
         "main_scenarios": sorted({scenario for scenarios in method_scenario_coverage.values() for scenario in scenarios}),
         "main_benchmarks": sorted(benchmark_index),
@@ -113,11 +118,13 @@ def build_knowledge_map(project_id: str, dimension: str = "method-scenario-bench
         "benchmark_index": {key: values[:8] for key, values in benchmark_index.items()},
         "method_scenario_benchmark": method_scenario_benchmark,
         "method_scenario_benchmark_triples": triples,
+        "causal_evidence_graph": causal_evidence_graph,
         "claim_type_counts": dict(Counter(item["claim_type"] for triple in triples for item in triple["evidence_type_annotations"])),
         "extraction_repair": repair_report,
     }
     knowledge_map["unknown_summary"] = knowledge_map_unknown_summary(knowledge_map)
     project["knowledge_map"] = knowledge_map
+    project["causal_evidence_graph"] = causal_evidence_graph
     project["coverage_matrix"] = {
         method: {scenario: sorted({ref for refs in benchmarks.values() for ref in refs}) for scenario, benchmarks in scenarios.items()}
         for method, scenarios in method_scenario_benchmark.items()
@@ -126,6 +133,104 @@ def build_knowledge_map(project_id: str, dimension: str = "method-scenario-bench
     save_project(project)
     log_event("SCIENCE", "knowledge_map_built", project_id=project_id, methods=len(method_scenario_coverage), triples=len(triples))
     return json.dumps(knowledge_map, ensure_ascii=False, indent=2)
+
+def build_causal_evidence_graph(records: list[dict[str, Any]]) -> dict[str, Any]:
+    nodes: dict[str, dict[str, Any]] = {}
+    edges: list[dict[str, Any]] = []
+    chains: list[dict[str, Any]] = []
+    edge_keys: set[tuple[str, str, str, str]] = set()
+
+    def add_node(label: Any, node_type: str, citation: str) -> str:
+        text = str(label or "").strip()
+        if not text:
+            return ""
+        key = text.lower()
+        item = nodes.setdefault(
+            key,
+            {"id": f"node_{len(nodes) + 1}", "label": text, "types": [], "supporting_references": []},
+        )
+        if node_type not in item["types"]:
+            item["types"].append(node_type)
+        if citation and citation not in item["supporting_references"]:
+            item["supporting_references"].append(citation)
+        return item["id"]
+
+    def add_edge(source: str, target: str, relation: str, citation: str, excerpt: str, evidence_type: str) -> bool:
+        if not source or not target:
+            return False
+        key = (source, target, relation, citation)
+        if key in edge_keys:
+            return False
+        edge_keys.add(key)
+        edges.append(
+            {
+                "source": source,
+                "target": target,
+                "relation": relation,
+                "citation": citation,
+                "evidence_excerpt": str(excerpt or "")[:600],
+                "evidence_type": evidence_type or "reported_unclassified",
+            }
+        )
+        return True
+
+    for record in records:
+        citation = record_reference(record)
+        raw_chains = record.get("causal_chains", [])
+        for chain in raw_chains if isinstance(raw_chains, list) else []:
+            if not isinstance(chain, dict):
+                continue
+            trigger_id = add_node(chain.get("trigger"), "external_intervention_or_condition", citation)
+            prior_id = trigger_id
+            edge_indexes: list[int] = []
+            raw_steps = chain.get("steps", [])
+            for step in raw_steps if isinstance(raw_steps, list) else []:
+                if isinstance(step, dict):
+                    claim = step.get("claim") or step.get("text")
+                    excerpt = str(step.get("evidence") or "")
+                    evidence_type = str(step.get("evidence_type") or "reported_unclassified")
+                else:
+                    claim = step
+                    excerpt = ""
+                    evidence_type = "reported_unclassified"
+                step_id = add_node(claim, "intermediate_process", citation)
+                if add_edge(prior_id, step_id, "leads_to", citation, excerpt, evidence_type):
+                    edge_indexes.append(len(edges) - 1)
+                prior_id = step_id or prior_id
+            outcome_id = add_node(chain.get("outcome"), "macro_outcome", citation)
+            if add_edge(
+                prior_id,
+                outcome_id,
+                "leads_to",
+                citation,
+                str(chain.get("outcome_evidence") or ""),
+                "reported_unclassified",
+            ):
+                edge_indexes.append(len(edges) - 1)
+            raw_observables = chain.get("observables", [])
+            for observable in raw_observables if isinstance(raw_observables, list) else []:
+                observable_id = add_node(observable, "observable_signal", citation)
+                add_edge(outcome_id, observable_id, "observed_by", citation, "", "observational")
+            raw_interventions = chain.get("interventions", [])
+            for intervention in raw_interventions if isinstance(raw_interventions, list) else []:
+                intervention_id = add_node(intervention, "external_intervention", citation)
+                add_edge(intervention_id, trigger_id, "intervenes_on", citation, "", "experimental")
+            chains.append(
+                {
+                    "chain_id": str(chain.get("chain_id") or f"{record.get('paper_id', 'paper')}_chain_{len(chains) + 1}"),
+                    "paper_id": str(record.get("paper_id") or ""),
+                    "sub_hypothesis_id": str(record.get("retrieval_branch") or ""),
+                    "citation": citation,
+                    "trigger": str(chain.get("trigger") or ""),
+                    "steps": raw_steps if isinstance(raw_steps, list) else [],
+                    "outcome": str(chain.get("outcome") or ""),
+                    "observables": list(raw_observables) if isinstance(raw_observables, list) else [],
+                    "interventions": list(raw_interventions) if isinstance(raw_interventions, list) else [],
+                    "edge_indexes": edge_indexes,
+                }
+            )
+    return {"nodes": list(nodes.values()), "edges": edges, "chains": chains}
+
 
 def build_coverage_matrix(project_id: str) -> str:
     try:
@@ -368,6 +473,124 @@ def first_sentence_with_terms(text: str, terms: tuple[str, ...]) -> str:
             return trim_text(sentence, 260)
     return ""
 
+
+def detect_causal_chain_break_gaps(project: dict[str, Any], limit: int = 4) -> list[dict[str, Any]]:
+    graph = project.get("causal_evidence_graph", {})
+    chains = graph.get("chains", []) if isinstance(graph, dict) else []
+    gaps: list[dict[str, Any]] = []
+    for chain in chains if isinstance(chains, list) else []:
+        if not isinstance(chain, dict):
+            continue
+        missing_kind, evidence_needed = causal_chain_missing_requirement(chain)
+        if not missing_kind:
+            continue
+        sub_hypothesis = subhypothesis_for_causal_chain(project, chain)
+        focus = str(sub_hypothesis.get("focus") or chain.get("trigger") or chain.get("outcome") or "this mechanism")
+        gap = make_gap(
+            gap_type="causal_chain_break",
+            description=(
+                f"Causal chain '{chain.get('chain_id')}' from {chain.get('citation') or 'the PaperGraph'} has a missing {missing_kind}: "
+                f"{focus}. The chain cannot support a causal hypothesis until this link is independently evidenced."
+            ),
+            supporting_references=[str(chain.get("citation") or "")],
+            suggested_research_path=(
+                f"Collect {evidence_needed}; then test an intervention and a matched control that can distinguish this chain from competing explanations."
+            ),
+            value_argument="A broken causal link is a direct, falsifiable research opening rather than a sparse method-scenario combination.",
+            hypothesis_ingredients={
+                "methods": [str(chain.get("trigger") or "")],
+                "scenarios": [focus],
+                "benchmarks": list(chain.get("observables") or []) or [str(chain.get("outcome") or "")],
+                "measurable_metrics": list(chain.get("observables") or []),
+            },
+        )
+        gap["causal_gap"] = {
+            "chain_id": chain.get("chain_id"),
+            "paper_id": chain.get("paper_id"),
+            "missing_kind": missing_kind,
+            "evidence_needed": evidence_needed,
+            "trigger": chain.get("trigger"),
+            "outcome": chain.get("outcome"),
+        }
+        gap["sub_hypothesis_id"] = str(sub_hypothesis.get("id") or "")
+        gap["priority"] = "high" if missing_kind in {"intermediate_mechanism", "observability", "intervention"} else "medium"
+        gaps.append(assess_gap_dict(project, gap))
+        if len(gaps) >= limit:
+            return gaps
+
+    for sub_hypothesis in project.get("sub_hypotheses", []) if isinstance(project.get("sub_hypotheses"), list) else []:
+        if not isinstance(sub_hypothesis, dict) or len(gaps) >= limit:
+            continue
+        if any(
+            subhypothesis_for_causal_chain(project, chain, candidate=sub_hypothesis)
+            for chain in chains
+            if isinstance(chain, dict)
+        ):
+            continue
+        focus = str(sub_hypothesis.get("focus") or sub_hypothesis.get("id") or "sub-hypothesis")
+        gap = make_gap(
+            gap_type="causal_evidence_missing",
+            description=f"Sub-hypothesis {sub_hypothesis.get('id') or ''} ({focus}) has no extracted causal-chain evidence in the current PaperGraph.",
+            supporting_references=[],
+            suggested_research_path="Run the focused retrieval query, require a source-backed trigger-to-outcome chain, and keep the branch out of synthesis until its evidence window is met.",
+            value_argument="This prevents an unsearched objective component from being silently promoted into a combined conclusion.",
+            hypothesis_ingredients={
+                "methods": [str(sub_hypothesis.get("independent_variable") or "")],
+                "scenarios": [focus],
+                "benchmarks": list(sub_hypothesis.get("dependent_variables") or []),
+                "numerical_bounds": [str(sub_hypothesis.get("quantifiable_bounds") or "")],
+            },
+        )
+        gap["sub_hypothesis_id"] = str(sub_hypothesis.get("id") or "")
+        gap["causal_gap"] = {"missing_kind": "causal_evidence_window", "evidence_needed": "at least one source-backed trigger-to-outcome chain with an observable and intervention"}
+        gaps.append(assess_gap_dict(project, gap))
+    return gaps
+
+
+def causal_chain_missing_requirement(chain: dict[str, Any]) -> tuple[str, str]:
+    if not str(chain.get("trigger") or "").strip():
+        return "trigger or boundary condition", "the condition that initiates the proposed mechanism"
+    steps = chain.get("steps", []) if isinstance(chain.get("steps"), list) else []
+    if not steps:
+        return "intermediate_mechanism", "an intermediate mechanism measured or derived between trigger and outcome"
+    if any(isinstance(step, dict) and not str(step.get("evidence") or "").strip() for step in steps):
+        return "step-level evidence", "a source excerpt, measurement, or derivation for each intermediate step"
+    if not str(chain.get("outcome") or "").strip():
+        return "outcome", "a measurable downstream outcome"
+    if not list(chain.get("observables") or []):
+        return "observability", "a concrete observable signal that can reveal the proposed link"
+    if not list(chain.get("interventions") or []):
+        return "intervention", "a feasible intervention or natural experiment that varies the causal input"
+    return "", ""
+
+
+def subhypothesis_for_causal_chain(
+    project: dict[str, Any],
+    chain: dict[str, Any],
+    candidate: dict[str, Any] | None = None,
+) -> dict[str, Any]:
+    candidates = [candidate] if isinstance(candidate, dict) else project.get("sub_hypotheses", [])
+    branch_id = str(chain.get("sub_hypothesis_id") or "")
+    if branch_id:
+        for item in candidates if isinstance(candidates, list) else []:
+            if isinstance(item, dict) and str(item.get("id") or "") == branch_id:
+                return item
+    chain_text = " ".join(
+        [
+            str(chain.get("trigger") or ""),
+            str(chain.get("outcome") or ""),
+            " ".join(str(step.get("claim") or "") for step in chain.get("steps", []) if isinstance(step, dict)),
+        ]
+    ).lower()
+    for item in candidates if isinstance(candidates, list) else []:
+        if not isinstance(item, dict):
+            continue
+        focus = str(item.get("focus") or "").strip().lower()
+        if focus and focus in chain_text:
+            return item
+    return {}
+
+
 def detect_knowledge_gaps(project_id: str, max_gaps: int = 10) -> str:
     try:
         from ._pipeline import supporting_references_for_method_or_scenario
@@ -378,7 +601,7 @@ def detect_knowledge_gaps(project_id: str, max_gaps: int = 10) -> str:
         from _project import load_project, save_project
         from _utils import trim_text
     project = load_project(project_id)
-    if not project.get("knowledge_map"):
+    if not project.get("knowledge_map") or not project.get("causal_evidence_graph"):
         build_knowledge_map(project_id)
         project = load_project(project_id)
 
@@ -390,6 +613,8 @@ def detect_knowledge_gaps(project_id: str, max_gaps: int = 10) -> str:
     gaps: list[dict[str, Any]] = []
     semantic_rejected_gaps: list[dict[str, Any]] = []
     per_type_quota = max(1, max_gaps // 5)
+
+    gaps.extend(detect_causal_chain_break_gaps(project, min(max(1, per_type_quota + 1), max_gaps)))
 
     if len(gaps) < max_gaps:
         gaps.extend(detect_reasoning_gaps(project, min(per_type_quota + 1, max_gaps - len(gaps))))
@@ -569,10 +794,23 @@ def run_tanxi_gap_exploration(
     except ImportError:
         from _project import load_project, save_project
     project = load_project(project_id)
-    if not project.get("knowledge_map"):
+    active_papergraph_count = sum(
+        1 for record in project.get("papergraph", [])
+        if isinstance(record, dict) and record.get("active", True) is not False
+    )
+    map_active_count = (
+        project.get("knowledge_map", {}).get("active_papergraph_count")
+        if isinstance(project.get("knowledge_map"), dict)
+        else None
+    )
+    if not project.get("knowledge_map") or map_active_count != active_papergraph_count:
         build_knowledge_map(project_id)
         project = load_project(project_id)
-    if not project.get("knowledge_gaps"):
+        # Existing gaps may have been derived from records that a later domain
+        # review deactivated, so refresh them with the active corpus.
+        detect_knowledge_gaps(project_id, max_gaps=max_gaps)
+        project = load_project(project_id)
+    elif not project.get("knowledge_gaps"):
         detect_knowledge_gaps(project_id, max_gaps=max_gaps)
         project = load_project(project_id)
     report = tanxi_gap_exploration_report(
@@ -663,6 +901,7 @@ def tanxi_gap_exploration_report(
     ranked = counterfactual_gap_analysis(project, ranked, limit=min(max_gaps, 10))
     for gap in ranked:
         if isinstance(gap, dict):
+            gap["tabi_checks"] = tabi_mechanism_assessment(project, gap)
             # Native TanXi output: a conservative handoff, not an asserted
             # mechanism. Socrates must resolve every field with citations.
             gap["mechanism_draft"] = build_tanxi_mechanism_draft(gap)
@@ -681,7 +920,8 @@ def tanxi_gap_exploration_report(
             "detect_mechanism_issue_gaps": {"priority": "higher_than_matrix_holes"},
             "find_unconnected_pairs": {"target_domain": target_domain},
             "detect_suspended_problems": {"min_citation_threshold": 50},
-            "prioritize_gaps": {"criteria": ["importance", "tractability", "strategic_value"]},
+            "prioritize_gaps": {"criteria": ["importance", "tractability", "strategic_value", "core_mechanism_relevance"]},
+            "tabi_mechanism_audit": {"checks": ["theory_consistency", "counterfactual", "mechanism_competition", "evidence_gap", "testable_prediction", "contradiction_score"]},
             "align_with_strategic_needs": {"strategic_domains": strategic_domains},
         },
         "coverage_analysis": coverage_analysis,
@@ -866,6 +1106,119 @@ def detect_suspended_problems(project: dict[str, Any], min_citation_threshold: i
     problems.sort(key=lambda item: (-int(item["citation_count"]), -int(item["years_unresolved"]), item["problem"]))
     return problems
 
+_MECHANISM_NOISE_TERMS = {
+    "analysis", "approach", "benchmark", "challenge", "comprehensive", "data", "evidence",
+    "framework", "literature", "method", "methods", "model", "paper", "research", "review",
+    "study", "studies", "system", "systems", "validation",
+}
+
+
+def mechanism_core_records(project: dict[str, Any]) -> list[dict[str, Any]]:
+    """Return the evidence corpus eligible to support a scientific mechanism.
+
+    This is deliberately domain-agnostic.  Serial retrieval labels boundary
+    extensions, while the generic domain reviewer labels marginal imports. Both
+    remain visible in a landscape report but cannot define a mechanism gap.
+    """
+    try:
+        from ._pipeline import project_records_for_mapping
+    except ImportError:
+        from _pipeline import project_records_for_mapping
+    records = project_records_for_mapping(project)
+    core = [
+        record for record in records
+        if str(record.get("retrieval_phase") or "") != "boundary_extension"
+        and str(record.get("domain_review_verdict") or "keep") not in {"review", "reject"}
+    ]
+    # Older projects have no provenance. In that case retain all active records
+    # except explicit mismatches rather than silently creating an empty corpus.
+    if not core:
+        core = [record for record in records if str(record.get("domain_review_verdict") or "keep") != "reject"]
+    return core
+
+
+def mechanism_entity_profile(project: dict[str, Any]) -> dict[str, Any]:
+    """Build a project-local entity boundary from core PaperGraph evidence."""
+    try:
+        from ._literature_search import query_terms
+        from ._utils import unique_preserve_order
+    except ImportError:
+        from _literature_search import query_terms
+        from _utils import unique_preserve_order
+    records = mechanism_core_records(project)
+    counts: Counter[str] = Counter()
+    labels: list[str] = []
+    for record in records:
+        labels.extend(
+            str(record.get(field) or "")
+            for field in ("method", "scenario", "benchmark")
+            if str(record.get(field) or "").strip()
+        )
+        text = " ".join(str(record.get(field) or "") for field in (
+            "title", "abstract", "method", "scenario", "benchmark", "contribution", "limitation", "conclusion",
+        ))
+        for term in query_terms(text):
+            if len(term) >= 4 and term not in _MECHANISM_NOISE_TERMS:
+                counts[term] += 1
+    entities = [term for term, _ in counts.most_common(100)]
+    return {
+        "entities": entities,
+        "labels": unique_preserve_order(labels)[:80],
+        "record_count": len(records),
+        "source": "active_core_papergraph",
+    }
+
+
+def mechanism_gap_relevance(project: dict[str, Any], gap: dict[str, Any]) -> dict[str, Any]:
+    """Score whether a gap is grounded in the project's core evidence corpus."""
+    try:
+        from ._literature_search import query_terms
+    except ImportError:
+        from _literature_search import query_terms
+    profile = mechanism_entity_profile(project)
+    gap_text = " ".join(
+        str(gap.get(field) or "") for field in ("description", "gap_description", "value_argument", "suggested_research_path")
+    )
+    ingredients = gap.get("hypothesis_ingredients") if isinstance(gap.get("hypothesis_ingredients"), dict) else {}
+    gap_text += " " + " ".join(str(value) for values in ingredients.values() for value in (values if isinstance(values, list) else [values]))
+    terms = [term for term in query_terms(gap_text) if len(term) >= 4 and term not in _MECHANISM_NOISE_TERMS]
+    core_entities = set(profile["entities"])
+    label_text = " ".join(profile["labels"]).lower()
+    entity_hits = [term for term in terms if term in core_entities]
+    label_hits = [term for term in terms if term in label_text]
+    denominator = max(3, min(12, len(set(terms))))
+    score = min(1.0, (len(set(entity_hits)) + 0.5 * len(set(label_hits))) / denominator)
+    gap_type = str(gap.get("gap_type") or "")
+    semantic = gap.get("semantic_plausibility") if isinstance(gap.get("semantic_plausibility"), dict) else {}
+    verdict = str(semantic.get("verdict") or "")
+    eligible = score >= 0.34 and not (gap_type == "migration" and (score < 0.55 or verdict != "PASS"))
+    return {
+        "score": round(score, 3),
+        "eligible_for_mechanism_hypothesis": eligible,
+        "core_entity_hits": sorted(set(entity_hits))[:12],
+        "profile_record_count": profile["record_count"],
+        "reason": (
+            "Gap is grounded in core mechanism evidence."
+            if eligible else "Gap is weakly connected to core mechanism evidence or relies on an unverified cross-domain transfer."
+        ),
+    }
+
+
+def select_mechanism_hypothesis_gaps(project: dict[str, Any], gaps: list[dict[str, Any]], limit: int = 3) -> list[dict[str, Any]]:
+    """Choose distinct, core-grounded gaps for independent MingLi hypotheses."""
+    scored: list[dict[str, Any]] = []
+    for gap in gaps:
+        if not isinstance(gap, dict):
+            continue
+        relevance = gap.get("mechanism_relevance") if isinstance(gap.get("mechanism_relevance"), dict) else mechanism_gap_relevance(project, gap)
+        item = dict(gap)
+        item["mechanism_relevance"] = relevance
+        if relevance.get("eligible_for_mechanism_hypothesis"):
+            scored.append(item)
+    scored.sort(key=lambda item: (-float(item.get("exploration_value_score") or 0), -float(item["mechanism_relevance"].get("score") or 0)))
+    return scored[:max(1, int(limit or 3))]
+
+
 def prioritize_gaps(
     project: dict[str, Any],
     raw_gaps: list[dict[str, Any]],
@@ -882,21 +1235,28 @@ def prioritize_gaps(
             continue
         alignment = align_gap_with_strategic_needs(gap, strategic_domains)
         score, reason = tanxi_gap_priority_score(project, gap, alignment, density_lookup)
-        ranked.append(
+        relevance = mechanism_gap_relevance(project, gap)
+        adjusted_score = score if relevance["eligible_for_mechanism_hypothesis"] else round(score * 0.18, 3)
+        item = dict(gap)  # Preserve ingredients/TABI/source signals for Socrates and MingLi.
+        item.update(
             {
                 "rank": 0,
                 "gap_id": gap.get("gap_id"),
-                "gap_description": gap.get("description"),
+                "description": gap.get("description") or gap.get("gap_description") or "",
+                "gap_description": gap.get("description") or gap.get("gap_description") or "",
                 "gap_type": gap.get("gap_type"),
-                "exploration_value_score": score,
-                "importance": importance_label(score),
+                "exploration_value_score": adjusted_score,
+                "raw_exploration_value_score": score,
+                "importance": importance_label(adjusted_score),
                 "tractability": gap.get("feasibility", "medium"),
                 "strategic_alignment": alignment,
                 "supporting_references": refs[:5],
                 "recommended_approach": gap.get("suggested_research_path") or "Design a focused validation study with explicit baselines and failure criteria.",
-                "ranking_reason": reason,
+                "ranking_reason": reason + " " + relevance["reason"],
+                "mechanism_relevance": relevance,
             }
         )
+        ranked.append(item)
     ranked.sort(key=lambda item: (-float(item["exploration_value_score"]), item.get("gap_description", "")))
     for index, item in enumerate(ranked[:max_gaps], 1):
         item["rank"] = index
@@ -3068,6 +3428,89 @@ def extract_evidence_pairs_from_records(project, limit=30):
     return pairs[:limit]
 
 
+def tabi_mechanism_assessment(project: dict[str, Any], gap: dict[str, Any]) -> dict[str, Any]:
+    """Audit whether a TABI gap contains an actual theory/evidence tension.
+
+    The function never invents a quantitative prediction.  It reports a
+    substantive TABI result only when the local evidence includes both a
+    theory/model claim and an empirical/observational claim; otherwise it
+    records exactly which evidence class must be retrieved next.
+    """
+    try:
+        from ._utils import trim_text, unique_preserve_order
+    except ImportError:
+        from _utils import trim_text, unique_preserve_order
+    refs = {str(ref) for ref in gap.get("supporting_references", []) if str(ref)}
+    records = mechanism_core_records(project)
+    selected = [
+        record for record in records
+        if not refs or str(record.get("citation") or record.get("title") or "") in refs
+    ]
+    if not selected:
+        selected = records[:8]
+    theory_markers = ("theory", "theoretical", "model", "simulation", "computed", "calculated", "predicted")
+    empirical_markers = ("experiment", "experimental", "measured", "observed", "operando", "in situ", "characterized", "data")
+    theory, empirical, mechanisms = [], [], []
+    for record in selected:
+        text = " ".join(str(record.get(field) or "") for field in ("abstract", "contribution", "conclusion", "limitation"))
+        lowered = text.lower()
+        citation = str(record.get("citation") or record.get("title") or "")
+        excerpt = trim_text(text, 300)
+        if any(marker in lowered for marker in theory_markers):
+            theory.append({"citation": citation, "excerpt": excerpt})
+        if any(marker in lowered for marker in empirical_markers):
+            empirical.append({"citation": citation, "excerpt": excerpt})
+        mechanism = str(record.get("method") or record.get("scenario") or "").strip()
+        if mechanism:
+            mechanisms.append(mechanism)
+    gap_type = str(gap.get("gap_type") or "")
+    explicit_tension = gap_type in {"contradiction", "anomaly", "implicit_tabi"} or "contradict" in str(gap.get("description") or "").lower()
+    evidence_gap: list[str] = []
+    if not theory:
+        evidence_gap.append("No theory/model source is linked to this gap.")
+    if not empirical:
+        evidence_gap.append("No empirical/observational source is linked to this gap.")
+    if not explicit_tension:
+        evidence_gap.append("The source pair does not yet establish a theory--observation contradiction.")
+    substantive = bool(theory and empirical and explicit_tension)
+    score = min(10, (4 if theory else 0) + (4 if empirical else 0) + (2 if explicit_tension else 0))
+    variable = _first_tabi_variable(gap)
+    return {
+        "theory_consistency": {
+            "status": "tension_detected" if substantive else "insufficient_comparison",
+            "theory_evidence": theory[:2],
+            "empirical_evidence": empirical[:2],
+        },
+        "counterfactual": {
+            "status": "testable" if variable else "needs_variable",
+            "condition": f"Hold confounders fixed and vary {variable}." if variable else "Extract a controllable variable from the linked studies.",
+        },
+        "mechanism_competition": {
+            "candidates": unique_preserve_order(mechanisms)[:3],
+            "status": "compare_candidates" if len(set(mechanisms)) >= 2 else "needs_competing_mechanism_evidence",
+        },
+        "evidence_gap": evidence_gap,
+        "testable_prediction": (
+            f"A parameter-matched intervention on {variable} should discriminate the competing explanations before endpoint performance changes."
+            if variable else "No quantitative prediction is asserted until a controllable variable and matched evidence are retrieved."
+        ),
+        "contradiction_score": score,
+        "substantive": substantive,
+        "required_directed_retrieval": [
+            "theory or simulation prediction", "matched experimental or observational measurement"
+        ] if not substantive else [],
+    }
+
+
+def _first_tabi_variable(gap: dict[str, Any]) -> str:
+    ingredients = gap.get("hypothesis_ingredients") if isinstance(gap.get("hypothesis_ingredients"), dict) else {}
+    for field in ("numerical_bounds", "operating_conditions", "measurable_metrics"):
+        values = ingredients.get(field)
+        if isinstance(values, list) and values and str(values[0]).strip():
+            return str(values[0]).strip()
+    return ""
+
+
 def tabi_abductive_gap_detection(project, max_gaps=8):
     try:
         from ._utils import new_id, normalize_space, trim_text, unique_preserve_order
@@ -3115,6 +3558,7 @@ def tabi_abductive_gap_detection(project, max_gaps=8):
         gap["gap_discovery_method"] = "implicit_tabi"
         gap["confidence_bucket"] = bucket
         gap["tabi_evidence_type"] = pt
+        gap["tabi_checks"] = tabi_mechanism_assessment(project, gap)
         gaps.append(gap)
         if len(gaps) >= max_gaps:
             break
