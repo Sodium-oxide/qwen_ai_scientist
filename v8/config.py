@@ -96,7 +96,7 @@ SCIENCE_ZHIZHI_MAX_IMPORT_TOP_K = int(
     os.environ.get("SCIENCE_ZHIZHI_MAX_IMPORT_TOP_K", "50")
 )
 
-QWEN_MODEL_ID = os.environ.get("QWEN_MODEL_ID", "qwen3.6-max")
+QWEN_MODEL_ID = os.environ.get("QWEN_MODEL_ID", "qwen-plus")
 QWEN_API_KEY = os.environ.get("QWEN_API_KEY") or os.environ.get("DASHSCOPE_API_KEY")
 QWEN_API_BASE = os.environ.get("QWEN_API_BASE") or os.environ.get("DASHSCOPE_API_BASE")
 DEFAULT_LLM_PROVIDER = "qwen" if QWEN_API_KEY else "deepseek"
