@@ -1,0 +1,1219 @@
+{
+  "subspace_map_id": "subspace_1783423483969504900",
+  "domain": "Power System Simulation / 电力系统仿真",
+  "generated_by": "llm",
+  "confidence": 0.85,
+  "createdAt": 1783423483.969532,
+  "providers": [
+    "semantic_scholar",
+    "arxiv"
+  ],
+  "user_hints": [],
+  "subspaces": [
+    {
+      "subspace_id": "electromagnetic_transients_simulation",
+      "name": "Electromagnetic Transients Simulation",
+      "aliases": [
+        "EMT",
+        "电磁暂态仿真",
+        "EMTP"
+      ],
+      "description": "High-fidelity time-domain simulation of fast electrical transients (microsecond to millisecond scale), including switching surges, lightning strikes, and converter dynamics.",
+      "parent": "",
+      "keywords": [
+        "EMT simulation",
+        "ATP-EMTP",
+        "PSCAD EMT",
+        "switching transients",
+        "lightning surge",
+        "IGBT modeling",
+        "frequency-dependent line models",
+        "real-time EMT"
+      ],
+      "seed_papers": [
+        "IEEE Task Force on Benchmark Systems for EMT Simulation (2019)",
+        "Martinez et al., 'EMT Modeling of HVDC Converters', IEEE TPWRS 2021"
+      ],
+      "maturity": "mature",
+      "estimated_density": "high",
+      "strategic_importance": 9,
+      "search_strategy": "must_include",
+      "generated_by": "llm",
+      "probe_query": "EMT simulation ATP-EMTP PSCAD EMT switching transients lightning surge IGBT modeling",
+      "probe_hit_count": 7,
+      "recent_hit_count": 5,
+      "high_impact_hit_count": 0,
+      "suggested_quota": 3,
+      "coverage_status": "probe_covered"
+    },
+    {
+      "subspace_id": "electromechanical_transient_simulation",
+      "name": "Electromechanical Transient Simulation",
+      "aliases": [
+        "EMT (electromechanical)",
+        "暂态稳定仿真",
+        "RMS simulation"
+      ],
+      "description": "Quasi-steady-state time-domain simulation (tens of milliseconds to seconds) focusing on rotor angle stability, governor/turbine dynamics, and protection system interactions.",
+      "parent": "",
+      "keywords": [
+        "electromechanical transients",
+        "RMS simulation",
+        "transient stability",
+        "generator swing equations",
+        "power system stabilizers",
+        "IEC 61970 CIM",
+        "PSSE",
+        "DIgSILENT PowerFactory"
+      ],
+      "seed_papers": [
+        "Kundur et al., 'Power System Stability and Control', 1994 (Ch. 12–14)",
+        "IEEE Std 1547.1-2020 Annex B"
+      ],
+      "maturity": "mature",
+      "estimated_density": "low",
+      "strategic_importance": 10,
+      "search_strategy": "must_include",
+      "generated_by": "llm",
+      "probe_query": "electromechanical transients RMS simulation transient stability generator swing equations power system stabilizers IEC 61970 CIM",
+      "probe_hit_count": 2,
+      "recent_hit_count": 0,
+      "high_impact_hit_count": 0,
+      "suggested_quota": 2,
+      "coverage_status": "probe_covered"
+    },
+    {
+      "subspace_id": "phasor_measurement_unit_based_real_time_simulation",
+      "name": "Phasor Measurement Unit–Based Real-Time Simulation",
+      "aliases": [
+        "PMU-HIL",
+        "hardware-in-the-loop with PMUs",
+        "广域实时仿真"
+      ],
+      "description": "Closed-loop co-simulation integrating physical PMU hardware or emulated PMU streams with real-time digital simulators for wide-area monitoring and control validation.",
+      "parent": "",
+      "keywords": [
+        "PMU-HIL",
+        "RTDS-PMU interface",
+        "synchrophasor-in-the-loop",
+        "wide-area damping control",
+        "FNET/GRIDLAB integration",
+        "IEEE C37.118 compliance"
+      ],
+      "seed_papers": [
+        "Zhao et al., 'PMU-Based Real-Time Simulation for WAMS Validation', IEEE TSG 2020",
+        "Huang et al., 'Cyber-Physical HIL Testbed for PMU Applications', EPES 2022"
+      ],
+      "maturity": "growing",
+      "estimated_density": "unknown",
+      "strategic_importance": 9,
+      "search_strategy": "must_include",
+      "generated_by": "llm",
+      "probe_query": "PMU-HIL RTDS-PMU interface synchrophasor-in-the-loop wide-area damping control FNET/GRIDLAB integration IEEE C37.118 compliance",
+      "probe_hit_count": 0,
+      "recent_hit_count": 0,
+      "high_impact_hit_count": 0,
+      "suggested_quota": 2,
+      "coverage_status": "uncovered"
+    },
+    {
+      "subspace_id": "digital_twin_for_power_systems",
+      "name": "Digital Twin for Power Systems",
+      "aliases": [
+        "power system digital twin",
+        "电网数字孪生",
+        "DTS++"
+      ],
+      "description": "Persistent, synchronized virtual replicas of physical grids integrating live SCADA/PMU data, physics-based models, and ML-driven forecasting for predictive operation and scenario rehearsal.",
+      "parent": "",
+      "keywords": [
+        "digital twin",
+        "grid digital twin",
+        "model-data fusion",
+        "cyber-physical synchronization",
+        "OPC UA + FMU",
+        "ISO-NE Digital Twin Pilot",
+        "asset digital twin"
+      ],
+      "seed_papers": [
+        "Liu et al., 'A Framework for Power System Digital Twins', IEEE TSG 2023",
+        "EPRI Report 3002012231, 'Digital Twin Roadmap for Transmission Systems', 2022"
+      ],
+      "maturity": "emerging",
+      "estimated_density": "unknown",
+      "strategic_importance": 10,
+      "search_strategy": "must_include",
+      "generated_by": "llm",
+      "probe_query": "digital twin grid digital twin model-data fusion cyber-physical synchronization OPC UA + FMU ISO-NE Digital Twin Pilot",
+      "probe_hit_count": 0,
+      "recent_hit_count": 0,
+      "high_impact_hit_count": 0,
+      "suggested_quota": 2,
+      "coverage_status": "uncovered"
+    },
+    {
+      "subspace_id": "high_performance_computing_for_power_flow",
+      "name": "High-Performance Computing for Power Flow",
+      "aliases": [
+        "HPC power flow",
+        "并行潮流计算",
+        "GPU-accelerated load flow"
+      ],
+      "description": "Scalable numerical methods leveraging GPUs, distributed memory clusters, or domain decomposition to solve large-scale AC/DC optimal power flow and stochastic security-constrained OPF.",
+      "parent": "",
+      "keywords": [
+        "GPU power flow",
+        "distributed OPF",
+        "parallel Newton-Raphson",
+        "graph neural network OPF",
+        "MATPOWER-GPU",
+        "GridPACK",
+        "PETSc-based solvers"
+      ],
+      "seed_papers": [
+        "Jiang et al., 'GPU-Accelerated AC Optimal Power Flow', IEEE TPWRS 2021",
+        "Chen et al., 'Distributed Consensus OPF Using ADMM', IEEE TSG 2019"
+      ],
+      "maturity": "growing",
+      "estimated_density": "unknown",
+      "strategic_importance": 8,
+      "search_strategy": "nice_to_have",
+      "generated_by": "llm",
+      "probe_query": "GPU power flow distributed OPF parallel Newton-Raphson graph neural network OPF MATPOWER-GPU GridPACK",
+      "probe_hit_count": 0,
+      "recent_hit_count": 0,
+      "high_impact_hit_count": 0,
+      "suggested_quota": 2,
+      "coverage_status": "uncovered"
+    },
+    {
+      "subspace_id": "model_order_reduction_for_dynamic_simulation",
+      "name": "Model Order Reduction for Dynamic Simulation",
+      "aliases": [
+        "MOR for power systems",
+        "降阶建模",
+        "POD, DMD, balanced truncation"
+      ],
+      "description": "Mathematical techniques (e.g., POD, DMD, Krylov subspace) to compress high-fidelity dynamic models while preserving stability, passivity, and input-output behavior for faster transient studies.",
+      "parent": "",
+      "keywords": [
+        "model order reduction",
+        "proper orthogonal decomposition",
+        "dynamic mode decomposition",
+        "Krylov subspace projection",
+        "reduced-order VSC-HVDC model",
+        "structure-preserving MOR"
+      ],
+      "seed_papers": [
+        "Bai et al., 'Physics-Informed DMD for Power System Oscillations', IEEE TPWRS 2022",
+        "Rommes & Feng, 'Computing Low-Rank Approximations of Large-Scale Power System Models', SIAM J. Sci. Comput. 2008"
+      ],
+      "maturity": "growing",
+      "estimated_density": "unknown",
+      "strategic_importance": 7,
+      "search_strategy": "nice_to_have",
+      "generated_by": "llm",
+      "probe_query": "model order reduction proper orthogonal decomposition dynamic mode decomposition Krylov subspace projection reduced-order VSC-HVDC model structure-preserving MOR",
+      "probe_hit_count": 0,
+      "recent_hit_count": 0,
+      "high_impact_hit_count": 0,
+      "suggested_quota": 2,
+      "coverage_status": "uncovered"
+    },
+    {
+      "subspace_id": "renewable_integrated_grid_simulation",
+      "name": "Renewable-Integrated Grid Simulation",
+      "aliases": [
+        "inverter-based resource modeling",
+        "IBR simulation",
+        "新能源并网仿真"
+      ],
+      "description": "Specialized modeling and co-simulation frameworks for grid-forming/grid-following inverters, wind/solar plant controllers, and stability analysis under low-inertia conditions.",
+      "parent": "",
+      "keywords": [
+        "grid-forming inverter",
+        "IBR modeling",
+        "short-circuit ratio",
+        "sub-synchronous resonance",
+        "virtual inertia",
+        "IEEE 1547-2018 compliance",
+        "PQ/PV/Pf droop models"
+      ],
+      "seed_papers": [
+        "Ulbig et al., 'Foundations of Power System Stability with Inverter-Based Resources', IEEE TPS 2022",
+        "NERC Report PRC-024-2, 'IBR Interconnection Requirements', 2023"
+      ],
+      "maturity": "growing",
+      "estimated_density": "unknown",
+      "strategic_importance": 10,
+      "search_strategy": "must_include",
+      "generated_by": "llm",
+      "probe_query": "grid-forming inverter IBR modeling short-circuit ratio sub-synchronous resonance virtual inertia IEEE 1547-2018 compliance",
+      "probe_hit_count": 0,
+      "recent_hit_count": 0,
+      "high_impact_hit_count": 0,
+      "suggested_quota": 2,
+      "coverage_status": "uncovered"
+    },
+    {
+      "subspace_id": "cyber_physical_security_simulation",
+      "name": "Cyber-Physical Security Simulation",
+      "aliases": [
+        "CPS security testing",
+        "电力系统网络安全仿真",
+        "attack-in-the-loop"
+      ],
+      "description": "Integrated simulation of power system dynamics with communication networks and SCADA/ICS protocols to assess impact of cyberattacks (e.g., false data injection, DoS) on stability and protection.",
+      "parent": "",
+      "keywords": [
+        "false data injection",
+        "CPS security testbed",
+        "Modbus/TCP attack simulation",
+        "co-simulation of RTDS + NS-3",
+        "IEC 62351",
+        "attack impact quantification",
+        "resilience metrics"
+      ],
+      "seed_papers": [
+        "Yan et al., 'A Co-Simulation Framework for CPS Security Analysis', IEEE TSG 2021",
+        "Zhou et al., 'False Data Injection Attacks Against Wide-Area Monitoring', IEEE TPWRS 2020"
+      ],
+      "maturity": "growing",
+      "estimated_density": "unknown",
+      "strategic_importance": 9,
+      "search_strategy": "must_include",
+      "generated_by": "llm",
+      "probe_query": "false data injection CPS security testbed Modbus/TCP attack simulation co-simulation of RTDS + NS-3 IEC 62351 attack impact quantification",
+      "probe_hit_count": 0,
+      "recent_hit_count": 0,
+      "high_impact_hit_count": 0,
+      "suggested_quota": 2,
+      "coverage_status": "uncovered"
+    }
+  ],
+  "probe_results": [
+    {
+      "subspace_id": "electromagnetic_transients_simulation",
+      "name": "Electromagnetic Transients Simulation",
+      "query": "EMT simulation ATP-EMTP PSCAD EMT switching transients lightning surge IGBT modeling",
+      "probe_queries": [
+        "Electromagnetic Transients Simulation EMT simulation ATP-EMTP PSCAD EMT switching transients",
+        "EMT simulation ATP-EMTP PSCAD EMT switching transients lightning surge IGBT modeling"
+      ],
+      "provider_blocks": [
+        {
+          "provider": "semantic_scholar",
+          "query": "Electromagnetic Transients Simulation EMT simulation ATP-EMTP PSCAD EMT switching transients",
+          "status": "ok",
+          "note": null,
+          "error": null,
+          "result_count": 2
+        },
+        {
+          "provider": "arxiv",
+          "query": "Electromagnetic Transients Simulation EMT simulation ATP-EMTP PSCAD EMT switching transients",
+          "status": "ok",
+          "note": null,
+          "error": null,
+          "result_count": 2
+        },
+        {
+          "provider": "semantic_scholar",
+          "query": "EMT simulation ATP-EMTP PSCAD EMT switching transients lightning surge IGBT modeling",
+          "status": "ok",
+          "note": null,
+          "error": null,
+          "result_count": 2
+        },
+        {
+          "provider": "arxiv",
+          "query": "EMT simulation ATP-EMTP PSCAD EMT switching transients lightning surge IGBT modeling",
+          "status": "ok",
+          "note": null,
+          "error": null,
+          "result_count": 2
+        }
+      ],
+      "hit_count": 7,
+      "recent_count": 5,
+      "high_impact_count": 0,
+      "top_seed_papers": [
+        {
+          "result_index": null,
+          "stratified_layer": "",
+          "stratified_label": "",
+          "query_branch": "",
+          "retrieval_query": "Electromagnetic Transients Simulation EMT simulation ATP-EMTP PSCAD EMT switching transients",
+          "_why_selected": "",
+          "domain_relevance": {},
+          "relevance_score": 0.2962,
+          "relevance_components": {
+            "text_score": 0.328,
+            "recency_score": 1.0,
+            "impact_score": 0.35,
+            "citation_field": "materials_energy",
+            "citation_baseline": 250.0,
+            "venue_score": 0.45,
+            "publication_quality_score": 0.72,
+            "base_score": 0.4114,
+            "text_weight": 0.62,
+            "recency_weight": 0.1,
+            "impact_weight": 0.18,
+            "venue_weight": 0.1
+          },
+          "publication_quality_score": 0.72,
+          "venue_quality": "unverified",
+          "journal_quartile": "",
+          "journal_metric_source": "",
+          "inferred_field": "materials_energy",
+          "quality_flags": [
+            "unverified_venue",
+            "new_paper_protection"
+          ],
+          "quality_criteria": [
+            "venue did not match suspicious, reputable, preprint, or curated quartile tables",
+            "paper is within 2-year protection window; low citations are not treated as low quality"
+          ],
+          "suspicion_type": "",
+          "is_review_like": false,
+          "pyramid_root_score": 0.4927,
+          "matched_query_terms": [
+            "emt",
+            "simulation",
+            "atp-emtp",
+            "switching"
+          ],
+          "title": "ATP-EMTP-Based Energy Storage System Model for High-Performance Transient Simulation in Power Grids",
+          "citation": "L. R. Merchan-Villalba et al. (2025) ATP-EMTP-Based Energy Storage System Model for High-Performance Transient Simulation in Power Grids doi:10.1109/ROPEC68163.2025.11353997",
+          "provider": "semantic_scholar",
+          "year": "2025",
+          "citation_count": 0,
+          "influential_citation_count": 0,
+          "doi": "10.1109/ROPEC68163.2025.11353997",
+          "arxiv_id": "",
+          "url": "https://www.semanticscholar.org/paper/8b3805c9405b5ed3d9d9807582044502b24fdb93",
+          "relevance_reason": "title=3/10, abstract=4/10, citation=3/10, phrase_bonus=0.0, recency=1.0, impact=0.35, venue=0.45, quality=0.72",
+          "quality_reason": "venue did not match suspicious, reputable, preprint, or curated quartile tables; paper is within 2-year protection window; low citations are not treated as low quality"
+        },
+        {
+          "result_index": null,
+          "stratified_layer": "",
+          "stratified_label": "",
+          "query_branch": "",
+          "retrieval_query": "Electromagnetic Transients Simulation EMT simulation ATP-EMTP PSCAD EMT switching transients",
+          "_why_selected": "",
+          "domain_relevance": {},
+          "relevance_score": 0.2765,
+          "relevance_components": {
+            "text_score": 0.284,
+            "recency_score": 1.0,
+            "impact_score": 0.35,
+            "citation_field": "general",
+            "citation_baseline": 500.0,
+            "venue_score": 0.45,
+            "publication_quality_score": 0.72,
+            "base_score": 0.3841,
+            "text_weight": 0.62,
+            "recency_weight": 0.1,
+            "impact_weight": 0.18,
+            "venue_weight": 0.1
+          },
+          "publication_quality_score": 0.72,
+          "venue_quality": "unverified",
+          "journal_quartile": "",
+          "journal_metric_source": "",
+          "inferred_field": "general",
+          "quality_flags": [
+            "unverified_venue",
+            "new_paper_protection"
+          ],
+          "quality_criteria": [
+            "venue did not match suspicious, reputable, preprint, or curated quartile tables",
+            "paper is within 2-year protection window; low citations are not treated as low quality"
+          ],
+          "suspicion_type": "",
+          "is_review_like": false,
+          "pyramid_root_score": 0.473,
+          "matched_query_terms": [
+            "emt",
+            "atp-emtp",
+            "simulation",
+            "transients",
+            "lightning"
+          ],
+          "title": "A Comprehensive Analysis and Modelling of Return Stroke Current Using ATP-EMTP",
+          "citation": "Michail Pitsikalis et al. (2025) A Comprehensive Analysis and Modelling of Return Stroke Current Using ATP-EMTP doi:10.1109/SIPDA68639.2025.11296787",
+          "provider": "semantic_scholar",
+          "year": "2025",
+          "citation_count": 0,
+          "influential_citation_count": 0,
+          "doi": "10.1109/SIPDA68639.2025.11296787",
+          "arxiv_id": "",
+          "url": "https://www.semanticscholar.org/paper/2b4593e772f826d0ece1d99f933993578207ae98",
+          "relevance_reason": "title=2/10, abstract=5/10, citation=2/10, phrase_bonus=0.0, recency=1.0, impact=0.35, venue=0.45, quality=0.72",
+          "quality_reason": "venue did not match suspicious, reputable, preprint, or curated quartile tables; paper is within 2-year protection window; low citations are not treated as low quality"
+        }
+      ]
+    },
+    {
+      "subspace_id": "electromechanical_transient_simulation",
+      "name": "Electromechanical Transient Simulation",
+      "query": "electromechanical transients RMS simulation transient stability generator swing equations power system stabilizers IEC 61970 CIM",
+      "probe_queries": [
+        "Electromechanical Transient Simulation electromechanical transients RMS simulation transient stability generator swing equations",
+        "electromechanical transients RMS simulation transient stability generator swing equations power system stabilizers IEC 61970 CIM"
+      ],
+      "provider_blocks": [
+        {
+          "provider": "semantic_scholar",
+          "query": "Electromechanical Transient Simulation electromechanical transients RMS simulation transient stability generator swing equations",
+          "status": "rate_limited_skipped",
+          "note": null,
+          "error": "Semantic Scholar circuit open; retry_after_seconds=17.5",
+          "result_count": 0
+        },
+        {
+          "provider": "arxiv",
+          "query": "Electromechanical Transient Simulation electromechanical transients RMS simulation transient stability generator swing equations",
+          "status": "ok",
+          "note": null,
+          "error": null,
+          "result_count": 2
+        },
+        {
+          "provider": "semantic_scholar",
+          "query": "electromechanical transients RMS simulation transient stability generator swing equations power system stabilizers IEC 61970 CIM",
+          "status": "rate_limited_skipped",
+          "note": null,
+          "error": "Semantic Scholar circuit open; retry_after_seconds=13.9",
+          "result_count": 0
+        },
+        {
+          "provider": "arxiv",
+          "query": "electromechanical transients RMS simulation transient stability generator swing equations power system stabilizers IEC 61970 CIM",
+          "status": "probe_budget_exhausted",
+          "note": null,
+          "error": null,
+          "result_count": 0
+        }
+      ],
+      "hit_count": 2,
+      "recent_count": 0,
+      "high_impact_count": 0,
+      "top_seed_papers": [
+        {
+          "result_index": null,
+          "stratified_layer": "",
+          "stratified_label": "",
+          "query_branch": "",
+          "retrieval_query": "Electromechanical Transient Simulation electromechanical transients RMS simulation transient stability generator swing equations",
+          "_why_selected": "",
+          "domain_relevance": {},
+          "relevance_score": 0.1543,
+          "relevance_components": {
+            "text_score": 0.3893,
+            "recency_score": 0.45,
+            "impact_score": 0.0,
+            "citation_field": "automation_control",
+            "citation_baseline": 350.0,
+            "venue_score": 0.35,
+            "publication_quality_score": 0.48,
+            "base_score": 0.3214,
+            "text_weight": 0.62,
+            "recency_weight": 0.1,
+            "impact_weight": 0.18,
+            "venue_weight": 0.1
+          },
+          "publication_quality_score": 0.48,
+          "venue_quality": "missing",
+          "journal_quartile": "",
+          "journal_metric_source": "",
+          "inferred_field": "automation_control",
+          "quality_flags": [
+            "missing_venue",
+            "zero_citations_mature_paper"
+          ],
+          "quality_criteria": [
+            "venue metadata is missing",
+            "paper is older than 2 years and has zero Semantic Scholar citations"
+          ],
+          "suspicion_type": "",
+          "is_review_like": false,
+          "pyramid_root_score": 0.2503,
+          "matched_query_terms": [
+            "electromechanical",
+            "simulation",
+            "transient",
+            "power",
+            "system",
+            "transients",
+            "rms",
+            "stability"
+          ],
+          "title": "A Simulation-based Education Approach for the Electromagnetic and Electromechanical Transient Waves in Power Systems",
+          "citation": "Abdulelah Alharbi et al. (2020) A Simulation-based Education Approach for the Electromagnetic and Electromechanical Transient Waves in Power Systems arXiv:2010.12379v2",
+          "provider": "arxiv",
+          "year": "2020",
+          "citation_count": null,
+          "influential_citation_count": null,
+          "doi": "",
+          "arxiv_id": "2010.12379v2",
+          "url": "http://arxiv.org/abs/2010.12379v2",
+          "relevance_reason": "title=5/15, abstract=8/15, citation=5/15, phrase_bonus=0.0, recency=0.45, impact=0.0, venue=0.35, quality=0.48",
+          "quality_reason": "venue metadata is missing; paper is older than 2 years and has zero Semantic Scholar citations"
+        },
+        {
+          "result_index": null,
+          "stratified_layer": "",
+          "stratified_label": "",
+          "query_branch": "",
+          "retrieval_query": "Electromechanical Transient Simulation electromechanical transients RMS simulation transient stability generator swing equations",
+          "_why_selected": "",
+          "domain_relevance": {},
+          "relevance_score": 0.0901,
+          "relevance_components": {
+            "text_score": 0.1333,
+            "recency_score": 0.7,
+            "impact_score": 0.0,
+            "citation_field": "astrophysics",
+            "citation_baseline": 500.0,
+            "venue_score": 0.35,
+            "publication_quality_score": 0.48,
+            "base_score": 0.1877,
+            "text_weight": 0.62,
+            "recency_weight": 0.1,
+            "impact_weight": 0.18,
+            "venue_weight": 0.1
+          },
+          "publication_quality_score": 0.48,
+          "venue_quality": "missing",
+          "journal_quartile": "",
+          "journal_metric_source": "",
+          "inferred_field": "astrophysics",
+          "quality_flags": [
+            "missing_venue",
+            "zero_citations_mature_paper"
+          ],
+          "quality_criteria": [
+            "venue metadata is missing",
+            "paper is older than 2 years and has zero Semantic Scholar citations"
+          ],
+          "suspicion_type": "",
+          "is_review_like": true,
+          "pyramid_root_score": 0.5361,
+          "matched_query_terms": [
+            "transients",
+            "transient",
+            "system"
+          ],
+          "title": "The JCMT Transient Survey: Single Epoch Transients and Variability of Faint Sources",
+          "citation": "Doug Johnstone et al. (2022) The JCMT Transient Survey: Single Epoch Transients and Variability of Faint Sources doi:10.3847/1538-4357/ac8a48",
+          "provider": "arxiv",
+          "year": "2022",
+          "citation_count": null,
+          "influential_citation_count": null,
+          "doi": "10.3847/1538-4357/ac8a48",
+          "arxiv_id": "2208.07815v1",
+          "url": "http://arxiv.org/abs/2208.07815v1",
+          "relevance_reason": "title=2/15, abstract=2/15, citation=2/15, phrase_bonus=0.0, recency=0.7, impact=0.0, venue=0.35, quality=0.48",
+          "quality_reason": "venue metadata is missing; paper is older than 2 years and has zero Semantic Scholar citations"
+        }
+      ]
+    },
+    {
+      "subspace_id": "phasor_measurement_unit_based_real_time_simulation",
+      "name": "Phasor Measurement Unit–Based Real-Time Simulation",
+      "query": "PMU-HIL RTDS-PMU interface synchrophasor-in-the-loop wide-area damping control FNET/GRIDLAB integration IEEE C37.118 compliance",
+      "probe_queries": [
+        "Phasor Measurement Unit–Based Real-Time Simulation PMU-HIL RTDS-PMU interface synchrophasor-in-the-loop wide-area damping control",
+        "PMU-HIL RTDS-PMU interface synchrophasor-in-the-loop wide-area damping control FNET/GRIDLAB integration IEEE C37.118 compliance"
+      ],
+      "provider_blocks": [
+        {
+          "provider": "semantic_scholar",
+          "query": "Phasor Measurement Unit–Based Real-Time Simulation PMU-HIL RTDS-PMU interface synchrophasor-in-the-loop wide-area damping control",
+          "status": "rate_limited_skipped",
+          "note": null,
+          "error": "Semantic Scholar circuit open; retry_after_seconds=13.9",
+          "result_count": 0
+        },
+        {
+          "provider": "arxiv",
+          "query": "Phasor Measurement Unit–Based Real-Time Simulation PMU-HIL RTDS-PMU interface synchrophasor-in-the-loop wide-area damping control",
+          "status": "probe_budget_exhausted",
+          "note": null,
+          "error": null,
+          "result_count": 0
+        },
+        {
+          "provider": "semantic_scholar",
+          "query": "PMU-HIL RTDS-PMU interface synchrophasor-in-the-loop wide-area damping control FNET/GRIDLAB integration IEEE C37.118 compliance",
+          "status": "rate_limited_skipped",
+          "note": null,
+          "error": "Semantic Scholar circuit open; retry_after_seconds=13.9",
+          "result_count": 0
+        },
+        {
+          "provider": "arxiv",
+          "query": "PMU-HIL RTDS-PMU interface synchrophasor-in-the-loop wide-area damping control FNET/GRIDLAB integration IEEE C37.118 compliance",
+          "status": "probe_budget_exhausted",
+          "note": null,
+          "error": null,
+          "result_count": 0
+        }
+      ],
+      "hit_count": 0,
+      "recent_count": 0,
+      "high_impact_count": 0,
+      "top_seed_papers": []
+    },
+    {
+      "subspace_id": "digital_twin_for_power_systems",
+      "name": "Digital Twin for Power Systems",
+      "query": "digital twin grid digital twin model-data fusion cyber-physical synchronization OPC UA + FMU ISO-NE Digital Twin Pilot",
+      "probe_queries": [
+        "Digital Twin for Power Systems digital twin grid digital twin model-data fusion cyber-physical synchronization",
+        "digital twin grid digital twin model-data fusion cyber-physical synchronization OPC UA + FMU ISO-NE Digital Twin Pilot"
+      ],
+      "provider_blocks": [
+        {
+          "provider": "semantic_scholar",
+          "query": "Digital Twin for Power Systems digital twin grid digital twin model-data fusion cyber-physical synchronization",
+          "status": "rate_limited_skipped",
+          "note": null,
+          "error": "Semantic Scholar circuit open; retry_after_seconds=13.9",
+          "result_count": 0
+        },
+        {
+          "provider": "arxiv",
+          "query": "Digital Twin for Power Systems digital twin grid digital twin model-data fusion cyber-physical synchronization",
+          "status": "probe_budget_exhausted",
+          "note": null,
+          "error": null,
+          "result_count": 0
+        },
+        {
+          "provider": "semantic_scholar",
+          "query": "digital twin grid digital twin model-data fusion cyber-physical synchronization OPC UA + FMU ISO-NE Digital Twin Pilot",
+          "status": "rate_limited_skipped",
+          "note": null,
+          "error": "Semantic Scholar circuit open; retry_after_seconds=13.9",
+          "result_count": 0
+        },
+        {
+          "provider": "arxiv",
+          "query": "digital twin grid digital twin model-data fusion cyber-physical synchronization OPC UA + FMU ISO-NE Digital Twin Pilot",
+          "status": "probe_budget_exhausted",
+          "note": null,
+          "error": null,
+          "result_count": 0
+        }
+      ],
+      "hit_count": 0,
+      "recent_count": 0,
+      "high_impact_count": 0,
+      "top_seed_papers": []
+    },
+    {
+      "subspace_id": "high_performance_computing_for_power_flow",
+      "name": "High-Performance Computing for Power Flow",
+      "query": "GPU power flow distributed OPF parallel Newton-Raphson graph neural network OPF MATPOWER-GPU GridPACK",
+      "probe_queries": [
+        "High-Performance Computing for Power Flow GPU power flow distributed OPF parallel Newton-Raphson graph neural network OPF",
+        "GPU power flow distributed OPF parallel Newton-Raphson graph neural network OPF MATPOWER-GPU GridPACK"
+      ],
+      "provider_blocks": [
+        {
+          "provider": "semantic_scholar",
+          "query": "High-Performance Computing for Power Flow GPU power flow distributed OPF parallel Newton-Raphson graph neural network OPF",
+          "status": "rate_limited_skipped",
+          "note": null,
+          "error": "Semantic Scholar circuit open; retry_after_seconds=13.9",
+          "result_count": 0
+        },
+        {
+          "provider": "arxiv",
+          "query": "High-Performance Computing for Power Flow GPU power flow distributed OPF parallel Newton-Raphson graph neural network OPF",
+          "status": "probe_budget_exhausted",
+          "note": null,
+          "error": null,
+          "result_count": 0
+        },
+        {
+          "provider": "semantic_scholar",
+          "query": "GPU power flow distributed OPF parallel Newton-Raphson graph neural network OPF MATPOWER-GPU GridPACK",
+          "status": "rate_limited_skipped",
+          "note": null,
+          "error": "Semantic Scholar circuit open; retry_after_seconds=13.9",
+          "result_count": 0
+        },
+        {
+          "provider": "arxiv",
+          "query": "GPU power flow distributed OPF parallel Newton-Raphson graph neural network OPF MATPOWER-GPU GridPACK",
+          "status": "probe_budget_exhausted",
+          "note": null,
+          "error": null,
+          "result_count": 0
+        }
+      ],
+      "hit_count": 0,
+      "recent_count": 0,
+      "high_impact_count": 0,
+      "top_seed_papers": []
+    },
+    {
+      "subspace_id": "model_order_reduction_for_dynamic_simulation",
+      "name": "Model Order Reduction for Dynamic Simulation",
+      "query": "model order reduction proper orthogonal decomposition dynamic mode decomposition Krylov subspace projection reduced-order VSC-HVDC model structure-preserving MOR",
+      "probe_queries": [
+        "Model Order Reduction for Dynamic Simulation model order reduction proper orthogonal decomposition dynamic mode decomposition Krylov subspace projection",
+        "model order reduction proper orthogonal decomposition dynamic mode decomposition Krylov subspace projection reduced-order VSC-HVDC model structure-preserving MOR"
+      ],
+      "provider_blocks": [
+        {
+          "provider": "semantic_scholar",
+          "query": "Model Order Reduction for Dynamic Simulation model order reduction proper orthogonal decomposition dynamic mode decomposition Krylov subspace projection",
+          "status": "rate_limited_skipped",
+          "note": null,
+          "error": "Semantic Scholar circuit open; retry_after_seconds=13.9",
+          "result_count": 0
+        },
+        {
+          "provider": "arxiv",
+          "query": "Model Order Reduction for Dynamic Simulation model order reduction proper orthogonal decomposition dynamic mode decomposition Krylov subspace projection",
+          "status": "probe_budget_exhausted",
+          "note": null,
+          "error": null,
+          "result_count": 0
+        },
+        {
+          "provider": "semantic_scholar",
+          "query": "model order reduction proper orthogonal decomposition dynamic mode decomposition Krylov subspace projection reduced-order VSC-HVDC model structure-preserving MOR",
+          "status": "rate_limited_skipped",
+          "note": null,
+          "error": "Semantic Scholar circuit open; retry_after_seconds=13.9",
+          "result_count": 0
+        },
+        {
+          "provider": "arxiv",
+          "query": "model order reduction proper orthogonal decomposition dynamic mode decomposition Krylov subspace projection reduced-order VSC-HVDC model structure-preserving MOR",
+          "status": "probe_budget_exhausted",
+          "note": null,
+          "error": null,
+          "result_count": 0
+        }
+      ],
+      "hit_count": 0,
+      "recent_count": 0,
+      "high_impact_count": 0,
+      "top_seed_papers": []
+    },
+    {
+      "subspace_id": "renewable_integrated_grid_simulation",
+      "name": "Renewable-Integrated Grid Simulation",
+      "query": "grid-forming inverter IBR modeling short-circuit ratio sub-synchronous resonance virtual inertia IEEE 1547-2018 compliance",
+      "probe_queries": [
+        "Renewable-Integrated Grid Simulation grid-forming inverter IBR modeling short-circuit ratio sub-synchronous resonance",
+        "grid-forming inverter IBR modeling short-circuit ratio sub-synchronous resonance virtual inertia IEEE 1547-2018 compliance"
+      ],
+      "provider_blocks": [
+        {
+          "provider": "semantic_scholar",
+          "query": "Renewable-Integrated Grid Simulation grid-forming inverter IBR modeling short-circuit ratio sub-synchronous resonance",
+          "status": "rate_limited_skipped",
+          "note": null,
+          "error": "Semantic Scholar circuit open; retry_after_seconds=13.9",
+          "result_count": 0
+        },
+        {
+          "provider": "arxiv",
+          "query": "Renewable-Integrated Grid Simulation grid-forming inverter IBR modeling short-circuit ratio sub-synchronous resonance",
+          "status": "probe_budget_exhausted",
+          "note": null,
+          "error": null,
+          "result_count": 0
+        },
+        {
+          "provider": "semantic_scholar",
+          "query": "grid-forming inverter IBR modeling short-circuit ratio sub-synchronous resonance virtual inertia IEEE 1547-2018 compliance",
+          "status": "rate_limited_skipped",
+          "note": null,
+          "error": "Semantic Scholar circuit open; retry_after_seconds=13.9",
+          "result_count": 0
+        },
+        {
+          "provider": "arxiv",
+          "query": "grid-forming inverter IBR modeling short-circuit ratio sub-synchronous resonance virtual inertia IEEE 1547-2018 compliance",
+          "status": "probe_budget_exhausted",
+          "note": null,
+          "error": null,
+          "result_count": 0
+        }
+      ],
+      "hit_count": 0,
+      "recent_count": 0,
+      "high_impact_count": 0,
+      "top_seed_papers": []
+    },
+    {
+      "subspace_id": "cyber_physical_security_simulation",
+      "name": "Cyber-Physical Security Simulation",
+      "query": "false data injection CPS security testbed Modbus/TCP attack simulation co-simulation of RTDS + NS-3 IEC 62351 attack impact quantification",
+      "probe_queries": [
+        "Cyber-Physical Security Simulation false data injection CPS security testbed Modbus/TCP attack simulation co-simulation of RTDS + NS-3",
+        "false data injection CPS security testbed Modbus/TCP attack simulation co-simulation of RTDS + NS-3 IEC 62351 attack impact quantification"
+      ],
+      "provider_blocks": [
+        {
+          "provider": "semantic_scholar",
+          "query": "Cyber-Physical Security Simulation false data injection CPS security testbed Modbus/TCP attack simulation co-simulation of RTDS + NS-3",
+          "status": "rate_limited_skipped",
+          "note": null,
+          "error": "Semantic Scholar circuit open; retry_after_seconds=13.9",
+          "result_count": 0
+        },
+        {
+          "provider": "arxiv",
+          "query": "Cyber-Physical Security Simulation false data injection CPS security testbed Modbus/TCP attack simulation co-simulation of RTDS + NS-3",
+          "status": "probe_budget_exhausted",
+          "note": null,
+          "error": null,
+          "result_count": 0
+        },
+        {
+          "provider": "semantic_scholar",
+          "query": "false data injection CPS security testbed Modbus/TCP attack simulation co-simulation of RTDS + NS-3 IEC 62351 attack impact quantification",
+          "status": "rate_limited_skipped",
+          "note": null,
+          "error": "Semantic Scholar circuit open; retry_after_seconds=13.9",
+          "result_count": 0
+        },
+        {
+          "provider": "arxiv",
+          "query": "false data injection CPS security testbed Modbus/TCP attack simulation co-simulation of RTDS + NS-3 IEC 62351 attack impact quantification",
+          "status": "probe_budget_exhausted",
+          "note": null,
+          "error": null,
+          "result_count": 0
+        }
+      ],
+      "hit_count": 0,
+      "recent_count": 0,
+      "high_impact_count": 0,
+      "top_seed_papers": []
+    }
+  ],
+  "coverage_plan": {
+    "total_subspaces": 8,
+    "covered": 2,
+    "missing": 6,
+    "insufficient": 0,
+    "coverage_rate": 0.25,
+    "missing_details": [
+      {
+        "name": "Phasor Measurement Unit–Based Real-Time Simulation",
+        "keywords": [
+          "PMU-HIL",
+          "RTDS-PMU interface",
+          "synchrophasor-in-the-loop",
+          "wide-area damping control",
+          "FNET/GRIDLAB integration",
+          "IEEE C37.118 compliance"
+        ],
+        "suggested_action": "supplemental_search"
+      },
+      {
+        "name": "Digital Twin for Power Systems",
+        "keywords": [
+          "digital twin",
+          "grid digital twin",
+          "model-data fusion",
+          "cyber-physical synchronization",
+          "OPC UA + FMU",
+          "ISO-NE Digital Twin Pilot"
+        ],
+        "suggested_action": "supplemental_search"
+      },
+      {
+        "name": "High-Performance Computing for Power Flow",
+        "keywords": [
+          "GPU power flow",
+          "distributed OPF",
+          "parallel Newton-Raphson",
+          "graph neural network OPF",
+          "MATPOWER-GPU",
+          "GridPACK"
+        ],
+        "suggested_action": "supplemental_search"
+      },
+      {
+        "name": "Model Order Reduction for Dynamic Simulation",
+        "keywords": [
+          "model order reduction",
+          "proper orthogonal decomposition",
+          "dynamic mode decomposition",
+          "Krylov subspace projection",
+          "reduced-order VSC-HVDC model",
+          "structure-preserving MOR"
+        ],
+        "suggested_action": "supplemental_search"
+      },
+      {
+        "name": "Renewable-Integrated Grid Simulation",
+        "keywords": [
+          "grid-forming inverter",
+          "IBR modeling",
+          "short-circuit ratio",
+          "sub-synchronous resonance",
+          "virtual inertia",
+          "IEEE 1547-2018 compliance"
+        ],
+        "suggested_action": "supplemental_search"
+      },
+      {
+        "name": "Cyber-Physical Security Simulation",
+        "keywords": [
+          "false data injection",
+          "CPS security testbed",
+          "Modbus/TCP attack simulation",
+          "co-simulation of RTDS + NS-3",
+          "IEC 62351",
+          "attack impact quantification"
+        ],
+        "suggested_action": "supplemental_search"
+      }
+    ],
+    "recommendation": "Confirm priority subspaces with the user before running ZhiZhi, then search selected subspaces independently."
+  },
+  "query_plan": [
+    {
+      "branch": "electromagnetic_transients_simulation",
+      "name": "Electromagnetic Transients Simulation",
+      "query": "EMT simulation ATP-EMTP PSCAD EMT switching transients lightning surge IGBT modeling frequency-dependent line models real-time EMT review survey",
+      "quota": 3,
+      "estimated_density": "high",
+      "strategic_importance": 9,
+      "search_strategy": "must_include"
+    },
+    {
+      "branch": "electromechanical_transient_simulation",
+      "name": "Electromechanical Transient Simulation",
+      "query": "electromechanical transients RMS simulation transient stability generator swing equations power system stabilizers IEC 61970 CIM PSSE DIgSILENT PowerFactory review survey",
+      "quota": 2,
+      "estimated_density": "low",
+      "strategic_importance": 10,
+      "search_strategy": "must_include"
+    },
+    {
+      "branch": "phasor_measurement_unit_based_real_time_simulation",
+      "name": "Phasor Measurement Unit–Based Real-Time Simulation",
+      "query": "PMU-HIL RTDS-PMU interface synchrophasor-in-the-loop wide-area damping control FNET/GRIDLAB integration IEEE C37.118 compliance latest recent",
+      "quota": 2,
+      "estimated_density": "unknown",
+      "strategic_importance": 9,
+      "search_strategy": "must_include"
+    },
+    {
+      "branch": "digital_twin_for_power_systems",
+      "name": "Digital Twin for Power Systems",
+      "query": "digital twin grid digital twin model-data fusion cyber-physical synchronization OPC UA + FMU ISO-NE Digital Twin Pilot asset digital twin latest recent",
+      "quota": 2,
+      "estimated_density": "unknown",
+      "strategic_importance": 10,
+      "search_strategy": "must_include"
+    },
+    {
+      "branch": "high_performance_computing_for_power_flow",
+      "name": "High-Performance Computing for Power Flow",
+      "query": "GPU power flow distributed OPF parallel Newton-Raphson graph neural network OPF MATPOWER-GPU GridPACK PETSc-based solvers latest recent",
+      "quota": 2,
+      "estimated_density": "unknown",
+      "strategic_importance": 8,
+      "search_strategy": "nice_to_have"
+    },
+    {
+      "branch": "model_order_reduction_for_dynamic_simulation",
+      "name": "Model Order Reduction for Dynamic Simulation",
+      "query": "model order reduction proper orthogonal decomposition dynamic mode decomposition Krylov subspace projection reduced-order VSC-HVDC model structure-preserving MOR latest recent",
+      "quota": 2,
+      "estimated_density": "unknown",
+      "strategic_importance": 7,
+      "search_strategy": "nice_to_have"
+    },
+    {
+      "branch": "renewable_integrated_grid_simulation",
+      "name": "Renewable-Integrated Grid Simulation",
+      "query": "grid-forming inverter IBR modeling short-circuit ratio sub-synchronous resonance virtual inertia IEEE 1547-2018 compliance PQ/PV/Pf droop models latest recent",
+      "quota": 2,
+      "estimated_density": "unknown",
+      "strategic_importance": 10,
+      "search_strategy": "must_include"
+    },
+    {
+      "branch": "cyber_physical_security_simulation",
+      "name": "Cyber-Physical Security Simulation",
+      "query": "false data injection CPS security testbed Modbus/TCP attack simulation co-simulation of RTDS + NS-3 IEC 62351 attack impact quantification resilience metrics latest recent",
+      "quota": 2,
+      "estimated_density": "unknown",
+      "strategic_importance": 9,
+      "search_strategy": "must_include"
+    }
+  ],
+  "user_interaction": {
+    "needed": true,
+    "type": "pre_retrieval_subspace_selection",
+    "question": "Select the subspaces to prioritize before ZhiZhi imports papers. You can also add custom subspaces.",
+    "options": [
+      {
+        "label": "Electromagnetic Transients Simulation",
+        "subspace_id": "electromagnetic_transients_simulation",
+        "description": "High-fidelity time-domain simulation of fast electrical transients (microsecond to millisecond scale), including switching surges, lightning strikes, and converter dynamics.",
+        "keywords": [
+          "EMT simulation",
+          "ATP-EMTP",
+          "PSCAD EMT",
+          "switching transients",
+          "lightning surge",
+          "IGBT modeling",
+          "frequency-dependent line models",
+          "real-time EMT"
+        ],
+        "probe_hit_count": 7,
+        "estimated_density": "high",
+        "strategic_importance": 9,
+        "recommended": true
+      },
+      {
+        "label": "Electromechanical Transient Simulation",
+        "subspace_id": "electromechanical_transient_simulation",
+        "description": "Quasi-steady-state time-domain simulation (tens of milliseconds to seconds) focusing on rotor angle stability, governor/turbine dynamics, and protection system interactions.",
+        "keywords": [
+          "electromechanical transients",
+          "RMS simulation",
+          "transient stability",
+          "generator swing equations",
+          "power system stabilizers",
+          "IEC 61970 CIM",
+          "PSSE",
+          "DIgSILENT PowerFactory"
+        ],
+        "probe_hit_count": 2,
+        "estimated_density": "low",
+        "strategic_importance": 10,
+        "recommended": true
+      },
+      {
+        "label": "Phasor Measurement Unit–Based Real-Time Simulation",
+        "subspace_id": "phasor_measurement_unit_based_real_time_simulation",
+        "description": "Closed-loop co-simulation integrating physical PMU hardware or emulated PMU streams with real-time digital simulators for wide-area monitoring and control validation.",
+        "keywords": [
+          "PMU-HIL",
+          "RTDS-PMU interface",
+          "synchrophasor-in-the-loop",
+          "wide-area damping control",
+          "FNET/GRIDLAB integration",
+          "IEEE C37.118 compliance"
+        ],
+        "probe_hit_count": 0,
+        "estimated_density": "unknown",
+        "strategic_importance": 9,
+        "recommended": true
+      },
+      {
+        "label": "Digital Twin for Power Systems",
+        "subspace_id": "digital_twin_for_power_systems",
+        "description": "Persistent, synchronized virtual replicas of physical grids integrating live SCADA/PMU data, physics-based models, and ML-driven forecasting for predictive operation and scenario rehearsal.",
+        "keywords": [
+          "digital twin",
+          "grid digital twin",
+          "model-data fusion",
+          "cyber-physical synchronization",
+          "OPC UA + FMU",
+          "ISO-NE Digital Twin Pilot",
+          "asset digital twin"
+        ],
+        "probe_hit_count": 0,
+        "estimated_density": "unknown",
+        "strategic_importance": 10,
+        "recommended": true
+      },
+      {
+        "label": "High-Performance Computing for Power Flow",
+        "subspace_id": "high_performance_computing_for_power_flow",
+        "description": "Scalable numerical methods leveraging GPUs, distributed memory clusters, or domain decomposition to solve large-scale AC/DC optimal power flow and stochastic security-constrained OPF.",
+        "keywords": [
+          "GPU power flow",
+          "distributed OPF",
+          "parallel Newton-Raphson",
+          "graph neural network OPF",
+          "MATPOWER-GPU",
+          "GridPACK",
+          "PETSc-based solvers"
+        ],
+        "probe_hit_count": 0,
+        "estimated_density": "unknown",
+        "strategic_importance": 8,
+        "recommended": true
+      },
+      {
+        "label": "Model Order Reduction for Dynamic Simulation",
+        "subspace_id": "model_order_reduction_for_dynamic_simulation",
+        "description": "Mathematical techniques (e.g., POD, DMD, Krylov subspace) to compress high-fidelity dynamic models while preserving stability, passivity, and input-output behavior for faster transient studies.",
+        "keywords": [
+          "model order reduction",
+          "proper orthogonal decomposition",
+          "dynamic mode decomposition",
+          "Krylov subspace projection",
+          "reduced-order VSC-HVDC model",
+          "structure-preserving MOR"
+        ],
+        "probe_hit_count": 0,
+        "estimated_density": "unknown",
+        "strategic_importance": 7,
+        "recommended": true
+      },
+      {
+        "label": "Renewable-Integrated Grid Simulation",
+        "subspace_id": "renewable_integrated_grid_simulation",
+        "description": "Specialized modeling and co-simulation frameworks for grid-forming/grid-following inverters, wind/solar plant controllers, and stability analysis under low-inertia conditions.",
+        "keywords": [
+          "grid-forming inverter",
+          "IBR modeling",
+          "short-circuit ratio",
+          "sub-synchronous resonance",
+          "virtual inertia",
+          "IEEE 1547-2018 compliance",
+          "PQ/PV/Pf droop models"
+        ],
+        "probe_hit_count": 0,
+        "estimated_density": "unknown",
+        "strategic_importance": 10,
+        "recommended": true
+      },
+      {
+        "label": "Cyber-Physical Security Simulation",
+        "subspace_id": "cyber_physical_security_simulation",
+        "description": "Integrated simulation of power system dynamics with communication networks and SCADA/ICS protocols to assess impact of cyberattacks (e.g., false data injection, DoS) on stability and protection.",
+        "keywords": [
+          "false data injection",
+          "CPS security testbed",
+          "Modbus/TCP attack simulation",
+          "co-simulation of RTDS + NS-3",
+          "IEC 62351",
+          "attack impact quantification",
+          "resilience metrics"
+        ],
+        "probe_hit_count": 0,
+        "estimated_density": "unknown",
+        "strategic_importance": 9,
+        "recommended": true
+      }
+    ],
+    "custom_subspace_input": {
+      "enabled": true,
+      "placeholder": "e.g. Demand Response; EV Charging Coordination; Building Energy Management",
+      "instructions": "If your target subfield is not listed, provide one subspace per line or semicolon-separated. These will be converted into custom retrieval branches."
+    },
+    "continue_with": "Pass subspace_map_id plus selected_subfields, or pass option labels as focus_branches to run_zhizhi_literature_analysis."
+  }
+}

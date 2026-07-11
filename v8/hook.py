@@ -149,6 +149,14 @@ def permission_hook(block: Any) -> str | None:
         if not re.fullmatch(r"[A-Za-z0-9 _.-]{1,64}", server):
             return block_permission(name, "bad_mcp_server_name", server)
 
+    if name in {"create_worktree", "remove_worktree", "keep_worktree"}:
+        worktree_name = str(tool_input.get("name", ""))
+        if not re.fullmatch(r"[A-Za-z0-9._-]{1,64}", worktree_name) or worktree_name in {".", ".."}:
+            return block_permission(name, "bad_worktree_name", worktree_name)
+        if name == "remove_worktree" and bool(tool_input.get("discard_changes")) and not approve(
+            f"Allow removing worktree with discard_changes=true? {worktree_name}"
+        ):
+            return block_permission(name, "user_denied_discard_worktree", worktree_name)
 
     if name == "schedule_cron":
         cron = str(tool_input.get("cron", ""))
@@ -212,6 +220,12 @@ def normalize_tool_name(name: Any) -> str:
         "spawn_subagent": "spawn_subagent",
         "loadskill": "load_skill",
         "load_skill": "load_skill",
+        "createworktree": "create_worktree",
+        "create_worktree": "create_worktree",
+        "removeworktree": "remove_worktree",
+        "remove_worktree": "remove_worktree",
+        "keepworktree": "keep_worktree",
+        "keep_worktree": "keep_worktree",
         "connectmcp": "connect_mcp",
         "connect_mcp": "connect_mcp",
         "schedulecron": "schedule_cron",
@@ -263,9 +277,9 @@ def on_tool_start(block: Any) -> str | None:
     tool_input = block_attr(block, "input", {}) or {}
     TOOL_STARTS[tool_id] = time.perf_counter()
     STATS["tool_calls"] += 1
-    if normalize_tool_name(name) in {"task", "spawn_subagent"}:
+    if normalize_tool_name(name) in {"task", "spawn_subagent", "spawn_teammate"}:
         STATS["subagents"] += 1
-    category = "SUBAGENT" if normalize_tool_name(name) in {"task", "spawn_subagent"} else "TOOL"
+    category = "SUBAGENT" if normalize_tool_name(name) in {"task", "spawn_subagent", "spawn_teammate"} else "TOOL"
     log_event(category, "start", name=name, id=tool_id, input=compact_input(tool_input))
     return None
 
@@ -275,7 +289,7 @@ def on_tool_end(block: Any, output: str) -> str | None:
     tool_id = block_attr(block, "id", "<no-id>")
     start = TOOL_STARTS.pop(tool_id, None)
     elapsed_ms = None if start is None else int((time.perf_counter() - start) * 1000)
-    category = "SUBAGENT" if normalize_tool_name(name) in {"task", "spawn_subagent"} else "TOOL"
+    category = "SUBAGENT" if normalize_tool_name(name) in {"task", "spawn_subagent", "spawn_teammate"} else "TOOL"
     log_event(category, "end", name=name, id=tool_id, chars=len(output), elapsed_ms=elapsed_ms)
     return None
 
@@ -289,9 +303,9 @@ def approve(question: str) -> bool:
 
 def compact_input(tool_input: dict[str, Any]) -> str:
     rendered = repr(tool_input)
-    if len(rendered) <= 1000:
+    if len(rendered) <= 500:
         return rendered
-    return rendered[:1000] + "...[truncated]"
+    return rendered[:500] + "...[truncated]"
 
 
 def register_default_hooks() -> None:

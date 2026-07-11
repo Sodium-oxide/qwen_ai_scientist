@@ -1,6 +1,6 @@
 ---
 name: workspace_path
-description: Local filesystem root for the project
+description: Local project workspace directory
 type: reference
 ---
 

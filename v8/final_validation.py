@@ -5,11 +5,11 @@ import subprocess
 from pathlib import Path
 
 try:
-    from .config import WORKDIR
+    from .config import WORKDIR, WORKTREES_DIR
     from .log import log_event
     from .task_system import load_task
 except ImportError:
-    from config import WORKDIR
+    from config import WORKDIR, WORKTREES_DIR
     from log import log_event
     from task_system import load_task
 
@@ -25,6 +25,7 @@ def extract_task_ids(text: str) -> set[str]:
 
 def validate_before_final(user_input: str, task_ids: set[str]) -> str:
     issues: list[str] = []
+    preferred_roots = task_worktree_roots(task_ids)
 
     for task_id in sorted(task_ids):
         try:
@@ -35,17 +36,17 @@ def validate_before_final(user_input: str, task_ids: set[str]) -> str:
         if task.status != "completed":
             issues.append(
                 f"- Task {task.id} is {task.status}, not completed "
-                f"(owner={task.owner or 'none'})."
+                f"(owner={task.owner or 'none'}, worktree={task.worktree or 'none'})."
             )
 
     expected_paths = expected_python_paths(user_input)
     for rel_path in sorted(expected_paths):
-        if not find_existing_path(rel_path):
-            issues.append(f"- Expected file is missing in workspace: {rel_path}")
+        if not find_existing_path(rel_path, preferred_roots):
+            issues.append(f"- Expected file is missing in workspace/worktrees: {rel_path}")
 
     test_paths = [path for path in sorted(expected_paths) if Path(path).name.startswith("test_")]
     for rel_path in test_paths:
-        existing = find_existing_path(rel_path)
+        existing = find_existing_path(rel_path, preferred_roots)
         if existing is None:
             continue
         pytest_issue = run_pytest(existing.root, existing.relative_path)
@@ -99,6 +100,24 @@ class ExistingPath:
         self.absolute_path = absolute_path
 
 
+def task_worktree_roots(task_ids: set[str]) -> list[Path]:
+    roots: list[Path] = []
+    for task_id in sorted(task_ids):
+        try:
+            task = load_task(task_id)
+        except Exception:
+            continue
+        if not task.worktree:
+            continue
+        try:
+            from .worktree_isolation import resolve_worktree_cwd
+        except ImportError:
+            from worktree_isolation import resolve_worktree_cwd
+        try:
+            roots.append(resolve_worktree_cwd(task.worktree))
+        except Exception as exc:
+            log_event("WARN", "validation_worktree_unavailable", task_id=task.id, worktree=task.worktree, detail=exc)
+    return roots
 
 
 def find_existing_path(rel_path: str, preferred_roots: list[Path] | None = None) -> ExistingPath | None:
@@ -106,6 +125,8 @@ def find_existing_path(rel_path: str, preferred_roots: list[Path] | None = None)
     if not normalized:
         return None
     roots = list(preferred_roots or []) + [WORKDIR]
+    if WORKTREES_DIR.exists():
+        roots.extend(path for path in WORKTREES_DIR.iterdir() if path.is_dir())
 
     seen: set[Path] = set()
     for root in roots:
@@ -138,8 +159,8 @@ def run_pytest(root: Path, rel_path: str) -> str:
     if completed.returncode == 0:
         return ""
     summary = output.strip().replace("\n", "\\n")
-    if len(summary) > 1000:
-        summary = summary[:1000] + "...[truncated]"
+    if len(summary) > 500:
+        summary = summary[:500] + "...[truncated]"
     return f"- Tests failed for {rel_path} under {root}: {summary}"
 
 

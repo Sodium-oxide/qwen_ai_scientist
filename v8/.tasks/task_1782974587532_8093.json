@@ -1,0 +1,13 @@
+{
+  "id": "task_1782974587532_8093",
+  "subject": "B: 为 string_utils 写 pytest 测试",
+  "description": "Owner: bob\n\n在 `v8_eval_target/test_string_utils.py` 为 5 个 string_utils 函数写 pytest 测试。\n\n覆盖要求（≥12 个用例）：\n- reverse: 正常字符串、空串、单字符/含空格\n- is_palindrome: 忽略大小写与非字母数字（如 \"A man, a plan, a canal: Panama\"）、非回文、空串\n- count_words: 正常、多空白分隔、空串\n- capitalize_words: 普通句子、带撇号（如 \"don't stop\"）、空串/纯空白\n- truncate: 不需截断、需要截断、自定义 suffix、max_length 小于等于 suffix 长度\n- 边界与异常：非 str 输入 -> TypeError；truncate 的 max_length < 0 -> ValueError\n\n约束：\n- pytest 风格，函数名 `test_<function>_<case>`\n- 依赖 `import string_utils` 或 `from string_utils import ...`（从 `v8_eval_target` 目录内运行）\n- 遵循 `test_calc.py` / `test_slugify.py` 既有风格\n- 在 worktree 内新增/修改（worktree 名 task-B）\n\n完成条件：\n1. `cd v8_eval_target && python -m pytest -v test_string_utils.py` 全绿\n2. 用例数 >= 12\n3. 用 send_message 向 lead 汇报测试数量 + 全绿输出摘要\n\nBlocked by task A（等待 alice 完成实现后再最终跑测试）。",
+  "status": "completed",
+  "owner": "bob",
+  "worktree": "task-B",
+  "blockedBy": [
+    "task_1782974565441_2312"
+  ],
+  "createdAt": 1782974587.5323713,
+  "updatedAt": 1782974806.1144118
+}

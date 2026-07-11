@@ -145,6 +145,7 @@ def bounded_tool_result_preview(rel: str, chars: int, mode: str, body: str) -> s
 
 def write_file(path: str, content: str, cwd: str | None = None, actor: str = "lead") -> str:
     target = safe_path(path, cwd)
+    enforce_assigned_worktree_write_permission(target, actor)
     target.parent.mkdir(parents=True, exist_ok=True)
     target.write_text(content, encoding="utf-8")
     return f"Wrote {len(content)} characters to {relative(target)}"
@@ -152,12 +153,45 @@ def write_file(path: str, content: str, cwd: str | None = None, actor: str = "le
 
 def edit_file(path: str, old_text: str, new_text: str, cwd: str | None = None, actor: str = "lead") -> str:
     target = safe_path(path, cwd)
+    enforce_assigned_worktree_write_permission(target, actor)
     content = target.read_text(encoding="utf-8", errors="replace")
     if old_text not in content:
         raise ValueError("old_text was not found.")
     updated = content.replace(old_text, new_text, 1)
     target.write_text(updated, encoding="utf-8")
     return f"Replaced one occurrence in {relative(target)}"
+
+
+def enforce_assigned_worktree_write_permission(target: Path, actor: str) -> None:
+    actor_name = normalize_actor(actor)
+    try:
+        from .task_system import load_tasks
+        from .worktree_isolation import resolve_worktree_cwd
+    except ImportError:
+        from task_system import load_tasks
+        from worktree_isolation import resolve_worktree_cwd
+
+    for task in load_tasks():
+        if task.status != "in_progress" or not task.owner or not task.worktree:
+            continue
+        owner = normalize_actor(task.owner)
+        if actor_name == owner:
+            continue
+        try:
+            worktree_root = resolve_worktree_cwd(task.worktree)
+        except Exception:
+            continue
+        if target.resolve().is_relative_to(worktree_root.resolve()):
+            raise PermissionError(
+                "Assigned worktree write blocked: "
+                f"task {task.id} is owned by {task.owner}; actor {actor or 'lead'} "
+                "must ask the owner teammate to modify this worktree."
+            )
+
+
+def normalize_actor(value: str) -> str:
+    raw = str(value or "lead").strip().lower().replace("-", "_").replace(" ", "_")
+    return "".join(char for char in raw if char.isalnum() or char == "_") or "lead"
 
 
 def glob(pattern: str, limit: int = 200, cwd: str | None = None) -> str:
@@ -250,12 +284,83 @@ def complete_task(task_id: str) -> str:
     return task_complete(task_id)
 
 
+def spawn_teammate(name: str, task: str = "") -> str:
+    try:
+        from .agent_teams import spawn_teammate as team_spawn
+    except ImportError:
+        from agent_teams import spawn_teammate as team_spawn
+    return team_spawn(name, task)
 
 
+def send_message(to: str, content: str, type: str = "message") -> str:
+    try:
+        from .agent_teams import LEAD, send_message as team_send
+    except ImportError:
+        from agent_teams import LEAD, send_message as team_send
+    return team_send(LEAD, to, content, type=type)
 
 
+def check_inbox(agent: str = "lead") -> str:
+    try:
+        from .agent_teams import check_inbox as team_check
+    except ImportError:
+        from agent_teams import check_inbox as team_check
+    return team_check(agent)
 
 
+def request_shutdown(teammate: str, reason: str = "") -> str:
+    try:
+        from .agent_teams import request_shutdown as team_shutdown
+    except ImportError:
+        from agent_teams import request_shutdown as team_shutdown
+    return team_shutdown(teammate, reason)
+
+
+def request_plan(teammate: str, prompt: str) -> str:
+    try:
+        from .agent_teams import request_plan as team_plan
+    except ImportError:
+        from agent_teams import request_plan as team_plan
+    return team_plan(teammate, prompt)
+
+
+def review_plan(request_id: str, approve: bool, feedback: str = "") -> str:
+    try:
+        from .agent_teams import review_plan as team_review
+    except ImportError:
+        from agent_teams import review_plan as team_review
+    return team_review(request_id, approve, feedback)
+
+
+def create_worktree(name: str, task_id: str = "") -> str:
+    try:
+        from .worktree_isolation import create_worktree as wt_create
+    except ImportError:
+        from worktree_isolation import create_worktree as wt_create
+    result = wt_create(name, task_id)
+    if task_id:
+        try:
+            from .task_system import bind_task_worktree
+        except ImportError:
+            from task_system import bind_task_worktree
+        result = f"{result}\n{bind_task_worktree(task_id, name)}"
+    return result
+
+
+def remove_worktree(name: str, discard_changes: bool = False) -> str:
+    try:
+        from .worktree_isolation import remove_worktree as wt_remove
+    except ImportError:
+        from worktree_isolation import remove_worktree as wt_remove
+    return wt_remove(name, discard_changes)
+
+
+def keep_worktree(name: str, reason: str = "") -> str:
+    try:
+        from .worktree_isolation import keep_worktree as wt_keep
+    except ImportError:
+        from worktree_isolation import keep_worktree as wt_keep
+    return wt_keep(name, reason)
 
 
 def connect_mcp(name: str) -> str:
@@ -358,7 +463,7 @@ def explore_domain_subspaces(
     return science_explore_subspaces(domain, max_subspaces, probe_depth, use_llm, providers, user_hints)
 
 
-def search_literature(query: str, providers: list[str] | None = None, max_results: int = 30) -> str:
+def search_literature(query: str, providers: list[str] | None = None, max_results: int = 10) -> str:
     try:
         from .science_core import search_literature as science_search
     except ImportError:
@@ -369,7 +474,7 @@ def search_literature(query: str, providers: list[str] | None = None, max_result
 def search_literature_stratified(
     query: str,
     providers: list[str] | None = None,
-    max_results: int = 50,
+    max_results: int = 15,
     domain: str = "",
     focus_branches: list[str] | None = None,
     use_llm: bool = False,
@@ -384,7 +489,7 @@ def search_literature_stratified(
 def search_papers(
     query: str,
     databases: list[str] | None = None,
-    max_results: int = 50,
+    max_results: int = 15,
     years: str = "",
 ) -> str:
     try:
@@ -397,7 +502,7 @@ def search_papers(
 def search_papers_stratified(
     query: str,
     databases: list[str] | None = None,
-    max_results: int = 50,
+    max_results: int = 15,
     years: str = "",
     domain: str = "",
     focus_branches: list[str] | None = None,
@@ -435,7 +540,7 @@ def expand_literature_graph(
     result_index: int = 0,
     query: str = "",
     direction: str = "both",
-    max_results: int = 50,
+    max_results: int = 40,
     use_llm: bool = False,
     depth: int = 1,
     second_layer_top_k: int = 3,
@@ -487,6 +592,7 @@ def create_science_delegation_tasks(
     selected_subfields: list[str] | None = None,
     focus_branches: list[str] | None = None,
     max_branch_tasks: int = 6,
+    spawn_teammates: bool = False,
 ) -> str:
     try:
         from .science_core import create_science_delegation_tasks as science_delegation
@@ -499,6 +605,7 @@ def create_science_delegation_tasks(
         selected_subfields,
         focus_branches,
         max_branch_tasks,
+        spawn_teammates,
     )
 
 
@@ -507,19 +614,21 @@ def create_boxue_delegation_tasks(
     goal: str = "",
     phases: list[str] | None = None,
     max_steps: int = 20,
+    spawn_teammates: bool = False,
     max_parallel_agents: int = 3,
 ) -> str:
     try:
         from .science_core import create_boxue_delegation_tasks as boxue_delegation
     except ImportError:
         from science_core import create_boxue_delegation_tasks as boxue_delegation
-    return boxue_delegation(project_id, goal, phases, max_steps, max_parallel_agents)
+    return boxue_delegation(project_id, goal, phases, max_steps, spawn_teammates, max_parallel_agents)
 
 
 def run_boxue_research_round(
     project_id: str,
     goal: str = "",
     phases: list[str] | None = None,
+    spawn_teammates: bool = True,
     plan_id: str = "",
     execution_mode: str = "async",
     max_steps: int = 20,
@@ -536,7 +645,7 @@ def run_boxue_research_round(
         project_id=project_id,
         goal=goal,
         phases=phases,
-        
+        spawn_teammates=spawn_teammates,
         plan_id=plan_id,
         execution_mode=execution_mode,
         max_steps=max_steps,
@@ -545,138 +654,6 @@ def run_boxue_research_round(
         poll_interval_seconds=poll_interval_seconds,
         revision_after_seconds=revision_after_seconds,
     )
-
-
-def create_autogen_groupchat(
-    project_id: str,
-    goal: str = "",
-    agents: list[str] | None = None,
-    max_round: int = 12,
-    speaker_selection_method: str = "round_robin",
-    human_input_mode: str = "TERMINATE",
-    use_native_autogen: bool = False,
-) -> str:
-    try:
-        from .autogen_collab import create_autogen_groupchat as autogen_create
-    except ImportError:
-        from autogen_collab import create_autogen_groupchat as autogen_create
-    return autogen_create(project_id, goal, agents, max_round, speaker_selection_method, human_input_mode, use_native_autogen)
-
-
-def run_autogen_research_flow(
-    project_id: str,
-    goal: str = "",
-    groupchat_id: str = "",
-    providers: list[str] | None = None,
-    max_results: int = 50,
-    import_top_k: int = 20,
-    use_llm: bool = True,
-    live_search: bool = False,
-    run_debate: bool = True,
-    max_round: int = 12,
-    speaker_selection_method: str = "round_robin",
-    human_input_mode: str = "TERMINATE",
-    proponent_model_family: str = "qwen-max",
-    opponent_model_family: str = "qwen-plus",
-    judge_model_family: str = "qwen-deep-research",
-    verifier_model_family: str = "qwen-plus",
-    use_native_autogen: bool = False,
-) -> str:
-    try:
-        from .autogen_collab import run_autogen_research_flow as autogen_flow
-    except ImportError:
-        from autogen_collab import run_autogen_research_flow as autogen_flow
-    return autogen_flow(
-        project_id,
-        goal,
-        groupchat_id,
-        providers,
-        max_results,
-        import_top_k,
-        use_llm,
-        live_search,
-        run_debate,
-        max_round,
-        speaker_selection_method,
-        human_input_mode,
-        proponent_model_family,
-        opponent_model_family,
-        judge_model_family,
-        verifier_model_family,
-        use_native_autogen,
-    )
-
-
-def list_autogen_groupchats(project_id: str = "") -> str:
-    try:
-        from .autogen_collab import list_autogen_groupchats as autogen_list
-    except ImportError:
-        from autogen_collab import list_autogen_groupchats as autogen_list
-    return autogen_list(project_id)
-
-
-def get_autogen_run(run_id: str) -> str:
-    try:
-        from .autogen_collab import get_autogen_run as autogen_run
-    except ImportError:
-        from autogen_collab import get_autogen_run as autogen_run
-    return autogen_run(run_id)
-
-
-def create_science_crew(
-    project_id: str,
-    goal: str = "",
-    agents: list[str] | None = None,
-    process: str = "sequential",
-    flow: str = "research_hypothesis_debate",
-    allow_delegation: bool = True,
-    use_native_crewai: bool = False,
-) -> str:
-    return create_autogen_groupchat(project_id, goal, agents, max_round=12, use_native_autogen=False)
-
-
-def run_science_crew_flow(
-    project_id: str,
-    goal: str = "",
-    crew_id: str = "",
-    process: str = "sequential",
-    flow: str = "research_hypothesis_debate",
-    providers: list[str] | None = None,
-    max_results: int = 50,
-    import_top_k: int = 20,
-    use_llm: bool = True,
-    live_search: bool = False,
-    run_debate: bool = True,
-    proponent_model_family: str = "qwen-max",
-    opponent_model_family: str = "qwen-plus",
-    judge_model_family: str = "qwen-deep-research",
-    verifier_model_family: str = "qwen-plus",
-    use_native_crewai: bool = False,
-) -> str:
-    return run_autogen_research_flow(
-        project_id=project_id,
-        goal=goal,
-        groupchat_id="",
-        providers=providers,
-        max_results=max_results,
-        import_top_k=import_top_k,
-        use_llm=use_llm,
-        live_search=live_search,
-        run_debate=run_debate,
-        proponent_model_family=proponent_model_family,
-        opponent_model_family=opponent_model_family,
-        judge_model_family=judge_model_family,
-        verifier_model_family=verifier_model_family,
-        use_native_autogen=False,
-    )
-
-
-def list_science_crews(project_id: str = "") -> str:
-    return list_autogen_groupchats(project_id)
-
-
-def get_science_crew_run(run_id: str) -> str:
-    return get_autogen_run(run_id)
 
 
 def build_knowledge_map(project_id: str, dimension: str = "method-scenario-benchmark") -> str:
@@ -895,12 +872,12 @@ def run_zhizhi_literature_analysis(
     project_id: str,
     domain: str,
     query: str,
-    max_results: int = 50,
-    years: str = "last 15 years",
+    max_results: int = 10,
+    years: str = "last 5 years",
     providers: list[str] | None = None,
     import_top_k: int = SCIENCE_ZHIZHI_DEFAULT_IMPORT_TOP_K,
     graph_depth: int = 1,
-    use_llm: bool = True,
+    use_llm: bool = False,
     focus_branches: list[str] | None = None,
     live_coverage_check: bool = True,
     subspace_map_id: str = "",
@@ -966,22 +943,6 @@ def run_tanxi_gap_exploration(
     return science_tanxi(project_id, target_domain, strategic_domains, max_gaps)
 
 
-def check_semantic_plausibility(
-    project_id: str,
-    method: str,
-    scenario: str,
-    gap: dict[str, object] | None = None,
-) -> str:
-    try:
-        from .science_core import load_project, semantic_plausibility_for_pair
-    except ImportError:
-        from science_core import load_project, semantic_plausibility_for_pair
-    project = load_project(project_id)
-    import json
-
-    return json.dumps(semantic_plausibility_for_pair(project, method, scenario, gap or {}), ensure_ascii=False, indent=2)
-
-
 def evolve_domain_subspaces(
     project_id: str,
     subspace_map_id: str = "",
@@ -1014,7 +975,7 @@ def find_structural_analogy_transfers(
     project_id: str,
     target_scenario: str = "",
     threshold: float = 0.55,
-    max_results: int = 50,
+    max_results: int = 10,
 ) -> str:
     try:
         from .science_core import find_structural_analogy_transfers as science_analogies
@@ -1036,72 +997,6 @@ def run_mingli_hypothesis_evolution(
     except ImportError:
         from science_core import run_mingli_hypothesis_evolution as science_mingli
     return science_mingli(project_id, gap_ids, population_size, generations, top_k, use_llm)
-
-
-def run_socrates_mechanism_enrichment(
-    project_id: str,
-    gap: dict[str, object] | str = "",
-    gap_id: str = "",
-    mechanism_contract: dict[str, object] | None = None,
-    domain: str = "",
-    providers: list[str] | None = None,
-    max_iterations: int = 3,
-    max_fields_per_iteration: int = 2,
-    max_results_per_query: int = 12,
-    imports_per_query: int = 2,
-    use_llm: bool = False,
-) -> str:
-    try:
-        from .science_core import run_socrates_mechanism_enrichment as science_socrates
-    except ImportError:
-        from science_core import run_socrates_mechanism_enrichment as science_socrates
-    return science_socrates(
-        project_id, gap, gap_id, mechanism_contract, domain, providers,
-        max_iterations, max_fields_per_iteration, max_results_per_query,
-        imports_per_query, use_llm,
-    )
-
-
-def generate_idea(
-    project_id: str,
-    gap: dict[str, object] | str = "",
-    gap_id: str = "",
-    style: str = "innovative",
-    parent_hypothesis_id: str = "",
-    use_llm: bool = False,
-) -> str:
-    try:
-        from .science_core import generate_idea as science_generate_idea
-    except ImportError:
-        from science_core import generate_idea as science_generate_idea
-    return science_generate_idea(project_id, gap, gap_id, style, parent_hypothesis_id, use_llm)
-
-
-def design_experiment(
-    project_id: str,
-    idea: dict[str, object] | str = "",
-    idea_id: str = "",
-    constraints: str = "academic lab scale",
-) -> str:
-    try:
-        from .science_core import design_experiment as science_design_experiment
-    except ImportError:
-        from science_core import design_experiment as science_design_experiment
-    return science_design_experiment(project_id, idea, idea_id, constraints)
-
-
-def finalize_idea(
-    project_id: str,
-    idea_json: dict[str, object] | str = "",
-    idea_id: str = "",
-    live_search: bool = True,
-    providers: list[str] | None = None,
-) -> str:
-    try:
-        from .science_core import finalize_idea as science_finalize_idea
-    except ImportError:
-        from science_core import finalize_idea as science_finalize_idea
-    return science_finalize_idea(project_id, idea_json, idea_id, live_search, providers)
 
 
 def create_hypothesis(
@@ -1129,199 +1024,6 @@ def run_mechanism_check(
     except ImportError:
         from science_core import run_mechanism_check as science_check
     return science_check(project_id, hypothesis_id, shifted_conditions)
-
-
-def check_internal_consistency(
-    hypothesis: str,
-    reasoning_chain: list[str] | None = None,
-) -> str:
-    try:
-        from .science_core import check_internal_consistency as science_internal
-    except ImportError:
-        from science_core import check_internal_consistency as science_internal
-    return science_internal(hypothesis, reasoning_chain)
-
-
-def check_data_consistency(
-    hypothesis: str,
-    cited_data: list[object] | None = None,
-    original_sources: list[object] | None = None,
-) -> str:
-    try:
-        from .science_core import check_data_consistency as science_data
-    except ImportError:
-        from science_core import check_data_consistency as science_data
-    return science_data(hypothesis, cited_data, original_sources)
-
-
-def regime_shift_test(
-    mechanism: str,
-    original_conditions: dict[str, object] | None = None,
-    shifted_conditions: list[object] | None = None,
-) -> str:
-    try:
-        from .science_core import regime_shift_test as science_regime
-    except ImportError:
-        from science_core import regime_shift_test as science_regime
-    return science_regime(mechanism, original_conditions, shifted_conditions)
-
-
-def detect_selective_citation(
-    cited_papers: list[object] | None = None,
-    full_paper_contexts: list[object] | None = None,
-) -> str:
-    try:
-        from .science_core import detect_selective_citation as science_selective
-    except ImportError:
-        from science_core import detect_selective_citation as science_selective
-    return science_selective(cited_papers, full_paper_contexts)
-
-
-def causal_chain_audit(
-    causal_chain: list[str] | None = None,
-    evidence_for_each: list[object] | None = None,
-) -> str:
-    try:
-        from .science_core import causal_chain_audit as science_chain
-    except ImportError:
-        from science_core import causal_chain_audit as science_chain
-    return science_chain(causal_chain, evidence_for_each)
-
-
-def run_yanzhen_mechanism_verification(
-    project_id: str,
-    hypothesis_id: str = "",
-    hypothesis: str = "",
-    reasoning_chain: list[str] | None = None,
-    cited_data: list[object] | None = None,
-    original_sources: list[object] | None = None,
-    shifted_conditions: list[object] | None = None,
-) -> str:
-    try:
-        from .science_core import run_yanzhen_mechanism_verification as science_yanzhen
-    except ImportError:
-        from science_core import run_yanzhen_mechanism_verification as science_yanzhen
-    return science_yanzhen(project_id, hypothesis_id, hypothesis, reasoning_chain, cited_data, original_sources, shifted_conditions)
-
-
-def ask_socratic_questions(
-    project_id: str = "",
-    hypothesis_id: str = "",
-    hypothesis: str = "",
-    question_types: list[str] | None = None,
-    max_questions: int = 12,
-) -> str:
-    try:
-        from .science_core import ask_socratic_questions as science_ask_socratic
-    except ImportError:
-        from science_core import ask_socratic_questions as science_ask_socratic
-    return science_ask_socratic(project_id, hypothesis_id, hypothesis, question_types, max_questions)
-
-
-def ask_critical_questions(
-    project_id: str = "",
-    hypothesis_id: str = "",
-    hypothesis: str = "",
-    question_types: list[str] | None = None,
-    max_questions: int = 12,
-) -> str:
-    try:
-        from .science_core import ask_critical_questions as science_ask_critical
-    except ImportError:
-        from science_core import ask_critical_questions as science_ask_critical
-    return science_ask_critical(project_id, hypothesis_id, hypothesis, question_types, max_questions)
-
-
-def find_counterexamples(
-    project_id: str = "",
-    hypothesis_id: str = "",
-    hypothesis: str = "",
-    max_questions: int = 6,
-) -> str:
-    try:
-        from .science_core import find_counterexamples as science_counterexamples
-    except ImportError:
-        from science_core import find_counterexamples as science_counterexamples
-    return science_counterexamples(project_id, hypothesis_id, hypothesis, max_questions)
-
-
-def stress_test_assumptions(
-    project_id: str = "",
-    hypothesis_id: str = "",
-    hypothesis: str = "",
-    max_questions: int = 8,
-) -> str:
-    try:
-        from .science_core import stress_test_assumptions as science_stress
-    except ImportError:
-        from science_core import stress_test_assumptions as science_stress
-    return science_stress(project_id, hypothesis_id, hypothesis, max_questions)
-
-
-def moderate_round(
-    project_id: str,
-    round_name: str,
-    proponent_position: str = "",
-    opponent_questions: list[dict[str, object]] | None = None,
-    yanzhen_report: dict[str, object] | None = None,
-) -> str:
-    try:
-        from .science_core import moderate_round as science_moderate
-    except ImportError:
-        from science_core import moderate_round as science_moderate
-    return science_moderate(project_id, round_name, proponent_position, opponent_questions, yanzhen_report)
-
-
-def summarize_positions(
-    proponent_position: str = "",
-    opponent_questions: list[dict[str, object]] | None = None,
-    yanzhen_report: dict[str, object] | None = None,
-) -> str:
-    try:
-        from .science_core import summarize_positions as science_summary
-    except ImportError:
-        from science_core import summarize_positions as science_summary
-    return science_summary(proponent_position, opponent_questions, yanzhen_report)
-
-
-def extract_emergent_method(debate_report: dict[str, object] | str) -> str:
-    try:
-        from .science_core import extract_emergent_method as science_extract_method
-    except ImportError:
-        from science_core import extract_emergent_method as science_extract_method
-    return science_extract_method(debate_report)
-
-
-def run_socratic_hypothesis_debate(
-    project_id: str,
-    hypothesis_id: str = "",
-    hypothesis: str = "",
-    max_rounds: int = 5,
-    proponent_model_family: str = "qwen-max",
-    opponent_model_family: str = "qwen-plus",
-    judge_model_family: str = "qwen-deep-research",
-    verifier_model_family: str = "qwen-plus",
-    shifted_conditions: list[object] | None = None,
-    auto_literature_supplement: bool = True,
-    supplement_providers: list[str] | None = None,
-) -> str:
-    try:
-        from .science_core import run_socratic_hypothesis_debate as science_debate
-    except ImportError:
-        from science_core import run_socratic_hypothesis_debate as science_debate
-    return science_debate(
-        project_id,
-        hypothesis_id,
-        hypothesis,
-        max_rounds,
-        proponent_model_family,
-        opponent_model_family,
-        judge_model_family,
-        verifier_model_family,
-        shifted_conditions,
-        auto_literature_supplement,
-        supplement_providers,
-    )
 
 
 def export_research_plan(project_id: str) -> str:
@@ -1582,8 +1284,132 @@ TASK_TOOLS = [
     },
 ]
 
+TEAM_TOOLS = [
+    {
+        "name": "spawn_teammate",
+        "description": "Start a named teammate agent in a background idle loop.",
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "name": {"type": "string", "description": "Stable teammate name."},
+                "task": {
+                    "type": "string",
+                    "description": "Optional initial task to place in the teammate inbox.",
+                },
+            },
+            "required": ["name"],
+        },
+    },
+    {
+        "name": "send_message",
+        "description": "Send a mailbox message from Lead to another agent.",
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "to": {"type": "string", "description": "Target teammate or lead."},
+                "content": {"type": "string", "description": "Message body."},
+                "type": {
+                    "type": "string",
+                    "description": "Message type, usually message/result.",
+                },
+            },
+            "required": ["to", "content"],
+        },
+    },
+    {
+        "name": "check_inbox",
+        "description": "Read and clear an agent mailbox, routing Lead protocol responses.",
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "agent": {
+                    "type": "string",
+                    "description": "Agent name. Defaults to lead.",
+                }
+            },
+            "required": [],
+        },
+    },
+    {
+        "name": "request_shutdown",
+        "description": "Ask a teammate to stop gracefully through the protocol state machine.",
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "teammate": {"type": "string", "description": "Target teammate name."},
+                "reason": {"type": "string", "description": "Optional shutdown reason."},
+            },
+            "required": ["teammate"],
+        },
+    },
+    {
+        "name": "request_plan",
+        "description": "Ask a teammate to submit a plan for Lead approval.",
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "teammate": {"type": "string", "description": "Target teammate name."},
+                "prompt": {"type": "string", "description": "Planning request."},
+            },
+            "required": ["teammate", "prompt"],
+        },
+    },
+    {
+        "name": "review_plan",
+        "description": "Approve or reject a teammate plan approval request.",
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "request_id": {"type": "string", "description": "Protocol request id."},
+                "approve": {"type": "boolean", "description": "Whether to approve the plan."},
+                "feedback": {"type": "string", "description": "Optional feedback."},
+            },
+            "required": ["request_id", "approve"],
+        },
+    },
+]
 
-
+WORKTREE_TOOLS = [
+    {
+        "name": "create_worktree",
+        "description": "Create an isolated git worktree. If git worktree fails, use the configured lightweight fallback snapshot instead of copying the whole workspace.",
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "name": {"type": "string", "description": "Safe worktree name."},
+                "task_id": {"type": "string", "description": "Optional task id to bind."},
+            },
+            "required": ["name"],
+        },
+    },
+    {
+        "name": "remove_worktree",
+        "description": "Remove an isolated worktree after safety checks.",
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "name": {"type": "string", "description": "Worktree name."},
+                "discard_changes": {
+                    "type": "boolean",
+                    "description": "Allow deleting uncommitted or non-empty worktrees.",
+                },
+            },
+            "required": ["name"],
+        },
+    },
+    {
+        "name": "keep_worktree",
+        "description": "Keep a worktree and record an audit event.",
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "name": {"type": "string", "description": "Worktree name."},
+                "reason": {"type": "string", "description": "Why the worktree is kept."},
+            },
+            "required": ["name"],
+        },
+    },
+]
 
 MCP_TOOLS = [
     {
@@ -1696,7 +1522,7 @@ SCIENCE_TOOLS = [
     },
     {
         "name": "list_literature_providers",
-        "description": "List stable PaperGraph literature provider connectors: semantic_scholar, arxiv, biorxiv, chemrxiv, medrxiv, and pubmed.",
+        "description": "List PaperGraph v1 literature provider connectors and placeholder status.",
         "input_schema": {"type": "object", "properties": {}, "required": []},
     },
     {
@@ -1709,7 +1535,7 @@ SCIENCE_TOOLS = [
                 "max_subspaces": {"type": "integer", "description": "Maximum substantive subspaces to generate, default 12."},
                 "probe_depth": {"type": "integer", "description": "Seed-probe result count per subspace, default 5."},
                 "use_llm": {"type": "boolean", "description": "Use Qwen/LLM to generate domain subspaces when available."},
-                "providers": {"type": "array", "items": {"type": "string"}, "description": "Probe providers: semantic_scholar, arxiv, biorxiv, chemrxiv, medrxiv, pubmed."},
+                "providers": {"type": "array", "items": {"type": "string"}, "description": "Probe providers, e.g. semantic_scholar, openalex, crossref, arxiv, dblp, openreview, biorxiv, medrxiv, chemrxiv."},
                 "user_hints": {"type": "array", "items": {"type": "string"}, "description": "Optional user-supplied subspace hints or priorities."},
             },
             "required": ["domain"],
@@ -1725,7 +1551,7 @@ SCIENCE_TOOLS = [
                 "providers": {
                     "type": "array",
                     "items": {"type": "string"},
-                    "description": "Optional providers: semantic_scholar, arxiv, biorxiv, chemrxiv, medrxiv, pubmed.",
+                    "description": "Optional providers: semantic_scholar, openalex, crossref, arxiv, dblp, openreview, biorxiv, medrxiv, chemrxiv, google_scholar, springer_nature.",
                 },
                 "max_results": {"type": "integer", "description": "Maximum provider result blocks."},
             },
@@ -1742,7 +1568,7 @@ SCIENCE_TOOLS = [
                 "providers": {
                     "type": "array",
                     "items": {"type": "string"},
-                    "description": "Optional providers: semantic_scholar, arxiv, biorxiv, chemrxiv, medrxiv, pubmed.",
+                    "description": "Optional providers: semantic_scholar, openalex, crossref, arxiv, dblp, openreview, biorxiv, medrxiv, chemrxiv. Other providers may be placeholders.",
                 },
                 "max_results": {"type": "integer", "description": "Total stratified result budget, default 15."},
                 "domain": {"type": "string", "description": "Optional broad research domain. When provided, the search expands into known sub-branches and applies a pre-import domain relevance gate."},
@@ -1881,6 +1707,10 @@ SCIENCE_TOOLS = [
                     "description": "Manual branch labels/queries when no subspace_map_id is available.",
                 },
                 "max_branch_tasks": {"type": "integer", "description": "Maximum parallel branch scout tasks to create, default 6."},
+                "spawn_teammates": {
+                    "type": "boolean",
+                    "description": "If true, also spawn one teammate per branch scout. Default false; creating tasks first is safer.",
+                },
             },
             "required": ["project_id"],
         },
@@ -1899,6 +1729,10 @@ SCIENCE_TOOLS = [
                     "description": "Optional subset of phases, e.g. Gap Discovery, Hypothesis Generation, Socratic Debate.",
                 },
                 "max_steps": {"type": "integer", "description": "Maximum Boxue delegation steps, default 20, capped at 25."},
+                "spawn_teammates": {
+                    "type": "boolean",
+                    "description": "If true, spawn teammates for currently unblocked specialist tasks. Default false.",
+                },
                 "max_parallel_agents": {"type": "integer", "description": "Maximum teammates to spawn for unblocked tasks, default 3."},
             },
             "required": ["project_id"],
@@ -1906,7 +1740,7 @@ SCIENCE_TOOLS = [
     },
     {
         "name": "run_boxue_research_round",
-        "description": "Run Boxue's automatic scheduling loop for one bounded research round. Recommended: execution_mode='pipeline' or 'autogen' runs the AutoGen 2.0-style GroupChat layer ZhiZhi -> TanXi -> MingLi -> YanZhen -> DuZhi -> BianLun without CrewAI, worktrees, or background teammates. Legacy async mode still creates/monitors teammate tasks.",
+        "description": "Run Boxue's automatic scheduling loop for one bounded research round: create the Boxue DAG, spawn currently unblocked specialist teammates, monitor lead inbox and the task board, review completed deliverables, create revision tasks for failed or stalled items, and return Boxue synthesis/finalization status.",
         "input_schema": {
             "type": "object",
             "properties": {
@@ -1917,13 +1751,17 @@ SCIENCE_TOOLS = [
                     "items": {"type": "string"},
                     "description": "Optional subset of phases, e.g. Gap Discovery, Hypothesis Generation, Socratic Debate.",
                 },
+                "spawn_teammates": {
+                    "type": "boolean",
+                    "description": "If true, start currently unblocked specialist teammates. Default true.",
+                },
                 "plan_id": {
                     "type": "string",
                     "description": "Optional existing boxue_delegation_plan_id to continue; if omitted, an active unfinished plan is reused or a new one is created.",
                 },
                 "execution_mode": {
                     "type": "string",
-                    "description": "pipeline/autogen/groupchat runs the AutoGen GroupChat closed loop; async starts/monitors legacy worktree teammates.",
+                    "description": "async starts/monitors teammate tasks; pipeline executes ZhiZhi -> TanXi -> MingLi directly in dependency order for a one-call closed loop.",
                 },
                 "max_steps": {"type": "integer", "description": "Maximum Boxue DAG steps to create, default 20, capped at 25."},
                 "max_parallel_agents": {"type": "integer", "description": "Maximum concurrently spawned specialists, default 3."},
@@ -1938,79 +1776,6 @@ SCIENCE_TOOLS = [
                 },
             },
             "required": ["project_id"],
-        },
-    },
-    {
-        "name": "create_autogen_groupchat",
-        "description": "Create an AutoGen 2.0-style GroupChat spec for science agents. Maps MingLi/DuZhi/BianLun to AssistantAgent/GroupChatManager, Boxue to UserProxy, and ZhiZhi/YanZhen/TanXi to tool-backed agents. Does not use CrewAI or worktrees.",
-        "input_schema": {
-            "type": "object",
-            "properties": {
-                "project_id": {"type": "string", "description": "Science project id."},
-                "goal": {"type": "string", "description": "GroupChat goal; defaults to project objective in downstream flow."},
-                "agents": {
-                    "type": "array",
-                    "items": {"type": "string"},
-                    "description": "Agent keys, e.g. boxue, zhizhi, tanxi, mingli, yanzhen, duzhi, bianlun.",
-                },
-                "max_round": {"type": "integer", "description": "AutoGen GroupChat max_round, default 12."},
-                "speaker_selection_method": {"type": "string", "description": "round_robin, auto, manual, or random."},
-                "human_input_mode": {"type": "string", "description": "AutoGen UserProxy mode: NEVER, TERMINATE, or ALWAYS."},
-                "use_native_autogen": {"type": "boolean", "description": "Check/use native AutoGen availability; default executor remains structured to control token use."},
-            },
-            "required": ["project_id"],
-        },
-    },
-    {
-        "name": "run_autogen_research_flow",
-        "description": "Run the AutoGen 2.0-style GroupChat research flow: ZhiZhi literature reading -> TanXi gap exploration -> MingLi hypothesis -> YanZhen CAWM verification -> DuZhi Socratic challenge -> BianLun synthesis. Replaces CrewAI collaboration.",
-        "input_schema": {
-            "type": "object",
-            "properties": {
-                "project_id": {"type": "string", "description": "Science project id."},
-                "goal": {"type": "string", "description": "Research goal/query for this AutoGen run."},
-                "groupchat_id": {"type": "string", "description": "Optional existing groupchat_id from create_autogen_groupchat."},
-                "providers": {
-                    "type": "array",
-                    "items": {"type": "string"},
-                    "description": "Literature providers: semantic_scholar, arxiv, biorxiv, chemrxiv, medrxiv, pubmed.",
-                },
-                "max_results": {"type": "integer", "description": "ZhiZhi stratified search result budget."},
-                "import_top_k": {"type": "integer", "description": "How many papers ZhiZhi should import."},
-                "use_llm": {"type": "boolean", "description": "Use Qwen-assisted extraction/planning where available."},
-                "live_search": {"type": "boolean", "description": "Use live uniqueness verification in MingLi finalize_idea; default false to reduce API pressure."},
-                "run_debate": {"type": "boolean", "description": "Run DuZhi/BianLun debate after hypothesis generation."},
-                "max_round": {"type": "integer", "description": "AutoGen GroupChat max_round, default 12."},
-                "speaker_selection_method": {"type": "string", "description": "round_robin, auto, manual, or random."},
-                "human_input_mode": {"type": "string", "description": "AutoGen UserProxy mode: NEVER, TERMINATE, or ALWAYS."},
-                "proponent_model_family": {"type": "string", "description": "MingLi/proponent model id, default qwen-max."},
-                "opponent_model_family": {"type": "string", "description": "DuZhi/opponent model id, default qwen-plus. Must differ from proponent id; Qwen-only setups are allowed."},
-                "judge_model_family": {"type": "string", "description": "BianLun judge model id, default Qwen-Deep-Research."},
-                "verifier_model_family": {"type": "string", "description": "YanZhen verifier model id, default qwen-plus. Must differ from proponent id; Qwen-only setups are allowed."},
-                "use_native_autogen": {"type": "boolean", "description": "Check/use native AutoGen runtime; default structured executor controls token use."},
-            },
-            "required": ["project_id"],
-        },
-    },
-    {
-        "name": "list_autogen_groupchats",
-        "description": "List AutoGen GroupChat specs stored in v8/.science/autogen_groupchats.",
-        "input_schema": {
-            "type": "object",
-            "properties": {
-                "project_id": {"type": "string", "description": "Optional project filter."},
-            },
-        },
-    },
-    {
-        "name": "get_autogen_run",
-        "description": "Read a stored AutoGen GroupChat run record by run_id.",
-        "input_schema": {
-            "type": "object",
-            "properties": {
-                "run_id": {"type": "string", "description": "AutoGen run id returned by run_autogen_research_flow."},
-            },
-            "required": ["run_id"],
         },
     },
     {
@@ -2288,20 +2053,6 @@ SCIENCE_TOOLS = [
         },
     },
     {
-        "name": "check_semantic_plausibility",
-        "description": "Semantic gate between TanXi and MingLi: audit whether a method-scenario pair has a plausible data/modality/mechanism bridge before treating it as a scientific gap.",
-        "input_schema": {
-            "type": "object",
-            "properties": {
-                "project_id": {"type": "string", "description": "Science project id."},
-                "method": {"type": "string", "description": "Candidate method, technique, model, assay, or tool."},
-                "scenario": {"type": "string", "description": "Candidate scientific scenario, application, system, disease, material, or task."},
-                "gap": {"type": "object", "description": "Optional gap object for additional context."},
-            },
-            "required": ["project_id", "method", "scenario"],
-        },
-    },
-    {
         "name": "evolve_domain_subspaces",
         "description": "Dynamic Subspace Evolution: update subspace metrics, detect fission/fusion/decline/emergent signals, and produce proposed subspace adjustments before MingLi hypothesis generation.",
         "input_schema": {
@@ -2366,76 +2117,6 @@ SCIENCE_TOOLS = [
         },
     },
     {
-        "name": "run_socrates_mechanism_enrichment",
-        "description": "Socrates: repeatedly inspect PaperGraph evidence and run bounded, targeted ZhiZhi searches to resolve an incomplete mechanism contract. It returns INSUFFICIENT_EVIDENCE rather than inventing unresolved mechanism fields.",
-        "input_schema": {
-            "type": "object",
-            "properties": {
-                "project_id": {"type": "string", "description": "Science project id."},
-                "gap": {"description": "Optional TanXi gap object. Omit when using gap_id."},
-                "gap_id": {"type": "string", "description": "Target TanXi knowledge gap id."},
-                "mechanism_contract": {"description": "Optional incomplete mechanism draft. Fields without cited evidence are searched and remain unresolved if evidence is absent."},
-                "domain": {"type": "string", "description": "Optional domain override for the targeted ZhiZhi query."},
-                "providers": {"type": "array", "items": {"type": "string"}, "description": "Optional providers: semantic_scholar, arxiv, biorxiv, chemrxiv, medrxiv, pubmed."},
-                "max_iterations": {"type": "integer", "description": "Maximum bounded enrichment iterations, default 3 and capped at 5."},
-                "max_fields_per_iteration": {"type": "integer", "description": "Maximum unresolved mechanism fields to search in one iteration, default 2."},
-                "max_results_per_query": {"type": "integer", "description": "Maximum ranked ZhiZhi candidates per field query, default 12."},
-                "imports_per_query": {"type": "integer", "description": "Maximum papers imported per targeted query, default 2."},
-                "use_llm": {"type": "boolean", "description": "Use LLM-assisted structured extraction for imported papers when available."},
-            },
-            "required": ["project_id"],
-        },
-    },
-    {
-        "name": "generate_idea",
-        "description": "MingLi action: generate one gap-traceable research idea from a TanXi/ZhiZhi knowledge gap, with auditable lineage and preliminary scores.",
-        "input_schema": {
-            "type": "object",
-            "properties": {
-                "project_id": {"type": "string", "description": "Science project id."},
-                "gap": {"description": "Optional gap object or gap description. Omit when using gap_id."},
-                "gap_id": {"type": "string", "description": "Specific TanXi/ZhiZhi knowledge gap id."},
-                "style": {"type": "string", "description": "innovative or conservative."},
-                "parent_hypothesis_id": {"type": "string", "description": "Optional parent id for tournament mutation lineage."},
-                "use_llm": {"type": "boolean", "description": "Reserved flag for LLM-assisted generation; deterministic fallback remains auditable."},
-            },
-            "required": ["project_id"],
-        },
-    },
-    {
-        "name": "design_experiment",
-        "description": "MingLi action: turn a generated idea into a concrete falsifiable experiment with setup, metrics, baselines, risks, and rejection criteria.",
-        "input_schema": {
-            "type": "object",
-            "properties": {
-                "project_id": {"type": "string", "description": "Science project id."},
-                "idea": {"description": "Idea JSON object or JSON string. Omit when using idea_id."},
-                "idea_id": {"type": "string", "description": "draft_idea_id or experiment_plan_id from earlier MingLi output."},
-                "constraints": {"type": "string", "description": "Resource constraints, e.g. academic lab scale, public datasets only, small GPU budget."},
-            },
-            "required": ["project_id"],
-        },
-    },
-    {
-        "name": "finalize_idea",
-        "description": "MingLi action: finalize a complete idea JSON only after mandatory uniqueness/literature verification; overlap-risk ideas are rejected instead of persisted.",
-        "input_schema": {
-            "type": "object",
-            "properties": {
-                "project_id": {"type": "string", "description": "Science project id."},
-                "idea_json": {"description": "Complete MingLi final idea JSON. Omit when using idea_id."},
-                "idea_id": {"type": "string", "description": "draft_idea_id or experiment_plan_id from earlier MingLi output."},
-                "live_search": {"type": "boolean", "description": "Run live literature verification through verify_uniqueness; default true."},
-                "providers": {
-                    "type": "array",
-                    "items": {"type": "string"},
-                    "description": "Optional provider list: semantic_scholar, arxiv, biorxiv, chemrxiv, medrxiv, pubmed.",
-                },
-            },
-            "required": ["project_id"],
-        },
-    },
-    {
         "name": "create_hypothesis",
         "description": "Create a research hypothesis linked to a detected knowledge gap.",
         "input_schema": {
@@ -2452,125 +2133,8 @@ SCIENCE_TOOLS = [
         },
     },
     {
-        "name": "ask_socratic_questions",
-        "description": "DuZhi Agent 5: ask structured Socratic questions across conceptual clarification, constraint checks, causal probes, and counterexample challenges.",
-        "input_schema": {
-            "type": "object",
-            "properties": {
-                "project_id": {"type": "string", "description": "Science project id. Optional if hypothesis text is provided."},
-                "hypothesis_id": {"type": "string", "description": "Persisted hypothesis id."},
-                "hypothesis": {"type": "string", "description": "Hypothesis text when no hypothesis_id is available."},
-                "question_types": {
-                    "type": "array",
-                    "items": {"type": "string"},
-                    "description": "Optional subset: conceptual_clarification, constraint_check, causal_probe, counterexample_challenge.",
-                },
-                "max_questions": {"type": "integer", "description": "Maximum questions to return; default 12."},
-            },
-        },
-    },
-    {
-        "name": "ask_critical_questions",
-        "description": "Compatibility alias for ask_socratic_questions.",
-        "input_schema": {
-            "type": "object",
-            "properties": {
-                "project_id": {"type": "string"},
-                "hypothesis_id": {"type": "string"},
-                "hypothesis": {"type": "string"},
-                "question_types": {"type": "array", "items": {"type": "string"}},
-                "max_questions": {"type": "integer"},
-            },
-        },
-    },
-    {
-        "name": "find_counterexamples",
-        "description": "DuZhi counterexample challenge: generate regime-shift and falsification questions for a hypothesis.",
-        "input_schema": {
-            "type": "object",
-            "properties": {
-                "project_id": {"type": "string"},
-                "hypothesis_id": {"type": "string"},
-                "hypothesis": {"type": "string"},
-                "max_questions": {"type": "integer"},
-            },
-        },
-    },
-    {
-        "name": "stress_test_assumptions",
-        "description": "DuZhi stress test: expose hidden assumptions, missing validity regimes, and boundary conditions.",
-        "input_schema": {
-            "type": "object",
-            "properties": {
-                "project_id": {"type": "string"},
-                "hypothesis_id": {"type": "string"},
-                "hypothesis": {"type": "string"},
-                "max_questions": {"type": "integer"},
-            },
-        },
-    },
-    {
-        "name": "moderate_round",
-        "description": "BianLun Agent 6: moderate one structured debate round and decide advance/revise from DuZhi questions and YanZhen evidence.",
-        "input_schema": {
-            "type": "object",
-            "properties": {
-                "project_id": {"type": "string"},
-                "round_name": {"type": "string"},
-                "proponent_position": {"type": "string"},
-                "opponent_questions": {"type": "array", "items": {}},
-                "yanzhen_report": {"type": "object"},
-            },
-            "required": ["project_id", "round_name"],
-        },
-    },
-    {
-        "name": "summarize_positions",
-        "description": "BianLun summary: compare proponent claim, opponent issues, and YanZhen verdict.",
-        "input_schema": {
-            "type": "object",
-            "properties": {
-                "proponent_position": {"type": "string"},
-                "opponent_questions": {"type": "array", "items": {}},
-                "yanzhen_report": {"type": "object"},
-            },
-        },
-    },
-    {
-        "name": "extract_emergent_method",
-        "description": "BianLun extraction: pull the refined method, causal chain, falsification conditions, and evidence requirements from a debate report.",
-        "input_schema": {
-            "type": "object",
-            "properties": {
-                "debate_report": {"description": "Debate report JSON object or JSON string."},
-            },
-            "required": ["debate_report"],
-        },
-    },
-    {
-        "name": "run_socratic_hypothesis_debate",
-        "description": "Run the AHOIS/ARIS-inspired triangle loop: Socratic debate, YanZhen mechanism audit, targeted ZhiZhi literature completion, MingLi revision, and BianLun synthesis.",
-        "input_schema": {
-            "type": "object",
-            "properties": {
-                "project_id": {"type": "string", "description": "Science project id."},
-                "hypothesis_id": {"type": "string", "description": "Persisted hypothesis id from MingLi/finalize_idea."},
-                "hypothesis": {"type": "string", "description": "Hypothesis text if no persisted id exists."},
-                "max_rounds": {"type": "integer", "description": "4-5; default 5. Use 5 to allow an audit-feedback revision round before final synthesis."},
-                "proponent_model_family": {"type": "string", "description": "MingLi/proponent model id; default qwen-max."},
-                "opponent_model_family": {"type": "string", "description": "DuZhi/opponent model id; default qwen-plus. Must differ from proponent id; Qwen-only setups are allowed."},
-                "judge_model_family": {"type": "string", "description": "BianLun/moderator model id; default Qwen-Deep-Research."},
-                "verifier_model_family": {"type": "string", "description": "YanZhen/verifier model id; default qwen-plus. Must differ from proponent id; Qwen-only setups are allowed."},
-                "shifted_conditions": {"type": "array", "items": {}, "description": "Optional regime shift tests."},
-                "auto_literature_supplement": {"type": "boolean", "description": "If true, YanZhen unsupported claims trigger capped ZhiZhi evidence completion."},
-                "supplement_providers": {"type": "array", "items": {"type": "string"}, "description": "Optional providers for audit-triggered literature completion."},
-            },
-            "required": ["project_id"],
-        },
-    },
-    {
         "name": "run_mechanism_check",
-        "description": "Compatibility alias for YanZhen CAWM-style mechanism fidelity verification on a persisted hypothesis.",
+        "description": "Run a lightweight CAWM-style mechanism fidelity check for a hypothesis.",
         "input_schema": {
             "type": "object",
             "properties": {
@@ -2583,89 +2147,6 @@ SCIENCE_TOOLS = [
                 },
             },
             "required": ["project_id", "hypothesis_id"],
-        },
-    },
-    {
-        "name": "check_internal_consistency",
-        "description": "YanZhen Layer 1: audit hypothesis logic, causal chain integrity, formula/quantity assumptions, and internal contradictions.",
-        "input_schema": {
-            "type": "object",
-            "properties": {
-                "hypothesis": {"type": "string", "description": "Hypothesis or mechanism text."},
-                "reasoning_chain": {"type": "array", "items": {"type": "string"}, "description": "Optional explicit premise -> mechanism -> conclusion chain."},
-            },
-            "required": ["hypothesis"],
-        },
-    },
-    {
-        "name": "check_data_consistency",
-        "description": "YanZhen Layer 2: check whether a mechanism matches cited data and original source contexts.",
-        "input_schema": {
-            "type": "object",
-            "properties": {
-                "hypothesis": {"type": "string", "description": "Hypothesis or mechanism text."},
-                "cited_data": {"type": "array", "items": {}, "description": "Cited papers, evidence snippets, references, or PaperGraph records."},
-                "original_sources": {"type": "array", "items": {}, "description": "Broader source contexts for alignment and contradiction checks."},
-            },
-            "required": ["hypothesis"],
-        },
-    },
-    {
-        "name": "regime_shift_test",
-        "description": "YanZhen Layer 3: stress a claimed mechanism under at least two shifted conditions to detect CAWM brittleness.",
-        "input_schema": {
-            "type": "object",
-            "properties": {
-                "mechanism": {"type": "string", "description": "Claimed mechanism text."},
-                "original_conditions": {"type": "object", "description": "Original assumptions, parameters, dataset, environment, or boundary conditions."},
-                "shifted_conditions": {
-                    "type": "array",
-                    "items": {},
-                    "description": "Shift cases such as parameter 10x/0.1x, noise, domain transfer, different organism/material/system, or data distribution shift.",
-                },
-            },
-            "required": ["mechanism"],
-        },
-    },
-    {
-        "name": "detect_selective_citation",
-        "description": "YanZhen ARIS-style audit: detect cherry-picking by comparing cited papers/snippets against broader source contexts.",
-        "input_schema": {
-            "type": "object",
-            "properties": {
-                "cited_papers": {"type": "array", "items": {}, "description": "Papers or snippets cited as support."},
-                "full_paper_contexts": {"type": "array", "items": {}, "description": "Broader PaperGraph records or source contexts, including limitations/contradictions."},
-            },
-            "required": [],
-        },
-    },
-    {
-        "name": "causal_chain_audit",
-        "description": "YanZhen audit: trace causal links and verify that each link has supporting evidence.",
-        "input_schema": {
-            "type": "object",
-            "properties": {
-                "causal_chain": {"type": "array", "items": {"type": "string"}, "description": "Causal links, e.g. A -> B, B -> C."},
-                "evidence_for_each": {"type": "array", "items": {}, "description": "Evidence snippets or records aligned to the causal links."},
-            },
-            "required": [],
-        },
-    },
-    {
-        "name": "run_yanzhen_mechanism_verification",
-        "description": "YanZhen full protocol: execute internal consistency, data consistency, selective citation, causal-chain, and regime-shift CAWM verification.",
-        "input_schema": {
-            "type": "object",
-            "properties": {
-                "project_id": {"type": "string", "description": "Science project id."},
-                "hypothesis_id": {"type": "string", "description": "Persisted hypothesis id; preferred when available."},
-                "hypothesis": {"type": "string", "description": "Raw hypothesis text when no persisted hypothesis is available."},
-                "reasoning_chain": {"type": "array", "items": {"type": "string"}, "description": "Optional explicit causal/logical chain."},
-                "cited_data": {"type": "array", "items": {}, "description": "Optional cited evidence."},
-                "original_sources": {"type": "array", "items": {}, "description": "Optional original source contexts."},
-                "shifted_conditions": {"type": "array", "items": {}, "description": "Optional regime-shift tests; at least two recommended."},
-            },
-            "required": ["project_id"],
         },
     },
     {
@@ -2683,6 +2164,8 @@ TOOLS = (
     BASIC_TOOLS
     + [TODO_TOOL, TASK_TOOL, LOAD_SKILL_TOOL, COMPACT_TOOL]
     + TASK_TOOLS
+    + TEAM_TOOLS
+    + WORKTREE_TOOLS
     + MCP_TOOLS
     + CRON_TOOLS
     + SCIENCE_TOOLS
@@ -2704,6 +2187,15 @@ TOOL_HANDLERS: dict[str, Callable[..., str]] = {
     "get_task": get_task,
     "claim_task": claim_task,
     "complete_task": complete_task,
+    "spawn_teammate": spawn_teammate,
+    "send_message": send_message,
+    "check_inbox": check_inbox,
+    "request_shutdown": request_shutdown,
+    "request_plan": request_plan,
+    "review_plan": review_plan,
+    "create_worktree": create_worktree,
+    "remove_worktree": remove_worktree,
+    "keep_worktree": keep_worktree,
     "connect_mcp": connect_mcp,
     "schedule_cron": schedule_cron,
     "list_crons": list_crons,
@@ -2727,14 +2219,6 @@ TOOL_HANDLERS: dict[str, Callable[..., str]] = {
     "create_science_delegation_tasks": create_science_delegation_tasks,
     "create_boxue_delegation_tasks": create_boxue_delegation_tasks,
     "run_boxue_research_round": run_boxue_research_round,
-    "create_autogen_groupchat": create_autogen_groupchat,
-    "run_autogen_research_flow": run_autogen_research_flow,
-    "list_autogen_groupchats": list_autogen_groupchats,
-    "get_autogen_run": get_autogen_run,
-    "create_science_crew": create_science_crew,
-    "run_science_crew_flow": run_science_crew_flow,
-    "list_science_crews": list_science_crews,
-    "get_science_crew_run": get_science_crew_run,
     "build_knowledge_map": build_knowledge_map,
     "add_literature_evidence": add_literature_evidence,
     "import_literature_text": import_literature_text,
@@ -2751,31 +2235,12 @@ TOOL_HANDLERS: dict[str, Callable[..., str]] = {
     "build_coverage_matrix": build_coverage_matrix,
     "detect_knowledge_gaps": detect_knowledge_gaps,
     "run_tanxi_gap_exploration": run_tanxi_gap_exploration,
-    "check_semantic_plausibility": check_semantic_plausibility,
     "evolve_domain_subspaces": evolve_domain_subspaces,
     "build_temporal_knowledge_graph": build_temporal_knowledge_graph,
     "detect_structural_knowledge_gaps": detect_structural_knowledge_gaps,
     "find_structural_analogy_transfers": find_structural_analogy_transfers,
     "run_mingli_hypothesis_evolution": run_mingli_hypothesis_evolution,
-    "run_socrates_mechanism_enrichment": run_socrates_mechanism_enrichment,
-    "generate_idea": generate_idea,
-    "design_experiment": design_experiment,
-    "finalize_idea": finalize_idea,
     "create_hypothesis": create_hypothesis,
-    "ask_socratic_questions": ask_socratic_questions,
-    "ask_critical_questions": ask_critical_questions,
-    "find_counterexamples": find_counterexamples,
-    "stress_test_assumptions": stress_test_assumptions,
-    "moderate_round": moderate_round,
-    "summarize_positions": summarize_positions,
-    "extract_emergent_method": extract_emergent_method,
-    "run_socratic_hypothesis_debate": run_socratic_hypothesis_debate,
     "run_mechanism_check": run_mechanism_check,
-    "check_internal_consistency": check_internal_consistency,
-    "check_data_consistency": check_data_consistency,
-    "regime_shift_test": regime_shift_test,
-    "detect_selective_citation": detect_selective_citation,
-    "causal_chain_audit": causal_chain_audit,
-    "run_yanzhen_mechanism_verification": run_yanzhen_mechanism_verification,
     "export_research_plan": export_research_plan,
 }

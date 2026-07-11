@@ -1,0 +1,11 @@
+{
+  "id": "task_1782974565441_2312",
+  "subject": "A: 实现 v8_eval_target/string_utils.py",
+  "description": "Owner: alice\n\n按已达成的契约在 `v8_eval_target/string_utils.py` 落地 5 个纯函数（可能已有实现，需比对契约并保证一致）：\n\n- reverse(text: str) -> str\n- is_palindrome(text: str) -> bool  # ignore case + non-alphanumeric\n- count_words(text: str) -> int     # split on whitespace\n- capitalize_words(text: str) -> str\n- truncate(text: str, max_length: int, suffix: str = \"...\") -> str\n\n错误规则：\n- 非 str 输入 -> TypeError\n- truncate 中 max_length < 0 -> ValueError\n\n要求：\n- 保留类型注解 + docstring\n- 无副作用、无外部依赖\n- 遵循 v8_eval_target 既有代码风格（见 calc.py / slugify.py）\n- 在 worktree 内做修改（worktree 名 task-A）\n\n完成条件：\n1. `python -m py_compile string_utils.py` 通过\n2. `python -c \"from string_utils import reverse,is_palindrome,count_words,capitalize_words,truncate\"` 通过\n3. 用 send_message 向 lead 汇报改动摘要 + 快速自检结果",
+  "status": "completed",
+  "owner": "alice",
+  "worktree": "task-A",
+  "blockedBy": [],
+  "createdAt": 1782974565.4419765,
+  "updatedAt": 1782974780.905669
+}

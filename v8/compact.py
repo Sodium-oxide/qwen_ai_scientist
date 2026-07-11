@@ -159,60 +159,7 @@ def is_l1_snip_marker(message: dict[str, Any]) -> bool:
     return isinstance(content, str) and content.startswith("[snip_compact omitted ")
 
 
-def _build_tool_use_index(messages: list[dict[str, Any]]) -> dict[str, tuple[str, dict[str, Any]]]:
-    """Build mapping from tool_use_id to (tool_name, tool_input) for all tool_use blocks."""
-    index: dict[str, tuple[str, dict[str, Any]]] = {}
-    for message in messages:
-        if message.get("role") != "assistant":
-            continue
-        content = message.get("content")
-        if not isinstance(content, list):
-            continue
-        for block in content:
-            if isinstance(block, dict) and block.get("type") == "tool_use":
-                tool_id = block.get("id", "")
-                tool_name = block.get("name", "")
-                tool_input = block.get("input", {})
-                if tool_id:
-                    index[tool_id] = (tool_name, tool_input if isinstance(tool_input, dict) else {})
-    return index
-
-
-def _summarize_tool_result(tool_name: str, tool_input: dict[str, Any], result_text: str) -> str:
-    """Generate a compact summary preserving key metadata instead of generic placeholder."""
-    name_lower = tool_name.lower().replace("_", "")
-
-    # File read operations: preserve path and size info
-    if name_lower in {"readfile", "read"}:
-        path = str(tool_input.get("path", ""))
-        if path:
-            # Count lines in the result (read_file returns numbered lines)
-            line_count = result_text.count("\n") + 1 if result_text else 0
-            char_count = len(result_text)
-            path_short = path.split("/")[-1] if "/" in path else path.split("\\")[-1] if "\\" in path else path
-            return f"[Previously read: {path_short} ({line_count} lines, {char_count} chars)]"
-
-    # Glob operations: preserve pattern and match count
-    if name_lower == "glob":
-        pattern = str(tool_input.get("pattern", ""))
-        if pattern:
-            # Count matches (glob returns one path per line)
-            match_count = len([l for l in result_text.splitlines() if l.strip()]) if result_text else 0
-            return f"[Previously globbed: {pattern} ({match_count} matches)]"
-
-    # List operations
-    if "list" in name_lower:
-        count = len([l for l in result_text.splitlines() if l.strip()]) if result_text else 0
-        return f"[Previously listed: {tool_name} ({count} items)]"
-
-    # Default: generic compressed with tool name
-    return f"[tool result compressed: {tool_name}]"
-
-
 def micro_compact(messages: list[dict[str, Any]]) -> list[dict[str, Any]]:
-    # Build index of tool_use_id -> (tool_name, tool_input) for meaningful summaries
-    tool_use_index = _build_tool_use_index(messages)
-
     seen = 0
     changed = 0
     for message in reversed(messages):
@@ -228,46 +175,11 @@ def micro_compact(messages: list[dict[str, Any]]) -> list[dict[str, Any]]:
             text = str(block.get("content", ""))
             if text.startswith("[tool result compressed"):
                 continue
-            # Exempt previously summarized results
-            if text.startswith("[Previously"):
-                continue
-            # Exempt error results — they are small and critical for preventing retry loops
-            if block.get("is_error") or _is_error_tool_result(text):
-                continue
-            # Exempt very small results — they don't contribute to context bloat
-            if len(text) < 200:
-                continue
-
-            # Generate meaningful summary if we have tool_use metadata
-            tool_use_id = block.get("tool_use_id", "")
-            if tool_use_id and tool_use_id in tool_use_index:
-                tool_name, tool_input = tool_use_index[tool_use_id]
-                summary = _summarize_tool_result(tool_name, tool_input, text)
-            else:
-                summary = "[tool result compressed by micro_compact]"
-
-            block["content"] = summary
+            block["content"] = "[tool result compressed by micro_compact]"
             changed += 1
     if changed:
         log_event("COMPACT", "l2_micro", changed=changed, kept=L2_KEEP_TOOL_RESULTS)
     return messages
-
-
-def _is_error_tool_result(text: str) -> bool:
-    """Check if a tool result text indicates an error or suppression message."""
-    if not text:
-        return False
-    lower = text[:200].lower()
-    return any(marker in lower for marker in (
-        "error:", "error :", "errno",
-        "no such file", "not found", "does not exist",
-        "no files", "no matches", "no results",
-        "no records", "no papers", "no projects",
-        "no papergraph", "(empty)",
-        "duplicate", "suppressed", "repeated",
-        "extension-cycling", "loop detected",
-        "traceback", "exception",
-    ))
 
 
 def compact_history(messages: list[dict[str, Any]], *, focus: str = "") -> list[dict[str, Any]]:

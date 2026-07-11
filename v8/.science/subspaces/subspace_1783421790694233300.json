@@ -1,0 +1,1222 @@
+{
+  "subspace_map_id": "subspace_1783421790694233300",
+  "domain": "Power System Simulation / 电力系统仿真",
+  "generated_by": "llm",
+  "confidence": 0.85,
+  "createdAt": 1783421790.6942503,
+  "providers": [
+    "semantic_scholar",
+    "arxiv"
+  ],
+  "user_hints": [
+    "transient stability simulation",
+    "electromagnetic transient simulation",
+    "digital twin power grid",
+    "real-time simulator",
+    "power system co-simulation",
+    "AI surrogate modeling for power grids"
+  ],
+  "subspaces": [
+    {
+      "subspace_id": "electromagnetic_transient_simulation",
+      "name": "Electromagnetic Transient Simulation",
+      "aliases": [
+        "EMT simulation",
+        "电磁暂态仿真",
+        "EMT"
+      ],
+      "description": "High-fidelity time-domain simulation of fast electromagnetic phenomena (µs–ms scale), including switching transients, lightning surges, and power electronics dynamics.",
+      "parent": "",
+      "keywords": [
+        "PSCAD",
+        "EMTP-RV",
+        "ATP-EMTP",
+        "switching transient",
+        "power electronics modeling",
+        "frequency-dependent line modeling",
+        "HVDC converter dynamics",
+        "nonlinear device modeling"
+      ],
+      "seed_papers": [
+        "Martinez et al., 'EMTP-type Programs: A Historical Perspective', IEEE Trans. Power Delivery, 2015"
+      ],
+      "maturity": "mature",
+      "estimated_density": "high",
+      "strategic_importance": 9,
+      "search_strategy": "must_include",
+      "generated_by": "llm",
+      "probe_query": "PSCAD EMTP-RV ATP-EMTP switching transient power electronics modeling frequency-dependent line modeling",
+      "probe_hit_count": 8,
+      "recent_hit_count": 5,
+      "high_impact_hit_count": 0,
+      "suggested_quota": 3,
+      "coverage_status": "probe_covered"
+    },
+    {
+      "subspace_id": "transient_stability_simulation",
+      "name": "Transient Stability Simulation",
+      "aliases": [
+        "TS simulation",
+        "暂态稳定仿真",
+        "large-signal stability"
+      ],
+      "description": "Simulation of rotor-angle and power-angle dynamics following disturbances (e.g., faults, loss of generation) over 0.1–30 s timescales using phasor-domain models.",
+      "parent": "",
+      "keywords": [
+        "classical model",
+        "detailed generator model",
+        "network reduction",
+        "critical clearing time",
+        "time-domain stability",
+        "IEEE 14-bus benchmark",
+        "PSAT",
+        "MATPOWER"
+      ],
+      "seed_papers": [
+        "Kundur et al., 'Power System Stability and Control', 1994 (Ch. 12–14)"
+      ],
+      "maturity": "mature",
+      "estimated_density": "medium",
+      "strategic_importance": 10,
+      "search_strategy": "must_include",
+      "generated_by": "llm",
+      "probe_query": "classical model detailed generator model network reduction critical clearing time time-domain stability IEEE 14-bus benchmark",
+      "probe_hit_count": 4,
+      "recent_hit_count": 2,
+      "high_impact_hit_count": 0,
+      "suggested_quota": 3,
+      "coverage_status": "probe_covered"
+    },
+    {
+      "subspace_id": "real_time_power_system_simulation",
+      "name": "Real-Time Power System Simulation",
+      "aliases": [
+        "RT simulation",
+        "实时仿真",
+        "hardware-in-the-loop"
+      ],
+      "description": "Sub-cycle to millisecond-scale simulation executed on dedicated real-time platforms (e.g., OPAL-RT, RTDS) for controller testing, protection validation, and digital twin integration.",
+      "parent": "",
+      "keywords": [
+        "RTDS",
+        "OPAL-RT",
+        "HIL testing",
+        "FPGA-based simulation",
+        "real-time co-simulation",
+        "latency-constrained execution",
+        "I/O synchronization"
+      ],
+      "seed_papers": [
+        "Larsson et al., 'Real-Time Simulation of Power Systems: A Review', IEEE Trans. Power Systems, 2021"
+      ],
+      "maturity": "growing",
+      "estimated_density": "unknown",
+      "strategic_importance": 9,
+      "search_strategy": "must_include",
+      "generated_by": "llm",
+      "probe_query": "RTDS OPAL-RT HIL testing FPGA-based simulation real-time co-simulation latency-constrained execution",
+      "probe_hit_count": 0,
+      "recent_hit_count": 0,
+      "high_impact_hit_count": 0,
+      "suggested_quota": 2,
+      "coverage_status": "uncovered"
+    },
+    {
+      "subspace_id": "power_system_co_simulation",
+      "name": "Power System Co-Simulation",
+      "aliases": [
+        "co-simulation",
+        "联合仿真",
+        "FMI-based simulation"
+      ],
+      "description": "Orchestrated execution of heterogeneous models (e.g., EMT + TS + control logic + communication networks) using standardized interfaces like FMI or HELICS.",
+      "parent": "",
+      "keywords": [
+        "FMI 2.0",
+        "HELICS",
+        "cosim framework",
+        "interface synchronization",
+        "cross-domain coupling",
+        "grid-edge device integration",
+        "cyber-physical co-simulation"
+      ],
+      "seed_papers": [
+        "Bhela et al., 'Co-Simulation Frameworks for Smart Grids: A Survey', IEEE Access, 2020"
+      ],
+      "maturity": "growing",
+      "estimated_density": "unknown",
+      "strategic_importance": 8,
+      "search_strategy": "must_include",
+      "generated_by": "llm",
+      "probe_query": "FMI 2.0 HELICS cosim framework interface synchronization cross-domain coupling grid-edge device integration",
+      "probe_hit_count": 0,
+      "recent_hit_count": 0,
+      "high_impact_hit_count": 0,
+      "suggested_quota": 2,
+      "coverage_status": "uncovered"
+    },
+    {
+      "subspace_id": "ai_based_surrogate_modeling_for_power_systems",
+      "name": "AI-Based Surrogate Modeling for Power Systems",
+      "aliases": [
+        "surrogate modeling",
+        "代理模型",
+        "ML emulator",
+        "physics-informed ML"
+      ],
+      "description": "Data- or physics-guided machine learning models (e.g., neural ODEs, GNNs, PINNs) that replace or accelerate high-fidelity simulations while preserving accuracy and interpretability.",
+      "parent": "",
+      "keywords": [
+        "neural surrogate",
+        "graph neural network",
+        "PINN",
+        "model order reduction",
+        "simulation acceleration",
+        "uncertainty-aware emulation",
+        "training data scarcity",
+        "transfer learning for grids"
+      ],
+      "seed_papers": [
+        "Zhou et al., 'Neural Ordinary Differential Equations for Power System Dynamic Simulation', IEEE TPWRS, 2023"
+      ],
+      "maturity": "emerging",
+      "estimated_density": "unknown",
+      "strategic_importance": 10,
+      "search_strategy": "must_include",
+      "generated_by": "llm",
+      "probe_query": "neural surrogate graph neural network PINN model order reduction simulation acceleration uncertainty-aware emulation",
+      "probe_hit_count": 0,
+      "recent_hit_count": 0,
+      "high_impact_hit_count": 0,
+      "suggested_quota": 2,
+      "coverage_status": "uncovered"
+    },
+    {
+      "subspace_id": "digital_twin_for_power_grids",
+      "name": "Digital Twin for Power Grids",
+      "aliases": [
+        "power grid digital twin",
+        "电网数字孪生",
+        "grid twin"
+      ],
+      "description": "Cyber-physical system architecture integrating real-time data ingestion, multi-fidelity simulation, AI analytics, and bidirectional feedback for monitoring, prediction, and prescriptive control.",
+      "parent": "",
+      "keywords": [
+        "digital twin architecture",
+        "data-model fusion",
+        "twin-to-reality update",
+        "asset-level fidelity",
+        "edge-cloud orchestration",
+        "ISO digital twin",
+        "state estimation integration"
+      ],
+      "seed_papers": [
+        "Liu et al., 'Digital Twin in Power Systems: Concept, Architecture, and Applications', CSEE JPES, 2022"
+      ],
+      "maturity": "emerging",
+      "estimated_density": "unknown",
+      "strategic_importance": 10,
+      "search_strategy": "must_include",
+      "generated_by": "llm",
+      "probe_query": "digital twin architecture data-model fusion twin-to-reality update asset-level fidelity edge-cloud orchestration ISO digital twin",
+      "probe_hit_count": 0,
+      "recent_hit_count": 0,
+      "high_impact_hit_count": 0,
+      "suggested_quota": 2,
+      "coverage_status": "uncovered"
+    },
+    {
+      "subspace_id": "multi_time_scale_hybrid_simulation",
+      "name": "Multi-Time-Scale Hybrid Simulation",
+      "aliases": [
+        "hybrid time-scale simulation",
+        "多时间尺度仿真"
+      ],
+      "description": "Integrated simulation frameworks that concurrently resolve dynamics across disparate time scales (e.g., µs EMT + ms protection logic + s-level stability + min-level market dispatch).",
+      "parent": "Power System Co-Simulation",
+      "keywords": [
+        "multi-rate integration",
+        "time-step bridging",
+        "event-driven synchronization",
+        "scale-aware coupling",
+        "adaptive time stepping",
+        "stiffness handling",
+        "grid-forming inverter interaction"
+      ],
+      "seed_papers": [],
+      "maturity": "growing",
+      "estimated_density": "unknown",
+      "strategic_importance": 8,
+      "search_strategy": "nice_to_have",
+      "generated_by": "llm",
+      "probe_query": "multi-rate integration time-step bridging event-driven synchronization scale-aware coupling adaptive time stepping stiffness handling",
+      "probe_hit_count": 0,
+      "recent_hit_count": 0,
+      "high_impact_hit_count": 0,
+      "suggested_quota": 2,
+      "coverage_status": "uncovered"
+    },
+    {
+      "subspace_id": "model_validation_and_uncertainty_quantification",
+      "name": "Model Validation and Uncertainty Quantification",
+      "aliases": [
+        "V&V",
+        "verification and validation",
+        "不确定性量化",
+        "UQ"
+      ],
+      "description": "Rigorous statistical and numerical methods to quantify discrepancies between simulation outputs and physical measurements, including parameter uncertainty propagation and model fidelity assessment.",
+      "parent": "",
+      "keywords": [
+        "Bayesian calibration",
+        "Sobol sensitivity",
+        "model discrepancy",
+        "field-data validation",
+        "benchmarking against PMU data",
+        "epistemic vs aleatory uncertainty",
+        "validation metrics"
+      ],
+      "seed_papers": [
+        "Papadopoulos et al., 'Uncertainty Quantification in Power System Dynamic Simulations', IEEE Trans. Power Systems, 2022"
+      ],
+      "maturity": "growing",
+      "estimated_density": "unknown",
+      "strategic_importance": 7,
+      "search_strategy": "nice_to_have",
+      "generated_by": "llm",
+      "probe_query": "Bayesian calibration Sobol sensitivity model discrepancy field-data validation benchmarking against PMU data epistemic vs aleatory uncertainty",
+      "probe_hit_count": 0,
+      "recent_hit_count": 0,
+      "high_impact_hit_count": 0,
+      "suggested_quota": 2,
+      "coverage_status": "uncovered"
+    }
+  ],
+  "probe_results": [
+    {
+      "subspace_id": "electromagnetic_transient_simulation",
+      "name": "Electromagnetic Transient Simulation",
+      "query": "PSCAD EMTP-RV ATP-EMTP switching transient power electronics modeling frequency-dependent line modeling",
+      "probe_queries": [
+        "Electromagnetic Transient Simulation PSCAD EMTP-RV ATP-EMTP switching transient",
+        "PSCAD EMTP-RV ATP-EMTP switching transient power electronics modeling frequency-dependent line modeling"
+      ],
+      "provider_blocks": [
+        {
+          "provider": "semantic_scholar",
+          "query": "Electromagnetic Transient Simulation PSCAD EMTP-RV ATP-EMTP switching transient",
+          "status": "ok",
+          "note": null,
+          "error": null,
+          "result_count": 2
+        },
+        {
+          "provider": "arxiv",
+          "query": "Electromagnetic Transient Simulation PSCAD EMTP-RV ATP-EMTP switching transient",
+          "status": "ok",
+          "note": null,
+          "error": null,
+          "result_count": 2
+        },
+        {
+          "provider": "semantic_scholar",
+          "query": "PSCAD EMTP-RV ATP-EMTP switching transient power electronics modeling frequency-dependent line modeling",
+          "status": "ok",
+          "note": null,
+          "error": null,
+          "result_count": 2
+        },
+        {
+          "provider": "arxiv",
+          "query": "PSCAD EMTP-RV ATP-EMTP switching transient power electronics modeling frequency-dependent line modeling",
+          "status": "ok",
+          "note": null,
+          "error": null,
+          "result_count": 2
+        }
+      ],
+      "hit_count": 8,
+      "recent_count": 5,
+      "high_impact_count": 0,
+      "top_seed_papers": [
+        {
+          "result_index": null,
+          "stratified_layer": "",
+          "stratified_label": "",
+          "query_branch": "",
+          "retrieval_query": "Electromagnetic Transient Simulation PSCAD EMTP-RV ATP-EMTP switching transient",
+          "_why_selected": "",
+          "domain_relevance": {},
+          "relevance_score": 0.2837,
+          "relevance_components": {
+            "text_score": 0.3,
+            "recency_score": 1.0,
+            "impact_score": 0.35,
+            "citation_field": "materials_energy",
+            "citation_baseline": 250.0,
+            "venue_score": 0.45,
+            "publication_quality_score": 0.72,
+            "base_score": 0.394,
+            "text_weight": 0.62,
+            "recency_weight": 0.1,
+            "impact_weight": 0.18,
+            "venue_weight": 0.1
+          },
+          "publication_quality_score": 0.72,
+          "venue_quality": "unverified",
+          "journal_quartile": "",
+          "journal_metric_source": "",
+          "inferred_field": "materials_energy",
+          "quality_flags": [
+            "unverified_venue",
+            "new_paper_protection"
+          ],
+          "quality_criteria": [
+            "venue did not match suspicious, reputable, preprint, or curated quartile tables",
+            "paper is within 2-year protection window; low citations are not treated as low quality"
+          ],
+          "suspicion_type": "",
+          "is_review_like": false,
+          "pyramid_root_score": 0.4802,
+          "matched_query_terms": [
+            "atp-emtp",
+            "transient",
+            "power",
+            "switching"
+          ],
+          "title": "ATP-EMTP-Based Energy Storage System Model for High-Performance Transient Simulation in Power Grids",
+          "citation": "L. R. Merchan-Villalba et al. (2025) ATP-EMTP-Based Energy Storage System Model for High-Performance Transient Simulation in Power Grids doi:10.1109/ROPEC68163.2025.11353997",
+          "provider": "semantic_scholar",
+          "year": "2025",
+          "citation_count": 0,
+          "influential_citation_count": 0,
+          "doi": "10.1109/ROPEC68163.2025.11353997",
+          "arxiv_id": "",
+          "url": "https://www.semanticscholar.org/paper/8b3805c9405b5ed3d9d9807582044502b24fdb93",
+          "relevance_reason": "title=3/10, abstract=3/10, citation=3/10, phrase_bonus=0.0, recency=1.0, impact=0.35, venue=0.45, quality=0.72",
+          "quality_reason": "venue did not match suspicious, reputable, preprint, or curated quartile tables; paper is within 2-year protection window; low citations are not treated as low quality"
+        },
+        {
+          "result_index": null,
+          "stratified_layer": "",
+          "stratified_label": "",
+          "query_branch": "",
+          "retrieval_query": "PSCAD EMTP-RV ATP-EMTP switching transient power electronics modeling frequency-dependent line modeling",
+          "_why_selected": "",
+          "domain_relevance": {},
+          "relevance_score": 0.2702,
+          "relevance_components": {
+            "text_score": 0.312,
+            "recency_score": 0.85,
+            "impact_score": 0.2882,
+            "citation_field": "general",
+            "citation_baseline": 500.0,
+            "venue_score": 0.45,
+            "publication_quality_score": 0.72,
+            "base_score": 0.3753,
+            "text_weight": 0.62,
+            "recency_weight": 0.1,
+            "impact_weight": 0.18,
+            "venue_weight": 0.1
+          },
+          "publication_quality_score": 0.72,
+          "venue_quality": "unverified",
+          "journal_quartile": "",
+          "journal_metric_source": "",
+          "inferred_field": "general",
+          "quality_flags": [
+            "unverified_venue"
+          ],
+          "quality_criteria": [
+            "venue did not match suspicious, reputable, preprint, or curated quartile tables"
+          ],
+          "suspicion_type": "",
+          "is_review_like": false,
+          "pyramid_root_score": 0.4574,
+          "matched_query_terms": [
+            "switching",
+            "line",
+            "emtp-rv",
+            "transient",
+            "power",
+            "frequency-dependent"
+          ],
+          "title": "Switching Overvoltage Analysis in Conventional and Unconventional Transmission Lines",
+          "citation": "Easir Arafat et al. (2024) Switching Overvoltage Analysis in Conventional and Unconventional Transmission Lines doi:10.1109/KPEC61529.2024.10676135",
+          "provider": "semantic_scholar",
+          "year": "2024",
+          "citation_count": 5,
+          "influential_citation_count": 0,
+          "doi": "10.1109/KPEC61529.2024.10676135",
+          "arxiv_id": "",
+          "url": "https://www.semanticscholar.org/paper/3abcb1364accfc32a382a4bed74cb1f5b49d38e4",
+          "relevance_reason": "title=2/10, abstract=6/10, citation=2/10, phrase_bonus=0.0, recency=0.85, impact=0.2882, venue=0.45, quality=0.72",
+          "quality_reason": "venue did not match suspicious, reputable, preprint, or curated quartile tables"
+        }
+      ]
+    },
+    {
+      "subspace_id": "transient_stability_simulation",
+      "name": "Transient Stability Simulation",
+      "query": "classical model detailed generator model network reduction critical clearing time time-domain stability IEEE 14-bus benchmark",
+      "probe_queries": [
+        "Transient Stability Simulation classical model detailed generator model network reduction critical clearing time",
+        "classical model detailed generator model network reduction critical clearing time time-domain stability IEEE 14-bus benchmark"
+      ],
+      "provider_blocks": [
+        {
+          "provider": "semantic_scholar",
+          "query": "Transient Stability Simulation classical model detailed generator model network reduction critical clearing time",
+          "status": "ok",
+          "note": null,
+          "error": null,
+          "result_count": 2
+        },
+        {
+          "provider": "arxiv",
+          "query": "Transient Stability Simulation classical model detailed generator model network reduction critical clearing time",
+          "status": "ok",
+          "note": null,
+          "error": null,
+          "result_count": 2
+        },
+        {
+          "provider": "semantic_scholar",
+          "query": "classical model detailed generator model network reduction critical clearing time time-domain stability IEEE 14-bus benchmark",
+          "status": "probe_budget_exhausted",
+          "note": null,
+          "error": null,
+          "result_count": 0
+        },
+        {
+          "provider": "arxiv",
+          "query": "classical model detailed generator model network reduction critical clearing time time-domain stability IEEE 14-bus benchmark",
+          "status": "probe_budget_exhausted",
+          "note": null,
+          "error": null,
+          "result_count": 0
+        }
+      ],
+      "hit_count": 4,
+      "recent_count": 2,
+      "high_impact_count": 0,
+      "top_seed_papers": [
+        {
+          "result_index": null,
+          "stratified_layer": "",
+          "stratified_label": "",
+          "query_branch": "",
+          "retrieval_query": "Transient Stability Simulation classical model detailed generator model network reduction critical clearing time",
+          "_why_selected": "",
+          "domain_relevance": {},
+          "relevance_score": 0.313,
+          "relevance_components": {
+            "text_score": 0.3657,
+            "recency_score": 1.0,
+            "impact_score": 0.35,
+            "citation_field": "general",
+            "citation_baseline": 500.0,
+            "venue_score": 0.45,
+            "publication_quality_score": 0.72,
+            "base_score": 0.4347,
+            "text_weight": 0.62,
+            "recency_weight": 0.1,
+            "impact_weight": 0.18,
+            "venue_weight": 0.1
+          },
+          "publication_quality_score": 0.72,
+          "venue_quality": "unverified",
+          "journal_quartile": "",
+          "journal_metric_source": "",
+          "inferred_field": "general",
+          "quality_flags": [
+            "unverified_venue"
+          ],
+          "quality_criteria": [
+            "venue did not match suspicious, reputable, preprint, or curated quartile tables"
+          ],
+          "suspicion_type": "",
+          "is_review_like": false,
+          "pyramid_root_score": 0.5095,
+          "matched_query_terms": [
+            "reduction",
+            "critical",
+            "clearing",
+            "time",
+            "model",
+            "generator",
+            "time-domain",
+            "stability"
+          ],
+          "title": "Evaluation of Critical Clearing Time under PV Penetration and Inertia Reduction in SMIB",
+          "citation": "Naval Rudiyanto et al. (2025) Evaluation of Critical Clearing Time under PV Penetration and Inertia Reduction in SMIB doi:10.1109/ICITACEE66165.2025.11232860",
+          "provider": "semantic_scholar",
+          "year": "2025",
+          "citation_count": 1,
+          "influential_citation_count": 0,
+          "doi": "10.1109/ICITACEE66165.2025.11232860",
+          "arxiv_id": "",
+          "url": "https://www.semanticscholar.org/paper/3c0c0c78d8870a0b8315da52c13a9a75463c4058",
+          "relevance_reason": "title=4/14, abstract=8/14, citation=4/14, phrase_bonus=0.0, recency=1.0, impact=0.35, venue=0.45, quality=0.72",
+          "quality_reason": "venue did not match suspicious, reputable, preprint, or curated quartile tables"
+        },
+        {
+          "result_index": null,
+          "stratified_layer": "",
+          "stratified_label": "",
+          "query_branch": "",
+          "retrieval_query": "Transient Stability Simulation classical model detailed generator model network reduction critical clearing time",
+          "_why_selected": "",
+          "domain_relevance": {},
+          "relevance_score": 0.1974,
+          "relevance_components": {
+            "text_score": 0.3171,
+            "recency_score": 0.45,
+            "impact_score": 0.1767,
+            "citation_field": "general",
+            "citation_baseline": 500.0,
+            "venue_score": 0.35,
+            "publication_quality_score": 0.64,
+            "base_score": 0.3084,
+            "text_weight": 0.62,
+            "recency_weight": 0.1,
+            "impact_weight": 0.18,
+            "venue_weight": 0.1
+          },
+          "publication_quality_score": 0.64,
+          "venue_quality": "missing",
+          "journal_quartile": "",
+          "journal_metric_source": "",
+          "inferred_field": "general",
+          "quality_flags": [
+            "missing_venue"
+          ],
+          "quality_criteria": [
+            "venue metadata is missing"
+          ],
+          "suspicion_type": "",
+          "is_review_like": false,
+          "pyramid_root_score": 0.3519,
+          "matched_query_terms": [
+            "generator",
+            "critical",
+            "clearing",
+            "time",
+            "stability",
+            "model",
+            "network"
+          ],
+          "title": "Introducing a New Method to Increase Critical Clearing Time (CCT) and Improve Transient Stability of Synchronous Generator Using Brake Resistance",
+          "citation": "Ebadollah Amouzad Mahdiraji (2020) Introducing a New Method to Increase Critical Clearing Time (CCT) and Improve Transient Stability of Synchronous Generator Using Brake Resistance doi:10.30855/gmbd.2020.02.06",
+          "provider": "semantic_scholar",
+          "year": "2020",
+          "citation_count": 2,
+          "influential_citation_count": 0,
+          "doi": "10.30855/gmbd.2020.02.06",
+          "arxiv_id": "",
+          "url": "https://www.semanticscholar.org/paper/2c88f54a1d8d2132fb7121af37c94f902ea20758",
+          "relevance_reason": "title=5/14, abstract=3/14, citation=5/14, phrase_bonus=0.0, recency=0.45, impact=0.1767, venue=0.35, quality=0.64",
+          "quality_reason": "venue metadata is missing"
+        }
+      ]
+    },
+    {
+      "subspace_id": "real_time_power_system_simulation",
+      "name": "Real-Time Power System Simulation",
+      "query": "RTDS OPAL-RT HIL testing FPGA-based simulation real-time co-simulation latency-constrained execution",
+      "probe_queries": [
+        "Real-Time Power System Simulation RTDS OPAL-RT HIL testing FPGA-based simulation",
+        "RTDS OPAL-RT HIL testing FPGA-based simulation real-time co-simulation latency-constrained execution"
+      ],
+      "provider_blocks": [
+        {
+          "provider": "semantic_scholar",
+          "query": "Real-Time Power System Simulation RTDS OPAL-RT HIL testing FPGA-based simulation",
+          "status": "probe_budget_exhausted",
+          "note": null,
+          "error": null,
+          "result_count": 0
+        },
+        {
+          "provider": "arxiv",
+          "query": "Real-Time Power System Simulation RTDS OPAL-RT HIL testing FPGA-based simulation",
+          "status": "probe_budget_exhausted",
+          "note": null,
+          "error": null,
+          "result_count": 0
+        },
+        {
+          "provider": "semantic_scholar",
+          "query": "RTDS OPAL-RT HIL testing FPGA-based simulation real-time co-simulation latency-constrained execution",
+          "status": "probe_budget_exhausted",
+          "note": null,
+          "error": null,
+          "result_count": 0
+        },
+        {
+          "provider": "arxiv",
+          "query": "RTDS OPAL-RT HIL testing FPGA-based simulation real-time co-simulation latency-constrained execution",
+          "status": "probe_budget_exhausted",
+          "note": null,
+          "error": null,
+          "result_count": 0
+        }
+      ],
+      "hit_count": 0,
+      "recent_count": 0,
+      "high_impact_count": 0,
+      "top_seed_papers": []
+    },
+    {
+      "subspace_id": "power_system_co_simulation",
+      "name": "Power System Co-Simulation",
+      "query": "FMI 2.0 HELICS cosim framework interface synchronization cross-domain coupling grid-edge device integration",
+      "probe_queries": [
+        "Power System Co-Simulation FMI 2.0 HELICS cosim framework interface synchronization",
+        "FMI 2.0 HELICS cosim framework interface synchronization cross-domain coupling grid-edge device integration"
+      ],
+      "provider_blocks": [
+        {
+          "provider": "semantic_scholar",
+          "query": "Power System Co-Simulation FMI 2.0 HELICS cosim framework interface synchronization",
+          "status": "probe_budget_exhausted",
+          "note": null,
+          "error": null,
+          "result_count": 0
+        },
+        {
+          "provider": "arxiv",
+          "query": "Power System Co-Simulation FMI 2.0 HELICS cosim framework interface synchronization",
+          "status": "probe_budget_exhausted",
+          "note": null,
+          "error": null,
+          "result_count": 0
+        },
+        {
+          "provider": "semantic_scholar",
+          "query": "FMI 2.0 HELICS cosim framework interface synchronization cross-domain coupling grid-edge device integration",
+          "status": "probe_budget_exhausted",
+          "note": null,
+          "error": null,
+          "result_count": 0
+        },
+        {
+          "provider": "arxiv",
+          "query": "FMI 2.0 HELICS cosim framework interface synchronization cross-domain coupling grid-edge device integration",
+          "status": "probe_budget_exhausted",
+          "note": null,
+          "error": null,
+          "result_count": 0
+        }
+      ],
+      "hit_count": 0,
+      "recent_count": 0,
+      "high_impact_count": 0,
+      "top_seed_papers": []
+    },
+    {
+      "subspace_id": "ai_based_surrogate_modeling_for_power_systems",
+      "name": "AI-Based Surrogate Modeling for Power Systems",
+      "query": "neural surrogate graph neural network PINN model order reduction simulation acceleration uncertainty-aware emulation",
+      "probe_queries": [
+        "AI-Based Surrogate Modeling for Power Systems neural surrogate graph neural network PINN model order reduction",
+        "neural surrogate graph neural network PINN model order reduction simulation acceleration uncertainty-aware emulation"
+      ],
+      "provider_blocks": [
+        {
+          "provider": "semantic_scholar",
+          "query": "AI-Based Surrogate Modeling for Power Systems neural surrogate graph neural network PINN model order reduction",
+          "status": "probe_budget_exhausted",
+          "note": null,
+          "error": null,
+          "result_count": 0
+        },
+        {
+          "provider": "arxiv",
+          "query": "AI-Based Surrogate Modeling for Power Systems neural surrogate graph neural network PINN model order reduction",
+          "status": "probe_budget_exhausted",
+          "note": null,
+          "error": null,
+          "result_count": 0
+        },
+        {
+          "provider": "semantic_scholar",
+          "query": "neural surrogate graph neural network PINN model order reduction simulation acceleration uncertainty-aware emulation",
+          "status": "probe_budget_exhausted",
+          "note": null,
+          "error": null,
+          "result_count": 0
+        },
+        {
+          "provider": "arxiv",
+          "query": "neural surrogate graph neural network PINN model order reduction simulation acceleration uncertainty-aware emulation",
+          "status": "probe_budget_exhausted",
+          "note": null,
+          "error": null,
+          "result_count": 0
+        }
+      ],
+      "hit_count": 0,
+      "recent_count": 0,
+      "high_impact_count": 0,
+      "top_seed_papers": []
+    },
+    {
+      "subspace_id": "digital_twin_for_power_grids",
+      "name": "Digital Twin for Power Grids",
+      "query": "digital twin architecture data-model fusion twin-to-reality update asset-level fidelity edge-cloud orchestration ISO digital twin",
+      "probe_queries": [
+        "Digital Twin for Power Grids digital twin architecture data-model fusion twin-to-reality update asset-level fidelity",
+        "digital twin architecture data-model fusion twin-to-reality update asset-level fidelity edge-cloud orchestration ISO digital twin"
+      ],
+      "provider_blocks": [
+        {
+          "provider": "semantic_scholar",
+          "query": "Digital Twin for Power Grids digital twin architecture data-model fusion twin-to-reality update asset-level fidelity",
+          "status": "probe_budget_exhausted",
+          "note": null,
+          "error": null,
+          "result_count": 0
+        },
+        {
+          "provider": "arxiv",
+          "query": "Digital Twin for Power Grids digital twin architecture data-model fusion twin-to-reality update asset-level fidelity",
+          "status": "probe_budget_exhausted",
+          "note": null,
+          "error": null,
+          "result_count": 0
+        },
+        {
+          "provider": "semantic_scholar",
+          "query": "digital twin architecture data-model fusion twin-to-reality update asset-level fidelity edge-cloud orchestration ISO digital twin",
+          "status": "probe_budget_exhausted",
+          "note": null,
+          "error": null,
+          "result_count": 0
+        },
+        {
+          "provider": "arxiv",
+          "query": "digital twin architecture data-model fusion twin-to-reality update asset-level fidelity edge-cloud orchestration ISO digital twin",
+          "status": "probe_budget_exhausted",
+          "note": null,
+          "error": null,
+          "result_count": 0
+        }
+      ],
+      "hit_count": 0,
+      "recent_count": 0,
+      "high_impact_count": 0,
+      "top_seed_papers": []
+    },
+    {
+      "subspace_id": "multi_time_scale_hybrid_simulation",
+      "name": "Multi-Time-Scale Hybrid Simulation",
+      "query": "multi-rate integration time-step bridging event-driven synchronization scale-aware coupling adaptive time stepping stiffness handling",
+      "probe_queries": [
+        "Multi-Time-Scale Hybrid Simulation multi-rate integration time-step bridging event-driven synchronization scale-aware coupling",
+        "multi-rate integration time-step bridging event-driven synchronization scale-aware coupling adaptive time stepping stiffness handling"
+      ],
+      "provider_blocks": [
+        {
+          "provider": "semantic_scholar",
+          "query": "Multi-Time-Scale Hybrid Simulation multi-rate integration time-step bridging event-driven synchronization scale-aware coupling",
+          "status": "probe_budget_exhausted",
+          "note": null,
+          "error": null,
+          "result_count": 0
+        },
+        {
+          "provider": "arxiv",
+          "query": "Multi-Time-Scale Hybrid Simulation multi-rate integration time-step bridging event-driven synchronization scale-aware coupling",
+          "status": "probe_budget_exhausted",
+          "note": null,
+          "error": null,
+          "result_count": 0
+        },
+        {
+          "provider": "semantic_scholar",
+          "query": "multi-rate integration time-step bridging event-driven synchronization scale-aware coupling adaptive time stepping stiffness handling",
+          "status": "probe_budget_exhausted",
+          "note": null,
+          "error": null,
+          "result_count": 0
+        },
+        {
+          "provider": "arxiv",
+          "query": "multi-rate integration time-step bridging event-driven synchronization scale-aware coupling adaptive time stepping stiffness handling",
+          "status": "probe_budget_exhausted",
+          "note": null,
+          "error": null,
+          "result_count": 0
+        }
+      ],
+      "hit_count": 0,
+      "recent_count": 0,
+      "high_impact_count": 0,
+      "top_seed_papers": []
+    },
+    {
+      "subspace_id": "model_validation_and_uncertainty_quantification",
+      "name": "Model Validation and Uncertainty Quantification",
+      "query": "Bayesian calibration Sobol sensitivity model discrepancy field-data validation benchmarking against PMU data epistemic vs aleatory uncertainty",
+      "probe_queries": [
+        "Model Validation and Uncertainty Quantification Bayesian calibration Sobol sensitivity model discrepancy field-data validation",
+        "Bayesian calibration Sobol sensitivity model discrepancy field-data validation benchmarking against PMU data epistemic vs aleatory uncertainty"
+      ],
+      "provider_blocks": [
+        {
+          "provider": "semantic_scholar",
+          "query": "Model Validation and Uncertainty Quantification Bayesian calibration Sobol sensitivity model discrepancy field-data validation",
+          "status": "probe_budget_exhausted",
+          "note": null,
+          "error": null,
+          "result_count": 0
+        },
+        {
+          "provider": "arxiv",
+          "query": "Model Validation and Uncertainty Quantification Bayesian calibration Sobol sensitivity model discrepancy field-data validation",
+          "status": "probe_budget_exhausted",
+          "note": null,
+          "error": null,
+          "result_count": 0
+        },
+        {
+          "provider": "semantic_scholar",
+          "query": "Bayesian calibration Sobol sensitivity model discrepancy field-data validation benchmarking against PMU data epistemic vs aleatory uncertainty",
+          "status": "probe_budget_exhausted",
+          "note": null,
+          "error": null,
+          "result_count": 0
+        },
+        {
+          "provider": "arxiv",
+          "query": "Bayesian calibration Sobol sensitivity model discrepancy field-data validation benchmarking against PMU data epistemic vs aleatory uncertainty",
+          "status": "probe_budget_exhausted",
+          "note": null,
+          "error": null,
+          "result_count": 0
+        }
+      ],
+      "hit_count": 0,
+      "recent_count": 0,
+      "high_impact_count": 0,
+      "top_seed_papers": []
+    }
+  ],
+  "coverage_plan": {
+    "total_subspaces": 8,
+    "covered": 2,
+    "missing": 6,
+    "insufficient": 0,
+    "coverage_rate": 0.25,
+    "missing_details": [
+      {
+        "name": "Real-Time Power System Simulation",
+        "keywords": [
+          "RTDS",
+          "OPAL-RT",
+          "HIL testing",
+          "FPGA-based simulation",
+          "real-time co-simulation",
+          "latency-constrained execution"
+        ],
+        "suggested_action": "supplemental_search"
+      },
+      {
+        "name": "Power System Co-Simulation",
+        "keywords": [
+          "FMI 2.0",
+          "HELICS",
+          "cosim framework",
+          "interface synchronization",
+          "cross-domain coupling",
+          "grid-edge device integration"
+        ],
+        "suggested_action": "supplemental_search"
+      },
+      {
+        "name": "AI-Based Surrogate Modeling for Power Systems",
+        "keywords": [
+          "neural surrogate",
+          "graph neural network",
+          "PINN",
+          "model order reduction",
+          "simulation acceleration",
+          "uncertainty-aware emulation"
+        ],
+        "suggested_action": "supplemental_search"
+      },
+      {
+        "name": "Digital Twin for Power Grids",
+        "keywords": [
+          "digital twin architecture",
+          "data-model fusion",
+          "twin-to-reality update",
+          "asset-level fidelity",
+          "edge-cloud orchestration",
+          "ISO digital twin"
+        ],
+        "suggested_action": "supplemental_search"
+      },
+      {
+        "name": "Multi-Time-Scale Hybrid Simulation",
+        "keywords": [
+          "multi-rate integration",
+          "time-step bridging",
+          "event-driven synchronization",
+          "scale-aware coupling",
+          "adaptive time stepping",
+          "stiffness handling"
+        ],
+        "suggested_action": "supplemental_search"
+      },
+      {
+        "name": "Model Validation and Uncertainty Quantification",
+        "keywords": [
+          "Bayesian calibration",
+          "Sobol sensitivity",
+          "model discrepancy",
+          "field-data validation",
+          "benchmarking against PMU data",
+          "epistemic vs aleatory uncertainty"
+        ],
+        "suggested_action": "supplemental_search"
+      }
+    ],
+    "recommendation": "Confirm priority subspaces with the user before running ZhiZhi, then search selected subspaces independently."
+  },
+  "query_plan": [
+    {
+      "branch": "electromagnetic_transient_simulation",
+      "name": "Electromagnetic Transient Simulation",
+      "query": "PSCAD EMTP-RV ATP-EMTP switching transient power electronics modeling frequency-dependent line modeling HVDC converter dynamics nonlinear device modeling review survey",
+      "quota": 3,
+      "estimated_density": "high",
+      "strategic_importance": 9,
+      "search_strategy": "must_include"
+    },
+    {
+      "branch": "transient_stability_simulation",
+      "name": "Transient Stability Simulation",
+      "query": "classical model detailed generator model network reduction critical clearing time time-domain stability IEEE 14-bus benchmark PSAT MATPOWER review survey",
+      "quota": 3,
+      "estimated_density": "medium",
+      "strategic_importance": 10,
+      "search_strategy": "must_include"
+    },
+    {
+      "branch": "real_time_power_system_simulation",
+      "name": "Real-Time Power System Simulation",
+      "query": "RTDS OPAL-RT HIL testing FPGA-based simulation real-time co-simulation latency-constrained execution I/O synchronization latest recent",
+      "quota": 2,
+      "estimated_density": "unknown",
+      "strategic_importance": 9,
+      "search_strategy": "must_include"
+    },
+    {
+      "branch": "power_system_co_simulation",
+      "name": "Power System Co-Simulation",
+      "query": "FMI 2.0 HELICS cosim framework interface synchronization cross-domain coupling grid-edge device integration cyber-physical co-simulation latest recent",
+      "quota": 2,
+      "estimated_density": "unknown",
+      "strategic_importance": 8,
+      "search_strategy": "must_include"
+    },
+    {
+      "branch": "ai_based_surrogate_modeling_for_power_systems",
+      "name": "AI-Based Surrogate Modeling for Power Systems",
+      "query": "neural surrogate graph neural network PINN model order reduction simulation acceleration uncertainty-aware emulation training data scarcity transfer learning for grids latest recent",
+      "quota": 2,
+      "estimated_density": "unknown",
+      "strategic_importance": 10,
+      "search_strategy": "must_include"
+    },
+    {
+      "branch": "digital_twin_for_power_grids",
+      "name": "Digital Twin for Power Grids",
+      "query": "digital twin architecture data-model fusion twin-to-reality update asset-level fidelity edge-cloud orchestration ISO digital twin state estimation integration latest recent",
+      "quota": 2,
+      "estimated_density": "unknown",
+      "strategic_importance": 10,
+      "search_strategy": "must_include"
+    },
+    {
+      "branch": "multi_time_scale_hybrid_simulation",
+      "name": "Multi-Time-Scale Hybrid Simulation",
+      "query": "multi-rate integration time-step bridging event-driven synchronization scale-aware coupling adaptive time stepping stiffness handling grid-forming inverter interaction latest recent",
+      "quota": 2,
+      "estimated_density": "unknown",
+      "strategic_importance": 8,
+      "search_strategy": "nice_to_have"
+    },
+    {
+      "branch": "model_validation_and_uncertainty_quantification",
+      "name": "Model Validation and Uncertainty Quantification",
+      "query": "Bayesian calibration Sobol sensitivity model discrepancy field-data validation benchmarking against PMU data epistemic vs aleatory uncertainty validation metrics latest recent",
+      "quota": 2,
+      "estimated_density": "unknown",
+      "strategic_importance": 7,
+      "search_strategy": "nice_to_have"
+    }
+  ],
+  "user_interaction": {
+    "needed": true,
+    "type": "pre_retrieval_subspace_selection",
+    "question": "Select the subspaces to prioritize before ZhiZhi imports papers. You can also add custom subspaces.",
+    "options": [
+      {
+        "label": "Electromagnetic Transient Simulation",
+        "subspace_id": "electromagnetic_transient_simulation",
+        "description": "High-fidelity time-domain simulation of fast electromagnetic phenomena (µs–ms scale), including switching transients, lightning surges, and power electronics dynamics.",
+        "keywords": [
+          "PSCAD",
+          "EMTP-RV",
+          "ATP-EMTP",
+          "switching transient",
+          "power electronics modeling",
+          "frequency-dependent line modeling",
+          "HVDC converter dynamics",
+          "nonlinear device modeling"
+        ],
+        "probe_hit_count": 8,
+        "estimated_density": "high",
+        "strategic_importance": 9,
+        "recommended": true
+      },
+      {
+        "label": "Transient Stability Simulation",
+        "subspace_id": "transient_stability_simulation",
+        "description": "Simulation of rotor-angle and power-angle dynamics following disturbances (e.g., faults, loss of generation) over 0.1–30 s timescales using phasor-domain models.",
+        "keywords": [
+          "classical model",
+          "detailed generator model",
+          "network reduction",
+          "critical clearing time",
+          "time-domain stability",
+          "IEEE 14-bus benchmark",
+          "PSAT",
+          "MATPOWER"
+        ],
+        "probe_hit_count": 4,
+        "estimated_density": "medium",
+        "strategic_importance": 10,
+        "recommended": true
+      },
+      {
+        "label": "Real-Time Power System Simulation",
+        "subspace_id": "real_time_power_system_simulation",
+        "description": "Sub-cycle to millisecond-scale simulation executed on dedicated real-time platforms (e.g., OPAL-RT, RTDS) for controller testing, protection validation, and digital twin integration.",
+        "keywords": [
+          "RTDS",
+          "OPAL-RT",
+          "HIL testing",
+          "FPGA-based simulation",
+          "real-time co-simulation",
+          "latency-constrained execution",
+          "I/O synchronization"
+        ],
+        "probe_hit_count": 0,
+        "estimated_density": "unknown",
+        "strategic_importance": 9,
+        "recommended": true
+      },
+      {
+        "label": "Power System Co-Simulation",
+        "subspace_id": "power_system_co_simulation",
+        "description": "Orchestrated execution of heterogeneous models (e.g., EMT + TS + control logic + communication networks) using standardized interfaces like FMI or HELICS.",
+        "keywords": [
+          "FMI 2.0",
+          "HELICS",
+          "cosim framework",
+          "interface synchronization",
+          "cross-domain coupling",
+          "grid-edge device integration",
+          "cyber-physical co-simulation"
+        ],
+        "probe_hit_count": 0,
+        "estimated_density": "unknown",
+        "strategic_importance": 8,
+        "recommended": true
+      },
+      {
+        "label": "AI-Based Surrogate Modeling for Power Systems",
+        "subspace_id": "ai_based_surrogate_modeling_for_power_systems",
+        "description": "Data- or physics-guided machine learning models (e.g., neural ODEs, GNNs, PINNs) that replace or accelerate high-fidelity simulations while preserving accuracy and interpretability.",
+        "keywords": [
+          "neural surrogate",
+          "graph neural network",
+          "PINN",
+          "model order reduction",
+          "simulation acceleration",
+          "uncertainty-aware emulation",
+          "training data scarcity",
+          "transfer learning for grids"
+        ],
+        "probe_hit_count": 0,
+        "estimated_density": "unknown",
+        "strategic_importance": 10,
+        "recommended": true
+      },
+      {
+        "label": "Digital Twin for Power Grids",
+        "subspace_id": "digital_twin_for_power_grids",
+        "description": "Cyber-physical system architecture integrating real-time data ingestion, multi-fidelity simulation, AI analytics, and bidirectional feedback for monitoring, prediction, and prescriptive control.",
+        "keywords": [
+          "digital twin architecture",
+          "data-model fusion",
+          "twin-to-reality update",
+          "asset-level fidelity",
+          "edge-cloud orchestration",
+          "ISO digital twin",
+          "state estimation integration"
+        ],
+        "probe_hit_count": 0,
+        "estimated_density": "unknown",
+        "strategic_importance": 10,
+        "recommended": true
+      },
+      {
+        "label": "Multi-Time-Scale Hybrid Simulation",
+        "subspace_id": "multi_time_scale_hybrid_simulation",
+        "description": "Integrated simulation frameworks that concurrently resolve dynamics across disparate time scales (e.g., µs EMT + ms protection logic + s-level stability + min-level market dispatch).",
+        "keywords": [
+          "multi-rate integration",
+          "time-step bridging",
+          "event-driven synchronization",
+          "scale-aware coupling",
+          "adaptive time stepping",
+          "stiffness handling",
+          "grid-forming inverter interaction"
+        ],
+        "probe_hit_count": 0,
+        "estimated_density": "unknown",
+        "strategic_importance": 8,
+        "recommended": true
+      },
+      {
+        "label": "Model Validation and Uncertainty Quantification",
+        "subspace_id": "model_validation_and_uncertainty_quantification",
+        "description": "Rigorous statistical and numerical methods to quantify discrepancies between simulation outputs and physical measurements, including parameter uncertainty propagation and model fidelity assessment.",
+        "keywords": [
+          "Bayesian calibration",
+          "Sobol sensitivity",
+          "model discrepancy",
+          "field-data validation",
+          "benchmarking against PMU data",
+          "epistemic vs aleatory uncertainty",
+          "validation metrics"
+        ],
+        "probe_hit_count": 0,
+        "estimated_density": "unknown",
+        "strategic_importance": 7,
+        "recommended": true
+      }
+    ],
+    "custom_subspace_input": {
+      "enabled": true,
+      "placeholder": "e.g. Demand Response; EV Charging Coordination; Building Energy Management",
+      "instructions": "If your target subfield is not listed, provide one subspace per line or semicolon-separated. These will be converted into custom retrieval branches."
+    },
+    "continue_with": "Pass subspace_map_id plus selected_subfields, or pass option labels as focus_branches to run_zhizhi_literature_analysis."
+  }
+}

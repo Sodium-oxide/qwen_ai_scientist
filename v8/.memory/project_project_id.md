@@ -1,7 +1,7 @@
 ---
 name: project_id
-description: 科学研究项目的ID
+description: unique identifier for the research project
 type: project
 ---
 
-sci_1783694961337118900
+sci_1783350589946502800

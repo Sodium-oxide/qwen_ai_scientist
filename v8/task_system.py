@@ -35,7 +35,7 @@ DELIVERY_IGNORED_PREFIXES = {
     "v8/.memory",
     "v8/.team",
     "v8/.tasks",
-    
+    "v8/.worktrees",
 }
 SLOW_KEYWORDS = [
     "install",
@@ -75,6 +75,7 @@ class Task:
     description: str
     status: str = "pending"
     owner: str | None = None
+    worktree: str | None = None
     blockedBy: list[str] = field(default_factory=list)
     createdAt: float = field(default_factory=time.time)
     updatedAt: float = field(default_factory=time.time)
@@ -122,6 +123,8 @@ def claim_task(task_id: str, owner: str = "main") -> str:
         if not can_start(task):
             missing = incomplete_dependencies(task)
             raise ValueError(f"Task {task_id} is blocked by: {', '.join(missing)}")
+        if not task.worktree:
+            task.worktree = ensure_task_worktree(task, owner)
         task.status = "in_progress"
         task.owner = owner
         task.updatedAt = time.time()
@@ -142,6 +145,12 @@ def complete_task(task_id: str) -> str:
         task.status = "completed"
         task.updatedAt = time.time()
         save_task(task)
+    if task.worktree:
+        try:
+            from .worktree_isolation import keep_worktree
+        except ImportError:
+            from worktree_isolation import keep_worktree
+        keep_worktree(task.worktree, reason=f"task {task.id} completed")
 
     deliverable_targets = [
         candidate
@@ -161,9 +170,72 @@ def complete_task(task_id: str) -> str:
     return result
 
 
+def bind_task_worktree(task_id: str, worktree: str) -> str:
+    worktree_name = str(worktree).strip()
+    if not worktree_name:
+        raise ValueError("worktree is required")
+    with task_lock:
+        task = load_task(task_id)
+        if task.worktree and task.worktree != worktree_name:
+            return (
+                f"Task {task.id} is already bound to worktree {task.worktree}; "
+                f"not rebinding to {worktree_name}."
+            )
+        task.worktree = worktree_name
+        task.updatedAt = time.time()
+        save_task(task)
+    log_event("TASK", "worktree_bound", id=task.id, worktree=worktree_name)
+    return f"Bound task {task.id} to worktree {worktree_name}."
+
+
 def deliver_outputs_to_dependents(source_task: Task, targets: list[Task]) -> list[dict[str, Any]]:
-    # Worktree-based delivery removed; tasks share the same workspace.
-    return []
+    if not source_task.worktree or not targets:
+        return []
+    try:
+        from .worktree_isolation import resolve_worktree_cwd
+    except ImportError:
+        from worktree_isolation import resolve_worktree_cwd
+
+    try:
+        source_root = resolve_worktree_cwd(source_task.worktree)
+    except Exception as exc:
+        log_event("WARN", "delivery_source_unavailable", task_id=source_task.id, worktree=source_task.worktree, detail=exc)
+        return []
+
+    rel_paths = changed_output_paths(source_root, since=source_task.createdAt)
+    if not rel_paths:
+        log_event("TASK", "delivery_no_changes", task_id=source_task.id, worktree=source_task.worktree)
+        return []
+
+    deliveries: list[dict[str, Any]] = []
+    for target in targets:
+        if not target.worktree:
+            deliveries.append({"target": target.id, "status": "skipped", "reason": "target has no worktree"})
+            continue
+        try:
+            target_root = resolve_worktree_cwd(target.worktree)
+        except Exception as exc:
+            deliveries.append({"target": target.id, "status": "failed", "reason": str(exc)})
+            log_event("WARN", "delivery_target_unavailable", task_id=target.id, worktree=target.worktree, detail=exc)
+            continue
+        copied = copy_relative_outputs(source_root, target_root, rel_paths)
+        deliveries.append(
+            {
+                "target": target.id,
+                "worktree": target.worktree,
+                "status": "delivered",
+                "files": copied,
+            }
+        )
+        log_event(
+            "TASK",
+            "delivered_outputs",
+            source=source_task.id,
+            target=target.id,
+            worktree=target.worktree,
+            files=len(copied),
+        )
+    return deliveries
 
 
 def changed_output_paths(root: Path, *, since: float) -> list[str]:
@@ -271,7 +343,7 @@ def render_deliveries(deliveries: list[dict[str, Any]]) -> str:
         if isinstance(files, list):
             file_text = ", ".join(str(file) for file in files) or "(no files)"
             lines.append(
-                f"- {delivery.get('target')} -> {delivery.get('target')}: "
+                f"- {delivery.get('target')} -> {delivery.get('worktree')}: "
                 f"{delivery.get('status')} {file_text}"
             )
         else:
@@ -284,14 +356,25 @@ def validate_task_completion(task: Task) -> str:
     expected_paths = expected_task_python_paths(task_text)
     if not expected_paths:
         return ""
+    if not task.worktree:
+        return "- Task declares Python deliverables but is not bound to a worktree."
+
+    try:
+        from .worktree_isolation import resolve_worktree_cwd
+    except ImportError:
+        from worktree_isolation import resolve_worktree_cwd
+
+    try:
+        root = resolve_worktree_cwd(task.worktree)
+    except Exception as exc:
+        return f"- Task worktree is unavailable: {exc}"
 
     issues: list[str] = []
-    root = Path(WORKDIR)
     existing_files: dict[str, Path] = {}
     for rel_path in sorted(expected_paths):
         found = find_task_file(root, rel_path)
         if found is None:
-            issues.append(f"- Expected file is missing: {rel_path}")
+            issues.append(f"- Expected file is missing in task worktree {task.worktree}: {rel_path}")
         else:
             existing_files[rel_path] = found
 
@@ -392,8 +475,8 @@ def summarize_process_output(completed: subprocess.CompletedProcess[str]) -> str
     output = ((completed.stdout or "") + (completed.stderr or "")).strip().replace("\n", "\\n")
     if not output:
         output = f"exit_code={completed.returncode}"
-    if len(output) > 1500:
-        output = output[:1500] + "...[truncated]"
+    if len(output) > 700:
+        output = output[:700] + "...[truncated]"
     return output
 
 
@@ -586,6 +669,7 @@ def task_from_dict(data: dict[str, Any]) -> Task:
         description=str(data.get("description", "")),
         status=status,
         owner=data.get("owner"),
+        worktree=data.get("worktree"),
         blockedBy=list(data.get("blockedBy", [])),
         createdAt=float(data.get("createdAt", time.time())),
         updatedAt=float(data.get("updatedAt", time.time())),
@@ -610,6 +694,14 @@ def new_background_id() -> str:
     return f"bg_{int(time.time() * 1000)}_{random.randint(1000, 9999)}"
 
 
+def ensure_task_worktree(task: Task, owner: str) -> str:
+    try:
+        from .worktree_isolation import create_worktree, sanitize_worktree_name
+    except ImportError:
+        from worktree_isolation import create_worktree, sanitize_worktree_name
+    name = sanitize_worktree_name(f"{owner}_{task.id}")
+    create_worktree(name, task_id=task.id)
+    return name
 
 
 def summarize_invocation(name: str, tool_input: dict[str, Any]) -> str:
