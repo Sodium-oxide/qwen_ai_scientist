@@ -926,7 +926,7 @@ def revise_paper(
     review_feedback: dict[str, Any] | str,
     project_context: dict[str, Any] | None = None,
     *,
-    max_tokens: int = 4000,
+    max_tokens: int = 6000,
 ) -> dict[str, Any]:
     """
     根据评审反馈修改论文。

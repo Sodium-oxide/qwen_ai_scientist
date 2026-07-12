@@ -1,0 +1,44 @@
+{
+  "scores": {
+    "novelty": 8,
+    "quality": 7,
+    "clarity": 7,
+    "significance": 8,
+    "ethics": "pass"
+  },
+  "total_score": 30,
+  "strengths": [
+    "Integrates safety/adverse effect probability modeling directly into GRN/PPI inference, addressing a critical translational gap often ignored in reprogramming studies.",
+    "Comprehensive multi-tiered validation pipeline spanning computational benchmarking (AUPRC), in vitro functional angiogenesis assays, and in vivo placental vascular analysis.",
+    "Strict adherence to MISEV2023 guidelines for EV isolation, characterization, and purity validation strengthens mechanistic claims regarding RUNX1-mediated cargo sorting.",
+    "Mathematically formalized propensity scoring with Bayesian weight optimization demonstrates rigorous computational design."
+  ],
+  "weaknesses": [
+    "The perturbed expression distribution Q_{c,g} is not mathematically or computationally defined, making the KL divergence-based propensity score non-reproducible.",
+    "Reference to GENIE3-v2 with monotonicity constraints appears to be a custom or unpublished adaptation; no public repository, benchmark, or validation is provided.",
+    "Tail-vein LNP delivery at embryonic day 8.5 is biologically questionable for achieving placental-specific targeting without engineered tropism or local injection routes.",
+    "The abstract claims a precise 3.84-fold upregulation and 17.2% reduction in off-target effects, but the provided results section lacks quantitative confirmation of these exact values.",
+    "Manuscript is incomplete (cuts off mid-sentence) and lacks a code/data availability statement, statistical test specifications, and multiple testing corrections."
+  ],
+  "citation_check": {
+    "total_citations": 20,
+    "verified": 17,
+    "flagged_as_potentially_hallucinated": [
+      "[11,19] GENIE3-v2 (custom/unverifiable variant lacking public documentation)",
+      "[13] CMap/LINCS integration tool citation is generic and lacks specific pipeline reference"
+    ]
+  },
+  "reproducibility_assessment": "medium",
+  "claims_vs_results_alignment": "partially_aligned",
+  "questions_for_authors": [
+    "How exactly is the in silico overexpression distribution Q_{c,g} simulated or parameterized for the KL divergence calculation?",
+    "Can the authors provide a public repository containing the GENIE3-v2 source code, monotonicity constraint implementation, and the Bayesian optimization pipeline?",
+    "What specific LNP formulation, surface modification, or targeting ligand was used to achieve placental specificity after systemic tail-vein administration at E8.5?",
+    "Where are the exact statistical values (e.g., 3.84-fold upregulation, 17.2% safety improvement) located in the full manuscript, and what multiple-testing correction was applied?"
+  ],
+  "recommended_action": "Weak Accept",
+  "confidence_in_recommendation": "medium",
+  "detailed_review": "This manuscript proposes Refate, a computational-experimental framework that expands cell fate reprogramming beyond TF-centric paradigms by integrating single-cell multimodal atlases, drug-target databases, and explicit safety modeling. The conceptual contribution is substantial: unifying efficacy propensity scoring with adverse effect probability is a timely advancement for translational regenerative biology. The application to placental angiogenesis and RUNX1-mediated EV cargo loading is novel and well-motivated. Methodologically, the use of KL divergence, JSD, and Bayesian weight optimization provides a rigorous statistical foundation, and the AUPRC benchmarking against SCENIC/CellOracle demonstrates competitive predictive performance. Experimental validation is multi-modal, adhering to MISEV2023 standards and including robust in vitro (tube formation, aortic ring) and in vivo (placental vessel density) assays. However, several critical issues must be addressed prior to publication. First, the core propensity formula relies on an undefined perturbed distribution Q_{c,g}; without clarifying how in silico overexpression is simulated (e.g., via scGen, cellOracle, or a custom generative model), the metric cannot be replicated. Second, GENIE3-v2 is cited as a custom adaptation with monotonicity constraints, but lacks public code, benchmark comparisons, or mathematical formalization, raising reproducibility concerns. Third, the in vivo strategy of tail-vein LNP delivery at E8.5 for placental targeting is biologically contentious; systemic administration typically results in hepatic/pulmonary sequestration, and placental delivery usually requires uterine artery injection or tropism-engineered LNPs. Fourth, the provided text cuts off abruptly, and the abstract's precise quantitative claims (3.84-fold upregulation, 17.2% safety reduction) are not quantitatively mirrored in the visible results section, suggesting partial misalignment or missing data. Finally, the manuscript lacks a code/data availability statement, exact statistical tests, and multiple comparison corrections. Addressing these points through supplementary code, clarified simulation pipelines, targeted delivery validation, and complete results reporting would elevate this to a strong accept. Currently, it meets the threshold for a Weak Accept given its high novelty, strong experimental design, and translational significance.",
+  "reviewed_at": "2026-07-13T00:20:26",
+  "pass_threshold_30": true
+}

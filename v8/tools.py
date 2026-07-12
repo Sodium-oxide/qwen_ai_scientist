@@ -1466,6 +1466,67 @@ def export_research_plan(project_id: str) -> str:
     return science_export(project_id)
 
 
+# ---- PaperWriter + Reviewer (模块9+10) ----
+
+def _write_paper_handler(project_id: str, paper_title: str = "") -> str:
+    """PaperWriter: 从项目上下文生成完整论文。"""
+    import json as _json
+    try:
+        from .paper_writer import write_paper_from_project, write_paper
+    except ImportError:
+        from paper_writer import write_paper_from_project, write_paper
+    try:
+        result = write_paper_from_project(project_id)
+    except Exception:
+        # fallback: 用空上下文生成
+        result = write_paper({})
+    return _json.dumps(result, ensure_ascii=False, indent=2)
+
+
+def _revise_paper_handler(project_id: str, current_paper: str = "", review_feedback: str = "") -> str:
+    """PaperWriter: 根据评审反馈修改论文。"""
+    import json as _json
+    try:
+        from .paper_writer import revise_paper
+    except ImportError:
+        from paper_writer import revise_paper
+    feedback = _json.loads(review_feedback) if review_feedback.strip().startswith("{") else review_feedback
+    result = revise_paper(current_paper, feedback, {"project_id": project_id})
+    return _json.dumps(result, ensure_ascii=False, indent=2)
+
+
+def _review_paper_handler(project_id: str, paper_content: str = "") -> str:
+    """Reviewer: 五维评分评审论文。"""
+    import json as _json
+    from pathlib import Path as _Path
+    try:
+        from .reviewer import review_paper
+    except ImportError:
+        from reviewer import review_paper
+    # 如果 paper_content 是文件路径，读取内容
+    if paper_content and _Path(paper_content).exists():
+        paper_content = _Path(paper_content).read_text(encoding="utf-8")
+    report = review_paper(paper_content, {"project_id": project_id})
+    return _json.dumps(report, ensure_ascii=False, indent=2)
+
+
+def _review_and_revise_handler(project_id: str, max_rounds: int = 3) -> str:
+    """Reviewer: 评审→修改→再评审迭代循环。"""
+    import json as _json
+    try:
+        from .paper_writer import write_paper_from_project, _paper_to_text
+        from .reviewer import review_and_revise
+    except ImportError:
+        from paper_writer import write_paper_from_project, _paper_to_text
+        from reviewer import review_and_revise
+    # 首先生成初始论文
+    paper_result = write_paper_from_project(project_id)
+    paper_text = _paper_to_text(paper_result["paper"])
+    # 运行迭代循环
+    loop_result = review_and_revise(paper_text, {"project_id": project_id}, max_rounds=max_rounds)
+    return _json.dumps(loop_result, ensure_ascii=False, indent=2)
+
+
 BASIC_TOOLS = [
     {
         "name": "bash",
@@ -2919,6 +2980,57 @@ SCIENCE_TOOLS = [
             "required": ["project_id"],
         },
     },
+    # ---- PaperWriter (模块9) ----
+    {
+        "name": "write_paper",
+        "description": "PaperWriter: Generate a complete academic paper from project context (hypothesis, experiments, analysis, references).",
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "project_id": {"type": "string", "description": "Science project id."},
+                "paper_title": {"type": "string", "description": "Optional override title."},
+            },
+            "required": ["project_id"],
+        },
+    },
+    {
+        "name": "revise_paper",
+        "description": "PaperWriter: Revise a paper based on reviewer feedback. Address all weaknesses and questions.",
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "project_id": {"type": "string", "description": "Science project id."},
+                "current_paper": {"type": "string", "description": "Current paper text or path to paper JSON."},
+                "review_feedback": {"type": "string", "description": "Reviewer feedback JSON or text."},
+            },
+            "required": ["project_id"],
+        },
+    },
+    # ---- Reviewer (模块10) ----
+    {
+        "name": "review_paper",
+        "description": "Reviewer: Score a manuscript on novelty, quality, clarity, significance, and ethics. Return structured peer review.",
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "project_id": {"type": "string", "description": "Science project id."},
+                "paper_content": {"type": "string", "description": "Paper text or path to paper file."},
+            },
+            "required": ["project_id"],
+        },
+    },
+    {
+        "name": "review_and_revise",
+        "description": "Reviewer: Run the full review-revise loop (max 3 rounds). Review paper, if score < 30, feed weaknesses back to PaperWriter for revision, then re-review.",
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "project_id": {"type": "string", "description": "Science project id."},
+                "max_rounds": {"type": "integer", "description": "Max review-revise rounds; default 3."},
+            },
+            "required": ["project_id"],
+        },
+    },
 ]
 
 TOOLS = (
@@ -3027,4 +3139,9 @@ TOOL_HANDLERS: dict[str, Callable[..., str]] = {
     "causal_chain_audit": causal_chain_audit,
     "run_yanzhen_mechanism_verification": run_yanzhen_mechanism_verification,
     "export_research_plan": export_research_plan,
+    # ---- PaperWriter + Reviewer (模块9+10) ----
+    "write_paper": _write_paper_handler,
+    "revise_paper": _revise_paper_handler,
+    "review_paper": _review_paper_handler,
+    "review_and_revise": _review_and_revise_handler,
 }
