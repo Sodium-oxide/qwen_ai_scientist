@@ -1,0 +1,276 @@
+{
+  "objective": "在定义明确的患者群体、疾病类型和治疗类别中，个体的遗传变异、肿瘤或疾病分子表型、器官功能、免疫状态、既往治疗史以及制造过程参数，是否能够以可重复、可校准、因果上可解释的方式预测：1. 某一治疗方案的药代动力学暴露、毒性和适宜剂量；2. 某一靶向药物、免疫治疗、细胞治疗或核酸药物的临床获益与耐药风险；3. 个体化制剂或自体细胞产品能否在身份、纯度、效力、无菌性、批间一致性、周转时间和成本约束下稳定制造；4. 上述预测在不同祖源、年龄、肝肾功能、疾病分期、医疗中心和检测平台迁移时是否仍成立。禁止将统计相关、患者画像匹配或模型准确率直接解释为因果治疗获益；禁止将实验室样本、类器官、动物模型或单中心回顾性结果直接外推为临床个体化治疗有效；禁止将技术尚不成熟误判为生物学上绝对不可行。",
+  "domain": "Personalized Medicine / Precision Medicine / Pharmacogenomics / Cancer Genomics / Clinical Pharmacology / Multi-omics / Patient-derived Models / Cell and Gene Therapy Manufacturing / Biostatistics / Regulatory Science",
+  "research_brief": "创建并运行一个 AutoGen 科研闭环验证项目。\n\n  项目标题：\n  Can we design and manufacture medicines customized for individual people?\n  从个体分子表型、剂量响应到可制造性的精准医疗因果证据闭环验证\n\n  领域：\n  Personalized Medicine / Precision Medicine / Pharmacogenomics / Cancer Genomics /\n  Clinical Pharmacology / Multi-omics / Patient-derived Models /\n  Cell and Gene Therapy Manufacturing / Biostatistics / Regulatory Science\n\n  研究目标：\n  不要泛泛讨论 精准医疗将改变未来医疗。围绕以下可分解、可证伪的科学与转化问题开展验证：\n\n  在定义明确的患者群体、疾病类型和治疗类别中，个体的遗传变异、肿瘤或疾病分子表型、\n  器官功能、免疫状态、既往治疗史以及制造过程参数，是否能够以可重复、可校准、\n  因果上可解释的方式预测：\n\n  1. 某一治疗方案的药代动力学暴露、毒性和适宜剂量；\n  2. 某一靶向药物、免疫治疗、细胞治疗或核酸药物的临床获益与耐药风险；\n  3. 个体化制剂或自体细胞产品能否在身份、纯度、效力、无菌性、批间一致性、\n     周转时间和成本约束下稳定制造；\n  4. 上述预测在不同祖源、年龄、肝肾功能、疾病分期、医疗中心和检测平台迁移时是否仍成立。\n\n  禁止将统计相关、患者画像匹配或模型准确率直接解释为因果治疗获益；\n  禁止将实验室样本、类器官、动物模型或单中心回顾性结果直接外推为临床个体化治疗有效；\n  禁止将技术尚不成熟误判为生物学上绝对不可行。\n\n  执行完整闭环：\n  Boxue → Objective Decomposition → ZhiZhi → TanXi → Socrates →\n  MingLi → YanZhen → DuZhi → BianLun → MingLi 修订 → YanZhen 复审。\n\n\n  ## Boxue：Objective Decomposition\n\n  在任何宽泛检索前，先运行 decompose_research_objective。\n  输出不是一组研究方向，而是独立的、可被推翻的子假设。\n\n  Decomposer输出:\n\n    SH1:\n      focus: 药物基因组学指导剂量是否可改善暴露与毒性预测\n      patient_scope: >\n        接受具有明确药物基因组学证据药物的成人患者；\n        必须限定具体药物/疾病组合，例如氟嘧啶类治疗的消化道肿瘤患者，\n        或其他具有明确代谢酶、转运体、HLA 风险位点的治疗场景。\n      causal_chain:\n        - 可行动遗传变异或功能性表型\n        - 药物代谢/转运/免疫反应能力改变\n        - 药物暴露量、活性代谢物或靶点占有率改变\n        - 毒性风险或治疗效应改变\n      independent_variable: >\n        基因型/表型指导的剂量规则，或经预注册的剂量调整策略\n      dependent_variables:\n        - AUC、Cmax、谷浓度或暴露预测误差\n        - 3级及以上毒性发生率\n        - 剂量中断率\n        - 治疗完成率\n      required_controls:\n        - 肾功能、肝功能、年龄、体重、合并用药\n        - 肿瘤负荷或疾病严重度\n        - 治疗方案和给药途径\n      falsification_condition: >\n        在外部队列中，遗传/表型引导的规则在控制临床混杂后\n        不能改善暴露校准、毒性预测或临床安全性；\n        或疗效/毒性差异完全可由未控制的临床因素解释。\n      evidence_window:\n        P0_latest_preprint: 至少1篇近期临床药理或精准剂量预印本\n        P1_recent_primary: 至少2篇近2年人群或前瞻性原始研究\n        P2_mechanism_or_theory: 至少1篇酶学、PK/PD或转运机制证据\n      retrieval_query: >\n        pharmacogenomics genotype guided dosing pharmacokinetics exposure toxicity\n        external validation causal inference\n\n    SH2:\n      focus: 个体肿瘤/疾病多组学能否预测靶向治疗获益而非仅预测预后\n      patient_scope: >\n        必须限定疾病与治疗类别，例如特定实体瘤中的靶向治疗、\n        免疫检查点抑制剂或抗体药物偶联物；\n        不允许把所有癌症、所有突变和所有疗法混为一个假设。\n      causal_chain:\n        - 基线或动态分子特征\n        - 可作用靶点、通路依赖或免疫微环境状态\n        - 药物靶点调制与早期药效学生物标志物\n        - 客观缓解、无进展生存或临床获益\n      independent_variable: >\n        依据预注册分子分层规则选择治疗，\n        或在自然实验/目标试验模拟中比较不同治疗策略\n      dependent_variables:\n        - 靶点占有、循环肿瘤DNA变化或药效标志物\n        - 客观缓解率\n        - 无进展生存\n        - 严重不良事件\n      alternative_mechanisms:\n        - 预后性生物标志物而非预测性生物标志物\n        - 既往治疗史或疾病负荷造成的选择偏倚\n        - 检测平台误差或肿瘤异质性\n      falsification_condition: >\n        分子特征在接受不同治疗的可比患者中不产生治疗效应异质性；\n        或在外部中心、不同测序平台、不同祖源群体中失去校准。\n      retrieval_query: >\n        multiomics predictive biomarker treatment effect heterogeneity\n        target trial emulation external validation precision oncology\n\n    SH3:\n      focus: 患者来源模型能否作为个体化治疗决策的可迁移中介\n      patient_scope: >\n        选择一种明确患者来源模型，例如肿瘤类器官、患者来源异种移植模型、\n        单细胞功能测定或外周免疫细胞功能测定；\n        不得把不同模型的结果直接合并。\n      causal_chain:\n        - 患者来源组织或细胞的采集与质量控制\n        - 可保留的克隆、微环境或药物反应表型\n        - ex vivo / 模型体系的药物敏感性\n        - 患者体内疗效或毒性结果\n      independent_variable: >\n        模型驱动治疗选择与标准治疗选择之间的预注册比较；\n        或模型预测分数的阈值分层\n      dependent_variables:\n        - 模型与临床响应的一致性\n        - 预测灵敏度、特异度、校准度\n        - 周转时间\n        - 失败样本率\n      falsification_condition: >\n        患者来源模型的预测增益在外部队列中不高于\n        临床变量加基因组变量的基线模型，或因样本选择偏倚而消失。\n      retrieval_query: >\n        patient derived organoid functional precision medicine\n        prospective clinical correlation treatment response external validation\n\n    SH4:\n      focus: 个体化制剂或自体治疗产品的制造约束是否限制临床个体化可及性\n      patient_scope: >\n        必须选择一种制造平台，例如自体CAR-T、TCR-T、个体化mRNA疫苗、\n        反义寡核苷酸或个体化配制剂；\n        不得将所有细胞、基因和核酸疗法混为个体化制造。\n      causal_chain:\n        - 患者起始材料质量、设计参数与供应链条件\n        - 制造过程控制、身份链、纯度、效力和放行标准\n        - 产品剂量/活性/周转时间/失败率\n        - 可给药比例、临床暴露和治疗获益\n      independent_variable: >\n        预定义制造工艺、质量属性控制策略、自动化程度或放行规则\n      dependent_variables:\n        - 制造成功率\n        - 周转时间\n        - 批间变异\n        - 细胞活性/效力或制剂质量属性\n        - 每位患者成本\n        - 治疗可及率\n      falsification_condition: >\n        即使在受控工艺下，关键质量属性不能预测产品活性或临床可给药性；\n        或个体化制造改进被成本、周转时间和失败率抵消。\n      retrieval_query: >\n        autologous cell therapy manufacturing critical quality attributes\n        chain of identity potency turnaround time individualized medicine\n\n    combination_hypothesis:\n      statement: >\n        仅当 SH1–SH4 在各自限定的疾病、治疗和制造平台中获得独立支持时，\n        才能得出个体化医疗在特定适应证中可设计、可验证、可制造的条件化结论。\n        不能把某一癌种、某一药物或某一种细胞产品的成功外推为普适结论。\n      integration_test: >\n        比较临床获益、预测校准、制造成功率、周转时间、成本与公平性，\n        明确哪些限制是生物学机制限制，哪些是工程、数据、支付或监管限制。\n      status: blocked_on_component_evidence\n\n  ## ZhiZhi：文献与证据知识库要求\n\n  数据源与质量边界\n\n  - 主要使用 semantic_scholar、PubMed、arXiv；临床前沿预印本可补充 medRxiv/bioRxiv，但必须明确其未经同行评审状态。\n  - 分层导入至少 15 篇经质量筛选的文献；数量不是目标，必须覆盖每个已选子假设的证据窗口。\n  - 对摘要缺失、unknown 字段、来源可疑或 requires_human_review 的记录，执行提取修复、降权或停留在背景层，不得作为机制合\n    同的唯一证据。\n\n  - 不得制造论文、临床试验、监管文件、效应量、患者结局或指南推荐。\n\n  P0–P4 分层\n\n  P0 / L3：近期预印本\n    - 精准医疗、临床药理、多组学、患者来源模型、个体化细胞/核酸制造\n    - 要求标注未经同行评审；检索失败必须显式标记证据不足\n\n  P1 / L2：近2年高质量原始研究\n    - 前瞻性临床队列、随机或准实验研究\n    - 外部验证、临床药理、真实世界目标试验模拟\n    - 多中心临床/转化研究和受控制造研究\n\n  P2 / L4：机制、实验与理论证据\n    - 酶动力学、PK/PD、药物转运、受体占有\n    - 单细胞、多组学、功能测定、类器官\n    - CMC、效力测定、放行标准、过程分析技术\n\n  P3 / L0：系统综述、临床指南、监管和方法学综述\n    - 药物基因组学实施指南\n    - 精准肿瘤学、患者来源模型和先进治疗产品监管综述\n    - 偏倚、因果推断、临床预测模型报告规范\n\n  P4 / L1：奠基研究与历史脉络\n    - 关键药物基因组学机制发现\n    - 个体化靶向治疗或细胞治疗的奠基性临床/制造研究\n    - 仅用于历史和机制脉络，不得替代当前外部验证\n\n  必须覆盖的子空间\n\n  - 药物基因组学、代谢酶、转运体、HLA 风险、PK/PD 与剂量优化；\n  - 肿瘤或疾病基因组、转录组、蛋白组、单细胞和空间组学；\n  - 预测性标志物与预后性标志物的因果区分；\n  - 真实世界数据、目标试验模拟、选择偏倚、祖源偏倚和检测平台漂移；\n  - 患者来源类器官、PDX、功能测定与临床结局之间的迁移误差；\n  - 自体细胞、核酸药物或个体化制剂的 CMC、身份链、效力、无菌、放行和供应链；\n  - 监管、知情同意、数据治理、隐私、算法审计和可及性；\n  - 经济性：周转时间、失败制造批次、支付方式和中心间可复制性。\n\n  必须排除或降权的内容\n\n  - 只报告模型 AUC、没有临床终点或外部验证的纯算法论文；\n  - 只有疾病关联、没有治疗策略或可观测中介的关联研究；\n  - 与精准医疗无关的普通生物信息学、一般医院调度或常规药物合成论文；\n  - 仅动物或细胞系研究、却声称直接预测患者获益的论文；\n  - 没有来源、无明确样本定义、混合多个治疗场景且不可拆分的营销报告。\n\n  DeepSurvey 风格知识构建\n\n  每篇入库论文除 method-scenario-benchmark 外，必须提取：\n\n  keynote:\n    core_problem: 该论文解决的具体临床或制造问题\n    patient_population: 人群、适应证、入排标准和治疗场景\n    causal_chains:\n      - trigger: 干预、遗传变异、制造参数或自然实验条件\n        steps:\n          - claim: 中介机制\n            evidence: 论文中的来源摘录\n            evidence_type: experimental | theoretical | observational | inferred\n        outcome: 临床、药代、功能或制造终点\n        observables: 可直接测量的信号\n        interventions: 可操纵变量\n    experimental_evidence: 样本数、测量条件、对照和主要终点\n    assumptions: 隐含假设、可迁移条件和未测混杂\n    limitations: 作者明确局限\n    important_claims: 声明与证据的一一对应\n    future_directions: 明确未来工作\n    code_or_implementation: 公开代码、模型版本、分析环境；不得下载或处理患者敏感数据\n\n  ## TanXi：Gap 探索要求\n\n  TanXi 首先做因果断链检测，而不是把方法尚未用于某场景作为高价值 Gap。\n\n  优先发现以下问题：\n\n  1. 遗传变异 → 功能表型 → 药物暴露 → 毒性/获益 中，哪一段缺乏可测量中介、干预证据或外部验证；\n  2. 某些生物标志物究竟预测治疗效应，还是仅反映预后、疾病负荷或医生选择治疗的偏倚；\n  3. 单次基线多组学预测与治疗过程中克隆演化、耐药、免疫状态变化之间的断链；\n  4. 类器官、PDX 或功能检测的体外响应与临床响应不一致的机制：采样偏倚、微环境缺失、时间滞后还是剂量暴露差异；\n  5. 个体化细胞/核酸产品中，起始材料、过程参数、关键质量属性、效力和临床可给药性之间是否存在未验证的因果链；\n  6. 不同祖源、年龄、肝肾功能、合并用药、检测平台和医疗中心之间，预测规则是否出现校准失效；\n  7. 预测性能改进是否被制造周期、失败率、成本和可及性抵消；\n  8. 监管/标准体系是否无法覆盖个体化产品的身份链、效力检测和持续工艺变更。\n\n  每个 ranked gap 必须输出：\n\n  mechanism_draft:\n    input: 已定义的干预、患者分层或制造变量\n    proposed_mediator: 仅可填写文献来源支持的中介；否则保持 unresolved\n    output: 明确临床、药代、功能或制造终点\n    source_clue: 原文 citation 与 excerpt\n    causal_gap:\n      missing_kind: intermediate_mechanism | observability | intervention |\n                    counterfactual | evidence_window\n      evidence_needed: 下一步需要何种直接证据\n    sub_hypothesis_id: SH1 | SH2 | SH3 | SH4\n    unresolved_fields:\n      - identity\n      - location_or_scope\n      - dynamics\n      - reversibility\n      - observability\n      - intervention\n      - counterfactual\n\n  禁止把某 AI 方法尚未用于某癌种某测序技术还没和某药物配对直接列为核心 Gap。\n\n  ## Socrates：机制合同与因果补全\n\n  只选择排名第一、且属于机制型或矛盾型的 Gap 建立机制合同。\n\n  Socrates evidence contract:\n    identity: 中介实体/过程到底是什么\n    location_or_scope: 位于哪类细胞、组织、患者分层、制造环节或时间窗\n    dynamics: 如何随剂量、治疗周期、病程或制造批次变化\n    reversibility: 是否可逆，何种条件下可恢复\n    observability: 如何直接测量，而不是只测临床终点\n    intervention: 什么变量可在伦理和技术上被操纵\n    counterfactual: 若抑制/移除中介，预期发生什么\n\n  每个字段必须有：\n\n  evidence:\n    - citation: 真实论文、试验、指南或受控制造来源\n      excerpt: 支持该字段的原文摘录\n      paper_id: PaperGraph记录\n      evidence_type: experimental | theoretical | observational | inferred\n\n  Socrates 必须同时输出：\n\n  - 反事实或准实验设计；\n  - 第一性原理推导待补项，例如酶动力学、药物暴露—反应关系、受体占有、细胞扩增动力学、质量属性—效力关系；\n  - 竞争机制消除计划；\n  - 哪些证据来自人体、体外系统、动物模型或制造过程，禁止混淆证据层级。\n\n  若 verdict != COMPLETE，输出 INSUFFICIENT_EVIDENCE、剩余字段和定向检索建议，停止 MingLi 假设生成；不得用常识、临床直觉\n  或模板补全。\n\n  ## MingLi：假设生成要求\n\n  MingLi 只可消费：\n\n  - Socrates COMPLETE 的机制合同；\n  - 对应子假设满足 P0–P2 证据窗口；\n  - 有明确患者范围、治疗范围和可观测终点的 Gap。\n\n  每条假设必须包含：\n\n  hypothesis:\n    sub_hypothesis_id: SHx\n    patient_scope: 年龄、适应证、疾病阶段、关键入排条件\n    treatment_scope: 具体药物/治疗类别/制造平台\n    causal_chain: X → Z → Y\n    X: 可干预变量或可定义的自然实验\n    Z: 直接可测量中介\n    Y: 临床、药代、功能或制造终点\n    operating_conditions:\n      - 给药方案、剂量、治疗周期\n      - 肝肾功能、合并用药、样本采集时点\n      - 制造工艺、放行窗口或储运条件\n    observables:\n      - 药物暴露、毒性分级、反应率、无进展生存\n      - ctDNA、转录组、蛋白组、免疫功能、类器官功能读数\n      - 身份、纯度、效力、无菌、周转时间和失败率\n    null_hypothesis: 不存在经中介 Z 传递的治疗效应异质性\n    alternative_explanations:\n      - 未测临床混杂\n      - 预后性而非预测性标志物\n      - 检测误差、选择偏倚或时间依赖偏倚\n      - 制造批次或中心效应\n    falsification_condition: 预注册的失败条件\n    source_mapping: 每个因果链步骤对应 Socrates citation/excerpt\n\n  合格假设的形式应类似：\n\n  > 在预先定义的患者分层和治疗方案中，若通过 X 改变或识别个体化治疗条件，并且直接测得中介 Z 的预期变化，而 Y 在匹配对照\n  > 下按预注册方向改变，则支持该机制；若 Z 未改变、Y 与 Z 脱钩，或竞争机制更能解释数据，则否定或修订假设。\n\n  禁止使用AI 能改善个体化治疗通过多组学理解患者采用特定技术提升疗效之类没有机制实体和证伪条件的万能模板。\n\n  ## YanZhen：两次机制审计\n\n  初审\n\n  - 内部一致性：变量、患者范围、治疗范围、时间顺序和中介定义是否一致；\n  - 数据一致性：citation/excerpt 是否真正支持所声称的人群、干预和终点；\n  - 因果一致性：是否把相关误当治疗效应，是否遗漏关键混杂；\n  - 工程与生物学区分：制造失败、成本或周转时间限制不能被误判为疗法生物学无效；\n  - 输出：unsupported_claims、required_actions、verdict。\n\n  至少两个 regime-shift 检验\n\n  regime_shift_1:\n    condition: 祖源、年龄或性别构成发生变化\n    question: 遗传风险或治疗预测是否仍校准，是否存在群体公平性失效\n\n  regime_shift_2:\n    condition: 肝肾功能、合并用药、疾病分期或治疗线数变化\n    question: 剂量—暴露—毒性因果链是否仍成立\n\n  regime_shift_3:\n    condition: 检测平台、样本采集时间点、医疗中心或制造设施变化\n    question: 生物标志物和质量属性是否可重复，中心效应是否主导结论\n\n  regime_shift_4:\n    condition: 从回顾性队列迁移到前瞻性、真实世界或受控临床研究\n    question: 是否存在标签泄漏、选择偏倚、时间依赖偏倚或疗效衰减\n\n  若初审不是 PASS，YanZhen 必须把具体失败点反馈给 MingLi 和 DuZhi；不得直接输出成功结论。\n\n  ## DuZhi + BianLun：3–5 轮结构化辩论\n\n  DuZhi 每轮必须针对上一轮的具体回应追问，并至少覆盖：\n\n  1. 个体化的操作定义是什么：是药物选择、剂量、给药时机、组合疗法，还是产品制造参数？\n  2. 遗传或多组学标志物如何从关联提升为预测性治疗标志物？是否存在治疗分配偏倚？\n  3. 中介变量 Z 如何直接测量？检测误差、批次效应和采样时间是否足以掩盖真实变化？\n  4. 若不同中心、不同祖源或不同检测平台中预测效果显著下降，机制是否仍成立？\n  5. 若患者来源模型预测有效但临床无效，是模型缺少微环境、药物暴露不匹配，还是临床终点定义错误？\n  6. 个体化制造产品的效力、纯度或周转时间改善，是否被制造失败率、成本、可及性或监管限制抵消？\n  7. 所谓不能为个体制造药物究竟是生物学限制、临床证据限制、制造限制，还是支付和监管限制？\n\n  BianLun 每轮必须输出：\n\n  round_summary:\n    resolved_disputes: []\n    unresolved_disputes: []\n    causal_links_requiring_revision: []\n    evidence_missing: []\n    required_mingli_revision: []\n\n  MingLi 必须保留修订前后版本、修改理由、引用变化和仍未解决的不确定性。\n\n  ## 最终交付物与安全边界\n\n  最终输出必须包括：\n\n  - Objective Decomposition、每个 SH 的状态和组合结论门槛；\n  - P0–P4 文献覆盖、子空间覆盖、来源质量和预印本缺口报告；\n  - PaperGraph 因果证据图与断链位置；\n  - TanXi ranked gaps 与 mechanism_draft；\n  - Socrates evidence contract、反事实设计、第一性原理待补项；\n  - 初始假设、3–5 轮 DuZhi 质询、BianLun 归纳、MingLi 修订轨迹；\n  - YanZhen 初审与复审；\n  - 最终状态：ACCEPT_FOR_EXPERIMENT、CONDITIONAL_ACCEPT、REJECTED 或 REQUIRES_HUMAN_REVIEW；\n  - 可证伪的验证设计，包括患者选择、对照、混杂控制、外部验证、统计分析计划和数据治理要求；\n  - 个体化制造路径的 CMC 验证：身份链、关键质量属性、效力、纯度、无菌、批间一致性、周转时间、失败率和成本；\n  - 未解决证据缺口、不能外推的人群/治疗范围，以及后续定向检索建议。\n\n  所有涉及真实患者数据、治疗分配、剂量改变、细胞或基因治疗制造的实验，都只能作为研究设计输出；实际执行必须经过 IRB/伦理\n  审查、临床试验注册、知情同意、隐私与数据治理审查，以及相应药品监管要求。",
+  "research_brief_source": "verbatim_project_brief",
+  "status": "ready_for_subhypothesis_retrieval",
+  "extractor": "heuristic_fallback",
+  "sub_hypotheses": [
+    {
+      "id": "SH1",
+      "focus": "在定义明确的患者群体",
+      "causal_chain": [],
+      "independent_variable": "",
+      "dependent_variables": [],
+      "controls": [],
+      "quantifiable_bounds": "",
+      "threshold_to_test": "",
+      "falsification_condition": "Matched interventions on 在定义明确的患者群体 do not produce a reproducible directional change in the proposed observable outcome, or a competing mechanism explains the result better.",
+      "retrieval_query": "在定义明确的患者群体 mechanism intervention measurement",
+      "query_variants": [
+        "Personalized Medicine / Precision Medicine / Pharmacogenomics / Cancer Genomics / Clinical Pharmacology / Multi-omics / Patient-derived Models / Cell and Gene Therapy Manufacturing / Biostatistics / Regulatory Science 在定义明确的患者群体",
+        "Personalized Medicine / Precision Medicine / Pharmacogenomics / Cancer Genomics / Clinical Pharmacology / Multi-omics / Patient-derived Models / Cell and Gene Therapy Manufacturing / Biostatistics / Regulatory Science 在定义明确的患者群体 causal mechanism experimental evidence",
+        "在定义明确的患者群体 intervention observable outcome preprint"
+      ],
+      "evidence_window": {
+        "P0_latest_preprint": {
+          "minimum": 1,
+          "max_age_months": 12,
+          "purpose": "frontier signal"
+        },
+        "P1_recent_primary": {
+          "minimum": 2,
+          "max_age_years": 2,
+          "purpose": "recent primary evidence"
+        },
+        "P2_mechanism_or_theory": {
+          "minimum": 1,
+          "purpose": "causal mechanism or theory"
+        },
+        "minimum_evidence_types": [
+          "observable",
+          "intervention_or_natural_experiment"
+        ]
+      },
+      "alternative_mechanisms": [],
+      "status": "pending_retrieval_needs_causal_specification",
+      "source_objective": "在定义明确的患者群体、疾病类型和治疗类别中，个体的遗传变异、肿瘤或疾病分子表型、器官功能、免疫状态、既往治疗史以及制造过程参数，是否能够以可重复、可校准、因果上可解释的方式预测：1. 某一治疗方案的药代动力学暴露、毒性和适宜剂量；2. 某一靶向药物、免疫治疗、细胞治疗或核酸药物的临床获益与耐药风险；3. 个体化制剂或自体细胞产品能否在身份、纯度、效力、无菌性、批间一致性、周转时间和成本约束下稳定制造；4. 上述预测在不同祖源、年龄、肝肾功能、疾病分期、医疗中心和检测平台迁移时是否仍成立。禁止将统计相关、患者画像匹配或模型准确率直接解释为因果治疗获益；禁止将实验室样本、类器官、动物模型或单中心回顾性结果直接外推为临床个体化治疗有效；禁止将技术尚不成熟误判为生物学上绝对不可行。"
+    },
+    {
+      "id": "SH2",
+      "focus": "疾病类型和治疗类别中",
+      "causal_chain": [],
+      "independent_variable": "",
+      "dependent_variables": [],
+      "controls": [],
+      "quantifiable_bounds": "",
+      "threshold_to_test": "",
+      "falsification_condition": "Matched interventions on 疾病类型和治疗类别中 do not produce a reproducible directional change in the proposed observable outcome, or a competing mechanism explains the result better.",
+      "retrieval_query": "疾病类型和治疗类别中 mechanism intervention measurement",
+      "query_variants": [
+        "Personalized Medicine / Precision Medicine / Pharmacogenomics / Cancer Genomics / Clinical Pharmacology / Multi-omics / Patient-derived Models / Cell and Gene Therapy Manufacturing / Biostatistics / Regulatory Science 疾病类型和治疗类别中",
+        "Personalized Medicine / Precision Medicine / Pharmacogenomics / Cancer Genomics / Clinical Pharmacology / Multi-omics / Patient-derived Models / Cell and Gene Therapy Manufacturing / Biostatistics / Regulatory Science 疾病类型和治疗类别中 causal mechanism experimental evidence",
+        "疾病类型和治疗类别中 intervention observable outcome preprint"
+      ],
+      "evidence_window": {
+        "P0_latest_preprint": {
+          "minimum": 1,
+          "max_age_months": 12,
+          "purpose": "frontier signal"
+        },
+        "P1_recent_primary": {
+          "minimum": 2,
+          "max_age_years": 2,
+          "purpose": "recent primary evidence"
+        },
+        "P2_mechanism_or_theory": {
+          "minimum": 1,
+          "purpose": "causal mechanism or theory"
+        },
+        "minimum_evidence_types": [
+          "observable",
+          "intervention_or_natural_experiment"
+        ]
+      },
+      "alternative_mechanisms": [],
+      "status": "pending_retrieval_needs_causal_specification",
+      "source_objective": "在定义明确的患者群体、疾病类型和治疗类别中，个体的遗传变异、肿瘤或疾病分子表型、器官功能、免疫状态、既往治疗史以及制造过程参数，是否能够以可重复、可校准、因果上可解释的方式预测：1. 某一治疗方案的药代动力学暴露、毒性和适宜剂量；2. 某一靶向药物、免疫治疗、细胞治疗或核酸药物的临床获益与耐药风险；3. 个体化制剂或自体细胞产品能否在身份、纯度、效力、无菌性、批间一致性、周转时间和成本约束下稳定制造；4. 上述预测在不同祖源、年龄、肝肾功能、疾病分期、医疗中心和检测平台迁移时是否仍成立。禁止将统计相关、患者画像匹配或模型准确率直接解释为因果治疗获益；禁止将实验室样本、类器官、动物模型或单中心回顾性结果直接外推为临床个体化治疗有效；禁止将技术尚不成熟误判为生物学上绝对不可行。"
+    },
+    {
+      "id": "SH3",
+      "focus": "个体的遗传变异",
+      "causal_chain": [],
+      "independent_variable": "",
+      "dependent_variables": [],
+      "controls": [],
+      "quantifiable_bounds": "",
+      "threshold_to_test": "",
+      "falsification_condition": "Matched interventions on 个体的遗传变异 do not produce a reproducible directional change in the proposed observable outcome, or a competing mechanism explains the result better.",
+      "retrieval_query": "个体的遗传变异 mechanism intervention measurement",
+      "query_variants": [
+        "Personalized Medicine / Precision Medicine / Pharmacogenomics / Cancer Genomics / Clinical Pharmacology / Multi-omics / Patient-derived Models / Cell and Gene Therapy Manufacturing / Biostatistics / Regulatory Science 个体的遗传变异",
+        "Personalized Medicine / Precision Medicine / Pharmacogenomics / Cancer Genomics / Clinical Pharmacology / Multi-omics / Patient-derived Models / Cell and Gene Therapy Manufacturing / Biostatistics / Regulatory Science 个体的遗传变异 causal mechanism experimental evidence",
+        "个体的遗传变异 intervention observable outcome preprint"
+      ],
+      "evidence_window": {
+        "P0_latest_preprint": {
+          "minimum": 1,
+          "max_age_months": 12,
+          "purpose": "frontier signal"
+        },
+        "P1_recent_primary": {
+          "minimum": 2,
+          "max_age_years": 2,
+          "purpose": "recent primary evidence"
+        },
+        "P2_mechanism_or_theory": {
+          "minimum": 1,
+          "purpose": "causal mechanism or theory"
+        },
+        "minimum_evidence_types": [
+          "observable",
+          "intervention_or_natural_experiment"
+        ]
+      },
+      "alternative_mechanisms": [],
+      "status": "pending_retrieval_needs_causal_specification",
+      "source_objective": "在定义明确的患者群体、疾病类型和治疗类别中，个体的遗传变异、肿瘤或疾病分子表型、器官功能、免疫状态、既往治疗史以及制造过程参数，是否能够以可重复、可校准、因果上可解释的方式预测：1. 某一治疗方案的药代动力学暴露、毒性和适宜剂量；2. 某一靶向药物、免疫治疗、细胞治疗或核酸药物的临床获益与耐药风险；3. 个体化制剂或自体细胞产品能否在身份、纯度、效力、无菌性、批间一致性、周转时间和成本约束下稳定制造；4. 上述预测在不同祖源、年龄、肝肾功能、疾病分期、医疗中心和检测平台迁移时是否仍成立。禁止将统计相关、患者画像匹配或模型准确率直接解释为因果治疗获益；禁止将实验室样本、类器官、动物模型或单中心回顾性结果直接外推为临床个体化治疗有效；禁止将技术尚不成熟误判为生物学上绝对不可行。"
+    },
+    {
+      "id": "SH4",
+      "focus": "肿瘤或疾病分子表型",
+      "causal_chain": [],
+      "independent_variable": "",
+      "dependent_variables": [],
+      "controls": [],
+      "quantifiable_bounds": "",
+      "threshold_to_test": "",
+      "falsification_condition": "Matched interventions on 肿瘤或疾病分子表型 do not produce a reproducible directional change in the proposed observable outcome, or a competing mechanism explains the result better.",
+      "retrieval_query": "肿瘤或疾病分子表型 mechanism intervention measurement",
+      "query_variants": [
+        "Personalized Medicine / Precision Medicine / Pharmacogenomics / Cancer Genomics / Clinical Pharmacology / Multi-omics / Patient-derived Models / Cell and Gene Therapy Manufacturing / Biostatistics / Regulatory Science 肿瘤或疾病分子表型",
+        "Personalized Medicine / Precision Medicine / Pharmacogenomics / Cancer Genomics / Clinical Pharmacology / Multi-omics / Patient-derived Models / Cell and Gene Therapy Manufacturing / Biostatistics / Regulatory Science 肿瘤或疾病分子表型 causal mechanism experimental evidence",
+        "肿瘤或疾病分子表型 intervention observable outcome preprint"
+      ],
+      "evidence_window": {
+        "P0_latest_preprint": {
+          "minimum": 1,
+          "max_age_months": 12,
+          "purpose": "frontier signal"
+        },
+        "P1_recent_primary": {
+          "minimum": 2,
+          "max_age_years": 2,
+          "purpose": "recent primary evidence"
+        },
+        "P2_mechanism_or_theory": {
+          "minimum": 1,
+          "purpose": "causal mechanism or theory"
+        },
+        "minimum_evidence_types": [
+          "observable",
+          "intervention_or_natural_experiment"
+        ]
+      },
+      "alternative_mechanisms": [],
+      "status": "pending_retrieval_needs_causal_specification",
+      "source_objective": "在定义明确的患者群体、疾病类型和治疗类别中，个体的遗传变异、肿瘤或疾病分子表型、器官功能、免疫状态、既往治疗史以及制造过程参数，是否能够以可重复、可校准、因果上可解释的方式预测：1. 某一治疗方案的药代动力学暴露、毒性和适宜剂量；2. 某一靶向药物、免疫治疗、细胞治疗或核酸药物的临床获益与耐药风险；3. 个体化制剂或自体细胞产品能否在身份、纯度、效力、无菌性、批间一致性、周转时间和成本约束下稳定制造；4. 上述预测在不同祖源、年龄、肝肾功能、疾病分期、医疗中心和检测平台迁移时是否仍成立。禁止将统计相关、患者画像匹配或模型准确率直接解释为因果治疗获益；禁止将实验室样本、类器官、动物模型或单中心回顾性结果直接外推为临床个体化治疗有效；禁止将技术尚不成熟误判为生物学上绝对不可行。"
+    },
+    {
+      "id": "SH5",
+      "focus": "器官功能",
+      "causal_chain": [],
+      "independent_variable": "",
+      "dependent_variables": [],
+      "controls": [],
+      "quantifiable_bounds": "",
+      "threshold_to_test": "",
+      "falsification_condition": "Matched interventions on 器官功能 do not produce a reproducible directional change in the proposed observable outcome, or a competing mechanism explains the result better.",
+      "retrieval_query": "器官功能 mechanism intervention measurement",
+      "query_variants": [
+        "Personalized Medicine / Precision Medicine / Pharmacogenomics / Cancer Genomics / Clinical Pharmacology / Multi-omics / Patient-derived Models / Cell and Gene Therapy Manufacturing / Biostatistics / Regulatory Science 器官功能",
+        "Personalized Medicine / Precision Medicine / Pharmacogenomics / Cancer Genomics / Clinical Pharmacology / Multi-omics / Patient-derived Models / Cell and Gene Therapy Manufacturing / Biostatistics / Regulatory Science 器官功能 causal mechanism experimental evidence",
+        "器官功能 intervention observable outcome preprint"
+      ],
+      "evidence_window": {
+        "P0_latest_preprint": {
+          "minimum": 1,
+          "max_age_months": 12,
+          "purpose": "frontier signal"
+        },
+        "P1_recent_primary": {
+          "minimum": 2,
+          "max_age_years": 2,
+          "purpose": "recent primary evidence"
+        },
+        "P2_mechanism_or_theory": {
+          "minimum": 1,
+          "purpose": "causal mechanism or theory"
+        },
+        "minimum_evidence_types": [
+          "observable",
+          "intervention_or_natural_experiment"
+        ]
+      },
+      "alternative_mechanisms": [],
+      "status": "pending_retrieval_needs_causal_specification",
+      "source_objective": "在定义明确的患者群体、疾病类型和治疗类别中，个体的遗传变异、肿瘤或疾病分子表型、器官功能、免疫状态、既往治疗史以及制造过程参数，是否能够以可重复、可校准、因果上可解释的方式预测：1. 某一治疗方案的药代动力学暴露、毒性和适宜剂量；2. 某一靶向药物、免疫治疗、细胞治疗或核酸药物的临床获益与耐药风险；3. 个体化制剂或自体细胞产品能否在身份、纯度、效力、无菌性、批间一致性、周转时间和成本约束下稳定制造；4. 上述预测在不同祖源、年龄、肝肾功能、疾病分期、医疗中心和检测平台迁移时是否仍成立。禁止将统计相关、患者画像匹配或模型准确率直接解释为因果治疗获益；禁止将实验室样本、类器官、动物模型或单中心回顾性结果直接外推为临床个体化治疗有效；禁止将技术尚不成熟误判为生物学上绝对不可行。"
+    },
+    {
+      "id": "SH6",
+      "focus": "免疫状态",
+      "causal_chain": [],
+      "independent_variable": "",
+      "dependent_variables": [],
+      "controls": [],
+      "quantifiable_bounds": "",
+      "threshold_to_test": "",
+      "falsification_condition": "Matched interventions on 免疫状态 do not produce a reproducible directional change in the proposed observable outcome, or a competing mechanism explains the result better.",
+      "retrieval_query": "免疫状态 mechanism intervention measurement",
+      "query_variants": [
+        "Personalized Medicine / Precision Medicine / Pharmacogenomics / Cancer Genomics / Clinical Pharmacology / Multi-omics / Patient-derived Models / Cell and Gene Therapy Manufacturing / Biostatistics / Regulatory Science 免疫状态",
+        "Personalized Medicine / Precision Medicine / Pharmacogenomics / Cancer Genomics / Clinical Pharmacology / Multi-omics / Patient-derived Models / Cell and Gene Therapy Manufacturing / Biostatistics / Regulatory Science 免疫状态 causal mechanism experimental evidence",
+        "免疫状态 intervention observable outcome preprint"
+      ],
+      "evidence_window": {
+        "P0_latest_preprint": {
+          "minimum": 1,
+          "max_age_months": 12,
+          "purpose": "frontier signal"
+        },
+        "P1_recent_primary": {
+          "minimum": 2,
+          "max_age_years": 2,
+          "purpose": "recent primary evidence"
+        },
+        "P2_mechanism_or_theory": {
+          "minimum": 1,
+          "purpose": "causal mechanism or theory"
+        },
+        "minimum_evidence_types": [
+          "observable",
+          "intervention_or_natural_experiment"
+        ]
+      },
+      "alternative_mechanisms": [],
+      "status": "pending_retrieval_needs_causal_specification",
+      "source_objective": "在定义明确的患者群体、疾病类型和治疗类别中，个体的遗传变异、肿瘤或疾病分子表型、器官功能、免疫状态、既往治疗史以及制造过程参数，是否能够以可重复、可校准、因果上可解释的方式预测：1. 某一治疗方案的药代动力学暴露、毒性和适宜剂量；2. 某一靶向药物、免疫治疗、细胞治疗或核酸药物的临床获益与耐药风险；3. 个体化制剂或自体细胞产品能否在身份、纯度、效力、无菌性、批间一致性、周转时间和成本约束下稳定制造；4. 上述预测在不同祖源、年龄、肝肾功能、疾病分期、医疗中心和检测平台迁移时是否仍成立。禁止将统计相关、患者画像匹配或模型准确率直接解释为因果治疗获益；禁止将实验室样本、类器官、动物模型或单中心回顾性结果直接外推为临床个体化治疗有效；禁止将技术尚不成熟误判为生物学上绝对不可行。"
+    }
+  ],
+  "combination_hypothesis": {
+    "statement": "Synthesize a multi-mechanism conclusion only after the component causal hypotheses have independent evidence.",
+    "required_sub_hypothesis_ids": [
+      "SH1",
+      "SH2",
+      "SH3",
+      "SH4",
+      "SH5",
+      "SH6"
+    ],
+    "integration_test": "Compare single-factor interventions, joint interventions, and matched controls to distinguish additive from coupled effects.",
+    "status": "blocked_on_component_evidence"
+  },
+  "execution_constraints": {
+    "retrieval": [],
+    "gap_detection": [],
+    "hypothesis": [],
+    "verification": []
+  },
+  "decomposition_rules": [
+    "Each sub-hypothesis must expose an intervention, observable outcome, falsification condition, and evidence window.",
+    "A combined conclusion is admissible only after the relevant component hypotheses are independently evaluated.",
+    "Missing quantitative bounds remain explicitly unresolved; they must not be fabricated from the objective."
+  ],
+  "createdAt": 1783786202.6227999,
+  "llm_error": "LLM did not return a JSON object"
+}

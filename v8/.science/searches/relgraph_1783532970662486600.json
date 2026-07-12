@@ -1,0 +1,298 @@
+{
+  "search_id": "relgraph_1783532970662486600",
+  "kind": "paper_relation_graph",
+  "source_search_id": "graph_1783532967248770000",
+  "query": "验证从文献阅读、知识图谱构建、Gap探索、假设生成、苏格拉底辩论、机制审计到最终裁决的多Agent协作能力",
+  "createdAt": 1783532970.6624894,
+  "node_count": 2,
+  "edge_count": 1,
+  "cluster_count": 1,
+  "max_clusters": 8,
+  "fallback_used": false,
+  "analysis_confidence": 1.0,
+  "edge_summary": {
+    "total_edges": 1,
+    "citation_graph_edges": 1,
+    "artificial_edges": 0,
+    "by_relation": {
+      "citation": 1
+    },
+    "by_depth": {
+      "1": 1
+    },
+    "fallback_weight_policy": "keyword_fallback/search_result edges are artificial and use very low PageRank weight."
+  },
+  "nodes": [
+    {
+      "node_id": "doi10_1149_ma2025_013168mtgabs",
+      "role": "seed",
+      "result_index": 2,
+      "title": "Promoting Reversible Anionic Redox in Sodium-Ion Cathodes by Doping and Phase Control",
+      "year": "2025",
+      "venue": "ECS Meeting Abstracts",
+      "field": "chemistry",
+      "mechanism_terms": [
+        "analysis",
+        "control",
+        "interaction",
+        "mechanism",
+        "model",
+        "screening"
+      ],
+      "mechanism_cluster_key": "chemistry:analysis",
+      "relevance_score": 0.2123,
+      "publication_quality_score": 0.72,
+      "venue_quality": "unverified",
+      "journal_quartile": "",
+      "citation_count": 1.0,
+      "influential_citation_count": 0.0,
+      "quality_flags": [
+        "unverified_venue",
+        "incomplete_s2_metadata_recent"
+      ],
+      "doi": "10.1149/ma2025-013168mtgabs",
+      "arxiv_id": "",
+      "semantic_scholar_id": "e1c67d6da842852e631904dfad09630b89e2f285",
+      "url": "https://www.semanticscholar.org/paper/e1c67d6da842852e631904dfad09630b89e2f285",
+      "pagerank": 0.649123,
+      "degree_centrality": 1.0,
+      "centrality_score": 0.754386
+    },
+    {
+      "node_id": "doi10_1007_s12039_025_02442_2",
+      "role": "paper",
+      "result_index": 0,
+      "title": "Understanding the effect of metal-oxygen bond covalency on anionic redox activity of Na-ion-based cathode materials through first-principles",
+      "year": "2025",
+      "venue": "Proceedings of the Indian Academy of sciences. Chemical sciences",
+      "field": "chemistry",
+      "mechanism_terms": [
+        "sciences",
+        "understanding",
+        "effect",
+        "metal-oxygen",
+        "bond",
+        "covalency"
+      ],
+      "mechanism_cluster_key": "chemistry:sciences",
+      "relevance_score": 0.0754,
+      "publication_quality_score": 0.92,
+      "venue_quality": "reputable",
+      "journal_quartile": "Q1",
+      "citation_count": 0.0,
+      "influential_citation_count": 0.0,
+      "quality_flags": [
+        "journal_quartile_q1",
+        "reputable_venue",
+        "new_paper_protection"
+      ],
+      "doi": "10.1007/s12039-025-02442-2",
+      "arxiv_id": "",
+      "semantic_scholar_id": "03f4bfa33f0fd7a1d7bf7bb8fc88fddd9b65f81d",
+      "url": "https://www.semanticscholar.org/paper/03f4bfa33f0fd7a1d7bf7bb8fc88fddd9b65f81d",
+      "pagerank": 0.350877,
+      "degree_centrality": 1.0,
+      "centrality_score": 0.545614
+    }
+  ],
+  "edges": [
+    {
+      "source": "doi10_1007_s12039_025_02442_2",
+      "target": "doi10_1149_ma2025_013168mtgabs",
+      "relation": "citation",
+      "base_relation": "citation",
+      "edge_type": "citation_graph",
+      "expanded_depth": 1,
+      "weight": 1.0,
+      "citation_contexts": [
+        "21 One such approach involves identifying speciﬁc A–"
+      ],
+      "citation_intents": [],
+      "is_influential": false,
+      "parent_title": "",
+      "manual_connection": false
+    }
+  ],
+  "clusters": [
+    {
+      "cluster_id": "chemistrysciences",
+      "field": "chemistry",
+      "mechanism": "sciences",
+      "size": 1,
+      "merged_singletons": false,
+      "artificial_connection_count": 0,
+      "connection_confidence": 1.0,
+      "avg_quality": 0.92,
+      "avg_relevance": 0.0754,
+      "quality_flags": [
+        "journal_quartile_q1",
+        "new_paper_protection",
+        "reputable_venue"
+      ],
+      "representative_papers": [
+        {
+          "node_id": "doi10_1007_s12039_025_02442_2",
+          "title": "Understanding the effect of metal-oxygen bond covalency on anionic redox activity of Na-ion-based cathode materials through first-principles",
+          "year": "2025",
+          "venue": "Proceedings of the Indian Academy of sciences. Chemical sciences",
+          "field": "chemistry",
+          "mechanism_terms": [
+            "sciences",
+            "understanding",
+            "effect",
+            "metal-oxygen",
+            "bond",
+            "covalency"
+          ],
+          "pagerank": null,
+          "degree_centrality": null,
+          "centrality_score": null,
+          "publication_quality_score": 0.92,
+          "relevance_score": 0.0754,
+          "quality_flags": [
+            "journal_quartile_q1",
+            "reputable_venue",
+            "new_paper_protection"
+          ]
+        }
+      ]
+    }
+  ],
+  "central_papers": [
+    {
+      "node_id": "doi10_1149_ma2025_013168mtgabs",
+      "title": "Promoting Reversible Anionic Redox in Sodium-Ion Cathodes by Doping and Phase Control",
+      "year": "2025",
+      "venue": "ECS Meeting Abstracts",
+      "field": "chemistry",
+      "mechanism_terms": [
+        "analysis",
+        "control",
+        "interaction",
+        "mechanism",
+        "model",
+        "screening"
+      ],
+      "pagerank": 0.649123,
+      "degree_centrality": 1.0,
+      "centrality_score": 0.754386,
+      "publication_quality_score": 0.72,
+      "relevance_score": 0.2123,
+      "quality_flags": [
+        "unverified_venue",
+        "incomplete_s2_metadata_recent"
+      ]
+    },
+    {
+      "node_id": "doi10_1007_s12039_025_02442_2",
+      "title": "Understanding the effect of metal-oxygen bond covalency on anionic redox activity of Na-ion-based cathode materials through first-principles",
+      "year": "2025",
+      "venue": "Proceedings of the Indian Academy of sciences. Chemical sciences",
+      "field": "chemistry",
+      "mechanism_terms": [
+        "sciences",
+        "understanding",
+        "effect",
+        "metal-oxygen",
+        "bond",
+        "covalency"
+      ],
+      "pagerank": 0.350877,
+      "degree_centrality": 1.0,
+      "centrality_score": 0.545614,
+      "publication_quality_score": 0.92,
+      "relevance_score": 0.0754,
+      "quality_flags": [
+        "journal_quartile_q1",
+        "reputable_venue",
+        "new_paper_protection"
+      ]
+    }
+  ],
+  "mechanism_lineage": [
+    {
+      "mechanism": "sciences",
+      "field": "chemistry",
+      "paper_count": 1,
+      "avg_quality": 0.92,
+      "representative_titles": [
+        "Understanding the effect of metal-oxygen bond covalency on anionic redox activity of Na-ion-based cathode materials through first-principles"
+      ],
+      "interpretation": "chemistry lineage centered on sciences with 1 papers; inspect representative_papers before importing claims."
+    }
+  ],
+  "total_results": 2,
+  "results": [
+    {
+      "node_id": "doi10_1149_ma2025_013168mtgabs",
+      "role": "seed",
+      "result_index": 2,
+      "title": "Promoting Reversible Anionic Redox in Sodium-Ion Cathodes by Doping and Phase Control",
+      "year": "2025",
+      "venue": "ECS Meeting Abstracts",
+      "field": "chemistry",
+      "mechanism_terms": [
+        "analysis",
+        "control",
+        "interaction",
+        "mechanism",
+        "model",
+        "screening"
+      ],
+      "mechanism_cluster_key": "chemistry:analysis",
+      "relevance_score": 0.2123,
+      "publication_quality_score": 0.72,
+      "venue_quality": "unverified",
+      "journal_quartile": "",
+      "citation_count": 1.0,
+      "influential_citation_count": 0.0,
+      "quality_flags": [
+        "unverified_venue",
+        "incomplete_s2_metadata_recent"
+      ],
+      "doi": "10.1149/ma2025-013168mtgabs",
+      "arxiv_id": "",
+      "semantic_scholar_id": "e1c67d6da842852e631904dfad09630b89e2f285",
+      "url": "https://www.semanticscholar.org/paper/e1c67d6da842852e631904dfad09630b89e2f285",
+      "pagerank": 0.649123,
+      "degree_centrality": 1.0,
+      "centrality_score": 0.754386
+    },
+    {
+      "node_id": "doi10_1007_s12039_025_02442_2",
+      "role": "paper",
+      "result_index": 0,
+      "title": "Understanding the effect of metal-oxygen bond covalency on anionic redox activity of Na-ion-based cathode materials through first-principles",
+      "year": "2025",
+      "venue": "Proceedings of the Indian Academy of sciences. Chemical sciences",
+      "field": "chemistry",
+      "mechanism_terms": [
+        "sciences",
+        "understanding",
+        "effect",
+        "metal-oxygen",
+        "bond",
+        "covalency"
+      ],
+      "mechanism_cluster_key": "chemistry:sciences",
+      "relevance_score": 0.0754,
+      "publication_quality_score": 0.92,
+      "venue_quality": "reputable",
+      "journal_quartile": "Q1",
+      "citation_count": 0.0,
+      "influential_citation_count": 0.0,
+      "quality_flags": [
+        "journal_quartile_q1",
+        "reputable_venue",
+        "new_paper_protection"
+      ],
+      "doi": "10.1007/s12039-025-02442-2",
+      "arxiv_id": "",
+      "semantic_scholar_id": "03f4bfa33f0fd7a1d7bf7bb8fc88fddd9b65f81d",
+      "url": "https://www.semanticscholar.org/paper/03f4bfa33f0fd7a1d7bf7bb8fc88fddd9b65f81d",
+      "pagerank": 0.350877,
+      "degree_centrality": 1.0,
+      "centrality_score": 0.545614
+    }
+  ]
+}

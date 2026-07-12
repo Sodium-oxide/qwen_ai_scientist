@@ -1,0 +1,1659 @@
+{
+  "thought": "ZhiZhi retrieved and filtered literature, imported grounded PaperGraph evidence, built a benchmark-aware knowledge map, expanded citation context when available, and generated gaps with novelty/value/feasibility checks.",
+  "action": {
+    "agent": "zhizhi",
+    "query": "vanadium redox flow battery review",
+    "domain": "Vanadium Redox Flow Battery / Energy Storage / Electrochemical Engineering",
+    "years": "last 10 years",
+    "search_papers_stratified": {
+      "search_id": "search_1783513626837182300",
+      "total_results": 15,
+      "requested_max_results": 15,
+      "effective_search_budget": 15,
+      "providers": [
+        "semantic_scholar",
+        "pubmed",
+        "chemrxiv",
+        "arxiv"
+      ],
+      "strategy": "stratified_cascade",
+      "query_plan": [
+        {
+          "branch": "primary",
+          "query": "vanadium redox flow battery review"
+        },
+        {
+          "branch": "electrolyte_stability",
+          "query": "vanadium redox flow battery review electrolyte stability"
+        },
+        {
+          "branch": "electrode_materials",
+          "query": "vanadium redox flow battery review electrode materials"
+        },
+        {
+          "branch": "membrane_development",
+          "query": "vanadium redox flow battery review membrane development"
+        },
+        {
+          "branch": "capacity_decay_mechanisms",
+          "query": "vanadium redox flow battery review capacity decay mechanisms"
+        },
+        {
+          "branch": "high_power_density_design",
+          "query": "vanadium redox flow battery review high power density design"
+        },
+        {
+          "branch": "electrolyte_chemistry",
+          "query": "vanadium redox flow battery review vanadium electrolyte speciation pH stability V2O5 dissolution precipitation",
+          "topic_type": "branch"
+        },
+        {
+          "branch": "membrane_science",
+          "query": "vanadium redox flow battery review VRFB membrane selectivity proton conductivity vanadium crossover Nafion alternatives",
+          "topic_type": "branch"
+        },
+        {
+          "branch": "electrode_engineering",
+          "query": "vanadium redox flow battery review VRFB carbon electrode modification surface functionalization kinetics electrocatalysis",
+          "topic_type": "branch"
+        }
+      ],
+      "focus_branches": [
+        "electrolyte stability",
+        "electrode materials",
+        "membrane development",
+        "capacity decay mechanisms",
+        "high power density design"
+      ],
+      "strata": [
+        {
+          "layer": "L0_review",
+          "label": "high-impact review / field map",
+          "quota": 3,
+          "query_suffix": "review survey progress perspective tutorial systematic review meta-analysis",
+          "target": 3,
+          "candidate_count": 16,
+          "raw_candidate_count": 34,
+          "selected": 3,
+          "domain_rejected": 0,
+          "recovery_used": "",
+          "carried_to_next": 0
+        },
+        {
+          "layer": "L1_milestone",
+          "label": "milestone / highly cited foundation",
+          "quota": 4,
+          "query_suffix": "seminal foundational highly cited landmark classic influential",
+          "target": 4,
+          "candidate_count": 10,
+          "raw_candidate_count": 45,
+          "selected": 4,
+          "domain_rejected": 0,
+          "recovery_used": "",
+          "carried_to_next": 0
+        },
+        {
+          "layer": "L2_top_latest",
+          "label": "recent top-venue frontier",
+          "quota": 4,
+          "query_suffix": "latest recent top journal high impact breakthrough advance frontier",
+          "target": 4,
+          "candidate_count": 6,
+          "raw_candidate_count": 45,
+          "selected": 4,
+          "domain_rejected": 0,
+          "recovery_used": "",
+          "carried_to_next": 0
+        },
+        {
+          "layer": "L3_preprint",
+          "label": "latest arXiv preprint frontier",
+          "quota": 1,
+          "query_suffix": "",
+          "target": 1,
+          "candidate_count": 28,
+          "raw_candidate_count": 28,
+          "selected": 1,
+          "domain_rejected": 0,
+          "recovery_used": "",
+          "carried_to_next": 0
+        },
+        {
+          "layer": "L4_regular",
+          "label": "regular journal / supplemental evidence",
+          "quota": 3,
+          "query_suffix": "",
+          "target": 3,
+          "candidate_count": 38,
+          "raw_candidate_count": 75,
+          "selected": 3,
+          "domain_rejected": 0,
+          "recovery_used": "",
+          "carried_to_next": 0
+        }
+      ],
+      "errors": []
+    },
+    "domain_coverage_diagnostic": {
+      "profile": "electrochemical_energy_storage_system_using_vanadium_ions_in_different_oxidation",
+      "profile_source": "llm",
+      "search_id": "search_1783513626837182300",
+      "total_results": 15,
+      "represented_topics": [],
+      "blind_spots": [
+        {
+          "topic": "Electrolyte Chemistry",
+          "hit_count": 0,
+          "min_hits": 10,
+          "terms": [
+            "v(ii)/v(iii)",
+            "v(iv)/v(v)",
+            "sulfuric acid",
+            "hydrolysis",
+            "temperature stability"
+          ],
+          "suggested_query": "vanadium redox flow battery review v(ii)/v(iii) v(iv)/v(v) sulfuric acid hydrolysis",
+          "risk": "Live probe found literature for this missing branch; current PaperGraph may be incomplete, so TanXi should not treat this absence as a true unexplored gap.",
+          "live_probe": {
+            "query": "vanadium redox flow battery review v(ii)/v(iii) v(iv)/v(v) sulfuric acid hydrolysis",
+            "status": "ok",
+            "total_results": 9,
+            "providers": [
+              {
+                "provider": "semantic_scholar",
+                "status": "ok",
+                "result_count": 3,
+                "top_titles": [
+                  "Electrochemically activated graphite electrode with excellent kinetics of electrode processes of V(II)/V(III) and V(IV)/...[truncated]",
+                  "MOF-derived nitrogen, sulfur, cobalt, and copper co-doped graphite felt for high-efficiency vanadium redox flow battery...[truncated]",
+                  "Investigations on V(IV)/V(V) and V(II)/V(III) redox reactions by various electrochemical methods"
+                ],
+                "error": ""
+              },
+              {
+                "provider": "pubmed",
+                "status": "ok",
+                "result_count": 0,
+                "top_titles": [],
+                "error": ""
+              },
+              {
+                "provider": "chemrxiv",
+                "status": "ok",
+                "result_count": 3,
+                "top_titles": [
+                  "Flow Battery Electroanalysis 4: Investigation of Speciation and Correlated Electron Transfer Kinetics of the Cr(III/II)...[truncated]",
+                  "Flow Battery Electroanalysis 2: Influence of Surface Pretreatment on Fe(III/II) Redox Chemistry at Carbon Electrodes",
+                  "A Zinc Catalyzed Two-Electron Nickel(IV/II) Redox Couple: New Catholyte Design for Redox Flow Batteries"
+                ],
+                "error": ""
+              },
+              {
+                "provider": "arxiv",
+                "status": "ok",
+                "result_count": 3,
+                "top_titles": [
+                  "Expected Performance of the ATLAS Experiment - Detector, Trigger and Physics",
+                  "Status and initial physics performance studies of the MPD experiment at NICA",
+                  "Measurement of forward $W$ and $Z$ boson production in $pp$ collisions at $\\sqrt{s} = 8\\mathrm{\\,Te\\kern -0.1em V}$"
+                ],
+                "error": ""
+              }
+            ]
+          },
+          "false_negative_risk": true
+        },
+        {
+          "topic": "Electrode Kinetics and Materials",
+          "hit_count": 3,
+          "min_hits": 10,
+          "terms": [
+            "carbon felt",
+            "oxygen functional groups",
+            "charge transfer resistance",
+            "electrocatalysis"
+          ],
+          "suggested_query": "vanadium redox flow battery review carbon felt oxygen functional groups charge transfer resistance electrocatalysis",
+          "risk": "Live probe found literature for this missing branch; current PaperGraph may be incomplete, so TanXi should not treat this absence as a true unexplored gap.",
+          "live_probe": {
+            "query": "vanadium redox flow battery review carbon felt oxygen functional groups charge transfer resistance electrocatalysis",
+            "status": "ok",
+            "total_results": 9,
+            "providers": [
+              {
+                "provider": "semantic_scholar",
+                "status": "ok",
+                "result_count": 3,
+                "top_titles": [
+                  "Microwave‐Induced Two‐Phase Activation of Phytic Acid‐Derived Carbon for High‐Power Vanadium Flow Battery Electrodes",
+                  "Vanadium redox flow battery using activated carbon catalyst produced from low density polyethylene.",
+                  "Enhancement of vanadium redox flow battery performance with nitrogen-functionalized graphite felt electrodes etched by K...[truncated]"
+                ],
+                "error": ""
+              },
+              {
+                "provider": "pubmed",
+                "status": "ok",
+                "result_count": 0,
+                "top_titles": [],
+                "error": ""
+              },
+              {
+                "provider": "chemrxiv",
+                "status": "ok",
+                "result_count": 3,
+                "top_titles": [
+                  "Flow Battery Electroanalysis 4: Investigation of Speciation and Correlated Electron Transfer Kinetics of the Cr(III/II)...[truncated]",
+                  "An extensive scaling-up oriented investigation on carbon felt flow- through and interdigitated Vanadium Flow Batteries c...[truncated]",
+                  "The Role of Oxygenic Groups and Sp3 Carbon Hybridization in Activated Graphite Electrodes for Vanadium Redox Flow Batter...[truncated]"
+                ],
+                "error": ""
+              },
+              {
+                "provider": "arxiv",
+                "status": "ok",
+                "result_count": 3,
+                "top_titles": [
+                  "Oxygen redox in battery cathodes: A brief overview",
+                  "3D-printed conductive static mixers enable all-vanadium redox flow battery using slurry electrodes",
+                  "Optimization of Electrolyte Rebalancing in Vanadium Redox Flow Batteries"
+                ],
+                "error": ""
+              }
+            ]
+          },
+          "false_negative_risk": true
+        },
+        {
+          "topic": "Membrane Science and Ion Selectivity",
+          "hit_count": 1,
+          "min_hits": 10,
+          "terms": [
+            "nafion",
+            "vanadium crossover",
+            "proton conductivity",
+            "speek",
+            "ion selectivity"
+          ],
+          "suggested_query": "vanadium redox flow battery review nafion vanadium crossover proton conductivity speek",
+          "risk": "Live probe found literature for this missing branch; current PaperGraph may be incomplete, so TanXi should not treat this absence as a true unexplored gap.",
+          "live_probe": {
+            "query": "vanadium redox flow battery review nafion vanadium crossover proton conductivity speek",
+            "status": "ok",
+            "total_results": 9,
+            "providers": [
+              {
+                "provider": "semantic_scholar",
+                "status": "ok",
+                "result_count": 3,
+                "top_titles": [
+                  "Nafion-Based Proton Exchange Membranes for Vanadium Redox Flow Batteries.",
+                  "Electrochemical behaviour of PBI-based vanadium redox flow battery membranes",
+                  "Fabrication of Sulfonated Cellulose Nanocrystal/MXene Hybrid Proton Exchange Membrane and Its Synergistic Effect in Vana...[truncated]"
+                ],
+                "error": ""
+              },
+              {
+                "provider": "pubmed",
+                "status": "ok",
+                "result_count": 0,
+                "top_titles": [],
+                "error": ""
+              },
+              {
+                "provider": "chemrxiv",
+                "status": "ok",
+                "result_count": 3,
+                "top_titles": [
+                  "A Vanadium Redox Flow Process for Carbon Capture and Energy Storage",
+                  "Electrolyte mixing in vanadium flow battery tanks: Effects on capacity utilization",
+                  "Materials availability and supply chain considerations for vanadium in grid-scale redox flow batteries"
+                ],
+                "error": ""
+              },
+              {
+                "provider": "arxiv",
+                "status": "ok",
+                "result_count": 3,
+                "top_titles": [
+                  "3D-printed conductive static mixers enable all-vanadium redox flow battery using slurry electrodes",
+                  "Optimization of Electrolyte Rebalancing in Vanadium Redox Flow Batteries",
+                  "Characteristics of a Nickel Vanadium redox flow battery Based on COMSOL"
+                ],
+                "error": ""
+              }
+            ]
+          },
+          "false_negative_risk": true
+        },
+        {
+          "topic": "System Modeling and Control",
+          "hit_count": 1,
+          "min_hits": 10,
+          "terms": [
+            "soc estimation",
+            "pump energy",
+            "polarization curve",
+            "dynamic model"
+          ],
+          "suggested_query": "vanadium redox flow battery review soc estimation pump energy polarization curve dynamic model",
+          "risk": "Live probe found literature for this missing branch; current PaperGraph may be incomplete, so TanXi should not treat this absence as a true unexplored gap.",
+          "live_probe": {
+            "query": "vanadium redox flow battery review soc estimation pump energy polarization curve dynamic model",
+            "status": "ok",
+            "total_results": 9,
+            "providers": [
+              {
+                "provider": "semantic_scholar",
+                "status": "ok",
+                "result_count": 3,
+                "top_titles": [
+                  "Precision dynamic equivalent circuit model of a Vanadium Redox Flow Battery and determination of circuit parameters for...[truncated]",
+                  "Design and experimental validation of a generalised electrical equivalent model of Vanadium Redox Flow Battery for inter...[truncated]",
+                  "Identification of Overpotentials in Vanadium Redox Flow Battery with Reference Electrodes and Determination of Apparent...[truncated]"
+                ],
+                "error": ""
+              },
+              {
+                "provider": "pubmed",
+                "status": "ok",
+                "result_count": 0,
+                "top_titles": [],
+                "error": ""
+              },
+              {
+                "provider": "chemrxiv",
+                "status": "ok",
+                "result_count": 3,
+                "top_titles": [
+                  "A Vanadium Redox Flow Process for Carbon Capture and Energy Storage",
+                  "A computationally efficient, zero-dimensional stack model for simulating redox flow battery performance",
+                  "A spreadsheet-based redox flow battery cell cycling model enabled by closed-form approximations"
+                ],
+                "error": ""
+              },
+              {
+                "provider": "arxiv",
+                "status": "ok",
+                "result_count": 3,
+                "top_titles": [
+                  "Characteristics of a Nickel Vanadium redox flow battery Based on COMSOL",
+                  "Optimization of Electrolyte Rebalancing in Vanadium Redox Flow Batteries",
+                  "Mixed Integer Linear Program model for optimized scheduling of a vanadium redox flow battery with variable efficiencies,...[truncated]"
+                ],
+                "error": ""
+              }
+            ]
+          },
+          "false_negative_risk": true
+        }
+      ],
+      "live_validate": true,
+      "live_probe_reports": [
+        {
+          "query": "vanadium redox flow battery review v(ii)/v(iii) v(iv)/v(v) sulfuric acid hydrolysis",
+          "status": "ok",
+          "total_results": 9,
+          "providers": [
+            {
+              "provider": "semantic_scholar",
+              "status": "ok",
+              "result_count": 3,
+              "top_titles": [
+                "Electrochemically activated graphite electrode with excellent kinetics of electrode processes of V(II)/V(III) and V(IV)/...[truncated]",
+                "MOF-derived nitrogen, sulfur, cobalt, and copper co-doped graphite felt for high-efficiency vanadium redox flow battery...[truncated]",
+                "Investigations on V(IV)/V(V) and V(II)/V(III) redox reactions by various electrochemical methods"
+              ],
+              "error": ""
+            },
+            {
+              "provider": "pubmed",
+              "status": "ok",
+              "result_count": 0,
+              "top_titles": [],
+              "error": ""
+            },
+            {
+              "provider": "chemrxiv",
+              "status": "ok",
+              "result_count": 3,
+              "top_titles": [
+                "Flow Battery Electroanalysis 4: Investigation of Speciation and Correlated Electron Transfer Kinetics of the Cr(III/II)...[truncated]",
+                "Flow Battery Electroanalysis 2: Influence of Surface Pretreatment on Fe(III/II) Redox Chemistry at Carbon Electrodes",
+                "A Zinc Catalyzed Two-Electron Nickel(IV/II) Redox Couple: New Catholyte Design for Redox Flow Batteries"
+              ],
+              "error": ""
+            },
+            {
+              "provider": "arxiv",
+              "status": "ok",
+              "result_count": 3,
+              "top_titles": [
+                "Expected Performance of the ATLAS Experiment - Detector, Trigger and Physics",
+                "Status and initial physics performance studies of the MPD experiment at NICA",
+                "Measurement of forward $W$ and $Z$ boson production in $pp$ collisions at $\\sqrt{s} = 8\\mathrm{\\,Te\\kern -0.1em V}$"
+              ],
+              "error": ""
+            }
+          ]
+        },
+        {
+          "query": "vanadium redox flow battery review carbon felt oxygen functional groups charge transfer resistance electrocatalysis",
+          "status": "ok",
+          "total_results": 9,
+          "providers": [
+            {
+              "provider": "semantic_scholar",
+              "status": "ok",
+              "result_count": 3,
+              "top_titles": [
+                "Microwave‐Induced Two‐Phase Activation of Phytic Acid‐Derived Carbon for High‐Power Vanadium Flow Battery Electrodes",
+                "Vanadium redox flow battery using activated carbon catalyst produced from low density polyethylene.",
+                "Enhancement of vanadium redox flow battery performance with nitrogen-functionalized graphite felt electrodes etched by K...[truncated]"
+              ],
+              "error": ""
+            },
+            {
+              "provider": "pubmed",
+              "status": "ok",
+              "result_count": 0,
+              "top_titles": [],
+              "error": ""
+            },
+            {
+              "provider": "chemrxiv",
+              "status": "ok",
+              "result_count": 3,
+              "top_titles": [
+                "Flow Battery Electroanalysis 4: Investigation of Speciation and Correlated Electron Transfer Kinetics of the Cr(III/II)...[truncated]",
+                "An extensive scaling-up oriented investigation on carbon felt flow- through and interdigitated Vanadium Flow Batteries c...[truncated]",
+                "The Role of Oxygenic Groups and Sp3 Carbon Hybridization in Activated Graphite Electrodes for Vanadium Redox Flow Batter...[truncated]"
+              ],
+              "error": ""
+            },
+            {
+              "provider": "arxiv",
+              "status": "ok",
+              "result_count": 3,
+              "top_titles": [
+                "Oxygen redox in battery cathodes: A brief overview",
+                "3D-printed conductive static mixers enable all-vanadium redox flow battery using slurry electrodes",
+                "Optimization of Electrolyte Rebalancing in Vanadium Redox Flow Batteries"
+              ],
+              "error": ""
+            }
+          ]
+        },
+        {
+          "query": "vanadium redox flow battery review nafion vanadium crossover proton conductivity speek",
+          "status": "ok",
+          "total_results": 9,
+          "providers": [
+            {
+              "provider": "semantic_scholar",
+              "status": "ok",
+              "result_count": 3,
+              "top_titles": [
+                "Nafion-Based Proton Exchange Membranes for Vanadium Redox Flow Batteries.",
+                "Electrochemical behaviour of PBI-based vanadium redox flow battery membranes",
+                "Fabrication of Sulfonated Cellulose Nanocrystal/MXene Hybrid Proton Exchange Membrane and Its Synergistic Effect in Vana...[truncated]"
+              ],
+              "error": ""
+            },
+            {
+              "provider": "pubmed",
+              "status": "ok",
+              "result_count": 0,
+              "top_titles": [],
+              "error": ""
+            },
+            {
+              "provider": "chemrxiv",
+              "status": "ok",
+              "result_count": 3,
+              "top_titles": [
+                "A Vanadium Redox Flow Process for Carbon Capture and Energy Storage",
+                "Electrolyte mixing in vanadium flow battery tanks: Effects on capacity utilization",
+                "Materials availability and supply chain considerations for vanadium in grid-scale redox flow batteries"
+              ],
+              "error": ""
+            },
+            {
+              "provider": "arxiv",
+              "status": "ok",
+              "result_count": 3,
+              "top_titles": [
+                "3D-printed conductive static mixers enable all-vanadium redox flow battery using slurry electrodes",
+                "Optimization of Electrolyte Rebalancing in Vanadium Redox Flow Batteries",
+                "Characteristics of a Nickel Vanadium redox flow battery Based on COMSOL"
+              ],
+              "error": ""
+            }
+          ]
+        },
+        {
+          "query": "vanadium redox flow battery review soc estimation pump energy polarization curve dynamic model",
+          "status": "ok",
+          "total_results": 9,
+          "providers": [
+            {
+              "provider": "semantic_scholar",
+              "status": "ok",
+              "result_count": 3,
+              "top_titles": [
+                "Precision dynamic equivalent circuit model of a Vanadium Redox Flow Battery and determination of circuit parameters for...[truncated]",
+                "Design and experimental validation of a generalised electrical equivalent model of Vanadium Redox Flow Battery for inter...[truncated]",
+                "Identification of Overpotentials in Vanadium Redox Flow Battery with Reference Electrodes and Determination of Apparent...[truncated]"
+              ],
+              "error": ""
+            },
+            {
+              "provider": "pubmed",
+              "status": "ok",
+              "result_count": 0,
+              "top_titles": [],
+              "error": ""
+            },
+            {
+              "provider": "chemrxiv",
+              "status": "ok",
+              "result_count": 3,
+              "top_titles": [
+                "A Vanadium Redox Flow Process for Carbon Capture and Energy Storage",
+                "A computationally efficient, zero-dimensional stack model for simulating redox flow battery performance",
+                "A spreadsheet-based redox flow battery cell cycling model enabled by closed-form approximations"
+              ],
+              "error": ""
+            },
+            {
+              "provider": "arxiv",
+              "status": "ok",
+              "result_count": 3,
+              "top_titles": [
+                "Characteristics of a Nickel Vanadium redox flow battery Based on COMSOL",
+                "Optimization of Electrolyte Rebalancing in Vanadium Redox Flow Batteries",
+                "Mixed Integer Linear Program model for optimized scheduling of a vanadium redox flow battery with variable efficiencies,...[truncated]"
+              ],
+              "error": ""
+            }
+          ]
+        }
+      ],
+      "coverage_warning": true,
+      "needs_user_branch_confirmation": true
+    },
+    "user_interaction": {
+      "needed": true,
+      "type": "research_branch_confirmation",
+      "question": "Some major sub-branches appear missing from the current retrieval. Which should be prioritized for a supplemental search before treating gaps as real?",
+      "options": [
+        {
+          "label": "Electrolyte Chemistry",
+          "suggested_query": "vanadium redox flow battery review v(ii)/v(iii) v(iv)/v(v) sulfuric acid hydrolysis",
+          "live_evidence_count": 9,
+          "false_negative_risk": true
+        },
+        {
+          "label": "Electrode Kinetics and Materials",
+          "suggested_query": "vanadium redox flow battery review carbon felt oxygen functional groups charge transfer resistance electrocatalysis",
+          "live_evidence_count": 9,
+          "false_negative_risk": true
+        },
+        {
+          "label": "Membrane Science and Ion Selectivity",
+          "suggested_query": "vanadium redox flow battery review nafion vanadium crossover proton conductivity speek",
+          "live_evidence_count": 9,
+          "false_negative_risk": true
+        },
+        {
+          "label": "System Modeling and Control",
+          "suggested_query": "vanadium redox flow battery review soc estimation pump energy polarization curve dynamic model",
+          "live_evidence_count": 9,
+          "false_negative_risk": true
+        }
+      ],
+      "default_action": "Run supplemental stratified search for options with false_negative_risk=true, or ask the user to pick 2-3 priority branches.",
+      "continue_with": "Pass selected option labels or custom branch keywords as focus_branches to run_zhizhi_literature_analysis/search_papers_stratified."
+    },
+    "select_literature_result": {
+      "result_index": 0,
+      "stratified_layer": "L1_milestone",
+      "stratified_label": "milestone / highly cited foundation",
+      "query_branch": "primary",
+      "retrieval_query": "vanadium redox flow battery review",
+      "_why_selected": "Selected as milestone/high-impact paper: Vanadium Redox Flow Battery: Review and Perspective of 3D Electrodes.; citations=113; year=2024; venue=ACS Nano; quality=1.0.",
+      "domain_relevance": {
+        "profile": "vanadium_redox_flow_battery_energy_storage_electrochemical_engineering",
+        "target_field": "materials_energy",
+        "result_field": "materials",
+        "score": 0.8362,
+        "query_hits": [
+          "vanadium",
+          "redox",
+          "flow",
+          "battery",
+          "review"
+        ],
+        "anchor_hits": [
+          "vanadium",
+          "redox",
+          "flow",
+          "battery",
+          "energy",
+          "storage",
+          "electrochemical"
+        ],
+        "topic_hits": [],
+        "noise_hits": [],
+        "flags": [
+          "core_domain_hit"
+        ],
+        "is_preprint": false,
+        "core_domain_alignment": {
+          "enabled": true,
+          "passes": true,
+          "core_terms": [
+            "vanadium redox flow",
+            "redox flow battery",
+            "flow battery energy",
+            "battery energy storage",
+            "energy storage electrochemical",
+            "storage electrochemical engineering",
+            "electrochemical engineering review",
+            "vanadium redox",
+            "flow battery",
+            "battery energy",
+            "vanadium",
+            "redox",
+            "flow",
+            "battery",
+            "energy",
+            "storage",
+            "electrochemical",
+            "engineering"
+          ],
+          "core_hit_count": 11,
+          "core_hits": [
+            "vanadium redox flow",
+            "redox flow battery",
+            "vanadium redox",
+            "flow battery",
+            "vanadium",
+            "redox",
+            "flow",
+            "battery",
+            "energy",
+            "storage",
+            "electrochemical"
+          ],
+          "specific_terms": [
+            "vanadium redox flow",
+            "redox flow battery",
+            "flow battery energy",
+            "battery energy storage",
+            "energy storage electrochemical",
+            "storage electrochemical engineering",
+            "electrochemical engineering review",
+            "vanadium redox",
+            "flow battery",
+            "battery energy",
+            "vanadium",
+            "battery"
+          ],
+          "specific_hit_count": 8,
+          "specific_hits": [
+            "vanadium redox flow",
+            "redox flow battery",
+            "vanadium redox",
+            "flow battery",
+            "vanadium",
+            "battery",
+            "storage",
+            "electrochemical"
+          ],
+          "min_core_hits": 3,
+          "min_specific_hits": 2,
+          "is_preprint": false,
+          "reason": "core topic terms sufficiently covered"
+        },
+        "verdict": "keep",
+        "requires_human_review": false
+      },
+      "relevance_score": 0.9505,
+      "relevance_components": {
+        "text_score": 1.0,
+        "recency_score": 0.85,
+        "impact_score": 0.8081,
+        "citation_field": "materials",
+        "citation_baseline": 350.0,
+        "venue_score": 1.0,
+        "publication_quality_score": 1.0,
+        "base_score": 0.9505,
+        "text_weight": 0.62,
+        "recency_weight": 0.1,
+        "impact_weight": 0.18,
+        "venue_weight": 0.1
+      },
+      "publication_quality_score": 1.0,
+      "venue_quality": "reputable",
+      "journal_quartile": "Q1",
+      "journal_metric_source": "curated",
+      "inferred_field": "materials",
+      "quality_flags": [
+        "journal_quartile_q1",
+        "reputable_venue",
+        "well_cited"
+      ],
+      "quality_criteria": [
+        "venue matched curated journal metric table: Q1",
+        "citation count exceeds medium/high threshold"
+      ],
+      "suspicion_type": "",
+      "is_review_like": true,
+      "pyramid_root_score": 1.7017,
+      "matched_query_terms": [
+        "vanadium",
+        "redox",
+        "flow",
+        "battery",
+        "review"
+      ],
+      "title": "Vanadium Redox Flow Battery: Review and Perspective of 3D Electrodes.",
+      "citation": "Lingzhi Ye et al. (2024) Vanadium Redox Flow Battery: Review and Perspective of 3D Electrodes. doi:10.1021/acsnano.4c06675",
+      "provider": "semantic_scholar",
+      "year": "2024",
+      "citation_count": 113,
+      "influential_citation_count": 0,
+      "doi": "10.1021/acsnano.4c06675",
+      "arxiv_id": "",
+      "url": "https://www.semanticscholar.org/paper/7afe6e0653f340a6209e6e6473d518e3f80788d2",
+      "relevance_reason": "title=5/5, abstract=5/5, citation=5/5, phrase_bonus=0.0, recency=0.85, impact=0.8081, venue=1.0, quality=1.0",
+      "quality_reason": "venue matched curated journal metric table: Q1; citation count exceeds medium/high threshold"
+    },
+    "stratified_import_plan": {
+      "strategy": "layer_minimum_then_score_backfill",
+      "requested_import_top_k": 12,
+      "effective_import_top_k": 12,
+      "min_per_layer": {
+        "L0_review": 2,
+        "L1_milestone": 2,
+        "L2_top_latest": 2,
+        "L3_preprint": 2,
+        "L4_regular": 3
+      },
+      "candidate_counts_by_layer": {
+        "L0_review": 3,
+        "L1_milestone": 4,
+        "L2_top_latest": 4,
+        "L3_preprint": 1,
+        "L4_regular": 3
+      },
+      "selected_counts_by_layer": {
+        "L0_review": 2,
+        "L1_milestone": 4,
+        "L2_top_latest": 2,
+        "L3_preprint": 1,
+        "L4_regular": 3
+      },
+      "missing_layers": [
+        {
+          "layer": "L3_preprint",
+          "label": "latest preprint frontier",
+          "target": 2,
+          "selected": 1,
+          "candidates": 1
+        }
+      ],
+      "selected_result_indexes": [
+        0,
+        2,
+        3,
+        4,
+        7,
+        9,
+        11,
+        12,
+        14,
+        13,
+        5,
+        6
+      ]
+    },
+    "imported_records": 12,
+    "expand_literature_graph": {
+      "graph_search_id": "graph_1783514014218487000",
+      "total_results": 10,
+      "fallback_used": false,
+      "depth": 1
+    },
+    "build_literature_relation_graph": {
+      "relation_graph_id": "relgraph_1783514020220746600",
+      "cluster_count": 8,
+      "edge_summary": {
+        "total_edges": 10,
+        "citation_graph_edges": 10,
+        "artificial_edges": 0,
+        "by_relation": {
+          "citation": 10
+        },
+        "by_depth": {
+          "1": 10
+        },
+        "fallback_weight_policy": "keyword_fallback/search_result edges are artificial and use very low PageRank weight."
+      },
+      "analysis_confidence": 1.0
+    }
+  },
+  "observation": [
+    "Potential retrieval blind spot: Electrolyte Chemistry was not represented in retrieved/imported candidates; suggested query: vanadium redox flow battery review v(ii)/v(iii) v(iv)/v(v) sulfuric acid hydrolysis; live_probe_results=9",
+    "Potential retrieval blind spot: Electrode Kinetics and Materials was not represented in retrieved/imported candidates; suggested query: vanadium redox flow battery review carbon felt oxygen functional groups charge transfer resistance electrocatalysis; live_probe_results=9",
+    "Potential retrieval blind spot: Membrane Science and Ion Selectivity was not represented in retrieved/imported candidates; suggested query: vanadium redox flow battery review nafion vanadium crossover proton conductivity speek; live_probe_results=9",
+    "Potential retrieval blind spot: System Modeling and Control was not represented in retrieved/imported candidates; suggested query: vanadium redox flow battery review soc estimation pump energy polarization curve dynamic model; live_probe_results=9",
+    "Layer import target not met: L3_preprint selected=1/target=2 from candidates=1. This indicates retrieval/candidate scarcity rather than top-K truncation.",
+    "Knowledge map still contains 4 triples with unknown fields; rerun extraction with use_llm=true for key papers."
+  ],
+  "knowledge_map_summary": {
+    "main_methods": [
+      "catalyst design",
+      "computer simulation",
+      "deep eutectic solvent (DES) electrolyte formulation",
+      "electrochemical cell testing",
+      "electrochemical measurement",
+      "imaging and characterization",
+      "optimization algorithm",
+      "review",
+      "review and perspective synthesis",
+      "technology review",
+      "unknown method"
+    ],
+    "method_scenario_coverage": {
+      "review and perspective synthesis": [
+        "vanadium redox flow battery (VRFB) electrodes"
+      ],
+      "optimization algorithm": [
+        "large-scale power systems"
+      ],
+      "computer simulation": [
+        "vanadium redox flow battery"
+      ],
+      "review": [
+        "vanadium redox flow battery"
+      ],
+      "deep eutectic solvent (DES) electrolyte formulation": [
+        "vanadium-iron redox flow battery"
+      ],
+      "unknown method": [
+        "vanadium redox flow battery"
+      ],
+      "catalyst design": [
+        "vanadium redox flow batteries | carbonous felt electrode"
+      ],
+      "electrochemical measurement": [
+        "carbon capture and energy storage"
+      ],
+      "electrochemical cell testing": [
+        "aqueous organic redox flow batteries"
+      ],
+      "imaging and characterization": [
+        "zinc/iodide redox flow batteries | I3-/I- redox couple"
+      ],
+      "technology review": [
+        "vanadium redox flow battery in microgrid"
+      ]
+    },
+    "method_scenario_benchmark_triples": [
+      {
+        "method": "review and perspective synthesis",
+        "scenario": "vanadium redox flow battery (VRFB) electrodes",
+        "benchmark": "conversion and selectivity",
+        "references": [
+          "Lingzhi Ye et al. (2024) Vanadium Redox Flow Battery: Review and Perspective of 3D Electrodes. doi:10.1021/acsnano.4c06675"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "review and perspective synthesis",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "categorization and analysis of 3D electrodes (foam-, biomass-, and electrospun fiber-derived) and 3D electrocatalysts (metal-based, carbon-based, composite) for enhancing mass transfer and active site density in VRFBs",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "Abstract: Vanadium redox flow battery (VRFB) has garnered significant attention due to its potential for facilitating the cost-effective utilization of renewable energy and large-scale power storage. However, the limited electrochemical activity of the electrode in vanadium redox reactions poses a c...[truncated]",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "Full text excerpt:",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "Consequently, there is a pressing need to assess advancements in electrodes to inspire innovative approaches for enhancing electrode structure and composition.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "This work categorizes three-dimensional (3D) electrodes derived from materials such as foam, biomass, and electrospun fibers.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "It is hoped that this review will inspire the development of methodology and concept of 3D electrodes in VRFB, so as to promote the future development of scientific energy storage and conversion technology.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "Full text excerpt: categorization and analysis of 3D electrodes (foam-, biomass-, and electrospun fiber-derived) and 3D electrocatalysts (metal-based, carbon-based, composite) for enhancing mass transfer and active site density in VRFBs Abstract: Vanadium redox flow battery (VRFB) has garnered signi...[truncated]",
+            "support": "source_sentence"
+          }
+        ]
+      },
+      {
+        "method": "optimization algorithm",
+        "scenario": "large-scale power systems",
+        "benchmark": "it presents technical information to improve the overall performance",
+        "references": [
+          "A. Aluko et al. (2023) A Review on Vanadium Redox Flow Battery Storage Systems for Large-Scale Power Systems Application doi:10.1109/ACCESS.2023.3243800"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "optimization algorithm",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "presents the current state of vanadium redox flow battery (V-RFB) technology for power system applications, including operation principles, component design considerations, and performance improvement strategies",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "Abstract: In the wake of increasing the share of renewable energy-based generation systems in the power mix and reducing the risk of global environmental harm caused by fossil-based generation systems, energy storage system application has become a crucial player to offset the intermittence and inst...[truncated]",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "Full text excerpt:",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "The basic working operation of the V-RFB system with the principle of operation of its major components, the design considerations, and the limitations of each component are discussed.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "It presents technical information to improve the overall performance of the V-RFB by considering the materials of the cell components, modeling methods, stack design, flow rate optimization, and shunt current reduction.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "Full text excerpt: presents the current state of vanadium redox flow battery (V-RFB) technology for power system applications, including operation principles, component design considerations, and performance improvement strategies Abstract: In the wake of increasing the share of renewable energy-bas...[truncated]",
+            "support": "source_sentence"
+          }
+        ]
+      },
+      {
+        "method": "computer simulation",
+        "scenario": "vanadium redox flow battery",
+        "benchmark": "battery capacity",
+        "references": [
+          "Thomas Puleston et al. (2024) Vanadium redox flow battery capacity loss mitigation strategy based on a comprehensive analysis of electrolyte imbalance effects doi:10.1016/j.apenergy.2023.122271"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "computer simulation",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "A systematic procedure to track an optimal mass imbalance that mitigates capacity loss caused by electrolyte oxidation, and generalized State of Charge and State of Health indicators accounting for both vanadium crossover and net oxidation imbalances.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "The joint effect of both types of imbalances on the battery capacity is still not well understood.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "Full text excerpt:",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "It has been widely reported that imbalance caused by vanadium crossover can be readily recovered by remixing the electrolytes, while imbalance caused by a net oxidation of the electrolyte can only be reverted by means of more complex chemical or electrochemical methods.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "To overcome this limitation, generalised State of Charge and State of Health indicators that consider both types of imbalances are derived in this work.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "As a result of this analysis, two specific outcomes are highlighted.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "Firstly, it is shown that standard electrolyte remixing may be counterproductive under certain imbalance conditions, further reducing the battery capacity instead of augmenting it.",
+            "support": "source_sentence"
+          }
+        ]
+      },
+      {
+        "method": "review",
+        "scenario": "vanadium redox flow battery",
+        "benchmark": "ionic conductivity",
+        "references": [
+          "Barbara Satola (2021) Review—Bipolar Plates for the Vanadium Redox Flow Battery doi:10.1149/1945-7111/AC0177"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "review",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "comprehensive overview of carbon-polymer based composites for bipolar plates in vanadium redox flow batteries, including materials, production, properties, degradation mechanisms, designs, and costs",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "Abstract: Bipolar plates are one of the key components of vanadium redox ﬂ ow batteries. They electrically conduct and physically separate adjacent cells in series and provide structural support to the stack. Bipolar plates are exposed to harsh conditions due to the acidic vanadium electrolyte and h...[truncated]",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "Full text excerpt:",
+            "support": "structured_field"
+          }
+        ]
+      },
+      {
+        "method": "deep eutectic solvent (DES) electrolyte formulation",
+        "scenario": "vanadium-iron redox flow battery",
+        "benchmark": "coulombic efficiency",
+        "references": [
+          "Qian Xu et al. (2019) A deep eutectic solvent (DES) electrolyte-based vanadium-iron redox flow battery enabling higher specific capacity and improved thermal stability doi:10.1016/J.ELECTACTA.2018.10.063"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "deep eutectic solvent (DES) electrolyte formulation",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "Demonstration of a reline-based DES electrolyte enabling higher specific capacity (+54.6% vs. aqueous) and improved thermal stability in a vanadium-iron redox flow battery.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "High viscosity causing increased pumping losses; sluggish redox kinetics of vanadium ions; large internal ohmic resistance leading to low voltage efficiency (68.3%) and energy efficiency (64.7%).",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "Full text excerpt:",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "Since the solubility of the vanadium and iron species in deep eutectic solvent has been improved, an increased specific capacity can be obtained, up to 54.6% compared with the aqueous electrolyte one.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "The open-circuit voltage of such an non-aqueous system begins near 0.9 V with a decrease rate of 0.005 V h −1 , suggesting a better capacity retention ability than does the aqueous flow battery.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "With an improved thermal stability, this vanadium-iron redox flow battery is preferred to be operated at elevated temperature, which helps to greatly reduce the ohmic loss and pumping loss, such that to increase the system energy efficiency.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "aqueous) and improved thermal stability in a vanadium-iron redox flow battery.",
+            "support": "source_sentence"
+          }
+        ]
+      },
+      {
+        "method": "unknown method",
+        "scenario": "vanadium redox flow battery",
+        "benchmark": "benchmark dataset",
+        "references": [
+          "Rafiq Ahmed et al. (2026) Bipolar plate flow channel designs for vanadium redox flow battery: a review doi:10.1016/j.jpowsour.2025.239101"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "unknown method",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "Title: Bipolar plate flow channel designs for vanadium redox flow battery: a review Venue: Journal of Power Sources Year: 2026 Citation: Rafiq Ahmed et al.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "No explicit limitation extracted.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "Full text excerpt:",
+            "support": "structured_field"
+          }
+        ]
+      },
+      {
+        "method": "catalyst design",
+        "scenario": "vanadium redox flow batteries | carbonous felt electrode",
+        "benchmark": "operational stability",
+        "references": [
+          "Cong Ding et al. (2023) Insights into the Modification of Carbonous Felt as an Electrode for Vanadium Redox Flow Batteries doi:10.3390/ma16103811"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "catalyst design",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "identifies surface area and active sites as decisive factors enhancing carbonous felt electrode performance; clarifies structure–electrochemical performance relationships and modification mechanisms",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "As one of the critical components of VRFBs to provide the reaction sites for redox couples, an ideal electrode should possess excellent chemical and electrochemical stability, conductivity, and a low price, as well as good reaction kinetics, hydrophilicity, and electrochemical activity, in order to...[truncated]",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "Full text excerpt:",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "Therefore, modified carbon substrates have been extensively investigated to improve vanadium redox reactions.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "Here, we give a brief review of recent progress in the modification methods of carbonous felt electrodes, such as surface treatment, the deposition of low-cost metal oxides, the doping of nonmetal elements, and complexation with nanostructured carbon materials.",
+            "support": "source_sentence"
+          }
+        ]
+      },
+      {
+        "method": "electrochemical measurement",
+        "scenario": "carbon capture and energy storage",
+        "benchmark": "overpotential",
+        "references": [
+          "Mohsen Afshari et al. (2024) A Vanadium Redox Flow Process for Carbon Capture and Energy Storage doi:10.26434/chemrxiv-2024-c25fk"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "electrochemical measurement",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "integrated electrochemical process for carbon capture and energy storage using vanadium redox flow principles, enabling daytime CO2 desorption/charging and nighttime electricity release/absorbent regeneration",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "Abstract: Climate change mitigation by decreasing worldwide CO2 emissions is an urgent and demanding challenge that requires innovative technical solutions. This work, inspired by vanadium redox flow batteries (VRFB), introduces an integrated electrochemical process for carbon capture and energy sto...[truncated]",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "Full text excerpt:",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "The CV results pinpointed a 0.3 V Nernstian overpotential as the thermodynamic minimum required for cell operation.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "To further enhance the kinetics of the redox reactions, plasma treatment of electrode surfaces was implemented, resulting in a 43% decrease in charge transfer resistance, as measured by electrochemical impedance spectroscopy (EIS) analysis.",
+            "support": "source_sentence"
+          }
+        ]
+      },
+      {
+        "method": "electrochemical cell testing",
+        "scenario": "aqueous organic redox flow batteries",
+        "benchmark": "coulombic efficiency",
+        "references": [
+          "Thomas Boulanger et al. (2025) A Novel Pyridinium Derivative as a Highly Stable Posolyte for Aqueous Organic Redox Flow Batteries doi:10.1149/ma2025-01452410mtgabs"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "electrochemical cell testing",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "A novel pyridinium derivative demonstrates high solubility (2.4 M), reversible two-electron transfer, high redox potential (0.6 V vs. Ag/AgCl at pH 0.5), and exceptional stability (0.015% per day capacity fade at pH 0.5 over 30 days) as a posolyte in acidic AORFBs.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "A Novel Pyridinium Derivative as a Highly Stable Posolyte for Aqueous Organic Redox Flow Batteries Aqueous organic redox flow batteries (AORFBs), which use water-soluble organic molecules as the redox couple, represent a highly promising avenue for large-scale sustainable energy storage [1].",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "Full text excerpt:",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "This paper presents the preliminary results of a novel family of pyridinium derivatives that demonstrate performance characteristics comparable to or exceeding those of electroactive molecules reported as posolytes in AORFBs operating under acidic conditions.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "The initial member of this pyridinium derivative series displays remarkable solubility (2.4 M in water) and exhibits a reversible two-electron transfer, resulting in batteries with high energy density.",
+            "support": "source_sentence"
+          }
+        ]
+      },
+      {
+        "method": "imaging and characterization",
+        "scenario": "zinc/iodide redox flow batteries | I3-/I- redox couple",
+        "benchmark": "charge-discharge energy efficiency | maximum power density | polarization resistance",
+        "references": [
+          "Yifan Cao et al. (2024) Impact of Magnetic Graphene Nanofluidic Electrolytes for I3-/I- in Zinc/Iodide Redox Flow Batteries doi:10.1149/ma2024-013581mtgabs"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "imaging and characterization",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "Magnetic graphene nanofluidic electrolyte improves energy efficiency of ZIRFBs and enables magnetic recovery of nanoparticles.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "Abstract: Redox flow batteries (RFBs) stand out as a highly promising technology to tackle the growing challenges of intermittent energy supply, known for their extended cycle life, low environmental impact, scalability, and design flexibility1",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "Full text excerpt:",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "This discrepancy results in significant electrode polarization resistance, a major hindrance to achieving high energy efficiency and a primary obstacle to commercialize large-scale ZIRFBs.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "To address this issue, researchers typically enhance the cathode’s electrochemical activity or conductivity to promote the I3-/I- reaction, thereby reducing polarization resistance, by modifying the cathode with materials such as graphene quantum dots6, metal-organic frameworks5, and conductive poly...[truncated]",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "In this study, a magnetic graphene composite was developed using a self-assembly method facilitated by electrostatic force.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "Flow cell experiments with a ZIRFB using a 3M solution revealed a notable improvement in the charge-discharge energy efficiency upon the addition of 0.3 mg/ml PDDA-graphene, from 72% to 82% at a current density of 30 mA/cm2, and from 47% to 60% at a current density of 70 mA/cm2.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "Performance improvements were also observed compared to unmodified graphene.",
+            "support": "source_sentence"
+          }
+        ]
+      },
+      {
+        "method": "technology review",
+        "scenario": "vanadium redox flow battery in microgrid",
+        "benchmark": "treatment safety",
+        "references": [
+          "Zebo Huang et al. (2021) Research and analysis of performance improvement of vanadium redox flow battery in microgrid: A technology review doi:10.1002/er.6716"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "technology review",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "combines microgrid application background to improve VRFB overall performance via modeling, structural design optimization, flow field and flow optimization, stack design, thermal treatment, and temperature characteristic distribution",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "Full text excerpt: combines microgrid application background to improve VRFB overall performance via modeling, structural design optimization, flow field and flow optimization, stack design, thermal treatment, and temperature characteristic distribution No explicit limitation extracted.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "Full text excerpt:",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "Without involving the development of the key components of the VRFB, research how to improve the performance of the VRFB to make it in the best operating state in the microgrid.",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "The main contribution of this paper are to combine the application background of the microgrid to improve the overall performance of the battery from the aspects of VRFB modeling, battery structure design optimization, flow field and flow optimization, stack design, thermal treatment, and temperatur...[truncated]",
+            "support": "source_sentence"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "Full text excerpt: combines microgrid application background to improve VRFB overall performance via modeling, structural design optimization, flow field and flow optimization, stack design, thermal treatment, and temperature characteristic distribution Full text excerpt: combines microgrid applicat...[truncated]",
+            "support": "source_sentence"
+          }
+        ]
+      },
+      {
+        "method": "unknown method",
+        "scenario": "vanadium redox flow battery",
+        "benchmark": "benchmark dataset",
+        "references": [
+          "Rafiq Ahmed et al. (2026) Bipolar plate flow channel designs for vanadium redox flow battery: a review doi:10.1016/j.jpowsour.2025.239101",
+          "Chivukula Kalyan Sundar Krishna et al. (2026) A critical review on the recent progress of vanadium redox flow battery materials for electrolytes, membranes and electrodes preparation doi:10.1016/j.jpowsour.2026.239523"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "unknown method",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "Title: A critical review on the recent progress of vanadium redox flow battery materials for electrolytes, membranes and electrodes preparation Venue: Journal of Power Sources Year: 2026 Citation: Chivukula Kalyan Sundar Krishna et al.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "No explicit limitation extracted.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "Full text excerpt:",
+            "support": "structured_field"
+          }
+        ]
+      },
+      {
+        "method": "review and perspective synthesis",
+        "scenario": "vanadium redox flow battery (VRFB) electrodes",
+        "benchmark": "conversion and selectivity",
+        "references": [
+          "Lingzhi Ye et al. (2024) Vanadium Redox Flow Battery: Review and Perspective of 3D Electrodes. doi:10.1021/acsnano.4c06675"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "review and perspective synthesis",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "categorization and analysis of 3D electrodes (foam-, biomass-, and electrospun fiber-derived) and 3D electrocatalysts (metal-based, carbon-based, composite) for enhancing mass transfer and active site density in VRFBs",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "Abstract: Vanadium redox flow battery (VRFB) has garnered significant attention due to its potential for facilitating the cost-effective utilization of renewable energy and large-scale power storage. However, the limited electrochemical activity of the electrode in vanadium redox reactions poses a c...[truncated]",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "categorization and analysis of 3D electrodes (foam-, biomass-, and electrospun fiber-derived) and 3D electrocatalysts (metal-based, carbon-based, composite) for enhancing mass transfer and active site density in VRFBs Abstract: Vanadium redox flow battery (VRFB) has garnered significant attention du...[truncated]",
+            "support": "source_sentence"
+          }
+        ]
+      },
+      {
+        "method": "optimization algorithm",
+        "scenario": "large-scale power systems",
+        "benchmark": "it presents technical information to improve the overall performance",
+        "references": [
+          "A. Aluko et al. (2023) A Review on Vanadium Redox Flow Battery Storage Systems for Large-Scale Power Systems Application doi:10.1109/ACCESS.2023.3243800"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "optimization algorithm",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "presents the current state of vanadium redox flow battery (V-RFB) technology for power system applications, including operation principles, component design considerations, and performance improvement strategies",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "Abstract: In the wake of increasing the share of renewable energy-based generation systems in the power mix and reducing the risk of global environmental harm caused by fossil-based generation systems, energy storage system application has become a crucial player to offset the intermittence and inst...[truncated]",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "presents the current state of vanadium redox flow battery (V-RFB) technology for power system applications, including operation principles, component design considerations, and performance improvement strategies Abstract: In the wake of increasing the share of renewable energy-based generation syste...[truncated]",
+            "support": "source_sentence"
+          }
+        ]
+      },
+      {
+        "method": "computer simulation",
+        "scenario": "vanadium redox flow battery",
+        "benchmark": "battery capacity",
+        "references": [
+          "Thomas Puleston et al. (2024) Vanadium redox flow battery capacity loss mitigation strategy based on a comprehensive analysis of electrolyte imbalance effects doi:10.1016/j.apenergy.2023.122271"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "computer simulation",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "A systematic procedure to track an optimal mass imbalance that mitigates capacity loss caused by electrolyte oxidation, and generalized State of Charge and State of Health indicators accounting for both vanadium crossover and net oxidation imbalances.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "The joint effect of both types of imbalances on the battery capacity is still not well understood.",
+            "support": "structured_field"
+          }
+        ]
+      },
+      {
+        "method": "review",
+        "scenario": "vanadium redox flow battery",
+        "benchmark": "ionic conductivity",
+        "references": [
+          "Barbara Satola (2021) Review—Bipolar Plates for the Vanadium Redox Flow Battery doi:10.1149/1945-7111/AC0177"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "review",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "comprehensive overview of carbon-polymer based composites for bipolar plates in vanadium redox flow batteries, including materials, production, properties, degradation mechanisms, designs, and costs",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "Abstract: Bipolar plates are one of the key components of vanadium redox ﬂ ow batteries. They electrically conduct and physically separate adjacent cells in series and provide structural support to the stack. Bipolar plates are exposed to harsh conditions due to the acidic vanadium electrolyte and h...[truncated]",
+            "support": "structured_field"
+          }
+        ]
+      },
+      {
+        "method": "deep eutectic solvent (DES) electrolyte formulation",
+        "scenario": "vanadium-iron redox flow battery",
+        "benchmark": "coulombic efficiency",
+        "references": [
+          "Qian Xu et al. (2019) A deep eutectic solvent (DES) electrolyte-based vanadium-iron redox flow battery enabling higher specific capacity and improved thermal stability doi:10.1016/J.ELECTACTA.2018.10.063"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "deep eutectic solvent (DES) electrolyte formulation",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "Demonstration of a reline-based DES electrolyte enabling higher specific capacity (+54.6% vs. aqueous) and improved thermal stability in a vanadium-iron redox flow battery.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "High viscosity causing increased pumping losses; sluggish redox kinetics of vanadium ions; large internal ohmic resistance leading to low voltage efficiency (68.3%) and energy efficiency (64.7%).",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "theoretical_claim",
+            "claim": "aqueous) and improved thermal stability in a vanadium-iron redox flow battery.",
+            "support": "source_sentence"
+          }
+        ]
+      },
+      {
+        "method": "unknown method",
+        "scenario": "vanadium redox flow battery",
+        "benchmark": "benchmark dataset",
+        "references": [
+          "Rafiq Ahmed et al. (2026) Bipolar plate flow channel designs for vanadium redox flow battery: a review doi:10.1016/j.jpowsour.2025.239101",
+          "Chivukula Kalyan Sundar Krishna et al. (2026) A critical review on the recent progress of vanadium redox flow battery materials for electrolytes, membranes and electrodes preparation doi:10.1016/j.jpowsour.2026.239523"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "unknown method",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "Title: Bipolar plate flow channel designs for vanadium redox flow battery: a review Venue: Journal of Power Sources Year: 2026 Citation: Rafiq Ahmed et al.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "No explicit limitation extracted.",
+            "support": "structured_field"
+          }
+        ]
+      },
+      {
+        "method": "catalyst design",
+        "scenario": "vanadium redox flow batteries | carbonous felt electrode",
+        "benchmark": "operational stability",
+        "references": [
+          "Cong Ding et al. (2023) Insights into the Modification of Carbonous Felt as an Electrode for Vanadium Redox Flow Batteries doi:10.3390/ma16103811"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "catalyst design",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "identifies surface area and active sites as decisive factors enhancing carbonous felt electrode performance; clarifies structure–electrochemical performance relationships and modification mechanisms",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "As one of the critical components of VRFBs to provide the reaction sites for redox couples, an ideal electrode should possess excellent chemical and electrochemical stability, conductivity, and a low price, as well as good reaction kinetics, hydrophilicity, and electrochemical activity, in order to...[truncated]",
+            "support": "structured_field"
+          }
+        ]
+      },
+      {
+        "method": "electrochemical measurement",
+        "scenario": "carbon capture and energy storage",
+        "benchmark": "overpotential",
+        "references": [
+          "Mohsen Afshari et al. (2024) A Vanadium Redox Flow Process for Carbon Capture and Energy Storage doi:10.26434/chemrxiv-2024-c25fk"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "electrochemical measurement",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "integrated electrochemical process for carbon capture and energy storage using vanadium redox flow principles, enabling daytime CO2 desorption/charging and nighttime electricity release/absorbent regeneration",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "Abstract: Climate change mitigation by decreasing worldwide CO2 emissions is an urgent and demanding challenge that requires innovative technical solutions. This work, inspired by vanadium redox flow batteries (VRFB), introduces an integrated electrochemical process for carbon capture and energy sto...[truncated]",
+            "support": "structured_field"
+          }
+        ]
+      }
+    ],
+    "claim_type_counts": {
+      "methodological_description": 30,
+      "empirical_result": 32,
+      "author_opinion": 27,
+      "theoretical_claim": 29
+    }
+  },
+  "knowledge_gaps": [
+    {
+      "gap_id": "gap_1783514032073534600",
+      "gap_type": "combinatorial",
+      "description": "Method 'catalyst design' has no recorded validation in scenario 'aqueous organic redox flow batteries' in the current PaperGraph map.",
+      "supporting_references": [
+        "Cong Ding et al. (2023) Insights into the Modification of Carbonous Felt as an Electrode for Vanadium Redox Flow Batteries doi:10.3390/ma16103811",
+        "Thomas Boulanger et al. (2025) A Novel Pyridinium Derivative as a Highly Stable Posolyte for Aqueous Organic Redox Flow Batteries doi:10.1149/ma2025-01452410mtgabs"
+      ],
+      "novelty_score": 4,
+      "application_value": "medium",
+      "feasibility": "high",
+      "suggested_research_path": "Run a targeted validation study with explicit benchmarks, baselines, and failure-mode analysis.",
+      "value_argument": "The combination may expose method-scenario boundary conditions rather than simply adding another benchmark.",
+      "overlap_risk": "medium",
+      "requires_human_review": false
+    }
+  ],
+  "self_reflection": {
+    "top_venue_coverage_checked": true,
+    "pseudo_gap_risk_checked": true,
+    "method_categories_require_literature_support": true,
+    "unsupported_claims_marked_for_review": true
+  }
+}

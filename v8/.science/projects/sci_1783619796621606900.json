@@ -1,0 +1,244 @@
+{
+  "project_id": "sci_1783619796621606900",
+  "title": "特高压输电变电技术 AutoGen 多Agent协作闭环验证",
+  "domain": "Ultra-High Voltage Power Transmission and Transformation / Electrical Engineering / Power Grid",
+  "objective": "验证特高压输电变电领域中，基于文献证据的 gap 发现、假设生成、机制检验和辩论迭代闭环。",
+  "strategic_need": "",
+  "phase": "Gap Discovery",
+  "createdAt": 1783619796.6216106,
+  "updatedAt": 1783619817.0108325,
+  "papergraph": [],
+  "evidence": [],
+  "coverage_matrix": {},
+  "knowledge_gaps": [],
+  "hypotheses": [],
+  "keynotes": [],
+  "mechanism_reports": [],
+  "pipeline_tasks": [
+    "task_1783619816908_5017",
+    "task_1783619816916_6165",
+    "task_1783619816923_2488",
+    "task_1783619816931_3977",
+    "task_1783619816940_8499",
+    "task_1783619816947_9367",
+    "task_1783619816955_2802",
+    "task_1783619816964_6005",
+    "task_1783619816972_9097",
+    "task_1783619816981_3484",
+    "task_1783619816990_6715",
+    "task_1783619817000_4577"
+  ],
+  "boxue_delegation_plans": [
+    {
+      "boxue_delegation_plan_id": "boxue_1783619816908592900",
+      "project_id": "sci_1783619796621606900",
+      "goal": "围绕特高压输电变电技术，系统阅读高影响综述、里程碑变压器与换流阀设计、最新顶刊关于绝缘配合、电磁环境、过电压防护、智能运维成果和相关预印本，构建 PaperGraph，识别真实机制 gap，生成可证伪科学假设，并通过 YanZhen 机制一致性检验与 DuZhi/BianLun 苏格拉底辩论进行迭代。",
+      "createdAt": 1783619817.0105343,
+      "prompt_alignment": {
+        "comparison": {
+          "prompt_assign_task": "implemented as persistent create_task DAG entries with assigned agent, phase, dependency, deliverable, priority, and acceptance criteria",
+          "prompt_review_output": "implemented as reviewer_gate plus boxue_final dependency gates; Boxue can add revision tasks via the task system",
+          "prompt_synthesize": "implemented as bianlun_synthesis, paperwriter_draft, and boxue_final synthesis tasks",
+          "prompt_adjust_plan": "implemented operationally by creating additional tasks or new delegation plans after reviewing outputs",
+          "prompt_finalize": "implemented as boxue_final decision task, not as specialist execution"
+        },
+        "stronger_than_old_pipeline_tasks": [
+          "role-specific tasks instead of generic phase tasks",
+          "explicit acceptance criteria",
+          "risk constraints embedded in every task",
+          "dependencies mirror the research lifecycle",
+          "optional teammate spawning for unblocked specialist work"
+        ],
+        "remaining_manual_gate": "Boxue still needs to review outputs and decide whether to create revision tasks; this preserves human/lead control over shared project state."
+      },
+      "coordination_policy": {
+        "boxue_role": "decompose, assign, review, synthesize, adjust, finalize",
+        "specialist_role": "execute only the assigned scientific subtask",
+        "shared_state": "state-changing PaperGraph/project updates should be gated by lead/synthesis tasks",
+        "step_limit": 20
+      },
+      "tasks": [
+        {
+          "task_id": "task_1783619816908_5017",
+          "agent": "zhizhi",
+          "phase": "Gap Discovery",
+          "title": "Build grounded PaperGraph evidence substrate",
+          "blockedBy": [],
+          "priority": "high",
+          "acceptance_criteria": [
+            "At least one verifiable source or an explicit retrieval-failure report",
+            "Method/scenario/benchmark/contribution/limitation fields are populated or flagged unknown",
+            "Unsupported claims are marked for human review"
+          ]
+        },
+        {
+          "task_id": "task_1783619816916_6165",
+          "agent": "tanxi",
+          "phase": "Gap Discovery",
+          "title": "Rank high-value knowledge gaps",
+          "blockedBy": [
+            "task_1783619816908_5017"
+          ],
+          "priority": "high",
+          "acceptance_criteria": [
+            "Every reported gap has supporting references or is flagged as ungrounded",
+            "No more than 10 ranked gaps",
+            "Each gap includes novelty/value/feasibility rationale"
+          ]
+        },
+        {
+          "task_id": "task_1783619816923_2488",
+          "agent": "mingli",
+          "phase": "Hypothesis Generation",
+          "title": "Generate and evolve gap-grounded hypotheses",
+          "blockedBy": [
+            "task_1783619816916_6165"
+          ],
+          "priority": "high",
+          "acceptance_criteria": [
+            "Each hypothesis links to a gap_id",
+            "Each hypothesis contains mechanism and falsification condition",
+            "Overlap/novelty risk is reported"
+          ]
+        },
+        {
+          "task_id": "task_1783619816931_3977",
+          "agent": "duzhi",
+          "phase": "Socratic Debate",
+          "title": "Run Socratic critique",
+          "blockedBy": [
+            "task_1783619816923_2488"
+          ],
+          "priority": "medium",
+          "acceptance_criteria": [
+            "At least one counterexample per hypothesis",
+            "At least one alternative explanation per hypothesis",
+            "Actionable revision or rejection recommendation"
+          ]
+        },
+        {
+          "task_id": "task_1783619816940_8499",
+          "agent": "bianlun",
+          "phase": "Socratic Debate",
+          "title": "Moderate structured debate and synthesize refined hypothesis",
+          "blockedBy": [
+            "task_1783619816931_3977"
+          ],
+          "priority": "medium",
+          "acceptance_criteria": [
+            "Arguments are separated into factual vs conceptual disagreements",
+            "Refined hypothesis lists improvements from critique",
+            "Remaining risks are explicit"
+          ]
+        },
+        {
+          "task_id": "task_1783619816947_9367",
+          "agent": "yanzhen",
+          "phase": "Mechanism Verification",
+          "title": "Audit mechanism fidelity",
+          "blockedBy": [
+            "task_1783619816940_8499"
+          ],
+          "priority": "high",
+          "acceptance_criteria": [
+            "All three verification layers are addressed",
+            "Regime-shift conditions are explicit",
+            "High-risk mechanisms are routed to revision or human review"
+          ]
+        },
+        {
+          "task_id": "task_1783619816955_2802",
+          "agent": "gewu",
+          "phase": "Experimental Design",
+          "title": "Design falsifiable validation protocol",
+          "blockedBy": [
+            "task_1783619816947_9367"
+          ],
+          "priority": "high",
+          "acceptance_criteria": [
+            "At least one standard and one strong baseline",
+            "Metrics have success thresholds",
+            "Falsification criteria are stated before execution"
+          ]
+        },
+        {
+          "task_id": "task_1783619816964_6005",
+          "agent": "codeengineer",
+          "phase": "Implementation",
+          "title": "Implement reproducible experiment",
+          "blockedBy": [
+            "task_1783619816955_2802"
+          ],
+          "priority": "medium",
+          "acceptance_criteria": [
+            "Code runs or failure is diagnosed with logs",
+            "Random seeds and dependencies are documented",
+            "Outputs are saved in reproducible artifacts"
+          ]
+        },
+        {
+          "task_id": "task_1783619816972_9097",
+          "agent": "mingbian",
+          "phase": "Review & Iteration",
+          "title": "Analyze experiment outcomes",
+          "blockedBy": [
+            "task_1783619816964_6005"
+          ],
+          "priority": "medium",
+          "acceptance_criteria": [
+            "Distinguishes supported/refuted/inconclusive",
+            "Reports effect size or practical significance",
+            "Failed experiments are documented as negative knowledge"
+          ]
+        },
+        {
+          "task_id": "task_1783619816981_3484",
+          "agent": "paperwriter",
+          "phase": "Manuscript Writing",
+          "title": "Draft evidence-grounded research plan/manuscript",
+          "blockedBy": [
+            "task_1783619816972_9097"
+          ],
+          "priority": "medium",
+          "acceptance_criteria": [
+            "Claims are backed by results or citations",
+            "Limitations and failed paths are included",
+            "References are traceable to PaperGraph or retrieval artifacts"
+          ]
+        },
+        {
+          "task_id": "task_1783619816990_6715",
+          "agent": "reviewer",
+          "phase": "Review & Iteration",
+          "title": "Run automated peer review gate",
+          "blockedBy": [
+            "task_1783619816981_3484"
+          ],
+          "priority": "medium",
+          "acceptance_criteria": [
+            "Scores include specific justifications",
+            "Citation and claim/result alignment are checked",
+            "Revision actions are concrete"
+          ]
+        },
+        {
+          "task_id": "task_1783619817000_4577",
+          "agent": "boxue",
+          "phase": "Review & Iteration",
+          "title": "Synthesize final decision and next round",
+          "blockedBy": [
+            "task_1783619816990_6715"
+          ],
+          "priority": "high",
+          "acceptance_criteria": [
+            "Decision references specialist outputs",
+            "Knowledge-gap lifecycle status is updated",
+            "Next actions are either finalize or explicit revision tasks"
+          ]
+        }
+      ],
+      "spawned_teammates": [],
+      "next_step": "Let unblocked specialist tasks run first. Boxue should review outputs at dependency gates, then adjust or unlock downstream phases."
+    }
+  ]
+}

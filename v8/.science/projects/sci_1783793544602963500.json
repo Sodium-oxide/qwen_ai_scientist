@@ -1,0 +1,2293 @@
+{
+  "project_id": "sci_1783793544602963500",
+  "title": "Can we design and manufacture medicines customized for individual people? 从个体分子表型、剂量响应到可制造性的精准医疗因果证据闭环验证",
+  "domain": "Personalized Medicine / Precision Medicine / Pharmacogenomics / Cancer Genomics / Clinical Pharmacology / Multi-omics / Patient-derived Models / Cell and Gene Therapy Manufacturing / Biostatistics / Regulatory Science",
+  "objective": "在定义明确的患者群体、疾病类型和治疗类别中，个体的遗传变异、肿瘤或疾病分子表型、器官功能、免疫状态、既往治疗史以及制造过程参数，是否能够以可重复、可校准、因果上可解释的方式预测：1. 某一治疗方案的药代动力学暴露、毒性和适宜剂量；2. 某一靶向药物、免疫治疗、细胞治疗或核酸药物的临床获益与耐药风险；3. 个体化制剂或自体细胞产品能否在身份、纯度、效力、无菌性、批间一致性、周转时间和成本约束下稳定制造；4. 上述预测在不同祖源、年龄、肝肾功能、疾病分期、医疗中心和检测平台迁移时是否仍成立。禁止将统计相关、患者画像匹配或模型准确率直接解释为因果治疗获益；禁止将实验室样本、类器官、动物模型或单中心回顾性结果直接外推为临床个体化治疗有效；禁止将技术尚不成熟误判为生物学上绝对不可行。执行完整闭环：Boxue → Objective Decomposition → ZhiZhi → TanXi → Socrates → MingLi → YanZhen → DuZhi → BianLun → MingLi 修订 → YanZhen 复审。",
+  "strategic_need": "",
+  "research_brief": "创建并运行一个 AutoGen 科研闭环验证项目。\n\n  项目标题：\n  Can we design and manufacture medicines customized for individual people?\n  从个体分子表型、剂量响应到可制造性的精准医疗因果证据闭环验证\n\n  领域：\n  Personalized Medicine / Precision Medicine / Pharmacogenomics / Cancer Genomics /\n  Clinical Pharmacology / Multi-omics / Patient-derived Models /\n  Cell and Gene Therapy Manufacturing / Biostatistics / Regulatory Science\n\n  研究目标：\n  不要泛泛讨论 精准医疗将改变未来医疗。围绕以下可分解、可证伪的科学与转化问题开展验证：\n\n  在定义明确的患者群体、疾病类型和治疗类别中，个体的遗传变异、肿瘤或疾病分子表型、\n  器官功能、免疫状态、既往治疗史以及制造过程参数，是否能够以可重复、可校准、\n  因果上可解释的方式预测：\n\n  1. 某一治疗方案的药代动力学暴露、毒性和适宜剂量；\n  2. 某一靶向药物、免疫治疗、细胞治疗或核酸药物的临床获益与耐药风险；\n  3. 个体化制剂或自体细胞产品能否在身份、纯度、效力、无菌性、批间一致性、\n     周转时间和成本约束下稳定制造；\n  4. 上述预测在不同祖源、年龄、肝肾功能、疾病分期、医疗中心和检测平台迁移时是否仍成立。\n\n  禁止将统计相关、患者画像匹配或模型准确率直接解释为因果治疗获益；\n  禁止将实验室样本、类器官、动物模型或单中心回顾性结果直接外推为临床个体化治疗有效；\n  禁止将技术尚不成熟误判为生物学上绝对不可行。\n\n  执行完整闭环：\n  Boxue → Objective Decomposition → ZhiZhi → TanXi → Socrates →\n  MingLi → YanZhen → DuZhi → BianLun → MingLi 修订 → YanZhen 复审。\n\n\n  ## Boxue：Objective Decomposition\n\n  在任何宽泛检索前，先运行 decompose_research_objective。\n  输出不是一组研究方向，而是独立的、可被推翻的子假设。\n\n \n\n  ## ZhiZhi：文献与证据知识库要求\n\n  数据源与质量边界\n\n  - 主要使用 semantic_scholar、PubMed、arXiv；临床前沿预印本可补充 medRxiv/bioRxiv，但必须明确其未经同行评审状态。\n  - 分层导入至少 15 篇经质量筛选的文献；数量不是目标，必须覆盖每个已选子假设的证据窗口。\n  - 对摘要缺失、unknown 字段、来源可疑或 requires_human_review 的记录，执行提取修复、降权或停留在背景层，不得作为机制合\n    同的唯一证据。\n\n  - 不得制造论文、临床试验、监管文件、效应量、患者结局或指南推荐。\n\n  P0–P4 分层\n\n  P0 / L3：近期预印本\n    - 精准医疗、临床药理、多组学、患者来源模型、个体化细胞/核酸制造\n    - 要求标注未经同行评审；检索失败必须显式标记证据不足\n\n  P1 / L2：近2年高质量原始研究\n    - 前瞻性临床队列、随机或准实验研究\n    - 外部验证、临床药理、真实世界目标试验模拟\n    - 多中心临床/转化研究和受控制造研究\n\n  P2 / L4：机制、实验与理论证据\n    - 酶动力学、PK/PD、药物转运、受体占有\n    - 单细胞、多组学、功能测定、类器官\n    - CMC、效力测定、放行标准、过程分析技术\n\n  P3 / L0：系统综述、临床指南、监管和方法学综述\n    - 药物基因组学实施指南\n    - 精准肿瘤学、患者来源模型和先进治疗产品监管综述\n    - 偏倚、因果推断、临床预测模型报告规范\n\n  P4 / L1：奠基研究与历史脉络\n    - 关键药物基因组学机制发现\n    - 个体化靶向治疗或细胞治疗的奠基性临床/制造研究\n    - 仅用于历史和机制脉络，不得替代当前外部验证\n\n  必须覆盖的子空间\n\n  - 药物基因组学、代谢酶、转运体、HLA 风险、PK/PD 与剂量优化；\n  - 肿瘤或疾病基因组、转录组、蛋白组、单细胞和空间组学；\n  - 预测性标志物与预后性标志物的因果区分；\n  - 真实世界数据、目标试验模拟、选择偏倚、祖源偏倚和检测平台漂移；\n  - 患者来源类器官、PDX、功能测定与临床结局之间的迁移误差；\n  - 自体细胞、核酸药物或个体化制剂的 CMC、身份链、效力、无菌、放行和供应链；\n  - 监管、知情同意、数据治理、隐私、算法审计和可及性；\n  - 经济性：周转时间、失败制造批次、支付方式和中心间可复制性。\n\n  必须排除或降权的内容\n\n  - 只报告模型 AUC、没有临床终点或外部验证的纯算法论文；\n  - 只有疾病关联、没有治疗策略或可观测中介的关联研究；\n  - 与精准医疗无关的普通生物信息学、一般医院调度或常规药物合成论文；\n  - 仅动物或细胞系研究、却声称直接预测患者获益的论文；\n  - 没有来源、无明确样本定义、混合多个治疗场景且不可拆分的营销报告。\n\n  DeepSurvey 风格知识构建\n\n  每篇入库论文除 method-scenario-benchmark 外，必须提取：\n\n  keynote:\n    core_problem: 该论文解决的具体临床或制造问题\n    patient_population: 人群、适应证、入排标准和治疗场景\n    causal_chains:\n      - trigger: 干预、遗传变异、制造参数或自然实验条件\n        steps:\n          - claim: 中介机制\n            evidence: 论文中的来源摘录\n            evidence_type: experimental | theoretical | observational | inferred\n        outcome: 临床、药代、功能或制造终点\n        observables: 可直接测量的信号\n        interventions: 可操纵变量\n    experimental_evidence: 样本数、测量条件、对照和主要终点\n    assumptions: 隐含假设、可迁移条件和未测混杂\n    limitations: 作者明确局限\n    important_claims: 声明与证据的一一对应\n    future_directions: 明确未来工作\n    code_or_implementation: 公开代码、模型版本、分析环境；不得下载或处理患者敏感数据\n\n  ## TanXi：Gap 探索要求\n\n  TanXi 首先做因果断链检测，而不是把方法尚未用于某场景作为高价值 Gap。\n\n  优先发现以下问题：\n\n  1. 遗传变异 → 功能表型 → 药物暴露 → 毒性/获益 中，哪一段缺乏可测量中介、干预证据或外部验证；\n  2. 某些生物标志物究竟预测治疗效应，还是仅反映预后、疾病负荷或医生选择治疗的偏倚；\n  3. 单次基线多组学预测与治疗过程中克隆演化、耐药、免疫状态变化之间的断链；\n  4. 类器官、PDX 或功能检测的体外响应与临床响应不一致的机制：采样偏倚、微环境缺失、时间滞后还是剂量暴露差异；\n  5. 个体化细胞/核酸产品中，起始材料、过程参数、关键质量属性、效力和临床可给药性之间是否存在未验证的因果链；\n  6. 不同祖源、年龄、肝肾功能、合并用药、检测平台和医疗中心之间，预测规则是否出现校准失效；\n  7. 预测性能改进是否被制造周期、失败率、成本和可及性抵消；\n  8. 监管/标准体系是否无法覆盖个体化产品的身份链、效力检测和持续工艺变更。\n\n  每个 ranked gap 必须输出：\n\n  mechanism_draft:\n    input: 已定义的干预、患者分层或制造变量\n    proposed_mediator: 仅可填写文献来源支持的中介；否则保持 unresolved\n    output: 明确临床、药代、功能或制造终点\n    source_clue: 原文 citation 与 excerpt\n    causal_gap:\n      missing_kind: intermediate_mechanism | observability | intervention |\n                    counterfactual | evidence_window\n      evidence_needed: 下一步需要何种直接证据\n    sub_hypothesis_id: SH1 | SH2 | SH3 | SH4\n    unresolved_fields:\n      - identity\n      - location_or_scope\n      - dynamics\n      - reversibility\n      - observability\n      - intervention\n      - counterfactual\n\n  禁止把某 AI 方法尚未用于某癌种某测序技术还没和某药物配对直接列为核心 Gap。\n\n  ## Socrates：机制合同与因果补全\n\n  只选择排名第一、且属于机制型或矛盾型的 Gap 建立机制合同。\n\n  Socrates evidence contract:\n    identity: 中介实体/过程到底是什么\n    location_or_scope: 位于哪类细胞、组织、患者分层、制造环节或时间窗\n    dynamics: 如何随剂量、治疗周期、病程或制造批次变化\n    reversibility: 是否可逆，何种条件下可恢复\n    observability: 如何直接测量，而不是只测临床终点\n    intervention: 什么变量可在伦理和技术上被操纵\n    counterfactual: 若抑制/移除中介，预期发生什么\n\n  每个字段必须有：\n\n  evidence:\n    - citation: 真实论文、试验、指南或受控制造来源\n      excerpt: 支持该字段的原文摘录\n      paper_id: PaperGraph记录\n      evidence_type: experimental | theoretical | observational | inferred\n\n  Socrates 必须同时输出：\n\n  - 反事实或准实验设计；\n  - 第一性原理推导待补项，例如酶动力学、药物暴露—反应关系、受体占有、细胞扩增动力学、质量属性—效力关系；\n  - 竞争机制消除计划；\n  - 哪些证据来自人体、体外系统、动物模型或制造过程，禁止混淆证据层级。\n\n  若 verdict != COMPLETE，输出 INSUFFICIENT_EVIDENCE、剩余字段和定向检索建议，停止 MingLi 假设生成；不得用常识、临床直觉\n  或模板补全。\n\n  ## MingLi：假设生成要求\n\n  MingLi 只可消费：\n\n  - Socrates COMPLETE 的机制合同；\n  - 对应子假设满足 P0–P2 证据窗口；\n  - 有明确患者范围、治疗范围和可观测终点的 Gap。\n\n  每条假设必须包含：\n\n  hypothesis:\n    sub_hypothesis_id: SHx\n    patient_scope: 年龄、适应证、疾病阶段、关键入排条件\n    treatment_scope: 具体药物/治疗类别/制造平台\n    causal_chain: X → Z → Y\n    X: 可干预变量或可定义的自然实验\n    Z: 直接可测量中介\n    Y: 临床、药代、功能或制造终点\n    operating_conditions:\n      - 给药方案、剂量、治疗周期\n      - 肝肾功能、合并用药、样本采集时点\n      - 制造工艺、放行窗口或储运条件\n    observables:\n      - 药物暴露、毒性分级、反应率、无进展生存\n      - ctDNA、转录组、蛋白组、免疫功能、类器官功能读数\n      - 身份、纯度、效力、无菌、周转时间和失败率\n    null_hypothesis: 不存在经中介 Z 传递的治疗效应异质性\n    alternative_explanations:\n      - 未测临床混杂\n      - 预后性而非预测性标志物\n      - 检测误差、选择偏倚或时间依赖偏倚\n      - 制造批次或中心效应\n    falsification_condition: 预注册的失败条件\n    source_mapping: 每个因果链步骤对应 Socrates citation/excerpt\n\n  合格假设的形式应类似：\n\n  > 在预先定义的患者分层和治疗方案中，若通过 X 改变或识别个体化治疗条件，并且直接测得中介 Z 的预期变化，而 Y 在匹配对照\n  > 下按预注册方向改变，则支持该机制；若 Z 未改变、Y 与 Z 脱钩，或竞争机制更能解释数据，则否定或修订假设。\n\n  禁止使用AI 能改善个体化治疗通过多组学理解患者采用特定技术提升疗效之类没有机制实体和证伪条件的万能模板。\n\n  ## YanZhen：两次机制审计\n\n  初审\n\n  - 内部一致性：变量、患者范围、治疗范围、时间顺序和中介定义是否一致；\n  - 数据一致性：citation/excerpt 是否真正支持所声称的人群、干预和终点；\n  - 因果一致性：是否把相关误当治疗效应，是否遗漏关键混杂；\n  - 工程与生物学区分：制造失败、成本或周转时间限制不能被误判为疗法生物学无效；\n  - 输出：unsupported_claims、required_actions、verdict。\n\n  至少两个 regime-shift 检验\n\n  regime_shift_1:\n    condition: 祖源、年龄或性别构成发生变化\n    question: 遗传风险或治疗预测是否仍校准，是否存在群体公平性失效\n\n  regime_shift_2:\n    condition: 肝肾功能、合并用药、疾病分期或治疗线数变化\n    question: 剂量—暴露—毒性因果链是否仍成立\n\n  regime_shift_3:\n    condition: 检测平台、样本采集时间点、医疗中心或制造设施变化\n    question: 生物标志物和质量属性是否可重复，中心效应是否主导结论\n\n  regime_shift_4:\n    condition: 从回顾性队列迁移到前瞻性、真实世界或受控临床研究\n    question: 是否存在标签泄漏、选择偏倚、时间依赖偏倚或疗效衰减\n\n  若初审不是 PASS，YanZhen 必须把具体失败点反馈给 MingLi 和 DuZhi；不得直接输出成功结论。\n\n  ## DuZhi + BianLun：3–5 轮结构化辩论\n\n  DuZhi 每轮必须针对上一轮的具体回应追问，并至少覆盖：\n\n  1. 个体化的操作定义是什么：是药物选择、剂量、给药时机、组合疗法，还是产品制造参数？\n  2. 遗传或多组学标志物如何从关联提升为预测性治疗标志物？是否存在治疗分配偏倚？\n  3. 中介变量 Z 如何直接测量？检测误差、批次效应和采样时间是否足以掩盖真实变化？\n  4. 若不同中心、不同祖源或不同检测平台中预测效果显著下降，机制是否仍成立？\n  5. 若患者来源模型预测有效但临床无效，是模型缺少微环境、药物暴露不匹配，还是临床终点定义错误？\n  6. 个体化制造产品的效力、纯度或周转时间改善，是否被制造失败率、成本、可及性或监管限制抵消？\n  7. 所谓不能为个体制造药物究竟是生物学限制、临床证据限制、制造限制，还是支付和监管限制？\n\n  BianLun 每轮必须输出：\n\n  round_summary:\n    resolved_disputes: []\n    unresolved_disputes: []\n    causal_links_requiring_revision: []\n    evidence_missing: []\n    required_mingli_revision: []\n\n  MingLi 必须保留修订前后版本、修改理由、引用变化和仍未解决的不确定性。\n\n  ## 最终交付物与安全边界\n\n  最终输出必须包括：\n\n  - Objective Decomposition、每个 SH 的状态和组合结论门槛；\n  - P0–P4 文献覆盖、子空间覆盖、来源质量和预印本缺口报告；\n  - PaperGraph 因果证据图与断链位置；\n  - TanXi ranked gaps 与 mechanism_draft；\n  - Socrates evidence contract、反事实设计、第一性原理待补项；\n  - 初始假设、3–5 轮 DuZhi 质询、BianLun 归纳、MingLi 修订轨迹；\n  - YanZhen 初审与复审；\n  - 最终状态：ACCEPT_FOR_EXPERIMENT、CONDITIONAL_ACCEPT、REJECTED 或 REQUIRES_HUMAN_REVIEW；\n  - 可证伪的验证设计，包括患者选择、对照、混杂控制、外部验证、统计分析计划和数据治理要求；\n  - 个体化制造路径的 CMC 验证：身份链、关键质量属性、效力、纯度、无菌、批间一致性、周转时间、失败率和成本；\n  - 未解决证据缺口、不能外推的人群/治疗范围，以及后续定向检索建议。\n\n  所有涉及真实患者数据、治疗分配、剂量改变、细胞或基因治疗制造的实验，都只能作为研究设计输出；实际执行必须经过 IRB/伦理\n  审查、临床试验注册、知情同意、隐私与数据治理审查，以及相应药品监管要求。",
+  "research_brief_source": "verbatim_user_prompt",
+  "phase": "Gap Discovery",
+  "createdAt": 1783793544.6029654,
+  "updatedAt": 1783793931.4703724,
+  "papergraph": [
+    {
+      "paper_id": "paper_1783793728675374400",
+      "unique_key": "doi:10_1124_dmd_122_001066",
+      "title": "Novel Approaches to Characterize Individual Drug Metabolism and Advance Precision Medicine",
+      "citation": "Klarissa D Jackson et al. (2023) Novel Approaches to Characterize Individual Drug Metabolism and Advance Precision Medicine doi:10.1124/dmd.122.001066",
+      "authors": [
+        "Klarissa D Jackson"
+      ],
+      "year": "2023",
+      "venue": "Drug Metabolism And Disposition",
+      "provider": "semantic_scholar",
+      "source_type": "api",
+      "doi": "10.1124/dmd.122.001066",
+      "arxiv_id": "",
+      "semantic_scholar_id": "124c306298993580937e2f2ee5566fbd47cedd0c",
+      "url": "https://www.semanticscholar.org/paper/124c306298993580937e2f2ee5566fbd47cedd0c",
+      "abstract": "Interindividual variability in drug metabolism can significantly affect drug concentrations in the body and subsequent drug response. Understanding an individual’s drug metabolism capacity is important for predicting drug exposure and developing precision medicine strategies. The goal of precision medicine is to individualize drug treatment for patients to maximize efficacy and minimize drug toxicity. While advances in pharmacogenomics have improved our understanding of how genetic variations in drug-metabolizing enzymes (DMEs) affect drug response, nongenetic factors are also known to influence drug metabolism phenotypes. This minireview discusses approaches beyond pharmacogenetic testing to phenotype DMEs—particularly the cytochrome P450 enzymes—in clinical settings. Several phenotyping approaches have been proposed: traditional approaches include phenotyping with exogenous probe substrates and the use of endogenous biomarkers; newer approaches include evaluating circulating noncoding RNAs and liquid biopsy-derived markers relevant to DME expression and function. The goals of this minireview are to 1) provide a high-level overview of traditional and novel approaches to phenotype individual drug metabolism capacity, 2) describe how these approaches are being applied or can be applied to pharmacokinetic studies, and 3) discuss perspectives on future opportunities to advance precision medicine in diverse populations. SIGNIFICANCE STATEMENT This minireview provides an overview of recent advances in approaches to characterize individual drug metabolism phenotypes in clinical settings. It highlights the integration of existing pharmacokinetic biomarkers with novel approaches; also discussed are current challenges and existing knowledge gaps. The article concludes with perspectives on the future deployment of a liquid biopsy-informed physiologically based pharmacokinetic strategy for patient characterization and precision dosing.",
+      "full_text_excerpt": "",
+      "conclusion": "Full text excerpt:",
+      "strengths": [
+        "Title: Novel Approaches to Characterize Individual Drug Metabolism and Advance Precision Medicine",
+        "Citation: Klarissa D Jackson et al. (2023) Novel Approaches to Characterize Individual Drug Metabolism and Advance Precision Medicine doi:10.1124/dmd.122.001066",
+        "Abstract: Interindividual variability in drug metabolism can significantly affect drug concentrations in the body and subsequent drug response. Understanding an individual’s drug metabolism capacity is important for predicting drug exposure and developing precision medicine strategies. The goal of p...[truncated]"
+      ],
+      "improvements": [
+        "Abstract: Interindividual variability in drug metabolism can significantly affect drug concentrations in the body and subsequent drug response. Understanding an individual’s drug metabolism capacity is important for predicting drug exposure and developing precision medicine strategies. The goal of p...[truncated]"
+      ],
+      "method": "imaging and characterization",
+      "scenario": "individual drug metabolism and precision medicine",
+      "benchmark": "drug metabolism phenotypes, DME expression and function",
+      "contribution": "overview of traditional and novel approaches to phenotype individual drug metabolism capacity and their application to pharmacokinetic studies",
+      "limitation": "Abstract: Interindividual variability in drug metabolism can significantly affect drug concentrations in the body and subsequent drug response. Understanding an individual’s drug metabolism capacity is important for predicting drug exposure and developing precision medicine strategies. The goal of p...[truncated]",
+      "credibility_score": 0.58,
+      "credibility_reasons": [
+        "base record",
+        "has title and citation",
+        "has DOI",
+        "has scholarly identifier",
+        "has URL",
+        "has substantial abstract",
+        "provider recorded",
+        "requires human quality review",
+        "credibility multiplied down by low publication quality",
+        "has publication year"
+      ],
+      "extraction_quality": {
+        "score": 1.0,
+        "unknown_ratio": 0.0,
+        "unknown_fields": [],
+        "abstract_chars": 1958,
+        "flags": [],
+        "needs_enrichment": false,
+        "needs_llm_retry": false,
+        "requires_human_review": false,
+        "initial": {
+          "score": 0.28,
+          "unknown_ratio": 1.0,
+          "unknown_fields": [
+            "method",
+            "scenario",
+            "benchmark"
+          ],
+          "abstract_chars": 1958,
+          "flags": [
+            "missing_conclusion",
+            "unknown_fields",
+            "unknown_fields_high",
+            "missing_benchmark"
+          ],
+          "needs_enrichment": false,
+          "needs_llm_retry": true,
+          "requires_human_review": true
+        },
+        "llm_retry": {
+          "attempted": true,
+          "succeeded": true,
+          "error": "",
+          "extractor": "qwen_json"
+        }
+      },
+      "enrichment_sources": [],
+      "gap_signals": [
+        {
+          "signal_id": "sig_1783793728648425500",
+          "signal_type": "mechanism_issue",
+          "text": "While advances in pharmacogenomics have improved our understanding of how genetic variations in drug-metabolizing enzymes (DMEs) affect drug response, nongenetic factors are also known to influence drug metabolism phenotypes.",
+          "evidence_type": "problem_statement",
+          "supporting_reference": "Klarissa D Jackson et al. (2023) Novel Approaches to Characterize Individual Drug Metabolism and Advance Precision Medicine doi:10.1124/dmd.122.001066",
+          "confidence": 0.89
+        },
+        {
+          "signal_id": "sig_1783793728648570700",
+          "signal_type": "mechanism_issue",
+          "text": "Full text excerpt: overview of traditional and novel approaches to phenotype individual drug metabolism capacity and their application to pharmacokinetic studies Abstract: Interindividual variability in drug metabolism can significantly affect drug concentrations in the body and subsequent drug response.",
+          "evidence_type": "problem_statement",
+          "supporting_reference": "Klarissa D Jackson et al. (2023) Novel Approaches to Characterize Individual Drug Metabolism and Advance Precision Medicine doi:10.1124/dmd.122.001066",
+          "confidence": 0.84
+        },
+        {
+          "signal_id": "sig_1783793728648376800",
+          "signal_type": "mechanism_issue",
+          "text": "Novel Approaches to Characterize Individual Drug Metabolism and Advance Precision Medicine Interindividual variability in drug metabolism can significantly affect drug concentrations in the body and subsequent drug response.",
+          "evidence_type": "problem_statement",
+          "supporting_reference": "Klarissa D Jackson et al. (2023) Novel Approaches to Characterize Individual Drug Metabolism and Advance Precision Medicine doi:10.1124/dmd.122.001066",
+          "confidence": 0.84
+        },
+        {
+          "signal_id": "sig_1783793728648410200",
+          "signal_type": "mechanism_issue",
+          "text": "The goal of precision medicine is to individualize drug treatment for patients to maximize efficacy and minimize drug toxicity.",
+          "evidence_type": "problem_statement",
+          "supporting_reference": "Klarissa D Jackson et al. (2023) Novel Approaches to Characterize Individual Drug Metabolism and Advance Precision Medicine doi:10.1124/dmd.122.001066",
+          "confidence": 0.84
+        },
+        {
+          "signal_id": "sig_1783793728636525700",
+          "signal_type": "future_work",
+          "text": "perspectives on future opportunities to advance precision medicine in diverse populations",
+          "evidence_type": "author_opinion",
+          "supporting_reference": "Klarissa D Jackson et al. (2023) Novel Approaches to Characterize Individual Drug Metabolism and Advance Precision Medicine doi:10.1124/dmd.122.001066",
+          "confidence": 0.78
+        },
+        {
+          "signal_id": "sig_1783793728648534200",
+          "signal_type": "challenge",
+          "text": "It highlights the integration of existing pharmacokinetic biomarkers with novel approaches; also discussed are current challenges and existing knowledge gaps.",
+          "evidence_type": "problem_statement",
+          "supporting_reference": "Klarissa D Jackson et al. (2023) Novel Approaches to Characterize Individual Drug Metabolism and Advance Precision Medicine doi:10.1124/dmd.122.001066",
+          "confidence": 0.76
+        },
+        {
+          "signal_id": "sig_1783793728636498300",
+          "signal_type": "challenge",
+          "text": "current challenges and existing knowledge gaps",
+          "evidence_type": "problem_statement",
+          "supporting_reference": "Klarissa D Jackson et al. (2023) Novel Approaches to Characterize Individual Drug Metabolism and Advance Precision Medicine doi:10.1124/dmd.122.001066",
+          "confidence": 0.76
+        }
+      ],
+      "causal_chains": [
+        {
+          "chain_id": "chain_1",
+          "trigger": "Interindividual variability in drug metabolism",
+          "trigger_evidence": "",
+          "steps": [
+            {
+              "claim": "Affects drug concentrations in the body",
+              "evidence": "Interindividual variability in drug metabolism can significantly affect drug concentrations in the body and subsequent drug response.",
+              "evidence_type": "theoretical"
+            },
+            {
+              "claim": "Influences subsequent drug response",
+              "evidence": "Interindividual variability in drug metabolism can significantly affect drug concentrations in the body and subsequent drug response.",
+              "evidence_type": "theoretical"
+            }
+          ],
+          "outcome": "Importance of understanding individual drug metabolism capacity for precision medicine",
+          "outcome_evidence": "",
+          "observables": [
+            "Drug concentrations in the body",
+            "Subsequent drug response"
+          ],
+          "interventions": [
+            "Phenotyping with exogenous probe substrates",
+            "Use of endogenous biomarkers",
+            "Evaluating circulating noncoding RNAs",
+            "Utilizing liquid biopsy-derived markers"
+          ],
+          "confidence": null
+        }
+      ],
+      "importedAt": 1783793728.6753898,
+      "active": true
+    },
+    {
+      "paper_id": "paper_1783793753195594100",
+      "unique_key": "doi:10_3389_fanes_2026_1727481",
+      "title": "Precision anesthesia and pharmacogenomics: a scoping review of personalized drug response",
+      "citation": "Sarina Nikzad et al. (2026) Precision anesthesia and pharmacogenomics: a scoping review of personalized drug response doi:10.3389/fanes.2026.1727481",
+      "authors": [
+        "Sarina Nikzad"
+      ],
+      "year": "2026",
+      "venue": "Frontiers in Anesthesiology",
+      "provider": "semantic_scholar",
+      "source_type": "api",
+      "doi": "10.3389/fanes.2026.1727481",
+      "arxiv_id": "",
+      "semantic_scholar_id": "7ffc8d51f49ecc15ec96faf8344023f3a80a25b2",
+      "url": "https://www.semanticscholar.org/paper/7ffc8d51f49ecc15ec96faf8344023f3a80a25b2",
+      "abstract": "Anesthetic agent selection and dosing have historically relied on empirical models without taking into account inter-individual variability in drug response, leading to adverse drug reactions (ADRs). Precision medicine, specifically leveraging pharmacogenomics (PGx), offers a paradigm shift toward personalized anesthesia, enhancing efficacy and safety. This scoping review synthesized literature from 2015 to 2025, using systematic database searches and Artificial Intelligence (AI)-powered tools, to identify the most extensively studied genetic variants impacting the pharmacokinetics and pharmacodynamics of common perioperative medications. Key genetic variants in metabolic enzymes, transporters, and receptors significantly influence anesthetic outcomes. PGx holds transformative potential for the field of anesthesiology by offering actionable insights for drug selection and dose adjustment to mitigate ADRs and optimize pain control.",
+      "full_text_excerpt": "",
+      "conclusion": "Full text excerpt:",
+      "strengths": [],
+      "improvements": [
+        "No explicit limitation extracted."
+      ],
+      "method": "scoping review",
+      "scenario": "personalized anesthesia",
+      "benchmark": "genetic variants impact on anesthetic outcomes",
+      "contribution": "synthesized key genetic variants that influence anesthetic outcomes and highlighted the potential of pharmacogenomics in personalized anesthesia",
+      "limitation": "Precision anesthesia and pharmacogenomics: a scoping review of personalized drug response Anesthetic agent selection and dosing have historically relied on empirical models without taking into account inter-individual variability in drug response, leading to adverse drug reactions (ADRs).",
+      "credibility_score": 0.95,
+      "credibility_reasons": [
+        "base record",
+        "has title and citation",
+        "has DOI",
+        "has scholarly identifier",
+        "has URL",
+        "has substantial abstract",
+        "provider recorded",
+        "has publication year"
+      ],
+      "extraction_quality": {
+        "score": 1.0,
+        "unknown_ratio": 0.0,
+        "unknown_fields": [],
+        "abstract_chars": 944,
+        "flags": [],
+        "needs_enrichment": false,
+        "needs_llm_retry": false,
+        "requires_human_review": false,
+        "initial": {
+          "score": 0.28,
+          "unknown_ratio": 1.0,
+          "unknown_fields": [
+            "method",
+            "scenario",
+            "benchmark"
+          ],
+          "abstract_chars": 1954,
+          "flags": [
+            "missing_conclusion",
+            "unknown_fields",
+            "unknown_fields_high",
+            "missing_benchmark"
+          ],
+          "needs_enrichment": false,
+          "needs_llm_retry": true,
+          "requires_human_review": true
+        },
+        "llm_retry": {
+          "attempted": true,
+          "succeeded": true,
+          "error": "",
+          "extractor": "qwen_json"
+        }
+      },
+      "enrichment_sources": [],
+      "gap_signals": [
+        {
+          "signal_id": "sig_1783793753195168000",
+          "signal_type": "mechanism_issue",
+          "text": "Precision anesthesia and pharmacogenomics: a scoping review of personalized drug response Anesthetic agent selection and dosing have historically relied on empirical models without taking into account inter-individual variability in drug response, leading to adverse drug reactions (ADRs).",
+          "evidence_type": "problem_statement",
+          "supporting_reference": "Sarina Nikzad et al. (2026) Precision anesthesia and pharmacogenomics: a scoping review of personalized drug response doi:10.3389/fanes.2026.1727481",
+          "confidence": 0.84
+        },
+        {
+          "signal_id": "sig_1783793753195180700",
+          "signal_type": "mechanism_issue",
+          "text": "Precision medicine, specifically leveraging pharmacogenomics (PGx), offers a paradigm shift toward personalized anesthesia, enhancing efficacy and safety.",
+          "evidence_type": "problem_statement",
+          "supporting_reference": "Sarina Nikzad et al. (2026) Precision anesthesia and pharmacogenomics: a scoping review of personalized drug response doi:10.3389/fanes.2026.1727481",
+          "confidence": 0.84
+        },
+        {
+          "signal_id": "sig_1783793753195260400",
+          "signal_type": "limitation",
+          "text": "Full text excerpt: synthesized key genetic variants that influence anesthetic outcomes and highlighted the potential of pharmacogenomics in personalized anesthesia No explicit limitation extracted.",
+          "evidence_type": "author_opinion",
+          "supporting_reference": "Sarina Nikzad et al. (2026) Precision anesthesia and pharmacogenomics: a scoping review of personalized drug response doi:10.3389/fanes.2026.1727481",
+          "confidence": 0.82
+        }
+      ],
+      "causal_chains": [
+        {
+          "chain_id": "chain_1",
+          "trigger": "Empirical models for anesthetic agent selection and dosing",
+          "trigger_evidence": "",
+          "steps": [
+            {
+              "claim": "Empirical models do not account for inter-individual variability in drug response",
+              "evidence": "Anesthetic agent selection and dosing have historically relied on empirical models without taking into account inter-individual variability in drug response",
+              "evidence_type": "observational"
+            },
+            {
+              "claim": "Lack of consideration for inter-individual variability leads to adverse drug reactions (ADRs)",
+              "evidence": "leading to adverse drug reactions (ADRs)",
+              "evidence_type": "observational"
+            }
+          ],
+          "outcome": "Adverse drug reactions (ADRs) occur",
+          "outcome_evidence": "",
+          "observables": [
+            "Adverse drug reactions (ADRs)"
+          ],
+          "interventions": [],
+          "confidence": null
+        },
+        {
+          "chain_id": "chain_2",
+          "trigger": "Pharmacogenomics (PGx) in anesthesiology",
+          "trigger_evidence": "",
+          "steps": [
+            {
+              "claim": "PGx offers actionable insights for drug selection and dose adjustment",
+              "evidence": "PGx holds transformative potential for the field of anesthesiology by offering actionable insights for drug selection and dose adjustment",
+              "evidence_type": "theoretical"
+            },
+            {
+              "claim": "Actionable insights lead to mitigation of ADRs and optimized pain control",
+              "evidence": "to mitigate ADRs and optimize pain control",
+              "evidence_type": "theoretical"
+            }
+          ],
+          "outcome": "Mitigation of ADRs and optimized pain control",
+          "outcome_evidence": "",
+          "observables": [
+            "Reduced ADRs",
+            "Optimized pain control"
+          ],
+          "interventions": [
+            "Personalized drug selection and dose adjustment based on genetic variants"
+          ],
+          "confidence": null
+        }
+      ],
+      "importedAt": 1783793753.195603,
+      "active": true
+    },
+    {
+      "paper_id": "paper_1783793789120874900",
+      "unique_key": "doi:10_3389_fphar_2021_648519",
+      "title": "Case Report of Novel Genetic Variant in KCNT1 Channel and Pharmacological Treatment With Quinidine. Precision Medicine in Refractory Epilepsy",
+      "citation": "M. C. Kravetz et al. (2021) Case Report of Novel Genetic Variant in KCNT1 Channel and Pharmacological Treatment With Quinidine. Precision Medicine in Refractory Epilepsy doi:10.3389/fphar.2021.648519",
+      "authors": [
+        "M. C. Kravetz et al."
+      ],
+      "year": "2021",
+      "venue": "Frontiers in Pharmacology",
+      "provider": "semantic_scholar",
+      "source_type": "api",
+      "doi": "10.3389/fphar.2021.648519",
+      "arxiv_id": "",
+      "semantic_scholar_id": "976a0c8c36ed1c11bff632187bdfdb6f0cc52683",
+      "url": "https://www.semanticscholar.org/paper/976a0c8c36ed1c11bff632187bdfdb6f0cc52683",
+      "abstract": "Case introduction: In this work we present a female infant patient with epilepsy of infancy with migrating focal seizures (EIMFS). Although many pharmacological schemes were attempted, she developed an encephalopathy with poor response to antiepileptic drugs and progressive cerebral dysfunction. Aim: To present the pharmacological response and therapeutic drug monitoring of a paediatric patient with a severe encephalopathy carrying a genetic variant in KCNT1 gene, whose identification led to include quinidine (QND) in the treatment regimen as an antiepileptic drug. Case report: Patient showed slow rhythmic activity (theta range) over left occipital areas with temporal propagation and oculo-clonic focal seizures and without tonic spasms three months after birth. At the age of 18 months showed severe impairments of motor and intellectual function with poor eye contact. When the patient was 4 years old, a genetic variant in the exon 24 of the KCNT1 gene was found. This led to the diagnosis of EIMFS. Due to antiepileptic treatment failed to control seizures, QND a KCNT1 blocker, was introduced as a therapeutic alternative besides topiramate (200 mg/day) and nitrazepam (2 mg/day). Therapeutic drug monitoring (TDM) of QND plasma levels needed to be implemented to establish individual therapeutic range and avoid toxicity. TDM for dose adjustment was performed to establish the individual therapeutic range of the patient. Seizures were under control with QND levels above 1.5 mcg/ml (65–70 mg/kg q. i.d). In addition, QND levels higher than 4.0 mcg/ml, were related to higher risk of suffering arrhythmia due to prolongation of QT segment. Despite initial intention to withdrawal topiramate completely, QND was no longer effective by itself and failed to maintain seizures control. Due to this necessary interaction between quinidine and topiramate, topiramate was stablished in a maintenance dose of 40 mg/day. Conclusion: The implementation of Precision Medicine by using tools such as Next Generation Sequencing and TDM led to diagnose and select a targeted therapy for the treatment of a KCNT1-related epilepsy in a patient presented with EIMFS in early infancy and poor response to antiepileptic drugs. QND an old antiarrhythmic drug, due to its activity as KCNT1 channel blocker, associated to topiramate resulted in seizures control. Due to high variability observed in QND levels, TDM and pharmacokinetic characterization allowed to optimize drug regimen to maintain QND concentration between the individual therapeutic range and diminish toxicity.",
+      "full_text_excerpt": "",
+      "conclusion": "The implementation of Precision Medicine by using tools such as Next Generation Sequencing and TDM led to diagnose and select a targeted therapy for the treatment of a KCNT1-related epilepsy in a patient presented with EIMFS in early infancy and poor response to antiepileptic drugs. QND an old antiarrhythmic drug, due to its activity as KCNT1 channel blocker, associated to topiramate resulted in seizures control. Due to high variability observed in QND levels, TDM and pharmacokinetic characterization allowed to optimize drug regimen to maintain QND concentration between the individual therapeutic range and diminish toxicity.",
+      "strengths": [
+        "Title: Case Report of Novel Genetic Variant in KCNT1 Channel and Pharmacological Treatment With Quinidine. Precision Medicine in Refractory Epilepsy",
+        "Citation: M. C. Kravetz et al. (2021) Case Report of Novel Genetic Variant in KCNT1 Channel and Pharmacological Treatment With Quinidine. Precision Medicine in Refractory Epilepsy doi:10.3389/fphar.2021.648519"
+      ],
+      "improvements": [],
+      "method": "genetic sequencing | therapeutic drug monitoring (TDM)",
+      "scenario": "epilepsy of infancy with migrating focal seizures (EIMFS) | KCNT1-related epilepsy",
+      "benchmark": "seizure control | QND plasma levels | therapeutic range | toxicity",
+      "contribution": "The use of precision medicine, including genetic sequencing and TDM, led to the successful diagnosis and targeted treatment of a patient with a novel KCNT1 genetic variant, resulting in better seizure control with quinidine and topiramate.",
+      "limitation": "High variability in QND levels required careful TDM and pharmacokinetic characterization to maintain the therapeutic range and minimize toxicity.",
+      "credibility_score": 0.62,
+      "credibility_reasons": [
+        "base record",
+        "has title and citation",
+        "has DOI",
+        "has scholarly identifier",
+        "has URL",
+        "has substantial abstract",
+        "has conclusion/discussion",
+        "provider recorded",
+        "requires human quality review",
+        "credibility multiplied down by low publication quality",
+        "has publication year"
+      ],
+      "extraction_quality": {
+        "score": 1.0,
+        "unknown_ratio": 0.0,
+        "unknown_fields": [],
+        "abstract_chars": 2571,
+        "flags": [],
+        "needs_enrichment": false,
+        "needs_llm_retry": false,
+        "requires_human_review": false,
+        "initial": {
+          "score": 0.28,
+          "unknown_ratio": 1.0,
+          "unknown_fields": [
+            "method",
+            "scenario",
+            "benchmark"
+          ],
+          "abstract_chars": 2571,
+          "flags": [
+            "missing_conclusion",
+            "unknown_fields",
+            "unknown_fields_high",
+            "missing_benchmark"
+          ],
+          "needs_enrichment": false,
+          "needs_llm_retry": true,
+          "requires_human_review": true
+        },
+        "llm_retry": {
+          "attempted": true,
+          "succeeded": true,
+          "error": "",
+          "extractor": "qwen_json"
+        }
+      },
+      "enrichment_sources": [],
+      "gap_signals": [
+        {
+          "signal_id": "sig_1783793789120367300",
+          "signal_type": "mechanism_issue",
+          "text": "In addition, QND levels higher than 4.0 mcg/ml, were related to higher risk of suffering arrhythmia due to prolongation of QT segment.",
+          "evidence_type": "problem_statement",
+          "supporting_reference": "M. C. Kravetz et al. (2021) Case Report of Novel Genetic Variant in KCNT1 Channel and Pharmacological Treatment With Quinidine. Precision Medicine in Refractory Epilepsy doi:10.3389/fphar.2021.648519",
+          "confidence": 0.89
+        },
+        {
+          "signal_id": "sig_1783793789107756100",
+          "signal_type": "limitation",
+          "text": "Despite initial intention to withdrawal topiramate completely, QND was no longer effective by itself and failed to maintain seizures control. Due to this necessary interaction between quinidine and topiramate, topiramate was stablished in a maintenance dose of 40 mg/day.",
+          "evidence_type": "author_opinion",
+          "supporting_reference": "M. C. Kravetz et al. (2021) Case Report of Novel Genetic Variant in KCNT1 Channel and Pharmacological Treatment With Quinidine. Precision Medicine in Refractory Epilepsy doi:10.3389/fphar.2021.648519",
+          "confidence": 0.87
+        },
+        {
+          "signal_id": "sig_1783793789120522300",
+          "signal_type": "mechanism_issue",
+          "text": "High variability in QND levels required careful TDM and pharmacokinetic characterization to maintain the therapeutic range and minimize toxicity.",
+          "evidence_type": "problem_statement",
+          "supporting_reference": "M. C. Kravetz et al. (2021) Case Report of Novel Genetic Variant in KCNT1 Channel and Pharmacological Treatment With Quinidine. Precision Medicine in Refractory Epilepsy doi:10.3389/fphar.2021.648519",
+          "confidence": 0.84
+        },
+        {
+          "signal_id": "sig_1783793789120318400",
+          "signal_type": "mechanism_issue",
+          "text": "Therapeutic drug monitoring (TDM) of QND plasma levels needed to be implemented to establish individual therapeutic range and avoid toxicity.",
+          "evidence_type": "problem_statement",
+          "supporting_reference": "M. C. Kravetz et al. (2021) Case Report of Novel Genetic Variant in KCNT1 Channel and Pharmacological Treatment With Quinidine. Precision Medicine in Refractory Epilepsy doi:10.3389/fphar.2021.648519",
+          "confidence": 0.84
+        },
+        {
+          "signal_id": "sig_1783793789107784900",
+          "signal_type": "challenge",
+          "text": "Due to high variability observed in QND levels, TDM and pharmacokinetic characterization allowed to optimize drug regimen to maintain QND concentration between the individual therapeutic range and diminish toxicity.",
+          "evidence_type": "problem_statement",
+          "supporting_reference": "M. C. Kravetz et al. (2021) Case Report of Novel Genetic Variant in KCNT1 Channel and Pharmacological Treatment With Quinidine. Precision Medicine in Refractory Epilepsy doi:10.3389/fphar.2021.648519",
+          "confidence": 0.81
+        }
+      ],
+      "causal_chains": [
+        {
+          "chain_id": "chain_1",
+          "trigger": "Identification of KCNT1 variant",
+          "trigger_evidence": "",
+          "steps": [
+            {
+              "claim": "Diagnosis of EIMFS",
+              "evidence": "A genetic variant in the exon 24 of the KCNT1 gene was found, leading to the diagnosis of EIMFS.",
+              "evidence_type": "observational"
+            },
+            {
+              "claim": "Introduction of QND as a therapeutic alternative",
+              "evidence": "Due to the KCNT1 variant, QND, a KCNT1 blocker, was introduced as a therapeutic alternative.",
+              "evidence_type": "theoretical"
+            }
+          ],
+          "outcome": "Better seizure control with QND and topiramate",
+          "outcome_evidence": "",
+          "observables": [
+            "Seizures under control with QND levels above 1.5 mcg/ml",
+            "Necessity of topiramate for sustained seizure control"
+          ],
+          "interventions": [
+            "Use of QND",
+            "Use of topiramate",
+            "TDM for QND plasma levels"
+          ],
+          "confidence": null
+        }
+      ],
+      "importedAt": 1783793789.1208806,
+      "active": true
+    },
+    {
+      "paper_id": "paper_1783793841786687600",
+      "unique_key": "doi:10_1038_s41698_021_00216_w",
+      "title": "Artificial intelligence for the next generation of precision oncology",
+      "citation": "P. Ballester et al. (2021) Artificial intelligence for the next generation of precision oncology doi:10.1038/s41698-021-00216-w",
+      "authors": [
+        "P. Ballester et al."
+      ],
+      "year": "2021",
+      "venue": "npj Precision Oncology",
+      "provider": "semantic_scholar",
+      "source_type": "api",
+      "doi": "10.1038/s41698-021-00216-w",
+      "arxiv_id": "",
+      "semantic_scholar_id": "8984bbe6d2fdfaae9fce0d6d1856c2d48e865634",
+      "url": "https://www.semanticscholar.org/paper/8984bbe6d2fdfaae9fce0d6d1856c2d48e865634",
+      "abstract": "The concept of precision oncology involves the prescription of therapies that target the molecular driver alterations of an individual patient’s tumor. This treatment paradigm has been accelerated in recent years through increasing integration of molecular profiling approaches into mainstream clinical oncology, and the approval of a variety of molecularly targeted agents that have improved the clinical outcomes of patients across multiple cancer types. Targeted therapies such as trastuzumab or vemurafenib have become the standards of care for patients with HER2-expressing breast cancers or BRAF-mutant melanomas, respectively, and immune checkpoint inhibitors recently received tissue-agnostic approval for treating patients whose tumors exhibit microsatellite instability. With the advent of personalized cancer medicine, the portfolio of anti-tumor agents and companion diagnostic assays has experienced an unprecedented expansion, and a plethora of clinical trials are exploring the most effective treatments for the best-matching patients. In this context, data-driven approaches for optimizing clinical matching, reducing the cost of diagnostic testing, and improving the prediction of clinical phenotypes hold great promise for enhancing the clinical management of patients and maximize the value of precision oncology. However, all stakeholders must be aware of the important challenges that need to be overcome to reach these goals. This editorial aims at raising awareness about these challenges. Artificial intelligence (AI), and more concretely its machine learning (ML) branch, can process large-scale and heterogeneous data sets to discern medically relevant patterns. ML is hence showing promise for making a positive impact in patient care. Pioneering works in the field of computer vision, and specifically in digital pathology, have demonstrated the enormous potential of ML models for improving the accuracy of diagnostic protocols using automated methods that require little human input. For instance, deep learning models can learn to predict molecular features of tumor samples, such as driver mutations or histological subtyping, based on features of histopathological images. Approaches such as this could be scaled-up and incorporated in clinical pathways to streamline the time-consuming task of histological examination, and the generalization across tumor types and potential for accelerating clinical diagnoses through assisting expert pathologists have been supported by recent studies. The field of diagnostic radiology is another area where the integration of ML techniques might have an impact on early cancer detection and diagnosis. Models trained on sufficiently large and wellannotated data sets of mammography or chest radiographs have demonstrated potential to predict the risk of developing breast or lung cancers by extracting information that is often imperceptible to the expert human eye, and to identify prognostic imaging biomarkers that can be associated with long-term patient outcome. In non-invasive molecular testing, random forest algorithms applied on circulating microRNAs can accurately diagnose glioblastoma preoperatively, and other types of ML analyses applied to DNA methylation signatures measured in plasma cell-free nucleic acids achieve robust performance for tumor detection and classification. To date, however, these models have been tested in retrospective studies, and their real-world impact for accelerating clinical workflows and increasing the rates of early cancer detection remains to be achieved prospectively. On another clinical front, AI-powered decision support systems are increasingly getting better at optimizing treatment decision making for cancer patients. In addition to their role in drug discovery efforts, ML models integrating data on tumor growth kinetics, molecular profiling, and pharmacological properties could provide accurate prospective recommendations on the most effective therapeutic approaches for individual cancer patients—be it through drug repurposing, by identifying synergistic drug combinations, or in optimizing dosing schedules to maximize therapeutic efficacy. For this to be achieved, population-scale data sets containing well-annotated clinical and molecular information need to be made available. Issues such as tumor heterogeneity and sampling bias, tumor evolution dynamics, or incomplete information on electronic medical records, among many other factors, represent major roadblocks for using and integrating these sources of data to build ML models, and are only partially solved by approaches increasing training set size (number of patients) at the expense of relevance (e.g., including patients with other cancer subtypes or treated with related drugs) or robustness of the data (e.g., merging clinical trials with different dosage schedules or even exploiting less-controlled data such as electronic health records). Even in the uncommon situations where large, carefully curated, and relevant data sets with low levels of noise are available, several fundamental methodological challenges currently limit ML approaches, including reliable inference of testable causality, identifying the most suitable algorithm and features to solve a given problem, learning from highdimensional data sets, or accurately estimating model generalization. A related medical challenge is found when predicting patient response or resistance to anti-cancer treatments, not only for cytotoxic chemotherapies that form the backbone of most treatment regimens, but also for targeted therapies that either elicit unacceptable toxicities or achieve modest benefit even in the presence of the associated genomic marker. Here too, ML models are particularly promising for improving these predictions by identifying an optimal combination of patient features, which may include a range of non-genetic tumor features, if provided with appropriate input training data. To overcome the limitation imposed by the paucity of large, wellannotated patient data sets, some studies have attempted to predict clinical phenotypes using ML models trained on response data from preclinical experimental systems of patient-derived xenografts or large-scale in vitro drug response studies. However, despite the high value of preclinical models for drug development, their general usefulness for precision oncology remains to be proven. The problem of predicting optimal treatment approaches and response patterns remains unsolved, despite substantial efforts, as these models have not so far influenced clinical care in a www.nature.com/npjprecisiononcology",
+      "full_text_excerpt": "",
+      "conclusion": "Full text excerpt:",
+      "strengths": [
+        "Abstract: The concept of precision oncology involves the prescription of therapies that target the molecular driver alterations of an individual patient’s tumor. This treatment paradigm has been accelerated in recent years through increasing integration of molecular profiling approaches into mainstr...[truncated]"
+      ],
+      "improvements": [
+        "Abstract: The concept of precision oncology involves the prescription of therapies that target the molecular driver alterations of an individual patient’s tumor. This treatment paradigm has been accelerated in recent years through increasing integration of molecular profiling approaches into mainstr...[truncated]"
+      ],
+      "method": "machine learning | deep learning | random forest algorithms",
+      "scenario": "precision oncology | cancer diagnosis | treatment decision making",
+      "benchmark": "classification performance",
+      "contribution": "Demonstration of the potential of machine learning and artificial intelligence to improve precision oncology, including diagnostics, treatment decision-making, and patient response prediction.",
+      "limitation": "Challenges in data availability, tumor heterogeneity, and the need for large, well-annotated, and relevant datasets to build robust ML models.",
+      "credibility_score": 0.65,
+      "credibility_reasons": [
+        "base record",
+        "has title and citation",
+        "has DOI",
+        "has scholarly identifier",
+        "has URL",
+        "has substantial abstract",
+        "provider recorded",
+        "high-prestige venue marker",
+        "requires human quality review",
+        "credibility multiplied down by low publication quality",
+        "has publication year"
+      ],
+      "extraction_quality": {
+        "score": 1.0,
+        "unknown_ratio": 0.0,
+        "unknown_fields": [],
+        "abstract_chars": 6647,
+        "flags": [],
+        "needs_enrichment": false,
+        "needs_llm_retry": false,
+        "requires_human_review": false,
+        "initial": {
+          "score": 0.28,
+          "unknown_ratio": 1.0,
+          "unknown_fields": [
+            "method",
+            "scenario",
+            "benchmark"
+          ],
+          "abstract_chars": 6647,
+          "flags": [
+            "missing_conclusion",
+            "unknown_fields",
+            "unknown_fields_high",
+            "missing_benchmark"
+          ],
+          "needs_enrichment": false,
+          "needs_llm_retry": true,
+          "requires_human_review": true
+        },
+        "llm_retry": {
+          "attempted": true,
+          "succeeded": true,
+          "error": "",
+          "extractor": "qwen_json"
+        }
+      },
+      "enrichment_sources": [],
+      "gap_signals": [
+        {
+          "signal_id": "sig_1783793841689563000",
+          "signal_type": "mechanism_issue",
+          "text": "Challenges in data availability, tumor heterogeneity, and the need for large, well-annotated, and relevant datasets to build robust ML models.",
+          "evidence_type": "problem_statement",
+          "supporting_reference": "P. Ballester et al. (2021) Artificial intelligence for the next generation of precision oncology doi:10.1038/s41698-021-00216-w",
+          "confidence": 0.89
+        },
+        {
+          "signal_id": "sig_1783793841689267500",
+          "signal_type": "mechanism_issue",
+          "text": "Models trained on sufficiently large and wellannotated data sets of mammography or chest radiographs have demonstrated potential to predict the risk of developing breast or lung cancers by extracting information that is often imperceptible to the expert human eye, and to identify prognostic imaging biomarkers that can be associated with long-term patient out...[truncated]",
+          "evidence_type": "problem_statement",
+          "supporting_reference": "P. Ballester et al. (2021) Artificial intelligence for the next generation of precision oncology doi:10.1038/s41698-021-00216-w",
+          "confidence": 0.89
+        },
+        {
+          "signal_id": "sig_1783793841689506600",
+          "signal_type": "mechanism_issue",
+          "text": "To overcome the limitation imposed by the paucity of large, wellannotated patient data sets, some studies have attempted to predict clinical phenotypes using ML models trained on response data from preclinical experimental systems of patient-derived xenografts or large-scale in vitro drug response studies.",
+          "evidence_type": "problem_statement",
+          "supporting_reference": "P. Ballester et al. (2021) Artificial intelligence for the next generation of precision oncology doi:10.1038/s41698-021-00216-w",
+          "confidence": 0.89
+        },
+        {
+          "signal_id": "sig_1783793841662237400",
+          "signal_type": "limitation",
+          "text": "To date, however, these models have been tested in retrospective studies, and their real-world impact for accelerating clinical workflows and increasing the rates of early cancer detection remains to be achieved prospectively.",
+          "evidence_type": "author_opinion",
+          "supporting_reference": "P. Ballester et al. (2021) Artificial intelligence for the next generation of precision oncology doi:10.1038/s41698-021-00216-w",
+          "confidence": 0.87
+        },
+        {
+          "signal_id": "sig_1783793841689463500",
+          "signal_type": "mechanism_issue",
+          "text": "A related medical challenge is found when predicting patient response or resistance to anti-cancer treatments, not only for cytotoxic chemotherapies that form the backbone of most treatment regimens, but also for targeted therapies that either elicit unacceptable toxicities or achieve modest benefit even in the presence of the associated genomic marker.",
+          "evidence_type": "problem_statement",
+          "supporting_reference": "P. Ballester et al. (2021) Artificial intelligence for the next generation of precision oncology doi:10.1038/s41698-021-00216-w",
+          "confidence": 0.84
+        },
+        {
+          "signal_id": "sig_1783793841689156500",
+          "signal_type": "mechanism_issue",
+          "text": "Artificial intelligence (AI), and more concretely its machine learning (ML) branch, can process large-scale and heterogeneous data sets to discern medically relevant patterns.",
+          "evidence_type": "problem_statement",
+          "supporting_reference": "P. Ballester et al. (2021) Artificial intelligence for the next generation of precision oncology doi:10.1038/s41698-021-00216-w",
+          "confidence": 0.84
+        },
+        {
+          "signal_id": "sig_1783793841689105400",
+          "signal_type": "mechanism_issue",
+          "text": "In this context, data-driven approaches for optimizing clinical matching, reducing the cost of diagnostic testing, and improving the prediction of clinical phenotypes hold great promise for enhancing the clinical management of patients and maximize the value of precision oncology.",
+          "evidence_type": "problem_statement",
+          "supporting_reference": "P. Ballester et al. (2021) Artificial intelligence for the next generation of precision oncology doi:10.1038/s41698-021-00216-w",
+          "confidence": 0.84
+        },
+        {
+          "signal_id": "sig_1783793841689059300",
+          "signal_type": "mechanism_issue",
+          "text": "Targeted therapies such as trastuzumab or vemurafenib have become the standards of care for patients with HER2-expressing breast cancers or BRAF-mutant melanomas, respectively, and immune checkpoint inhibitors recently received tissue-agnostic approval for treating patients whose tumors exhibit microsatellite instability.",
+          "evidence_type": "problem_statement",
+          "supporting_reference": "P. Ballester et al. (2021) Artificial intelligence for the next generation of precision oncology doi:10.1038/s41698-021-00216-w",
+          "confidence": 0.84
+        },
+        {
+          "signal_id": "sig_1783793841662250900",
+          "signal_type": "future_work",
+          "text": "For this to be achieved, population-scale data sets containing well-annotated clinical and molecular information need to be made available.",
+          "evidence_type": "author_opinion",
+          "supporting_reference": "P. Ballester et al. (2021) Artificial intelligence for the next generation of precision oncology doi:10.1038/s41698-021-00216-w",
+          "confidence": 0.83
+        },
+        {
+          "signal_id": "sig_1783793841689127700",
+          "signal_type": "challenge",
+          "text": "However, all stakeholders must be aware of the important challenges that need to be overcome to reach these goals.",
+          "evidence_type": "problem_statement",
+          "supporting_reference": "P. Ballester et al. (2021) Artificial intelligence for the next generation of precision oncology doi:10.1038/s41698-021-00216-w",
+          "confidence": 0.81
+        },
+        {
+          "signal_id": "sig_1783793841662173400",
+          "signal_type": "challenge",
+          "text": "Issues such as tumor heterogeneity and sampling bias, tumor evolution dynamics, or incomplete information on electronic medical records, among many other factors, represent major roadblocks for using and integrating these sources of data to build ML models.",
+          "evidence_type": "problem_statement",
+          "supporting_reference": "P. Ballester et al. (2021) Artificial intelligence for the next generation of precision oncology doi:10.1038/s41698-021-00216-w",
+          "confidence": 0.81
+        },
+        {
+          "signal_id": "sig_1783793841689231600",
+          "signal_type": "mechanism_issue",
+          "text": "Approaches such as this could be scaled-up and incorporated in clinical pathways to streamline the time-consuming task of histological examination, and the generalization across tumor types and potential for accelerating clinical diagnoses through assisting expert pathologists have been supported by recent studies.",
+          "evidence_type": "problem_statement",
+          "supporting_reference": "P. Ballester et al. (2021) Artificial intelligence for the next generation of precision oncology doi:10.1038/s41698-021-00216-w",
+          "confidence": 0.79
+        },
+        {
+          "signal_id": "sig_1783793841662215700",
+          "signal_type": "challenge",
+          "text": "Even in the uncommon situations where large, carefully curated, and relevant data sets with low levels of noise are available, several fundamental methodological challenges currently limit ML approaches, including reliable inference of testable causality, identifying the most suitable algorithm and features to solve a given problem, learning from high-dimens...[truncated]",
+          "evidence_type": "problem_statement",
+          "supporting_reference": "P. Ballester et al. (2021) Artificial intelligence for the next generation of precision oncology doi:10.1038/s41698-021-00216-w",
+          "confidence": 0.76
+        }
+      ],
+      "causal_chains": [
+        {
+          "chain_id": "chain_1",
+          "trigger": "Integration of ML in digital pathology and radiology",
+          "trigger_evidence": "",
+          "steps": [
+            {
+              "claim": "ML models can predict molecular features of tumor samples and cancer risk.",
+              "evidence": "Deep learning models and ML models trained on radiographic data have shown high accuracy in predicting molecular features and cancer risk.",
+              "evidence_type": "experimental"
+            }
+          ],
+          "outcome": "Improved accuracy of diagnostic protocols",
+          "outcome_evidence": "",
+          "observables": [
+            "Enhanced accuracy in predicting molecular features and cancer risk"
+          ],
+          "interventions": [
+            "Training ML models on large, well-annotated datasets"
+          ],
+          "confidence": null
+        },
+        {
+          "chain_id": "chain_2",
+          "trigger": "Application of ML in non-invasive molecular testing",
+          "trigger_evidence": "",
+          "steps": [
+            {
+              "claim": "ML models can diagnose glioblastoma and classify tumors based on DNA methylation signatures.",
+              "evidence": "Random forest algorithms and other ML techniques have shown robust performance in tumor detection and classification.",
+              "evidence_type": "experimental"
+            }
+          ],
+          "outcome": "Accurate and non-invasive tumor detection and classification",
+          "outcome_evidence": "",
+          "observables": [
+            "High accuracy in diagnosing glioblastoma and classifying tumors"
+          ],
+          "interventions": [
+            "Using ML on circulating microRNAs and DNA methylation signatures"
+          ],
+          "confidence": null
+        },
+        {
+          "chain_id": "chain_3",
+          "trigger": "Development of AI-powered decision support systems",
+          "trigger_evidence": "",
+          "steps": [
+            {
+              "claim": "ML models can optimize treatment decisions by integrating various data types.",
+              "evidence": "ML models integrating tumor growth kinetics, molecular profiling, and pharmacological properties can provide accurate treatment recommendations.",
+              "evidence_type": "theoretical"
+            }
+          ],
+          "outcome": "Optimized treatment decision making",
+          "outcome_evidence": "",
+          "observables": [
+            "Accurate prospective recommendations on the most effective therapeutic approaches"
+          ],
+          "interventions": [
+            "Integrating multiple data types into ML models"
+          ],
+          "confidence": null
+        }
+      ],
+      "importedAt": 1783793841.7866964,
+      "active": true
+    },
+    {
+      "paper_id": "paper_1783793876874954400",
+      "unique_key": "doi:10_3389_fgene_2021_712602",
+      "title": "Development and Implementation of In-House Pharmacogenomic Testing Program at a Major Academic Health System",
+      "citation": "P. Mróz et al. (2021) Development and Implementation of In-House Pharmacogenomic Testing Program at a Major Academic Health System doi:10.3389/fgene.2021.712602",
+      "authors": [
+        "P. Mróz"
+      ],
+      "year": "2021",
+      "venue": "Frontiers in Genetics",
+      "provider": "semantic_scholar",
+      "source_type": "api",
+      "doi": "10.3389/fgene.2021.712602",
+      "arxiv_id": "",
+      "semantic_scholar_id": "389d6b3e1d2d1867b9d98639fa55307ca5fdf75d",
+      "url": "https://www.semanticscholar.org/paper/389d6b3e1d2d1867b9d98639fa55307ca5fdf75d",
+      "abstract": "Pharmacogenomics (PGx) studies how a person’s genes affect the response to medications and is quickly becoming a significant part of precision medicine. The clinical application of PGx principles has consistently been cited as a major opportunity for improving therapeutic outcomes. Several recent studies have demonstrated that most individuals (> 90%) harbor PGx variants that would be clinically actionable if prescribed a medication relevant to that gene. In multiple well-conducted studies, the results of PGx testing have been shown to guide therapy choice and dosing modifications which improve treatment efficacy and reduce the incidence of adverse drug reactions (ADRs). Although the value of PGx testing is evident, its successful implementation in a clinical setting presents a number of challenges to molecular diagnostic laboratories, healthcare systems, providers and patients. Different molecular methods can be applied to identify PGx variants and the design of the assay is therefore extremely important. Once the genotyping results are available the biggest technical challenge lies in turning this complex genetic information into phenotypes and actionable recommendations that a busy clinician can effectively utilize to provide better medical care, in a cost-effective, efficient and reliable manner. In this paper we describe a successful and highly collaborative implementation of the PGx testing program at the University of Minnesota and MHealth Fairview Molecular Diagnostic Laboratory and selected Pharmacies and Clinics. We offer detailed descriptions of the necessary components of the pharmacogenomic testing implementation, the development and technical validation of the in-house SNP based multiplex PCR based assay targeting 20 genes and 48 SNPs as well as a separate CYP2D6 copy number assay along with the process of PGx report design, results of the provider and pharmacists usability studies, and the development of the software tool for genotype-phenotype translation and gene-phenotype-drug CPIC-based recommendations. Finally, we outline the process of developing the clinical workflow that connects the providers with the PGx experts within the Molecular Diagnostic Laboratory and the Pharmacy.",
+      "full_text_excerpt": "",
+      "conclusion": "Full text excerpt:",
+      "strengths": [
+        "Abstract: Pharmacogenomics (PGx) studies how a person’s genes affect the response to medications and is quickly becoming a significant part of precision medicine. The clinical application of PGx principles has consistently been cited as a major opportunity for improving therapeutic outcomes. Several...[truncated]"
+      ],
+      "improvements": [
+        "Abstract: Pharmacogenomics (PGx) studies how a person’s genes affect the response to medications and is quickly becoming a significant part of precision medicine. The clinical application of PGx principles has consistently been cited as a major opportunity for improving therapeutic outcomes. Several...[truncated]"
+      ],
+      "method": "the process of pgx report design",
+      "scenario": "pharmacogenomic testing in a clinical setting",
+      "benchmark": "classification performance",
+      "contribution": "successful and highly collaborative implementation of a pharmacogenomic testing program, including assay development, report design, and clinical workflow",
+      "limitation": "Abstract: Pharmacogenomics (PGx) studies how a person’s genes affect the response to medications and is quickly becoming a significant part of precision medicine. The clinical application of PGx principles has consistently been cited as a major opportunity for improving therapeutic outcomes. Several...[truncated]",
+      "credibility_score": 0.58,
+      "credibility_reasons": [
+        "base record",
+        "has title and citation",
+        "has DOI",
+        "has scholarly identifier",
+        "has URL",
+        "has substantial abstract",
+        "provider recorded",
+        "requires human quality review",
+        "credibility multiplied down by low publication quality",
+        "has publication year"
+      ],
+      "extraction_quality": {
+        "score": 1.0,
+        "unknown_ratio": 0.0,
+        "unknown_fields": [],
+        "abstract_chars": 2235,
+        "flags": [],
+        "needs_enrichment": false,
+        "needs_llm_retry": false,
+        "requires_human_review": false,
+        "initial": {
+          "score": 0.28,
+          "unknown_ratio": 1.0,
+          "unknown_fields": [
+            "method",
+            "scenario",
+            "benchmark"
+          ],
+          "abstract_chars": 2235,
+          "flags": [
+            "missing_conclusion",
+            "unknown_fields",
+            "unknown_fields_high",
+            "missing_benchmark"
+          ],
+          "needs_enrichment": false,
+          "needs_llm_retry": true,
+          "requires_human_review": true
+        },
+        "llm_retry": {
+          "attempted": true,
+          "succeeded": true,
+          "error": "",
+          "extractor": "qwen_json"
+        }
+      },
+      "enrichment_sources": [],
+      "gap_signals": [
+        {
+          "signal_id": "sig_1783793876840379500",
+          "signal_type": "mechanism_issue",
+          "text": "In multiple well-conducted studies, the results of PGx testing have been shown to guide therapy choice and dosing modifications which improve treatment efficacy and reduce the incidence of adverse drug reactions (ADRs).",
+          "evidence_type": "problem_statement",
+          "supporting_reference": "P. Mróz et al. (2021) Development and Implementation of In-House Pharmacogenomic Testing Program at a Major Academic Health System doi:10.3389/fgene.2021.712602",
+          "confidence": 0.89
+        },
+        {
+          "signal_id": "sig_1783793876840411000",
+          "signal_type": "challenge",
+          "text": "Although the value of PGx testing is evident, its successful implementation in a clinical setting presents a number of challenges to molecular diagnostic laboratories, healthcare systems, providers and patients.",
+          "evidence_type": "problem_statement",
+          "supporting_reference": "P. Mróz et al. (2021) Development and Implementation of In-House Pharmacogenomic Testing Program at a Major Academic Health System doi:10.3389/fgene.2021.712602",
+          "confidence": 0.76
+        },
+        {
+          "signal_id": "sig_1783793876840462700",
+          "signal_type": "challenge",
+          "text": "Once the genotyping results are available the biggest technical challenge lies in turning this complex genetic information into phenotypes and actionable recommendations that a busy clinician can effectively utilize to provide better medical care, in a cost-effective, efficient and reliable manner.",
+          "evidence_type": "problem_statement",
+          "supporting_reference": "P. Mróz et al. (2021) Development and Implementation of In-House Pharmacogenomic Testing Program at a Major Academic Health System doi:10.3389/fgene.2021.712602",
+          "confidence": 0.76
+        }
+      ],
+      "causal_chains": [
+        {
+          "chain_id": "chain_1",
+          "trigger": "Implementation of PGx testing",
+          "trigger_evidence": "",
+          "steps": [
+            {
+              "claim": "Genotyping results are available",
+              "evidence": "Once the genotyping results are available, the biggest technical challenge lies in turning this complex genetic information into phenotypes and actionable recommendations.",
+              "evidence_type": "theoretical"
+            },
+            {
+              "claim": "Complex genetic information is translated into phenotypes and actionable recommendations",
+              "evidence": "The process of PGx report design, results of the provider and pharmacists usability studies, and the development of the software tool for genotype-phenotype translation and gene-phenotype-drug CPIC-based recommendations.",
+              "evidence_type": "experimental"
+            },
+            {
+              "claim": "Providers and pharmacists effectively utilize the recommendations",
+              "evidence": "The development of the clinical workflow that connects the providers with the PGx experts within the Molecular Diagnostic Laboratory and the Pharmacy.",
+              "evidence_type": "observational"
+            }
+          ],
+          "outcome": "Improved therapeutic outcomes and reduced ADRs",
+          "outcome_evidence": "",
+          "observables": [
+            "Improved treatment efficacy",
+            "Reduced incidence of adverse drug reactions"
+          ],
+          "interventions": [
+            "Pharmacogenomic testing",
+            "Provider and pharmacist education and training",
+            "Integration of PGx data into clinical decision-making"
+          ],
+          "confidence": null
+        }
+      ],
+      "importedAt": 1783793876.874961,
+      "active": true
+    },
+    {
+      "paper_id": "paper_1783793931470059800",
+      "unique_key": "doi:10_1186_gm394",
+      "title": "Pharmacogenomics: a key component of personalized therapy",
+      "citation": "M. Schwab et al. (2012) Pharmacogenomics: a key component of personalized therapy doi:10.1186/gm394",
+      "authors": [
+        "M. Schwab"
+      ],
+      "year": "2012",
+      "venue": "Genome Medicine",
+      "provider": "semantic_scholar",
+      "source_type": "api",
+      "doi": "10.1186/gm394",
+      "arxiv_id": "",
+      "semantic_scholar_id": "00ffbd329e6fd9d76c1123d372033a62a09b5e15",
+      "url": "https://www.semanticscholar.org/paper/00ffbd329e6fd9d76c1123d372033a62a09b5e15",
+      "abstract": "The goal of personalized medicine is to provide individualized treatment and to predict the clinical outcome of different treatments in different patients. Pharmacogenomics is one of the core elements in personalized medicine. The basic concept is that interindividual variability in drug response is a consequence of multiple factors, including genomics, epigenomics, the environment and a patient's characteristics, such as gender, age and/or concomitant medication [1]. Thirty years ago, drug response was found to be altered by genetic polymorphisms in drug-metabolizing enzymes (for example, the cytochrome P450 2D6 and the thiopurine S-methyltransferase) [2], yet valid and predictive biomarkers for therapeutic effects and/or for avoiding severe side effects are lacking for more than 90% of drugs currently used in clinical practice. Pharmacogenomics in recent years has used a new generation of technologies known as 'omics' approaches that has led to a revolution in the understanding of disease susceptibility and pathophysiology, providing enormous potential for novel therapeutic strategies. It is beyond doubt that pharmacogenomics promotes the development of targeted therapies, as was demonstrated by the approval earlier this year of the drug ivacaftor by the US Food and Drug Administration (FDA) and the European Medicines Agency for the treatment of a subset of cystic fibrosis patients. Ivacaftor is approved only for cystic fibrosis patients bearing the specific G551D genetic variant in the cystic fibrosis transmembrane regulator (CFTR) gene, which encodes a protein that regulates chloride and water transport in the body and is defective in the disease. Ivacaftor targets the CFTR protein, increases its activity, and consequently improves lung function [3]. Although this and other examples (such as vemurafenib as an inhibitor of the BRAF V600E mutation in malignant melanoma [1]) suggest the demise of the blockbuster model of drug development, the concept of targeted therapy is in its early stages. One reason is that monogenic pharmacogenetic traits are mostly unable to explain the variations in a complex phenotype such as drug response [2]. There is evidence through drug-target network analyses that most currently used drugs have multiple targets and numerous off-target effects. Genome-wide approaches such as sequencing, epigenomic profiling and metabolomics will be essential for understanding the detailed molecular architecture of disease etiology and/or drug response. Genome-wide association studies (GWAS) have implicated many new biological pathways, but this approach has limitations because most of the variants that have been associated with clinical phenotypes, such as adverse drug reactions, are not necessarily causal. There is reasonable hope that pharmacogenomic research will benefit from a combination of different omics technologies. Recently, multi-omics studies have shown their use in discovering potential novel therapeutic targets [1]. For instance, in one multi-omics study the integrative personal omics profile (iPOP), which combines genomic information with additional dynamic omics activities (that is, transcriptomic, proteomic, metabolomic and autoantibody profiles), from a single individual over a 14-month period demonstrated that iPOP data can be used to interpret healthy and diseased states, and can be helpful in the diagnostics, monitoring and treatment of diseased states [4]. The major challenge, however, is the bioinformatic analysis and valid interpretation of highly complex multi-omics data sets. A recent National Institutes of Health White Paper by the Quantitative and Systems Pharmacology Workshop Group [5] stated that: 'Genomics is, in and of itself, insufficient as a means to develop and study drugs: the operation of biological networks is strongly affected not only by changes in coding sequence or gene expression but also by transient responses to external signals at the level of protein activity, posttranslational modification, stochastic processes, etc.' Thus, with the help of an integrative systems pharmacology approach, multiple one-dimensional biomolecular-omics data sets, as well as patient history, can be linked together to achieve a better understanding of the biology behind diseases as well as drug-response phenotypes. Such a strategy should ultimately result in the identification of novel drug targets. Several important applications of pharmacogenomics are already being used in clinical practice and some of them have been approved by the FDA (for example, cetuximab/panitumumab and KRAS; vemurafenib and BRAF; warfarin and CYP2C9/VKORC1; abacavir and HLA-B*5701; carbamazepin and HLA-B*1502; thiopurines and TPMT) [1]. Other candidates have been identified (for example, tamoxifen [6]), but their clinical utility needs to be evaluated. To improve the translation of pharmacogenomics from bench to bedside, the dynamic relationship between a patient's phenotype (such as drug response), which may change over time, and their genome also needs to be more deeply considered (Figure ​(Figure1).1). The integration of non-genetic factors, such as environmental and clinical co-variates, may provide important additional phenotypic information to increase the precision of a therapeutic decision, as recently shown by warfarin algorithms [7]. In addition to genetic variation in CYP2C9 and VKORC1, warfarin dose requirement depends on age, sex, body mass index, diet, concomitant drug therapy and ethnic background. The consideration of all these co-variates predicts up to 60% of the variability of warfarin dosage in patients. Consequently, warfarin pharmacogenomics treatment algorithms incorporating genetic and non-genetic factors have been established, extensively validated [8] and are now publicly available via the Internet [9]. There has been considerable research into pharmacogenomics in the past decade, and functional genomic approaches are likely to be used in the future as an important resource for the prediction of clinical outcome. However, the field faces a major challenge: how can pharmacogenomics knowledge be brought to the bedside as a key component of personalized medicine? In this context, electronic medical records (EMRs) and electronic health records (EHRs) may play a pivotal role. Information management and analysis of the clinical relevance of pharmacogenomics can be improved by using EMRs [10]. EMRs will help to compare data on treatment and outcome in thousands of patients using a real clinical setting, including the integration of genomic and multi-omics data. Fitting EMRs/EHRs into a dynamic, validated and rapidly evolving information infrastructure [11] is also crucial for pharmacogenomics. Without doubt, pharmacogenomics is a highly attractive field of research, which has been recently stimulated by multi-omics technologies. To demonstrate the clinical relevance of pharmacogenomics in most areas of medicine, however, a concerted effort is necessary to connect the expertise of basic and clinical researchers with other sectors such as healthcare communities, regulators and commercial partners.",
+      "full_text_excerpt": "",
+      "conclusion": "Full text excerpt:",
+      "strengths": [
+        "Abstract: The goal of personalized medicine is to provide individualized treatment and to predict the clinical outcome of different treatments in different patients. Pharmacogenomics is one of the core elements in personalized medicine. The basic concept is that interindividual variability in drug r...[truncated]",
+        "It is beyond doubt that pharmacogenomics promotes the development of targeted therapies, as was demonstrated by the approval earlier this year of the drug ivacaftor by the US Food and Drug Administration (FDA) and the European Medicines Agency for the treatment of a subset of cystic fibrosis patient...[truncated]",
+        "There is reasonable hope that pharmacogenomic research will benefit from a combination of different omics technologies. Recently, multi-omics studies have shown their use in discovering potential novel therapeutic targets [1]. For instance, in one multi-omics study the integrative personal omics pro...[truncated]",
+        "The major challenge, however, is the bioinformatic analysis and valid interpretation of highly complex multi-omics data sets. A recent National Institutes of Health White Paper by the Quantitative and Systems Pharmacology Workshop Group [5] stated that: 'Genomics is, in and of itself, insufficient a...[truncated]",
+        "Several important applications of pharmacogenomics are already being used in clinical practice and some of them have been approved by the FDA (for example, cetuximab/panitumumab and KRAS; vemurafenib and BRAF; warfarin and CYP2C9/VKORC1; abacavir and HLA-B*5701; carbamazepin and HLA-B*1502; thiopuri...[truncated]"
+      ],
+      "improvements": [
+        "Although this and other examples (such as vemurafenib as an inhibitor of the BRAF V600E mutation in malignant melanoma [1]) suggest the demise of the blockbuster model of drug development, the concept of targeted therapy is in its early stages. One reason is that monogenic pharmacogenetic traits are...[truncated]",
+        "The major challenge, however, is the bioinformatic analysis and valid interpretation of highly complex multi-omics data sets. A recent National Institutes of Health White Paper by the Quantitative and Systems Pharmacology Workshop Group [5] stated that: 'Genomics is, in and of itself, insufficient a...[truncated]",
+        "There has been considerable research into pharmacogenomics in the past decade, and functional genomic approaches are likely to be used in the future as an important resource for the prediction of clinical outcome. However, the field faces a major challenge: how can pharmacogenomics knowledge be brou...[truncated]"
+      ],
+      "method": "multi-omics studies | integrative personal omics profile (iPOP)",
+      "scenario": "personalized therapy | pharmacogenomics",
+      "benchmark": "drug response | clinical outcome | biomarker validation",
+      "contribution": "demonstration of the importance of pharmacogenomics in developing targeted therapies and the need for multi-omics approaches to understand complex drug response phenotypes",
+      "limitation": "the bioinformatic analysis and valid interpretation of highly complex multi-omics data sets is a major challenge",
+      "credibility_score": 0.58,
+      "credibility_reasons": [
+        "base record",
+        "has title and citation",
+        "has DOI",
+        "has scholarly identifier",
+        "has URL",
+        "has substantial abstract",
+        "provider recorded",
+        "requires human quality review",
+        "credibility multiplied down by low publication quality",
+        "has publication year"
+      ],
+      "extraction_quality": {
+        "score": 1.0,
+        "unknown_ratio": 0.0,
+        "unknown_fields": [],
+        "abstract_chars": 7162,
+        "flags": [],
+        "needs_enrichment": false,
+        "needs_llm_retry": false,
+        "requires_human_review": false,
+        "initial": {
+          "score": 0.28,
+          "unknown_ratio": 1.0,
+          "unknown_fields": [
+            "method",
+            "scenario",
+            "benchmark"
+          ],
+          "abstract_chars": 7465,
+          "flags": [
+            "missing_conclusion",
+            "unknown_fields",
+            "unknown_fields_high",
+            "missing_benchmark"
+          ],
+          "needs_enrichment": false,
+          "needs_llm_retry": true,
+          "requires_human_review": true
+        },
+        "llm_retry": {
+          "attempted": true,
+          "succeeded": true,
+          "error": "",
+          "extractor": "qwen_json"
+        }
+      },
+      "enrichment_sources": [],
+      "gap_signals": [
+        {
+          "signal_id": "sig_1783793931373800700",
+          "signal_type": "mechanism_issue",
+          "text": "A recent National Institutes of Health White Paper by the Quantitative and Systems Pharmacology Workshop Group [5] stated that: 'Genomics is, in and of itself, insufficient as a means to develop and study drugs: the operation of biological networks is strongly affected not only by changes in coding sequence or gene expression but also by transient responses....[truncated]",
+          "evidence_type": "problem_statement",
+          "supporting_reference": "M. Schwab et al. (2012) Pharmacogenomics: a key component of personalized therapy doi:10.1186/gm394",
+          "confidence": 0.89
+        },
+        {
+          "signal_id": "sig_1783793931343969500",
+          "signal_type": "open_problem",
+          "text": "how can pharmacogenomics knowledge be brought to the bedside as a key component of personalized medicine?",
+          "evidence_type": "problem_statement",
+          "supporting_reference": "M. Schwab et al. (2012) Pharmacogenomics: a key component of personalized therapy doi:10.1186/gm394",
+          "confidence": 0.88
+        },
+        {
+          "signal_id": "sig_1783793931373665800",
+          "signal_type": "mechanism_issue",
+          "text": "Genome-wide association studies (GWAS) have implicated many new biological pathways, but this approach has limitations because most of the variants that have been associated with clinical phenotypes, such as adverse drug reactions, are not necessarily causal.",
+          "evidence_type": "problem_statement",
+          "supporting_reference": "M. Schwab et al. (2012) Pharmacogenomics: a key component of personalized therapy doi:10.1186/gm394",
+          "confidence": 0.84
+        },
+        {
+          "signal_id": "sig_1783793931373936100",
+          "signal_type": "mechanism_issue",
+          "text": "In addition to genetic variation in CYP2C9 and VKORC1, warfarin dose requirement depends on age, sex, body mass index, diet, concomitant drug therapy and ethnic background.",
+          "evidence_type": "problem_statement",
+          "supporting_reference": "M. Schwab et al. (2012) Pharmacogenomics: a key component of personalized therapy doi:10.1186/gm394",
+          "confidence": 0.84
+        },
+        {
+          "signal_id": "sig_1783793931373617200",
+          "signal_type": "mechanism_issue",
+          "text": "One reason is that monogenic pharmacogenetic traits are mostly unable to explain the variations in a complex phenotype such as drug response [2].",
+          "evidence_type": "problem_statement",
+          "supporting_reference": "M. Schwab et al. (2012) Pharmacogenomics: a key component of personalized therapy doi:10.1186/gm394",
+          "confidence": 0.84
+        },
+        {
+          "signal_id": "sig_1783793931373465600",
+          "signal_type": "mechanism_issue",
+          "text": "The basic concept is that interindividual variability in drug response is a consequence of multiple factors, including genomics, epigenomics, the environment and a patient's characteristics, such as gender, age and/or concomitant medication [1].",
+          "evidence_type": "problem_statement",
+          "supporting_reference": "M. Schwab et al. (2012) Pharmacogenomics: a key component of personalized therapy doi:10.1186/gm394",
+          "confidence": 0.84
+        },
+        {
+          "signal_id": "sig_1783793931373946700",
+          "signal_type": "mechanism_issue",
+          "text": "The consideration of all these co-variates predicts up to 60% of the variability of warfarin dosage in patients.",
+          "evidence_type": "problem_statement",
+          "supporting_reference": "M. Schwab et al. (2012) Pharmacogenomics: a key component of personalized therapy doi:10.1186/gm394",
+          "confidence": 0.84
+        },
+        {
+          "signal_id": "sig_1783793931373677600",
+          "signal_type": "mechanism_issue",
+          "text": "There is reasonable hope that pharmacogenomic research will benefit from a combination of different omics technologies.",
+          "evidence_type": "problem_statement",
+          "supporting_reference": "M. Schwab et al. (2012) Pharmacogenomics: a key component of personalized therapy doi:10.1186/gm394",
+          "confidence": 0.84
+        },
+        {
+          "signal_id": "sig_1783793931373493200",
+          "signal_type": "mechanism_issue",
+          "text": "Thirty years ago, drug response was found to be altered by genetic polymorphisms in drug-metabolizing enzymes (for example, the cytochrome P450 2D6 and the thiopurine S-methyltransferase) [2], yet valid and predictive biomarkers for therapeutic effects and/or for avoiding severe side effects are lacking for more than 90% of drugs currently used in clinical p...[truncated]",
+          "evidence_type": "problem_statement",
+          "supporting_reference": "M. Schwab et al. (2012) Pharmacogenomics: a key component of personalized therapy doi:10.1186/gm394",
+          "confidence": 0.84
+        },
+        {
+          "signal_id": "sig_1783793931374006800",
+          "signal_type": "challenge",
+          "text": "However, the field faces a major challenge: how can pharmacogenomics knowledge be brought to the bedside as a key component of personalized medicine?",
+          "evidence_type": "problem_statement",
+          "supporting_reference": "M. Schwab et al. (2012) Pharmacogenomics: a key component of personalized therapy doi:10.1186/gm394",
+          "confidence": 0.81
+        },
+        {
+          "signal_id": "sig_1783793931373742700",
+          "signal_type": "challenge",
+          "text": "The major challenge, however, is the bioinformatic analysis and valid interpretation of highly complex multi-omics data sets.",
+          "evidence_type": "problem_statement",
+          "supporting_reference": "M. Schwab et al. (2012) Pharmacogenomics: a key component of personalized therapy doi:10.1186/gm394",
+          "confidence": 0.81
+        },
+        {
+          "signal_id": "sig_1783793931374018000",
+          "signal_type": "mechanism_issue",
+          "text": "In this context, electronic medical records (EMRs) and electronic health records (EHRs) may play a pivotal role.",
+          "evidence_type": "problem_statement",
+          "supporting_reference": "M. Schwab et al. (2012) Pharmacogenomics: a key component of personalized therapy doi:10.1186/gm394",
+          "confidence": 0.79
+        },
+        {
+          "signal_id": "sig_1783793931373923400",
+          "signal_type": "mechanism_issue",
+          "text": "The integration of non-genetic factors, such as environmental and clinical co-variates, may provide important additional phenotypic information to increase the precision of a therapeutic decision, as recently shown by warfarin algorithms [7].",
+          "evidence_type": "problem_statement",
+          "supporting_reference": "M. Schwab et al. (2012) Pharmacogenomics: a key component of personalized therapy doi:10.1186/gm394",
+          "confidence": 0.79
+        },
+        {
+          "signal_id": "sig_1783793931343941900",
+          "signal_type": "challenge",
+          "text": "the bioinformatic analysis and valid interpretation of highly complex multi-omics data sets is a major challenge",
+          "evidence_type": "problem_statement",
+          "supporting_reference": "M. Schwab et al. (2012) Pharmacogenomics: a key component of personalized therapy doi:10.1186/gm394",
+          "confidence": 0.76
+        }
+      ],
+      "causal_chains": [
+        {
+          "chain_id": "heuristic_1",
+          "trigger": "It is beyond doubt that pharmacogenomics",
+          "trigger_evidence": "It is beyond doubt that pharmacogenomics promotes the development of targeted therapies, as was demonstrated by the approval earlier this year of the drug ivacaftor by the US Food and Drug Administration (FDA) and the European Medicines Agency for the treatment of a subset of cystic fibrosis patients.",
+          "steps": [],
+          "outcome": "the development of targeted therapies, as was demonstrated by the approval earlier this year of the drug ivacaftor by the US Food and Drug Administration (FDA) and the European Medicines Agency for the treatment of a sub",
+          "outcome_evidence": "It is beyond doubt that pharmacogenomics promotes the development of targeted therapies, as was demonstrated by the approval earlier this year of the drug ivacaftor by the US Food and Drug Administration (FDA) and the European Medicines Agency for the treatment of a subset of cystic fibrosis patients.",
+          "observables": [],
+          "interventions": [],
+          "confidence": 0.3
+        },
+        {
+          "chain_id": "heuristic_2",
+          "trigger": "Genome-wide association studies (GWAS) have implicated many new biological pathways, but this approach has limitations be",
+          "trigger_evidence": "Genome-wide association studies (GWAS) have implicated many new biological pathways, but this approach has limitations because most of the variants that have been associated with clinical phenotypes, such as adverse drug reactions, are not necessarily causal.",
+          "steps": [],
+          "outcome": "most of the variants that have been associated with clinical phenotypes, such as adverse drug reactions, are not necessarily causal.",
+          "outcome_evidence": "Genome-wide association studies (GWAS) have implicated many new biological pathways, but this approach has limitations because most of the variants that have been associated with clinical phenotypes, such as adverse drug reactions, are not necessarily causal.",
+          "observables": [],
+          "interventions": [],
+          "confidence": 0.3
+        },
+        {
+          "chain_id": "heuristic_3",
+          "trigger": "Such a strategy should ultimately",
+          "trigger_evidence": "Such a strategy should ultimately result in the identification of novel drug targets.",
+          "steps": [],
+          "outcome": "the identification of novel drug targets.",
+          "outcome_evidence": "Such a strategy should ultimately result in the identification of novel drug targets.",
+          "observables": [],
+          "interventions": [],
+          "confidence": 0.3
+        }
+      ],
+      "importedAt": 1783793931.4700701,
+      "active": true
+    }
+  ],
+  "evidence": [
+    {
+      "evidence_id": "ev_1783793728675444200",
+      "title": "Novel Approaches to Characterize Individual Drug Metabolism and Advance Precision Medicine",
+      "citation": "Klarissa D Jackson et al. (2023) Novel Approaches to Characterize Individual Drug Metabolism and Advance Precision Medicine doi:10.1124/dmd.122.001066",
+      "method": "imaging and characterization",
+      "scenario": "individual drug metabolism and precision medicine",
+      "benchmark": "drug metabolism phenotypes, DME expression and function",
+      "contribution": "overview of traditional and novel approaches to phenotype individual drug metabolism capacity and their application to pharmacokinetic studies",
+      "limitation": "Abstract: Interindividual variability in drug metabolism can significantly affect drug concentrations in the body and subsequent drug response. Understanding an individual’s drug metabolism capacity is important for predicting drug exposure and developing precision medicine strategies. The goal of p...[truncated]",
+      "url": "https://www.semanticscholar.org/paper/124c306298993580937e2f2ee5566fbd47cedd0c",
+      "createdAt": 1783793728.6754484,
+      "paper_id": "paper_1783793728675374400",
+      "active": true,
+      "causal_chains": []
+    },
+    {
+      "evidence_id": "ev_1783793753195647300",
+      "title": "Precision anesthesia and pharmacogenomics: a scoping review of personalized drug response",
+      "citation": "Sarina Nikzad et al. (2026) Precision anesthesia and pharmacogenomics: a scoping review of personalized drug response doi:10.3389/fanes.2026.1727481",
+      "method": "scoping review",
+      "scenario": "personalized anesthesia",
+      "benchmark": "genetic variants impact on anesthetic outcomes",
+      "contribution": "synthesized key genetic variants that influence anesthetic outcomes and highlighted the potential of pharmacogenomics in personalized anesthesia",
+      "limitation": "Precision anesthesia and pharmacogenomics: a scoping review of personalized drug response Anesthetic agent selection and dosing have historically relied on empirical models without taking into account inter-individual variability in drug response, leading to adverse drug reactions (ADRs).",
+      "url": "https://www.semanticscholar.org/paper/7ffc8d51f49ecc15ec96faf8344023f3a80a25b2",
+      "createdAt": 1783793753.1956508,
+      "paper_id": "paper_1783793753195594100",
+      "active": true,
+      "causal_chains": [
+        {
+          "chain_id": "CYP3A4/5_and_POR_variations",
+          "trigger": "Variations in CYP3A4/5 and POR",
+          "trigger_evidence": "Variations in CYP3A4/5 and POR alter midazolam metabolism, risking prolonged sedation.",
+          "steps": [
+            {
+              "claim": "alter midazolam metabolism",
+              "evidence": "Variations in CYP3A4/5 and POR alter midazolam metabolism, risking prolonged sedation.",
+              "evidence_type": "observational"
+            }
+          ],
+          "outcome": "risking prolonged sedation",
+          "outcome_evidence": "Variations in CYP3A4/5 and POR alter midazolam metabolism, risking prolonged sedation.",
+          "observables": [
+            "midazolam metabolism"
+          ],
+          "interventions": [
+            "genetic variations in CYP3A4/5 and POR"
+          ],
+          "confidence": 0.9
+        },
+        {
+          "chain_id": "CYP2B6*6_variation",
+          "trigger": "CYP2B6*6 variation",
+          "trigger_evidence": "CYP2B6*6 is associated with decreased clearance of propofol and ketamine.",
+          "steps": [
+            {
+              "claim": "decreased clearance of propofol and ketamine",
+              "evidence": "CYP2B6*6 is associated with decreased clearance of propofol and ketamine.",
+              "evidence_type": "observational"
+            }
+          ],
+          "outcome": "decreased clearance of propofol and ketamine",
+          "outcome_evidence": "CYP2B6*6 is associated with decreased clearance of propofol and ketamine.",
+          "observables": [
+            "clearance of propofol and ketamine"
+          ],
+          "interventions": [
+            "CYP2B6*6 variation"
+          ],
+          "confidence": 0.9
+        },
+        {
+          "chain_id": "OPRM1_118_A_G_variant",
+          "trigger": "OPRM1 118 A > G (G-allele) carriers",
+          "trigger_evidence": "OPRM1 118 A > G (G-allele) carriers show a blunted response to morphine, requiring higher doses.",
+          "steps": [
+            {
+              "claim": "blunted response to morphine",
+              "evidence": "OPRM1 118 A > G (G-allele) carriers show a blunted response to morphine, requiring higher doses.",
+              "evidence_type": "observational"
+            }
+          ],
+          "outcome": "requiring higher doses of morphine",
+          "outcome_evidence": "OPRM1 118 A > G (G-allele) carriers show a blunted response to morphine, requiring higher doses.",
+          "observables": [
+            "response to morphine"
+          ],
+          "interventions": [
+            "OPRM1 118 A > G (G-allele)"
+          ],
+          "confidence": 0.9
+        }
+      ]
+    },
+    {
+      "evidence_id": "ev_1783793789120926600",
+      "title": "Case Report of Novel Genetic Variant in KCNT1 Channel and Pharmacological Treatment With Quinidine. Precision Medicine in Refractory Epilepsy",
+      "citation": "M. C. Kravetz et al. (2021) Case Report of Novel Genetic Variant in KCNT1 Channel and Pharmacological Treatment With Quinidine. Precision Medicine in Refractory Epilepsy doi:10.3389/fphar.2021.648519",
+      "method": "genetic sequencing | therapeutic drug monitoring (TDM)",
+      "scenario": "epilepsy of infancy with migrating focal seizures (EIMFS) | KCNT1-related epilepsy",
+      "benchmark": "seizure control | QND plasma levels | therapeutic range | toxicity",
+      "contribution": "The use of precision medicine, including genetic sequencing and TDM, led to the successful diagnosis and targeted treatment of a patient with a novel KCNT1 genetic variant, resulting in better seizure control with quinidine and topiramate.",
+      "limitation": "High variability in QND levels required careful TDM and pharmacokinetic characterization to maintain the therapeutic range and minimize toxicity.",
+      "url": "https://www.semanticscholar.org/paper/976a0c8c36ed1c11bff632187bdfdb6f0cc52683",
+      "createdAt": 1783793789.1209292,
+      "paper_id": "paper_1783793789120874900",
+      "active": true,
+      "causal_chains": [
+        {
+          "chain_id": "cc1",
+          "trigger": "identification of KCNT1 genetic variant",
+          "trigger_evidence": "When the patient was 4 years old, a genetic variant in the exon 24 of the KCNT1 gene was found. This led to the diagnosis of EIMFS.",
+          "steps": [
+            {
+              "claim": "diagnosis of EIMFS",
+              "evidence": "This led to the diagnosis of EIMFS.",
+              "evidence_type": "observational"
+            },
+            {
+              "claim": "introduction of quinidine (QND) as a therapeutic alternative",
+              "evidence": "Due to antiepileptic treatment failed to control seizures, QND a KCNT1 blocker, was introduced as a therapeutic alternative besides topiramate (200 mg/day) and nitrazepam (2 mg/day).",
+              "evidence_type": "experimental"
+            }
+          ],
+          "outcome": "seizure control",
+          "outcome_evidence": "Seizures were under control with QND levels above 1.5 mcg/ml (65–70 mg/kg q. i.d).",
+          "observables": [
+            "seizure frequency"
+          ],
+          "interventions": [
+            "quinidine (QND) administration",
+            "topiramate (200 mg/day)"
+          ],
+          "confidence": 0.8
+        }
+      ]
+    },
+    {
+      "evidence_id": "ev_1783793841786756600",
+      "title": "Artificial intelligence for the next generation of precision oncology",
+      "citation": "P. Ballester et al. (2021) Artificial intelligence for the next generation of precision oncology doi:10.1038/s41698-021-00216-w",
+      "method": "machine learning | deep learning | random forest algorithms",
+      "scenario": "precision oncology | cancer diagnosis | treatment decision making",
+      "benchmark": "classification performance",
+      "contribution": "Demonstration of the potential of machine learning and artificial intelligence to improve precision oncology, including diagnostics, treatment decision-making, and patient response prediction.",
+      "limitation": "Challenges in data availability, tumor heterogeneity, and the need for large, well-annotated, and relevant datasets to build robust ML models.",
+      "url": "https://www.semanticscholar.org/paper/8984bbe6d2fdfaae9fce0d6d1856c2d48e865634",
+      "createdAt": 1783793841.7867596,
+      "paper_id": "paper_1783793841786687600",
+      "active": true,
+      "causal_chains": []
+    },
+    {
+      "evidence_id": "ev_1783793876874999300",
+      "title": "Development and Implementation of In-House Pharmacogenomic Testing Program at a Major Academic Health System",
+      "citation": "P. Mróz et al. (2021) Development and Implementation of In-House Pharmacogenomic Testing Program at a Major Academic Health System doi:10.3389/fgene.2021.712602",
+      "method": "the process of pgx report design",
+      "scenario": "pharmacogenomic testing in a clinical setting",
+      "benchmark": "classification performance",
+      "contribution": "successful and highly collaborative implementation of a pharmacogenomic testing program, including assay development, report design, and clinical workflow",
+      "limitation": "Abstract: Pharmacogenomics (PGx) studies how a person’s genes affect the response to medications and is quickly becoming a significant part of precision medicine. The clinical application of PGx principles has consistently been cited as a major opportunity for improving therapeutic outcomes. Several...[truncated]",
+      "url": "https://www.semanticscholar.org/paper/389d6b3e1d2d1867b9d98639fa55307ca5fdf75d",
+      "createdAt": 1783793876.8750021,
+      "paper_id": "paper_1783793876874954400",
+      "active": true,
+      "causal_chains": []
+    },
+    {
+      "evidence_id": "ev_1783793931470152700",
+      "title": "Pharmacogenomics: a key component of personalized therapy",
+      "citation": "M. Schwab et al. (2012) Pharmacogenomics: a key component of personalized therapy doi:10.1186/gm394",
+      "method": "multi-omics studies | integrative personal omics profile (iPOP)",
+      "scenario": "personalized therapy | pharmacogenomics",
+      "benchmark": "drug response | clinical outcome | biomarker validation",
+      "contribution": "demonstration of the importance of pharmacogenomics in developing targeted therapies and the need for multi-omics approaches to understand complex drug response phenotypes",
+      "limitation": "the bioinformatic analysis and valid interpretation of highly complex multi-omics data sets is a major challenge",
+      "url": "https://www.semanticscholar.org/paper/00ffbd329e6fd9d76c1123d372033a62a09b5e15",
+      "createdAt": 1783793931.4701555,
+      "paper_id": "paper_1783793931470059800",
+      "active": true,
+      "causal_chains": [
+        {
+          "chain_id": "heuristic_1",
+          "trigger": "It is beyond doubt that pharmacogenomics",
+          "trigger_evidence": "It is beyond doubt that pharmacogenomics promotes the development of targeted therapies, as was demonstrated by the approval earlier this year of the drug ivacaftor by the US Food and Drug Administration (FDA) and the European Medicines Agency for the treatment of a subset of cystic fibrosis patients.",
+          "steps": [],
+          "outcome": "the development of targeted therapies, as was demonstrated by the approval earlier this year of the drug ivacaftor by the US Food and Drug Administration (FDA) and the European Medicines Agency for the treatment of a sub",
+          "outcome_evidence": "It is beyond doubt that pharmacogenomics promotes the development of targeted therapies, as was demonstrated by the approval earlier this year of the drug ivacaftor by the US Food and Drug Administration (FDA) and the European Medicines Agency for the treatment of a subset of cystic fibrosis patients.",
+          "observables": [],
+          "interventions": [],
+          "confidence": 0.3
+        },
+        {
+          "chain_id": "heuristic_2",
+          "trigger": "Genome-wide association studies (GWAS) have implicated many new biological pathways, but this approach has limitations be",
+          "trigger_evidence": "Genome-wide association studies (GWAS) have implicated many new biological pathways, but this approach has limitations because most of the variants that have been associated with clinical phenotypes, such as adverse drug reactions, are not necessarily causal.",
+          "steps": [],
+          "outcome": "most of the variants that have been associated with clinical phenotypes, such as adverse drug reactions, are not necessarily causal.",
+          "outcome_evidence": "Genome-wide association studies (GWAS) have implicated many new biological pathways, but this approach has limitations because most of the variants that have been associated with clinical phenotypes, such as adverse drug reactions, are not necessarily causal.",
+          "observables": [],
+          "interventions": [],
+          "confidence": 0.3
+        },
+        {
+          "chain_id": "heuristic_3",
+          "trigger": "Such a strategy should ultimately",
+          "trigger_evidence": "Such a strategy should ultimately result in the identification of novel drug targets.",
+          "steps": [],
+          "outcome": "the identification of novel drug targets.",
+          "outcome_evidence": "Such a strategy should ultimately result in the identification of novel drug targets.",
+          "observables": [],
+          "interventions": [],
+          "confidence": 0.3
+        }
+      ]
+    }
+  ],
+  "coverage_matrix": {},
+  "knowledge_gaps": [],
+  "hypotheses": [],
+  "keynotes": [
+    {
+      "keynote_id": "keynote_1783793738534202200",
+      "paper_id": "paper_1783793728675374400",
+      "search_id": "",
+      "result_index": null,
+      "title": "Novel Approaches to Characterize Individual Drug Metabolism and Advance Precision Medicine",
+      "createdAt": 1783793738.5342035,
+      "keynote": {
+        "title": "Novel Approaches to Characterize Individual Drug Metabolism and Advance Precision Medicine",
+        "core_problem": "Interindividual variability in drug metabolism can significantly affect drug concentrations in the body and subsequent drug response, necessitating a better understanding of individual drug metabolism capacity for precision medicine.",
+        "contributions": [
+          "Provides an overview of traditional and novel approaches to phenotype individual drug metabolism capacity.",
+          "Discusses the application of these approaches to pharmacokinetic studies.",
+          "Highlights the integration of existing pharmacokinetic biomarkers with novel approaches, and discusses current challenges and knowledge gaps."
+        ],
+        "methods": [
+          "Phenotyping with exogenous probe substrates",
+          "Use of endogenous biomarkers",
+          "Evaluating circulating noncoding RNAs",
+          "Utilizing liquid biopsy-derived markers"
+        ],
+        "experiments_or_evidence": [],
+        "assumptions": [
+          "Genetic variations in drug-metabolizing enzymes (DMEs) are a significant factor in drug response.",
+          "Nongenetic factors also influence drug metabolism phenotypes."
+        ],
+        "limitations": [
+          "The full text is truncated, so detailed limitations are not provided."
+        ],
+        "gap_signals": [
+          {
+            "signal_id": "sig_1783793738534104800",
+            "signal_type": "limitation",
+            "text": "The full text is truncated, so detailed limitations are not provided.",
+            "evidence_type": "author_opinion",
+            "supporting_reference": "",
+            "confidence": 0.82
+          },
+          {
+            "signal_id": "sig_1783793738534082100",
+            "signal_type": "knowledge gap",
+            "text": "Current challenges and existing knowledge gaps in characterizing individual drug metabolism.",
+            "evidence_type": "problem_statement",
+            "supporting_reference": "",
+            "confidence": 0.6
+          }
+        ],
+        "datasets_or_materials": [],
+        "code_or_implementation": [],
+        "important_claims": [
+          {
+            "claim": "Understanding an individual’s drug metabolism capacity is important for predicting drug exposure and developing precision medicine strategies.",
+            "evidence": "Interindividual variability in drug metabolism can significantly affect drug concentrations in the body and subsequent drug response."
+          },
+          {
+            "claim": "Integrating existing pharmacokinetic biomarkers with novel approaches can advance precision medicine.",
+            "evidence": "This minireview highlights the integration of existing pharmacokinetic biomarkers with novel approaches and discusses their application to pharmacokinetic studies."
+          }
+        ],
+        "causal_chains": [
+          {
+            "chain_id": "chain_1",
+            "trigger": "Interindividual variability in drug metabolism",
+            "trigger_evidence": "",
+            "steps": [
+              {
+                "claim": "Affects drug concentrations in the body",
+                "evidence": "Interindividual variability in drug metabolism can significantly affect drug concentrations in the body and subsequent drug response.",
+                "evidence_type": "theoretical"
+              },
+              {
+                "claim": "Influences subsequent drug response",
+                "evidence": "Interindividual variability in drug metabolism can significantly affect drug concentrations in the body and subsequent drug response.",
+                "evidence_type": "theoretical"
+              }
+            ],
+            "outcome": "Importance of understanding individual drug metabolism capacity for precision medicine",
+            "outcome_evidence": "",
+            "observables": [
+              "Drug concentrations in the body",
+              "Subsequent drug response"
+            ],
+            "interventions": [
+              "Phenotyping with exogenous probe substrates",
+              "Use of endogenous biomarkers",
+              "Evaluating circulating noncoding RNAs",
+              "Utilizing liquid biopsy-derived markers"
+            ],
+            "confidence": null
+          }
+        ],
+        "reuse_value_for_research": "The review provides a comprehensive summary of both traditional and emerging methods to phenotype drug metabolism, which can be used as a reference for researchers and clinicians aiming to develop or apply precision medicine strategies. The identified knowledge gaps and future opportunities can guide further research and development in this field.",
+        "extractor": "qwen_keynote"
+      }
+    },
+    {
+      "keynote_id": "keynote_1783793768983107000",
+      "paper_id": "paper_1783793753195594100",
+      "search_id": "",
+      "result_index": null,
+      "title": "Precision anesthesia and pharmacogenomics: a scoping review of personalized drug response",
+      "createdAt": 1783793768.9831083,
+      "keynote": {
+        "title": "Precision anesthesia and pharmacogenomics: a scoping review of personalized drug response",
+        "core_problem": "Anesthetic agent selection and dosing have historically relied on empirical models without taking into account inter-individual variability in drug response, leading to adverse drug reactions (ADRs).",
+        "contributions": [
+          "Synthesized key genetic variants that influence anesthetic outcomes",
+          "Highlighted the potential of pharmacogenomics in personalized anesthesia"
+        ],
+        "methods": [
+          "Systematic database searches",
+          "Use of Artificial Intelligence (AI)-powered tools"
+        ],
+        "experiments_or_evidence": [],
+        "assumptions": [
+          "Inter-individual variability in drug response is significant and can be addressed through pharmacogenomics"
+        ],
+        "limitations": [],
+        "gap_signals": [
+          {
+            "signal_id": "sig_1783793768982986900",
+            "signal_type": "Research Need",
+            "text": "The need for more extensive studies on the impact of genetic variants on anesthetic outcomes",
+            "evidence_type": "problem_statement",
+            "supporting_reference": "",
+            "confidence": 0.6
+          }
+        ],
+        "datasets_or_materials": [],
+        "code_or_implementation": [],
+        "important_claims": [
+          {
+            "claim": "Key genetic variants in metabolic enzymes, transporters, and receptors significantly influence anesthetic outcomes.",
+            "evidence": "This scoping review synthesized literature from 2015 to 2025, using systematic database searches and AI-powered tools, to identify the most extensively studied genetic variants impacting the pharmacokinetics and pharmacodynamics of common perioperative medications."
+          },
+          {
+            "claim": "Pharmacogenomics holds transformative potential for the field of anesthesiology by offering actionable insights for drug selection and dose adjustment to mitigate ADRs and optimize pain control.",
+            "evidence": "The review highlighted the potential of pharmacogenomics in personalized anesthesia."
+          }
+        ],
+        "causal_chains": [
+          {
+            "chain_id": "chain_1",
+            "trigger": "Empirical models for anesthetic agent selection and dosing",
+            "trigger_evidence": "",
+            "steps": [
+              {
+                "claim": "Empirical models do not account for inter-individual variability in drug response",
+                "evidence": "Anesthetic agent selection and dosing have historically relied on empirical models without taking into account inter-individual variability in drug response",
+                "evidence_type": "observational"
+              },
+              {
+                "claim": "Lack of consideration for inter-individual variability leads to adverse drug reactions (ADRs)",
+                "evidence": "leading to adverse drug reactions (ADRs)",
+                "evidence_type": "observational"
+              }
+            ],
+            "outcome": "Adverse drug reactions (ADRs) occur",
+            "outcome_evidence": "",
+            "observables": [
+              "Adverse drug reactions (ADRs)"
+            ],
+            "interventions": [],
+            "confidence": null
+          },
+          {
+            "chain_id": "chain_2",
+            "trigger": "Pharmacogenomics (PGx) in anesthesiology",
+            "trigger_evidence": "",
+            "steps": [
+              {
+                "claim": "PGx offers actionable insights for drug selection and dose adjustment",
+                "evidence": "PGx holds transformative potential for the field of anesthesiology by offering actionable insights for drug selection and dose adjustment",
+                "evidence_type": "theoretical"
+              },
+              {
+                "claim": "Actionable insights lead to mitigation of ADRs and optimized pain control",
+                "evidence": "to mitigate ADRs and optimize pain control",
+                "evidence_type": "theoretical"
+              }
+            ],
+            "outcome": "Mitigation of ADRs and optimized pain control",
+            "outcome_evidence": "",
+            "observables": [
+              "Reduced ADRs",
+              "Optimized pain control"
+            ],
+            "interventions": [
+              "Personalized drug selection and dose adjustment based on genetic variants"
+            ],
+            "confidence": null
+          }
+        ],
+        "reuse_value_for_research": "The review provides a foundation for future research on the role of specific genetic variants in anesthetic outcomes and the development of personalized anesthetic protocols.",
+        "extractor": "qwen_keynote"
+      }
+    },
+    {
+      "keynote_id": "keynote_1783793808667227300",
+      "paper_id": "paper_1783793789120874900",
+      "search_id": "",
+      "result_index": null,
+      "title": "Case Report of Novel Genetic Variant in KCNT1 Channel and Pharmacological Treatment With Quinidine. Precision Medicine in Refractory Epilepsy",
+      "createdAt": 1783793808.6672282,
+      "keynote": {
+        "title": "Case Report of Novel Genetic Variant in KCNT1 Channel and Pharmacological Treatment With Quinidine. Precision Medicine in Refractory Epilepsy",
+        "core_problem": "A female infant patient with epilepsy of infancy with migrating focal seizures (EIMFS) had a poor response to antiepileptic drugs, leading to encephalopathy and progressive cerebral dysfunction.",
+        "contributions": [
+          "Diagnosis of EIMFS through genetic variant identification in the KCNT1 gene.",
+          "Introduction of quinidine (QND), a KCNT1 blocker, as a targeted therapeutic alternative.",
+          "Implementation of therapeutic drug monitoring (TDM) to optimize QND dosage and minimize toxicity."
+        ],
+        "methods": [
+          "Genetic sequencing to identify the KCNT1 variant.",
+          "Pharmacological treatment with QND, topiramate, and nitrazepam.",
+          "Therapeutic drug monitoring (TDM) for QND plasma levels."
+        ],
+        "experiments_or_evidence": [
+          "Seizures were controlled when QND levels were above 1.5 mcg/ml.",
+          "QND levels higher than 4.0 mcg/ml were associated with a higher risk of arrhythmia due to QT segment prolongation.",
+          "QND alone was not effective; it required combination with topiramate for sustained seizure control."
+        ],
+        "assumptions": [
+          "The KCNT1 genetic variant is causally linked to the patient's EIMFS.",
+          "QND, as a KCNT1 blocker, would be effective in controlling seizures."
+        ],
+        "limitations": [
+          "High variability in QND levels necessitated careful TDM.",
+          "QND alone was not sufficient for maintaining seizure control, requiring the addition of topiramate."
+        ],
+        "gap_signals": [
+          {
+            "signal_id": "sig_1783793808667132500",
+            "signal_type": "limitation",
+            "text": "High variability in QND levels necessitated careful TDM.",
+            "evidence_type": "author_opinion",
+            "supporting_reference": "",
+            "confidence": 0.82
+          },
+          {
+            "signal_id": "sig_1783793808667144600",
+            "signal_type": "limitation",
+            "text": "QND alone was not sufficient for maintaining seizure control, requiring the addition of topiramate.",
+            "evidence_type": "author_opinion",
+            "supporting_reference": "",
+            "confidence": 0.82
+          },
+          {
+            "signal_id": "sig_1783793808667111700",
+            "signal_type": "need for further research",
+            "text": "Despite the successful use of QND and topiramate, the high variability in QND levels and the need for TDM highlight the complexity of managing this treatment.",
+            "evidence_type": "problem_statement",
+            "supporting_reference": "",
+            "confidence": 0.6
+          }
+        ],
+        "datasets_or_materials": [],
+        "code_or_implementation": [],
+        "important_claims": [
+          {
+            "claim": "Identification of the KCNT1 variant led to the diagnosis of EIMFS and the introduction of QND as a targeted therapy.",
+            "evidence": "A genetic variant in the exon 24 of the KCNT1 gene was found, leading to the diagnosis of EIMFS. QND, a KCNT1 blocker, was introduced as a therapeutic alternative."
+          },
+          {
+            "claim": "QND and topiramate together resulted in better seizure control.",
+            "evidence": "Seizures were under control with QND levels above 1.5 mcg/ml, but QND alone was not effective, and topiramate was needed in a maintenance dose of 40 mg/day."
+          }
+        ],
+        "causal_chains": [
+          {
+            "chain_id": "chain_1",
+            "trigger": "Identification of KCNT1 variant",
+            "trigger_evidence": "",
+            "steps": [
+              {
+                "claim": "Diagnosis of EIMFS",
+                "evidence": "A genetic variant in the exon 24 of the KCNT1 gene was found, leading to the diagnosis of EIMFS.",
+                "evidence_type": "observational"
+              },
+              {
+                "claim": "Introduction of QND as a therapeutic alternative",
+                "evidence": "Due to the KCNT1 variant, QND, a KCNT1 blocker, was introduced as a therapeutic alternative.",
+                "evidence_type": "theoretical"
+              }
+            ],
+            "outcome": "Better seizure control with QND and topiramate",
+            "outcome_evidence": "",
+            "observables": [
+              "Seizures under control with QND levels above 1.5 mcg/ml",
+              "Necessity of topiramate for sustained seizure control"
+            ],
+            "interventions": [
+              "Use of QND",
+              "Use of topiramate",
+              "TDM for QND plasma levels"
+            ],
+            "confidence": null
+          }
+        ],
+        "reuse_value_for_research": "This case report highlights the importance of precision medicine, including genetic sequencing and TDM, in diagnosing and treating refractory epilepsy. It provides a framework for using QND and topiramate in patients with KCNT1-related EIMFS, emphasizing the need for personalized therapeutic ranges and careful monitoring.",
+        "extractor": "qwen_keynote"
+      }
+    },
+    {
+      "keynote_id": "keynote_1783793861040590600",
+      "paper_id": "paper_1783793841786687600",
+      "search_id": "",
+      "result_index": null,
+      "title": "Artificial intelligence for the next generation of precision oncology",
+      "createdAt": 1783793861.0405915,
+      "keynote": {
+        "title": "Artificial intelligence for the next generation of precision oncology",
+        "core_problem": "The need to improve precision oncology through better diagnostics, treatment decision-making, and patient response prediction, while addressing challenges in data availability, tumor heterogeneity, and the requirement for large, well-annotated, and relevant datasets.",
+        "contributions": [
+          "Demonstration of the potential of machine learning (ML) and artificial intelligence (AI) to enhance precision oncology."
+        ],
+        "methods": [
+          "Use of ML in digital pathology to predict molecular features of tumor samples from histopathological images.",
+          "Application of ML in diagnostic radiology to predict cancer risk and identify prognostic imaging biomarkers.",
+          "Utilization of random forest algorithms and other ML techniques on circulating microRNAs and DNA methylation signatures for non-invasive molecular testing.",
+          "Development of AI-powered decision support systems for optimizing treatment decisions."
+        ],
+        "experiments_or_evidence": [
+          "Pioneering works in computer vision and digital pathology have shown that deep learning models can predict molecular features of tumor samples with high accuracy.",
+          "ML models trained on mammography or chest radiographs have demonstrated the potential to predict cancer risk and identify prognostic imaging biomarkers.",
+          "Random forest algorithms applied on circulating microRNAs can accurately diagnose glioblastoma preoperatively.",
+          "ML analyses applied to DNA methylation signatures achieve robust performance for tumor detection and classification."
+        ],
+        "assumptions": [
+          "Large, well-annotated, and relevant datasets are necessary for building robust ML models in precision oncology."
+        ],
+        "limitations": [
+          "Most ML models have been tested in retrospective studies, and their real-world impact remains to be achieved prospectively.",
+          "Challenges such as tumor heterogeneity, sampling bias, and incomplete information in electronic medical records limit the use and integration of data for ML models.",
+          "Fundamental methodological challenges, including reliable inference of causality, identifying suitable algorithms and features, and learning from high-dimensional data, currently limit ML approaches."
+        ],
+        "gap_signals": [
+          {
+            "signal_id": "sig_1783793861040424400",
+            "signal_type": "limitation",
+            "text": "Challenges such as tumor heterogeneity, sampling bias, and incomplete information in electronic medical records limit the use and integration of data for ML models.",
+            "evidence_type": "author_opinion",
+            "supporting_reference": "",
+            "confidence": 0.82
+          },
+          {
+            "signal_id": "sig_1783793861040438900",
+            "signal_type": "limitation",
+            "text": "Fundamental methodological challenges, including reliable inference of causality, identifying suitable algorithms and features, and learning from high-dimensional data, currently limit ML approaches.",
+            "evidence_type": "author_opinion",
+            "supporting_reference": "",
+            "confidence": 0.82
+          },
+          {
+            "signal_id": "sig_1783793861040409400",
+            "signal_type": "limitation",
+            "text": "Most ML models have been tested in retrospective studies, and their real-world impact remains to be achieved prospectively.",
+            "evidence_type": "author_opinion",
+            "supporting_reference": "",
+            "confidence": 0.82
+          },
+          {
+            "signal_id": "sig_1783793861040361900",
+            "signal_type": "Data Availability",
+            "text": "Issues such as tumor heterogeneity and sampling bias, tumor evolution dynamics, or incomplete information on electronic medical records, among many other factors, represent major roadblocks for using and integrating these sources of data to build ML models.",
+            "evidence_type": "problem_statement",
+            "supporting_reference": "",
+            "confidence": 0.65
+          },
+          {
+            "signal_id": "sig_1783793861040394400",
+            "signal_type": "Methodological Challenges",
+            "text": "Several fundamental methodological challenges currently limit ML approaches, including reliable inference of testable causality, identifying the most suitable algorithm and features to solve a given problem, learning from high-dimensional data sets, or accurately estimating model generalization.",
+            "evidence_type": "problem_statement",
+            "supporting_reference": "",
+            "confidence": 0.6
+          }
+        ],
+        "datasets_or_materials": [
+          "Large, well-annotated, and relevant datasets containing clinical and molecular information."
+        ],
+        "code_or_implementation": [],
+        "important_claims": [
+          {
+            "claim": "ML models can improve the accuracy of diagnostic protocols in digital pathology and radiology.",
+            "evidence": "Deep learning models can predict molecular features of tumor samples, and ML models trained on mammography or chest radiographs can predict cancer risk and identify prognostic imaging biomarkers."
+          },
+          {
+            "claim": "ML can enhance non-invasive molecular testing for tumor detection and classification.",
+            "evidence": "Random forest algorithms applied on circulating microRNAs can diagnose glioblastoma preoperatively, and ML analyses on DNA methylation signatures achieve robust performance."
+          },
+          {
+            "claim": "AI-powered decision support systems can optimize treatment decision making for cancer patients.",
+            "evidence": "ML models integrating data on tumor growth kinetics, molecular profiling, and pharmacological properties could provide accurate recommendations on the most effective therapeutic approaches."
+          }
+        ],
+        "causal_chains": [
+          {
+            "chain_id": "chain_1",
+            "trigger": "Integration of ML in digital pathology and radiology",
+            "trigger_evidence": "",
+            "steps": [
+              {
+                "claim": "ML models can predict molecular features of tumor samples and cancer risk.",
+                "evidence": "Deep learning models and ML models trained on radiographic data have shown high accuracy in predicting molecular features and cancer risk.",
+                "evidence_type": "experimental"
+              }
+            ],
+            "outcome": "Improved accuracy of diagnostic protocols",
+            "outcome_evidence": "",
+            "observables": [
+              "Enhanced accuracy in predicting molecular features and cancer risk"
+            ],
+            "interventions": [
+              "Training ML models on large, well-annotated datasets"
+            ],
+            "confidence": null
+          },
+          {
+            "chain_id": "chain_2",
+            "trigger": "Application of ML in non-invasive molecular testing",
+            "trigger_evidence": "",
+            "steps": [
+              {
+                "claim": "ML models can diagnose glioblastoma and classify tumors based on DNA methylation signatures.",
+                "evidence": "Random forest algorithms and other ML techniques have shown robust performance in tumor detection and classification.",
+                "evidence_type": "experimental"
+              }
+            ],
+            "outcome": "Accurate and non-invasive tumor detection and classification",
+            "outcome_evidence": "",
+            "observables": [
+              "High accuracy in diagnosing glioblastoma and classifying tumors"
+            ],
+            "interventions": [
+              "Using ML on circulating microRNAs and DNA methylation signatures"
+            ],
+            "confidence": null
+          },
+          {
+            "chain_id": "chain_3",
+            "trigger": "Development of AI-powered decision support systems",
+            "trigger_evidence": "",
+            "steps": [
+              {
+                "claim": "ML models can optimize treatment decisions by integrating various data types.",
+                "evidence": "ML models integrating tumor growth kinetics, molecular profiling, and pharmacological properties can provide accurate treatment recommendations.",
+                "evidence_type": "theoretical"
+              }
+            ],
+            "outcome": "Optimized treatment decision making",
+            "outcome_evidence": "",
+            "observables": [
+              "Accurate prospective recommendations on the most effective therapeutic approaches"
+            ],
+            "interventions": [
+              "Integrating multiple data types into ML models"
+            ],
+            "confidence": null
+          }
+        ],
+        "reuse_value_for_research": "The structured insights and causal chains provided can be used to guide future research in precision oncology, particularly in the development and validation of ML models for diagnostics, treatment decision-making, and patient response prediction. The identified gaps and limitations highlight areas where further work is needed, such as improving data availability and addressing methodological challenges.",
+        "extractor": "qwen_keynote"
+      }
+    },
+    {
+      "keynote_id": "keynote_1783793894962201400",
+      "paper_id": "paper_1783793876874954400",
+      "search_id": "",
+      "result_index": null,
+      "title": "Development and Implementation of In-House Pharmacogenomic Testing Program at a Major Academic Health System",
+      "createdAt": 1783793894.9622025,
+      "keynote": {
+        "title": "Development and Implementation of In-House Pharmacogenomic Testing Program at a Major Academic Health System",
+        "core_problem": "The challenge of implementing pharmacogenomic (PGx) testing in a clinical setting, including the design of assays, translation of genetic information into actionable recommendations, and integration into clinical workflows.",
+        "contributions": [
+          "Description of a successful and highly collaborative implementation of a PGx testing program",
+          "Development and technical validation of an in-house SNP-based multiplex PCR assay targeting 20 genes and 48 SNPs",
+          "Design of a CYP2D6 copy number assay",
+          "Process for PGx report design, including usability studies with providers and pharmacists",
+          "Development of a software tool for genotype-phenotype translation and CPIC-based recommendations",
+          "Development of a clinical workflow connecting providers with PGx experts"
+        ],
+        "methods": [
+          "Assay development and validation",
+          "Report design and provider/pharmacist usability studies",
+          "Software tool development for genotype-phenotype translation",
+          "Clinical workflow development"
+        ],
+        "experiments_or_evidence": [
+          "Validation of the in-house SNP-based multiplex PCR assay",
+          "Usability studies with providers and pharmacists"
+        ],
+        "assumptions": [
+          "Most individuals harbor PGx variants that are clinically actionable",
+          "PGx testing can guide therapy choice and dosing modifications, improving treatment efficacy and reducing ADRs"
+        ],
+        "limitations": [],
+        "gap_signals": [
+          {
+            "signal_id": "sig_1783793894962061900",
+            "signal_type": "Implementation Challenges",
+            "text": "Successful implementation in a clinical setting presents a number of challenges to molecular diagnostic laboratories, healthcare systems, providers, and patients.",
+            "evidence_type": "problem_statement",
+            "supporting_reference": "",
+            "confidence": 0.6
+          }
+        ],
+        "datasets_or_materials": [
+          "In-house SNP-based multiplex PCR assay targeting 20 genes and 48 SNPs",
+          "CYP2D6 copy number assay"
+        ],
+        "code_or_implementation": [
+          "Software tool for genotype-phenotype translation and CPIC-based recommendations"
+        ],
+        "important_claims": [
+          {
+            "claim": "PGx testing can improve therapeutic outcomes by guiding therapy choice and dosing modifications.",
+            "evidence": "Several recent studies have demonstrated that most individuals (> 90%) harbor PGx variants that would be clinically actionable if prescribed a medication relevant to that gene. In multiple well-conducted studies, the results of PGx testing have been shown to guide therapy choice and dosing modifications which improve treatment efficacy and reduce the incidence of adverse drug reactions (ADRs)."
+          }
+        ],
+        "causal_chains": [
+          {
+            "chain_id": "chain_1",
+            "trigger": "Implementation of PGx testing",
+            "trigger_evidence": "",
+            "steps": [
+              {
+                "claim": "Genotyping results are available",
+                "evidence": "Once the genotyping results are available, the biggest technical challenge lies in turning this complex genetic information into phenotypes and actionable recommendations.",
+                "evidence_type": "theoretical"
+              },
+              {
+                "claim": "Complex genetic information is translated into phenotypes and actionable recommendations",
+                "evidence": "The process of PGx report design, results of the provider and pharmacists usability studies, and the development of the software tool for genotype-phenotype translation and gene-phenotype-drug CPIC-based recommendations.",
+                "evidence_type": "experimental"
+              },
+              {
+                "claim": "Providers and pharmacists effectively utilize the recommendations",
+                "evidence": "The development of the clinical workflow that connects the providers with the PGx experts within the Molecular Diagnostic Laboratory and the Pharmacy.",
+                "evidence_type": "observational"
+              }
+            ],
+            "outcome": "Improved therapeutic outcomes and reduced ADRs",
+            "outcome_evidence": "",
+            "observables": [
+              "Improved treatment efficacy",
+              "Reduced incidence of adverse drug reactions"
+            ],
+            "interventions": [
+              "Pharmacogenomic testing",
+              "Provider and pharmacist education and training",
+              "Integration of PGx data into clinical decision-making"
+            ],
+            "confidence": null
+          }
+        ],
+        "reuse_value_for_research": "This paper provides a detailed framework for the implementation of a PGx testing program, including assay development, report design, and clinical workflow, which can serve as a model for other institutions looking to implement similar programs.",
+        "extractor": "qwen_keynote"
+      }
+    }
+  ],
+  "sub_hypotheses": [
+    {
+      "id": "SH1",
+      "focus": "Genetic variants and molecular phenotypes predict pharmacokinetic exposure, toxicity, and optimal dosing of a specific treatment regimen.",
+      "causal_chain": [
+        "genetic variants and molecular phenotypes",
+        "pharmacokinetic parameters (e.g., Cmax, AUC, t1/2)",
+        "toxicity and optimal dose"
+      ],
+      "independent_variable": "genetic variants and molecular phenotypes",
+      "dependent_variables": [
+        "pharmacokinetic exposure",
+        "toxicity levels",
+        "optimal dosing"
+      ],
+      "controls": [
+        "matched controls for age, sex, and disease stage"
+      ],
+      "quantifiable_bounds": "",
+      "threshold_to_test": "",
+      "falsification_condition": "No significant correlation between genetic/molecular profiles and pharmacokinetic/toxicity outcomes in a prospective cohort study.",
+      "retrieval_query": "genetic variants molecular phenotypes pharmacokinetics toxicity dosing precision medicine",
+      "query_variants": [
+        "genetic variants molecular phenotypes pharmacokinetics toxicity dosing precision medicine",
+        "Personalized Medicine / Precision Medicine / Pharmacogenomics / Cancer Genomics / Clinical Pharmacology / Multi-omics / Patient-derived Models / Cell and Gene Therapy Manufacturing / Biostatistics / Regulatory Science Genetic variants and molecular phenotypes predict pharmacokinetic exposure, toxicity, and optimal dosing of a specific treatment regimen. causal mechanism experimental evidence",
+        "Genetic variants and molecular phenotypes predict pharmacokinetic exposure, toxicity, and optimal dosing of a specific treatment regimen. intervention observable outcome preprint"
+      ],
+      "evidence_window": {
+        "P0_latest_preprint": "Recent preprints on the relationship between genetic variants, molecular phenotypes, and pharmacokinetics in precision medicine.",
+        "P1_recent_primary": "Primary studies from the last two years that validate the predictive power of genetic and molecular data on drug exposure and toxicity.",
+        "P2_mechanism_or_theory": "Mechanistic or theoretical evidence linking genetic and molecular factors to pharmacokinetic parameters and clinical outcomes.",
+        "minimum_evidence_types": [
+          "observable",
+          "intervention_or_natural_experiment"
+        ]
+      },
+      "alternative_mechanisms": [
+        "Variation in organ function or immune status may confound the observed relationships."
+      ],
+      "status": "pending_retrieval",
+      "source_objective": "在定义明确的患者群体、疾病类型和治疗类别中，个体的遗传变异、肿瘤或疾病分子表型、器官功能、免疫状态、既往治疗史以及制造过程参数，是否能够以可重复、可校准、因果上可解释的方式预测：1. 某一治疗方案的药代动力学暴露、毒性和适宜剂量；2. 某一靶向药物、免疫治疗、细胞治疗或核酸药物的临床获益与耐药风险；3. 个体化制剂或自体细胞产品能否在身份、纯度、效力、无菌性、批间一致性、周转时间和成本约束下稳定制造；4. 上述预测在不同祖源、年龄、肝肾功能、疾病分期、医疗中心和检测平台迁移时是否仍成立。禁止将统计相关、患者画像匹配或模型准确率直接解释为因果治疗获益；禁止将实验室样本、类器官、动物模型或单中心回顾性结果直接外推为临床个体化治疗有效；禁止将技术尚不成熟误判为生物学上绝对不可行。执行完整闭环：Boxue → Objective Decomposition → ZhiZhi → TanXi → Socrates → MingLi → YanZhen → DuZhi → BianLun → MingLi 修订 → YanZhen 复审。"
+    },
+    {
+      "id": "SH2",
+      "focus": "Molecular biomarkers predict clinical benefit and resistance risk for targeted, immunotherapeutic, or cell-based treatments.",
+      "causal_chain": [
+        "molecular biomarkers (e.g., mutations, expression levels, immune signatures)",
+        "clinical response and resistance mechanisms",
+        "clinical benefit and resistance risk"
+      ],
+      "independent_variable": "molecular biomarkers",
+      "dependent_variables": [
+        "clinical response rates",
+        "resistance development"
+      ],
+      "controls": [
+        "matched controls for prior treatment history and disease type"
+      ],
+      "quantifiable_bounds": "",
+      "threshold_to_test": "",
+      "falsification_condition": "No significant difference in clinical benefit or resistance risk between biomarker-positive and -negative groups in a randomized controlled trial.",
+      "retrieval_query": "molecular biomarkers clinical benefit resistance risk targeted therapy immunotherapy cell therapy",
+      "query_variants": [
+        "molecular biomarkers clinical benefit resistance risk targeted therapy immunotherapy cell therapy",
+        "Personalized Medicine / Precision Medicine / Pharmacogenomics / Cancer Genomics / Clinical Pharmacology / Multi-omics / Patient-derived Models / Cell and Gene Therapy Manufacturing / Biostatistics / Regulatory Science Molecular biomarkers predict clinical benefit and resistance risk for targeted, immunotherapeutic, or cell-based treatments. causal mechanism experimental evidence",
+        "Molecular biomarkers predict clinical benefit and resistance risk for targeted, immunotherapeutic, or cell-based treatments. intervention observable outcome preprint"
+      ],
+      "evidence_window": {
+        "P0_latest_preprint": "Recent preprints on the predictive value of molecular biomarkers for clinical outcomes in targeted and immunotherapies.",
+        "P1_recent_primary": "Primary studies from the last two years that demonstrate the utility of biomarkers in predicting treatment response and resistance.",
+        "P2_mechanism_or_theory": "Mechanistic or theoretical evidence explaining how specific biomarkers influence treatment efficacy and resistance.",
+        "minimum_evidence_types": [
+          "observable",
+          "intervention_or_natural_experiment"
+        ]
+      },
+      "alternative_mechanisms": [
+        "Biomarkers may reflect disease burden rather than treatment effect."
+      ],
+      "status": "pending_retrieval",
+      "source_objective": "在定义明确的患者群体、疾病类型和治疗类别中，个体的遗传变异、肿瘤或疾病分子表型、器官功能、免疫状态、既往治疗史以及制造过程参数，是否能够以可重复、可校准、因果上可解释的方式预测：1. 某一治疗方案的药代动力学暴露、毒性和适宜剂量；2. 某一靶向药物、免疫治疗、细胞治疗或核酸药物的临床获益与耐药风险；3. 个体化制剂或自体细胞产品能否在身份、纯度、效力、无菌性、批间一致性、周转时间和成本约束下稳定制造；4. 上述预测在不同祖源、年龄、肝肾功能、疾病分期、医疗中心和检测平台迁移时是否仍成立。禁止将统计相关、患者画像匹配或模型准确率直接解释为因果治疗获益；禁止将实验室样本、类器官、动物模型或单中心回顾性结果直接外推为临床个体化治疗有效；禁止将技术尚不成熟误判为生物学上绝对不可行。执行完整闭环：Boxue → Objective Decomposition → ZhiZhi → TanXi → Socrates → MingLi → YanZhen → DuZhi → BianLun → MingLi 修订 → YanZhen 复审。"
+    },
+    {
+      "id": "SH3",
+      "focus": "Manufacturing process parameters ensure stable production of personalized medicines with consistent identity, purity, potency, and sterility.",
+      "causal_chain": [
+        "manufacturing process parameters (e.g., temperature, pH, incubation time)",
+        "quality attributes (identity, purity, potency, sterility)",
+        "stable and consistent product batches"
+      ],
+      "independent_variable": "manufacturing process parameters",
+      "dependent_variables": [
+        "batch-to-batch consistency",
+        "product identity and purity",
+        "potency and sterility"
+      ],
+      "controls": [
+        "standardized manufacturing protocols and quality control measures"
+      ],
+      "quantifiable_bounds": "",
+      "threshold_to_test": "",
+      "falsification_condition": "Significant variability in product quality attributes across multiple batches despite standardized manufacturing processes.",
+      "retrieval_query": "manufacturing process parameters quality attributes personalized medicine stability consistency",
+      "query_variants": [
+        "manufacturing process parameters quality attributes personalized medicine stability consistency",
+        "Personalized Medicine / Precision Medicine / Pharmacogenomics / Cancer Genomics / Clinical Pharmacology / Multi-omics / Patient-derived Models / Cell and Gene Therapy Manufacturing / Biostatistics / Regulatory Science Manufacturing process parameters ensure stable production of personalized medicines with consistent identity, purity, potency, and sterility. causal mechanism experimental evidence",
+        "Manufacturing process parameters ensure stable production of personalized medicines with consistent identity, purity, potency, and sterility. intervention observable outcome preprint"
+      ],
+      "evidence_window": {
+        "P0_latest_preprint": "Recent preprints on the impact of manufacturing parameters on the quality and consistency of personalized medicines.",
+        "P1_recent_primary": "Primary studies from the last two years that evaluate the reproducibility and reliability of manufacturing processes for personalized therapies.",
+        "P2_mechanism_or_theory": "Mechanistic or theoretical evidence on the critical process parameters that affect the quality and consistency of personalized medicinal products.",
+        "minimum_evidence_types": [
+          "observable",
+          "intervention_or_natural_experiment"
+        ]
+      },
+      "alternative_mechanisms": [
+        "Variability in starting materials or uncontrolled environmental factors may contribute to batch inconsistencies."
+      ],
+      "status": "pending_retrieval",
+      "source_objective": "在定义明确的患者群体、疾病类型和治疗类别中，个体的遗传变异、肿瘤或疾病分子表型、器官功能、免疫状态、既往治疗史以及制造过程参数，是否能够以可重复、可校准、因果上可解释的方式预测：1. 某一治疗方案的药代动力学暴露、毒性和适宜剂量；2. 某一靶向药物、免疫治疗、细胞治疗或核酸药物的临床获益与耐药风险；3. 个体化制剂或自体细胞产品能否在身份、纯度、效力、无菌性、批间一致性、周转时间和成本约束下稳定制造；4. 上述预测在不同祖源、年龄、肝肾功能、疾病分期、医疗中心和检测平台迁移时是否仍成立。禁止将统计相关、患者画像匹配或模型准确率直接解释为因果治疗获益；禁止将实验室样本、类器官、动物模型或单中心回顾性结果直接外推为临床个体化治疗有效；禁止将技术尚不成熟误判为生物学上绝对不可行。执行完整闭环：Boxue → Objective Decomposition → ZhiZhi → TanXi → Socrates → MingLi → YanZhen → DuZhi → BianLun → MingLi 修订 → YanZhen 复审。"
+    },
+    {
+      "id": "SH4",
+      "focus": "Predictive models remain valid across different patient demographics, organ functions, and healthcare settings.",
+      "causal_chain": [
+        "patient demographics and organ functions (e.g., ancestry, age, liver/kidney function)",
+        "predictive model performance",
+        "consistent clinical outcomes"
+      ],
+      "independent_variable": "patient demographics and organ functions",
+      "dependent_variables": [
+        "model accuracy and calibration",
+        "clinical outcomes"
+      ],
+      "controls": [
+        "matched controls for disease stage and treatment center"
+      ],
+      "quantifiable_bounds": "",
+      "threshold_to_test": "",
+      "falsification_condition": "Predictive models show significant miscalibration or loss of accuracy when applied to patients with different demographics or organ functions in a multi-center study.",
+      "retrieval_query": "predictive models patient demographics organ function model calibration precision medicine",
+      "query_variants": [
+        "predictive models patient demographics organ function model calibration precision medicine",
+        "Personalized Medicine / Precision Medicine / Pharmacogenomics / Cancer Genomics / Clinical Pharmacology / Multi-omics / Patient-derived Models / Cell and Gene Therapy Manufacturing / Biostatistics / Regulatory Science Predictive models remain valid across different patient demographics, organ functions, and healthcare settings. causal mechanism experimental evidence",
+        "Predictive models remain valid across different patient demographics, organ functions, and healthcare settings. intervention observable outcome preprint"
+      ],
+      "evidence_window": {
+        "P0_latest_preprint": "Recent preprints on the generalizability of predictive models across diverse patient populations and healthcare settings.",
+        "P1_recent_primary": "Primary studies from the last two years that assess the robustness of predictive models in different demographic and clinical contexts.",
+        "P2_mechanism_or_theory": "Mechanistic or theoretical evidence on the factors that influence the external validity and generalizability of predictive models in precision medicine.",
+        "minimum_evidence_types": [
+          "observable",
+          "intervention_or_natural_experiment"
+        ]
+      },
+      "alternative_mechanisms": [
+        "Differences in healthcare practices or unmeasured confounders may affect model performance."
+      ],
+      "status": "pending_retrieval",
+      "source_objective": "在定义明确的患者群体、疾病类型和治疗类别中，个体的遗传变异、肿瘤或疾病分子表型、器官功能、免疫状态、既往治疗史以及制造过程参数，是否能够以可重复、可校准、因果上可解释的方式预测：1. 某一治疗方案的药代动力学暴露、毒性和适宜剂量；2. 某一靶向药物、免疫治疗、细胞治疗或核酸药物的临床获益与耐药风险；3. 个体化制剂或自体细胞产品能否在身份、纯度、效力、无菌性、批间一致性、周转时间和成本约束下稳定制造；4. 上述预测在不同祖源、年龄、肝肾功能、疾病分期、医疗中心和检测平台迁移时是否仍成立。禁止将统计相关、患者画像匹配或模型准确率直接解释为因果治疗获益；禁止将实验室样本、类器官、动物模型或单中心回顾性结果直接外推为临床个体化治疗有效；禁止将技术尚不成熟误判为生物学上绝对不可行。执行完整闭环：Boxue → Objective Decomposition → ZhiZhi → TanXi → Socrates → MingLi → YanZhen → DuZhi → BianLun → MingLi 修订 → YanZhen 复审。"
+    }
+  ],
+  "objective_decomposition": {
+    "objective": "在定义明确的患者群体、疾病类型和治疗类别中，个体的遗传变异、肿瘤或疾病分子表型、器官功能、免疫状态、既往治疗史以及制造过程参数，是否能够以可重复、可校准、因果上可解释的方式预测：1. 某一治疗方案的药代动力学暴露、毒性和适宜剂量；2. 某一靶向药物、免疫治疗、细胞治疗或核酸药物的临床获益与耐药风险；3. 个体化制剂或自体细胞产品能否在身份、纯度、效力、无菌性、批间一致性、周转时间和成本约束下稳定制造；4. 上述预测在不同祖源、年龄、肝肾功能、疾病分期、医疗中心和检测平台迁移时是否仍成立。禁止将统计相关、患者画像匹配或模型准确率直接解释为因果治疗获益；禁止将实验室样本、类器官、动物模型或单中心回顾性结果直接外推为临床个体化治疗有效；禁止将技术尚不成熟误判为生物学上绝对不可行。执行完整闭环：Boxue → Objective Decomposition → ZhiZhi → TanXi → Socrates → MingLi → YanZhen → DuZhi → BianLun → MingLi 修订 → YanZhen 复审。",
+    "domain": "Personalized Medicine / Precision Medicine / Pharmacogenomics / Cancer Genomics / Clinical Pharmacology / Multi-omics / Patient-derived Models / Cell and Gene Therapy Manufacturing / Biostatistics / Regulatory Science",
+    "research_brief": "创建并运行一个 AutoGen 科研闭环验证项目。\n\n  项目标题：\n  Can we design and manufacture medicines customized for individual people?\n  从个体分子表型、剂量响应到可制造性的精准医疗因果证据闭环验证\n\n  领域：\n  Personalized Medicine / Precision Medicine / Pharmacogenomics / Cancer Genomics /\n  Clinical Pharmacology / Multi-omics / Patient-derived Models /\n  Cell and Gene Therapy Manufacturing / Biostatistics / Regulatory Science\n\n  研究目标：\n  不要泛泛讨论 精准医疗将改变未来医疗。围绕以下可分解、可证伪的科学与转化问题开展验证：\n\n  在定义明确的患者群体、疾病类型和治疗类别中，个体的遗传变异、肿瘤或疾病分子表型、\n  器官功能、免疫状态、既往治疗史以及制造过程参数，是否能够以可重复、可校准、\n  因果上可解释的方式预测：\n\n  1. 某一治疗方案的药代动力学暴露、毒性和适宜剂量；\n  2. 某一靶向药物、免疫治疗、细胞治疗或核酸药物的临床获益与耐药风险；\n  3. 个体化制剂或自体细胞产品能否在身份、纯度、效力、无菌性、批间一致性、\n     周转时间和成本约束下稳定制造；\n  4. 上述预测在不同祖源、年龄、肝肾功能、疾病分期、医疗中心和检测平台迁移时是否仍成立。\n\n  禁止将统计相关、患者画像匹配或模型准确率直接解释为因果治疗获益；\n  禁止将实验室样本、类器官、动物模型或单中心回顾性结果直接外推为临床个体化治疗有效；\n  禁止将技术尚不成熟误判为生物学上绝对不可行。\n\n  执行完整闭环：\n  Boxue → Objective Decomposition → ZhiZhi → TanXi → Socrates →\n  MingLi → YanZhen → DuZhi → BianLun → MingLi 修订 → YanZhen 复审。\n\n\n  ## Boxue：Objective Decomposition\n\n  在任何宽泛检索前，先运行 decompose_research_objective。\n  输出不是一组研究方向，而是独立的、可被推翻的子假设。\n\n \n\n  ## ZhiZhi：文献与证据知识库要求\n\n  数据源与质量边界\n\n  - 主要使用 semantic_scholar、PubMed、arXiv；临床前沿预印本可补充 medRxiv/bioRxiv，但必须明确其未经同行评审状态。\n  - 分层导入至少 15 篇经质量筛选的文献；数量不是目标，必须覆盖每个已选子假设的证据窗口。\n  - 对摘要缺失、unknown 字段、来源可疑或 requires_human_review 的记录，执行提取修复、降权或停留在背景层，不得作为机制合\n    同的唯一证据。\n\n  - 不得制造论文、临床试验、监管文件、效应量、患者结局或指南推荐。\n\n  P0–P4 分层\n\n  P0 / L3：近期预印本\n    - 精准医疗、临床药理、多组学、患者来源模型、个体化细胞/核酸制造\n    - 要求标注未经同行评审；检索失败必须显式标记证据不足\n\n  P1 / L2：近2年高质量原始研究\n    - 前瞻性临床队列、随机或准实验研究\n    - 外部验证、临床药理、真实世界目标试验模拟\n    - 多中心临床/转化研究和受控制造研究\n\n  P2 / L4：机制、实验与理论证据\n    - 酶动力学、PK/PD、药物转运、受体占有\n    - 单细胞、多组学、功能测定、类器官\n    - CMC、效力测定、放行标准、过程分析技术\n\n  P3 / L0：系统综述、临床指南、监管和方法学综述\n    - 药物基因组学实施指南\n    - 精准肿瘤学、患者来源模型和先进治疗产品监管综述\n    - 偏倚、因果推断、临床预测模型报告规范\n\n  P4 / L1：奠基研究与历史脉络\n    - 关键药物基因组学机制发现\n    - 个体化靶向治疗或细胞治疗的奠基性临床/制造研究\n    - 仅用于历史和机制脉络，不得替代当前外部验证\n\n  必须覆盖的子空间\n\n  - 药物基因组学、代谢酶、转运体、HLA 风险、PK/PD 与剂量优化；\n  - 肿瘤或疾病基因组、转录组、蛋白组、单细胞和空间组学；\n  - 预测性标志物与预后性标志物的因果区分；\n  - 真实世界数据、目标试验模拟、选择偏倚、祖源偏倚和检测平台漂移；\n  - 患者来源类器官、PDX、功能测定与临床结局之间的迁移误差；\n  - 自体细胞、核酸药物或个体化制剂的 CMC、身份链、效力、无菌、放行和供应链；\n  - 监管、知情同意、数据治理、隐私、算法审计和可及性；\n  - 经济性：周转时间、失败制造批次、支付方式和中心间可复制性。\n\n  必须排除或降权的内容\n\n  - 只报告模型 AUC、没有临床终点或外部验证的纯算法论文；\n  - 只有疾病关联、没有治疗策略或可观测中介的关联研究；\n  - 与精准医疗无关的普通生物信息学、一般医院调度或常规药物合成论文；\n  - 仅动物或细胞系研究、却声称直接预测患者获益的论文；\n  - 没有来源、无明确样本定义、混合多个治疗场景且不可拆分的营销报告。\n\n  DeepSurvey 风格知识构建\n\n  每篇入库论文除 method-scenario-benchmark 外，必须提取：\n\n  keynote:\n    core_problem: 该论文解决的具体临床或制造问题\n    patient_population: 人群、适应证、入排标准和治疗场景\n    causal_chains:\n      - trigger: 干预、遗传变异、制造参数或自然实验条件\n        steps:\n          - claim: 中介机制\n            evidence: 论文中的来源摘录\n            evidence_type: experimental | theoretical | observational | inferred\n        outcome: 临床、药代、功能或制造终点\n        observables: 可直接测量的信号\n        interventions: 可操纵变量\n    experimental_evidence: 样本数、测量条件、对照和主要终点\n    assumptions: 隐含假设、可迁移条件和未测混杂\n    limitations: 作者明确局限\n    important_claims: 声明与证据的一一对应\n    future_directions: 明确未来工作\n    code_or_implementation: 公开代码、模型版本、分析环境；不得下载或处理患者敏感数据\n\n  ## TanXi：Gap 探索要求\n\n  TanXi 首先做因果断链检测，而不是把方法尚未用于某场景作为高价值 Gap。\n\n  优先发现以下问题：\n\n  1. 遗传变异 → 功能表型 → 药物暴露 → 毒性/获益 中，哪一段缺乏可测量中介、干预证据或外部验证；\n  2. 某些生物标志物究竟预测治疗效应，还是仅反映预后、疾病负荷或医生选择治疗的偏倚；\n  3. 单次基线多组学预测与治疗过程中克隆演化、耐药、免疫状态变化之间的断链；\n  4. 类器官、PDX 或功能检测的体外响应与临床响应不一致的机制：采样偏倚、微环境缺失、时间滞后还是剂量暴露差异；\n  5. 个体化细胞/核酸产品中，起始材料、过程参数、关键质量属性、效力和临床可给药性之间是否存在未验证的因果链；\n  6. 不同祖源、年龄、肝肾功能、合并用药、检测平台和医疗中心之间，预测规则是否出现校准失效；\n  7. 预测性能改进是否被制造周期、失败率、成本和可及性抵消；\n  8. 监管/标准体系是否无法覆盖个体化产品的身份链、效力检测和持续工艺变更。\n\n  每个 ranked gap 必须输出：\n\n  mechanism_draft:\n    input: 已定义的干预、患者分层或制造变量\n    proposed_mediator: 仅可填写文献来源支持的中介；否则保持 unresolved\n    output: 明确临床、药代、功能或制造终点\n    source_clue: 原文 citation 与 excerpt\n    causal_gap:\n      missing_kind: intermediate_mechanism | observability | intervention |\n                    counterfactual | evidence_window\n      evidence_needed: 下一步需要何种直接证据\n    sub_hypothesis_id: SH1 | SH2 | SH3 | SH4\n    unresolved_fields:\n      - identity\n      - location_or_scope\n      - dynamics\n      - reversibility\n      - observability\n      - intervention\n      - counterfactual\n\n  禁止把某 AI 方法尚未用于某癌种某测序技术还没和某药物配对直接列为核心 Gap。\n\n  ## Socrates：机制合同与因果补全\n\n  只选择排名第一、且属于机制型或矛盾型的 Gap 建立机制合同。\n\n  Socrates evidence contract:\n    identity: 中介实体/过程到底是什么\n    location_or_scope: 位于哪类细胞、组织、患者分层、制造环节或时间窗\n    dynamics: 如何随剂量、治疗周期、病程或制造批次变化\n    reversibility: 是否可逆，何种条件下可恢复\n    observability: 如何直接测量，而不是只测临床终点\n    intervention: 什么变量可在伦理和技术上被操纵\n    counterfactual: 若抑制/移除中介，预期发生什么\n\n  每个字段必须有：\n\n  evidence:\n    - citation: 真实论文、试验、指南或受控制造来源\n      excerpt: 支持该字段的原文摘录\n      paper_id: PaperGraph记录\n      evidence_type: experimental | theoretical | observational | inferred\n\n  Socrates 必须同时输出：\n\n  - 反事实或准实验设计；\n  - 第一性原理推导待补项，例如酶动力学、药物暴露—反应关系、受体占有、细胞扩增动力学、质量属性—效力关系；\n  - 竞争机制消除计划；\n  - 哪些证据来自人体、体外系统、动物模型或制造过程，禁止混淆证据层级。\n\n  若 verdict != COMPLETE，输出 INSUFFICIENT_EVIDENCE、剩余字段和定向检索建议，停止 MingLi 假设生成；不得用常识、临床直觉\n  或模板补全。\n\n  ## MingLi：假设生成要求\n\n  MingLi 只可消费：\n\n  - Socrates COMPLETE 的机制合同；\n  - 对应子假设满足 P0–P2 证据窗口；\n  - 有明确患者范围、治疗范围和可观测终点的 Gap。\n\n  每条假设必须包含：\n\n  hypothesis:\n    sub_hypothesis_id: SHx\n    patient_scope: 年龄、适应证、疾病阶段、关键入排条件\n    treatment_scope: 具体药物/治疗类别/制造平台\n    causal_chain: X → Z → Y\n    X: 可干预变量或可定义的自然实验\n    Z: 直接可测量中介\n    Y: 临床、药代、功能或制造终点\n    operating_conditions:\n      - 给药方案、剂量、治疗周期\n      - 肝肾功能、合并用药、样本采集时点\n      - 制造工艺、放行窗口或储运条件\n    observables:\n      - 药物暴露、毒性分级、反应率、无进展生存\n      - ctDNA、转录组、蛋白组、免疫功能、类器官功能读数\n      - 身份、纯度、效力、无菌、周转时间和失败率\n    null_hypothesis: 不存在经中介 Z 传递的治疗效应异质性\n    alternative_explanations:\n      - 未测临床混杂\n      - 预后性而非预测性标志物\n      - 检测误差、选择偏倚或时间依赖偏倚\n      - 制造批次或中心效应\n    falsification_condition: 预注册的失败条件\n    source_mapping: 每个因果链步骤对应 Socrates citation/excerpt\n\n  合格假设的形式应类似：\n\n  > 在预先定义的患者分层和治疗方案中，若通过 X 改变或识别个体化治疗条件，并且直接测得中介 Z 的预期变化，而 Y 在匹配对照\n  > 下按预注册方向改变，则支持该机制；若 Z 未改变、Y 与 Z 脱钩，或竞争机制更能解释数据，则否定或修订假设。\n\n  禁止使用AI 能改善个体化治疗通过多组学理解患者采用特定技术提升疗效之类没有机制实体和证伪条件的万能模板。\n\n  ## YanZhen：两次机制审计\n\n  初审\n\n  - 内部一致性：变量、患者范围、治疗范围、时间顺序和中介定义是否一致；\n  - 数据一致性：citation/excerpt 是否真正支持所声称的人群、干预和终点；\n  - 因果一致性：是否把相关误当治疗效应，是否遗漏关键混杂；\n  - 工程与生物学区分：制造失败、成本或周转时间限制不能被误判为疗法生物学无效；\n  - 输出：unsupported_claims、required_actions、verdict。\n\n  至少两个 regime-shift 检验\n\n  regime_shift_1:\n    condition: 祖源、年龄或性别构成发生变化\n    question: 遗传风险或治疗预测是否仍校准，是否存在群体公平性失效\n\n  regime_shift_2:\n    condition: 肝肾功能、合并用药、疾病分期或治疗线数变化\n    question: 剂量—暴露—毒性因果链是否仍成立\n\n  regime_shift_3:\n    condition: 检测平台、样本采集时间点、医疗中心或制造设施变化\n    question: 生物标志物和质量属性是否可重复，中心效应是否主导结论\n\n  regime_shift_4:\n    condition: 从回顾性队列迁移到前瞻性、真实世界或受控临床研究\n    question: 是否存在标签泄漏、选择偏倚、时间依赖偏倚或疗效衰减\n\n  若初审不是 PASS，YanZhen 必须把具体失败点反馈给 MingLi 和 DuZhi；不得直接输出成功结论。\n\n  ## DuZhi + BianLun：3–5 轮结构化辩论\n\n  DuZhi 每轮必须针对上一轮的具体回应追问，并至少覆盖：\n\n  1. 个体化的操作定义是什么：是药物选择、剂量、给药时机、组合疗法，还是产品制造参数？\n  2. 遗传或多组学标志物如何从关联提升为预测性治疗标志物？是否存在治疗分配偏倚？\n  3. 中介变量 Z 如何直接测量？检测误差、批次效应和采样时间是否足以掩盖真实变化？\n  4. 若不同中心、不同祖源或不同检测平台中预测效果显著下降，机制是否仍成立？\n  5. 若患者来源模型预测有效但临床无效，是模型缺少微环境、药物暴露不匹配，还是临床终点定义错误？\n  6. 个体化制造产品的效力、纯度或周转时间改善，是否被制造失败率、成本、可及性或监管限制抵消？\n  7. 所谓不能为个体制造药物究竟是生物学限制、临床证据限制、制造限制，还是支付和监管限制？\n\n  BianLun 每轮必须输出：\n\n  round_summary:\n    resolved_disputes: []\n    unresolved_disputes: []\n    causal_links_requiring_revision: []\n    evidence_missing: []\n    required_mingli_revision: []\n\n  MingLi 必须保留修订前后版本、修改理由、引用变化和仍未解决的不确定性。\n\n  ## 最终交付物与安全边界\n\n  最终输出必须包括：\n\n  - Objective Decomposition、每个 SH 的状态和组合结论门槛；\n  - P0–P4 文献覆盖、子空间覆盖、来源质量和预印本缺口报告；\n  - PaperGraph 因果证据图与断链位置；\n  - TanXi ranked gaps 与 mechanism_draft；\n  - Socrates evidence contract、反事实设计、第一性原理待补项；\n  - 初始假设、3–5 轮 DuZhi 质询、BianLun 归纳、MingLi 修订轨迹；\n  - YanZhen 初审与复审；\n  - 最终状态：ACCEPT_FOR_EXPERIMENT、CONDITIONAL_ACCEPT、REJECTED 或 REQUIRES_HUMAN_REVIEW；\n  - 可证伪的验证设计，包括患者选择、对照、混杂控制、外部验证、统计分析计划和数据治理要求；\n  - 个体化制造路径的 CMC 验证：身份链、关键质量属性、效力、纯度、无菌、批间一致性、周转时间、失败率和成本；\n  - 未解决证据缺口、不能外推的人群/治疗范围，以及后续定向检索建议。\n\n  所有涉及真实患者数据、治疗分配、剂量改变、细胞或基因治疗制造的实验，都只能作为研究设计输出；实际执行必须经过 IRB/伦理\n  审查、临床试验注册、知情同意、隐私与数据治理审查，以及相应药品监管要求。",
+    "research_brief_source": "verbatim_project_brief",
+    "status": "ready_for_subhypothesis_retrieval",
+    "extractor": "llm",
+    "sub_hypotheses": [
+      {
+        "id": "SH1",
+        "focus": "Genetic variants and molecular phenotypes predict pharmacokinetic exposure, toxicity, and optimal dosing of a specific treatment regimen.",
+        "causal_chain": [
+          "genetic variants and molecular phenotypes",
+          "pharmacokinetic parameters (e.g., Cmax, AUC, t1/2)",
+          "toxicity and optimal dose"
+        ],
+        "independent_variable": "genetic variants and molecular phenotypes",
+        "dependent_variables": [
+          "pharmacokinetic exposure",
+          "toxicity levels",
+          "optimal dosing"
+        ],
+        "controls": [
+          "matched controls for age, sex, and disease stage"
+        ],
+        "quantifiable_bounds": "",
+        "threshold_to_test": "",
+        "falsification_condition": "No significant correlation between genetic/molecular profiles and pharmacokinetic/toxicity outcomes in a prospective cohort study.",
+        "retrieval_query": "genetic variants molecular phenotypes pharmacokinetics toxicity dosing precision medicine",
+        "query_variants": [
+          "genetic variants molecular phenotypes pharmacokinetics toxicity dosing precision medicine",
+          "Personalized Medicine / Precision Medicine / Pharmacogenomics / Cancer Genomics / Clinical Pharmacology / Multi-omics / Patient-derived Models / Cell and Gene Therapy Manufacturing / Biostatistics / Regulatory Science Genetic variants and molecular phenotypes predict pharmacokinetic exposure, toxicity, and optimal dosing of a specific treatment regimen. causal mechanism experimental evidence",
+          "Genetic variants and molecular phenotypes predict pharmacokinetic exposure, toxicity, and optimal dosing of a specific treatment regimen. intervention observable outcome preprint"
+        ],
+        "evidence_window": {
+          "P0_latest_preprint": "Recent preprints on the relationship between genetic variants, molecular phenotypes, and pharmacokinetics in precision medicine.",
+          "P1_recent_primary": "Primary studies from the last two years that validate the predictive power of genetic and molecular data on drug exposure and toxicity.",
+          "P2_mechanism_or_theory": "Mechanistic or theoretical evidence linking genetic and molecular factors to pharmacokinetic parameters and clinical outcomes.",
+          "minimum_evidence_types": [
+            "observable",
+            "intervention_or_natural_experiment"
+          ]
+        },
+        "alternative_mechanisms": [
+          "Variation in organ function or immune status may confound the observed relationships."
+        ],
+        "status": "pending_retrieval",
+        "source_objective": "在定义明确的患者群体、疾病类型和治疗类别中，个体的遗传变异、肿瘤或疾病分子表型、器官功能、免疫状态、既往治疗史以及制造过程参数，是否能够以可重复、可校准、因果上可解释的方式预测：1. 某一治疗方案的药代动力学暴露、毒性和适宜剂量；2. 某一靶向药物、免疫治疗、细胞治疗或核酸药物的临床获益与耐药风险；3. 个体化制剂或自体细胞产品能否在身份、纯度、效力、无菌性、批间一致性、周转时间和成本约束下稳定制造；4. 上述预测在不同祖源、年龄、肝肾功能、疾病分期、医疗中心和检测平台迁移时是否仍成立。禁止将统计相关、患者画像匹配或模型准确率直接解释为因果治疗获益；禁止将实验室样本、类器官、动物模型或单中心回顾性结果直接外推为临床个体化治疗有效；禁止将技术尚不成熟误判为生物学上绝对不可行。执行完整闭环：Boxue → Objective Decomposition → ZhiZhi → TanXi → Socrates → MingLi → YanZhen → DuZhi → BianLun → MingLi 修订 → YanZhen 复审。"
+      },
+      {
+        "id": "SH2",
+        "focus": "Molecular biomarkers predict clinical benefit and resistance risk for targeted, immunotherapeutic, or cell-based treatments.",
+        "causal_chain": [
+          "molecular biomarkers (e.g., mutations, expression levels, immune signatures)",
+          "clinical response and resistance mechanisms",
+          "clinical benefit and resistance risk"
+        ],
+        "independent_variable": "molecular biomarkers",
+        "dependent_variables": [
+          "clinical response rates",
+          "resistance development"
+        ],
+        "controls": [
+          "matched controls for prior treatment history and disease type"
+        ],
+        "quantifiable_bounds": "",
+        "threshold_to_test": "",
+        "falsification_condition": "No significant difference in clinical benefit or resistance risk between biomarker-positive and -negative groups in a randomized controlled trial.",
+        "retrieval_query": "molecular biomarkers clinical benefit resistance risk targeted therapy immunotherapy cell therapy",
+        "query_variants": [
+          "molecular biomarkers clinical benefit resistance risk targeted therapy immunotherapy cell therapy",
+          "Personalized Medicine / Precision Medicine / Pharmacogenomics / Cancer Genomics / Clinical Pharmacology / Multi-omics / Patient-derived Models / Cell and Gene Therapy Manufacturing / Biostatistics / Regulatory Science Molecular biomarkers predict clinical benefit and resistance risk for targeted, immunotherapeutic, or cell-based treatments. causal mechanism experimental evidence",
+          "Molecular biomarkers predict clinical benefit and resistance risk for targeted, immunotherapeutic, or cell-based treatments. intervention observable outcome preprint"
+        ],
+        "evidence_window": {
+          "P0_latest_preprint": "Recent preprints on the predictive value of molecular biomarkers for clinical outcomes in targeted and immunotherapies.",
+          "P1_recent_primary": "Primary studies from the last two years that demonstrate the utility of biomarkers in predicting treatment response and resistance.",
+          "P2_mechanism_or_theory": "Mechanistic or theoretical evidence explaining how specific biomarkers influence treatment efficacy and resistance.",
+          "minimum_evidence_types": [
+            "observable",
+            "intervention_or_natural_experiment"
+          ]
+        },
+        "alternative_mechanisms": [
+          "Biomarkers may reflect disease burden rather than treatment effect."
+        ],
+        "status": "pending_retrieval",
+        "source_objective": "在定义明确的患者群体、疾病类型和治疗类别中，个体的遗传变异、肿瘤或疾病分子表型、器官功能、免疫状态、既往治疗史以及制造过程参数，是否能够以可重复、可校准、因果上可解释的方式预测：1. 某一治疗方案的药代动力学暴露、毒性和适宜剂量；2. 某一靶向药物、免疫治疗、细胞治疗或核酸药物的临床获益与耐药风险；3. 个体化制剂或自体细胞产品能否在身份、纯度、效力、无菌性、批间一致性、周转时间和成本约束下稳定制造；4. 上述预测在不同祖源、年龄、肝肾功能、疾病分期、医疗中心和检测平台迁移时是否仍成立。禁止将统计相关、患者画像匹配或模型准确率直接解释为因果治疗获益；禁止将实验室样本、类器官、动物模型或单中心回顾性结果直接外推为临床个体化治疗有效；禁止将技术尚不成熟误判为生物学上绝对不可行。执行完整闭环：Boxue → Objective Decomposition → ZhiZhi → TanXi → Socrates → MingLi → YanZhen → DuZhi → BianLun → MingLi 修订 → YanZhen 复审。"
+      },
+      {
+        "id": "SH3",
+        "focus": "Manufacturing process parameters ensure stable production of personalized medicines with consistent identity, purity, potency, and sterility.",
+        "causal_chain": [
+          "manufacturing process parameters (e.g., temperature, pH, incubation time)",
+          "quality attributes (identity, purity, potency, sterility)",
+          "stable and consistent product batches"
+        ],
+        "independent_variable": "manufacturing process parameters",
+        "dependent_variables": [
+          "batch-to-batch consistency",
+          "product identity and purity",
+          "potency and sterility"
+        ],
+        "controls": [
+          "standardized manufacturing protocols and quality control measures"
+        ],
+        "quantifiable_bounds": "",
+        "threshold_to_test": "",
+        "falsification_condition": "Significant variability in product quality attributes across multiple batches despite standardized manufacturing processes.",
+        "retrieval_query": "manufacturing process parameters quality attributes personalized medicine stability consistency",
+        "query_variants": [
+          "manufacturing process parameters quality attributes personalized medicine stability consistency",
+          "Personalized Medicine / Precision Medicine / Pharmacogenomics / Cancer Genomics / Clinical Pharmacology / Multi-omics / Patient-derived Models / Cell and Gene Therapy Manufacturing / Biostatistics / Regulatory Science Manufacturing process parameters ensure stable production of personalized medicines with consistent identity, purity, potency, and sterility. causal mechanism experimental evidence",
+          "Manufacturing process parameters ensure stable production of personalized medicines with consistent identity, purity, potency, and sterility. intervention observable outcome preprint"
+        ],
+        "evidence_window": {
+          "P0_latest_preprint": "Recent preprints on the impact of manufacturing parameters on the quality and consistency of personalized medicines.",
+          "P1_recent_primary": "Primary studies from the last two years that evaluate the reproducibility and reliability of manufacturing processes for personalized therapies.",
+          "P2_mechanism_or_theory": "Mechanistic or theoretical evidence on the critical process parameters that affect the quality and consistency of personalized medicinal products.",
+          "minimum_evidence_types": [
+            "observable",
+            "intervention_or_natural_experiment"
+          ]
+        },
+        "alternative_mechanisms": [
+          "Variability in starting materials or uncontrolled environmental factors may contribute to batch inconsistencies."
+        ],
+        "status": "pending_retrieval",
+        "source_objective": "在定义明确的患者群体、疾病类型和治疗类别中，个体的遗传变异、肿瘤或疾病分子表型、器官功能、免疫状态、既往治疗史以及制造过程参数，是否能够以可重复、可校准、因果上可解释的方式预测：1. 某一治疗方案的药代动力学暴露、毒性和适宜剂量；2. 某一靶向药物、免疫治疗、细胞治疗或核酸药物的临床获益与耐药风险；3. 个体化制剂或自体细胞产品能否在身份、纯度、效力、无菌性、批间一致性、周转时间和成本约束下稳定制造；4. 上述预测在不同祖源、年龄、肝肾功能、疾病分期、医疗中心和检测平台迁移时是否仍成立。禁止将统计相关、患者画像匹配或模型准确率直接解释为因果治疗获益；禁止将实验室样本、类器官、动物模型或单中心回顾性结果直接外推为临床个体化治疗有效；禁止将技术尚不成熟误判为生物学上绝对不可行。执行完整闭环：Boxue → Objective Decomposition → ZhiZhi → TanXi → Socrates → MingLi → YanZhen → DuZhi → BianLun → MingLi 修订 → YanZhen 复审。"
+      },
+      {
+        "id": "SH4",
+        "focus": "Predictive models remain valid across different patient demographics, organ functions, and healthcare settings.",
+        "causal_chain": [
+          "patient demographics and organ functions (e.g., ancestry, age, liver/kidney function)",
+          "predictive model performance",
+          "consistent clinical outcomes"
+        ],
+        "independent_variable": "patient demographics and organ functions",
+        "dependent_variables": [
+          "model accuracy and calibration",
+          "clinical outcomes"
+        ],
+        "controls": [
+          "matched controls for disease stage and treatment center"
+        ],
+        "quantifiable_bounds": "",
+        "threshold_to_test": "",
+        "falsification_condition": "Predictive models show significant miscalibration or loss of accuracy when applied to patients with different demographics or organ functions in a multi-center study.",
+        "retrieval_query": "predictive models patient demographics organ function model calibration precision medicine",
+        "query_variants": [
+          "predictive models patient demographics organ function model calibration precision medicine",
+          "Personalized Medicine / Precision Medicine / Pharmacogenomics / Cancer Genomics / Clinical Pharmacology / Multi-omics / Patient-derived Models / Cell and Gene Therapy Manufacturing / Biostatistics / Regulatory Science Predictive models remain valid across different patient demographics, organ functions, and healthcare settings. causal mechanism experimental evidence",
+          "Predictive models remain valid across different patient demographics, organ functions, and healthcare settings. intervention observable outcome preprint"
+        ],
+        "evidence_window": {
+          "P0_latest_preprint": "Recent preprints on the generalizability of predictive models across diverse patient populations and healthcare settings.",
+          "P1_recent_primary": "Primary studies from the last two years that assess the robustness of predictive models in different demographic and clinical contexts.",
+          "P2_mechanism_or_theory": "Mechanistic or theoretical evidence on the factors that influence the external validity and generalizability of predictive models in precision medicine.",
+          "minimum_evidence_types": [
+            "observable",
+            "intervention_or_natural_experiment"
+          ]
+        },
+        "alternative_mechanisms": [
+          "Differences in healthcare practices or unmeasured confounders may affect model performance."
+        ],
+        "status": "pending_retrieval",
+        "source_objective": "在定义明确的患者群体、疾病类型和治疗类别中，个体的遗传变异、肿瘤或疾病分子表型、器官功能、免疫状态、既往治疗史以及制造过程参数，是否能够以可重复、可校准、因果上可解释的方式预测：1. 某一治疗方案的药代动力学暴露、毒性和适宜剂量；2. 某一靶向药物、免疫治疗、细胞治疗或核酸药物的临床获益与耐药风险；3. 个体化制剂或自体细胞产品能否在身份、纯度、效力、无菌性、批间一致性、周转时间和成本约束下稳定制造；4. 上述预测在不同祖源、年龄、肝肾功能、疾病分期、医疗中心和检测平台迁移时是否仍成立。禁止将统计相关、患者画像匹配或模型准确率直接解释为因果治疗获益；禁止将实验室样本、类器官、动物模型或单中心回顾性结果直接外推为临床个体化治疗有效；禁止将技术尚不成熟误判为生物学上绝对不可行。执行完整闭环：Boxue → Objective Decomposition → ZhiZhi → TanXi → Socrates → MingLi → YanZhen → DuZhi → BianLun → MingLi 修订 → YanZhen 复审。"
+      }
+    ],
+    "combination_hypothesis": {
+      "statement": "If genetic and molecular profiles can predict pharmacokinetic and clinical outcomes, and if manufacturing processes are optimized for consistent product quality, then personalized medicines can be effectively designed and manufactured for individual patients across diverse settings.",
+      "required_sub_hypothesis_ids": [
+        "SH1",
+        "SH2",
+        "SH3",
+        "SH4"
+      ],
+      "integration_test": "A multi-center, prospective study that evaluates the combined impact of genetic/molecular predictors and manufacturing parameters on the overall success of personalized medicine, including both clinical and manufacturing outcomes.",
+      "status": "blocked_on_component_evidence"
+    },
+    "execution_constraints": {
+      "retrieval": [
+        "Use semantic_scholar, PubMed, and arXiv; medRxiv/bioRxiv for recent preprints. Ensure at least 15 quality-filtered papers covering each sub-hypothesis. Exclude irrelevant, non-peer-reviewed, or unverifiable sources. Do not fabricate papers, clinical trials, or regulatory documents."
+      ],
+      "gap_detection": [
+        "Identify gaps in the causal chains, such as missing intermediate mechanisms, observability, intervention, or counterfactual evidence. Prioritize gaps that address the transition from genetic/molecular profiles to functional phenotypes, treatment effects, and manufacturing consistency. Avoid listing gaps based on the absence of AI methods or specific technologies."
+      ],
+      "hypothesis": [
+        "Generate hypotheses only from Socrates COMPLETE mechanism contracts. Each hypothesis must include a clear patient scope, treatment scope, and observable endpoints. Define falsification conditions and alternative explanations. Avoid generic templates and ensure hypotheses are testable and falsifiable."
+      ],
+      "verification": [
+        "Conduct internal and external audits, including regime-shift tests for demographic, organ function, and healthcare setting variations. Provide detailed verification designs, including patient selection, controls, and statistical analysis plans. Ensure all experimental designs are subject to IRB/ethics review, clinical trial registration, and regulatory compliance."
+      ]
+    },
+    "decomposition_rules": [
+      "Each sub-hypothesis must expose an intervention, observable outcome, falsification condition, and evidence window.",
+      "A combined conclusion is admissible only after the relevant component hypotheses are independently evaluated.",
+      "Missing quantitative bounds remain explicitly unresolved; they must not be fabricated from the objective."
+    ],
+    "createdAt": 1783793599.593677
+  },
+  "causal_evidence_graph": {
+    "nodes": [],
+    "edges": [],
+    "chains": []
+  },
+  "mechanism_reports": [],
+  "pipeline_tasks": []
+}

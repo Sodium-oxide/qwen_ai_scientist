@@ -1,0 +1,592 @@
+{
+  "project_id": "sci_1783440460418276200",
+  "title": "Semantic gate smoke 3",
+  "domain": "AI-driven discovery of GPNMB CAR-T cells cancer prevention",
+  "objective": "test semantic plausibility gate",
+  "strategic_need": "",
+  "phase": "Gap Discovery",
+  "createdAt": 1783440460.4182806,
+  "updatedAt": 1783440460.4590433,
+  "papergraph": [
+    {
+      "title": "GIS density method",
+      "citation": "GIS Ref",
+      "method": "ArcGIS Pro | Kernel Density Estimation (KDE)",
+      "scenario": "urban event mapping",
+      "benchmark": "spatial clustering accuracy",
+      "abstract": "Kernel density estimation maps coordinate-indexed events.",
+      "extraction_quality": {
+        "score": 0.88,
+        "unknown_ratio": 0.0,
+        "unknown_fields": [],
+        "abstract_chars": 57,
+        "flags": [
+          "short_abstract",
+          "missing_conclusion"
+        ],
+        "needs_enrichment": false,
+        "needs_llm_retry": false,
+        "requires_human_review": false,
+        "initial": {
+          "score": 0.88,
+          "unknown_ratio": 0.0,
+          "unknown_fields": [],
+          "abstract_chars": 57,
+          "flags": [
+            "short_abstract",
+            "missing_conclusion"
+          ],
+          "needs_enrichment": false,
+          "needs_llm_retry": false,
+          "requires_human_review": false
+        },
+        "llm_retry": {
+          "attempted": false,
+          "succeeded": false,
+          "error": ""
+        }
+      },
+      "contribution": "GIS density method Kernel density estimation maps coordinate-indexed events.",
+      "limitation": "No explicit limitation extracted."
+    },
+    {
+      "title": "GPNMB CAR-T target biology",
+      "citation": "CAR-T Ref",
+      "method": "multi-omics target prioritization",
+      "scenario": "CAR-T cell therapy development",
+      "benchmark": "toxicity prediction",
+      "abstract": "GPNMB CAR-T target discovery requires tumor antigen expression and normal tissue toxicity checks.",
+      "extraction_quality": {
+        "score": 0.88,
+        "unknown_ratio": 0.0,
+        "unknown_fields": [],
+        "abstract_chars": 97,
+        "flags": [
+          "short_abstract",
+          "missing_conclusion"
+        ],
+        "needs_enrichment": false,
+        "needs_llm_retry": false,
+        "requires_human_review": false,
+        "initial": {
+          "score": 0.88,
+          "unknown_ratio": 0.0,
+          "unknown_fields": [],
+          "abstract_chars": 97,
+          "flags": [
+            "short_abstract",
+            "missing_conclusion"
+          ],
+          "needs_enrichment": false,
+          "needs_llm_retry": false,
+          "requires_human_review": false
+        },
+        "llm_retry": {
+          "attempted": false,
+          "succeeded": false,
+          "error": ""
+        }
+      },
+      "contribution": "GPNMB CAR-T target biology GPNMB CAR-T target discovery requires tumor antigen expression and normal tissue toxicity checks.",
+      "limitation": "No explicit limitation extracted."
+    }
+  ],
+  "evidence": [],
+  "coverage_matrix": {
+    "ArcGIS Pro | Kernel Density Estimation (KDE)": {
+      "urban event mapping": [
+        "GIS Ref"
+      ]
+    },
+    "multi-omics target prioritization": {
+      "CAR-T cell therapy development": [
+        "CAR-T Ref"
+      ]
+    }
+  },
+  "knowledge_gaps": [
+    {
+      "gap_id": "gap_1783440460453329700",
+      "gap_type": "migration",
+      "description": "Method 'multi-omics target prioritization' is only recorded in scenario 'CAR-T cell therapy development', but may be transferable to scenario 'urban event mapping'.",
+      "supporting_references": [],
+      "novelty_score": 6,
+      "application_value": "medium",
+      "feasibility": "medium",
+      "suggested_research_path": "Audit assumptions of the source scenario, then run a small transfer validation in the target scenario.",
+      "value_argument": "Migration gaps can create useful cross-domain leverage if mechanism assumptions remain valid.",
+      "status": "candidate",
+      "createdAt": 1783440460.4533315,
+      "semantic_plausibility": {
+        "verdict": "PASS",
+        "score": 0.73,
+        "requirements": [
+          "omics"
+        ],
+        "scenario_affordances": [
+          "graph",
+          "molecular",
+          "omics",
+          "spatial_context",
+          "spatial_coordinates"
+        ],
+        "bridge_terms": [
+          "multi-omics"
+        ],
+        "reason": "bridge concepts detected: multi-omics; scenario/context exposes the required data affordances"
+      },
+      "assessment_dimensions": [
+        "academic novelty",
+        "application value",
+        "implementation feasibility"
+      ],
+      "overlap_risk": "low",
+      "strongest_overlap": 0.4118,
+      "literature_coverage_factor": 0.6529,
+      "assessment_reason": "refs=0, gap_type=migration, strongest_local_overlap=0.412, coverage=0.653, feasibility=medium, application_value=medium, semantic_plausibility=PASS",
+      "requires_human_review": true,
+      "dedupe_signature": "car-t cell development in is multi-omics only prioritization target therapy"
+    }
+  ],
+  "hypotheses": [],
+  "keynotes": [],
+  "mechanism_reports": [],
+  "pipeline_tasks": [],
+  "knowledge_map": {
+    "dimension": "method-scenario-benchmark",
+    "main_methods": [
+      "ArcGIS Pro | Kernel Density Estimation (KDE)",
+      "multi-omics target prioritization"
+    ],
+    "main_scenarios": [
+      "CAR-T cell therapy development",
+      "urban event mapping"
+    ],
+    "main_benchmarks": [
+      "spatial clustering accuracy",
+      "toxicity prediction"
+    ],
+    "method_scenario_coverage": {
+      "ArcGIS Pro | Kernel Density Estimation (KDE)": [
+        "urban event mapping"
+      ],
+      "multi-omics target prioritization": [
+        "CAR-T cell therapy development"
+      ]
+    },
+    "benchmark_index": {
+      "spatial clustering accuracy": [
+        "GIS Ref"
+      ],
+      "toxicity prediction": [
+        "CAR-T Ref"
+      ]
+    },
+    "method_scenario_benchmark": {
+      "ArcGIS Pro | Kernel Density Estimation (KDE)": {
+        "urban event mapping": {
+          "spatial clustering accuracy": [
+            "GIS Ref"
+          ]
+        }
+      },
+      "multi-omics target prioritization": {
+        "CAR-T cell therapy development": {
+          "toxicity prediction": [
+            "CAR-T Ref"
+          ]
+        }
+      }
+    },
+    "method_scenario_benchmark_triples": [
+      {
+        "method": "ArcGIS Pro | Kernel Density Estimation (KDE)",
+        "scenario": "urban event mapping",
+        "benchmark": "spatial clustering accuracy",
+        "references": [
+          "GIS Ref"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "ArcGIS Pro | Kernel Density Estimation (KDE)",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "GIS density method Kernel density estimation maps coordinate-indexed events.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "No explicit limitation extracted.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "methodological_description",
+            "claim": "GIS density method Kernel density estimation maps coordinate-indexed events.",
+            "support": "source_sentence"
+          }
+        ]
+      },
+      {
+        "method": "multi-omics target prioritization",
+        "scenario": "CAR-T cell therapy development",
+        "benchmark": "toxicity prediction",
+        "references": [
+          "CAR-T Ref"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "multi-omics target prioritization",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "GPNMB CAR-T target biology GPNMB CAR-T target discovery requires tumor antigen expression and normal tissue toxicity checks.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "No explicit limitation extracted.",
+            "support": "structured_field"
+          }
+        ]
+      }
+    ],
+    "claim_type_counts": {
+      "methodological_description": 3,
+      "empirical_result": 2,
+      "author_opinion": 2
+    },
+    "extraction_repair": {
+      "attempted": 0,
+      "repaired": 2,
+      "still_low_quality": 0,
+      "errors": []
+    },
+    "unknown_summary": {
+      "total_triples": 2,
+      "unknown_triples": 0
+    }
+  },
+  "knowledge_gap_filter": {
+    "min_novelty": 4,
+    "input_count": 3,
+    "rejected_count": 2,
+    "rejected": [
+      {
+        "gap_id": "gap_1783440460451999800",
+        "gap_type": "combinatorial",
+        "novelty_score": 3,
+        "description": "Method 'ArcGIS Pro | Kernel Density Estimation (KDE)' has no recorded validation in scenario 'CAR-T cell therapy development' in the current PaperGraph map.",
+        "reason": "novelty_score below reporting threshold 4"
+      },
+      {
+        "gap_id": "gap_1783440460452740400",
+        "gap_type": "migration",
+        "novelty_score": 3,
+        "description": "Method 'ArcGIS Pro | Kernel Density Estimation (KDE)' is only recorded in scenario 'urban event mapping', but may be transferable to scenario 'CAR-T cell therapy development'.",
+        "reason": "novelty_score below reporting threshold 4"
+      }
+    ],
+    "semantic_rejected_count": 0,
+    "semantic_rejected": []
+  },
+  "semantic_rejected_knowledge_gaps": [],
+  "tanxi_gap_analysis": {
+    "agent": "tanxi",
+    "target_domain": "AI-driven discovery of GPNMB CAR-T cells cancer prevention",
+    "thought": "TanXi scanned the PaperGraph for low-density but high-importance method-scenario-benchmark regions, claim contradictions, anomaly/tension signals, cross-disciplinary unconnected pairs, suspended unresolved problems, and strategic-need alignment.",
+    "action": {
+      "scan_coverage_density": {
+        "target_domain": "AI-driven discovery of GPNMB CAR-T cells cancer prevention"
+      },
+      "detect_reasoning_gaps": {
+        "types": [
+          "claim_contradiction",
+          "theory_evidence_anomaly"
+        ]
+      },
+      "find_unconnected_pairs": {
+        "target_domain": "AI-driven discovery of GPNMB CAR-T cells cancer prevention"
+      },
+      "detect_suspended_problems": {
+        "min_citation_threshold": 50
+      },
+      "prioritize_gaps": {
+        "criteria": [
+          "importance",
+          "tractability",
+          "strategic_value"
+        ]
+      },
+      "align_with_strategic_needs": {
+        "strategic_domains": [
+          "ai for science"
+        ]
+      }
+    },
+    "coverage_analysis": {
+      "target_domain": "AI-driven discovery of GPNMB CAR-T cells cancer prevention",
+      "method_count": 2,
+      "scenario_count": 2,
+      "benchmark_count": 2,
+      "dense_areas": [
+        {
+          "topic": "ArcGIS Pro | Kernel Density Estimation (KDE) + urban event mapping",
+          "method": "ArcGIS Pro | Kernel Density Estimation (KDE)",
+          "scenario": "urban event mapping",
+          "evidence_count": 1,
+          "benchmark_count": 1,
+          "importance_score": 5
+        },
+        {
+          "topic": "multi-omics target prioritization + CAR-T cell therapy development",
+          "method": "multi-omics target prioritization",
+          "scenario": "CAR-T cell therapy development",
+          "evidence_count": 1,
+          "benchmark_count": 1,
+          "importance_score": 7
+        }
+      ],
+      "density_holes": [
+        {
+          "topic": "multi-omics target prioritization + CAR-T cell therapy development benchmark coverage",
+          "method": "multi-omics target prioritization",
+          "scenario": "CAR-T cell therapy development",
+          "importance_score": 7,
+          "current_evidence_level": "medium",
+          "missing_benchmarks": [
+            "spatial clustering accuracy"
+          ],
+          "why_important": "The method-scenario pair has evidence, but benchmark coverage is sparse, so robustness and generalization remain uncertain.",
+          "supporting_references": [
+            "CAR-T Ref"
+          ],
+          "semantic_plausibility": {
+            "verdict": "PASS",
+            "score": 1.0,
+            "requirements": [
+              "omics"
+            ],
+            "scenario_affordances": [
+              "graph",
+              "molecular",
+              "omics",
+              "spatial_context",
+              "spatial_coordinates"
+            ],
+            "bridge_terms": [
+              "multi-omics"
+            ],
+            "reason": "method and scenario already co-occur in at least one PaperGraph record; bridge concepts detected: multi-omics; scenario/context exposes the required data affordances"
+          }
+        },
+        {
+          "topic": "ArcGIS Pro | Kernel Density Estimation (KDE) + CAR-T cell therapy development",
+          "method": "ArcGIS Pro | Kernel Density Estimation (KDE)",
+          "scenario": "CAR-T cell therapy development",
+          "importance_score": 7,
+          "current_evidence_level": "none",
+          "missing_benchmarks": [
+            "spatial clustering accuracy",
+            "toxicity prediction"
+          ],
+          "why_important": "Both the method and scenario are visible in the field map, but this intersection has no recorded validation.",
+          "supporting_references": [],
+          "semantic_plausibility": {
+            "verdict": "HUMAN_REVIEW",
+            "score": 0.43,
+            "requirements": [
+              "spatial_coordinates"
+            ],
+            "scenario_affordances": [
+              "graph",
+              "molecular",
+              "omics",
+              "spatial_context",
+              "spatial_coordinates"
+            ],
+            "bridge_terms": [
+              "multi-omics"
+            ],
+            "reason": "bridge concepts detected: multi-omics; scenario/context exposes the required data affordances; narrow tool/software method appears without matching data modality in the scenario"
+          }
+        },
+        {
+          "topic": "ArcGIS Pro | Kernel Density Estimation (KDE) + urban event mapping benchmark coverage",
+          "method": "ArcGIS Pro | Kernel Density Estimation (KDE)",
+          "scenario": "urban event mapping",
+          "importance_score": 5,
+          "current_evidence_level": "medium",
+          "missing_benchmarks": [
+            "toxicity prediction"
+          ],
+          "why_important": "The method-scenario pair has evidence, but benchmark coverage is sparse, so robustness and generalization remain uncertain.",
+          "supporting_references": [
+            "GIS Ref"
+          ],
+          "semantic_plausibility": {
+            "verdict": "PASS",
+            "score": 0.78,
+            "requirements": [
+              "spatial_coordinates"
+            ],
+            "scenario_affordances": [
+              "graph",
+              "molecular",
+              "omics",
+              "spatial_context",
+              "spatial_coordinates"
+            ],
+            "bridge_terms": [
+              "multi-omics"
+            ],
+            "reason": "method and scenario already co-occur in at least one PaperGraph record; bridge concepts detected: multi-omics; scenario/context exposes the required data affordances; narrow tool/software method appears without matching data modality in the scenario"
+          }
+        },
+        {
+          "topic": "multi-omics target prioritization + urban event mapping",
+          "method": "multi-omics target prioritization",
+          "scenario": "urban event mapping",
+          "importance_score": 5,
+          "current_evidence_level": "none",
+          "missing_benchmarks": [
+            "spatial clustering accuracy",
+            "toxicity prediction"
+          ],
+          "why_important": "Both the method and scenario are visible in the field map, but this intersection has no recorded validation.",
+          "supporting_references": [],
+          "semantic_plausibility": {
+            "verdict": "PASS",
+            "score": 0.73,
+            "requirements": [
+              "omics"
+            ],
+            "scenario_affordances": [
+              "graph",
+              "molecular",
+              "omics",
+              "spatial_context",
+              "spatial_coordinates"
+            ],
+            "bridge_terms": [
+              "multi-omics"
+            ],
+            "reason": "bridge concepts detected: multi-omics; scenario/context exposes the required data affordances"
+          }
+        }
+      ],
+      "rejected_density_holes": []
+    },
+    "reasoning_gaps": [],
+    "cross_disciplinary_unconnected_pairs": [],
+    "suspended_problems": [
+      {
+        "problem": "GIS density method Kernel density estimation maps coordinate-indexed events. No explicit limitation extracted.",
+        "years_unresolved": 0,
+        "citation_count": 0,
+        "evidence_level": "unknown",
+        "barrier_to_progress": "unspecified conceptual or technical barrier",
+        "supporting_references": [
+          "GIS Ref"
+        ]
+      },
+      {
+        "problem": "GPNMB CAR-T target biology GPNMB CAR-T target discovery requires tumor antigen expression and normal tissue toxicity checks. No explicit limitation extracted.",
+        "years_unresolved": 0,
+        "citation_count": 0,
+        "evidence_level": "unknown",
+        "barrier_to_progress": "unspecified conceptual or technical barrier",
+        "supporting_references": [
+          "CAR-T Ref"
+        ]
+      }
+    ],
+    "ranked_gaps": [
+      {
+        "rank": 1,
+        "gap_id": "gap_1783440460457163800",
+        "gap_description": "Density hole: 'ArcGIS Pro | Kernel Density Estimation (KDE)' in 'urban event mapping' lacks benchmark coverage for toxicity prediction.",
+        "gap_type": "improvement",
+        "exploration_value_score": 10,
+        "importance": "high",
+        "tractability": "high",
+        "strategic_alignment": [
+          {
+            "strategic_domain": "ai for science",
+            "matched_keywords": [
+              "ai"
+            ],
+            "alignment_score": 6
+          }
+        ],
+        "supporting_references": [
+          "GIS Ref"
+        ],
+        "recommended_approach": "Use the dense neighboring literature as controls, then test the sparse intersection with explicit benchmark coverage.",
+        "ranking_reason": "novelty=5, refs=1, application=medium, feasibility=high, type=improvement, strategic_matches=1, density_bonus=1"
+      },
+      {
+        "rank": 2,
+        "gap_id": "gap_1783440460456912400",
+        "gap_description": "Density hole: 'multi-omics target prioritization' in 'CAR-T cell therapy development' lacks benchmark coverage for spatial clustering accuracy.",
+        "gap_type": "improvement",
+        "exploration_value_score": 10,
+        "importance": "high",
+        "tractability": "high",
+        "strategic_alignment": [
+          {
+            "strategic_domain": "ai for science",
+            "matched_keywords": [
+              "ai"
+            ],
+            "alignment_score": 6
+          }
+        ],
+        "supporting_references": [
+          "CAR-T Ref"
+        ],
+        "recommended_approach": "Use the dense neighboring literature as controls, then test the sparse intersection with explicit benchmark coverage.",
+        "ranking_reason": "novelty=5, refs=1, application=medium, feasibility=high, type=improvement, strategic_matches=1, density_bonus=1"
+      },
+      {
+        "rank": 3,
+        "gap_id": "gap_1783440460457381500",
+        "gap_description": "Suspended problem: GIS density method Kernel density estimation maps coordinate-indexed events. No explicit limitation extracted.",
+        "gap_type": "problem",
+        "exploration_value_score": 8,
+        "importance": "high",
+        "tractability": "medium",
+        "strategic_alignment": [],
+        "supporting_references": [
+          "GIS Ref"
+        ],
+        "recommended_approach": "Trace the barrier to a concrete scientific question, then test whether a new method or dataset removes the blocker.",
+        "ranking_reason": "novelty=3, refs=1, application=medium, feasibility=medium, type=problem, strategic_matches=0, density_bonus=1"
+      },
+      {
+        "rank": 4,
+        "gap_id": "gap_1783440460457583200",
+        "gap_description": "Suspended problem: GPNMB CAR-T target biology GPNMB CAR-T target discovery requires tumor antigen expression and normal tissue toxicity checks. No explicit limitation extracted.",
+        "gap_type": "problem",
+        "exploration_value_score": 8,
+        "importance": "high",
+        "tractability": "medium",
+        "strategic_alignment": [],
+        "supporting_references": [
+          "CAR-T Ref"
+        ],
+        "recommended_approach": "Trace the barrier to a concrete scientific question, then test whether a new method or dataset removes the blocker.",
+        "ranking_reason": "novelty=3, refs=1, application=medium, feasibility=medium, type=problem, strategic_matches=0, density_bonus=1"
+      }
+    ],
+    "constraints_checked": {
+      "requires_supporting_reference": true,
+      "filters_trivial_low_novelty": true,
+      "max_gaps": 6
+    }
+  }
+}

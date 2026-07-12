@@ -1,0 +1,1038 @@
+{
+  "search_id": "search_1783776064416962300",
+  "query": "锂离子电池 电极材料 电解液 循环寿命 能量密度 review survey",
+  "synonym_expansion_used": false,
+  "domain": "Energy Storage / Lithium-ion Batteries / Post-Lithium Systems / Materials Science / Electrochemistry / Battery Recycling / Techno-Economic Analysis",
+  "focus_branches": [],
+  "providers": [
+    "semantic_scholar",
+    "arxiv"
+  ],
+  "createdAt": 1783776076.8994746,
+  "strategy": "stratified_cascade",
+  "query_plan": [
+    {
+      "branch": "lithium_ion_batteries",
+      "name": "Lithium-Ion Batteries",
+      "query": "锂离子电池 电极材料 电解液 循环寿命 能量密度 review survey",
+      "quota": 1,
+      "estimated_density": "unknown",
+      "strategic_importance": 9,
+      "search_strategy": "must_include",
+      "phase": "core_subspace"
+    }
+  ],
+  "strata": [
+    {
+      "layer": "L0_review",
+      "label": "high-impact review / field map",
+      "quota": 0,
+      "query_suffix": "review survey progress perspective tutorial systematic review meta-analysis",
+      "target": 0,
+      "selected": 0,
+      "carried_to_next": 0
+    },
+    {
+      "layer": "L1_milestone",
+      "label": "milestone / highly cited foundation",
+      "quota": 2,
+      "query_suffix": "seminal foundational highly cited landmark classic influential",
+      "target": 2,
+      "candidate_count": 1,
+      "raw_candidate_count": 2,
+      "selected": 0,
+      "domain_rejected": 1,
+      "recovery_used": "",
+      "carried_to_next": 2
+    },
+    {
+      "layer": "L2_top_latest",
+      "label": "recent top-venue frontier",
+      "quota": 4,
+      "query_suffix": "latest recent top journal high impact breakthrough advance frontier",
+      "target": 6,
+      "candidate_count": 1,
+      "raw_candidate_count": 2,
+      "selected": 1,
+      "domain_rejected": 0,
+      "recovery_used": "relaxed_top_latest_recent_or_high_quality_available",
+      "carried_to_next": 5
+    },
+    {
+      "layer": "L3_preprint",
+      "label": "latest arXiv preprint frontier",
+      "quota": 1,
+      "query_suffix": "",
+      "target": 6,
+      "candidate_count": 0,
+      "raw_candidate_count": 0,
+      "selected": 0,
+      "domain_rejected": 0,
+      "recovery_used": "",
+      "carried_to_next": 6
+    },
+    {
+      "layer": "L4_regular",
+      "label": "regular journal / supplemental evidence",
+      "quota": 5,
+      "query_suffix": "",
+      "target": 11,
+      "candidate_count": 2,
+      "raw_candidate_count": 2,
+      "selected": 0,
+      "domain_rejected": 1,
+      "recovery_used": "",
+      "carried_to_next": 11
+    },
+    {
+      "layer": "L4_regular_backfill",
+      "label": "regular journal / quota backfill",
+      "quota": 11,
+      "target": 11,
+      "candidate_count": 2,
+      "selected": 0,
+      "domain_rejected": 1,
+      "carried_to_next": 11
+    }
+  ],
+  "knowledge_pyramid": {
+    "query": "锂离子电池 电极材料 电解液 循环寿命 能量密度 review survey",
+    "root_result_index": 0,
+    "root_node": {
+      "result_index": 0,
+      "stratified_layer": "L2_top_latest",
+      "stratified_label": "recent top-venue frontier",
+      "query_branch": "lithium_ion_batteries",
+      "retrieval_query": "锂离子电池 电极材料 电解液 循环寿命 能量密度 review survey",
+      "_why_selected": "Selected as recent top-venue frontier paper: Electrolyte perspective on stabilizing LiNi_0.8Co_0.1Mn_0.1O_2 cathode for lithium-ion batteries; year=2022; venue=Rare Metals; quality=0.76; relevance=0.2227.",
+      "domain_relevance": {
+        "profile": "energy_storage_lithium_ion_batteries_post_lithium_systems_materials_science_elec",
+        "target_field": "materials_energy",
+        "result_field": "materials_energy",
+        "score": 0.1675,
+        "query_hits": [],
+        "anchor_hits": [
+          "lithium-ion",
+          "batteries"
+        ],
+        "topic_hits": [],
+        "noise_hits": [],
+        "flags": [
+          "low_domain_relevance",
+          "core_domain_hit"
+        ],
+        "is_preprint": false,
+        "core_domain_alignment": {
+          "enabled": true,
+          "passes": true,
+          "core_terms": [
+            "energy storage lithium-ion",
+            "storage lithium-ion batteries",
+            "lithium-ion batteries post-lithium",
+            "batteries post-lithium systems",
+            "post-lithium systems materials",
+            "systems materials science",
+            "materials science electrochemistry",
+            "science electrochemistry battery",
+            "electrochemistry battery recycling",
+            "battery recycling techno-economic",
+            "energy",
+            "storage",
+            "lithium-ion",
+            "batteries",
+            "post-lithium",
+            "systems",
+            "materials",
+            "electrochemistry"
+          ],
+          "core_hit_count": 2,
+          "core_hits": [
+            "lithium-ion",
+            "batteries"
+          ],
+          "specific_terms": [
+            "energy storage lithium-ion",
+            "storage lithium-ion batteries",
+            "lithium-ion batteries post-lithium",
+            "batteries post-lithium systems",
+            "post-lithium systems materials",
+            "systems materials science",
+            "materials science electrochemistry",
+            "science electrochemistry battery",
+            "electrochemistry battery recycling",
+            "battery recycling techno-economic",
+            "storage",
+            "lithium-ion"
+          ],
+          "specific_hit_count": 2,
+          "specific_hits": [
+            "lithium-ion",
+            "batteries"
+          ],
+          "min_core_hits": 3,
+          "min_specific_hits": 2,
+          "is_preprint": false,
+          "reason": "core topic terms sufficiently covered"
+        },
+        "verdict": "keep",
+        "requires_human_review": false
+      },
+      "relevance_score": 0.2227,
+      "relevance_components": {
+        "text_score": 0.096,
+        "recency_score": 0.7,
+        "impact_score": 0.6583,
+        "citation_field": "materials_energy",
+        "citation_baseline": 250.0,
+        "venue_score": 0.45,
+        "publication_quality_score": 0.76,
+        "base_score": 0.293,
+        "text_weight": 0.62,
+        "recency_weight": 0.1,
+        "impact_weight": 0.18,
+        "venue_weight": 0.1
+      },
+      "publication_quality_score": 0.76,
+      "venue_quality": "unverified",
+      "journal_quartile": "",
+      "journal_metric_source": "",
+      "inferred_field": "materials_energy",
+      "quality_flags": [
+        "unverified_venue",
+        "some_citations"
+      ],
+      "quality_criteria": [
+        "venue did not match suspicious, reputable, preprint, or curated quartile tables",
+        "citation count exceeds minimum nontrivial threshold"
+      ],
+      "suspicion_type": "",
+      "is_review_like": true,
+      "pyramid_root_score": 0.8234,
+      "matched_query_terms": [
+        "lithium-ion",
+        "batteries"
+      ],
+      "title": "Electrolyte perspective on stabilizing LiNi_0.8Co_0.1Mn_0.1O_2 cathode for lithium-ion batteries",
+      "citation": "Xiao-feng Zhu et al. (2022) Electrolyte perspective on stabilizing LiNi_0.8Co_0.1Mn_0.1O_2 cathode for lithium-ion batteries doi:10.1007/s12598-022-02101-2",
+      "provider": "semantic_scholar",
+      "year": "2022",
+      "citation_count": 37,
+      "influential_citation_count": 0,
+      "doi": "10.1007/s12598-022-02101-2",
+      "arxiv_id": "",
+      "url": "https://www.semanticscholar.org/paper/36e872ff530ea330fafc22cbe8740364632e8445",
+      "relevance_reason": "title=2/15, abstract=0/15, citation=2/15, phrase_bonus=0.0, recency=0.7, impact=0.6583, venue=0.45, quality=0.76",
+      "quality_reason": "venue did not match suspicious, reputable, preprint, or curated quartile tables; citation count exceeds minimum nontrivial threshold"
+    },
+    "root_policy": "Prefer a high-impact review as the knowledge-map root. Only a clearly superior Nature/Science/Cell/PNAS-level paper should override it as the seed.",
+    "layers": {
+      "L0_review": [],
+      "L1A_milestone": [],
+      "L1B_top_latest": [
+        {
+          "result_index": 0,
+          "stratified_layer": "L2_top_latest",
+          "stratified_label": "recent top-venue frontier",
+          "query_branch": "lithium_ion_batteries",
+          "retrieval_query": "锂离子电池 电极材料 电解液 循环寿命 能量密度 review survey",
+          "_why_selected": "Selected as recent top-venue frontier paper: Electrolyte perspective on stabilizing LiNi_0.8Co_0.1Mn_0.1O_2 cathode for lithium-ion batteries; year=2022; venue=Rare Metals; quality=0.76; relevance=0.2227.",
+          "domain_relevance": {
+            "profile": "energy_storage_lithium_ion_batteries_post_lithium_systems_materials_science_elec",
+            "target_field": "materials_energy",
+            "result_field": "materials_energy",
+            "score": 0.1675,
+            "query_hits": [],
+            "anchor_hits": [
+              "lithium-ion",
+              "batteries"
+            ],
+            "topic_hits": [],
+            "noise_hits": [],
+            "flags": [
+              "low_domain_relevance",
+              "core_domain_hit"
+            ],
+            "is_preprint": false,
+            "core_domain_alignment": {
+              "enabled": true,
+              "passes": true,
+              "core_terms": [
+                "energy storage lithium-ion",
+                "storage lithium-ion batteries",
+                "lithium-ion batteries post-lithium",
+                "batteries post-lithium systems",
+                "post-lithium systems materials",
+                "systems materials science",
+                "materials science electrochemistry",
+                "science electrochemistry battery",
+                "electrochemistry battery recycling",
+                "battery recycling techno-economic",
+                "energy",
+                "storage",
+                "lithium-ion",
+                "batteries",
+                "post-lithium",
+                "systems",
+                "materials",
+                "electrochemistry"
+              ],
+              "core_hit_count": 2,
+              "core_hits": [
+                "lithium-ion",
+                "batteries"
+              ],
+              "specific_terms": [
+                "energy storage lithium-ion",
+                "storage lithium-ion batteries",
+                "lithium-ion batteries post-lithium",
+                "batteries post-lithium systems",
+                "post-lithium systems materials",
+                "systems materials science",
+                "materials science electrochemistry",
+                "science electrochemistry battery",
+                "electrochemistry battery recycling",
+                "battery recycling techno-economic",
+                "storage",
+                "lithium-ion"
+              ],
+              "specific_hit_count": 2,
+              "specific_hits": [
+                "lithium-ion",
+                "batteries"
+              ],
+              "min_core_hits": 3,
+              "min_specific_hits": 2,
+              "is_preprint": false,
+              "reason": "core topic terms sufficiently covered"
+            },
+            "verdict": "keep",
+            "requires_human_review": false
+          },
+          "relevance_score": 0.2227,
+          "relevance_components": {
+            "text_score": 0.096,
+            "recency_score": 0.7,
+            "impact_score": 0.6583,
+            "citation_field": "materials_energy",
+            "citation_baseline": 250.0,
+            "venue_score": 0.45,
+            "publication_quality_score": 0.76,
+            "base_score": 0.293,
+            "text_weight": 0.62,
+            "recency_weight": 0.1,
+            "impact_weight": 0.18,
+            "venue_weight": 0.1
+          },
+          "publication_quality_score": 0.76,
+          "venue_quality": "unverified",
+          "journal_quartile": "",
+          "journal_metric_source": "",
+          "inferred_field": "materials_energy",
+          "quality_flags": [
+            "unverified_venue",
+            "some_citations"
+          ],
+          "quality_criteria": [
+            "venue did not match suspicious, reputable, preprint, or curated quartile tables",
+            "citation count exceeds minimum nontrivial threshold"
+          ],
+          "suspicion_type": "",
+          "is_review_like": true,
+          "pyramid_root_score": 0.8234,
+          "matched_query_terms": [
+            "lithium-ion",
+            "batteries"
+          ],
+          "title": "Electrolyte perspective on stabilizing LiNi_0.8Co_0.1Mn_0.1O_2 cathode for lithium-ion batteries",
+          "citation": "Xiao-feng Zhu et al. (2022) Electrolyte perspective on stabilizing LiNi_0.8Co_0.1Mn_0.1O_2 cathode for lithium-ion batteries doi:10.1007/s12598-022-02101-2",
+          "provider": "semantic_scholar",
+          "year": "2022",
+          "citation_count": 37,
+          "influential_citation_count": 0,
+          "doi": "10.1007/s12598-022-02101-2",
+          "arxiv_id": "",
+          "url": "https://www.semanticscholar.org/paper/36e872ff530ea330fafc22cbe8740364632e8445",
+          "relevance_reason": "title=2/15, abstract=0/15, citation=2/15, phrase_bonus=0.0, recency=0.7, impact=0.6583, venue=0.45, quality=0.76",
+          "quality_reason": "venue did not match suspicious, reputable, preprint, or curated quartile tables; citation count exceeds minimum nontrivial threshold"
+        }
+      ],
+      "L1C_preprint": [],
+      "L2_regular": []
+    },
+    "edges": [],
+    "strata": [
+      {
+        "layer": "L0_review",
+        "label": "high-impact review / field map",
+        "quota": 0,
+        "query_suffix": "review survey progress perspective tutorial systematic review meta-analysis",
+        "target": 0,
+        "selected": 0,
+        "carried_to_next": 0
+      },
+      {
+        "layer": "L1_milestone",
+        "label": "milestone / highly cited foundation",
+        "quota": 2,
+        "query_suffix": "seminal foundational highly cited landmark classic influential",
+        "target": 2,
+        "candidate_count": 1,
+        "raw_candidate_count": 2,
+        "selected": 0,
+        "domain_rejected": 1,
+        "recovery_used": "",
+        "carried_to_next": 2
+      },
+      {
+        "layer": "L2_top_latest",
+        "label": "recent top-venue frontier",
+        "quota": 4,
+        "query_suffix": "latest recent top journal high impact breakthrough advance frontier",
+        "target": 6,
+        "candidate_count": 1,
+        "raw_candidate_count": 2,
+        "selected": 1,
+        "domain_rejected": 0,
+        "recovery_used": "relaxed_top_latest_recent_or_high_quality_available",
+        "carried_to_next": 5
+      },
+      {
+        "layer": "L3_preprint",
+        "label": "latest arXiv preprint frontier",
+        "quota": 1,
+        "query_suffix": "",
+        "target": 6,
+        "candidate_count": 0,
+        "raw_candidate_count": 0,
+        "selected": 0,
+        "domain_rejected": 0,
+        "recovery_used": "",
+        "carried_to_next": 6
+      },
+      {
+        "layer": "L4_regular",
+        "label": "regular journal / supplemental evidence",
+        "quota": 5,
+        "query_suffix": "",
+        "target": 11,
+        "candidate_count": 2,
+        "raw_candidate_count": 2,
+        "selected": 0,
+        "domain_rejected": 1,
+        "recovery_used": "",
+        "carried_to_next": 11
+      },
+      {
+        "layer": "L4_regular_backfill",
+        "label": "regular journal / quota backfill",
+        "quota": 11,
+        "target": 11,
+        "candidate_count": 2,
+        "selected": 0,
+        "domain_rejected": 1,
+        "carried_to_next": 11
+      }
+    ]
+  },
+  "total_results": 1,
+  "results": [
+    {
+      "title": "Electrolyte perspective on stabilizing LiNi_0.8Co_0.1Mn_0.1O_2 cathode for lithium-ion batteries",
+      "citation": "Xiao-feng Zhu et al. (2022) Electrolyte perspective on stabilizing LiNi_0.8Co_0.1Mn_0.1O_2 cathode for lithium-ion batteries doi:10.1007/s12598-022-02101-2",
+      "authors": [
+        "Xiao-feng Zhu",
+        "Xiu Li",
+        "Tianquan Liang",
+        "Xinhua Liu",
+        "Jian-Min Ma"
+      ],
+      "year": "2022",
+      "venue": "Rare Metals",
+      "doi": "10.1007/s12598-022-02101-2",
+      "arxiv_id": "",
+      "semantic_scholar_id": "36e872ff530ea330fafc22cbe8740364632e8445",
+      "url": "https://www.semanticscholar.org/paper/36e872ff530ea330fafc22cbe8740364632e8445",
+      "open_access_pdf": "",
+      "citation_count": 37,
+      "influential_citation_count": 0,
+      "reference_count": 70,
+      "is_open_access": false,
+      "abstract": "",
+      "papergraph_input": {
+        "title": "Electrolyte perspective on stabilizing LiNi_0.8Co_0.1Mn_0.1O_2 cathode for lithium-ion batteries",
+        "citation": "Xiao-feng Zhu et al. (2022) Electrolyte perspective on stabilizing LiNi_0.8Co_0.1Mn_0.1O_2 cathode for lithium-ion batteries doi:10.1007/s12598-022-02101-2",
+        "authors": [
+          "Xiao-feng Zhu",
+          "Xiu Li",
+          "Tianquan Liang",
+          "Xinhua Liu",
+          "Jian-Min Ma"
+        ],
+        "year": "2022",
+        "venue": "Rare Metals",
+        "provider": "semantic_scholar",
+        "source_type": "api",
+        "doi": "10.1007/s12598-022-02101-2",
+        "arxiv_id": "",
+        "semantic_scholar_id": "36e872ff530ea330fafc22cbe8740364632e8445",
+        "url": "https://www.semanticscholar.org/paper/36e872ff530ea330fafc22cbe8740364632e8445",
+        "abstract": "",
+        "conclusion": ""
+      },
+      "provider": "semantic_scholar",
+      "query_branch": "lithium_ion_batteries",
+      "retrieval_query": "锂离子电池 电极材料 电解液 循环寿命 能量密度 review survey",
+      "relevance_score": 0.2227,
+      "relevance_components": {
+        "text_score": 0.096,
+        "recency_score": 0.7,
+        "impact_score": 0.6583,
+        "citation_field": "materials_energy",
+        "citation_baseline": 250.0,
+        "venue_score": 0.45,
+        "publication_quality_score": 0.76,
+        "base_score": 0.293,
+        "text_weight": 0.62,
+        "recency_weight": 0.1,
+        "impact_weight": 0.18,
+        "venue_weight": 0.1
+      },
+      "publication_quality_score": 0.76,
+      "venue_quality": "unverified",
+      "journal_quartile": "",
+      "journal_metric_source": "",
+      "inferred_field": "materials_energy",
+      "quality_flags": [
+        "unverified_venue",
+        "some_citations"
+      ],
+      "quality_criteria": [
+        "venue did not match suspicious, reputable, preprint, or curated quartile tables",
+        "citation count exceeds minimum nontrivial threshold"
+      ],
+      "suspicion_type": "",
+      "quality_reason": "venue did not match suspicious, reputable, preprint, or curated quartile tables; citation count exceeds minimum nontrivial threshold",
+      "matched_query_terms": [
+        "lithium-ion",
+        "batteries"
+      ],
+      "relevance_reason": "title=2/15, abstract=0/15, citation=2/15, phrase_bonus=0.0, recency=0.7, impact=0.6583, venue=0.45, quality=0.76",
+      "domain_relevance": {
+        "profile": "energy_storage_lithium_ion_batteries_post_lithium_systems_materials_science_elec",
+        "target_field": "materials_energy",
+        "result_field": "materials_energy",
+        "score": 0.1675,
+        "query_hits": [],
+        "anchor_hits": [
+          "lithium-ion",
+          "batteries"
+        ],
+        "topic_hits": [],
+        "noise_hits": [],
+        "flags": [
+          "low_domain_relevance",
+          "core_domain_hit"
+        ],
+        "is_preprint": false,
+        "core_domain_alignment": {
+          "enabled": true,
+          "passes": true,
+          "core_terms": [
+            "energy storage lithium-ion",
+            "storage lithium-ion batteries",
+            "lithium-ion batteries post-lithium",
+            "batteries post-lithium systems",
+            "post-lithium systems materials",
+            "systems materials science",
+            "materials science electrochemistry",
+            "science electrochemistry battery",
+            "electrochemistry battery recycling",
+            "battery recycling techno-economic",
+            "energy",
+            "storage",
+            "lithium-ion",
+            "batteries",
+            "post-lithium",
+            "systems",
+            "materials",
+            "electrochemistry"
+          ],
+          "core_hit_count": 2,
+          "core_hits": [
+            "lithium-ion",
+            "batteries"
+          ],
+          "specific_terms": [
+            "energy storage lithium-ion",
+            "storage lithium-ion batteries",
+            "lithium-ion batteries post-lithium",
+            "batteries post-lithium systems",
+            "post-lithium systems materials",
+            "systems materials science",
+            "materials science electrochemistry",
+            "science electrochemistry battery",
+            "electrochemistry battery recycling",
+            "battery recycling techno-economic",
+            "storage",
+            "lithium-ion"
+          ],
+          "specific_hit_count": 2,
+          "specific_hits": [
+            "lithium-ion",
+            "batteries"
+          ],
+          "min_core_hits": 3,
+          "min_specific_hits": 2,
+          "is_preprint": false,
+          "reason": "core topic terms sufficiently covered"
+        },
+        "verdict": "keep",
+        "requires_human_review": false
+      },
+      "domain_review": {
+        "verdict": "review",
+        "score": 0.1667,
+        "target_field": "materials_energy",
+        "result_field": "materials_energy",
+        "foreign_field": false,
+        "target_terms": [
+          "energy",
+          "storage",
+          "lithium-ion",
+          "batteries",
+          "post-lithium",
+          "systems",
+          "materials",
+          "science",
+          "electrochemistry",
+          "battery",
+          "recycling",
+          "techno-economic"
+        ],
+        "target_hits": [
+          "lithium-ion",
+          "batteries"
+        ],
+        "reason": "Some target evidence exists, but the field context or anchor coverage remains ambiguous."
+      },
+      "stratified_layer": "L2_top_latest",
+      "stratified_label": "recent top-venue frontier",
+      "stratified_recovery": "relaxed_top_latest_recent_or_high_quality_available",
+      "_why_selected": "Selected as recent top-venue frontier paper: Electrolyte perspective on stabilizing LiNi_0.8Co_0.1Mn_0.1O_2 cathode for lithium-ion batteries; year=2022; venue=Rare Metals; quality=0.76; relevance=0.2227.",
+      "result_index": 0,
+      "search_id": "search_1783776064416962300"
+    }
+  ],
+  "provider_blocks": [
+    {
+      "provider": "semantic_scholar",
+      "query": "锂离子电池 电极材料 电解液 循环寿命 能量密度 review survey",
+      "status": "ok",
+      "total": 2,
+      "results": [
+        {
+          "title": "Nanostructured transition metal oxides as advanced anodes for lithium-ion batteries",
+          "citation": "Jingjing Zhang et al. (2015) Nanostructured transition metal oxides as advanced anodes for lithium-ion batteries doi:10.1007/S11434-015-0771-6",
+          "authors": [
+            "Jingjing Zhang",
+            "A. Yu"
+          ],
+          "year": "2015",
+          "venue": "",
+          "doi": "10.1007/S11434-015-0771-6",
+          "arxiv_id": "",
+          "semantic_scholar_id": "334926b32659764ab76fbae32868bcd7152c5fd0",
+          "url": "https://www.semanticscholar.org/paper/334926b32659764ab76fbae32868bcd7152c5fd0",
+          "open_access_pdf": "",
+          "citation_count": 249,
+          "influential_citation_count": 2,
+          "reference_count": 79,
+          "is_open_access": false,
+          "abstract": "",
+          "papergraph_input": {
+            "title": "Nanostructured transition metal oxides as advanced anodes for lithium-ion batteries",
+            "citation": "Jingjing Zhang et al. (2015) Nanostructured transition metal oxides as advanced anodes for lithium-ion batteries doi:10.1007/S11434-015-0771-6",
+            "authors": [
+              "Jingjing Zhang",
+              "A. Yu"
+            ],
+            "year": "2015",
+            "venue": "",
+            "provider": "semantic_scholar",
+            "source_type": "api",
+            "doi": "10.1007/S11434-015-0771-6",
+            "arxiv_id": "",
+            "semantic_scholar_id": "334926b32659764ab76fbae32868bcd7152c5fd0",
+            "url": "https://www.semanticscholar.org/paper/334926b32659764ab76fbae32868bcd7152c5fd0",
+            "abstract": "",
+            "conclusion": ""
+          }
+        },
+        {
+          "title": "Electrolyte perspective on stabilizing LiNi_0.8Co_0.1Mn_0.1O_2 cathode for lithium-ion batteries",
+          "citation": "Xiao-feng Zhu et al. (2022) Electrolyte perspective on stabilizing LiNi_0.8Co_0.1Mn_0.1O_2 cathode for lithium-ion batteries doi:10.1007/s12598-022-02101-2",
+          "authors": [
+            "Xiao-feng Zhu",
+            "Xiu Li",
+            "Tianquan Liang",
+            "Xinhua Liu",
+            "Jian-Min Ma"
+          ],
+          "year": "2022",
+          "venue": "Rare Metals",
+          "doi": "10.1007/s12598-022-02101-2",
+          "arxiv_id": "",
+          "semantic_scholar_id": "36e872ff530ea330fafc22cbe8740364632e8445",
+          "url": "https://www.semanticscholar.org/paper/36e872ff530ea330fafc22cbe8740364632e8445",
+          "open_access_pdf": "",
+          "citation_count": 37,
+          "influential_citation_count": 0,
+          "reference_count": 70,
+          "is_open_access": false,
+          "abstract": "",
+          "papergraph_input": {
+            "title": "Electrolyte perspective on stabilizing LiNi_0.8Co_0.1Mn_0.1O_2 cathode for lithium-ion batteries",
+            "citation": "Xiao-feng Zhu et al. (2022) Electrolyte perspective on stabilizing LiNi_0.8Co_0.1Mn_0.1O_2 cathode for lithium-ion batteries doi:10.1007/s12598-022-02101-2",
+            "authors": [
+              "Xiao-feng Zhu",
+              "Xiu Li",
+              "Tianquan Liang",
+              "Xinhua Liu",
+              "Jian-Min Ma"
+            ],
+            "year": "2022",
+            "venue": "Rare Metals",
+            "provider": "semantic_scholar",
+            "source_type": "api",
+            "doi": "10.1007/s12598-022-02101-2",
+            "arxiv_id": "",
+            "semantic_scholar_id": "36e872ff530ea330fafc22cbe8740364632e8445",
+            "url": "https://www.semanticscholar.org/paper/36e872ff530ea330fafc22cbe8740364632e8445",
+            "abstract": "",
+            "conclusion": ""
+          }
+        }
+      ],
+      "next_step": "Pass a result's papergraph_input fields into import_papergraph_record, or use import_literature_text with use_llm=true.",
+      "query_branch": "lithium_ion_batteries",
+      "retrieval_strategy": "broad_recall_then_citation_rerank"
+    },
+    {
+      "provider": "semantic_scholar",
+      "query": "锂离子电池 电极材料 电解液 循环寿命 能量密度 review survey",
+      "status": "ok",
+      "total": 2,
+      "results": [
+        {
+          "title": "Nanostructured transition metal oxides as advanced anodes for lithium-ion batteries",
+          "citation": "Jingjing Zhang et al. (2015) Nanostructured transition metal oxides as advanced anodes for lithium-ion batteries doi:10.1007/S11434-015-0771-6",
+          "authors": [
+            "Jingjing Zhang",
+            "A. Yu"
+          ],
+          "year": "2015",
+          "venue": "",
+          "doi": "10.1007/S11434-015-0771-6",
+          "arxiv_id": "",
+          "semantic_scholar_id": "334926b32659764ab76fbae32868bcd7152c5fd0",
+          "url": "https://www.semanticscholar.org/paper/334926b32659764ab76fbae32868bcd7152c5fd0",
+          "open_access_pdf": "",
+          "citation_count": 249,
+          "influential_citation_count": 2,
+          "reference_count": 79,
+          "is_open_access": false,
+          "abstract": "",
+          "papergraph_input": {
+            "title": "Nanostructured transition metal oxides as advanced anodes for lithium-ion batteries",
+            "citation": "Jingjing Zhang et al. (2015) Nanostructured transition metal oxides as advanced anodes for lithium-ion batteries doi:10.1007/S11434-015-0771-6",
+            "authors": [
+              "Jingjing Zhang",
+              "A. Yu"
+            ],
+            "year": "2015",
+            "venue": "",
+            "provider": "semantic_scholar",
+            "source_type": "api",
+            "doi": "10.1007/S11434-015-0771-6",
+            "arxiv_id": "",
+            "semantic_scholar_id": "334926b32659764ab76fbae32868bcd7152c5fd0",
+            "url": "https://www.semanticscholar.org/paper/334926b32659764ab76fbae32868bcd7152c5fd0",
+            "abstract": "",
+            "conclusion": ""
+          }
+        },
+        {
+          "title": "Electrolyte perspective on stabilizing LiNi_0.8Co_0.1Mn_0.1O_2 cathode for lithium-ion batteries",
+          "citation": "Xiao-feng Zhu et al. (2022) Electrolyte perspective on stabilizing LiNi_0.8Co_0.1Mn_0.1O_2 cathode for lithium-ion batteries doi:10.1007/s12598-022-02101-2",
+          "authors": [
+            "Xiao-feng Zhu",
+            "Xiu Li",
+            "Tianquan Liang",
+            "Xinhua Liu",
+            "Jian-Min Ma"
+          ],
+          "year": "2022",
+          "venue": "Rare Metals",
+          "doi": "10.1007/s12598-022-02101-2",
+          "arxiv_id": "",
+          "semantic_scholar_id": "36e872ff530ea330fafc22cbe8740364632e8445",
+          "url": "https://www.semanticscholar.org/paper/36e872ff530ea330fafc22cbe8740364632e8445",
+          "open_access_pdf": "",
+          "citation_count": 37,
+          "influential_citation_count": 0,
+          "reference_count": 70,
+          "is_open_access": false,
+          "abstract": "",
+          "papergraph_input": {
+            "title": "Electrolyte perspective on stabilizing LiNi_0.8Co_0.1Mn_0.1O_2 cathode for lithium-ion batteries",
+            "citation": "Xiao-feng Zhu et al. (2022) Electrolyte perspective on stabilizing LiNi_0.8Co_0.1Mn_0.1O_2 cathode for lithium-ion batteries doi:10.1007/s12598-022-02101-2",
+            "authors": [
+              "Xiao-feng Zhu",
+              "Xiu Li",
+              "Tianquan Liang",
+              "Xinhua Liu",
+              "Jian-Min Ma"
+            ],
+            "year": "2022",
+            "venue": "Rare Metals",
+            "provider": "semantic_scholar",
+            "source_type": "api",
+            "doi": "10.1007/s12598-022-02101-2",
+            "arxiv_id": "",
+            "semantic_scholar_id": "36e872ff530ea330fafc22cbe8740364632e8445",
+            "url": "https://www.semanticscholar.org/paper/36e872ff530ea330fafc22cbe8740364632e8445",
+            "abstract": "",
+            "conclusion": ""
+          }
+        }
+      ],
+      "next_step": "Pass a result's papergraph_input fields into import_papergraph_record, or use import_literature_text with use_llm=true.",
+      "query_branch": "lithium_ion_batteries",
+      "retrieval_strategy": "broad_recall_then_recent_top_venue_rerank"
+    },
+    {
+      "provider": "arxiv",
+      "query": "electrochemistry techno-economic post-lithium lithium-ion batteries materials",
+      "compact_query": "techno-economic electrochemistry post-lithium lithium-ion materials batteries",
+      "api_query": "all:techno-economic AND all:electrochemistry",
+      "status": "ok",
+      "results": [],
+      "raw_result_count": 0,
+      "local_rejected_count": 0,
+      "next_step": "Pass a result's papergraph_input fields into import_papergraph_record, or paste abstract into import_literature_text.",
+      "query_branch": "lithium_ion_batteries",
+      "retrieval_strategy": "latest_preprint_query",
+      "source_query": "锂离子电池 电极材料 电解液 循环寿命 能量密度 review survey"
+    },
+    {
+      "provider": "semantic_scholar",
+      "query": "锂离子电池 电极材料 电解液 循环寿命 能量密度 review survey",
+      "status": "ok",
+      "total": 2,
+      "results": [
+        {
+          "title": "Nanostructured transition metal oxides as advanced anodes for lithium-ion batteries",
+          "citation": "Jingjing Zhang et al. (2015) Nanostructured transition metal oxides as advanced anodes for lithium-ion batteries doi:10.1007/S11434-015-0771-6",
+          "authors": [
+            "Jingjing Zhang",
+            "A. Yu"
+          ],
+          "year": "2015",
+          "venue": "",
+          "doi": "10.1007/S11434-015-0771-6",
+          "arxiv_id": "",
+          "semantic_scholar_id": "334926b32659764ab76fbae32868bcd7152c5fd0",
+          "url": "https://www.semanticscholar.org/paper/334926b32659764ab76fbae32868bcd7152c5fd0",
+          "open_access_pdf": "",
+          "citation_count": 249,
+          "influential_citation_count": 2,
+          "reference_count": 79,
+          "is_open_access": false,
+          "abstract": "",
+          "papergraph_input": {
+            "title": "Nanostructured transition metal oxides as advanced anodes for lithium-ion batteries",
+            "citation": "Jingjing Zhang et al. (2015) Nanostructured transition metal oxides as advanced anodes for lithium-ion batteries doi:10.1007/S11434-015-0771-6",
+            "authors": [
+              "Jingjing Zhang",
+              "A. Yu"
+            ],
+            "year": "2015",
+            "venue": "",
+            "provider": "semantic_scholar",
+            "source_type": "api",
+            "doi": "10.1007/S11434-015-0771-6",
+            "arxiv_id": "",
+            "semantic_scholar_id": "334926b32659764ab76fbae32868bcd7152c5fd0",
+            "url": "https://www.semanticscholar.org/paper/334926b32659764ab76fbae32868bcd7152c5fd0",
+            "abstract": "",
+            "conclusion": ""
+          }
+        },
+        {
+          "title": "Electrolyte perspective on stabilizing LiNi_0.8Co_0.1Mn_0.1O_2 cathode for lithium-ion batteries",
+          "citation": "Xiao-feng Zhu et al. (2022) Electrolyte perspective on stabilizing LiNi_0.8Co_0.1Mn_0.1O_2 cathode for lithium-ion batteries doi:10.1007/s12598-022-02101-2",
+          "authors": [
+            "Xiao-feng Zhu",
+            "Xiu Li",
+            "Tianquan Liang",
+            "Xinhua Liu",
+            "Jian-Min Ma"
+          ],
+          "year": "2022",
+          "venue": "Rare Metals",
+          "doi": "10.1007/s12598-022-02101-2",
+          "arxiv_id": "",
+          "semantic_scholar_id": "36e872ff530ea330fafc22cbe8740364632e8445",
+          "url": "https://www.semanticscholar.org/paper/36e872ff530ea330fafc22cbe8740364632e8445",
+          "open_access_pdf": "",
+          "citation_count": 37,
+          "influential_citation_count": 0,
+          "reference_count": 70,
+          "is_open_access": false,
+          "abstract": "",
+          "papergraph_input": {
+            "title": "Electrolyte perspective on stabilizing LiNi_0.8Co_0.1Mn_0.1O_2 cathode for lithium-ion batteries",
+            "citation": "Xiao-feng Zhu et al. (2022) Electrolyte perspective on stabilizing LiNi_0.8Co_0.1Mn_0.1O_2 cathode for lithium-ion batteries doi:10.1007/s12598-022-02101-2",
+            "authors": [
+              "Xiao-feng Zhu",
+              "Xiu Li",
+              "Tianquan Liang",
+              "Xinhua Liu",
+              "Jian-Min Ma"
+            ],
+            "year": "2022",
+            "venue": "Rare Metals",
+            "provider": "semantic_scholar",
+            "source_type": "api",
+            "doi": "10.1007/s12598-022-02101-2",
+            "arxiv_id": "",
+            "semantic_scholar_id": "36e872ff530ea330fafc22cbe8740364632e8445",
+            "url": "https://www.semanticscholar.org/paper/36e872ff530ea330fafc22cbe8740364632e8445",
+            "abstract": "",
+            "conclusion": ""
+          }
+        }
+      ],
+      "next_step": "Pass a result's papergraph_input fields into import_papergraph_record, or use import_literature_text with use_llm=true.",
+      "query_branch": "lithium_ion_batteries",
+      "retrieval_strategy": "regular_backfill_query"
+    },
+    {
+      "provider": "arxiv",
+      "query": "electrochemistry techno-economic post-lithium lithium-ion batteries materials",
+      "compact_query": "techno-economic electrochemistry post-lithium lithium-ion materials batteries",
+      "api_query": "all:techno-economic AND all:electrochemistry",
+      "status": "ok",
+      "results": [],
+      "raw_result_count": 0,
+      "local_rejected_count": 0,
+      "next_step": "Pass a result's papergraph_input fields into import_papergraph_record, or paste abstract into import_literature_text.",
+      "query_branch": "lithium_ion_batteries",
+      "retrieval_strategy": "regular_backfill_query"
+    },
+    {
+      "provider": "semantic_scholar",
+      "query": "锂离子电池 电极材料 电解液 循环寿命 能量密度 review survey",
+      "status": "ok",
+      "total": 2,
+      "results": [
+        {
+          "title": "Nanostructured transition metal oxides as advanced anodes for lithium-ion batteries",
+          "citation": "Jingjing Zhang et al. (2015) Nanostructured transition metal oxides as advanced anodes for lithium-ion batteries doi:10.1007/S11434-015-0771-6",
+          "authors": [
+            "Jingjing Zhang",
+            "A. Yu"
+          ],
+          "year": "2015",
+          "venue": "",
+          "doi": "10.1007/S11434-015-0771-6",
+          "arxiv_id": "",
+          "semantic_scholar_id": "334926b32659764ab76fbae32868bcd7152c5fd0",
+          "url": "https://www.semanticscholar.org/paper/334926b32659764ab76fbae32868bcd7152c5fd0",
+          "open_access_pdf": "",
+          "citation_count": 249,
+          "influential_citation_count": 2,
+          "reference_count": 79,
+          "is_open_access": false,
+          "abstract": "",
+          "papergraph_input": {
+            "title": "Nanostructured transition metal oxides as advanced anodes for lithium-ion batteries",
+            "citation": "Jingjing Zhang et al. (2015) Nanostructured transition metal oxides as advanced anodes for lithium-ion batteries doi:10.1007/S11434-015-0771-6",
+            "authors": [
+              "Jingjing Zhang",
+              "A. Yu"
+            ],
+            "year": "2015",
+            "venue": "",
+            "provider": "semantic_scholar",
+            "source_type": "api",
+            "doi": "10.1007/S11434-015-0771-6",
+            "arxiv_id": "",
+            "semantic_scholar_id": "334926b32659764ab76fbae32868bcd7152c5fd0",
+            "url": "https://www.semanticscholar.org/paper/334926b32659764ab76fbae32868bcd7152c5fd0",
+            "abstract": "",
+            "conclusion": ""
+          }
+        },
+        {
+          "title": "Electrolyte perspective on stabilizing LiNi_0.8Co_0.1Mn_0.1O_2 cathode for lithium-ion batteries",
+          "citation": "Xiao-feng Zhu et al. (2022) Electrolyte perspective on stabilizing LiNi_0.8Co_0.1Mn_0.1O_2 cathode for lithium-ion batteries doi:10.1007/s12598-022-02101-2",
+          "authors": [
+            "Xiao-feng Zhu",
+            "Xiu Li",
+            "Tianquan Liang",
+            "Xinhua Liu",
+            "Jian-Min Ma"
+          ],
+          "year": "2022",
+          "venue": "Rare Metals",
+          "doi": "10.1007/s12598-022-02101-2",
+          "arxiv_id": "",
+          "semantic_scholar_id": "36e872ff530ea330fafc22cbe8740364632e8445",
+          "url": "https://www.semanticscholar.org/paper/36e872ff530ea330fafc22cbe8740364632e8445",
+          "open_access_pdf": "",
+          "citation_count": 37,
+          "influential_citation_count": 0,
+          "reference_count": 70,
+          "is_open_access": false,
+          "abstract": "",
+          "papergraph_input": {
+            "title": "Electrolyte perspective on stabilizing LiNi_0.8Co_0.1Mn_0.1O_2 cathode for lithium-ion batteries",
+            "citation": "Xiao-feng Zhu et al. (2022) Electrolyte perspective on stabilizing LiNi_0.8Co_0.1Mn_0.1O_2 cathode for lithium-ion batteries doi:10.1007/s12598-022-02101-2",
+            "authors": [
+              "Xiao-feng Zhu",
+              "Xiu Li",
+              "Tianquan Liang",
+              "Xinhua Liu",
+              "Jian-Min Ma"
+            ],
+            "year": "2022",
+            "venue": "Rare Metals",
+            "provider": "semantic_scholar",
+            "source_type": "api",
+            "doi": "10.1007/s12598-022-02101-2",
+            "arxiv_id": "",
+            "semantic_scholar_id": "36e872ff530ea330fafc22cbe8740364632e8445",
+            "url": "https://www.semanticscholar.org/paper/36e872ff530ea330fafc22cbe8740364632e8445",
+            "abstract": "",
+            "conclusion": ""
+          }
+        }
+      ],
+      "next_step": "Pass a result's papergraph_input fields into import_papergraph_record, or use import_literature_text with use_llm=true.",
+      "query_branch": "lithium_ion_batteries",
+      "retrieval_strategy": "regular_backfill_query"
+    },
+    {
+      "provider": "arxiv",
+      "query": "",
+      "compact_query": "",
+      "status": "ok",
+      "results": [],
+      "warning": "No provider-safe lexical anchors could be derived from the query.",
+      "next_step": "Use a domain or focus branch containing concrete scientific terms before retrying arXiv.",
+      "query_branch": "lithium_ion_batteries",
+      "retrieval_strategy": "regular_backfill_query"
+    }
+  ]
+}

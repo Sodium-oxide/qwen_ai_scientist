@@ -1,0 +1,1390 @@
+{
+  "run_id": "agr_1783541600058992600",
+  "groupchat_id": "agc_1783541590468015100",
+  "project_id": "sci_1783541582585393700",
+  "framework": "autogen_2_groupchat",
+  "groupchat_spec": {
+    "groupchat_id": "agc_1783541590468015100",
+    "project_id": "sci_1783541582585393700",
+    "goal": "验证从文献阅读、知识图谱构建、Gap探索、假设生成、苏格拉底辩论、机制审计到最终裁决的多Agent协作能力",
+    "framework": "autogen_2_groupchat",
+    "native_autogen": {
+      "requested": false,
+      "available": false,
+      "mode": "structured_groupchat_executor",
+      "reason": "Native AutoGen runtime disabled by default to control token use; v8 executes a deterministic GroupChat-compatible protocol."
+    },
+    "groupchat": {
+      "max_round": 12,
+      "speaker_selection_method": "auto",
+      "allow_repeat_speaker": false,
+      "human_input_mode": "NEVER",
+      "termination_marker": "TERMINATE"
+    },
+    "agents": [
+      {
+        "name": "Boxue_UserProxy",
+        "key": "boxue",
+        "autogen_type": "UserProxyAgent",
+        "role": "Chief Research Scheduler",
+        "goal": "Decompose research goals into verifiable tasks and coordinate the full AI Scientist pipeline.",
+        "system_message": "You are Boxue (博學), the Chief Research Scheduler and Principal Investigator of the Qwen-Zhikan multi-agent AI Scientist system.\nRole: Principal Investigator & Research Expedition Commander.\n\nCore responsibilities:\n1. Decompose broad research objectives into executable, verifiable, closed-loop subtasks.\n2. Coordinate specialist agents without performing their specialist work yourself.\n3. Track every knowledge gap from discovery through validation, implementation, manuscript, review, and iteration.\n4. Embed acceptance criteria, evidence requirements, role boundaries, and risk controls into every task.\n5. Synthesize specialist outputs and decide whether to advance, revise, or finalize.\n\nOperational principles:\n- Every task must have a responsible agent, dependency chain, deliverable, acceptance criteria, priority, and risks.\n- Domain-specific judgments must be delegated to specialist agents.\n- Prefer delegation DAGs over long single-agent runs for broad workflows.\n- Shared PaperGraph/project-state mutations should be gated by lead/synthesis tasks when parallel workers are involved.\n- Every action must serve knowledge gap identification, validation, or filling.\n\nTAO workflow:\nThought: review project state, dependencies, output quality, gap lifecycle status, and risks.\nAction: use create_boxue_delegation_tasks for full PI-style role DAGs, create_science_delegation_tasks for broad retrieval branch scouting, create_science_pipeline_tasks for coarse phase scaffolding, then review/synthesize/adjust/finalize through task gates.\nObservation: receive specialist deliverables, record progress, and update the next decision point.",
+        "llm_config_ref": "human_orchestrator_proxy",
+        "tools": [
+          "create_autogen_groupchat",
+          "run_autogen_research_flow",
+          "run_boxue_research_round",
+          "create_boxue_delegation_tasks",
+          "create_science_delegation_tasks",
+          "create_science_pipeline_tasks",
+          "assign_task",
+          "review_output",
+          "synthesize",
+          "adjust_plan",
+          "finalize"
+        ]
+      },
+      {
+        "name": "ZhiZhi_ToolAgent",
+        "key": "zhizhi",
+        "autogen_type": "ToolAgent",
+        "role": "Literature Mining and PaperGraph Expert",
+        "goal": "Retrieve literature, extract structured evidence, and build the PaperGraph substrate.",
+        "system_message": "You are ZhiZhi (致知), the Literature Mining & Knowledge Graph Expert of the Qwen-Zhikan AI Scientist system.\nRole: Academic Information Analyst & Knowledge Substrate Builder.\n\nCore responsibilities:\n1. Targeted literature retrieval from high-quality venues and academic databases.\n2. Structured extraction of method, scenario, benchmark, contribution/conclusion, and limitation.\n3. Domain knowledge graph construction over method-scenario-benchmark relations.\n4. Knowledge gap detection through combinatorial gaps, improvement gaps, migration gaps, and problem gaps.\n5. Novelty/value/feasibility assessment for each gap.\n6. Plagiarism/overlap verification for proposed ideas.\n\nOperational principles:\n- Prioritize top-tier and canonical literature.\n- Do not invent papers, method categories, or unsupported claims.\n- Distinguish empirical results, theoretical claims, methodological descriptions, and author opinions.\n- Every gap must include traceable supporting references or be marked for human review.\n- Avoid pseudo-gaps: \"nobody tried it\" is not enough unless scientific/application value is clear.\n\nTAO workflow:\nThought: analyze keywords, coverage, blind spots, method migration opportunities, and pseudo-gap risk.\nAction: prefer search_papers_stratified for systematic retrieval, then use extract_structured_info, build_knowledge_map, detect_knowledge_gaps, assess_novelty, verify_uniqueness.\nObservation: update the research landscape, record gaps, and flag validated innovation points.\n\nRequired output JSON:\n{\n  \"thought\": \"Literature analysis and gap detection reasoning process\",\n  \"action\": {},\n  \"knowledge_map_summary\": {\n    \"main_methods\": [\"method1\"],\n    \"method_scenario_coverage\": {\"method1\": [\"scenario1\"]},\n    \"method_scenario_benchmark_triples\": []\n  },\n  \"knowledge_gaps\": [\n    {\n      \"gap_id\": \"GAP-001\",\n      \"gap_type\": \"combinatorial | improvement | migration | problem\",\n      \"description\": \"Detailed academic description of the gap\",\n      \"supporting_references\": [\"reference1\"],\n      \"novelty_score\": 1,\n      \"application_value\": \"high | medium | low\",\n      \"feasibility\": \"high | medium | low\",\n      \"suggested_research_path\": \"Recommended research approach\"\n    }\n  ]\n}",
+        "llm_config_ref": "tool_backed_retriever",
+        "tools": [
+          "search_papers_stratified",
+          "search_papers",
+          "extract_structured_info",
+          "build_knowledge_map",
+          "verify_uniqueness"
+        ]
+      },
+      {
+        "name": "TanXi_ToolAgent",
+        "key": "tanxi",
+        "autogen_type": "ToolAgent",
+        "role": "Knowledge Gap Discovery Agent",
+        "goal": "Detect coverage holes, suspended problems, and high-value unexplored method-scenario pairs.",
+        "system_message": "You are TanXi, the Knowledge Gap Discovery AssistantAgent. Detect source-grounded, semantic-plausible, evidence-traceable gaps from PaperGraph.",
+        "llm_config_ref": "tool_backed_gap_miner",
+        "tools": [
+          "run_tanxi_gap_exploration",
+          "detect_knowledge_gaps",
+          "check_semantic_plausibility",
+          "assess_novelty",
+          "verify_uniqueness"
+        ]
+      },
+      {
+        "name": "MingLi_Proponent",
+        "key": "mingli",
+        "autogen_type": "AssistantAgent",
+        "role": "Hypothesis Generator",
+        "goal": "Generate and refine hypotheses guided by validated knowledge gaps.",
+        "system_message": "You are MingLi, the Creative Scientist and Hypothesis Generator of the Qwen-Zhikan AI Scientist system.\nRole: Novel Hypothesis Generator & Tournament Participant.\n\nCore responsibilities:\n1. Generate novel research ideas from TanXi knowledge gaps and ZhiZhi PaperGraph evidence.\n2. Design concrete, feasible, falsifiable experimental plans for each idea.\n3. Ensure every idea is novel, grounded, feasible, and differentiated from existing literature.\n4. Participate in tournament evolution by mutating hypotheses structurally across rounds.\n\nOperational principles:\n- Every hypothesis must trace to a specific TanXi gap id.\n- Every premise must cite or summarize PaperGraph evidence, or be marked as a hypothesis.\n- Before finalizing an idea, run at least one literature uniqueness check.\n- If near-duplicate literature is found, discard or regenerate the idea.\n- Tournament mutations must introduce structural changes: new variables, mechanisms, causal paths, or experimental regimes.\n- Track parent_hypothesis_id and lineage for auditability.\n\nTAO workflow:\nThought: evaluate novelty, feasibility, grounding, differentiation, and whether the idea actually fills the gap.\nAction: use generate_idea, design_experiment, verify_uniqueness or search_literature, then finalize_idea.\nObservation: inspect literature matches, overlap risk, PaperGraph evidence, and experiment feasibility before finalizing.\n\nRequired output JSON:\n{\n  \"title\": \"Research Title\",\n  \"hypothesis\": \"Core Hypothesis\",\n  \"abstract\": \"Abstract\",\n  \"related_work\": \"Comparison with Related Work\",\n  \"experiments\": {\n    \"setup\": \"Experimental Setup\",\n    \"metrics\": \"Evaluation Metrics\",\n    \"baselines\": \"Baseline Methods\"\n  },\n  \"risks\": \"Risk Factors and Limitations\",\n  \"tournament_generation\": 1,\n  \"parent_hypothesis_id\": \"string | null\"\n}",
+        "llm_config_ref": "qwen-max",
+        "tools": [
+          "evolve_domain_subspaces",
+          "build_temporal_knowledge_graph",
+          "detect_structural_knowledge_gaps",
+          "find_structural_analogy_transfers",
+          "check_semantic_plausibility",
+          "generate_idea",
+          "design_experiment",
+          "finalize_idea",
+          "run_mingli_hypothesis_evolution"
+        ]
+      },
+      {
+        "name": "YanZhen_ToolAgent",
+        "key": "yanzhen",
+        "autogen_type": "ToolAgent",
+        "role": "Mechanism Fidelity Verifier",
+        "goal": "Run CAWM-style internal consistency, data consistency, and regime-shift checks.",
+        "system_message": "You are YanZhen, the Mechanism Fidelity Verifier of the Qwen-Zhikan AI Scientist system.\nRole: CAWM Detector & Consistency Auditor.\n\nCore responsibilities:\n1. Layer 1 - Internal Consistency: verify the logical chain, causal links, formula/quantity use, and premise-to-conclusion integrity.\n2. Layer 2 - Data Consistency: verify that the claimed mechanism matches cited PaperGraph evidence and does not cherry-pick only supportive records.\n3. Layer 3 - Regime Shift Test: stress the mechanism under changed parameters, scale, environment, data distribution, boundary conditions, or adjacent domains.\n4. Detect the CAWM failure mode: correct-looking conclusion with fabricated, brittle, or inconsistent mechanism.\n\nOperational principles:\n- A hypothesis passes only if it survives all three layers.\n- Regime shift is the decisive CAWM test; unstated assumptions should raise risk.\n- Be conservative. When evidence is incomplete, return REQUIRES_HUMAN_REVIEW rather than a false pass.\n- Document the reasoning chain for every layer.\n- The protocol is domain-general across mathematics, physical sciences, life sciences, medicine, engineering, computer science, agriculture, climate, ecology, and social science.\n\nTAO workflow:\nThought: extract the claimed mechanism, causal chain, supporting data, and hidden assumptions.\nAction: run check_internal_consistency, check_data_consistency, regime_shift_test, detect_selective_citation, causal_chain_audit, then run_yanzhen_mechanism_verification.\nObservation: record pass/fail verdicts, CAWM risk, selective citation risk, and human-review requirements.\n\nRequired output JSON:\n{\n  \"thought\": \"Mechanism verification reasoning process\",\n  \"action\": {},\n  \"mechanism_fidelity_report\": {\n    \"hypothesis_id\": \"string\",\n    \"layer_1_internal_consistency\": {\n      \"logical_chain_intact\": true,\n      \"formula_application_correct\": true,\n      \"issues_found\": [],\n      \"verdict\": \"PASS | FAIL\"\n    },\n    \"layer_2_data_consistency\": {\n      \"mechanism_matches_data\": true,\n      \"selective_citation_detected\": false,\n      \"original_text_alignment\": \"high\",\n      \"verdict\": \"PASS | FAIL\"\n    },\n    \"layer_3_regime_shift_test\": {\n      \"shifted_conditions_tested\": [\"condition1\", \"condition2\"],\n      \"mechanism_stability\": \"stable | degrades_gracefully | collapses_unexpectedly\",\n      \"cawm_risk_level\": \"LOW | MEDIUM | HIGH\",\n      \"verdict\": \"PASS | FAIL\"\n    },\n    \"overall_verdict\": \"MECHANISM_VERIFIED | CAWM_DETECTED | REQUIRES_HUMAN_REVIEW\",\n    \"detailed_reasoning\": \"string\"\n  }\n}",
+        "llm_config_ref": "qwen-plus",
+        "tools": [
+          "check_internal_consistency",
+          "check_data_consistency",
+          "regime_shift_test",
+          "detect_selective_citation",
+          "causal_chain_audit",
+          "run_yanzhen_mechanism_verification"
+        ]
+      },
+      {
+        "name": "DuZhi_Opponent",
+        "key": "duzhi",
+        "autogen_type": "AssistantAgent",
+        "role": "Socratic Critic",
+        "goal": "Challenge hypotheses through counterexamples, hidden assumptions, and falsification questions.",
+        "system_message": "You are DuZhi, the Socratic Questioner Agent of the Qwen-Zhikan AI Scientist system.\nRole: Hypothesis Interrogator & Hidden-Assumption Exposer.\n\nCore responsibilities:\n1. Ask structured Socratic questions that force MingLi hypotheses to become operational, causal, and falsifiable.\n2. Expose hidden assumptions, missing definitions, weak evidence links, and untested boundary conditions.\n3. Generate counterexamples and regime-shift challenges before a hypothesis is accepted.\n4. Keep criticism evidence-driven: every objection must reference the hypothesis text, PaperGraph evidence, YanZhen audit output, or a clearly marked missing-evidence condition.\n\nQuestion classes:\n- Conceptual clarification: define key terms, distinguish measurable observables from inferred constructs.\n- Constraint check: test compatibility with domain constraints, instruments, data, equations, ethics, or feasibility limits.\n- Causal probe: require the full input -> mechanism -> output chain and evidence for each link.\n- Counterexample challenge: ask where the mechanism should fail under parameter, environment, scale, or distribution shifts.\n\nOperational principles:\n- Be adversarial toward mechanisms, not toward the researcher.\n- Prefer precise questions that can change the hypothesis over generic skepticism.\n- If a claim cannot be measured, ask how it will be operationalized.\n- If a mechanism has no boundary condition, demand one.\n- If evidence is cherry-picked or missing, ask for the omitted evidence class.\n\nOutput JSON:\n{\n  \"thought\": \"Socratic critique reasoning\",\n  \"action\": {\"type\": \"ask_socratic_questions\"},\n  \"questions\": [\n    {\n      \"question_type\": \"conceptual_clarification | constraint_check | causal_probe | counterexample_challenge\",\n      \"question\": \"string\",\n      \"target_claim\": \"string\",\n      \"why_it_matters\": \"string\",\n      \"required_revision\": \"string\",\n      \"severity\": \"low | medium | high | fatal\"\n    }\n  ],\n  \"overall_severity\": \"low | medium | high | fatal\",\n  \"must_revise\": true\n}",
+        "llm_config_ref": "qwen-plus",
+        "tools": [
+          "ask_socratic_questions",
+          "ask_critical_questions",
+          "find_counterexamples",
+          "stress_test_assumptions"
+        ]
+      },
+      {
+        "name": "BianLun_GroupChatManager",
+        "key": "bianlun",
+        "autogen_type": "GroupChatManager",
+        "role": "Structured Debate Moderator",
+        "goal": "Moderate structured debate and synthesize strongest surviving hypotheses.",
+        "system_message": "You are BianLun, the Structured Debate Moderator of the Qwen-Zhikan AI Scientist system.\nRole: Evidence-Grounded Debate Judge & Hypothesis Refinement Coordinator.\n\nCore responsibilities:\n1. Run the four-round Socratic debate protocol: clarification, evidence/CAWM Layer 1-2, methodology/regime shift, synthesis.\n2. Enforce ARIS-style safety gates: model-family independence, evidence threshold, convergence check, and human-review escalation.\n3. Integrate MingLi's proposal, DuZhi's critiques, YanZhen's mechanism fidelity report, and PaperGraph evidence.\n4. Produce a refined hypothesis, unresolved dispute list, and next experimental decision.\n\nDebate must be evidence-driven, not conversational. Unsupported revisions are not adopted.\n\nOutput JSON:\n{\n  \"thought\": \"moderator reasoning\",\n  \"action\": {\"type\": \"run_socratic_hypothesis_debate\"},\n  \"debate_report\": {\n    \"rounds\": [],\n    \"safety_gates\": {},\n    \"refined_hypothesis\": {},\n    \"unresolved_issues\": [],\n    \"final_decision\": \"accept_for_experiment | revise | human_review | reject\"\n  }\n}",
+        "llm_config_ref": "qwen-deep-research",
+        "tools": [
+          "run_socratic_hypothesis_debate",
+          "moderate_round",
+          "summarize_positions",
+          "extract_emergent_method"
+        ]
+      }
+    ],
+    "tools": [
+      {
+        "name": "run_zhizhi_literature_analysis",
+        "owner": "ZhiZhi_ToolAgent"
+      },
+      {
+        "name": "run_tanxi_gap_exploration",
+        "owner": "TanXi_ToolAgent"
+      },
+      {
+        "name": "generate_idea",
+        "owner": "MingLi_Proponent"
+      },
+      {
+        "name": "design_experiment",
+        "owner": "MingLi_Proponent"
+      },
+      {
+        "name": "finalize_idea",
+        "owner": "MingLi_Proponent"
+      },
+      {
+        "name": "run_yanzhen_mechanism_verification",
+        "owner": "YanZhen_ToolAgent"
+      },
+      {
+        "name": "ask_socratic_questions",
+        "owner": "DuZhi_Opponent"
+      },
+      {
+        "name": "run_socratic_hypothesis_debate",
+        "owner": "BianLun_GroupChatManager"
+      }
+    ],
+    "round_protocol": [
+      {
+        "round": 0,
+        "speaker": "ZhiZhi_ToolAgent",
+        "objective": "Read literature and build PaperGraph evidence."
+      },
+      {
+        "round": 0,
+        "speaker": "TanXi_ToolAgent",
+        "objective": "Mine source-grounded gaps from PaperGraph."
+      },
+      {
+        "round": 1,
+        "speaker": "MingLi_Proponent",
+        "objective": "State and defend a gap-traceable hypothesis."
+      },
+      {
+        "round": 2,
+        "speaker": "DuZhi_Opponent",
+        "objective": "Ask Socratic clarification, causal, constraint, and counterexample questions."
+      },
+      {
+        "round": 2,
+        "speaker": "YanZhen_ToolAgent",
+        "objective": "Run CAWM Layer 1 and Layer 2 evidence checks."
+      },
+      {
+        "round": 3,
+        "speaker": "MingLi_Proponent",
+        "objective": "Present an experiment and falsification plan."
+      },
+      {
+        "round": 3,
+        "speaker": "YanZhen_ToolAgent",
+        "objective": "Run regime-shift CAWM Layer 3."
+      },
+      {
+        "round": 4,
+        "speaker": "BianLun_GroupChatManager",
+        "objective": "Synthesize refined hypothesis or revision decision."
+      }
+    ],
+    "execution_policy": {
+      "worktree": "disabled",
+      "background_threads": "disabled",
+      "state_owner": "groupchat_manager",
+      "shared_project_writes": "serialized_by_autogen_flow",
+      "token_policy": "structured_turns_not_freeform_chat"
+    },
+    "createdAt": 1783541590.4681025
+  },
+  "state": {
+    "project_id": "sci_1783541582585393700",
+    "groupchat_id": "agc_1783541590468015100",
+    "goal": "High-voltage lithium batteries above 4.5V, cathode electrolyte interface stability, AI-assisted battery materials discovery",
+    "framework": "autogen_2_groupchat",
+    "hypothesis_id": "hyp_1783542536864905800",
+    "draft_idea_id": "idea_1783542536772060500",
+    "final_decision": "human_review",
+    "zhizhi_status": "completed",
+    "tanxi_gap_count": 10,
+    "best_gap_context": [
+      {
+        "gap_id": "gap_1783542536458818100",
+        "gap_type": "migration",
+        "description": null,
+        "supporting_references": [
+          "Bixian Ying et al. (2023) A review and outlook on anionic and cationic redox in Ni-, Li- and Mn-rich layered oxides LiMeO2 (Me = Li, Ni, Co, Mn) arXiv:2310.01295v2",
+          "Kevin Leung (2013) Electronic Structure Modeling of Electrochemical Reactions at Electrode/Electrolyte Interfaces in Lithium Ion Batteries doi:10.1021/jp308929a"
+        ],
+        "suggested_research_path": null,
+        "value_argument": null,
+        "semantic_plausibility": {},
+        "mechanism_issue_signal": {},
+        "gap_signal": {},
+        "priority_score": null,
+        "novelty_score": null,
+        "feasibility": null
+      },
+      {
+        "gap_id": "gap_1783542536335555000",
+        "gap_type": "combinatorial",
+        "description": null,
+        "supporting_references": [
+          "Maximilian Mellin et al. (2025) Voltage-dependent charge compensation mechanism and cathode electrolyte interface stability of the lithium-ion battery cathode materials LiNi0.6Mn0.2Co0.2O2, LiNi0.8Mn0.1Co0.1O2 and LiNi0.80Co0.15Al0.05O2 studied by photoelectron spectroscopy doi:10.26434/chemrxiv-2025-s4hrh",
+          "Md Farhan Hossain et al. (2025) Mechanistic Study of Functional-Solvent-Based Electrolytes for High Voltage Lithium Batteries doi:10.1149/ma2025-013298mtgabs",
+          "Jian He et al. (2024) Highly Antioxidative Lithium Salt Enables High-Voltage Ether Electrolyte for Lithium Metal Battery arXiv:2409.18344v1",
+          "Tao Meng et al. (2024) Deciphering Interphase Instability of Lithium Metal Batteries with Localized High-Concentration Electrolytes at Elevated Temperatures arXiv:2401.05671v1"
+        ],
+        "suggested_research_path": null,
+        "value_argument": null,
+        "semantic_plausibility": {},
+        "mechanism_issue_signal": {},
+        "gap_signal": {},
+        "priority_score": null,
+        "novelty_score": null,
+        "feasibility": null
+      },
+      {
+        "gap_id": "gap_1783542536363635500",
+        "gap_type": "combinatorial",
+        "description": null,
+        "supporting_references": [
+          "Kevin Leung (2013) Electronic Structure Modeling of Electrochemical Reactions at Electrode/Electrolyte Interfaces in Lithium Ion Batteries doi:10.1021/jp308929a",
+          "Md Farhan Hossain et al. (2025) Mechanistic Study of Functional-Solvent-Based Electrolytes for High Voltage Lithium Batteries doi:10.1149/ma2025-013298mtgabs"
+        ],
+        "suggested_research_path": null,
+        "value_argument": null,
+        "semantic_plausibility": {},
+        "mechanism_issue_signal": {},
+        "gap_signal": {},
+        "priority_score": null,
+        "novelty_score": null,
+        "feasibility": null
+      }
+    ],
+    "mingli_gap_handoff": "no_explicit_gap_from_tanxi; using PaperGraph fallback inside MingLi",
+    "finalize_status": "finalized",
+    "yanzhen_verdict": "REQUIRES_HUMAN_REVIEW"
+  },
+  "messages": [
+    {
+      "name": "ZhiZhi_ToolAgent",
+      "role": "assistant",
+      "content": "{\"action\": {\"agent\": \"zhizhi\", \"query\": \"High-voltage lithium batteries above 4.5V, cathode electrolyte interface stability, AI-assisted battery materials discovery\", \"domain\": \"High-voltage lithium batteries above 4.5V, cathode/electrolyte/interface stability, AI-assisted battery materials discovery\", \"years\": \"last 5 years\", \"search_papers_stratified\": {\"search_id\": \"search_1783541600062545000\", \"total_results\": 25, \"requested_max_results\": 25, \"effective_search_budget\": 25, \"providers\": [\"semantic_scholar\", \"arxiv\", \"chemrxiv\"], \"strategy\": \"stratified_cascade\", \"query_plan\": [{\"branch\": \"primary\", \"query\": \"High-voltage lithium batteries above 4.5V, cathode electrolyte interface stability, AI-assisted battery materials discovery\"}, {\"branch\": \"cathode_structural_stability\", \"query\": \"High-voltage lithium batteries above 4.5V, cathode electrolyte interface stability, AI-assisted battery materials discovery cathode phase transition OR oxygen loss OR TM dissolution OR lattice parameter evolution under >4.5 V cycling\", \"topic_type\": \"branch\"}, {\"branch\": \"electrolyte_oxidation_cei_formation\", \"query\": \"High-voltage lithium batteries above 4.5V, cathode electrolyte interface stability, AI-assisted battery materials discovery electrolyte oxidation onset OR cathode electrolyte interphase OR anion-derived CEI OR HF scavenging additives\", \"topic_type\": \"branch\"}, {\"branch\": \"interface_thermodynamics_kinetics\", \"query\": \"High-voltage lithium batteries above 4.5V, cathode electrolyte interface stability, AI-assisted battery materials discovery interfacial energy OR CEI formation energy OR charge transfer barrier OR interfacial reaction pathway\", \"topic_type\": \"branch\"}, {\"branch\": \"ai_ml_for_high_voltage_materials\", \"query\": \"High-voltage lithium batteries above 4.5V, cathode electrolyte interface stability, AI-assisted battery materials discovery machine learning battery cathode OR generative model electrolyte OR active learning battery screening OR graph neural network voltage prediction\", \"topic_type\": \"branch\"}, {\"branch\": \"field_map_reviews\", \"query\": \"High-voltage lithium batteries above 4.5V, cathode/electrolyte/interface stability, AI-assisted battery materials discovery High-voltage lithium batteries above 4.5V, cathode electrolyte interface stability, AI-assisted battery materials discovery review survey roadmap progress perspective systematic review\", \"topic_type\": \"retrieval_facet\"}, {\"branch\": \"milestone_foundations\", \"query\": \"High-voltage lithium batteries above 4.5V, cathode/electrolyte/interface stability, AI-assisted battery materials discovery High-voltage lithium batteries above 4.5V, cathode electrolyte interface stability, AI-assisted battery materials discovery seminal foundational highly cited landmark theory method mechanism\", \"topic_type\": \"retrieval_facet\"}, {\"branch\": \"methods_and_mechanisms\", \"query\": \"High-voltage lithium batteries above 4.5V, cathode/electrolyte/interface stability, AI-assisted battery materials discovery High-voltage lithium batteries above 4.5V, cathode electrolyte interface stability, AI-assisted battery materials discovery method model algorithm mechanism experiment framework\", \"topic_type\": \"retrieval_facet\"}, {\"branch\": \"applications_systems_scenarios\", \"query\": \"High-voltage lithium batteries above 4.5V, cathode/electrolyte/interface stability, AI-assisted battery materials discovery High-voltage lithium batteries above 4.5V, cathode electrolyte interface stability, AI-assisted battery materials discovery application system scenario case study deployment\", \"topic_type\": \"retrieval_facet\"}], \"focus_branches\": [], \"strata\": [{\"layer\": \"L0_review\", \"label\": \"high-impact review / field map\", \"quota\": 3, \"query_suffix\": \"review survey progress perspective tutorial systematic review meta-analysis\", \"target\": 3, \"candidate_count\": 4, \"raw_candidate_count\": 42, \"selected\": 2, \"domain_rejected\": 2, \"recovery_used\": \"\", \"carried_to_next\": 1}, {\"layer\": \"L1_milestone\", \"label\": \"milestone / highly cited foundation\", \"quota\": 4, \"query_suffix\": \"seminal foundational highly cited landmark classic influential\", \"target\": 5, \"candidate_count\": 1, \"raw_candidate_count\": 2, \"selected\": 1, \"domain_rejected\": 0, \"recovery_used\": \"relaxed_milestone_highest_available_citation\", \"carried_to_next\": 4}, {\"layer\": \"L2_top_latest\", \"label\": \"recent top-venue frontier\", \"quota\": 4, \"query_suffix\": \"latest recent top journal high impact breakthrough advance frontier\", \"target\": 8, \"candidate_count\": 2, \"raw_candidate_count\": 2, \"selected\": 1, \"domain_rejected\": 0, \"recovery_used\": \"relaxed_top_latest_recent_or_high_quality_available\", \"carried_to_next\": 7}, {\"layer\": \"L3_preprint\", \"label\": \"latest arXiv preprint frontier\", \"quota\": 1, \"query_suffix\": \"\", \"target\": 8, \"candidate_count\": 23, \"raw_candidate_count\": 23, \"selected\": 8, \"domain_rejected\": 0, \"recovery_used\": \"\", \"carried_to_next\": 0}, {\"layer\": \"L4_regular\", \"label\": \"regular journal / supplemental evidence\", \"quota\": 13, \"query_suffix\": \"\", \"target\": 13, \"candidate_count\": 2, \"raw_candidate_count\": 86, \"selected\": 0, \"domain_rejected\": 0, \"recovery_used\": \"\", \"carried_to_next\": 13}, {\"layer\": \"L4_regular_backfill\", \"label\": \"regular journal / quota backfill\", \"quota\": 13, \"target\": 13, \"candidate_count\": 86, \"selected\": 13, \"domain_rejected\": 0, \"carried_to_next\": 0}], \"errors\": []}, \"domain_coverage_diagnostic\": {\"profile\": \"materials_science_and_electrochemistry_research_focused_on_next_generation_lithi\", \"profile_source\": \"llm\", \"search_id\": \"search_1783541600062545000\", \"total_results\": 25, \"represented_topics\": [], \"blind_spots\": [{\"topic\": \"High-voltage cathode degradation pathways\", \"hit_count\": 1, \"min_hits\": 10, \"terms\": [\"oxygen redox\", \"transition metal migration\", \"lattice oxygen release\", \"voltage hysteresis\"], \"suggested_query\": \"High-voltage lithium batteries above 4.5V, cathode electrolyte interface stability, AI-assisted battery materials discovery oxygen redox transition metal migration lattice oxygen release voltage hysteresis\", \"risk\": \"Live probe found literature for this missing branch; current PaperGraph may be incomplete, so TanXi should not treat this absence as a true unexplored gap.\", \"live_probe\": {\"query\": \"High-voltage lithium batteries above 4.5V, cathode electrolyte interface stability, AI-assisted battery materials discovery oxygen redox transition metal migration lattice oxygen release voltage hysteresis\", \"status\": \"ok\", \"total_results\": 6, \"providers\": [{\"provider\": \"semantic_scholar\", \"status\": \"ok\", \"result_count\": 0, \"top_titles\": [], \"error\": \"\"}, {\"provider\": \"arxiv\", \"status\": \"ok\", \"result_count\": 3, \"top_titles\": [\"Oxygen redox in battery cathodes: A brief overview\", \"Nanoscale Voltage Enhancement at Cathode Interfaces in Li-ion Batteries\", \"High voltage transition metal-free cathode material LiBC3F4 for Li ion batteries\"], \"error\": \"\"}, {\"provider\": \"chemrxiv\", \"status\": \"ok\", \"result_count\": 3, \"top_titles\": [\"Voltage-dependent charge compensation mechanism and cathode electrolyte interface stability of the lithium-ion battery c...[truncated]\", \"A free-standing sulfone-based solid-state electrolyte mitigating the release of crystal water from the Prussian blue cat...[truncated]\", \"Transition metal migration and O2 formation underpin voltage hysteresis in oxygen-redox disordered rocksalt cathodes\"], \"error\": \"\"}]}, \"false_negative_risk\": true}, {\"topic\": \"Stable electrolyte formulations\", \"hit_count\": 1, \"min_hits\": 10, \"terms\": [\"sulfone-based electrolytes\", \"fluorinated carbonates\", \"lithium borate salts\", \"electrochemical window >5.0 v\"], \"suggested_query\": \"High-voltage lithium batteries above 4.5V, cathode electrolyte interface stability, AI-assisted battery materials discovery sulfone-based electrolytes fluorinated carbonates lithium borate salts electrochemical window >5.0 v\", \"risk\": \"Live probe found literature for this missing branch; current PaperGraph may be incomplete, so TanXi should not treat this absence as a true unexplored gap.\", \"live_probe\": {\"query\": \"High-voltage lithium batteries above 4.5V, cathode electrolyte interface stability, AI-assisted battery materials discovery sulfone-based electrolytes fluorinated carbonates lithium borate salts electrochemical window >5.0 v\", \"status\": \"ok\", \"total_results\": 6, \"providers\": [{\"provider\": \"semantic_scholar\", \"status\": \"ok\", \"result_count\": 0, \"top_titles\": [], \"error\": \"\"}, {\"provider\": \"arxiv\", \"status\": \"ok\", \"result_count\": 3, \"top_titles\": [\"Expected Performance of the ATLAS Experiment - Detector, Trigger and Physics\", \"Status and initial physics performance studies of the MPD experiment at NICA\", \"Measurement of forward $W$ and $Z$ boson production in $pp$ collisions at $\\\\sqrt{s} = 8\\\\mathrm{\\\\,Te\\\\kern -0.1em V}$\"], \"error\": \"\"}, {\"provider\": \"chemrxiv\", \"status\": \"ok\", \"result_count\": 3, \"top_titles\": [\"Voltage-dependent charge compensation mechanism and cathode electrolyte interface stability of the lithium-ion battery c...[truncated]\", \"A free-standing sulfone-based solid-state electrolyte mitigating the release of crystal water from the Prussian blue cat...[truncated]\", \"Computational Discovery of Superior Vanadium Niobates-Based Cathode Materials for Next-Generation All-Solid-State Lithiu...[truncated]\"], \"error\": \"\"}]}, \"false_negative_risk\": true}, {\"topic\": \"In-situ/operando CEI characterization\", \"hit_count\": 1, \"min_hits\": 10, \"terms\": [\"time-resolved xrd\", \"differential electrochemical mass spectrometry\", \"in-situ raman\", \"cryo-em of interfaces\"], \"suggested_query\": \"High-voltage lithium batteries above 4.5V, cathode electrolyte interface stability, AI-assisted battery materials discovery time-resolved xrd differential electrochemical mass spectrometry in-situ raman cryo-em of interfaces\", \"risk\": \"Live probe found literature for this missing branch; current PaperGraph may be incomplete, so TanXi should not treat this absence as a true unexplored gap.\", \"live_probe\": {\"query\": \"High-voltage lithium batteries above 4.5V, cathode electrolyte interface stability, AI-assisted battery materials discovery time-resolved xrd differential electrochemical mass spectrometry in-situ raman cryo-em of interfaces\", \"status\": \"ok\", \"total_results\": 6, \"providers\": [{\"provider\": \"semantic_scholar\", \"status\": \"ok\", \"result_count\": 0, \"top_titles\": [], \"error\": \"\"}, {\"provider\": \"arxiv\", \"status\": \"ok\", \"result_count\": 3, \"top_titles\": [\"Nanoscale Voltage Enhancement at Cathode Interfaces in Li-ion Batteries\", \"Unraveling the stable cathode electrolyte interface in all solid-state thin-film battery operating at 5V\", \"Electrochemical stability and lithium insertion at the Li|Li3OCl solid electrolyte interface\"], \"error\": \"\"}, {\"provider\": \"chemrxiv\", \"status\": \"ok\", \"result_count\": 3, \"top_titles\": [\"Voltage-dependent charge compensation mechanism and cathode electrolyte interface stability of the lithium-ion battery c...[truncated]\", \"Enabling stability at a high working voltage of aP2-Na0.85Li0.17Ni0.21Mn0.64O2 sodium-ion battery cathode via utilizatio...[truncated]\", \"Computational Discovery of Superior Vanadium Niobates-Based Cathode Materials for Next-Generation All-Solid-State Lithiu...[truncated]\"], \"error\": \"\"}]}, \"false_negative_risk\": true}, {\"topic\": \"Physics-informed ML for interfacial stability\", \"hit_count\": 0, \"min_hits\": 10, \"terms\": [\"dft-calibrated ml\", \"interfacial energy prediction\", \"decomposition pathway classification\", \"reaction barrier estimation\"], \"suggested_query\": \"High-voltage lithium batteries above 4.5V, cathode electrolyte interface stability, AI-assisted battery materials discovery dft-calibrated ml interfacial energy prediction decomposition pathway classification reaction barrier estimation\", \"risk\": \"Live probe found literature for this missing branch; current PaperGraph may be incomplete, so TanXi should not treat this absence as a true unexplored gap.\", \"live_probe\": {\"query\": \"High-voltage lithium batteries above 4.5V, cathode electrolyte interface stability, AI-assisted battery materials discovery dft-calibrated ml interfacial energy prediction decomposition pathway classification reaction barrier estimation\", \"status\": \"ok\", \"total_results\": 6, \"providers\": [{\"provider\": \"semantic_scholar\", \"status\": \"ok\", \"result_count\": 0, \"top_titles\": [], \"error\": \"\"}, {\"provider\": \"arxiv\", \"status\": \"ok\", \"result_count\": 3, \"top_titles\": [\"Cathode Materials for Lithium Ion Batteries (LIBs): A Review on Materials related aspects towards High Energy Density LI...[truncated]\", \"Nanoscale Voltage Enhancement at Cathode Interfaces in Li-ion Batteries\", \"Unraveling the stable cathode electrolyte interface in all solid-state thin-film battery operating at 5V\"], \"error\": \"\"}, {\"provider\": \"chemrxiv\", \"status\": \"ok\", \"result_count\": 3, \"top_titles\": [\"Voltage-dependent charge compensation mechanism and cathode electrolyte interface stability of the lithium-ion battery c...[truncated]\", \"Enabling stability at a high working voltage of aP2-Na0.85Li0.17Ni0.21Mn0.64O2 sodium-ion battery cathode via utilizatio...[truncated]\", \"Computational Discovery of Superior Vanadium Niobates-Based Cathode Materials for Next-Generation All-Solid-State Lithiu...[truncated]\"], \"error\": \"\"}]}, \"false_negative_risk\": true}], \"live_validate\": true, \"live_probe_reports\": [{\"query\": \"High-voltage lithium batteries above 4.5V, cathode electrolyte interface stability, AI-assisted battery materials discovery oxygen redox transition metal migration lattice oxygen release voltage hysteresis\", \"status\": \"ok\", \"total_results\": 6, \"providers\": [{\"provider\": \"semantic_scholar\", \"status\": \"ok\", \"result_count\": 0, \"top_titles\": [], \"error\": \"\"}, {\"provider\": \"arxiv\", \"status\": \"ok\", \"result_count\": 3, \"top_titles\": [\"Oxygen redox in battery cathodes: A brief overview\", \"Nanoscale Voltage Enhancement at Cathode Interfaces in Li-ion Batteries\", \"High voltage transition metal-free cathode material LiBC3F4 for Li ion batteries\"], \"error\": \"\"}, {\"provider\": \"chemrxiv\", \"status\": \"ok\", \"result_count\": 3, \"top_titles\": [\"Voltage-dependent charge compensation mechanism and cathode electrolyte interface stability of the lithium-ion battery c...[truncated]\", \"A free-standing sulfone-based solid-state electrolyte mitigating the release of crystal water from the Prussian blue cat...[truncated]\", \"Transition metal migration and O2 formation underpin voltage hysteresis in oxygen-redox disordered rocksalt cathodes\"], \"error\": \"\"}]}, {\"query\": \"High-voltage lithium batteries above 4.5V, cathode electrolyte interface stability, AI-assisted battery materials discovery sulfone-based electrolytes fluorinated carbonates lithium borate salts electrochemical window >5.0 v\", \"status\": \"ok\", \"total_results\": 6, \"providers\": [{\"provider\": \"semantic_scholar\", \"status\": \"ok\", \"result_count\": 0, \"top_titles\": [], \"error\": \"\"}, {\"provider\": \"arxiv\", \"status\": \"ok\", \"result_count\": 3, \"top_titles\": [\"Expected Performance of the ATLAS Experiment - Detector, Trigger and Physics\", \"Status and initial physics performance studies of the MPD experiment at NICA\", \"Measurement of forward $W$ and $Z$ boson production in $pp$ collisions at $\\\\sqrt{s} = 8\\\\mathrm{\\\\,Te\\\\kern -0.1em V}$\"], \"error\": \"\"}, {\"provider\": \"chemrxiv\", \"status\": \"ok\", \"result_count\": 3, \"top_titles\": [\"Voltage-dependent charge compensation mechanism and cathode electrolyte interface stability of the lithium-ion battery c...[truncated]\", \"A free-standing sulfone-based solid-state electrolyte mitigating the release of crystal water from the Prussian blue cat...[truncated]\", \"Computational Discovery of Superior Vanadium Niobates-Based Cathode Materials for Next-Generation All-Solid-State Lithiu...[truncated]\"], \"error\": \"\"}]}, {\"query\": \"High-voltage lithium batteries above 4.5V, cathode electrolyte interface stability, AI-assisted battery materials discovery time-resolved xrd differential electrochemical mass spectrometry in-situ raman cryo-em of interfaces\", \"status\": \"ok\", \"total_results\": 6, \"providers\": [{\"provider\": \"semantic_scholar\", \"status\": \"ok\", \"result_count\": 0, \"top_titles\": [], \"error\": \"\"}, {\"provider\": \"arxiv\", \"status\": \"ok\", \"result_count\": 3, \"top_titles\": [\"Nanoscale Voltage Enhancement at Cathode Interfaces in Li-ion Batteries\", \"Unraveling the stable cathode electrolyte interface in all solid-state thin-film battery operating at 5V\", \"Electrochemical stability and lithium insertion at the Li|Li3OCl solid electrolyte interface\"], \"error\": \"\"}, {\"provider\": \"chemrxiv\", \"status\": \"ok\", \"result_count\": 3, \"top_titles\": [\"Voltage-dependent charge compensation mechanism and cathode electrolyte interface stability of the lithium-ion battery c...[truncated]\", \"Enabling stability at a high working voltage of aP2-Na0.85Li0.17Ni0.21Mn0.64O2 sodium-ion battery cathode via utilizatio...[truncated]\", \"Computational Discovery of Superior Vanadium Niobates-Based Cathode Materials for Next-Generation All-Solid-State Lithiu...[truncated]\"], \"error\": \"\"}]}, {\"query\": \"High-voltage lithium batteries above 4.5V, cathode electrolyte interface stability, AI-assisted battery materials discovery dft-calibrated ml interfacial energy prediction decomposition pathway classification reaction barrier estimation\", \"status\": \"ok\", \"total_results\": 6, \"providers\": [{\"provider\": \"semantic_scholar\", \"status\": \"ok\", \"result_count\": 0, \"top_titles\": [], \"error\": \"\"}, {\"provider\": \"arxiv\", \"status\": \"ok\", \"result_count\": 3, \"top_titles\": [\"Cathode Materials for Lithium Ion Batteries (LIBs): A Review on Materials related aspects towards High Energy Density LI...[truncated]\", \"Nanoscale Voltage Enhancement at Cathode Interfaces in Li-ion Batteries\", \"Unraveling the stable cathode electrolyte interface in all solid-state thin-film battery operating at 5V\"], \"error\": \"\"}, {\"provider\": \"chemrxiv\", \"status\": \"ok\", \"result_count\": 3, \"top_titles\": [\"Voltage-dependent charge compensation mechanism and cathode electrolyte interface stability of the lithium-ion battery c...[truncated]\", \"Enabling stability at a high working voltage of aP2-Na0.85Li0.17Ni0.21Mn0.64O2 sodium-ion battery cathode via utilizatio...[truncated]\", \"Computational Discovery of Superior Vanadium Niobates-Based Cathode Materials for Next-Generation All-Solid-State Lithiu...[truncated]\"], \"error\": \"\"}]}], \"coverage_warning\": true, \"needs_user_branch_confirmation\": true}, \"user_interaction\": {\"needed\": true, \"type\": \"research_branch_confirmation\", \"question\": \"Some major sub-branches appear missing from the current retrieval. Which should be prioritized for a supplemental search before treating gaps as real?\", \"options\": [{\"label\": \"High-voltage cathode degradation pathways\", \"suggested_query\": \"High-voltage lithium batteries above 4.5V, cathode electrolyte interface stability, AI-assisted battery materials discovery oxygen redox transition metal migration lattice oxygen release voltage hysteresis\", \"live_evidence_count\": 6, \"false_negative_risk\": true}, {\"label\": \"Stable electrolyte formulations\", \"suggested_query\": \"High-voltage lithium batteries above 4.5V, cathode electrolyte interface stability, AI-assisted battery materials discovery sulfone-based electrolytes fluorinated carbonates lithium borate salts electrochemical window >5.0 v\", \"live_evidence_count\": 6, \"false_negative_risk\": true}, {\"label\": \"In-situ/operando CEI characterization\", \"suggested_query\": \"High-voltage lithium batteries above 4.5V, cathode electrolyte interface stability, AI-assisted battery materials discovery time-resolved xrd differential electrochemical mass spectrometry in-situ raman cryo-em of interfaces\", \"live_evidence_count\": 6, \"false_negative_risk\": true}, {\"label\": \"Physics-informed ML for interfacial stability\", \"suggested_query\": \"High-voltage lithium batteries above 4.5V, cathode electrolyte interface stability, AI-assisted battery materials discovery dft-calibrated ml interfacial energy prediction decomposition pathway classification reaction barrier estimation\", \"live_evidence_count\": 6, \"false_negative_risk\": true}], \"default_action\": \"Run supplemental stratified search for options with false_negative_risk=true, or ask the user to pick 2-3 priority branches.\", \"continue_with\": \"Pass selected option labels or custom branch keywords as focus_branches to run_zhizhi_literature_analysis/search_papers_stratified.\"}, \"auto_supplement_blind_spots\": {\"attempted\": true, \"branches_attempted\": 3, \"imports\": [{\"result_index\": 1, \"paper_id\": \"paper_1783541853678763800\", \"title\": \"A review and outlook on anionic and cationic redox in Ni-, Li- and Mn-rich layered oxides LiMeO2 (Me = Li, Ni, Co, Mn)\", \"status\": \"imported\"}, {\"result_index\": 0, \"paper_id\": \"paper_1783541875983846600\", \"title\": \"Cathode Materials for Lithium Ion Batteries (LIBs): A Review on Materials related aspects towards High Energy Density LIBs\", \"status\": \"imported\"}, {\"result_index\": 0, \"paper_id\": \"paper_1783541875983846600\", \"title\": \"Cathode Materials for Lithium Ion Batteries (LIBs): A Review on Materials related aspects towards High Energy Density LIBs\", \"status\": \"duplicate\"}, {\"result_index\": 1, \"paper_id\": \"paper_1783542055129038400\", \"title\": \"Voltage-dependent charge compensation mechanism and cathode electrolyte interface stability of the lithium-ion battery cathode materials LiNi0.6Mn0.2Co0.2O2, LiNi0.8Mn0.1Co0.1O2 and LiNi0.80Co0.15Al0.05O2 studied by photoelectron spectroscopy\", \"status\": \"imported\"}, {\"result_index\": 1, \"paper_id\": \"paper_1783541875983846600\", \"title\": \"Cathode Materials for Lithium Ion Batteries (LIBs): A Review on Materials related aspects towards High Energy Density LIBs\", \"status\": \"duplicate\"}, {\"result_index\": 0, \"paper_id\": \"paper_1783542203431515700\", \"title\": \"Electronic Structure Modeling of Electrochemical Reactions at Electrode/Electrolyte Interfaces in Lithium Ion Batteries\", \"status\": \"imported\"}], \"branches\": [{\"topic\": \"High-voltage cathode degradation pathways\", \"query\": \"High-voltage lithium batteries above 4.5V, cathode electrolyte interface stability, AI-assisted battery materials discovery oxygen redox transition metal migration lattice oxygen release voltage hysteresis\", \"search_id\": \"search_1783541769313157500\", \"total_results\": 8, \"imports\": [{\"result_index\": 1, \"paper_id\": \"paper_1783541853678763800\", \"title\": \"A review and outlook on anionic and cationic redox in Ni-, Li- and Mn-rich layered oxides LiMeO2 (Me = Li, Ni, Co, Mn)\", \"status\": \"imported\"}, {\"result_index\": 0, \"paper_id\": \"paper_1783541875983846600\", \"title\": \"Cathode Materials for Lithium Ion Batteries (LIBs): A Review on Materials related aspects towards High Energy Density LIBs\", \"status\": \"imported\"}]}, {\"topic\": \"Stable electrolyte formulations\", \"query\": \"High-voltage lithium batteries above 4.5V, cathode electrolyte interface stability, AI-assisted battery materials discovery sulfone-based electrolytes fluorinated carbonates lithium borate salts electrochemical window >5.0 v\", \"search_id\": \"search_1783541887744903800\", \"total_results\": 8, \"imports\": [{\"result_index\": 0, \"paper_id\": \"paper_1783541875983846600\", \"title\": \"Cathode Materials for Lithium Ion Batteries (LIBs): A Review on Materials related aspects towards High Energy Density LIBs\", \"status\": \"duplicate\"}, {\"result_index\": 1, \"paper_id\": \"paper_1783542055129038400\", \"title\": \"Voltage-dependent charge compensation mechanism and cathode electrolyte interface stability of the lithium-ion battery cathode materials LiNi0.6Mn0.2Co0.2O2, LiNi0.8Mn0.1Co0.1O2 and LiNi0.80Co0.15Al0.05O2 studied by photoelectron spectroscopy\", \"status\": \"imported\"}]}, {\"topic\": \"In-situ/operando CEI characterization\", \"query\": \"High-voltage lithium batteries above 4.5V, cathode electrolyte interface stability, AI-assisted battery materials discovery time-resolved xrd differential electrochemical mass spectrometry in-situ raman cryo-em of interfaces\", \"search_id\": \"search_1783542073572687200\", \"total_results\": 8, \"imports\": [{\"result_index\": 1, \"paper_id\": \"paper_1783541875983846600\", \"title\": \"Cathode Materials for Lithium Ion Batteries (LIBs): A Review on Materials related aspects towards High Energy Density LIBs\", \"status\": \"duplicate\"}, {\"result_index\": 0, \"paper_id\": \"paper_1783542203431515700\", \"title\": \"Electronic Structure Modeling of Electrochemical Reactions at Electrode/Electrolyte Interfaces in Lithium Ion Batteries\", \"status\": \"imported\"}]}], \"policy\": \"auto-supplement only live-confirmed blind spots; cap branches/imports to control API and token budget\"}, \"select_literature_result\": {\"result_index\": 3, \"stratified_layer\": \"L3_preprint\", \"stratified_label\": \"latest arXiv preprint frontier\", \"query_branch\": \"primary\", \"retrieval_query\": \"High-voltage lithium batteries above 4.5V, cathode electrolyte interface stability, AI-assisted battery materials discovery\", \"_why_selected\": \"Selected as latest preprint/frontier signal: Electrolyte stability and instability in lithium-ion batteries; year=2024; provider=chemrxiv; relevance=0.3069.\", \"domain_relevance\": {\"profile\": \"high_voltage_lithium_batteries_above_4_5v_cathode_electrolyte_interface_stabilit\", \"target_field\": \"materials_energy\", \"result_field\": \"materials_energy\", \"score\": 0.6487, \"query_hits\": [\"lithium\", \"batteries\", \"cathode\", \"electrolyte\", \"interface\", \"stability\", \"materials\"], \"anchor_hits\": [\"lithium\", \"batteries\", \"cathode\", \"electrolyte\", \"interface\", \"stability\", \"materials\"], \"topic_hits\": [], \"noise_hits\": [], \"flags\": [\"core_domain_hit\"], \"is_preprint\": true, \"core_domain_alignment\": {\"enabled\": true, \"passes\": true, \"core_terms\": [\"high-voltage lithium batteries\", \"lithium batteries above\", \"batteries above cathode\", \"above cathode electrolyte\", \"cathode electrolyte interface\", \"electrolyte interface stability\", \"interface stability ai-assisted\", \"stability ai-assisted battery\", \"ai-assisted battery materials\", \"battery materials discovery\", \"high-voltage\", \"lithium\", \"batteries\", \"above\", \"cathode\", \"electrolyte\", \"interface\", \"stability\"], \"core_hit_count\": 7, \"core_hits\": [\"lithium\", \"batteries\", \"cathode\", \"electrolyte\", \"interface\", \"stability\", \"materials\"], \"specific_terms\": [\"high-voltage lithium batteries\", \"lithium batteries above\", \"batteries above cathode\", \"above cathode electrolyte\", \"cathode electrolyte interface\", \"electrolyte interface stability\", \"interface stability ai-assisted\", \"stability ai-assisted battery\", \"ai-assisted battery materials\", \"battery materials discovery\", \"high-voltage\", \"lithium\"], \"specific_hit_count\": 7, \"specific_hits\": [\"lithium\", \"batteries\", \"cathode\", \"electrolyte\", \"interface\", \"stability\", \"materials\"], \"min_core_hits\": 4, \"min_specific_hits\": 2, \"is_preprint\": true, \"reason\": \"core topic terms sufficiently covered\"}, \"verdict\": \"keep\", \"requires_human_review\": false}, \"relevance_score\": 0.3069, \"relevance_components\": {\"text_score\": 0.4033, \"recency_score\": 0.85, \"impact_score\": 0.35, \"citation_field\": \"materials_energy\", \"citation_baseline\": 250.0, \"venue_score\": 0.6, \"publication_quality_score\": 0.67, \"base_score\": 0.4581, \"text_weight\": 0.62, \"recency_weight\": 0.1, \"impact_weight\": 0.18, \"venue_weight\": 0.1}, \"publication_quality_score\": 0.67, \"venue_quality\": \"preprint\", \"journal_quartile\": \"\", \"journal_metric_source\": \"\", \"inferred_field\": \"materials_energy\", \"quality_flags\": [\"preprint_not_peer_reviewed\", \"new_paper_protection\"], \"quality_criteria\": [\"venue is a preprint server, not final peer-reviewed venue\", \"paper is within 2-year protection window; low citations are not treated as low quality\"], \"suspicion_type\": \"\", \"is_review_like\": false, \"pyramid_root_score\": 0.4934, \"matched_query_terms\": [\"lithium\", \"batteries\", \"electrolyte\", \"stability\", \"cathode\", \"interface\", \"materials\"], \"title\": \"Electrolyte stability and instability in lithium-ion batteries\", \"citation\": \"Jason S. Terreblanche et al. (2024) Electrolyte stability and instability in lithium-ion batteries doi:10.26434/chemrxiv-2024-nmnr8\", \"provider\": \"chemrxiv\", \"year\": \"2024\", \"citation_count\": null, \"influential_citation_count\": null, \"doi\": \"10.26434/chemrxiv-2024-nmnr8\", \"arxiv_id\": null, \"url\": \"https://doi.org/10.26434/chemrxiv-2024-nmnr8\", \"relevance_reason\": \"title=4/12, abstract=7/12, citation=4/12, phrase_bonus=0.0, recency=0.85, impact=0.35, venue=0.6, quality=0.67\", \"quality_reason\": \"venue is a preprint server, not final peer-reviewed venue; paper is within 2-year protection window; low citations are not treated as low quality\"}, \"stratified_import_plan\": {\"strategy\": \"layer_minimum_then_score_backfill\", \"requested_import_top_k\": 12, \"effective_import_top_k\": 12, \"min_per_layer\": {\"L0_review\": 2, \"L1_milestone\": 2, \"L2_top_latest\": 2, \"L3_preprint\": 2, \"L4_regular\": 3}, \"candidate_counts_by_layer\": {\"L0_review\": 2, \"L1_milestone\": 1, \"L2_top_latest\": 1, \"L3_preprint\": 8, \"L4_regular\": 13}, \"selected_counts_by_layer\": {\"L0_review\": 2, \"L1_milestone\": 1, \"L2_top_latest\": 1, \"L3_preprint\": 5, \"L4_regular\": 3}, \"missing_layers\": [{\"layer\": \"L1_milestone\", \"label\": \"milestone / highly cited foundation\", \"target\": 2, \"selected\": 1, \"candidates\": 1}, {\"layer\": \"L2_top_latest\", \"label\": \"recent top-venue frontier\", \"target\": 2, \"selected\": 1, \"candidates\": 1}], \"selected_result_indexes\": [0, 1, 2, 3, 4, 5, 14, 15, 12, 6, 7, 8]}, \"imported_records\": 12, \"expand_literature_graph\": {\"graph_search_id\": \"graph_1783542513127532100\", \"total_results\": 1, \"fallback_used\": true, \"depth\": 1}, \"build_literature_relation_graph\": {\"relation_graph_id\": \"relgraph_1783542519014227700\", \"cluster_count\": 1, \"edge_summary\": {\"total_edges\": 1, \"citation_graph_edges\": 0, \"artificial_edges\": 1, \"by_relation\": {\"keyword_fallback\": 1}, \"by_depth\": {\"1\": 1}, \"fallback_weight_policy\": \"keyword_fallback/search_result edges are artificial and use very low PageRank weight.\"}, \"analysis_confidence\": 0.65}}, \"thought\": \"ZhiZhi retrieved and filtered literature, imported grounded PaperGraph evidence, built a benchmark-aware knowledge map, expanded citation context when available, and generated gaps with novelty/value/feasibility checks.\"}",
+      "round": "round_0_literature_reading",
+      "status": "completed"
+    },
+    {
+      "name": "TanXi_ToolAgent",
+      "role": "assistant",
+      "content": "{\"action\": {\"scan_coverage_density\": {\"target_domain\": \"High-voltage lithium batteries above 4.5V, cathode/electrolyte/interface stability, AI-assisted battery materials discovery\"}, \"detect_reasoning_gaps\": {\"types\": [\"claim_contradiction\", \"theory_evidence_anomaly\"]}, \"detect_source_gap_signals\": {\"types\": [\"limitations\", \"future_work\", \"open_problem\", \"missing_evidence\"]}, \"detect_mechanism_issue_gaps\": {\"priority\": \"higher_than_matrix_holes\"}, \"find_unconnected_pairs\": {\"target_domain\": \"High-voltage lithium batteries above 4.5V, cathode/electrolyte/interface stability, AI-assisted battery materials discovery\"}, \"detect_suspended_problems\": {\"min_citation_threshold\": 50}, \"prioritize_gaps\": {\"criteria\": [\"importance\", \"tractability\", \"strategic_value\"]}, \"align_with_strategic_needs\": {\"strategic_domains\": [\"ai for science\", \"energy\"]}}, \"thought\": \"TanXi scanned the PaperGraph for low-density but high-importance method-scenario-benchmark regions, claim contradictions, anomaly/tension signals, cross-disciplinary unconnected pairs, suspended unresolved problems, and strategic-need alignment.\"}",
+      "round": "round_0_gap_exploration",
+      "status": "completed"
+    },
+    {
+      "name": "MingLi_AssistantAgent",
+      "role": "assistant",
+      "content": "{\"status\": \"draft\", \"project_id\": \"sci_1783541582585393700\", \"next_step\": \"Call design_experiment with the draft idea, then finalize_idea to run mandatory uniqueness verification.\", \"action\": {\"type\": \"generate_idea\", \"gap_id\": \"gap_1783542528075108100\", \"style\": \"innovative\"}, \"thought\": \"Generated a gap-traceable MingLi draft idea and scored it for novelty, plausibility, grounding, testability, impact, and surprise.\"}",
+      "round": "round_1_proponent_position",
+      "status": "completed"
+    },
+    {
+      "name": "MingLi_AssistantAgent",
+      "role": "assistant",
+      "content": "{\"project_id\": \"sci_1783541582585393700\", \"next_step\": \"Call finalize_idea; it will run mandatory uniqueness verification before persisting the hypothesis.\", \"action\": {\"type\": \"design_experiment\", \"gap_id\": \"gap_1783542528075108100\", \"constraints\": \"academic lab scale; evidence-traceable; include baselines, ablations, regime shifts, and falsification criteria\"}, \"thought\": \"Designed a falsifiable experiment with setup, metrics, baselines, and rejection criteria.\"}",
+      "round": "round_3_methodology",
+      "status": "completed"
+    },
+    {
+      "name": "MingLi_AssistantAgent",
+      "role": "assistant",
+      "content": "{\"status\": \"finalized\", \"hypothesis_id\": \"hyp_1783542536864905800\"}",
+      "round": "round_1_hypothesis_finalization",
+      "status": "finalized"
+    },
+    {
+      "name": "YanZhen_ToolAgent",
+      "role": "assistant",
+      "content": "{\"action\": {\"type\": \"run_yanzhen_mechanism_verification\", \"hypothesis_id\": \"hyp_1783542536864905800\", \"layers_executed\": [\"internal_consistency\", \"data_consistency\", \"regime_shift_test\"]}, \"thought\": \"YanZhen audited the hypothesis through internal consistency, data consistency, selective-citation, causal-chain, and regime-shift checks.\", \"mechanism_fidelity_report\": {\"overall_verdict\": \"REQUIRES_HUMAN_REVIEW\", \"hypothesis_id\": \"hyp_1783542536864905800\"}}",
+      "round": "round_2_cawm_layer_1_2_and_round_3_layer_3",
+      "status": "REQUIRES_HUMAN_REVIEW"
+    },
+    {
+      "name": "BianLun_GroupChatManager",
+      "role": "assistant",
+      "content": "{\"action\": {\"type\": \"run_socratic_hypothesis_debate\", \"rounds\": 5, \"max_rounds\": 5}, \"thought\": \"BianLun ran the triangle loop: Socratic debate, YanZhen mechanism audit, targeted literature completion when needed, MingLi revision, and final synthesis.\", \"debate_report\": {\"debate_id\": \"debate_1783542753275543800\", \"final_decision\": \"human_review\", \"unresolved_issues\": [\"causal_probe: How will the hypothesis be revised to address YanZhen Layer 1 issue: Unsupported causal link: If the conflicting claims in all-solid-state lithium metal batteries are retested under matched the experimental, observational, or simulation conditions that differ between the claims conditions, then Coulombic efficiency (CE) will rev...[...[truncated]\", \"causal_probe: How will the hypothesis be revised to address YanZhen Layer 1 issue: Unsupported causal link: The conflicting claims in all-solid-state lithium metal batteries are retested under matched the experimental, observati...[truncated] If the conflicting claims in all-solid-state lithium metal batteries are retested under matched the exper...[truncated]\", \"causal_probe: How will the hypothesis be revised to address YanZhen Layer 1 issue: Unsupported causal link: The decisive prediction is that this concrete bridge, not a generic representation change, will alter Coulombic efficiency (CE); if the bridge data or causal link is absent, the hypothesis should fail rather than be reinterpreted post hoc.\", \"causal_probe: For the evidence-derived terms polymer-in-high concentrated ionic liquid (PiHCIL) electrolyte design, all-solid-state lithium metal batteries, ionic conductivity, principal component analysis, which exact term sits at the intervention, mediator, and output positions of the causal chain?\", \"evidence_completion_challenge: YanZhen marked this claim as unsupported: Unsupported causal link: The conflicting claims in all-solid-state lithium metal batteries are retested under matched the experimental, observati...[truncated] If the conflicting claims in all-solid-state lithium metal b...[truncated]. Will MingLi attach a PaperGraph citation, narrow the claim, or remove it?\"]}}",
+      "round": "round_4_groupchat_synthesis",
+      "status": "human_review"
+    }
+  ],
+  "turns": [
+    {
+      "round": "round_0_literature_reading",
+      "speaker": "ZhiZhi_ToolAgent",
+      "status": "completed",
+      "content": {
+        "action": {
+          "agent": "zhizhi",
+          "query": "High-voltage lithium batteries above 4.5V, cathode electrolyte interface stability, AI-assisted battery materials discovery",
+          "domain": "High-voltage lithium batteries above 4.5V, cathode/electrolyte/interface stability, AI-assisted battery materials discovery",
+          "years": "last 5 years",
+          "search_papers_stratified": {
+            "search_id": "search_1783541600062545000",
+            "total_results": 25,
+            "requested_max_results": 25,
+            "effective_search_budget": 25,
+            "providers": [
+              "semantic_scholar",
+              "arxiv",
+              "chemrxiv"
+            ],
+            "strategy": "stratified_cascade",
+            "query_plan": [
+              {
+                "branch": "primary",
+                "query": "High-voltage lithium batteries above 4.5V, cathode electrolyte interface stability, AI-assisted battery materials discovery"
+              },
+              {
+                "branch": "cathode_structural_stability",
+                "query": "High-voltage lithium batteries above 4.5V, cathode electrolyte interface stability, AI-assisted battery materials discovery cathode phase transition OR oxygen loss OR TM dissolution OR lattice parameter evolution under >4.5 V cycling",
+                "topic_type": "branch"
+              },
+              {
+                "branch": "electrolyte_oxidation_cei_formation",
+                "query": "High-voltage lithium batteries above 4.5V, cathode electrolyte interface stability, AI-assisted battery materials discovery electrolyte oxidation onset OR cathode electrolyte interphase OR anion-derived CEI OR HF scavenging additives",
+                "topic_type": "branch"
+              },
+              {
+                "branch": "interface_thermodynamics_kinetics",
+                "query": "High-voltage lithium batteries above 4.5V, cathode electrolyte interface stability, AI-assisted battery materials discovery interfacial energy OR CEI formation energy OR charge transfer barrier OR interfacial reaction pathway",
+                "topic_type": "branch"
+              },
+              {
+                "branch": "ai_ml_for_high_voltage_materials",
+                "query": "High-voltage lithium batteries above 4.5V, cathode electrolyte interface stability, AI-assisted battery materials discovery machine learning battery cathode OR generative model electrolyte OR active learning battery screening OR graph neural network voltage prediction",
+                "topic_type": "branch"
+              },
+              {
+                "branch": "field_map_reviews",
+                "query": "High-voltage lithium batteries above 4.5V, cathode/electrolyte/interface stability, AI-assisted battery materials discovery High-voltage lithium batteries above 4.5V, cathode electrolyte interface stability, AI-assisted battery materials discovery review survey roadmap progress perspective systematic review",
+                "topic_type": "retrieval_facet"
+              },
+              {
+                "branch": "milestone_foundations",
+                "query": "High-voltage lithium batteries above 4.5V, cathode/electrolyte/interface stability, AI-assisted battery materials discovery High-voltage lithium batteries above 4.5V, cathode electrolyte interface stability, AI-assisted battery materials discovery seminal foundational highly cited landmark theory method mechanism",
+                "topic_type": "retrieval_facet"
+              },
+              {
+                "branch": "methods_and_mechanisms",
+                "query": "High-voltage lithium batteries above 4.5V, cathode/electrolyte/interface stability, AI-assisted battery materials discovery High-voltage lithium batteries above 4.5V, cathode electrolyte interface stability, AI-assisted battery materials discovery method model algorithm mechanism experiment framework",
+                "topic_type": "retrieval_facet"
+              },
+              {
+                "branch": "applications_systems_scenarios",
+                "query": "High-voltage lithium batteries above 4.5V, cathode/electrolyte/interface stability, AI-assisted battery materials discovery High-voltage lithium batteries above 4.5V, cathode electrolyte interface stability, AI-assisted battery materials discovery application system scenario case study deployment",
+                "topic_type": "retrieval_facet"
+              }
+            ],
+            "focus_branches": [],
+            "strata": [
+              {
+                "layer": "L0_review",
+                "label": "high-impact review / field map",
+                "quota": 3,
+                "query_suffix": "review survey progress perspective tutorial systematic review meta-analysis",
+                "target": 3,
+                "candidate_count": 4,
+                "raw_candidate_count": 42,
+                "selected": 2,
+                "domain_rejected": 2,
+                "recovery_used": "",
+                "carried_to_next": 1
+              },
+              {
+                "layer": "L1_milestone",
+                "label": "milestone / highly cited foundation",
+                "quota": 4,
+                "query_suffix": "seminal foundational highly cited landmark classic influential",
+                "target": 5,
+                "candidate_count": 1,
+                "raw_candidate_count": 2,
+                "selected": 1,
+                "domain_rejected": 0,
+                "recovery_used": "relaxed_milestone_highest_available_citation",
+                "carried_to_next": 4
+              },
+              {
+                "layer": "L2_top_latest",
+                "label": "recent top-venue frontier",
+                "quota": 4,
+                "query_suffix": "latest recent top journal high impact breakthrough advance frontier",
+                "target": 8,
+                "candidate_count": 2,
+                "raw_candidate_count": 2,
+                "selected": 1,
+                "domain_rejected": 0,
+                "recovery_used": "relaxed_top_latest_recent_or_high_quality_available",
+                "carried_to_next": 7
+              },
+              {
+                "layer": "L3_preprint",
+                "label": "latest arXiv preprint frontier",
+                "quota": 1,
+                "query_suffix": "",
+                "target": 8,
+                "candidate_count": 23,
+                "raw_candidate_count": 23,
+                "selected": 8,
+                "domain_rejected": 0,
+                "recovery_used": "",
+                "carried_to_next": 0
+              },
+              {
+                "layer": "L4_regular",
+                "label": "regular journal / supplemental evidence",
+                "quota": 13,
+                "query_suffix": "",
+                "target": 13,
+                "candidate_count": 2,
+                "raw_candidate_count": 86,
+                "selected": 0,
+                "domain_rejected": 0,
+                "recovery_used": "",
+                "carried_to_next": 13
+              },
+              {
+                "layer": "L4_regular_backfill",
+                "label": "regular journal / quota backfill",
+                "quota": 13,
+                "target": 13,
+                "candidate_count": 86,
+                "selected": 13,
+                "domain_rejected": 0,
+                "carried_to_next": 0
+              }
+            ],
+            "errors": []
+          },
+          "domain_coverage_diagnostic": {
+            "profile": "materials_science_and_electrochemistry_research_focused_on_next_generation_lithi",
+            "profile_source": "llm",
+            "search_id": "search_1783541600062545000",
+            "total_results": 25,
+            "represented_topics": [],
+            "blind_spots": [
+              {
+                "topic": "High-voltage cathode degradation pathways",
+                "hit_count": 1,
+                "min_hits": 10,
+                "terms": [
+                  "oxygen redox",
+                  "transition metal migration",
+                  "lattice oxygen release",
+                  "voltage hysteresis"
+                ],
+                "suggested_query": "High-voltage lithium batteries above 4.5V, cathode electrolyte interface stability, AI-assisted battery materials discovery oxygen redox transition metal migration lattice oxygen release voltage hysteresis",
+                "risk": "Live probe found literature for this missing branch; current PaperGraph may be incomplete, so TanXi should not treat this absence as a true unexplored gap.",
+                "live_probe": {
+                  "query": "High-voltage lithium batteries above 4.5V, cathode electrolyte interface stability, AI-assisted battery materials discovery oxygen redox transition metal migration lattice oxygen release voltage hysteresis",
+                  "status": "ok",
+                  "total_results": 6,
+                  "providers": [
+                    {
+                      "provider": "semantic_scholar",
+                      "status": "ok",
+                      "result_count": 0,
+                      "top_titles": [],
+                      "error": ""
+                    },
+                    {
+                      "provider": "arxiv",
+                      "status": "ok",
+                      "result_count": 3,
+                      "top_titles": [
+                        "Oxygen redox in battery cathodes: A brief overview",
+                        "Nanoscale Voltage Enhancement at Cathode Interfaces in Li-ion Batteries",
+                        "High voltage transition metal-free cathode material LiBC3F4 for Li ion batteries"
+                      ],
+                      "error": ""
+                    },
+                    {
+                      "provider": "chemrxiv",
+                      "status": "ok",
+                      "result_count": 3,
+                      "top_titles": [
+                        "Voltage-dependent charge compensation mechanism and cathode electrolyte interface stability of the lithium-ion battery c...[truncated]",
+                        "A free-standing sulfone-based solid-state electrolyte mitigating the release of crystal water from the Prussian blue cat...[truncated]",
+                        "Transition metal migration and O2 formation underpin voltage hysteresis in oxygen-redox disordered rocksalt cathodes"
+                      ],
+                      "error": ""
+                    }
+                  ]
+                },
+                "false_negative_risk": true
+              },
+              {
+                "topic": "Stable electrolyte formulations",
+                "hit_count": 1,
+                "min_hits": 10,
+                "terms": [
+                  "sulfone-based electrolytes",
+                  "fluorinated carbonates",
+                  "lithium borate salts",
+                  "electrochemical window >5.0 v"
+                ],
+                "suggested_query": "High-voltage lithium batteries above 4.5V, cathode electrolyte interface stability, AI-assisted battery materials discovery sulfone-based electrolytes fluorinated carbonates lithium borate salts electrochemical window >5.0 v",
+                "risk": "Live probe found literature for this missing branch; current PaperGraph may be incomplete, so TanXi should not treat this absence as a true unexplored gap.",
+                "live_probe": {
+                  "query": "High-voltage lithium batteries above 4.5V, cathode electrolyte interface stability, AI-assisted battery materials discovery sulfone-based electrolytes fluorinated carbonates lithium borate salts electrochemical window >5.0 v",
+                  "status": "ok",
+                  "total_results": 6,
+                  "providers": [
+                    {
+                      "provider": "semantic_scholar",
+                      "status": "ok",
+                      "result_count": 0,
+                      "top_titles": [],
+                      "error": ""
+                    },
+                    {
+                      "provider": "arxiv",
+                      "status": "ok",
+                      "result_count": 3,
+                      "top_titles": [
+                        "Expected Performance of the ATLAS Experiment - Detector, Trigger and Physics",
+                        "Status and initial physics performance studies of the MPD experiment at NICA",
+                        "Measurement of forward $W$ and $Z$ boson production in $pp$ collisions at $\\sqrt{s} = 8\\mathrm{\\,Te\\kern -0.1em V}$"
+                      ],
+                      "error": ""
+                    },
+                    {
+                      "provider": "chemrxiv",
+                      "status": "ok",
+                      "result_count": 3,
+                      "top_titles": [
+                        "Voltage-dependent charge compensation mechanism and cathode electrolyte interface stability of the lithium-ion battery c...[truncated]",
+                        "A free-standing sulfone-based solid-state electrolyte mitigating the release of crystal water from the Prussian blue cat...[truncated]",
+                        "Computational Discovery of Superior Vanadium Niobates-Based Cathode Materials for Next-Generation All-Solid-State Lithiu...[truncated]"
+                      ],
+                      "error": ""
+                    }
+                  ]
+                },
+                "false_negative_risk": true
+              },
+              {
+                "topic": "In-situ/operando CEI characterization",
+                "hit_count": 1,
+                "min_hits": 10,
+                "terms": [
+                  "time-resolved xrd",
+                  "differential electrochemical mass spectrometry",
+                  "in-situ raman",
+                  "cryo-em of interfaces"
+                ],
+                "suggested_query": "High-voltage lithium batteries above 4.5V, cathode electrolyte interface stability, AI-assisted battery materials discovery time-resolved xrd differential electrochemical mass spectrometry in-situ raman cryo-em of interfaces",
+                "risk": "Live probe found literature for this missing branch; current PaperGraph may be incomplete, so TanXi should not treat this absence as a true unexplored gap.",
+                "live_probe": {
+                  "query": "High-voltage lithium batteries above 4.5V, cathode electrolyte interface stability, AI-assisted battery materials discovery time-resolved xrd differential electrochemical mass spectrometry in-situ raman cryo-em of interfaces",
+                  "status": "ok",
+                  "total_results": 6,
+                  "providers": [
+                    {
+                      "provider": "semantic_scholar",
+                      "status": "ok",
+                      "result_count": 0,
+                      "top_titles": [],
+                      "error": ""
+                    },
+                    {
+                      "provider": "arxiv",
+                      "status": "ok",
+                      "result_count": 3,
+                      "top_titles": [
+                        "Nanoscale Voltage Enhancement at Cathode Interfaces in Li-ion Batteries",
+                        "Unraveling the stable cathode electrolyte interface in all solid-state thin-film battery operating at 5V",
+                        "Electrochemical stability and lithium insertion at the Li|Li3OCl solid electrolyte interface"
+                      ],
+                      "error": ""
+                    },
+                    {
+                      "provider": "chemrxiv",
+                      "status": "ok",
+                      "result_count": 3,
+                      "top_titles": [
+                        "Voltage-dependent charge compensation mechanism and cathode electrolyte interface stability of the lithium-ion battery c...[truncated]",
+                        "Enabling stability at a high working voltage of aP2-Na0.85Li0.17Ni0.21Mn0.64O2 sodium-ion battery cathode via utilizatio...[truncated]",
+                        "Computational Discovery of Superior Vanadium Niobates-Based Cathode Materials for Next-Generation All-Solid-State Lithiu...[truncated]"
+                      ],
+                      "error": ""
+                    }
+                  ]
+                },
+                "false_negative_risk": true
+              },
+              {
+                "topic": "Physics-informed ML for interfacial stability",
+                "hit_count": 0,
+                "min_hits": 10,
+                "terms": [
+                  "dft-calibrated ml",
+                  "interfacial energy prediction",
+                  "decomposition pathway classification",
+                  "reaction barrier estimation"
+                ],
+                "suggested_query": "High-voltage lithium batteries above 4.5V, cathode electrolyte interface stability, AI-assisted battery materials discovery dft-calibrated ml interfacial energy prediction decomposition pathway classification reaction barrier estimation",
+                "risk": "Live probe found literature for this missing branch; current PaperGraph may be incomplete, so TanXi should not treat this absence as a true unexplored gap.",
+                "live_probe": {
+                  "query": "High-voltage lithium batteries above 4.5V, cathode electrolyte interface stability, AI-assisted battery materials discovery dft-calibrated ml interfacial energy prediction decomposition pathway classification reaction barrier estimation",
+                  "status": "ok",
+                  "total_results": 6,
+                  "providers": [
+                    {
+                      "provider": "semantic_scholar",
+                      "status": "ok",
+                      "result_count": 0,
+                      "top_titles": [],
+                      "error": ""
+                    },
+                    {
+                      "provider": "arxiv",
+                      "status": "ok",
+                      "result_count": 3,
+                      "top_titles": [
+                        "Cathode Materials for Lithium Ion Batteries (LIBs): A Review on Materials related aspects towards High Energy Density LI...[truncated]",
+                        "Nanoscale Voltage Enhancement at Cathode Interfaces in Li-ion Batteries",
+                        "Unraveling the stable cathode electrolyte interface in all solid-state thin-film battery operating at 5V"
+                      ],
+                      "error": ""
+                    },
+                    {
+                      "provider": "chemrxiv",
+                      "status": "ok",
+                      "result_count": 3,
+                      "top_titles": [
+                        "Voltage-dependent charge compensation mechanism and cathode electrolyte interface stability of the lithium-ion battery c...[truncated]",
+                        "Enabling stability at a high working voltage of aP2-Na0.85Li0.17Ni0.21Mn0.64O2 sodium-ion battery cathode via utilizatio...[truncated]",
+                        "Computational Discovery of Superior Vanadium Niobates-Based Cathode Materials for Next-Generation All-Solid-State Lithiu...[truncated]"
+                      ],
+                      "error": ""
+                    }
+                  ]
+                },
+                "false_negative_risk": true
+              }
+            ],
+            "live_validate": true,
+            "live_probe_reports": [
+              {
+                "query": "High-voltage lithium batteries above 4.5V, cathode electrolyte interface stability, AI-assisted battery materials discovery oxygen redox transition metal migration lattice oxygen release voltage hysteresis",
+                "status": "ok",
+                "total_results": 6,
+                "providers": [
+                  {
+                    "provider": "semantic_scholar",
+                    "status": "ok",
+                    "result_count": 0,
+                    "top_titles": [],
+                    "error": ""
+                  },
+                  {
+                    "provider": "arxiv",
+                    "status": "ok",
+                    "result_count": 3,
+                    "top_titles": [
+                      "Oxygen redox in battery cathodes: A brief overview",
+                      "Nanoscale Voltage Enhancement at Cathode Interfaces in Li-ion Batteries",
+                      "High voltage transition metal-free cathode material LiBC3F4 for Li ion batteries"
+                    ],
+                    "error": ""
+                  },
+                  {
+                    "provider": "chemrxiv",
+                    "status": "ok",
+                    "result_count": 3,
+                    "top_titles": [
+                      "Voltage-dependent charge compensation mechanism and cathode electrolyte interface stability of the lithium-ion battery c...[truncated]",
+                      "A free-standing sulfone-based solid-state electrolyte mitigating the release of crystal water from the Prussian blue cat...[truncated]",
+                      "Transition metal migration and O2 formation underpin voltage hysteresis in oxygen-redox disordered rocksalt cathodes"
+                    ],
+                    "error": ""
+                  }
+                ]
+              },
+              {
+                "query": "High-voltage lithium batteries above 4.5V, cathode electrolyte interface stability, AI-assisted battery materials discovery sulfone-based electrolytes fluorinated carbonates lithium borate salts electrochemical window >5.0 v",
+                "status": "ok",
+                "total_results": 6,
+                "providers": [
+                  {
+                    "provider": "semantic_scholar",
+                    "status": "ok",
+                    "result_count": 0,
+                    "top_titles": [],
+                    "error": ""
+                  },
+                  {
+                    "provider": "arxiv",
+                    "status": "ok",
+                    "result_count": 3,
+                    "top_titles": [
+                      "Expected Performance of the ATLAS Experiment - Detector, Trigger and Physics",
+                      "Status and initial physics performance studies of the MPD experiment at NICA",
+                      "Measurement of forward $W$ and $Z$ boson production in $pp$ collisions at $\\sqrt{s} = 8\\mathrm{\\,Te\\kern -0.1em V}$"
+                    ],
+                    "error": ""
+                  },
+                  {
+                    "provider": "chemrxiv",
+                    "status": "ok",
+                    "result_count": 3,
+                    "top_titles": [
+                      "Voltage-dependent charge compensation mechanism and cathode electrolyte interface stability of the lithium-ion battery c...[truncated]",
+                      "A free-standing sulfone-based solid-state electrolyte mitigating the release of crystal water from the Prussian blue cat...[truncated]",
+                      "Computational Discovery of Superior Vanadium Niobates-Based Cathode Materials for Next-Generation All-Solid-State Lithiu...[truncated]"
+                    ],
+                    "error": ""
+                  }
+                ]
+              },
+              {
+                "query": "High-voltage lithium batteries above 4.5V, cathode electrolyte interface stability, AI-assisted battery materials discovery time-resolved xrd differential electrochemical mass spectrometry in-situ raman cryo-em of interfaces",
+                "status": "ok",
+                "total_results": 6,
+                "providers": [
+                  {
+                    "provider": "semantic_scholar",
+                    "status": "ok",
+                    "result_count": 0,
+                    "top_titles": [],
+                    "error": ""
+                  },
+                  {
+                    "provider": "arxiv",
+                    "status": "ok",
+                    "result_count": 3,
+                    "top_titles": [
+                      "Nanoscale Voltage Enhancement at Cathode Interfaces in Li-ion Batteries",
+                      "Unraveling the stable cathode electrolyte interface in all solid-state thin-film battery operating at 5V",
+                      "Electrochemical stability and lithium insertion at the Li|Li3OCl solid electrolyte interface"
+                    ],
+                    "error": ""
+                  },
+                  {
+                    "provider": "chemrxiv",
+                    "status": "ok",
+                    "result_count": 3,
+                    "top_titles": [
+                      "Voltage-dependent charge compensation mechanism and cathode electrolyte interface stability of the lithium-ion battery c...[truncated]",
+                      "Enabling stability at a high working voltage of aP2-Na0.85Li0.17Ni0.21Mn0.64O2 sodium-ion battery cathode via utilizatio...[truncated]",
+                      "Computational Discovery of Superior Vanadium Niobates-Based Cathode Materials for Next-Generation All-Solid-State Lithiu...[truncated]"
+                    ],
+                    "error": ""
+                  }
+                ]
+              },
+              {
+                "query": "High-voltage lithium batteries above 4.5V, cathode electrolyte interface stability, AI-assisted battery materials discovery dft-calibrated ml interfacial energy prediction decomposition pathway classification reaction barrier estimation",
+                "status": "ok",
+                "total_results": 6,
+                "providers": [
+                  {
+                    "provider": "semantic_scholar",
+                    "status": "ok",
+                    "result_count": 0,
+                    "top_titles": [],
+                    "error": ""
+                  },
+                  {
+                    "provider": "arxiv",
+                    "status": "ok",
+                    "result_count": 3,
+                    "top_titles": [
+                      "Cathode Materials for Lithium Ion Batteries (LIBs): A Review on Materials related aspects towards High Energy Density LI...[truncated]",
+                      "Nanoscale Voltage Enhancement at Cathode Interfaces in Li-ion Batteries",
+                      "Unraveling the stable cathode electrolyte interface in all solid-state thin-film battery operating at 5V"
+                    ],
+                    "error": ""
+                  },
+                  {
+                    "provider": "chemrxiv",
+                    "status": "ok",
+                    "result_count": 3,
+                    "top_titles": [
+                      "Voltage-dependent charge compensation mechanism and cathode electrolyte interface stability of the lithium-ion battery c...[truncated]",
+                      "Enabling stability at a high working voltage of aP2-Na0.85Li0.17Ni0.21Mn0.64O2 sodium-ion battery cathode via utilizatio...[truncated]",
+                      "Computational Discovery of Superior Vanadium Niobates-Based Cathode Materials for Next-Generation All-Solid-State Lithiu...[truncated]"
+                    ],
+                    "error": ""
+                  }
+                ]
+              }
+            ],
+            "coverage_warning": true,
+            "needs_user_branch_confirmation": true
+          },
+          "user_interaction": {
+            "needed": true,
+            "type": "research_branch_confirmation",
+            "question": "Some major sub-branches appear missing from the current retrieval. Which should be prioritized for a supplemental search before treating gaps as real?",
+            "options": [
+              {
+                "label": "High-voltage cathode degradation pathways",
+                "suggested_query": "High-voltage lithium batteries above 4.5V, cathode electrolyte interface stability, AI-assisted battery materials discovery oxygen redox transition metal migration lattice oxygen release voltage hysteresis",
+                "live_evidence_count": 6,
+                "false_negative_risk": true
+              },
+              {
+                "label": "Stable electrolyte formulations",
+                "suggested_query": "High-voltage lithium batteries above 4.5V, cathode electrolyte interface stability, AI-assisted battery materials discovery sulfone-based electrolytes fluorinated carbonates lithium borate salts electrochemical window >5.0 v",
+                "live_evidence_count": 6,
+                "false_negative_risk": true
+              },
+              {
+                "label": "In-situ/operando CEI characterization",
+                "suggested_query": "High-voltage lithium batteries above 4.5V, cathode electrolyte interface stability, AI-assisted battery materials discovery time-resolved xrd differential electrochemical mass spectrometry in-situ raman cryo-em of interfaces",
+                "live_evidence_count": 6,
+                "false_negative_risk": true
+              },
+              {
+                "label": "Physics-informed ML for interfacial stability",
+                "suggested_query": "High-voltage lithium batteries above 4.5V, cathode electrolyte interface stability, AI-assisted battery materials discovery dft-calibrated ml interfacial energy prediction decomposition pathway classification reaction barrier estimation",
+                "live_evidence_count": 6,
+                "false_negative_risk": true
+              }
+            ],
+            "default_action": "Run supplemental stratified search for options with false_negative_risk=true, or ask the user to pick 2-3 priority branches.",
+            "continue_with": "Pass selected option labels or custom branch keywords as focus_branches to run_zhizhi_literature_analysis/search_papers_stratified."
+          },
+          "auto_supplement_blind_spots": {
+            "attempted": true,
+            "branches_attempted": 3,
+            "imports": [
+              {
+                "result_index": 1,
+                "paper_id": "paper_1783541853678763800",
+                "title": "A review and outlook on anionic and cationic redox in Ni-, Li- and Mn-rich layered oxides LiMeO2 (Me = Li, Ni, Co, Mn)",
+                "status": "imported"
+              },
+              {
+                "result_index": 0,
+                "paper_id": "paper_1783541875983846600",
+                "title": "Cathode Materials for Lithium Ion Batteries (LIBs): A Review on Materials related aspects towards High Energy Density LIBs",
+                "status": "imported"
+              },
+              {
+                "result_index": 0,
+                "paper_id": "paper_1783541875983846600",
+                "title": "Cathode Materials for Lithium Ion Batteries (LIBs): A Review on Materials related aspects towards High Energy Density LIBs",
+                "status": "duplicate"
+              },
+              {
+                "result_index": 1,
+                "paper_id": "paper_1783542055129038400",
+                "title": "Voltage-dependent charge compensation mechanism and cathode electrolyte interface stability of the lithium-ion battery cathode materials LiNi0.6Mn0.2Co0.2O2, LiNi0.8Mn0.1Co0.1O2 and LiNi0.80Co0.15Al0.05O2 studied by photoelectron spectroscopy",
+                "status": "imported"
+              },
+              {
+                "result_index": 1,
+                "paper_id": "paper_1783541875983846600",
+                "title": "Cathode Materials for Lithium Ion Batteries (LIBs): A Review on Materials related aspects towards High Energy Density LIBs",
+                "status": "duplicate"
+              },
+              {
+                "result_index": 0,
+                "paper_id": "paper_1783542203431515700",
+                "title": "Electronic Structure Modeling of Electrochemical Reactions at Electrode/Electrolyte Interfaces in Lithium Ion Batteries",
+                "status": "imported"
+              }
+            ],
+            "branches": [
+              {
+                "topic": "High-voltage cathode degradation pathways",
+                "query": "High-voltage lithium batteries above 4.5V, cathode electrolyte interface stability, AI-assisted battery materials discovery oxygen redox transition metal migration lattice oxygen release voltage hysteresis",
+                "search_id": "search_1783541769313157500",
+                "total_results": 8,
+                "imports": [
+                  {
+                    "result_index": 1,
+                    "paper_id": "paper_1783541853678763800",
+                    "title": "A review and outlook on anionic and cationic redox in Ni-, Li- and Mn-rich layered oxides LiMeO2 (Me = Li, Ni, Co, Mn)",
+                    "status": "imported"
+                  },
+                  {
+                    "result_index": 0,
+                    "paper_id": "paper_1783541875983846600",
+                    "title": "Cathode Materials for Lithium Ion Batteries (LIBs): A Review on Materials related aspects towards High Energy Density LIBs",
+                    "status": "imported"
+                  }
+                ]
+              },
+              {
+                "topic": "Stable electrolyte formulations",
+                "query": "High-voltage lithium batteries above 4.5V, cathode electrolyte interface stability, AI-assisted battery materials discovery sulfone-based electrolytes fluorinated carbonates lithium borate salts electrochemical window >5.0 v",
+                "search_id": "search_1783541887744903800",
+                "total_results": 8,
+                "imports": [
+                  {
+                    "result_index": 0,
+                    "paper_id": "paper_1783541875983846600",
+                    "title": "Cathode Materials for Lithium Ion Batteries (LIBs): A Review on Materials related aspects towards High Energy Density LIBs",
+                    "status": "duplicate"
+                  },
+                  {
+                    "result_index": 1,
+                    "paper_id": "paper_1783542055129038400",
+                    "title": "Voltage-dependent charge compensation mechanism and cathode electrolyte interface stability of the lithium-ion battery cathode materials LiNi0.6Mn0.2Co0.2O2, LiNi0.8Mn0.1Co0.1O2 and LiNi0.80Co0.15Al0.05O2 studied by photoelectron spectroscopy",
+                    "status": "imported"
+                  }
+                ]
+              },
+              {
+                "topic": "In-situ/operando CEI characterization",
+                "query": "High-voltage lithium batteries above 4.5V, cathode electrolyte interface stability, AI-assisted battery materials discovery time-resolved xrd differential electrochemical mass spectrometry in-situ raman cryo-em of interfaces",
+                "search_id": "search_1783542073572687200",
+                "total_results": 8,
+                "imports": [
+                  {
+                    "result_index": 1,
+                    "paper_id": "paper_1783541875983846600",
+                    "title": "Cathode Materials for Lithium Ion Batteries (LIBs): A Review on Materials related aspects towards High Energy Density LIBs",
+                    "status": "duplicate"
+                  },
+                  {
+                    "result_index": 0,
+                    "paper_id": "paper_1783542203431515700",
+                    "title": "Electronic Structure Modeling of Electrochemical Reactions at Electrode/Electrolyte Interfaces in Lithium Ion Batteries",
+                    "status": "imported"
+                  }
+                ]
+              }
+            ],
+            "policy": "auto-supplement only live-confirmed blind spots; cap branches/imports to control API and token budget"
+          },
+          "select_literature_result": {
+            "result_index": 3,
+            "stratified_layer": "L3_preprint",
+            "stratified_label": "latest arXiv preprint frontier",
+            "query_branch": "primary",
+            "retrieval_query": "High-voltage lithium batteries above 4.5V, cathode electrolyte interface stability, AI-assisted battery materials discovery",
+            "_why_selected": "Selected as latest preprint/frontier signal: Electrolyte stability and instability in lithium-ion batteries; year=2024; provider=chemrxiv; relevance=0.3069.",
+            "domain_relevance": {
+              "profile": "high_voltage_lithium_batteries_above_4_5v_cathode_electrolyte_interface_stabilit",
+              "target_field": "materials_energy",
+              "result_field": "materials_energy",
+              "score": 0.6487,
+              "query_hits": [
+                "lithium",
+                "batteries",
+                "cathode",
+                "electrolyte",
+                "interface",
+                "stability",
+                "materials"
+              ],
+              "anchor_hits": [
+                "lithium",
+                "batteries",
+                "cathode",
+                "electrolyte",
+                "interface",
+                "stability",
+                "materials"
+              ],
+              "topic_hits": [],
+              "noise_hits": [],
+              "flags": [
+                "core_domain_hit"
+              ],
+              "is_preprint": true,
+              "core_domain_alignment": {
+                "enabled": true,
+                "passes": true,
+                "core_terms": [
+                  "high-voltage lithium batteries",
+                  "lithium batteries above",
+                  "batteries above cathode",
+                  "above cathode electrolyte",
+                  "cathode electrolyte interface",
+                  "electrolyte interface stability",
+                  "interface stability ai-assisted",
+                  "stability ai-assisted battery",
+                  "ai-assisted battery materials",
+                  "battery materials discovery",
+                  "high-voltage",
+                  "lithium",
+                  "batteries",
+                  "above",
+                  "cathode",
+                  "electrolyte",
+                  "interface",
+                  "stability"
+                ],
+                "core_hit_count": 7,
+                "core_hits": [
+                  "lithium",
+                  "batteries",
+                  "cathode",
+                  "electrolyte",
+                  "interface",
+                  "stability",
+                  "materials"
+                ],
+                "specific_terms": [
+                  "high-voltage lithium batteries",
+                  "lithium batteries above",
+                  "batteries above cathode",
+                  "above cathode electrolyte",
+                  "cathode electrolyte interface",
+                  "electrolyte interface stability",
+                  "interface stability ai-assisted",
+                  "stability ai-assisted battery",
+                  "ai-assisted battery materials",
+                  "battery materials discovery",
+                  "high-voltage",
+                  "lithium"
+                ],
+                "specific_hit_count": 7,
+                "specific_hits": [
+                  "lithium",
+                  "batteries",
+                  "cathode",
+                  "electrolyte",
+                  "interface",
+                  "stability",
+                  "materials"
+                ],
+                "min_core_hits": 4,
+                "min_specific_hits": 2,
+                "is_preprint": true,
+                "reason": "core topic terms sufficiently covered"
+              },
+              "verdict": "keep",
+              "requires_human_review": false
+            },
+            "relevance_score": 0.3069,
+            "relevance_components": {
+              "text_score": 0.4033,
+              "recency_score": 0.85,
+              "impact_score": 0.35,
+              "citation_field": "materials_energy",
+              "citation_baseline": 250.0,
+              "venue_score": 0.6,
+              "publication_quality_score": 0.67,
+              "base_score": 0.4581,
+              "text_weight": 0.62,
+              "recency_weight": 0.1,
+              "impact_weight": 0.18,
+              "venue_weight": 0.1
+            },
+            "publication_quality_score": 0.67,
+            "venue_quality": "preprint",
+            "journal_quartile": "",
+            "journal_metric_source": "",
+            "inferred_field": "materials_energy",
+            "quality_flags": [
+              "preprint_not_peer_reviewed",
+              "new_paper_protection"
+            ],
+            "quality_criteria": [
+              "venue is a preprint server, not final peer-reviewed venue",
+              "paper is within 2-year protection window; low citations are not treated as low quality"
+            ],
+            "suspicion_type": "",
+            "is_review_like": false,
+            "pyramid_root_score": 0.4934,
+            "matched_query_terms": [
+              "lithium",
+              "batteries",
+              "electrolyte",
+              "stability",
+              "cathode",
+              "interface",
+              "materials"
+            ],
+            "title": "Electrolyte stability and instability in lithium-ion batteries",
+            "citation": "Jason S. Terreblanche et al. (2024) Electrolyte stability and instability in lithium-ion batteries doi:10.26434/chemrxiv-2024-nmnr8",
+            "provider": "chemrxiv",
+            "year": "2024",
+            "citation_count": null,
+            "influential_citation_count": null,
+            "doi": "10.26434/chemrxiv-2024-nmnr8",
+            "arxiv_id": null,
+            "url": "https://doi.org/10.26434/chemrxiv-2024-nmnr8",
+            "relevance_reason": "title=4/12, abstract=7/12, citation=4/12, phrase_bonus=0.0, recency=0.85, impact=0.35, venue=0.6, quality=0.67",
+            "quality_reason": "venue is a preprint server, not final peer-reviewed venue; paper is within 2-year protection window; low citations are not treated as low quality"
+          },
+          "stratified_import_plan": {
+            "strategy": "layer_minimum_then_score_backfill",
+            "requested_import_top_k": 12,
+            "effective_import_top_k": 12,
+            "min_per_layer": {
+              "L0_review": 2,
+              "L1_milestone": 2,
+              "L2_top_latest": 2,
+              "L3_preprint": 2,
+              "L4_regular": 3
+            },
+            "candidate_counts_by_layer": {
+              "L0_review": 2,
+              "L1_milestone": 1,
+              "L2_top_latest": 1,
+              "L3_preprint": 8,
+              "L4_regular": 13
+            },
+            "selected_counts_by_layer": {
+              "L0_review": 2,
+              "L1_milestone": 1,
+              "L2_top_latest": 1,
+              "L3_preprint": 5,
+              "L4_regular": 3
+            },
+            "missing_layers": [
+              {
+                "layer": "L1_milestone",
+                "label": "milestone / highly cited foundation",
+                "target": 2,
+                "selected": 1,
+                "candidates": 1
+              },
+              {
+                "layer": "L2_top_latest",
+                "label": "recent top-venue frontier",
+                "target": 2,
+                "selected": 1,
+                "candidates": 1
+              }
+            ],
+            "selected_result_indexes": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              14,
+              15,
+              12,
+              6,
+              7,
+              8
+            ]
+          },
+          "imported_records": 12,
+          "expand_literature_graph": {
+            "graph_search_id": "graph_1783542513127532100",
+            "total_results": 1,
+            "fallback_used": true,
+            "depth": 1
+          },
+          "build_literature_relation_graph": {
+            "relation_graph_id": "relgraph_1783542519014227700",
+            "cluster_count": 1,
+            "edge_summary": {
+              "total_edges": 1,
+              "citation_graph_edges": 0,
+              "artificial_edges": 1,
+              "by_relation": {
+                "keyword_fallback": 1
+              },
+              "by_depth": {
+                "1": 1
+              },
+              "fallback_weight_policy": "keyword_fallback/search_result edges are artificial and use very low PageRank weight."
+            },
+            "analysis_confidence": 0.65
+          }
+        },
+        "thought": "ZhiZhi retrieved and filtered literature, imported grounded PaperGraph evidence, built a benchmark-aware knowledge map, expanded citation context when available, and generated gaps with novelty/value/feasibility checks."
+      },
+      "error": "",
+      "timestamp": 1783542532.552363
+    },
+    {
+      "round": "round_0_gap_exploration",
+      "speaker": "TanXi_ToolAgent",
+      "status": "completed",
+      "content": {
+        "action": {
+          "scan_coverage_density": {
+            "target_domain": "High-voltage lithium batteries above 4.5V, cathode/electrolyte/interface stability, AI-assisted battery materials discovery"
+          },
+          "detect_reasoning_gaps": {
+            "types": [
+              "claim_contradiction",
+              "theory_evidence_anomaly"
+            ]
+          },
+          "detect_source_gap_signals": {
+            "types": [
+              "limitations",
+              "future_work",
+              "open_problem",
+              "missing_evidence"
+            ]
+          },
+          "detect_mechanism_issue_gaps": {
+            "priority": "higher_than_matrix_holes"
+          },
+          "find_unconnected_pairs": {
+            "target_domain": "High-voltage lithium batteries above 4.5V, cathode/electrolyte/interface stability, AI-assisted battery materials discovery"
+          },
+          "detect_suspended_problems": {
+            "min_citation_threshold": 50
+          },
+          "prioritize_gaps": {
+            "criteria": [
+              "importance",
+              "tractability",
+              "strategic_value"
+            ]
+          },
+          "align_with_strategic_needs": {
+            "strategic_domains": [
+              "ai for science",
+              "energy"
+            ]
+          }
+        },
+        "thought": "TanXi scanned the PaperGraph for low-density but high-importance method-scenario-benchmark regions, claim contradictions, anomaly/tension signals, cross-disciplinary unconnected pairs, suspended unresolved problems, and strategic-need alignment."
+      },
+      "error": "",
+      "timestamp": 1783542536.7339928
+    },
+    {
+      "round": "round_1_proponent_position",
+      "speaker": "MingLi_AssistantAgent",
+      "status": "completed",
+      "content": {
+        "status": "draft",
+        "project_id": "sci_1783541582585393700",
+        "next_step": "Call design_experiment with the draft idea, then finalize_idea to run mandatory uniqueness verification.",
+        "action": {
+          "type": "generate_idea",
+          "gap_id": "gap_1783542528075108100",
+          "style": "innovative"
+        },
+        "thought": "Generated a gap-traceable MingLi draft idea and scored it for novelty, plausibility, grounding, testability, impact, and surprise."
+      },
+      "error": "",
+      "timestamp": 1783542536.7865813
+    },
+    {
+      "round": "round_3_methodology",
+      "speaker": "MingLi_AssistantAgent",
+      "status": "completed",
+      "content": {
+        "project_id": "sci_1783541582585393700",
+        "next_step": "Call finalize_idea; it will run mandatory uniqueness verification before persisting the hypothesis.",
+        "action": {
+          "type": "design_experiment",
+          "gap_id": "gap_1783542528075108100",
+          "constraints": "academic lab scale; evidence-traceable; include baselines, ablations, regime shifts, and falsification criteria"
+        },
+        "thought": "Designed a falsifiable experiment with setup, metrics, baselines, and rejection criteria."
+      },
+      "error": "",
+      "timestamp": 1783542536.8193278
+    },
+    {
+      "round": "round_1_hypothesis_finalization",
+      "speaker": "MingLi_AssistantAgent",
+      "status": "finalized",
+      "content": {
+        "status": "finalized",
+        "hypothesis_id": "hyp_1783542536864905800"
+      },
+      "error": "",
+      "timestamp": 1783542536.8829896
+    },
+    {
+      "round": "round_2_cawm_layer_1_2_and_round_3_layer_3",
+      "speaker": "YanZhen_ToolAgent",
+      "status": "REQUIRES_HUMAN_REVIEW",
+      "content": {
+        "action": {
+          "type": "run_yanzhen_mechanism_verification",
+          "hypothesis_id": "hyp_1783542536864905800",
+          "layers_executed": [
+            "internal_consistency",
+            "data_consistency",
+            "regime_shift_test"
+          ]
+        },
+        "thought": "YanZhen audited the hypothesis through internal consistency, data consistency, selective-citation, causal-chain, and regime-shift checks.",
+        "mechanism_fidelity_report": {
+          "overall_verdict": "REQUIRES_HUMAN_REVIEW",
+          "hypothesis_id": "hyp_1783542536864905800"
+        }
+      },
+      "error": "",
+      "timestamp": 1783542536.929183
+    },
+    {
+      "round": "round_4_groupchat_synthesis",
+      "speaker": "BianLun_GroupChatManager",
+      "status": "human_review",
+      "content": {
+        "action": {
+          "type": "run_socratic_hypothesis_debate",
+          "rounds": 5,
+          "max_rounds": 5
+        },
+        "thought": "BianLun ran the triangle loop: Socratic debate, YanZhen mechanism audit, targeted literature completion when needed, MingLi revision, and final synthesis.",
+        "debate_report": {
+          "debate_id": "debate_1783542753275543800",
+          "final_decision": "human_review",
+          "unresolved_issues": [
+            "causal_probe: How will the hypothesis be revised to address YanZhen Layer 1 issue: Unsupported causal link: If the conflicting claims in all-solid-state lithium metal batteries are retested under matched the experimental, observational, or simulation conditions that differ between the claims conditions, then Coulombic efficiency (CE) will rev...[...[truncated]",
+            "causal_probe: How will the hypothesis be revised to address YanZhen Layer 1 issue: Unsupported causal link: The conflicting claims in all-solid-state lithium metal batteries are retested under matched the experimental, observati...[truncated] If the conflicting claims in all-solid-state lithium metal batteries are retested under matched the exper...[truncated]",
+            "causal_probe: How will the hypothesis be revised to address YanZhen Layer 1 issue: Unsupported causal link: The decisive prediction is that this concrete bridge, not a generic representation change, will alter Coulombic efficiency (CE); if the bridge data or causal link is absent, the hypothesis should fail rather than be reinterpreted post hoc.",
+            "causal_probe: For the evidence-derived terms polymer-in-high concentrated ionic liquid (PiHCIL) electrolyte design, all-solid-state lithium metal batteries, ionic conductivity, principal component analysis, which exact term sits at the intervention, mediator, and output positions of the causal chain?",
+            "evidence_completion_challenge: YanZhen marked this claim as unsupported: Unsupported causal link: The conflicting claims in all-solid-state lithium metal batteries are retested under matched the experimental, observati...[truncated] If the conflicting claims in all-solid-state lithium metal b...[truncated]. Will MingLi attach a PaperGraph citation, narrow the claim, or remove it?"
+          ]
+        }
+      },
+      "error": "",
+      "timestamp": 1783542753.3108113
+    }
+  ],
+  "createdAt": 1783542753.311437,
+  "native_autogen": {
+    "requested": false,
+    "available": false,
+    "mode": "structured_groupchat_executor",
+    "reason": "Native AutoGen runtime disabled by default to control token use; v8 executes a deterministic GroupChat-compatible protocol."
+  },
+  "next_step": "Inspect AutoGen GroupChat messages and regenerate or revise the hypothesis."
+}

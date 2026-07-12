@@ -1,0 +1,106 @@
+{
+  "project_id": "sci_1783437683155307500",
+  "title": "YanZhen smoke",
+  "domain": "general science",
+  "objective": "verify cawm audit",
+  "strategic_need": "",
+  "phase": "Mechanism Verification",
+  "createdAt": 1783437683.155311,
+  "updatedAt": 1783437683.1627204,
+  "papergraph": [
+    {
+      "title": "Ref A",
+      "citation": "Ref A",
+      "abstract": "The method improved in one cohort but limitations include noise, bias, and failure under different datasets."
+    }
+  ],
+  "evidence": [],
+  "coverage_matrix": {},
+  "knowledge_gaps": [
+    {
+      "gap_id": "gap_yz_1",
+      "gap_type": "problem",
+      "description": "A mechanism is underspecified under distribution shift.",
+      "supporting_references": [
+        "Ref A"
+      ],
+      "novelty_score": 7,
+      "application_value": "high",
+      "feasibility": "medium",
+      "suggested_research_path": "stress test"
+    }
+  ],
+  "hypotheses": [
+    {
+      "hypothesis_id": "hyp_yz_1",
+      "gap_id": "gap_yz_1",
+      "statement": "If method A is used, then benchmark B always improves.",
+      "mechanism": "Method A causes improvement because it extracts signal from the reported cohort.",
+      "test_plan": "Compare baseline."
+    }
+  ],
+  "keynotes": [],
+  "mechanism_reports": [
+    {
+      "hypothesis_id": "hyp_yz_1",
+      "layer_1_internal_consistency": {
+        "logical_chain_intact": false,
+        "formula_application_correct": true,
+        "issues_found": [
+          "Unsupported causal link: If method A is used, then benchmark B always improves.",
+          "Unsupported causal link: Method A causes improvement because it extracts signal from the reported cohort."
+        ],
+        "reasoning_chain": [
+          "If method A is used, then benchmark B always improves.",
+          "Method A causes improvement because it extracts signal from the reported cohort."
+        ],
+        "verdict": "FAIL"
+      },
+      "layer_2_data_consistency": {
+        "mechanism_matches_data": false,
+        "selective_citation_detected": false,
+        "original_text_alignment": "low",
+        "alignment_score": 0.0,
+        "issues_found": [
+          "Hypothesis mechanism has low lexical/semantic overlap with cited evidence."
+        ],
+        "verdict": "FAIL"
+      },
+      "layer_3_regime_shift_test": {
+        "shifted_conditions_tested": [
+          "scale: nominal scale -> 10x larger and 0.1x smaller scale",
+          "domain_transfer: original scenario -> adjacent but distinct scenario or dataset distribution"
+        ],
+        "mechanism_stability": "collapses_unexpectedly",
+        "cawm_risk_level": "HIGH",
+        "issues_found": [
+          "Mechanism does not state boundary conditions or validity regime."
+        ],
+        "verdict": "FAIL"
+      },
+      "causal_chain_audit": {
+        "causal_chain": [
+          "If method A is used, then benchmark B always improves.",
+          "Method A causes improvement because it extracts signal from the reported cohort."
+        ],
+        "links_checked": 2,
+        "unsupported_links": [
+          "Unsupported causal link: If method A is used, then benchmark B always improves.",
+          "Unsupported causal link: Method A causes improvement because it extracts signal from the reported cohort."
+        ],
+        "verdict": "FAIL"
+      },
+      "selective_citation_audit": {
+        "selective_citation_detected": false,
+        "cited_count": 1,
+        "context_count": 1,
+        "issues_found": [],
+        "verdict": "PASS"
+      },
+      "overall_verdict": "CAWM_DETECTED",
+      "detailed_reasoning": "Layer 1 verdict=FAIL; issues=['Unsupported causal link: If method A is used, then benchmark B always improves.', 'Unsupported causal link: Method A causes improvement because it extracts signal from the reported cohort.']. Causal chain verdict=FAIL; unsupported=['Unsupported causal link: If method A is used, then benchmark B always improves.', 'Unsupported causal link: Method A causes improvement because it extracts signal from the reported cohort.']. Layer 2 verdict=FAIL; alignment=low; issues=['Hypothesis mechanism has low lexical/semantic overlap with cited evidence.']. Selective citation verdict=PASS; issues=[]. Layer 3 verdict=FAIL; stability=collapses_unexpectedly; CAWM risk=HIGH. A hypothesis is accepted only if all layers pass and regime-shift risk remains low.",
+      "cawm_reference_note": "CAWM risk follows the pattern where correct-looking conclusions are defended by brittle or inconsistent mechanisms that fail under regime shift."
+    }
+  ],
+  "pipeline_tasks": []
+}

@@ -1,0 +1,132 @@
+{
+  "project_id": "sci_1783769392951978500",
+  "title": "What is the future for energy storage? — The Limits of Battery Performance and the Interplay of Chemistry, Materials Science, and Scalability",
+  "domain": "Energy Storage / Lithium-ion Batteries / Post-Lithium Systems / Materials Science / Electrochemistry / Grid-Scale Storage / Raw Material Supply Chain / Battery Recycling / Techno-Economic Analysis",
+  "objective": "围绕一个可证伪的科学问题：'电极材料（如钴酸锂、磷酸铁锂、硫正极）的固有化学稳定性、电解液分解电位、锂/钠离子迁移动力学以及固态电解质界面（SEI）的演化，是否共同决定了一个明确的能量密度上限（例如 < 500 Wh/kg）和循环寿命阈值（例如 < 10,000次，在80%容量保持率下），从而在技术和经济可行性上构成固态/液态电池的固有极限；该上限是否可以通过全新的化学体系（如锂-硫、锂-空气、钠离子）或梯度浓度/纳米结构工程被实质性突破？'",
+  "strategic_need": "",
+  "phase": "Gap Discovery",
+  "createdAt": 1783769392.9519799,
+  "updatedAt": 1783769421.9433374,
+  "papergraph": [],
+  "evidence": [],
+  "coverage_matrix": {},
+  "knowledge_gaps": [],
+  "hypotheses": [],
+  "keynotes": [],
+  "mechanism_reports": [],
+  "pipeline_tasks": [
+    "task_1783769421796_1451",
+    "task_1783769421827_6091",
+    "task_1783769421859_5836",
+    "task_1783769421886_4856",
+    "task_1783769421915_7887"
+  ],
+  "boxue_delegation_plans": [
+    {
+      "boxue_delegation_plan_id": "boxue_1783769421796684800",
+      "project_id": "sci_1783769392951978500",
+      "goal": "围绕一个可证伪的科学问题：'电极材料（如钴酸锂、磷酸铁锂、硫正极）的固有化学稳定性、电解液分解电位、锂/钠离子迁移动力学以及固态电解质界面（SEI）的演化，是否共同决定了一个明确的能量密度上限（例如 < 500 Wh/kg）和循环寿命阈值（例如 < 10,000次，在80%容量保持率下），从而在技术和经济可行性上构成固态/液态电池的固有极限；该上限是否可以通过全新的化学体系（如锂-硫、锂-空气、钠离子）或梯度浓度/纳米结构工程被实质性突破？'",
+      "createdAt": 1783769421.9431918,
+      "prompt_alignment": {
+        "comparison": {
+          "prompt_assign_task": "implemented as persistent create_task DAG entries with assigned agent, phase, dependency, deliverable, priority, and acceptance criteria",
+          "prompt_review_output": "implemented as reviewer_gate plus boxue_final dependency gates; Boxue can add revision tasks via the task system",
+          "prompt_synthesize": "implemented as bianlun_synthesis, paperwriter_draft, and boxue_final synthesis tasks",
+          "prompt_adjust_plan": "implemented operationally by creating additional tasks or new delegation plans after reviewing outputs",
+          "prompt_finalize": "implemented as boxue_final decision task, not as specialist execution"
+        },
+        "stronger_than_old_pipeline_tasks": [
+          "role-specific tasks instead of generic phase tasks",
+          "explicit acceptance criteria",
+          "risk constraints embedded in every task",
+          "dependencies mirror the research lifecycle",
+          "optional teammate spawning for unblocked specialist work"
+        ],
+        "remaining_manual_gate": "Boxue still needs to review outputs and decide whether to create revision tasks; this preserves human/lead control over shared project state."
+      },
+      "coordination_policy": {
+        "boxue_role": "decompose, assign, review, synthesize, adjust, finalize",
+        "specialist_role": "execute only the assigned scientific subtask",
+        "shared_state": "state-changing PaperGraph/project updates should be gated by lead/synthesis tasks",
+        "step_limit": 20
+      },
+      "tasks": [
+        {
+          "task_id": "task_1783769421796_1451",
+          "agent": "zhizhi",
+          "phase": "Gap Discovery",
+          "title": "Build grounded PaperGraph evidence substrate",
+          "blockedBy": [],
+          "priority": "high",
+          "acceptance_criteria": [
+            "At least one verifiable source or an explicit retrieval-failure report",
+            "Method/scenario/benchmark/contribution/limitation fields are populated or flagged unknown",
+            "Unsupported claims are marked for human review"
+          ]
+        },
+        {
+          "task_id": "task_1783769421827_6091",
+          "agent": "tanxi",
+          "phase": "Gap Discovery",
+          "title": "Rank high-value knowledge gaps",
+          "blockedBy": [
+            "task_1783769421796_1451"
+          ],
+          "priority": "high",
+          "acceptance_criteria": [
+            "Every reported gap has supporting references or is flagged as ungrounded",
+            "No more than 10 ranked gaps",
+            "Each gap includes novelty/value/feasibility rationale"
+          ]
+        },
+        {
+          "task_id": "task_1783769421859_5836",
+          "agent": "mingli",
+          "phase": "Hypothesis Generation",
+          "title": "Generate and evolve gap-grounded hypotheses",
+          "blockedBy": [
+            "task_1783769421827_6091"
+          ],
+          "priority": "high",
+          "acceptance_criteria": [
+            "Each hypothesis links to a gap_id",
+            "Each hypothesis contains mechanism and falsification condition",
+            "Overlap/novelty risk is reported"
+          ]
+        },
+        {
+          "task_id": "task_1783769421886_4856",
+          "agent": "duzhi",
+          "phase": "Socratic Debate",
+          "title": "Run Socratic critique",
+          "blockedBy": [
+            "task_1783769421859_5836"
+          ],
+          "priority": "medium",
+          "acceptance_criteria": [
+            "At least one counterexample per hypothesis",
+            "At least one alternative explanation per hypothesis",
+            "Actionable revision or rejection recommendation"
+          ]
+        },
+        {
+          "task_id": "task_1783769421915_7887",
+          "agent": "bianlun",
+          "phase": "Socratic Debate",
+          "title": "Moderate structured debate and synthesize refined hypothesis",
+          "blockedBy": [
+            "task_1783769421886_4856"
+          ],
+          "priority": "medium",
+          "acceptance_criteria": [
+            "Arguments are separated into factual vs conceptual disagreements",
+            "Refined hypothesis lists improvements from critique",
+            "Remaining risks are explicit"
+          ]
+        }
+      ],
+      "spawned_teammates": [],
+      "next_step": "Let unblocked specialist tasks run first. Boxue should review outputs at dependency gates, then adjust or unlock downstream phases."
+    }
+  ]
+}

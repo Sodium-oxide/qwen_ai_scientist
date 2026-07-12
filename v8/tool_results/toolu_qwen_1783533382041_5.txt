@@ -1,0 +1,1729 @@
+{
+  "thought": "BianLun ran the triangle loop: Socratic debate, YanZhen mechanism audit, targeted literature completion when needed, MingLi revision, and final synthesis.",
+  "action": {
+    "type": "run_socratic_hypothesis_debate",
+    "rounds": 5,
+    "max_rounds": 5
+  },
+  "debate_report": {
+    "debate_id": "debate_1783533567754067500",
+    "hypothesis_id": "hyp_1783533377950971700",
+    "model_families": {
+      "proponent": "qwen-max",
+      "opponent": "qwen-plus",
+      "judge": "qwen-deep-research",
+      "verifier": "qwen-plus"
+    },
+    "rounds": [
+      {
+        "round": 1,
+        "name": "Socratic Clarification",
+        "proponent_position": {
+          "hypothesis": "High-valence ion segregation at grain boundaries in Ni-rich cathodes arises not from thermodynamic equilibrium but from kinetic trapping during rapid calcination, and can be suppressed by controlled ramp-rate annealing combined with CTAB-mediated surface passivation. CTAB adsorption on primary particle surfaces reduces interfacial energy and slows grain boundary migration during calcination; simultaneous ramp-rate control prevents thermal runaway that drives high-valence ion diffusion to boundaries.",
+          "claimed_mechanism": "CTAB adsorption on primary particle surfaces reduces interfacial energy and slows grain boundary migration during calcination; simultaneous ramp-rate control prevents thermal runaway that drives high-valence ion diffusion to boundaries. Compare three synthesis routes: (1) conventional fast-ramp calcination, (2) slow-ramp only, (3) CTAB-assisted + slow-ramp. Characterize via STEM-EDS line scans across grain boundaries, XRD Rietveld refinement for site occupancy, and electrochemical voltage decay profiling over 500 cycles.",
+          "causal_chain": [
+            "CTAB adsorption on primary particle surfaces reduces interfacial energy and slows grain boundary migration during calcination; simultaneous ramp-rate control prevents thermal runaway that drives high-valence ion diffusion to boundaries.",
+            "CTAB adsorption on primary particle surfaces reduces interfacial energy and slows grain boundary migration during calcination; simultaneous ramp-rate control prevents thermal runaway that drives high-valence ion diffusion to boundaries."
+          ],
+          "evidence_refs": [],
+          "falsification_plan": "Compare three synthesis routes: (1) conventional fast-ramp calcination, (2) slow-ramp only, (3) CTAB-assisted + slow-ramp. Characterize via STEM-EDS line scans across grain boundaries, XRD Rietveld refinement for site occupancy, and electrochemical voltage decay profiling over 500 cycles."
+        },
+        "opponent_questions": [
+          {
+            "question_type": "constraint_check",
+            "question": "Which sentence or result in the imported PaperGraph evidence grounds the strongest mechanistic premise?",
+            "target_claim": "High-valence ion segregation at grain boundaries in Ni-rich cathodes arises not from thermodynamic equilibrium but from kinetic trapping during rapid calcination, and can be suppressed by controlled ramp-rate annealing c...[truncated]",
+            "why_it_matters": "ARIS-style evidence gates require claim-to-source traceability, not just thematic similarity.",
+            "required_revision": "Map each central premise to a PaperGraph citation or mark it as speculative.",
+            "severity": "high"
+          },
+          {
+            "question_type": "constraint_check",
+            "question": "The evidence repeatedly mentions CTAB-assisted co-precipitation, Co-free high-Ni cathodes, capacity retention | microcrack resistance | c-lattice shrinkage; which of these domain-specific constraints is actually required for the mechanism to hold?",
+            "target_claim": "CTAB adsorption on primary particle surfaces reduces interfacial energy and slows grain boundary migration during calcination; simultaneous ramp-rate control prevents thermal runaway that drives high-valence ion diffusio...[truncated]",
+            "why_it_matters": "A strong critique should test the hypothesis against the concrete variables found in the retrieved literature, not only generic stress tests.",
+            "required_revision": "Name the required evidence-derived constraint, its allowed range or qualitative regime, and how it will be monitored.",
+            "severity": "medium"
+          },
+          {
+            "question_type": "constraint_check",
+            "question": "What data, instrument, simulation, or experimental platform can actually observe the claimed causal step?",
+            "target_claim": "CTAB adsorption on primary particle surfaces reduces interfacial energy and slows grain boundary migration during calcination; simultaneous ramp-rate control prevents thermal runaway that drives high-valence ion diffusio...[truncated]",
+            "why_it_matters": "A hypothesis can be conceptually attractive but infeasible if the decisive mechanism is not observable.",
+            "required_revision": "Specify the observation platform and feasibility constraint for the decisive causal link.",
+            "severity": "medium"
+          }
+        ],
+        "proponent_response": {
+          "round_name": "Socratic Clarification",
+          "proponent_response": "MingLi responds to the opponent's concrete questions and narrows the claim into an operational, evidence-gated version.",
+          "addressed_opponent_questions": [
+            {
+              "question_type": "constraint_check",
+              "opponent_question": "Which sentence or result in the imported PaperGraph evidence grounds the strongest mechanistic premise?",
+              "mingli_direct_response": "Attach a PaperGraph citation for the causal link, or downgrade the link to an explicit testable assumption.",
+              "adopted_revision": "Map each central premise to a PaperGraph citation or mark it as speculative."
+            }
+          ],
+          "adopted_revision_requirements": [
+            "Map each central premise to a PaperGraph citation or mark it as speculative."
+          ],
+          "revision_delta": [
+            "Operationalized method/scenario/benchmark as: CTAB-assisted co-precipitation | Co-free high-Ni cathodes | capacity (161.2 mAh g-1), cycling stability (100 cycles).",
+            "Added explicit control variable and boundary: temperature at a preregistered stress threshold rather than an open-ended improvement claim.",
+            "Marked unsupported mechanism links as testable assumptions until PaperGraph evidence is attached."
+          ],
+          "revised_hypothesis": "High-valence ion segregation at grain boundaries in Ni-rich cathodes arises not from thermodynamic equilibrium but from kinetic trapping during rapid calcination, and can be suppressed by controlled ramp-rate annealing combined with CTAB-mediated surface passivation. CTAB adsorption on primary particle surfaces reduces interfacial energy and slows grain boundary migration during calcination; simultaneous ramp-rate control prevents thermal runaway that drives high-valence ion diffusion to boundaries. Revision after Socratic Clarification: the hypothesis is limited to Co-free high-Ni cathodes; temperature is varied under matched baseline/control conditions; capacity (161.2 mAh g-1), cycling stability (100 cycles) must change in the predicted direction and the causal chain must survive source mapping, ablation, and regime-shift tests.",
+          "revised_mechanism": "CTAB adsorption on primary particle surfaces reduces interfacial energy and slows grain boundary migration during calcination; simultaneous ramp-rate control prevents thermal runaway that drives high-valence ion diffusion to boundaries. Compare three synthesis routes: (1) conventional fast-ramp calcination, (2) slow-ramp only, (3) CTAB-assisted + slow-ramp. Characterize via STEM-EDS line scans across grain boundaries, XRD Rietveld refinement for site occupancy, and electrochemical voltage decay profiling over 500 cycles. Revised mechanism: CTAB-assisted co-precipitation must produce an observable intermediate change in Co-free high-Ni cathodes; otherwise any endpoint change in capacity (161.2 mAh g-1), cycling stability (100 cycles) is treated as correlation rather than mechanism.",
+          "causal_chain_after_revision": [
+            "Input/intervention: change temperature while holding the closest baseline/control fixed.",
+            "Mechanism: test whether CTAB-assisted co-precipitation changes the relevant state or process inside Co-free high-Ni cathodes.",
+            "Output: measure capacity (161.2 mAh g-1), cycling stability (100 cycles) and compare it with baseline and failure-mode controls."
+          ],
+          "remaining_speculative_claims": [
+            "High-valence ion segregation at grain boundaries in Ni-rich cathodes arises not from thermodynamic equilibrium but from kinetic trapping during rapid calcination, and can be suppre...[truncated]"
+          ]
+        },
+        "moderator_verdict": "revise"
+      },
+      {
+        "round": 2,
+        "name": "Evidence and CAWM Layer 1-2",
+        "yanzhen_report": {
+          "hypothesis_id": "",
+          "layer_1_internal_consistency": {
+            "logical_chain_intact": false,
+            "formula_application_correct": true,
+            "issues_found": [
+              "Mechanism lacks explicit causal links.",
+              "Unsupported causal link: CTAB adsorption on primary particle surfaces reduces interfacial energy and slows grain boundary migration during calcination; simultaneous ramp-rate control prevents thermal runaway that drives high-valence ion diffusion to boundaries."
+            ],
+            "reasoning_chain": [
+              "CTAB adsorption on primary particle surfaces reduces interfacial energy and slows grain boundary migration during calcination; simultaneous ramp-rate control prevents thermal runaway that drives high-valence ion diffusion to boundaries.",
+              "CTAB adsorption on primary particle surfaces reduces interfacial energy and slows grain boundary migration during calcination; simultaneous ramp-rate control prevents thermal runaway that drives high-valence ion diffusion to boundaries."
+            ],
+            "verdict": "FAIL"
+          },
+          "layer_2_data_consistency": {
+            "mechanism_matches_data": false,
+            "selective_citation_detected": true,
+            "original_text_alignment": "low",
+            "alignment_score": 0.0756,
+            "issues_found": [
+              "Hypothesis mechanism has low lexical/semantic overlap with cited evidence.",
+              "No explicit cited papers/data were provided."
+            ],
+            "verdict": "FAIL"
+          },
+          "layer_3_regime_shift_test": {
+            "shifted_conditions_tested": [
+              "data_distribution: training/reference distribution -> out-of-distribution or low-data setting",
+              "noise_level: nominal signal quality -> high-noise or missing-data condition",
+              "scale_or_environment: nominal experimental regime -> 10x/0.1x parameter scaling or changed environment",
+              "boundary_condition: reported boundary condition -> adjacent physical/chemical/climate regime"
+            ],
+            "mechanism_stability": "stable",
+            "cawm_risk_level": "LOW",
+            "issues_found": [],
+            "verdict": "PASS"
+          },
+          "causal_chain_audit": {
+            "causal_chain": [
+              "CTAB adsorption on primary particle surfaces reduces interfacial energy and slows grain boundary migration during calcination; simultaneous ramp-rate control prevents thermal runaway that drives high-valence ion diffusion to boundaries.",
+              "CTAB adsorption on primary particle surfaces reduces interfacial energy and slows grain boundary migration during calcination; simultaneous ramp-rate control prevents thermal runaway that drives high-valence ion diffusion to boundaries."
+            ],
+            "links_checked": 2,
+            "unsupported_links": [
+              "Unsupported causal link: CTAB adsorption on primary particle surfaces reduces interfacial energy and slows grain boundary migration during calcination; simultaneous ramp-rate control prevents thermal runaway that drives high-valence ion diffusion to boundaries.",
+              "Unsupported causal link: CTAB adsorption on primary particle surfaces reduces interfacial energy and slows grain boundary migration during calcination; simultaneous ramp-rate control prevents thermal runaway that drives high-valence ion diffusion to boundaries."
+            ],
+            "verdict": "FAIL"
+          },
+          "selective_citation_audit": {
+            "selective_citation_detected": true,
+            "cited_count": 0,
+            "context_count": 2,
+            "issues_found": [
+              "No explicit cited papers/data were provided."
+            ],
+            "verdict": "FAIL"
+          },
+          "feasibility_audit": {
+            "observable_or_measurable": true,
+            "controllable_or_intervenable": true,
+            "boundary_conditions_stated": true,
+            "issues_found": [],
+            "verdict": "PASS"
+          },
+          "overall_verdict": "REQUIRES_HUMAN_REVIEW",
+          "verdict": "REQUIRES_REVISION",
+          "required_actions": [
+            {
+              "action": "zhizhi_supplement_evidence",
+              "reason": "Unsupported causal or evidence links require targeted literature completion before accepting the hypothesis.",
+              "claims": [
+                "Unsupported causal link: CTAB adsorption on primary particle surfaces reduces interfacial energy and slows grain boundary migration during calcination; simultaneous ramp-rate control prevents thermal runaway that drives...[truncated]",
+                "Hypothesis mechanism has low lexical/semantic overlap with cited evidence."
+              ]
+            },
+            {
+              "action": "mingli_rewrite_causal_chain",
+              "reason": "Internal consistency failed.",
+              "issues": [
+                "Mechanism lacks explicit causal links.",
+                "Unsupported causal link: CTAB adsorption on primary particle surfaces reduces interfacial energy and slows grain boundary migration during calcination; simultaneous ramp-rate control prevents thermal runaway that drives high-valence ion diffusion to boundaries."
+              ]
+            },
+            {
+              "action": "separate_supported_from_speculative_claims",
+              "reason": "Mechanism-data alignment is insufficient or selective citation cannot be ruled out.",
+              "issues": [
+                "Hypothesis mechanism has low lexical/semantic overlap with cited evidence.",
+                "No explicit cited papers/data were provided."
+              ]
+            }
+          ],
+          "unsupported_claims": [
+            "Unsupported causal link: CTAB adsorption on primary particle surfaces reduces interfacial energy and slows grain boundary migration during calcination; simultaneous ramp-rate control prevents thermal runaway that drives...[truncated]",
+            "Hypothesis mechanism has low lexical/semantic overlap with cited evidence."
+          ],
+          "detailed_reasoning": "Layer 1 verdict=FAIL; issues=['Mechanism lacks explicit causal links.', 'Unsupported causal link: CTAB adsorption on primary particle surfaces reduces interfacial energy and slows grain boundary migration during calcination; simultaneous ramp-rate control prevents thermal runaway that drives high-valence ion diffusion to boundaries.']. Causal chain verdict=FAIL; unsupported=['Unsupported causal link: CTAB adsorption on primary particle surfaces reduces interfacial energy and slows grain boundary migration during calcination; simultaneous ramp-rate control prevents thermal runaway that drives high-valence ion diffusion to boundaries.', 'Unsupported causal link: CTAB adsorption on primary particle surfaces reduces interfacial energy and slows grain boundary migration during calcination; simultaneous ramp-rate control prevents thermal runaway that drives high-valence ion diffusion to boundaries.']. Layer 2 verdict=FAIL; alignment=low; issues=['Hypothesis mechanism has low lexical/semantic overlap with cited evidence.', 'No explicit cited papers/data were provided.']. Selective citation verdict=FAIL; issues=['No explicit cited papers/data were provided.']. Layer 3 verdict=PASS; stability=stable; CAWM risk=LOW. A hypothesis is accepted only if all layers pass and regime-shift risk remains low.",
+          "cawm_reference_note": "CAWM risk follows the pattern where correct-looking conclusions are defended by brittle or inconsistent mechanisms that fail under regime shift."
+        },
+        "opponent_questions": [
+          {
+            "question_type": "causal_probe",
+            "question": "How will the hypothesis be revised to address YanZhen Layer 1 issue: Unsupported causal link: CTAB adsorption on primary particle surfaces reduces interfacial energy and slows grain boundary migration during calcination; simultaneous ramp-rate control prevents thermal runaway that drives high-valence ion diffusion to boundaries.",
+            "target_claim": "CTAB adsorption on primary particle surfaces reduces interfacial energy and slows grain boundary migration during calcination; simultaneous ramp-rate control prevents thermal runaway that drives high-valence ion diffusio...[truncated]",
+            "why_it_matters": "Internal consistency issues must be resolved before evidence or experiments can rescue the claim.",
+            "required_revision": "Revise the mechanism so the logical chain is explicit and self-consistent.",
+            "severity": "fatal"
+          },
+          {
+            "question_type": "causal_probe",
+            "question": "For the evidence-derived terms CTAB-assisted co-precipitation, Co-free high-Ni cathodes, capacity retention | microcrack resistance | c-lattice shrinkage, which exact term sits at the intervention, mediator, and output positions of the causal chain?",
+            "target_claim": "CTAB adsorption on primary particle surfaces reduces interfacial energy and slows grain boundary migration during calcination; simultaneous ramp-rate control prevents thermal runaway that drives high-valence ion diffusio...[truncated]",
+            "why_it_matters": "Domain-targeted causal probing forces MingLi to connect the hypothesis to field-specific entities without hardcoding the field.",
+            "required_revision": "Rewrite the causal chain using at least two evidence-derived terms and mark unsupported links as assumptions.",
+            "severity": "high"
+          },
+          {
+            "question_type": "causal_probe",
+            "question": "How will the hypothesis be revised to address YanZhen Layer 1 issue: Mechanism lacks explicit causal links.",
+            "target_claim": "CTAB adsorption on primary particle surfaces reduces interfacial energy and slows grain boundary migration during calcination; simultaneous ramp-rate control prevents thermal runaway that drives high-valence ion diffusio...[truncated]",
+            "why_it_matters": "Internal consistency issues must be resolved before evidence or experiments can rescue the claim.",
+            "required_revision": "Revise the mechanism so the logical chain is explicit and self-consistent.",
+            "severity": "high"
+          }
+        ],
+        "proponent_response": {
+          "round_name": "Evidence and CAWM Layer 1-2",
+          "proponent_response": "MingLi responds to the opponent's concrete questions and narrows the claim into an operational, evidence-gated version.",
+          "addressed_opponent_questions": [
+            {
+              "question_type": "causal_probe",
+              "opponent_question": "How will the hypothesis be revised to address YanZhen Layer 1 issue: Unsupported causal link: CTAB adsorption on primary particle surfaces reduces interfacial energy and slows grain boundary migration during calcination; simultaneous ramp-rate control prevents...[truncated]",
+              "mingli_direct_response": "Restrict the claim to a preregistered stress threshold rather than an open-ended improvement claim; outside that regime the mechanism must be treated as uncertain and stress-tested.",
+              "adopted_revision": "Revise the mechanism so the logical chain is explicit and self-consistent."
+            },
+            {
+              "question_type": "causal_probe",
+              "opponent_question": "For the evidence-derived terms CTAB-assisted co-precipitation, Co-free high-Ni cathodes, capacity retention | microcrack resistance | c-lattice shrinkage, which exact term sits at the intervention, mediator, and output positions of the causal chain?",
+              "mingli_direct_response": "Attach a PaperGraph citation for the causal link, or downgrade the link to an explicit testable assumption.",
+              "adopted_revision": "Rewrite the causal chain using at least two evidence-derived terms and mark unsupported links as assumptions."
+            },
+            {
+              "question_type": "causal_probe",
+              "opponent_question": "How will the hypothesis be revised to address YanZhen Layer 1 issue: Mechanism lacks explicit causal links.",
+              "mingli_direct_response": "Rewrite the chain as intervention=temperature; mediator=CTAB-assisted co-precipitation acting in Co-free high-Ni cathodes; output=capacity (161.2 mAh g-1), cycling stability (100 cycles).",
+              "adopted_revision": "Revise the mechanism so the logical chain is explicit and self-consistent."
+            }
+          ],
+          "adopted_revision_requirements": [
+            "Revise the mechanism so the logical chain is explicit and self-consistent.",
+            "Rewrite the causal chain using at least two evidence-derived terms and mark unsupported links as assumptions.",
+            "repair logical-chain breaks identified by YanZhen Layer 1",
+            "separate source-supported claims from speculative mechanism claims"
+          ],
+          "revision_delta": [
+            "Operationalized method/scenario/benchmark as: CTAB-assisted co-precipitation | Co-free high-Ni cathodes | capacity (161.2 mAh g-1), cycling stability (100 cycles).",
+            "Added explicit control variable and boundary: temperature at a preregistered stress threshold rather than an open-ended improvement claim.",
+            "Marked unsupported mechanism links as testable assumptions until PaperGraph evidence is attached."
+          ],
+          "revised_hypothesis": "High-valence ion segregation at grain boundaries in Ni-rich cathodes arises not from thermodynamic equilibrium but from kinetic trapping during rapid calcination, and can be suppressed by controlled ramp-rate annealing combined with CTAB-mediated surface passivation. CTAB adsorption on primary particle surfaces reduces interfacial energy and slows grain boundary migration during calcination; simultaneous ramp-rate control prevents thermal runaway that drives high-valence ion diffusion to boundaries. Revision after Socratic Clarification: the hypothesis is limited to Co-free high-Ni cathodes; temperature is varied under matched baseline/control conditions; capacity (161.2 mAh g-1), cycling stability (100 cycles) must change in the predicted direction and the causal chain must survive source mapping, ablation, and regime-shift tests. Revision after Evidence and CAWM Layer 1-2: the hypothesis is limited to Co-free high-Ni cathodes; temperature is varied under matched baseline/control conditions; capacity (161.2 mAh g-1), cycling stability (100 cycles) must change in the predicted direction and the causal chain must survive source mapping, ablation, and regime-shift tests.",
+          "revised_mechanism": "CTAB adsorption on primary particle surfaces reduces interfacial energy and slows grain boundary migration during calcination; simultaneous ramp-rate control prevents thermal runaway that drives high-valence ion diffusion to boundaries. Compare three synthesis routes: (1) conventional fast-ramp calcination, (2) slow-ramp only, (3) CTAB-assisted + slow-ramp. Characterize via STEM-EDS line scans across grain boundaries, XRD Rietveld refinement for site occupancy, and electrochemical voltage decay profiling over 500 cycles. Revised mechanism: CTAB-assisted co-precipitation must produce an observable intermediate change in Co-free high-Ni cathodes; otherwise any endpoint change in capacity (161.2 mAh g-1), cycling stability (100 cycles) is treated as correlation rather than mechanism. Revised mechanism: CTAB-assisted co-precipitation must produce an observable intermediate change in Co-free high-Ni cathodes; otherwise any endpoint change in capacity (161.2 mAh g-1), cycling stability (100 cycles) is treated as correlation rather than mechanism.",
+          "causal_chain_after_revision": [
+            "Input/intervention: change temperature while holding the closest baseline/control fixed.",
+            "Mechanism: test whether CTAB-assisted co-precipitation changes the relevant state or process inside Co-free high-Ni cathodes.",
+            "Output: measure capacity (161.2 mAh g-1), cycling stability (100 cycles) and compare it with baseline and failure-mode controls."
+          ],
+          "remaining_speculative_claims": [
+            "CTAB adsorption on primary particle surfaces reduces interfacial energy and slows grain boundary migration during calcination; simultaneous ramp-rate control prevents thermal runaw...[truncated]",
+            "Mechanism-data alignment remains incomplete until source quotations or structured evidence are attached."
+          ]
+        },
+        "moderator_verdict": "revise"
+      },
+      {
+        "round": 3,
+        "name": "Methodology and Regime Shift",
+        "experiment_plan": "Compare three synthesis routes: (1) conventional fast-ramp calcination, (2) slow-ramp only, (3) CTAB-assisted + slow-ramp. Characterize via STEM-EDS line scans across grain boundaries, XRD Rietveld refinement for site occupancy, and electrochemical voltage decay profiling over 500 cycles.",
+        "regime_shift_summary": {
+          "shifted_conditions_tested": [
+            "data_distribution: training/reference distribution -> out-of-distribution or low-data setting",
+            "noise_level: nominal signal quality -> high-noise or missing-data condition",
+            "scale_or_environment: nominal experimental regime -> 10x/0.1x parameter scaling or changed environment",
+            "boundary_condition: reported boundary condition -> adjacent physical/chemical/climate regime"
+          ],
+          "mechanism_stability": "stable",
+          "cawm_risk_level": "LOW",
+          "issues_found": [],
+          "verdict": "PASS"
+        },
+        "opponent_questions": [
+          {
+            "question_type": "counterexample_challenge",
+            "question": "What outcome should occur if data_distribution: training/reference distribution -> out-of-distribution or low-data setting, and would that falsify the mechanism or only weaken it?",
+            "target_claim": "CTAB adsorption on primary particle surfaces reduces interfacial energy and slows grain boundary migration during calcination; simultaneous ramp-rate control prevents thermal runaway that drives high-valence ion diffusio...[truncated]",
+            "why_it_matters": "Counterexamples reveal whether the mechanism has real explanatory content across regimes.",
+            "required_revision": "Add predicted behavior under this shifted condition and define pass/fail interpretation.",
+            "severity": "medium"
+          },
+          {
+            "question_type": "counterexample_challenge",
+            "question": "What outcome should occur if noise_level: nominal signal quality -> high-noise or missing-data condition, and would that falsify the mechanism or only weaken it?",
+            "target_claim": "CTAB adsorption on primary particle surfaces reduces interfacial energy and slows grain boundary migration during calcination; simultaneous ramp-rate control prevents thermal runaway that drives high-valence ion diffusio...[truncated]",
+            "why_it_matters": "Counterexamples reveal whether the mechanism has real explanatory content across regimes.",
+            "required_revision": "Add predicted behavior under this shifted condition and define pass/fail interpretation.",
+            "severity": "medium"
+          },
+          {
+            "question_type": "counterexample_challenge",
+            "question": "What outcome should occur if scale_or_environment: nominal experimental regime -> 10x/0.1x parameter scaling or changed environment, and would that falsify the mechanism or only weaken it?",
+            "target_claim": "CTAB adsorption on primary particle surfaces reduces interfacial energy and slows grain boundary migration during calcination; simultaneous ramp-rate control prevents thermal runaway that drives high-valence ion diffusio...[truncated]",
+            "why_it_matters": "Counterexamples reveal whether the mechanism has real explanatory content across regimes.",
+            "required_revision": "Add predicted behavior under this shifted condition and define pass/fail interpretation.",
+            "severity": "medium"
+          }
+        ],
+        "proponent_response": {
+          "round_name": "Methodology and Regime Shift",
+          "proponent_response": "MingLi responds to the opponent's concrete questions and narrows the claim into an operational, evidence-gated version.",
+          "addressed_opponent_questions": [],
+          "adopted_revision_requirements": [
+            "repair logical-chain breaks identified by YanZhen Layer 1",
+            "separate source-supported claims from speculative mechanism claims"
+          ],
+          "revision_delta": [
+            "Operationalized method/scenario/benchmark as: CTAB-assisted co-precipitation | Co-free high-Ni cathodes | capacity (161.2 mAh g-1), cycling stability (100 cycles).",
+            "Added explicit control variable and boundary: temperature at a preregistered stress threshold rather than an open-ended improvement claim.",
+            "Marked unsupported mechanism links as testable assumptions until PaperGraph evidence is attached."
+          ],
+          "revised_hypothesis": "High-valence ion segregation at grain boundaries in Ni-rich cathodes arises not from thermodynamic equilibrium but from kinetic trapping during rapid calcination, and can be suppressed by controlled ramp-rate annealing combined with CTAB-mediated surface passivation. CTAB adsorption on primary particle surfaces reduces interfacial energy and slows grain boundary migration during calcination; simultaneous ramp-rate control prevents thermal runaway that drives high-valence ion diffusion to boundaries. Revision after Socratic Clarification: the hypothesis is limited to Co-free high-Ni cathodes; temperature is varied under matched baseline/control conditions; capacity (161.2 mAh g-1), cycling stability (100 cycles) must change in the predicted direction and the causal chain must survive source mapping, ablation, and regime-shift tests. Revision after Evidence and CAWM Layer 1-2: the hypothesis is limited to Co-free high-Ni cathodes; temperature is varied under matched baseline/control conditions; capacity (161.2 mAh g-1), cycling stability (100 cycles) must change in the predicted direction and the causal chain must survive source mapping, ablation, and regime-shift tests. Revision after Methodology and Regime Shift: the hypothesis is limited to Co-free high-Ni cathodes; temperature is varied under matched baseline/control conditions; capacity (161.2 mAh g-1), cycling stability (100 cycles) must change in the predicted direction and the causal chain must survive source mapping, ablation, and regime-shift tests.",
+          "revised_mechanism": "CTAB adsorption on primary particle surfaces reduces interfacial energy and slows grain boundary migration during calcination; simultaneous ramp-rate control prevents thermal runaway that drives high-valence ion diffusion to boundaries. Compare three synthesis routes: (1) conventional fast-ramp calcination, (2) slow-ramp only, (3) CTAB-assisted + slow-ramp. Characterize via STEM-EDS line scans across grain boundaries, XRD Rietveld refinement for site occupancy, and electrochemical voltage decay profiling over 500 cycles. Revised mechanism: CTAB-assisted co-precipitation must produce an observable intermediate change in Co-free high-Ni cathodes; otherwise any endpoint change in capacity (161.2 mAh g-1), cycling stability (100 cycles) is treated as correlation rather than mechanism. Revised mechanism: CTAB-assisted co-precipitation must produce an observable intermediate change in Co-free high-Ni cathodes; otherwise any endpoint change in capacity (161.2 mAh g-1), cycling stability (100 cycles) is treated as correlation rather than mechanism. Revised mechanism: CTAB-assisted co-precipitation must produce an observable intermediate change in Co-free high-Ni cathodes; otherwise any endpoint change in capacity (161.2 mAh g-1), cycling stability (100 cycles) is treated as correlation rather than mechanism.",
+          "causal_chain_after_revision": [
+            "Input/intervention: change temperature while holding the closest baseline/control fixed.",
+            "Mechanism: test whether CTAB-assisted co-precipitation changes the relevant state or process inside Co-free high-Ni cathodes.",
+            "Output: measure capacity (161.2 mAh g-1), cycling stability (100 cycles) and compare it with baseline and failure-mode controls."
+          ],
+          "remaining_speculative_claims": [
+            "Mechanism-data alignment remains incomplete until source quotations or structured evidence are attached."
+          ]
+        },
+        "moderator_verdict": "advance"
+      },
+      {
+        "round": 4,
+        "name": "Mechanism Audit Feedback and Literature Completion",
+        "yanzhen_report": {
+          "hypothesis_id": "",
+          "layer_1_internal_consistency": {
+            "logical_chain_intact": false,
+            "formula_application_correct": true,
+            "issues_found": [
+              "Mechanism lacks explicit causal links.",
+              "Unsupported causal link: CTAB adsorption on primary particle surfaces reduces interfacial energy and slows grain boundary migration during calcination; simultaneous ramp-rate control prevents thermal runaway that drives high-valence ion diffusion to boundaries."
+            ],
+            "reasoning_chain": [
+              "CTAB adsorption on primary particle surfaces reduces interfacial energy and slows grain boundary migration during calcination; simultaneous ramp-rate control prevents thermal runaway that drives high-valence ion diffusion to boundaries.",
+              "CTAB adsorption on primary particle surfaces reduces interfacial energy and slows grain boundary migration during calcination; simultaneous ramp-rate control prevents thermal runaway that drives high-valence ion diffusion to boundaries."
+            ],
+            "verdict": "FAIL"
+          },
+          "layer_2_data_consistency": {
+            "mechanism_matches_data": false,
+            "selective_citation_detected": true,
+            "original_text_alignment": "low",
+            "alignment_score": 0.0743,
+            "issues_found": [
+              "Hypothesis mechanism has low lexical/semantic overlap with cited evidence.",
+              "No explicit cited papers/data were provided."
+            ],
+            "verdict": "FAIL"
+          },
+          "layer_3_regime_shift_test": {
+            "shifted_conditions_tested": [
+              "data_distribution: training/reference distribution -> out-of-distribution or low-data setting",
+              "noise_level: nominal signal quality -> high-noise or missing-data condition",
+              "scale_or_environment: nominal experimental regime -> 10x/0.1x parameter scaling or changed environment",
+              "boundary_condition: reported boundary condition -> adjacent physical/chemical/climate regime"
+            ],
+            "mechanism_stability": "stable",
+            "cawm_risk_level": "LOW",
+            "issues_found": [],
+            "verdict": "PASS"
+          },
+          "causal_chain_audit": {
+            "causal_chain": [
+              "CTAB adsorption on primary particle surfaces reduces interfacial energy and slows grain boundary migration during calcination; simultaneous ramp-rate control prevents thermal runaway that drives high-valence ion diffusion to boundaries.",
+              "CTAB adsorption on primary particle surfaces reduces interfacial energy and slows grain boundary migration during calcination; simultaneous ramp-rate control prevents thermal runaway that drives high-valence ion diffusion to boundaries."
+            ],
+            "links_checked": 2,
+            "unsupported_links": [
+              "Unsupported causal link: CTAB adsorption on primary particle surfaces reduces interfacial energy and slows grain boundary migration during calcination; simultaneous ramp-rate control prevents thermal runaway that drives high-valence ion diffusion to boundaries.",
+              "Unsupported causal link: CTAB adsorption on primary particle surfaces reduces interfacial energy and slows grain boundary migration during calcination; simultaneous ramp-rate control prevents thermal runaway that drives high-valence ion diffusion to boundaries."
+            ],
+            "verdict": "FAIL"
+          },
+          "selective_citation_audit": {
+            "selective_citation_detected": true,
+            "cited_count": 0,
+            "context_count": 2,
+            "issues_found": [
+              "No explicit cited papers/data were provided."
+            ],
+            "verdict": "FAIL"
+          },
+          "feasibility_audit": {
+            "observable_or_measurable": true,
+            "controllable_or_intervenable": true,
+            "boundary_conditions_stated": true,
+            "issues_found": [],
+            "verdict": "PASS"
+          },
+          "overall_verdict": "REQUIRES_HUMAN_REVIEW",
+          "verdict": "REQUIRES_REVISION",
+          "required_actions": [
+            {
+              "action": "zhizhi_supplement_evidence",
+              "reason": "Unsupported causal or evidence links require targeted literature completion before accepting the hypothesis.",
+              "claims": [
+                "Unsupported causal link: CTAB adsorption on primary particle surfaces reduces interfacial energy and slows grain boundary migration during calcination; simultaneous ramp-rate control prevents thermal runaway that drives...[truncated]",
+                "Hypothesis mechanism has low lexical/semantic overlap with cited evidence."
+              ]
+            },
+            {
+              "action": "mingli_rewrite_causal_chain",
+              "reason": "Internal consistency failed.",
+              "issues": [
+                "Mechanism lacks explicit causal links.",
+                "Unsupported causal link: CTAB adsorption on primary particle surfaces reduces interfacial energy and slows grain boundary migration during calcination; simultaneous ramp-rate control prevents thermal runaway that drives high-valence ion diffusion to boundaries."
+              ]
+            },
+            {
+              "action": "separate_supported_from_speculative_claims",
+              "reason": "Mechanism-data alignment is insufficient or selective citation cannot be ruled out.",
+              "issues": [
+                "Hypothesis mechanism has low lexical/semantic overlap with cited evidence.",
+                "No explicit cited papers/data were provided."
+              ]
+            }
+          ],
+          "unsupported_claims": [
+            "Unsupported causal link: CTAB adsorption on primary particle surfaces reduces interfacial energy and slows grain boundary migration during calcination; simultaneous ramp-rate control prevents thermal runaway that drives...[truncated]",
+            "Hypothesis mechanism has low lexical/semantic overlap with cited evidence."
+          ],
+          "detailed_reasoning": "Layer 1 verdict=FAIL; issues=['Mechanism lacks explicit causal links.', 'Unsupported causal link: CTAB adsorption on primary particle surfaces reduces interfacial energy and slows grain boundary migration during calcination; simultaneous ramp-rate control prevents thermal runaway that drives high-valence ion diffusion to boundaries.']. Causal chain verdict=FAIL; unsupported=['Unsupported causal link: CTAB adsorption on primary particle surfaces reduces interfacial energy and slows grain boundary migration during calcination; simultaneous ramp-rate control prevents thermal runaway that drives high-valence ion diffusion to boundaries.', 'Unsupported causal link: CTAB adsorption on primary particle surfaces reduces interfacial energy and slows grain boundary migration during calcination; simultaneous ramp-rate control prevents thermal runaway that drives high-valence ion diffusion to boundaries.']. Layer 2 verdict=FAIL; alignment=low; issues=['Hypothesis mechanism has low lexical/semantic overlap with cited evidence.', 'No explicit cited papers/data were provided.']. Selective citation verdict=FAIL; issues=['No explicit cited papers/data were provided.']. Layer 3 verdict=PASS; stability=stable; CAWM risk=LOW. A hypothesis is accepted only if all layers pass and regime-shift risk remains low.",
+          "cawm_reference_note": "CAWM risk follows the pattern where correct-looking conclusions are defended by brittle or inconsistent mechanisms that fail under regime shift."
+        },
+        "audit_feedback": {
+          "verdict": "REQUIRES_REVISION",
+          "overall_verdict": "REQUIRES_HUMAN_REVIEW",
+          "required_actions": [
+            {
+              "action": "zhizhi_supplement_evidence",
+              "reason": "Unsupported causal or evidence links require targeted literature completion before accepting the hypothesis.",
+              "claims": [
+                "Unsupported causal link: CTAB adsorption on primary particle surfaces reduces interfacial energy and slows grain boundary migration during calcination; simultaneous ramp-rate control prevents thermal runaway that drives...[truncated]",
+                "Hypothesis mechanism has low lexical/semantic overlap with cited evidence."
+              ]
+            },
+            {
+              "action": "mingli_rewrite_causal_chain",
+              "reason": "Internal consistency failed.",
+              "issues": [
+                "Mechanism lacks explicit causal links.",
+                "Unsupported causal link: CTAB adsorption on primary particle surfaces reduces interfacial energy and slows grain boundary migration during calcination; simultaneous ramp-rate control prevents thermal runaway that drives high-valence ion diffusion to boundaries."
+              ]
+            },
+            {
+              "action": "separate_supported_from_speculative_claims",
+              "reason": "Mechanism-data alignment is insufficient or selective citation cannot be ruled out.",
+              "issues": [
+                "Hypothesis mechanism has low lexical/semantic overlap with cited evidence.",
+                "No explicit cited papers/data were provided."
+              ]
+            }
+          ],
+          "unsupported_claims": [
+            "Unsupported causal link: CTAB adsorption on primary particle surfaces reduces interfacial energy and slows grain boundary migration during calcination; simultaneous ramp-rate control prevents thermal runaway that drives...[truncated]",
+            "Hypothesis mechanism has low lexical/semantic overlap with cited evidence."
+          ],
+          "audit_layers": {
+            "internal": "FAIL",
+            "data": "FAIL",
+            "regime_shift": "PASS",
+            "feasibility": "PASS"
+          }
+        },
+        "literature_supplement": {
+          "attempted": true,
+          "trigger": "yanzhen_unsupported_claims",
+          "claims_attempted": 2,
+          "providers": [
+            "semantic_scholar",
+            "arxiv"
+          ],
+          "imports": [],
+          "claims": [
+            {
+              "claim": "Unsupported causal link: CTAB adsorption on primary particle surfaces reduces interfacial energy and slows grain boundary migration during calcination; simultaneous ramp-rate control prevents thermal runaway that drives...[truncated]",
+              "query": "ctab adsorption primary particle surfaces reduces truncated high-voltage lithium batteries above cathode electrolyte interface stability ai-assisted causal mechanism evidence limitation contradiction validation",
+              "search_id": "search_1783533384619961800",
+              "total_results": 6,
+              "relevance_reports": [
+                {
+                  "result_index": 0,
+                  "title": "Cathode Materials for Lithium Ion Batteries (LIBs): A Review on Materials related aspects towards High Energy Density LIBs",
+                  "relevance_gate": {
+                    "pass": false,
+                    "score": 0.25,
+                    "claim_hits": [],
+                    "domain_hits": [
+                      "batteries",
+                      "cathode",
+                      "lithium",
+                      "materials"
+                    ],
+                    "hypothesis_hits": [
+                      "energy",
+                      "ion"
+                    ],
+                    "reason": "requires at least one causal-claim term hit plus domain/hypothesis support"
+                  }
+                },
+                {
+                  "result_index": 1,
+                  "title": "Deciphering the interplay between wetting and chemo-mechanical fracture in lithium-ion battery cathode materials",
+                  "relevance_gate": {
+                    "pass": false,
+                    "score": 0.225,
+                    "claim_hits": [],
+                    "domain_hits": [
+                      "battery",
+                      "cathode",
+                      "lithium",
+                      "materials"
+                    ],
+                    "hypothesis_hits": [
+                      "ion"
+                    ],
+                    "reason": "requires at least one causal-claim term hit plus domain/hypothesis support"
+                  }
+                },
+                {
+                  "result_index": 2,
+                  "title": "Electrochemical stability and lithium insertion at the Li|Li3OCl solid electrolyte interface",
+                  "relevance_gate": {
+                    "pass": false,
+                    "score": 0.225,
+                    "claim_hits": [],
+                    "domain_hits": [
+                      "electrolyte",
+                      "interface",
+                      "lithium",
+                      "stability"
+                    ],
+                    "hypothesis_hits": [
+                      "stability"
+                    ],
+                    "reason": "requires at least one causal-claim term hit plus domain/hypothesis support"
+                  }
+                },
+                {
+                  "result_index": 3,
+                  "title": "Deciphering Interphase Instability of Lithium Metal Batteries with Localized High-Concentration Electrolytes at Elevated Temperatures",
+                  "relevance_gate": {
+                    "pass": false,
+                    "score": 0.1,
+                    "claim_hits": [],
+                    "domain_hits": [
+                      "batteries",
+                      "lithium"
+                    ],
+                    "hypothesis_hits": [],
+                    "reason": "requires at least one causal-claim term hit plus domain/hypothesis support"
+                  }
+                },
+                {
+                  "result_index": 4,
+                  "title": "Highly Antioxidative Lithium Salt Enables High-Voltage Ether Electrolyte for Lithium Metal Battery",
+                  "relevance_gate": {
+                    "pass": false,
+                    "score": 0.2,
+                    "claim_hits": [],
+                    "domain_hits": [
+                      "battery",
+                      "electrolyte",
+                      "high-voltage",
+                      "lithium"
+                    ],
+                    "hypothesis_hits": [],
+                    "reason": "requires at least one causal-claim term hit plus domain/hypothesis support"
+                  }
+                },
+                {
+                  "result_index": 5,
+                  "title": "Aluminum oxide coatings on Co-rich cathodes and interactions with organic electrolyte",
+                  "relevance_gate": {
+                    "pass": false,
+                    "score": 0.075,
+                    "claim_hits": [],
+                    "domain_hits": [
+                      "electrolyte"
+                    ],
+                    "hypothesis_hits": [
+                      "cathodes"
+                    ],
+                    "reason": "requires at least one causal-claim term hit plus domain/hypothesis support"
+                  }
+                }
+              ],
+              "imports": [
+                {
+                  "claim": "Unsupported causal link: CTAB adsorption on primary particle surfaces reduces interfacial energy and slows grain boundary migration during calcination; simultaneous ramp-rate control prevents thermal runaway that drives...[truncated]",
+                  "query": "ctab adsorption primary particle surfaces reduces truncated high-voltage lithium batteries above cathode electrolyte interface stability ai-assisted causal mechanism evidence limitation contradiction validation",
+                  "status": "no_relevance_pass",
+                  "reason": "Search returned candidates, but none matched the unsupported causal link closely enough to import."
+                }
+              ]
+            },
+            {
+              "claim": "Hypothesis mechanism has low lexical/semantic overlap with cited evidence.",
+              "query": "hypothesis mechanism has low lexical semantic high-voltage lithium batteries above cathode electrolyte interface stability ai-assisted battery causal mechanism evidence limitation contradiction validation",
+              "search_id": "search_1783533466063048600",
+              "total_results": 6,
+              "relevance_reports": [
+                {
+                  "result_index": 0,
+                  "title": "Cathode Materials for Lithium Ion Batteries (LIBs): A Review on Materials related aspects towards High Energy Density LIBs",
+                  "relevance_gate": {
+                    "pass": false,
+                    "score": 0.25,
+                    "claim_hits": [],
+                    "domain_hits": [
+                      "batteries",
+                      "cathode",
+                      "lithium",
+                      "materials"
+                    ],
+                    "hypothesis_hits": [
+                      "energy",
+                      "ion"
+                    ],
+                    "reason": "requires at least one causal-claim term hit plus domain/hypothesis support"
+                  }
+                },
+                {
+                  "result_index": 1,
+                  "title": "Deciphering Interphase Instability of Lithium Metal Batteries with Localized High-Concentration Electrolytes at Elevated Temperatures",
+                  "relevance_gate": {
+                    "pass": false,
+                    "score": 0.1,
+                    "claim_hits": [],
+                    "domain_hits": [
+                      "batteries",
+                      "lithium"
+                    ],
+                    "hypothesis_hits": [],
+                    "reason": "requires at least one causal-claim term hit plus domain/hypothesis support"
+                  }
+                },
+                {
+                  "result_index": 2,
+                  "title": "Computational discovery of cathode materials for rechargeable aqueous zinc-ion batteries",
+                  "relevance_gate": {
+                    "pass": false,
+                    "score": 0.225,
+                    "claim_hits": [],
+                    "domain_hits": [
+                      "batteries",
+                      "cathode",
+                      "discovery",
+                      "materials"
+                    ],
+                    "hypothesis_hits": [
+                      "ion"
+                    ],
+                    "reason": "requires at least one causal-claim term hit plus domain/hypothesis support"
+                  }
+                },
+                {
+                  "result_index": 3,
+                  "title": "Highly Antioxidative Lithium Salt Enables High-Voltage Ether Electrolyte for Lithium Metal Battery",
+                  "relevance_gate": {
+                    "pass": false,
+                    "score": 0.2,
+                    "claim_hits": [],
+                    "domain_hits": [
+                      "battery",
+                      "electrolyte",
+                      "high-voltage",
+                      "lithium"
+                    ],
+                    "hypothesis_hits": [],
+                    "reason": "requires at least one causal-claim term hit plus domain/hypothesis support"
+                  }
+                },
+                {
+                  "result_index": 4,
+                  "title": "Towards High-Voltage Cathodes for Zinc-Ion Batteries: Discovery Pipeline and Material Design Rules",
+                  "relevance_gate": {
+                    "pass": false,
+                    "score": 0.2,
+                    "claim_hits": [],
+                    "domain_hits": [
+                      "batteries",
+                      "discovery",
+                      "high-voltage"
+                    ],
+                    "hypothesis_hits": [
+                      "cathodes",
+                      "ion"
+                    ],
+                    "reason": "requires at least one causal-claim term hit plus domain/hypothesis support"
+                  }
+                },
+                {
+                  "result_index": 5,
+                  "title": "Discovery of High-Voltage Magnesium-Ion Cathodes using Machine Learning and First-Principles Calculations",
+                  "relevance_gate": {
+                    "pass": false,
+                    "score": 0.15,
+                    "claim_hits": [],
+                    "domain_hits": [
+                      "discovery",
+                      "high-voltage"
+                    ],
+                    "hypothesis_hits": [
+                      "cathodes",
+                      "ion"
+                    ],
+                    "reason": "requires at least one causal-claim term hit plus domain/hypothesis support"
+                  }
+                }
+              ],
+              "imports": [
+                {
+                  "claim": "Hypothesis mechanism has low lexical/semantic overlap with cited evidence.",
+                  "query": "hypothesis mechanism has low lexical semantic high-voltage lithium batteries above cathode electrolyte interface stability ai-assisted battery causal mechanism evidence limitation contradiction validation",
+                  "status": "no_relevance_pass",
+                  "reason": "Search returned candidates, but none matched the unsupported causal link closely enough to import."
+                }
+              ]
+            }
+          ],
+          "policy": "targeted evidence completion only; capped by unsupported-claim count to avoid broad rescans"
+        },
+        "opponent_questions": [
+          {
+            "question_type": "evidence_completion_challenge",
+            "question": "YanZhen marked this claim as unsupported: Unsupported causal link: CTAB adsorption on primary particle surfaces reduces interfacial energy and slows grain boundary migration during calcination; simultaneous ramp-rate control prevents thermal runaway that drives...[truncated]. Will MingLi attach a PaperGraph citation, narrow the claim, or remove it?",
+            "target_claim": "Unsupported causal link: CTAB adsorption on primary particle surfaces reduces interfacial energy and slows grain boundary migration during calcination; simultaneous ramp-rate control prevents thermal runaway that drives....[truncated]",
+            "why_it_matters": "Unsupported links are exactly where CAWM and selective-citation failures enter the hypothesis.",
+            "required_revision": "Attach evidence for the unsupported claim or downgrade it to an explicit assumption with a falsification test.",
+            "severity": "high"
+          },
+          {
+            "question_type": "evidence_completion_challenge",
+            "question": "YanZhen marked this claim as unsupported: Hypothesis mechanism has low lexical/semantic overlap with cited evidence.. Will MingLi attach a PaperGraph citation, narrow the claim, or remove it?",
+            "target_claim": "Hypothesis mechanism has low lexical/semantic overlap with cited evidence.",
+            "why_it_matters": "Unsupported links are exactly where CAWM and selective-citation failures enter the hypothesis.",
+            "required_revision": "Attach evidence for the unsupported claim or downgrade it to an explicit assumption with a falsification test.",
+            "severity": "high"
+          },
+          {
+            "question_type": "audit_action_challenge",
+            "question": "YanZhen requires `zhizhi_supplement_evidence`. What concrete revision satisfies this action before the hypothesis advances?",
+            "target_claim": "CTAB adsorption on primary particle surfaces reduces interfacial energy and slows grain boundary migration during calcination; simultaneous ramp-rate control prevents thermal runaway that drives high-valence ion diffusion to boundaries. Compare three synthesis routes: (1) conventional fast-ramp calcination, (2) slow-ramp only, (3) CTAB-assisted + slow-ramp. Characterize via STEM-EDS line scans across grain boundaries, XRD Rietveld refinement for site occupancy, and electrochemical voltage decay profiling over 500 cycles. Revised mechanism: CTAB-assisted co-precipitation must produce an observable intermediate change in Co-free high-Ni cathodes; otherwise any endpoint change in capacity (161.2 mAh g-1), cycling stability (100 cycles) is treated as correlation rather than mechanism. Revised mechanism: CTAB-assisted co-precipitation must produce an observable intermediate change in Co-free high-Ni cathodes; otherwise any endpoint change in capacity (161.2 mAh g-1), cycling stability (100 cycles) is treated as correlation rather than mechanism. Revised mechanism: CTAB-assisted co-precipitation must produce an observable intermediate change in Co-free high-Ni cathodes; otherwise any endpoint change in capacity (161.2 mAh g-1), cycling stability (100 cycles) is treated as correlation rather than mechanism.",
+            "why_it_matters": "Unsupported causal or evidence links require targeted literature completion before accepting the hypothesis.",
+            "required_revision": "Unsupported causal or evidence links require targeted literature completion before accepting the hypothesis.",
+            "severity": "high"
+          },
+          {
+            "question_type": "audit_action_challenge",
+            "question": "YanZhen requires `mingli_rewrite_causal_chain`. What concrete revision satisfies this action before the hypothesis advances?",
+            "target_claim": "CTAB adsorption on primary particle surfaces reduces interfacial energy and slows grain boundary migration during calcination; simultaneous ramp-rate control prevents thermal runaway that drives high-valence ion diffusion to boundaries. Compare three synthesis routes: (1) conventional fast-ramp calcination, (2) slow-ramp only, (3) CTAB-assisted + slow-ramp. Characterize via STEM-EDS line scans across grain boundaries, XRD Rietveld refinement for site occupancy, and electrochemical voltage decay profiling over 500 cycles. Revised mechanism: CTAB-assisted co-precipitation must produce an observable intermediate change in Co-free high-Ni cathodes; otherwise any endpoint change in capacity (161.2 mAh g-1), cycling stability (100 cycles) is treated as correlation rather than mechanism. Revised mechanism: CTAB-assisted co-precipitation must produce an observable intermediate change in Co-free high-Ni cathodes; otherwise any endpoint change in capacity (161.2 mAh g-1), cycling stability (100 cycles) is treated as correlation rather than mechanism. Revised mechanism: CTAB-assisted co-precipitation must produce an observable intermediate change in Co-free high-Ni cathodes; otherwise any endpoint change in capacity (161.2 mAh g-1), cycling stability (100 cycles) is treated as correlation rather than mechanism.",
+            "why_it_matters": "Internal consistency failed.",
+            "required_revision": "Internal consistency failed.",
+            "severity": "fatal"
+          },
+          {
+            "question_type": "audit_action_challenge",
+            "question": "YanZhen requires `separate_supported_from_speculative_claims`. What concrete revision satisfies this action before the hypothesis advances?",
+            "target_claim": "CTAB adsorption on primary particle surfaces reduces interfacial energy and slows grain boundary migration during calcination; simultaneous ramp-rate control prevents thermal runaway that drives high-valence ion diffusion to boundaries. Compare three synthesis routes: (1) conventional fast-ramp calcination, (2) slow-ramp only, (3) CTAB-assisted + slow-ramp. Characterize via STEM-EDS line scans across grain boundaries, XRD Rietveld refinement for site occupancy, and electrochemical voltage decay profiling over 500 cycles. Revised mechanism: CTAB-assisted co-precipitation must produce an observable intermediate change in Co-free high-Ni cathodes; otherwise any endpoint change in capacity (161.2 mAh g-1), cycling stability (100 cycles) is treated as correlation rather than mechanism. Revised mechanism: CTAB-assisted co-precipitation must produce an observable intermediate change in Co-free high-Ni cathodes; otherwise any endpoint change in capacity (161.2 mAh g-1), cycling stability (100 cycles) is treated as correlation rather than mechanism. Revised mechanism: CTAB-assisted co-precipitation must produce an observable intermediate change in Co-free high-Ni cathodes; otherwise any endpoint change in capacity (161.2 mAh g-1), cycling stability (100 cycles) is treated as correlation rather than mechanism.",
+            "why_it_matters": "Mechanism-data alignment is insufficient or selective citation cannot be ruled out.",
+            "required_revision": "Mechanism-data alignment is insufficient or selective citation cannot be ruled out.",
+            "severity": "high"
+          }
+        ],
+        "proponent_response": {
+          "round_name": "Mechanism Audit Feedback",
+          "proponent_response": "MingLi responds to the opponent's concrete questions and narrows the claim into an operational, evidence-gated version.",
+          "addressed_opponent_questions": [
+            {
+              "question_type": "evidence_completion_challenge",
+              "opponent_question": "YanZhen marked this claim as unsupported: Unsupported causal link: CTAB adsorption on primary particle surfaces reduces interfacial energy and slows grain boundary migration during calcination; simultaneous ramp-rate control prevents thermal runaway that drive...[truncated]",
+              "mingli_direct_response": "Restrict the claim to a preregistered stress threshold rather than an open-ended improvement claim; outside that regime the mechanism must be treated as uncertain and stress-tested.",
+              "adopted_revision": "Attach evidence for the unsupported claim or downgrade it to an explicit assumption with a falsification test."
+            },
+            {
+              "question_type": "evidence_completion_challenge",
+              "opponent_question": "YanZhen marked this claim as unsupported: Hypothesis mechanism has low lexical/semantic overlap with cited evidence.. Will MingLi attach a PaperGraph citation, narrow the claim, or remove it?",
+              "mingli_direct_response": "Attach a PaperGraph citation for the causal link, or downgrade the link to an explicit testable assumption.",
+              "adopted_revision": "Attach evidence for the unsupported claim or downgrade it to an explicit assumption with a falsification test."
+            },
+            {
+              "question_type": "audit_action_challenge",
+              "opponent_question": "YanZhen requires `zhizhi_supplement_evidence`. What concrete revision satisfies this action before the hypothesis advances?",
+              "mingli_direct_response": "Attach a PaperGraph citation for the causal link, or downgrade the link to an explicit testable assumption.",
+              "adopted_revision": "Unsupported causal or evidence links require targeted literature completion before accepting the hypothesis."
+            },
+            {
+              "question_type": "audit_action_challenge",
+              "opponent_question": "YanZhen requires `mingli_rewrite_causal_chain`. What concrete revision satisfies this action before the hypothesis advances?",
+              "mingli_direct_response": "Rewrite the chain as intervention=temperature; mediator=CTAB-assisted co-precipitation acting in Co-free high-Ni cathodes; output=capacity (161.2 mAh g-1), cycling stability (100 cycles).",
+              "adopted_revision": "Internal consistency failed."
+            },
+            {
+              "question_type": "audit_action_challenge",
+              "opponent_question": "YanZhen requires `separate_supported_from_speculative_claims`. What concrete revision satisfies this action before the hypothesis advances?",
+              "mingli_direct_response": "Attach a PaperGraph citation for the causal link, or downgrade the link to an explicit testable assumption.",
+              "adopted_revision": "Mechanism-data alignment is insufficient or selective citation cannot be ruled out."
+            }
+          ],
+          "adopted_revision_requirements": [
+            "Attach evidence for the unsupported claim or downgrade it to an explicit assumption with a falsification test.",
+            "Unsupported causal or evidence links require targeted literature completion before accepting the hypothesis.",
+            "Internal consistency failed.",
+            "Mechanism-data alignment is insufficient or selective citation cannot be ruled out.",
+            "repair logical-chain breaks identified by YanZhen Layer 1",
+            "separate source-supported claims from speculative mechanism claims"
+          ],
+          "revision_delta": [
+            "Operationalized method/scenario/benchmark as: CTAB-assisted co-precipitation | Co-free high-Ni cathodes | capacity (161.2 mAh g-1), cycling stability (100 cycles).",
+            "Added explicit control variable and boundary: temperature at a preregistered stress threshold rather than an open-ended improvement claim.",
+            "Marked unsupported mechanism links as testable assumptions until PaperGraph evidence is attached."
+          ],
+          "revised_hypothesis": "High-valence ion segregation at grain boundaries in Ni-rich cathodes arises not from thermodynamic equilibrium but from kinetic trapping during rapid calcination, and can be suppressed by controlled ramp-rate annealing combined with CTAB-mediated surface passivation. CTAB adsorption on primary particle surfaces reduces interfacial energy and slows grain boundary migration during calcination; simultaneous ramp-rate control prevents thermal runaway that drives high-valence ion diffusion to boundaries. Revision after Socratic Clarification: the hypothesis is limited to Co-free high-Ni cathodes; temperature is varied under matched baseline/control conditions; capacity (161.2 mAh g-1), cycling stability (100 cycles) must change in the predicted direction and the causal chain must survive source mapping, ablation, and regime-shift tests. Revision after Evidence and CAWM Layer 1-2: the hypothesis is limited to Co-free high-Ni cathodes; temperature is varied under matched baseline/control conditions; capacity (161.2 mAh g-1), cycling stability (100 cycles) must change in the predicted direction and the causal chain must survive source mapping, ablation, and regime-shift tests. Revision after Methodology and Regime Shift: the hypothesis is limited to Co-free high-Ni cathodes; temperature is varied under matched baseline/control conditions; capacity (161.2 mAh g-1), cycling stability (100 cycles) must change in the predicted direction and the causal chain must survive source mapping, ablation, and regime-shift tests. Revision after Mechanism Audit Feedback: the hypothesis is limited to Co-free high-Ni cathodes; temperature is varied under matched baseline/control conditions; capacity (161.2 mAh g-1), cycling stability (100 cycles) must change in the predicted direction and the causal chain must survive source mapping, ablation, and regime-shift tests.",
+          "revised_mechanism": "CTAB adsorption on primary particle surfaces reduces interfacial energy and slows grain boundary migration during calcination; simultaneous ramp-rate control prevents thermal runaway that drives high-valence ion diffusion to boundaries. Compare three synthesis routes: (1) conventional fast-ramp calcination, (2) slow-ramp only, (3) CTAB-assisted + slow-ramp. Characterize via STEM-EDS line scans across grain boundaries, XRD Rietveld refinement for site occupancy, and electrochemical voltage decay profiling over 500 cycles. Revised mechanism: CTAB-assisted co-precipitation must produce an observable intermediate change in Co-free high-Ni cathodes; otherwise any endpoint change in capacity (161.2 mAh g-1), cycling stability (100 cycles) is treated as correlation rather than mechanism. Revised mechanism: CTAB-assisted co-precipitation must produce an observable intermediate change in Co-free high-Ni cathodes; otherwise any endpoint change in capacity (161.2 mAh g-1), cycling stability (100 cycles) is treated as correlation rather than mechanism. Revised mechanism: CTAB-assisted co-precipitation must produce an observable intermediate change in Co-free high-Ni cathodes; otherwise any endpoint change in capacity (161.2 mAh g-1), cycling stability (100 cycles) is treated as correlation rather than mechanism. Revised mechanism: CTAB-assisted co-precipitation must produce an observable intermediate change in Co-free high-Ni cathodes; otherwise any endpoint change in capacity (161.2 mAh g-1), cycling stability (100 cycles) is treated as correlation rather than mechanism.",
+          "causal_chain_after_revision": [
+            "Input/intervention: change temperature while holding the closest baseline/control fixed.",
+            "Mechanism: test whether CTAB-assisted co-precipitation changes the relevant state or process inside Co-free high-Ni cathodes.",
+            "Output: measure capacity (161.2 mAh g-1), cycling stability (100 cycles) and compare it with baseline and failure-mode controls."
+          ],
+          "remaining_speculative_claims": [
+            "Unsupported causal link: CTAB adsorption on primary particle surfaces reduces interfacial energy and slows grain boundary migration during calcination; simultaneous ramp-rate contr...[truncated]",
+            "Hypothesis mechanism has low lexical/semantic overlap with cited evidence.",
+            "CTAB adsorption on primary particle surfaces reduces interfacial energy and slows grain boundary migration during calcination; simultaneous ramp-rate control prevents thermal runaw...[truncated]",
+            "Mechanism-data alignment remains incomplete until source quotations or structured evidence are attached."
+          ]
+        },
+        "moderator_verdict": "revise"
+      },
+      {
+        "round": 5,
+        "name": "Synthesis and Convergence",
+        "refined_hypothesis": {
+          "hypothesis": "Refined hypothesis: under explicitly matched conditions, vary temperature in Co-free high-Ni cathodes and test whether capacity (161.2 mAh g-1), cycling stability (100 cycles) changes at a preregistered stress threshold rather than an open-ended improvement claim; the hypothesis is accepted only if the causal chain survives ablation, evidence mapping, and regime-shift checks.",
+          "causal_chain": [
+            "CTAB adsorption on primary particle surfaces reduces interfacial energy and slows grain boundary migration during calcination; simultaneous ramp-rate control prevents thermal runaway that drives high-valence ion diffusion to boundaries.",
+            "CTAB adsorption on primary particle surfaces reduces interfacial energy and slows grain boundary migration during calcination; simultaneous ramp-rate control prevents thermal runaway that drives high-valence ion diffusion to boundaries."
+          ],
+          "adopted_revisions": [
+            "Map each central premise to a PaperGraph citation or mark it as speculative.",
+            "Revise the mechanism so the logical chain is explicit and self-consistent.",
+            "Rewrite the causal chain using at least two evidence-derived terms and mark unsupported links as assumptions.",
+            "Attach evidence for the unsupported claim or downgrade it to an explicit assumption with a falsification test.",
+            "Unsupported causal or evidence links require targeted literature completion before accepting the hypothesis.",
+            "Internal consistency failed.",
+            "Mechanism-data alignment is insufficient or selective citation cannot be ruled out."
+          ],
+          "evidence_requirements": [
+            "Map each central claim to a PaperGraph citation or mark it as speculative.",
+            "Provide evidence for causal connectors, not only endpoint performance."
+          ],
+          "falsification_conditions": [
+            "No mechanism-separating change in capacity (161.2 mAh g-1), cycling stability (100 cycles) when temperature crosses a preregistered stress threshold rather than an open-ended improvement claim.",
+            "YanZhen Layer 1 or Layer 2 remains FAIL after revision.",
+            "Regime-shift stability collapses unexpectedly under at least two shifted conditions."
+          ],
+          "regime_shift_requirements": [
+            "data_distribution: training/reference distribution -> out-of-distribution or low-data setting",
+            "noise_level: nominal signal quality -> high-noise or missing-data condition",
+            "scale_or_environment: nominal experimental regime -> 10x/0.1x parameter scaling or changed environment",
+            "boundary_condition: reported boundary condition -> adjacent physical/chemical/climate regime"
+          ]
+        },
+        "yanzhen_report": {
+          "hypothesis_id": "",
+          "layer_1_internal_consistency": {
+            "logical_chain_intact": false,
+            "formula_application_correct": true,
+            "issues_found": [
+              "Mechanism lacks explicit causal links.",
+              "Unsupported causal link: CTAB adsorption on primary particle surfaces reduces interfacial energy and slows grain boundary migration during calcination; simultaneous ramp-rate control prevents thermal runaway that drives high-valence ion diffusion to boundaries."
+            ],
+            "reasoning_chain": [
+              "CTAB adsorption on primary particle surfaces reduces interfacial energy and slows grain boundary migration during calcination; simultaneous ramp-rate control prevents thermal runaway that drives high-valence ion diffusion to boundaries.",
+              "CTAB adsorption on primary particle surfaces reduces interfacial energy and slows grain boundary migration during calcination; simultaneous ramp-rate control prevents thermal runaway that drives high-valence ion diffusion to boundaries."
+            ],
+            "verdict": "FAIL"
+          },
+          "layer_2_data_consistency": {
+            "mechanism_matches_data": false,
+            "selective_citation_detected": true,
+            "original_text_alignment": "low",
+            "alignment_score": 0.0737,
+            "issues_found": [
+              "Hypothesis mechanism has low lexical/semantic overlap with cited evidence.",
+              "No explicit cited papers/data were provided."
+            ],
+            "verdict": "FAIL"
+          },
+          "layer_3_regime_shift_test": {
+            "shifted_conditions_tested": [
+              "data_distribution: training/reference distribution -> out-of-distribution or low-data setting",
+              "noise_level: nominal signal quality -> high-noise or missing-data condition",
+              "scale_or_environment: nominal experimental regime -> 10x/0.1x parameter scaling or changed environment",
+              "boundary_condition: reported boundary condition -> adjacent physical/chemical/climate regime"
+            ],
+            "mechanism_stability": "stable",
+            "cawm_risk_level": "LOW",
+            "issues_found": [],
+            "verdict": "PASS"
+          },
+          "causal_chain_audit": {
+            "causal_chain": [
+              "CTAB adsorption on primary particle surfaces reduces interfacial energy and slows grain boundary migration during calcination; simultaneous ramp-rate control prevents thermal runaway that drives high-valence ion diffusion to boundaries.",
+              "CTAB adsorption on primary particle surfaces reduces interfacial energy and slows grain boundary migration during calcination; simultaneous ramp-rate control prevents thermal runaway that drives high-valence ion diffusion to boundaries."
+            ],
+            "links_checked": 2,
+            "unsupported_links": [
+              "Unsupported causal link: CTAB adsorption on primary particle surfaces reduces interfacial energy and slows grain boundary migration during calcination; simultaneous ramp-rate control prevents thermal runaway that drives high-valence ion diffusion to boundaries.",
+              "Unsupported causal link: CTAB adsorption on primary particle surfaces reduces interfacial energy and slows grain boundary migration during calcination; simultaneous ramp-rate control prevents thermal runaway that drives high-valence ion diffusion to boundaries."
+            ],
+            "verdict": "FAIL"
+          },
+          "selective_citation_audit": {
+            "selective_citation_detected": true,
+            "cited_count": 0,
+            "context_count": 2,
+            "issues_found": [
+              "No explicit cited papers/data were provided."
+            ],
+            "verdict": "FAIL"
+          },
+          "feasibility_audit": {
+            "observable_or_measurable": true,
+            "controllable_or_intervenable": true,
+            "boundary_conditions_stated": true,
+            "issues_found": [],
+            "verdict": "PASS"
+          },
+          "overall_verdict": "REQUIRES_HUMAN_REVIEW",
+          "verdict": "REQUIRES_REVISION",
+          "required_actions": [
+            {
+              "action": "zhizhi_supplement_evidence",
+              "reason": "Unsupported causal or evidence links require targeted literature completion before accepting the hypothesis.",
+              "claims": [
+                "Unsupported causal link: CTAB adsorption on primary particle surfaces reduces interfacial energy and slows grain boundary migration during calcination; simultaneous ramp-rate control prevents thermal runaway that drives...[truncated]",
+                "Hypothesis mechanism has low lexical/semantic overlap with cited evidence."
+              ]
+            },
+            {
+              "action": "mingli_rewrite_causal_chain",
+              "reason": "Internal consistency failed.",
+              "issues": [
+                "Mechanism lacks explicit causal links.",
+                "Unsupported causal link: CTAB adsorption on primary particle surfaces reduces interfacial energy and slows grain boundary migration during calcination; simultaneous ramp-rate control prevents thermal runaway that drives high-valence ion diffusion to boundaries."
+              ]
+            },
+            {
+              "action": "separate_supported_from_speculative_claims",
+              "reason": "Mechanism-data alignment is insufficient or selective citation cannot be ruled out.",
+              "issues": [
+                "Hypothesis mechanism has low lexical/semantic overlap with cited evidence.",
+                "No explicit cited papers/data were provided."
+              ]
+            }
+          ],
+          "unsupported_claims": [
+            "Unsupported causal link: CTAB adsorption on primary particle surfaces reduces interfacial energy and slows grain boundary migration during calcination; simultaneous ramp-rate control prevents thermal runaway that drives...[truncated]",
+            "Hypothesis mechanism has low lexical/semantic overlap with cited evidence."
+          ],
+          "detailed_reasoning": "Layer 1 verdict=FAIL; issues=['Mechanism lacks explicit causal links.', 'Unsupported causal link: CTAB adsorption on primary particle surfaces reduces interfacial energy and slows grain boundary migration during calcination; simultaneous ramp-rate control prevents thermal runaway that drives high-valence ion diffusion to boundaries.']. Causal chain verdict=FAIL; unsupported=['Unsupported causal link: CTAB adsorption on primary particle surfaces reduces interfacial energy and slows grain boundary migration during calcination; simultaneous ramp-rate control prevents thermal runaway that drives high-valence ion diffusion to boundaries.', 'Unsupported causal link: CTAB adsorption on primary particle surfaces reduces interfacial energy and slows grain boundary migration during calcination; simultaneous ramp-rate control prevents thermal runaway that drives high-valence ion diffusion to boundaries.']. Layer 2 verdict=FAIL; alignment=low; issues=['Hypothesis mechanism has low lexical/semantic overlap with cited evidence.', 'No explicit cited papers/data were provided.']. Selective citation verdict=FAIL; issues=['No explicit cited papers/data were provided.']. Layer 3 verdict=PASS; stability=stable; CAWM risk=LOW. A hypothesis is accepted only if all layers pass and regime-shift risk remains low.",
+          "cawm_reference_note": "CAWM risk follows the pattern where correct-looking conclusions are defended by brittle or inconsistent mechanisms that fail under regime shift."
+        },
+        "audit_feedback": {
+          "verdict": "REQUIRES_REVISION",
+          "overall_verdict": "REQUIRES_HUMAN_REVIEW",
+          "required_actions": [
+            {
+              "action": "zhizhi_supplement_evidence",
+              "reason": "Unsupported causal or evidence links require targeted literature completion before accepting the hypothesis.",
+              "claims": [
+                "Unsupported causal link: CTAB adsorption on primary particle surfaces reduces interfacial energy and slows grain boundary migration during calcination; simultaneous ramp-rate control prevents thermal runaway that drives...[truncated]",
+                "Hypothesis mechanism has low lexical/semantic overlap with cited evidence."
+              ]
+            },
+            {
+              "action": "mingli_rewrite_causal_chain",
+              "reason": "Internal consistency failed.",
+              "issues": [
+                "Mechanism lacks explicit causal links.",
+                "Unsupported causal link: CTAB adsorption on primary particle surfaces reduces interfacial energy and slows grain boundary migration during calcination; simultaneous ramp-rate control prevents thermal runaway that drives high-valence ion diffusion to boundaries."
+              ]
+            },
+            {
+              "action": "separate_supported_from_speculative_claims",
+              "reason": "Mechanism-data alignment is insufficient or selective citation cannot be ruled out.",
+              "issues": [
+                "Hypothesis mechanism has low lexical/semantic overlap with cited evidence.",
+                "No explicit cited papers/data were provided."
+              ]
+            }
+          ],
+          "unsupported_claims": [
+            "Unsupported causal link: CTAB adsorption on primary particle surfaces reduces interfacial energy and slows grain boundary migration during calcination; simultaneous ramp-rate control prevents thermal runaway that drives...[truncated]",
+            "Hypothesis mechanism has low lexical/semantic overlap with cited evidence."
+          ],
+          "audit_layers": {
+            "internal": "FAIL",
+            "data": "FAIL",
+            "regime_shift": "PASS",
+            "feasibility": "PASS"
+          }
+        },
+        "execution_validation": {
+          "verdict": "FAIL",
+          "checks": [
+            {
+              "name": "causal_chain_operationalized",
+              "passed": false,
+              "severity": "fatal",
+              "reason": "Requires at least input/intervention, mediator/mechanism, and output/readout steps."
+            },
+            {
+              "name": "has_falsification_condition",
+              "passed": true,
+              "severity": "fatal",
+              "reason": "Requires explicit evidence that would falsify or weaken the hypothesis."
+            },
+            {
+              "name": "claim_to_evidence_plan",
+              "passed": true,
+              "severity": "high",
+              "reason": "Requires a plan for mapping claims to PaperGraph evidence or marking assumptions."
+            },
+            {
+              "name": "observable_and_baseline_declared",
+              "passed": true,
+              "severity": "high",
+              "reason": "Requires both an observable outcome and a baseline/control comparison."
+            },
+            {
+              "name": "regime_shift_ready",
+              "passed": true,
+              "severity": "high",
+              "reason": "Requires boundary conditions or regime-shift stress tests before execution."
+            },
+            {
+              "name": "unsupported_claims_handled",
+              "passed": true,
+              "severity": "high",
+              "reason": "Unsupported YanZhen claims must be supported, narrowed, or recorded as no-relevant-evidence after targeted search."
+            },
+            {
+              "name": "mechanism_audit_not_failed",
+              "passed": true,
+              "severity": "fatal",
+              "reason": "A rejected YanZhen mechanism audit cannot advance to execution."
+            }
+          ],
+          "failed_checks": [
+            {
+              "name": "causal_chain_operationalized",
+              "passed": false,
+              "severity": "fatal",
+              "reason": "Requires at least input/intervention, mediator/mechanism, and output/readout steps."
+            }
+          ],
+          "execution_gate": "A hypothesis can enter Gewu only after it is operational, falsifiable, evidence-mapped, and stress-test-ready."
+        },
+        "final_decision": "human_review",
+        "moderator_verdict": "human_review"
+      }
+    ],
+    "debate_state": {
+      "hypothesis_id": "hyp_1783533377950971700",
+      "round": 5,
+      "max_rounds": 5,
+      "arguments": [
+        {
+          "round": 1,
+          "speaker": "MingLi",
+          "role": "proponent",
+          "content": "{\"hypothesis\": \"High-valence ion segregation at grain boundaries in Ni-rich cathodes arises not from thermodynamic equilibrium but from kinetic trapping during rapid calcination, and can be suppressed by controlled ramp-rate annealing combined with CTAB-mediated surface passivation. CTAB adsorption on primary particle surfaces reduces interfacial energy and slows grain boundary migration during calcination; simultaneous ramp-rate control prevents thermal runaway that drives high-valence ion diffusion to boundaries.\", \"claimed_mechanism\": \"CTAB adsorption on primary particle surfaces reduces interfacial energy and slows grain boundary migration during calcination; simultaneous ramp-rate control prevents thermal runaway that drives high-valence ion diffusion to boundaries. Compare three synthesis routes: (1) conventional fast-ramp calcination, (2) slow-ramp only, (3) CTAB-assisted + slow-r...[truncated]",
+          "evidence_refs": [],
+          "verdict": "revise"
+        },
+        {
+          "round": 1,
+          "speaker": "DuZhi",
+          "role": "opponent",
+          "content": "Which sentence or result in the imported PaperGraph evidence grounds the strongest mechanistic premise?",
+          "evidence_refs": [],
+          "verdict": "high"
+        },
+        {
+          "round": 1,
+          "speaker": "DuZhi",
+          "role": "opponent",
+          "content": "The evidence repeatedly mentions CTAB-assisted co-precipitation, Co-free high-Ni cathodes, capacity retention | microcrack resistance | c-lattice shrinkage; which of these domain-specific constraints is actually required for the mechanism to hold?",
+          "evidence_refs": [],
+          "verdict": "medium"
+        },
+        {
+          "round": 1,
+          "speaker": "DuZhi",
+          "role": "opponent",
+          "content": "What data, instrument, simulation, or experimental platform can actually observe the claimed causal step?",
+          "evidence_refs": [],
+          "verdict": "medium"
+        },
+        {
+          "round": 2,
+          "speaker": "DuZhi",
+          "role": "opponent",
+          "content": "How will the hypothesis be revised to address YanZhen Layer 1 issue: Unsupported causal link: CTAB adsorption on primary particle surfaces reduces interfacial energy and slows grain boundary migration during calcination; simultaneous ramp-rate control prevents thermal runaway that drives high-valence ion diffusion to boundaries.",
+          "evidence_refs": [],
+          "verdict": "fatal"
+        },
+        {
+          "round": 2,
+          "speaker": "DuZhi",
+          "role": "opponent",
+          "content": "For the evidence-derived terms CTAB-assisted co-precipitation, Co-free high-Ni cathodes, capacity retention | microcrack resistance | c-lattice shrinkage, which exact term sits at the intervention, mediator, and output positions of the causal chain?",
+          "evidence_refs": [],
+          "verdict": "high"
+        },
+        {
+          "round": 2,
+          "speaker": "DuZhi",
+          "role": "opponent",
+          "content": "How will the hypothesis be revised to address YanZhen Layer 1 issue: Mechanism lacks explicit causal links.",
+          "evidence_refs": [],
+          "verdict": "high"
+        },
+        {
+          "round": 3,
+          "speaker": "DuZhi",
+          "role": "opponent",
+          "content": "What outcome should occur if data_distribution: training/reference distribution -> out-of-distribution or low-data setting, and would that falsify the mechanism or only weaken it?",
+          "evidence_refs": [],
+          "verdict": "medium"
+        },
+        {
+          "round": 3,
+          "speaker": "DuZhi",
+          "role": "opponent",
+          "content": "What outcome should occur if noise_level: nominal signal quality -> high-noise or missing-data condition, and would that falsify the mechanism or only weaken it?",
+          "evidence_refs": [],
+          "verdict": "medium"
+        },
+        {
+          "round": 3,
+          "speaker": "DuZhi",
+          "role": "opponent",
+          "content": "What outcome should occur if scale_or_environment: nominal experimental regime -> 10x/0.1x parameter scaling or changed environment, and would that falsify the mechanism or only weaken it?",
+          "evidence_refs": [],
+          "verdict": "medium"
+        },
+        {
+          "round": 4,
+          "speaker": "DuZhi",
+          "role": "opponent",
+          "content": "YanZhen marked this claim as unsupported: Unsupported causal link: CTAB adsorption on primary particle surfaces reduces interfacial energy and slows grain boundary migration during calcination; simultaneous ramp-rate control prevents thermal runaway that drives...[truncated]. Will MingLi attach a PaperGraph citation, narrow the claim, or remove it?",
+          "evidence_refs": [],
+          "verdict": "high"
+        },
+        {
+          "round": 4,
+          "speaker": "DuZhi",
+          "role": "opponent",
+          "content": "YanZhen marked this claim as unsupported: Hypothesis mechanism has low lexical/semantic overlap with cited evidence.. Will MingLi attach a PaperGraph citation, narrow the claim, or remove it?",
+          "evidence_refs": [],
+          "verdict": "high"
+        },
+        {
+          "round": 4,
+          "speaker": "DuZhi",
+          "role": "opponent",
+          "content": "YanZhen requires `zhizhi_supplement_evidence`. What concrete revision satisfies this action before the hypothesis advances?",
+          "evidence_refs": [],
+          "verdict": "high"
+        },
+        {
+          "round": 4,
+          "speaker": "DuZhi",
+          "role": "opponent",
+          "content": "YanZhen requires `mingli_rewrite_causal_chain`. What concrete revision satisfies this action before the hypothesis advances?",
+          "evidence_refs": [],
+          "verdict": "fatal"
+        },
+        {
+          "round": 4,
+          "speaker": "DuZhi",
+          "role": "opponent",
+          "content": "YanZhen requires `separate_supported_from_speculative_claims`. What concrete revision satisfies this action before the hypothesis advances?",
+          "evidence_refs": [],
+          "verdict": "high"
+        }
+      ],
+      "unresolved_issues": [
+        "constraint_check: Which sentence or result in the imported PaperGraph evidence grounds the strongest mechanistic premise?",
+        "causal_probe: How will the hypothesis be revised to address YanZhen Layer 1 issue: Unsupported causal link: CTAB adsorption on primary particle surfaces reduces interfacial energy and slows grain boundary migration during calcination; simultaneous ramp-rate control prevents thermal runaway that drives high-valence ion diffusion to boundaries.",
+        "causal_probe: For the evidence-derived terms CTAB-assisted co-precipitation, Co-free high-Ni cathodes, capacity retention | microcrack resistance | c-lattice shrinkage, which exact term sits at the intervention, mediator, and output positions of the causal chain?",
+        "causal_probe: How will the hypothesis be revised to address YanZhen Layer 1 issue: Mechanism lacks explicit causal links.",
+        "evidence_completion_challenge: YanZhen marked this claim as unsupported: Unsupported causal link: CTAB adsorption on primary particle surfaces reduces interfacial energy and slows grain boundary migration during calcination; simultaneous ramp-rate control prevents thermal runaway that drives...[truncated]. Will MingLi attach a PaperGraph citation, narrow the claim, or remove it?",
+        "evidence_completion_challenge: YanZhen marked this claim as unsupported: Hypothesis mechanism has low lexical/semantic overlap with cited evidence.. Will MingLi attach a PaperGraph citation, narrow the claim, or remove it?",
+        "audit_action_challenge: YanZhen requires `zhizhi_supplement_evidence`. What concrete revision satisfies this action before the hypothesis advances?",
+        "audit_action_challenge: YanZhen requires `mingli_rewrite_causal_chain`. What concrete revision satisfies this action before the hypothesis advances?",
+        "audit_action_challenge: YanZhen requires `separate_supported_from_speculative_claims`. What concrete revision satisfies this action before the hypothesis advances?",
+        "YanZhen overall verdict: REQUIRES_HUMAN_REVIEW",
+        "Mechanism lacks explicit causal links.",
+        "Unsupported causal link: CTAB adsorption on primary particle surfaces reduces interfacial energy and slows grain boundary migration during calcination; simultaneous ramp-rate control prevents thermal runaway that drives high-valence ion diffusion to boundaries.",
+        "Hypothesis mechanism has low lexical/semantic overlap with cited evidence.",
+        "No explicit cited papers/data were provided."
+      ],
+      "revisions": [
+        {
+          "round": 1,
+          "adopted_revision_requirements": [
+            "Map each central premise to a PaperGraph citation or mark it as speculative."
+          ],
+          "revision_delta": [
+            "Operationalized method/scenario/benchmark as: CTAB-assisted co-precipitation | Co-free high-Ni cathodes | capacity (161.2 mAh g-1), cycling stability (100 cycles).",
+            "Added explicit control variable and boundary: temperature at a preregistered stress threshold rather than an open-ended improvement claim.",
+            "Marked unsupported mechanism links as testable assumptions until PaperGraph evidence is attached."
+          ],
+          "remaining_speculative_claims": [
+            "High-valence ion segregation at grain boundaries in Ni-rich cathodes arises not from thermodynamic equilibrium but from kinetic trapping during rapid calcination, and can be suppre...[truncated]"
+          ]
+        },
+        {
+          "round": 2,
+          "adopted_revision_requirements": [
+            "Revise the mechanism so the logical chain is explicit and self-consistent.",
+            "Rewrite the causal chain using at least two evidence-derived terms and mark unsupported links as assumptions.",
+            "repair logical-chain breaks identified by YanZhen Layer 1",
+            "separate source-supported claims from speculative mechanism claims"
+          ],
+          "revision_delta": [
+            "Operationalized method/scenario/benchmark as: CTAB-assisted co-precipitation | Co-free high-Ni cathodes | capacity (161.2 mAh g-1), cycling stability (100 cycles).",
+            "Added explicit control variable and boundary: temperature at a preregistered stress threshold rather than an open-ended improvement claim.",
+            "Marked unsupported mechanism links as testable assumptions until PaperGraph evidence is attached."
+          ],
+          "remaining_speculative_claims": [
+            "CTAB adsorption on primary particle surfaces reduces interfacial energy and slows grain boundary migration during calcination; simultaneous ramp-rate control prevents thermal runaw...[truncated]",
+            "Mechanism-data alignment remains incomplete until source quotations or structured evidence are attached."
+          ]
+        },
+        {
+          "round": 3,
+          "adopted_revision_requirements": [
+            "repair logical-chain breaks identified by YanZhen Layer 1",
+            "separate source-supported claims from speculative mechanism claims"
+          ],
+          "revision_delta": [
+            "Operationalized method/scenario/benchmark as: CTAB-assisted co-precipitation | Co-free high-Ni cathodes | capacity (161.2 mAh g-1), cycling stability (100 cycles).",
+            "Added explicit control variable and boundary: temperature at a preregistered stress threshold rather than an open-ended improvement claim.",
+            "Marked unsupported mechanism links as testable assumptions until PaperGraph evidence is attached."
+          ],
+          "remaining_speculative_claims": [
+            "Mechanism-data alignment remains incomplete until source quotations or structured evidence are attached."
+          ]
+        },
+        {
+          "round": 4,
+          "adopted_revision_requirements": [
+            "Attach evidence for the unsupported claim or downgrade it to an explicit assumption with a falsification test.",
+            "Unsupported causal or evidence links require targeted literature completion before accepting the hypothesis.",
+            "Internal consistency failed.",
+            "Mechanism-data alignment is insufficient or selective citation cannot be ruled out.",
+            "repair logical-chain breaks identified by YanZhen Layer 1",
+            "separate source-supported claims from speculative mechanism claims"
+          ],
+          "revision_delta": [
+            "Operationalized method/scenario/benchmark as: CTAB-assisted co-precipitation | Co-free high-Ni cathodes | capacity (161.2 mAh g-1), cycling stability (100 cycles).",
+            "Added explicit control variable and boundary: temperature at a preregistered stress threshold rather than an open-ended improvement claim.",
+            "Marked unsupported mechanism links as testable assumptions until PaperGraph evidence is attached."
+          ],
+          "remaining_speculative_claims": [
+            "Unsupported causal link: CTAB adsorption on primary particle surfaces reduces interfacial energy and slows grain boundary migration during calcination; simultaneous ramp-rate contr...[truncated]",
+            "Hypothesis mechanism has low lexical/semantic overlap with cited evidence.",
+            "CTAB adsorption on primary particle surfaces reduces interfacial energy and slows grain boundary migration during calcination; simultaneous ramp-rate control prevents thermal runaw...[truncated]",
+            "Mechanism-data alignment remains incomplete until source quotations or structured evidence are attached."
+          ]
+        }
+      ],
+      "mechanism_audits": [
+        {
+          "round": 2,
+          "verdict": "REQUIRES_REVISION",
+          "overall_verdict": "REQUIRES_HUMAN_REVIEW",
+          "required_actions": [
+            {
+              "action": "zhizhi_supplement_evidence",
+              "reason": "Unsupported causal or evidence links require targeted literature completion before accepting the hypothesis.",
+              "claims": [
+                "Unsupported causal link: CTAB adsorption on primary particle surfaces reduces interfacial energy and slows grain boundary migration during calcination; simultaneous ramp-rate control prevents thermal runaway that drives...[truncated]",
+                "Hypothesis mechanism has low lexical/semantic overlap with cited evidence."
+              ]
+            },
+            {
+              "action": "mingli_rewrite_causal_chain",
+              "reason": "Internal consistency failed.",
+              "issues": [
+                "Mechanism lacks explicit causal links.",
+                "Unsupported causal link: CTAB adsorption on primary particle surfaces reduces interfacial energy and slows grain boundary migration during calcination; simultaneous ramp-rate control prevents thermal runaway that drives high-valence ion diffusion to boundaries."
+              ]
+            },
+            {
+              "action": "separate_supported_from_speculative_claims",
+              "reason": "Mechanism-data alignment is insufficient or selective citation cannot be ruled out.",
+              "issues": [
+                "Hypothesis mechanism has low lexical/semantic overlap with cited evidence.",
+                "No explicit cited papers/data were provided."
+              ]
+            }
+          ],
+          "unsupported_claims": [
+            "Unsupported causal link: CTAB adsorption on primary particle surfaces reduces interfacial energy and slows grain boundary migration during calcination; simultaneous ramp-rate control prevents thermal runaway that drives...[truncated]",
+            "Hypothesis mechanism has low lexical/semantic overlap with cited evidence."
+          ]
+        },
+        {
+          "round": 4,
+          "verdict": "REQUIRES_REVISION",
+          "overall_verdict": "REQUIRES_HUMAN_REVIEW",
+          "required_actions": [
+            {
+              "action": "zhizhi_supplement_evidence",
+              "reason": "Unsupported causal or evidence links require targeted literature completion before accepting the hypothesis.",
+              "claims": [
+                "Unsupported causal link: CTAB adsorption on primary particle surfaces reduces interfacial energy and slows grain boundary migration during calcination; simultaneous ramp-rate control prevents thermal runaway that drives...[truncated]",
+                "Hypothesis mechanism has low lexical/semantic overlap with cited evidence."
+              ]
+            },
+            {
+              "action": "mingli_rewrite_causal_chain",
+              "reason": "Internal consistency failed.",
+              "issues": [
+                "Mechanism lacks explicit causal links.",
+                "Unsupported causal link: CTAB adsorption on primary particle surfaces reduces interfacial energy and slows grain boundary migration during calcination; simultaneous ramp-rate control prevents thermal runaway that drives high-valence ion diffusion to boundaries."
+              ]
+            },
+            {
+              "action": "separate_supported_from_speculative_claims",
+              "reason": "Mechanism-data alignment is insufficient or selective citation cannot be ruled out.",
+              "issues": [
+                "Hypothesis mechanism has low lexical/semantic overlap with cited evidence.",
+                "No explicit cited papers/data were provided."
+              ]
+            }
+          ],
+          "unsupported_claims": [
+            "Unsupported causal link: CTAB adsorption on primary particle surfaces reduces interfacial energy and slows grain boundary migration during calcination; simultaneous ramp-rate control prevents thermal runaway that drives...[truncated]",
+            "Hypothesis mechanism has low lexical/semantic overlap with cited evidence."
+          ]
+        },
+        {
+          "round": 5,
+          "verdict": "REQUIRES_REVISION",
+          "overall_verdict": "REQUIRES_HUMAN_REVIEW",
+          "required_actions": [
+            {
+              "action": "zhizhi_supplement_evidence",
+              "reason": "Unsupported causal or evidence links require targeted literature completion before accepting the hypothesis.",
+              "claims": [
+                "Unsupported causal link: CTAB adsorption on primary particle surfaces reduces interfacial energy and slows grain boundary migration during calcination; simultaneous ramp-rate control prevents thermal runaway that drives...[truncated]",
+                "Hypothesis mechanism has low lexical/semantic overlap with cited evidence."
+              ]
+            },
+            {
+              "action": "mingli_rewrite_causal_chain",
+              "reason": "Internal consistency failed.",
+              "issues": [
+                "Mechanism lacks explicit causal links.",
+                "Unsupported causal link: CTAB adsorption on primary particle surfaces reduces interfacial energy and slows grain boundary migration during calcination; simultaneous ramp-rate control prevents thermal runaway that drives high-valence ion diffusion to boundaries."
+              ]
+            },
+            {
+              "action": "separate_supported_from_speculative_claims",
+              "reason": "Mechanism-data alignment is insufficient or selective citation cannot be ruled out.",
+              "issues": [
+                "Hypothesis mechanism has low lexical/semantic overlap with cited evidence.",
+                "No explicit cited papers/data were provided."
+              ]
+            }
+          ],
+          "unsupported_claims": [
+            "Unsupported causal link: CTAB adsorption on primary particle surfaces reduces interfacial energy and slows grain boundary migration during calcination; simultaneous ramp-rate control prevents thermal runaway that drives...[truncated]",
+            "Hypothesis mechanism has low lexical/semantic overlap with cited evidence."
+          ]
+        }
+      ],
+      "literature_supplements": [
+        {
+          "attempted": true,
+          "trigger": "yanzhen_unsupported_claims",
+          "claims_attempted": 2,
+          "providers": [
+            "semantic_scholar",
+            "arxiv"
+          ],
+          "imports": [],
+          "claims": [
+            {
+              "claim": "Unsupported causal link: CTAB adsorption on primary particle surfaces reduces interfacial energy and slows grain boundary migration during calcination; simultaneous ramp-rate control prevents thermal runaway that drives...[truncated]",
+              "query": "ctab adsorption primary particle surfaces reduces truncated high-voltage lithium batteries above cathode electrolyte interface stability ai-assisted causal mechanism evidence limitation contradiction validation",
+              "search_id": "search_1783533384619961800",
+              "total_results": 6,
+              "relevance_reports": [
+                {
+                  "result_index": 0,
+                  "title": "Cathode Materials for Lithium Ion Batteries (LIBs): A Review on Materials related aspects towards High Energy Density LIBs",
+                  "relevance_gate": {
+                    "pass": false,
+                    "score": 0.25,
+                    "claim_hits": [],
+                    "domain_hits": [
+                      "batteries",
+                      "cathode",
+                      "lithium",
+                      "materials"
+                    ],
+                    "hypothesis_hits": [
+                      "energy",
+                      "ion"
+                    ],
+                    "reason": "requires at least one causal-claim term hit plus domain/hypothesis support"
+                  }
+                },
+                {
+                  "result_index": 1,
+                  "title": "Deciphering the interplay between wetting and chemo-mechanical fracture in lithium-ion battery cathode materials",
+                  "relevance_gate": {
+                    "pass": false,
+                    "score": 0.225,
+                    "claim_hits": [],
+                    "domain_hits": [
+                      "battery",
+                      "cathode",
+                      "lithium",
+                      "materials"
+                    ],
+                    "hypothesis_hits": [
+                      "ion"
+                    ],
+                    "reason": "requires at least one causal-claim term hit plus domain/hypothesis support"
+                  }
+                },
+                {
+                  "result_index": 2,
+                  "title": "Electrochemical stability and lithium insertion at the Li|Li3OCl solid electrolyte interface",
+                  "relevance_gate": {
+                    "pass": false,
+                    "score": 0.225,
+                    "claim_hits": [],
+                    "domain_hits": [
+                      "electrolyte",
+                      "interface",
+                      "lithium",
+                      "stability"
+                    ],
+                    "hypothesis_hits": [
+                      "stability"
+                    ],
+                    "reason": "requires at least one causal-claim term hit plus domain/hypothesis support"
+                  }
+                },
+                {
+                  "result_index": 3,
+                  "title": "Deciphering Interphase Instability of Lithium Metal Batteries with Localized High-Concentration Electrolytes at Elevated Temperatures",
+                  "relevance_gate": {
+                    "pass": false,
+                    "score": 0.1,
+                    "claim_hits": [],
+                    "domain_hits": [
+                      "batteries",
+                      "lithium"
+                    ],
+                    "hypothesis_hits": [],
+                    "reason": "requires at least one causal-claim term hit plus domain/hypothesis support"
+                  }
+                },
+                {
+                  "result_index": 4,
+                  "title": "Highly Antioxidative Lithium Salt Enables High-Voltage Ether Electrolyte for Lithium Metal Battery",
+                  "relevance_gate": {
+                    "pass": false,
+                    "score": 0.2,
+                    "claim_hits": [],
+                    "domain_hits": [
+                      "battery",
+                      "electrolyte",
+                      "high-voltage",
+                      "lithium"
+                    ],
+                    "hypothesis_hits": [],
+                    "reason": "requires at least one causal-claim term hit plus domain/hypothesis support"
+                  }
+                },
+                {
+                  "result_index": 5,
+                  "title": "Aluminum oxide coatings on Co-rich cathodes and interactions with organic electrolyte",
+                  "relevance_gate": {
+                    "pass": false,
+                    "score": 0.075,
+                    "claim_hits": [],
+                    "domain_hits": [
+                      "electrolyte"
+                    ],
+                    "hypothesis_hits": [
+                      "cathodes"
+                    ],
+                    "reason": "requires at least one causal-claim term hit plus domain/hypothesis support"
+                  }
+                }
+              ],
+              "imports": [
+                {
+                  "claim": "Unsupported causal link: CTAB adsorption on primary particle surfaces reduces interfacial energy and slows grain boundary migration during calcination; simultaneous ramp-rate control prevents thermal runaway that drives...[truncated]",
+                  "query": "ctab adsorption primary particle surfaces reduces truncated high-voltage lithium batteries above cathode electrolyte interface stability ai-assisted causal mechanism evidence limitation contradiction validation",
+                  "status": "no_relevance_pass",
+                  "reason": "Search returned candidates, but none matched the unsupported causal link closely enough to import."
+                }
+              ]
+            },
+            {
+              "claim": "Hypothesis mechanism has low lexical/semantic overlap with cited evidence.",
+              "query": "hypothesis mechanism has low lexical semantic high-voltage lithium batteries above cathode electrolyte interface stability ai-assisted battery causal mechanism evidence limitation contradiction validation",
+              "search_id": "search_1783533466063048600",
+              "total_results": 6,
+              "relevance_reports": [
+                {
+                  "result_index": 0,
+                  "title": "Cathode Materials for Lithium Ion Batteries (LIBs): A Review on Materials related aspects towards High Energy Density LIBs",
+                  "relevance_gate": {
+                    "pass": false,
+                    "score": 0.25,
+                    "claim_hits": [],
+                    "domain_hits": [
+                      "batteries",
+                      "cathode",
+                      "lithium",
+                      "materials"
+                    ],
+                    "hypothesis_hits": [
+                      "energy",
+                      "ion"
+                    ],
+                    "reason": "requires at least one causal-claim term hit plus domain/hypothesis support"
+                  }
+                },
+                {
+                  "result_index": 1,
+                  "title": "Deciphering Interphase Instability of Lithium Metal Batteries with Localized High-Concentration Electrolytes at Elevated Temperatures",
+                  "relevance_gate": {
+                    "pass": false,
+                    "score": 0.1,
+                    "claim_hits": [],
+                    "domain_hits": [
+                      "batteries",
+                      "lithium"
+                    ],
+                    "hypothesis_hits": [],
+                    "reason": "requires at least one causal-claim term hit plus domain/hypothesis support"
+                  }
+                },
+                {
+                  "result_index": 2,
+                  "title": "Computational discovery of cathode materials for rechargeable aqueous zinc-ion batteries",
+                  "relevance_gate": {
+                    "pass": false,
+                    "score": 0.225,
+                    "claim_hits": [],
+                    "domain_hits": [
+                      "batteries",
+                      "cathode",
+                      "discovery",
+                      "materials"
+                    ],
+                    "hypothesis_hits": [
+                      "ion"
+                    ],
+                    "reason": "requires at least one causal-claim term hit plus domain/hypothesis support"
+                  }
+                },
+                {
+                  "result_index": 3,
+                  "title": "Highly Antioxidative Lithium Salt Enables High-Voltage Ether Electrolyte for Lithium Metal Battery",
+                  "relevance_gate": {
+                    "pass": false,
+                    "score": 0.2,
+                    "claim_hits": [],
+                    "domain_hits": [
+                      "battery",
+                      "electrolyte",
+                      "high-voltage",
+                      "lithium"
+                    ],
+                    "hypothesis_hits": [],
+                    "reason": "requires at least one causal-claim term hit plus domain/hypothesis support"
+                  }
+                },
+                {
+                  "result_index": 4,
+                  "title": "Towards High-Voltage Cathodes for Zinc-Ion Batteries: Discovery Pipeline and Material Design Rules",
+                  "relevance_gate": {
+                    "pass": false,
+                    "score": 0.2,
+                    "claim_hits": [],
+                    "domain_hits": [
+                      "batteries",
+                      "discovery",
+                      "high-voltage"
+                    ],
+                    "hypothesis_hits": [
+                      "cathodes",
+                      "ion"
+                    ],
+                    "reason": "requires at least one causal-claim term hit plus domain/hypothesis support"
+                  }
+                },
+                {
+                  "result_index": 5,
+                  "title": "Discovery of High-Voltage Magnesium-Ion Cathodes using Machine Learning and First-Principles Calculations",
+                  "relevance_gate": {
+                    "pass": false,
+                    "score": 0.15,
+                    "claim_hits": [],
+                    "domain_hits": [
+                      "discovery",
+                      "high-voltage"
+                    ],
+                    "hypothesis_hits": [
+                      "cathodes",
+                      "ion"
+                    ],
+                    "reason": "requires at least one causal-claim term hit plus domain/hypothesis support"
+                  }
+                }
+              ],
+              "imports": [
+                {
+                  "claim": "Hypothesis mechanism has low lexical/semantic overlap with cited evidence.",
+                  "query": "hypothesis mechanism has low lexical semantic high-voltage lithium batteries above cathode electrolyte interface stability ai-assisted battery causal mechanism evidence limitation contradiction validation",
+                  "status": "no_relevance_pass",
+                  "reason": "Search returned candidates, but none matched the unsupported causal link closely enough to import."
+                }
+              ]
+            }
+          ],
+          "policy": "targeted evidence completion only; capped by unsupported-claim count to avoid broad rescans"
+        }
+      ],
+      "status": "ESCALATED"
+    },
+    "safety_gates": {
+      "passed": true,
+      "issues": [],
+      "warnings": [
+        "Qwen-only adversarial setup accepted: independence is enforced by distinct model ids/role prompts rather than non-Qwen families.",
+        "DuZhi and YanZhen share the same model id; this is allowed under Qwen-only constraints but lowers independence strength."
+      ],
+      "independence": {
+        "proponent_model_family": "qwen-max",
+        "opponent_model_family": "qwen-plus",
+        "judge_model_family": "qwen-deep-research",
+        "verifier_model_family": "qwen-plus",
+        "policy": "Require distinct model ids or role channels. Qwen-only multi-model setups such as qwen-max/qwen-plus/qwen-deep-research are allowed.",
+        "qwen_only": true
+      },
+      "evidence_gate": "Debate revisions are adopted only if tied to PaperGraph evidence, YanZhen issue, or an explicit missing-evidence condition.",
+      "convergence_gate": "If two rounds add no substantive revision, terminate with best current hypothesis and unresolved issues."
+    },
+    "refined_hypothesis": {
+      "hypothesis": "Refined hypothesis: under explicitly matched conditions, vary temperature in Co-free high-Ni cathodes and test whether capacity (161.2 mAh g-1), cycling stability (100 cycles) changes at a preregistered stress threshold rather than an open-ended improvement claim; the hypothesis is accepted only if the causal chain survives ablation, evidence mapping, and regime-shift checks.",
+      "causal_chain": [
+        "CTAB adsorption on primary particle surfaces reduces interfacial energy and slows grain boundary migration during calcination; simultaneous ramp-rate control prevents thermal runaway that drives high-valence ion diffusion to boundaries.",
+        "CTAB adsorption on primary particle surfaces reduces interfacial energy and slows grain boundary migration during calcination; simultaneous ramp-rate control prevents thermal runaway that drives high-valence ion diffusion to boundaries."
+      ],
+      "adopted_revisions": [
+        "Map each central premise to a PaperGraph citation or mark it as speculative.",
+        "Revise the mechanism so the logical chain is explicit and self-consistent.",
+        "Rewrite the causal chain using at least two evidence-derived terms and mark unsupported links as assumptions.",
+        "Attach evidence for the unsupported claim or downgrade it to an explicit assumption with a falsification test.",
+        "Unsupported causal or evidence links require targeted literature completion before accepting the hypothesis.",
+        "Internal consistency failed.",
+        "Mechanism-data alignment is insufficient or selective citation cannot be ruled out."
+      ],
+      "evidence_requirements": [
+        "Map each central claim to a PaperGraph citation or mark it as speculative.",
+        "Provide evidence for causal connectors, not only endpoint performance."
+      ],
+      "falsification_conditions": [
+        "No mechanism-separating change in capacity (161.2 mAh g-1), cycling stability (100 cycles) when temperature crosses a preregistered stress threshold rather than an open-ended improvement claim.",
+        "YanZhen Layer 1 or Layer 2 remains FAIL after revision.",
+        "Regime-shift stability collapses unexpectedly under at least two shifted conditions."
+      ],
+      "regime_shift_requirements": [
+        "data_distribution: training/reference distribution -> out-of-distribution or low-data setting",
+        "noise_level: nominal signal quality -> high-noise or missing-data condition",
+        "scale_or_environment: nominal experimental regime -> 10x/0.1x parameter scaling or changed environment",
+        "boundary_condition: reported boundary condition -> adjacent physical/chemical/climate regime"
+      ]
+    },
+    "unresolved_issues": [
+      "constraint_check: Which sentence or result in the imported PaperGraph evidence grounds the strongest mechanistic premise?",
+      "causal_probe: How will the hypothesis be revised to address YanZhen Layer 1 issue: Unsupported causal link: CTAB adsorption on primary particle surfaces reduces interfacial energy and slows grain boundary migration during calcination; simultaneous ramp-rate control prevents thermal runaway that drives high-valence ion diffusion to boundaries.",
+      "causal_probe: For the evidence-derived terms CTAB-assisted co-precipitation, Co-free high-Ni cathodes, capacity retention | microcrack resistance | c-lattice shrinkage, which exact term sits at the intervention, mediator, and output positions of the causal chain?",
+      "causal_probe: How will the hypothesis be revised to address YanZhen Layer 1 issue: Mechanism lacks explicit causal links.",
+      "evidence_completion_challenge: YanZhen marked this claim as unsupported: Unsupported causal link: CTAB adsorption on primary particle surfaces reduces interfacial energy and slows grain boundary migration during calcination; simultaneous ramp-rate control prevents thermal runaway that drives...[truncated]. Will MingLi attach a PaperGraph citation, narrow the claim, or remove it?",
+      "evidence_completion_challenge: YanZhen marked this claim as unsupported: Hypothesis mechanism has low lexical/semantic overlap with cited evidence.. Will MingLi attach a PaperGraph citation, narrow the claim, or remove it?",
+      "audit_action_challenge: YanZhen requires `zhizhi_supplement_evidence`. What concrete revision satisfies this action before the hypothesis advances?",
+      "audit_action_challenge: YanZhen requires `mingli_rewrite_causal_chain`. What concrete revision satisfies this action before the hypothesis advances?",
+      "audit_action_challenge: YanZhen requires `separate_supported_from_speculative_claims`. What concrete revision satisfies this action before the hypothesis advances?",
+      "YanZhen overall verdict: REQUIRES_HUMAN_REVIEW",
+      "Mechanism lacks explicit causal links.",
+      "Unsupported causal link: CTAB adsorption on primary particle surfaces reduces interfacial energy and slows grain boundary migration during calcination; simultaneous ramp-rate control prevents thermal runaway that drives high-valence ion diffusion to boundaries.",
+      "Hypothesis mechanism has low lexical/semantic overlap with cited evidence.",
+      "No explicit cited papers/data were provided."
+    ],
+    "final_decision": "human_review"
+  }
+}

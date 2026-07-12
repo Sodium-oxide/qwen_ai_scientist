@@ -1,0 +1,3445 @@
+{
+  "agent": "tanxi",
+  "target_domain": "Immunology / Systems Biology / T Cell Biology / Cytokine Signaling / Regulatory T Cells (Tregs) / Immune Checkpoints / Inflammation / Autoimmunity / Tumor Immunology / Single-cell Multi-omics / Functional Assays / Mathematical Modeling / Translational Medicine",
+  "thought": "TanXi scanned the PaperGraph for low-density but high-importance method-scenario-benchmark regions, claim contradictions, anomaly/tension signals, cross-disciplinary unconnected pairs, suspended unresolved problems, and strategic-need alignment.",
+  "action": {
+    "scan_coverage_density": {
+      "target_domain": "Immunology / Systems Biology / T Cell Biology / Cytokine Signaling / Regulatory T Cells (Tregs) / Immune Checkpoints / Inflammation / Autoimmunity / Tumor Immunology / Single-cell Multi-omics / Functional Assays / Mathematical Modeling / Translational Medicine"
+    },
+    "detect_reasoning_gaps": {
+      "types": [
+        "claim_contradiction",
+        "theory_evidence_anomaly"
+      ]
+    },
+    "detect_source_gap_signals": {
+      "types": [
+        "limitations",
+        "future_work",
+        "open_problem",
+        "missing_evidence"
+      ]
+    },
+    "detect_mechanism_issue_gaps": {
+      "priority": "higher_than_matrix_holes"
+    },
+    "find_unconnected_pairs": {
+      "target_domain": "Immunology / Systems Biology / T Cell Biology / Cytokine Signaling / Regulatory T Cells (Tregs) / Immune Checkpoints / Inflammation / Autoimmunity / Tumor Immunology / Single-cell Multi-omics / Functional Assays / Mathematical Modeling / Translational Medicine"
+    },
+    "detect_suspended_problems": {
+      "min_citation_threshold": 50
+    },
+    "prioritize_gaps": {
+      "criteria": [
+        "importance",
+        "tractability",
+        "strategic_value",
+        "core_mechanism_relevance"
+      ]
+    },
+    "tabi_mechanism_audit": {
+      "checks": [
+        "theory_consistency",
+        "counterfactual",
+        "mechanism_competition",
+        "evidence_gap",
+        "testable_prediction",
+        "contradiction_score"
+      ]
+    },
+    "align_with_strategic_needs": {
+      "strategic_domains": [
+        "Treg Development and Function",
+        "Teff-Treg Dynamics",
+        "Cytokine Signaling in Immune Homeostasis",
+        "Metabolic Pathways in Immune Regulation",
+        "Tissue Microenvironment Influence on Immune Cells",
+        "Genetic Variants Impacting Immune Homeostasis",
+        "Cross-Species and Cross-Tissue Conservation of Immune Mechanisms"
+      ]
+    }
+  },
+  "coverage_analysis": {
+    "target_domain": "Immunology / Systems Biology / T Cell Biology / Cytokine Signaling / Regulatory T Cells (Tregs) / Immune Checkpoints / Inflammation / Autoimmunity / Tumor Immunology / Single-cell Multi-omics / Functional Assays / Mathematical Modeling / Translational Medicine",
+    "method_count": 18,
+    "scenario_count": 18,
+    "benchmark_count": 17,
+    "dense_areas": [
+      {
+        "topic": "Treg cell-restricted deletion of Zfp36 family members + immune homeostasis",
+        "method": "Treg cell-restricted deletion of Zfp36 family members",
+        "scenario": "immune homeostasis",
+        "evidence_count": 1,
+        "benchmark_count": 1,
+        "importance_score": 7
+      },
+      {
+        "topic": "a cia mouse model + rheumatoid arthritis, Treg cell differentiation",
+        "method": "a cia mouse model",
+        "scenario": "rheumatoid arthritis, Treg cell differentiation",
+        "evidence_count": 1,
+        "benchmark_count": 1,
+        "importance_score": 7
+      },
+      {
+        "topic": "agent workflow + antitumor immunity in human cancers",
+        "method": "agent workflow",
+        "scenario": "antitumor immunity in human cancers",
+        "evidence_count": 1,
+        "benchmark_count": 1,
+        "importance_score": 5
+      },
+      {
+        "topic": "clinical study design + autoimmune diseases",
+        "method": "clinical study design",
+        "scenario": "autoimmune diseases",
+        "evidence_count": 1,
+        "benchmark_count": 1,
+        "importance_score": 5
+      },
+      {
+        "topic": "conditional deletion of CD226 within Foxp3+ cells + inflammatory conditions",
+        "method": "conditional deletion of CD226 within Foxp3+ cells",
+        "scenario": "inflammatory conditions",
+        "evidence_count": 1,
+        "benchmark_count": 1,
+        "importance_score": 7
+      },
+      {
+        "topic": "conditional gene knockout + regulatory T cell homeostasis and function",
+        "method": "conditional gene knockout",
+        "scenario": "regulatory T cell homeostasis and function",
+        "evidence_count": 1,
+        "benchmark_count": 1,
+        "importance_score": 7
+      },
+      {
+        "topic": "genome-wide CRISPR-knockout screening + IL-2 signaling in T cells",
+        "method": "genome-wide CRISPR-knockout screening",
+        "scenario": "IL-2 signaling in T cells",
+        "evidence_count": 1,
+        "benchmark_count": 1,
+        "importance_score": 7
+      },
+      {
+        "topic": "immunosuppressive properties + immune homeostasis and self-tolerance",
+        "method": "immunosuppressive properties",
+        "scenario": "immune homeostasis and self-tolerance",
+        "evidence_count": 1,
+        "benchmark_count": 1,
+        "importance_score": 7
+      },
+      {
+        "topic": "inducible deletion of CD25 in Tregs + Foxp3+ regulatory T cells (Tregs)",
+        "method": "inducible deletion of CD25 in Tregs",
+        "scenario": "Foxp3+ regulatory T cells (Tregs)",
+        "evidence_count": 1,
+        "benchmark_count": 1,
+        "importance_score": 7
+      },
+      {
+        "topic": "literature review + immune homeostasis and prevention of excessive immune responses",
+        "method": "literature review",
+        "scenario": "immune homeostasis and prevention of excessive immune responses",
+        "evidence_count": 1,
+        "benchmark_count": 1,
+        "importance_score": 7
+      }
+    ],
+    "density_holes": [
+      {
+        "topic": "Treg cell-restricted deletion of Zfp36 family members + immune homeostasis benchmark coverage",
+        "method": "Treg cell-restricted deletion of Zfp36 family members",
+        "scenario": "immune homeostasis",
+        "importance_score": 7,
+        "current_evidence_level": "medium",
+        "missing_benchmarks": [
+          "Foxp3 expression and Treg induction",
+          "IL-2 signaling",
+          "Treg activation and expansion, reduction in disease severity",
+          "Treg frequency and function, effector T cell response, tissue damage",
+          "a cia mouse model"
+        ],
+        "why_important": "The method-scenario pair has evidence, but benchmark coverage is sparse, so robustness and generalization remain uncertain.",
+        "supporting_references": [
+          "Beatriz Sáenz-Narciso et al. (2025) ZFP36-family RNA-binding proteins in regulatory T cells reinforce immune homeostasis doi:10.1038/s41467-025-58993-y"
+        ],
+        "semantic_plausibility": {
+          "verdict": "PASS",
+          "score": 0.96,
+          "requirements": [],
+          "scenario_affordances": [
+            "graph",
+            "image",
+            "intervention",
+            "molecular",
+            "omics",
+            "sequence",
+            "spatial_context",
+            "spatial_coordinates"
+          ],
+          "bridge_terms": [
+            "multi-omics",
+            "benchmark dataset"
+          ],
+          "score_breakdown": [
+            {
+              "factor": "base_prior",
+              "delta": 0.45,
+              "reason": "default prior before evidence checks"
+            },
+            {
+              "factor": "papergraph_cooccurrence",
+              "delta": 0.35,
+              "reason": "method and scenario co-occur in PaperGraph"
+            },
+            {
+              "factor": "bridge_terms",
+              "delta": 0.16,
+              "reason": "2 bridge concept(s) detected"
+            }
+          ],
+          "reason": "method and scenario already co-occur in at least one PaperGraph record; bridge concepts detected: multi-omics, benchmark dataset"
+        }
+      },
+      {
+        "topic": "a cia mouse model + rheumatoid arthritis, Treg cell differentiation benchmark coverage",
+        "method": "a cia mouse model",
+        "scenario": "rheumatoid arthritis, Treg cell differentiation",
+        "importance_score": 7,
+        "current_evidence_level": "medium",
+        "missing_benchmarks": [
+          "Foxp3 expression and Treg induction",
+          "IL-2 signaling",
+          "Treg activation and expansion, reduction in disease severity",
+          "Treg frequency and function, effector T cell response, tissue damage",
+          "autoimmunity and organ inflammation"
+        ],
+        "why_important": "The method-scenario pair has evidence, but benchmark coverage is sparse, so robustness and generalization remain uncertain.",
+        "supporting_references": [
+          "Qiaoyu Zhang et al. (2026) Catalpol enhances mTORC1/HIF-1α/PDHK1-mediated oxidative metabolism that leads to promote the differentiation of Treg cells in RA. doi:10.1016/j.molimm.2025.11.016"
+        ],
+        "semantic_plausibility": {
+          "verdict": "PASS",
+          "score": 0.96,
+          "requirements": [],
+          "scenario_affordances": [
+            "graph",
+            "image",
+            "intervention",
+            "molecular",
+            "omics",
+            "sequence",
+            "spatial_context",
+            "spatial_coordinates"
+          ],
+          "bridge_terms": [
+            "multi-omics",
+            "benchmark dataset"
+          ],
+          "score_breakdown": [
+            {
+              "factor": "base_prior",
+              "delta": 0.45,
+              "reason": "default prior before evidence checks"
+            },
+            {
+              "factor": "papergraph_cooccurrence",
+              "delta": 0.35,
+              "reason": "method and scenario co-occur in PaperGraph"
+            },
+            {
+              "factor": "bridge_terms",
+              "delta": 0.16,
+              "reason": "2 bridge concept(s) detected"
+            }
+          ],
+          "reason": "method and scenario already co-occur in at least one PaperGraph record; bridge concepts detected: multi-omics, benchmark dataset"
+        }
+      },
+      {
+        "topic": "conditional deletion of CD226 within Foxp3+ cells + inflammatory conditions benchmark coverage",
+        "method": "conditional deletion of CD226 within Foxp3+ cells",
+        "scenario": "inflammatory conditions",
+        "importance_score": 7,
+        "current_evidence_level": "medium",
+        "missing_benchmarks": [
+          "Foxp3 expression and Treg induction",
+          "IL-2 signaling",
+          "Treg activation and expansion, reduction in disease severity",
+          "Treg frequency and function, effector T cell response, tissue damage",
+          "a cia mouse model"
+        ],
+        "why_important": "The method-scenario pair has evidence, but benchmark coverage is sparse, so robustness and generalization remain uncertain.",
+        "supporting_references": [
+          "Jingchang Ma et al. (2023) CD226 maintains regulatory T cell phenotype stability and metabolism by the mTOR/Myc pathway under inflammatory conditions. doi:10.1016/j.celrep.2023.113306"
+        ],
+        "semantic_plausibility": {
+          "verdict": "PASS",
+          "score": 0.96,
+          "requirements": [],
+          "scenario_affordances": [
+            "graph",
+            "image",
+            "intervention",
+            "molecular",
+            "omics",
+            "sequence",
+            "spatial_context",
+            "spatial_coordinates"
+          ],
+          "bridge_terms": [
+            "multi-omics",
+            "benchmark dataset"
+          ],
+          "score_breakdown": [
+            {
+              "factor": "base_prior",
+              "delta": 0.45,
+              "reason": "default prior before evidence checks"
+            },
+            {
+              "factor": "papergraph_cooccurrence",
+              "delta": 0.35,
+              "reason": "method and scenario co-occur in PaperGraph"
+            },
+            {
+              "factor": "bridge_terms",
+              "delta": 0.16,
+              "reason": "2 bridge concept(s) detected"
+            }
+          ],
+          "reason": "method and scenario already co-occur in at least one PaperGraph record; bridge concepts detected: multi-omics, benchmark dataset"
+        }
+      },
+      {
+        "topic": "conditional gene knockout + regulatory T cell homeostasis and function benchmark coverage",
+        "method": "conditional gene knockout",
+        "scenario": "regulatory T cell homeostasis and function",
+        "importance_score": 7,
+        "current_evidence_level": "medium",
+        "missing_benchmarks": [
+          "Foxp3 expression and Treg induction",
+          "IL-2 signaling",
+          "Treg activation and expansion, reduction in disease severity",
+          "Treg frequency and function, effector T cell response, tissue damage",
+          "a cia mouse model"
+        ],
+        "why_important": "The method-scenario pair has evidence, but benchmark coverage is sparse, so robustness and generalization remain uncertain.",
+        "supporting_references": [
+          "T. Katsuyama et al. (2021) Splicing factor SRSF1 is indispensable for regulatory T cell homeostasis and function doi:10.1016/j.celrep.2021.109339"
+        ],
+        "semantic_plausibility": {
+          "verdict": "PASS",
+          "score": 0.96,
+          "requirements": [],
+          "scenario_affordances": [
+            "graph",
+            "image",
+            "intervention",
+            "molecular",
+            "omics",
+            "sequence",
+            "spatial_context",
+            "spatial_coordinates"
+          ],
+          "bridge_terms": [
+            "multi-omics",
+            "benchmark dataset"
+          ],
+          "score_breakdown": [
+            {
+              "factor": "base_prior",
+              "delta": 0.45,
+              "reason": "default prior before evidence checks"
+            },
+            {
+              "factor": "papergraph_cooccurrence",
+              "delta": 0.35,
+              "reason": "method and scenario co-occur in PaperGraph"
+            },
+            {
+              "factor": "bridge_terms",
+              "delta": 0.16,
+              "reason": "2 bridge concept(s) detected"
+            }
+          ],
+          "reason": "method and scenario already co-occur in at least one PaperGraph record; bridge concepts detected: multi-omics, benchmark dataset"
+        }
+      },
+      {
+        "topic": "genome-wide CRISPR-knockout screening + IL-2 signaling in T cells benchmark coverage",
+        "method": "genome-wide CRISPR-knockout screening",
+        "scenario": "IL-2 signaling in T cells",
+        "importance_score": 7,
+        "current_evidence_level": "medium",
+        "missing_benchmarks": [
+          "Foxp3 expression and Treg induction",
+          "Treg activation and expansion, reduction in disease severity",
+          "Treg frequency and function, effector T cell response, tissue damage",
+          "a cia mouse model",
+          "autoimmunity and organ inflammation"
+        ],
+        "why_important": "The method-scenario pair has evidence, but benchmark coverage is sparse, so robustness and generalization remain uncertain.",
+        "supporting_references": [
+          "Suyasha Roy et al. (2025) BLIMP1 negatively regulates IL-2 signaling in T cells doi:10.1126/sciadv.adx8105"
+        ],
+        "semantic_plausibility": {
+          "verdict": "PASS",
+          "score": 0.96,
+          "requirements": [],
+          "scenario_affordances": [
+            "graph",
+            "image",
+            "intervention",
+            "molecular",
+            "omics",
+            "sequence",
+            "spatial_context",
+            "spatial_coordinates"
+          ],
+          "bridge_terms": [
+            "multi-omics",
+            "benchmark dataset"
+          ],
+          "score_breakdown": [
+            {
+              "factor": "base_prior",
+              "delta": 0.45,
+              "reason": "default prior before evidence checks"
+            },
+            {
+              "factor": "papergraph_cooccurrence",
+              "delta": 0.35,
+              "reason": "method and scenario co-occur in PaperGraph"
+            },
+            {
+              "factor": "bridge_terms",
+              "delta": 0.16,
+              "reason": "2 bridge concept(s) detected"
+            }
+          ],
+          "reason": "method and scenario already co-occur in at least one PaperGraph record; bridge concepts detected: multi-omics, benchmark dataset"
+        }
+      },
+      {
+        "topic": "immunosuppressive properties + immune homeostasis and self-tolerance benchmark coverage",
+        "method": "immunosuppressive properties",
+        "scenario": "immune homeostasis and self-tolerance",
+        "importance_score": 7,
+        "current_evidence_level": "medium",
+        "missing_benchmarks": [
+          "Foxp3 expression and Treg induction",
+          "IL-2 signaling",
+          "Treg activation and expansion, reduction in disease severity",
+          "Treg frequency and function, effector T cell response, tissue damage",
+          "a cia mouse model"
+        ],
+        "why_important": "The method-scenario pair has evidence, but benchmark coverage is sparse, so robustness and generalization remain uncertain.",
+        "supporting_references": [
+          "Lingling Wang et al. (2025) Regulatory T cells in homeostasis and disease: molecular mechanisms and therapeutic potential doi:10.1038/s41392-025-02326-4"
+        ],
+        "semantic_plausibility": {
+          "verdict": "PASS",
+          "score": 0.96,
+          "requirements": [],
+          "scenario_affordances": [
+            "graph",
+            "image",
+            "intervention",
+            "molecular",
+            "omics",
+            "sequence",
+            "spatial_context",
+            "spatial_coordinates"
+          ],
+          "bridge_terms": [
+            "multi-omics",
+            "benchmark dataset"
+          ],
+          "score_breakdown": [
+            {
+              "factor": "base_prior",
+              "delta": 0.45,
+              "reason": "default prior before evidence checks"
+            },
+            {
+              "factor": "papergraph_cooccurrence",
+              "delta": 0.35,
+              "reason": "method and scenario co-occur in PaperGraph"
+            },
+            {
+              "factor": "bridge_terms",
+              "delta": 0.16,
+              "reason": "2 bridge concept(s) detected"
+            }
+          ],
+          "reason": "method and scenario already co-occur in at least one PaperGraph record; bridge concepts detected: multi-omics, benchmark dataset"
+        }
+      },
+      {
+        "topic": "inducible deletion of CD25 in Tregs + Foxp3+ regulatory T cells (Tregs) benchmark coverage",
+        "method": "inducible deletion of CD25 in Tregs",
+        "scenario": "Foxp3+ regulatory T cells (Tregs)",
+        "importance_score": 7,
+        "current_evidence_level": "medium",
+        "missing_benchmarks": [
+          "Foxp3 expression and Treg induction",
+          "IL-2 signaling",
+          "Treg activation and expansion, reduction in disease severity",
+          "Treg frequency and function, effector T cell response, tissue damage",
+          "a cia mouse model"
+        ],
+        "why_important": "The method-scenario pair has evidence, but benchmark coverage is sparse, so robustness and generalization remain uncertain.",
+        "supporting_references": [
+          "M. Fan et al. (2018) Differential Roles of IL-2 Signaling in Developing versus Mature Tregs doi:10.1016/j.celrep.2018.10.002"
+        ],
+        "semantic_plausibility": {
+          "verdict": "PASS",
+          "score": 0.96,
+          "requirements": [],
+          "scenario_affordances": [
+            "graph",
+            "image",
+            "intervention",
+            "molecular",
+            "omics",
+            "sequence",
+            "spatial_context",
+            "spatial_coordinates"
+          ],
+          "bridge_terms": [
+            "multi-omics",
+            "benchmark dataset"
+          ],
+          "score_breakdown": [
+            {
+              "factor": "base_prior",
+              "delta": 0.45,
+              "reason": "default prior before evidence checks"
+            },
+            {
+              "factor": "papergraph_cooccurrence",
+              "delta": 0.35,
+              "reason": "method and scenario co-occur in PaperGraph"
+            },
+            {
+              "factor": "bridge_terms",
+              "delta": 0.16,
+              "reason": "2 bridge concept(s) detected"
+            }
+          ],
+          "reason": "method and scenario already co-occur in at least one PaperGraph record; bridge concepts detected: multi-omics, benchmark dataset"
+        }
+      },
+      {
+        "topic": "literature review + immune homeostasis and prevention of excessive immune responses benchmark coverage",
+        "method": "literature review",
+        "scenario": "immune homeostasis and prevention of excessive immune responses",
+        "importance_score": 7,
+        "current_evidence_level": "medium",
+        "missing_benchmarks": [
+          "Foxp3 expression and Treg induction",
+          "IL-2 signaling",
+          "Treg activation and expansion, reduction in disease severity",
+          "Treg frequency and function, effector T cell response, tissue damage",
+          "a cia mouse model"
+        ],
+        "why_important": "The method-scenario pair has evidence, but benchmark coverage is sparse, so robustness and generalization remain uncertain.",
+        "supporting_references": [
+          "Yuan Zong et al. (2024) Regulation of Treg cells by cytokine signaling and co-stimulatory molecules doi:10.3389/fimmu.2024.1387975"
+        ],
+        "semantic_plausibility": {
+          "verdict": "PASS",
+          "score": 0.96,
+          "requirements": [],
+          "scenario_affordances": [
+            "graph",
+            "image",
+            "intervention",
+            "molecular",
+            "omics",
+            "sequence",
+            "spatial_context",
+            "spatial_coordinates"
+          ],
+          "bridge_terms": [
+            "multi-omics",
+            "benchmark dataset"
+          ],
+          "score_breakdown": [
+            {
+              "factor": "base_prior",
+              "delta": 0.45,
+              "reason": "default prior before evidence checks"
+            },
+            {
+              "factor": "papergraph_cooccurrence",
+              "delta": 0.35,
+              "reason": "method and scenario co-occur in PaperGraph"
+            },
+            {
+              "factor": "bridge_terms",
+              "delta": 0.16,
+              "reason": "2 bridge concept(s) detected"
+            }
+          ],
+          "reason": "method and scenario already co-occur in at least one PaperGraph record; bridge concepts detected: multi-omics, benchmark dataset"
+        }
+      },
+      {
+        "topic": "molecular pathway analysis + Foxp3 expression and Treg induction in naive CD4+ T cells benchmark coverage",
+        "method": "molecular pathway analysis",
+        "scenario": "Foxp3 expression and Treg induction in naive CD4+ T cells",
+        "importance_score": 7,
+        "current_evidence_level": "medium",
+        "missing_benchmarks": [
+          "IL-2 signaling",
+          "Treg activation and expansion, reduction in disease severity",
+          "Treg frequency and function, effector T cell response, tissue damage",
+          "a cia mouse model",
+          "autoimmunity and organ inflammation"
+        ],
+        "why_important": "The method-scenario pair has evidence, but benchmark coverage is sparse, so robustness and generalization remain uncertain.",
+        "supporting_references": [
+          "Xiaolong Zhang et al. (2018) OX40 Costimulation Inhibits Foxp3 Expression and Treg Induction via BATF3-Dependent and Independent Mechanisms. doi:10.1016/j.celrep.2018.06.052"
+        ],
+        "semantic_plausibility": {
+          "verdict": "PASS",
+          "score": 0.96,
+          "requirements": [],
+          "scenario_affordances": [
+            "graph",
+            "image",
+            "intervention",
+            "molecular",
+            "omics",
+            "sequence",
+            "spatial_context",
+            "spatial_coordinates"
+          ],
+          "bridge_terms": [
+            "multi-omics",
+            "benchmark dataset"
+          ],
+          "score_breakdown": [
+            {
+              "factor": "base_prior",
+              "delta": 0.45,
+              "reason": "default prior before evidence checks"
+            },
+            {
+              "factor": "papergraph_cooccurrence",
+              "delta": 0.35,
+              "reason": "method and scenario co-occur in PaperGraph"
+            },
+            {
+              "factor": "bridge_terms",
+              "delta": 0.16,
+              "reason": "2 bridge concept(s) detected"
+            }
+          ],
+          "reason": "method and scenario already co-occur in at least one PaperGraph record; bridge concepts detected: multi-omics, benchmark dataset"
+        }
+      },
+      {
+        "topic": "the mtor signaling pathway + induced regulatory T cell (iTregs) differentiation and function benchmark coverage",
+        "method": "the mtor signaling pathway",
+        "scenario": "induced regulatory T cell (iTregs) differentiation and function",
+        "importance_score": 7,
+        "current_evidence_level": "medium",
+        "missing_benchmarks": [
+          "Foxp3 expression and Treg induction",
+          "IL-2 signaling",
+          "Treg activation and expansion, reduction in disease severity",
+          "Treg frequency and function, effector T cell response, tissue damage",
+          "a cia mouse model"
+        ],
+        "why_important": "The method-scenario pair has evidence, but benchmark coverage is sparse, so robustness and generalization remain uncertain.",
+        "supporting_references": [
+          "Yanzhuo Liu et al. (2023) Mettl14 sustains FOXP3 expression to promote the differentiation and functions of induced-regulatory T cells via the mTOR signaling pathway. doi:10.1016/j.imlet.2023.04.008"
+        ],
+        "semantic_plausibility": {
+          "verdict": "PASS",
+          "score": 0.96,
+          "requirements": [],
+          "scenario_affordances": [
+            "graph",
+            "image",
+            "intervention",
+            "molecular",
+            "omics",
+            "sequence",
+            "spatial_context",
+            "spatial_coordinates"
+          ],
+          "bridge_terms": [
+            "multi-omics",
+            "benchmark dataset"
+          ],
+          "score_breakdown": [
+            {
+              "factor": "base_prior",
+              "delta": 0.45,
+              "reason": "default prior before evidence checks"
+            },
+            {
+              "factor": "papergraph_cooccurrence",
+              "delta": 0.35,
+              "reason": "method and scenario co-occur in PaperGraph"
+            },
+            {
+              "factor": "bridge_terms",
+              "delta": 0.16,
+              "reason": "2 bridge concept(s) detected"
+            }
+          ],
+          "reason": "method and scenario already co-occur in at least one PaperGraph record; bridge concepts detected: multi-omics, benchmark dataset"
+        }
+      },
+      {
+        "topic": "unknown method + IL-2 signaling between helper and regulatory T lymphocytes benchmark coverage",
+        "method": "unknown method",
+        "scenario": "IL-2 signaling between helper and regulatory T lymphocytes",
+        "importance_score": 7,
+        "current_evidence_level": "medium",
+        "missing_benchmarks": [
+          "Foxp3 expression and Treg induction",
+          "IL-2 signaling",
+          "Treg activation and expansion, reduction in disease severity",
+          "Treg frequency and function, effector T cell response, tissue damage",
+          "a cia mouse model"
+        ],
+        "why_important": "The method-scenario pair has evidence, but benchmark coverage is sparse, so robustness and generalization remain uncertain.",
+        "supporting_references": [
+          "Dorothea Busse et al. (2010) Competing feedback loops shape IL-2 signaling between helper and regulatory T lymphocytes in cellular microenvironments doi:10.1073/pnas.0812851107"
+        ],
+        "semantic_plausibility": {
+          "verdict": "PASS",
+          "score": 0.96,
+          "requirements": [],
+          "scenario_affordances": [
+            "graph",
+            "image",
+            "intervention",
+            "molecular",
+            "omics",
+            "sequence",
+            "spatial_context",
+            "spatial_coordinates"
+          ],
+          "bridge_terms": [
+            "multi-omics",
+            "benchmark dataset"
+          ],
+          "score_breakdown": [
+            {
+              "factor": "base_prior",
+              "delta": 0.45,
+              "reason": "default prior before evidence checks"
+            },
+            {
+              "factor": "papergraph_cooccurrence",
+              "delta": 0.35,
+              "reason": "method and scenario co-occur in PaperGraph"
+            },
+            {
+              "factor": "bridge_terms",
+              "delta": 0.16,
+              "reason": "2 bridge concept(s) detected"
+            }
+          ],
+          "reason": "method and scenario already co-occur in at least one PaperGraph record; bridge concepts detected: multi-omics, benchmark dataset"
+        }
+      },
+      {
+        "topic": "Treg cell-restricted deletion of Zfp36 family members + Foxp3 expression and Treg induction in naive CD4+ T cells",
+        "method": "Treg cell-restricted deletion of Zfp36 family members",
+        "scenario": "Foxp3 expression and Treg induction in naive CD4+ T cells",
+        "importance_score": 7,
+        "current_evidence_level": "none",
+        "missing_benchmarks": [
+          "Foxp3 expression and Treg induction",
+          "IL-2 signaling",
+          "Treg activation and expansion, reduction in disease severity",
+          "Treg frequency and function, effector T cell response, tissue damage",
+          "a cia mouse model"
+        ],
+        "why_important": "Both the method and scenario are visible in the field map, but this intersection has no recorded validation.",
+        "supporting_references": [
+          "Xiaolong Zhang et al. (2018) OX40 Costimulation Inhibits Foxp3 Expression and Treg Induction via BATF3-Dependent and Independent Mechanisms. doi:10.1016/j.celrep.2018.06.052",
+          "Beatriz Sáenz-Narciso et al. (2025) ZFP36-family RNA-binding proteins in regulatory T cells reinforce immune homeostasis doi:10.1038/s41467-025-58993-y"
+        ],
+        "semantic_plausibility": {
+          "verdict": "PASS",
+          "score": 0.61,
+          "requirements": [],
+          "scenario_affordances": [
+            "graph",
+            "image",
+            "intervention",
+            "molecular",
+            "omics",
+            "sequence",
+            "spatial_context",
+            "spatial_coordinates"
+          ],
+          "bridge_terms": [
+            "multi-omics",
+            "benchmark dataset"
+          ],
+          "score_breakdown": [
+            {
+              "factor": "base_prior",
+              "delta": 0.45,
+              "reason": "default prior before evidence checks"
+            },
+            {
+              "factor": "bridge_terms",
+              "delta": 0.16,
+              "reason": "2 bridge concept(s) detected"
+            }
+          ],
+          "reason": "bridge concepts detected: multi-omics, benchmark dataset"
+        }
+      },
+      {
+        "topic": "Treg cell-restricted deletion of Zfp36 family members + Foxp3+ regulatory T cells (Tregs)",
+        "method": "Treg cell-restricted deletion of Zfp36 family members",
+        "scenario": "Foxp3+ regulatory T cells (Tregs)",
+        "importance_score": 7,
+        "current_evidence_level": "none",
+        "missing_benchmarks": [
+          "Foxp3 expression and Treg induction",
+          "IL-2 signaling",
+          "Treg activation and expansion, reduction in disease severity",
+          "Treg frequency and function, effector T cell response, tissue damage",
+          "a cia mouse model"
+        ],
+        "why_important": "Both the method and scenario are visible in the field map, but this intersection has no recorded validation.",
+        "supporting_references": [
+          "M. Fan et al. (2018) Differential Roles of IL-2 Signaling in Developing versus Mature Tregs doi:10.1016/j.celrep.2018.10.002",
+          "Beatriz Sáenz-Narciso et al. (2025) ZFP36-family RNA-binding proteins in regulatory T cells reinforce immune homeostasis doi:10.1038/s41467-025-58993-y"
+        ],
+        "semantic_plausibility": {
+          "verdict": "PASS",
+          "score": 0.61,
+          "requirements": [],
+          "scenario_affordances": [
+            "graph",
+            "image",
+            "intervention",
+            "molecular",
+            "omics",
+            "sequence",
+            "spatial_context",
+            "spatial_coordinates"
+          ],
+          "bridge_terms": [
+            "multi-omics",
+            "benchmark dataset"
+          ],
+          "score_breakdown": [
+            {
+              "factor": "base_prior",
+              "delta": 0.45,
+              "reason": "default prior before evidence checks"
+            },
+            {
+              "factor": "bridge_terms",
+              "delta": 0.16,
+              "reason": "2 bridge concept(s) detected"
+            }
+          ],
+          "reason": "bridge concepts detected: multi-omics, benchmark dataset"
+        }
+      },
+      {
+        "topic": "Treg cell-restricted deletion of Zfp36 family members + IL-2 signaling between helper and regulatory T lymphocytes",
+        "method": "Treg cell-restricted deletion of Zfp36 family members",
+        "scenario": "IL-2 signaling between helper and regulatory T lymphocytes",
+        "importance_score": 7,
+        "current_evidence_level": "none",
+        "missing_benchmarks": [
+          "Foxp3 expression and Treg induction",
+          "IL-2 signaling",
+          "Treg activation and expansion, reduction in disease severity",
+          "Treg frequency and function, effector T cell response, tissue damage",
+          "a cia mouse model"
+        ],
+        "why_important": "Both the method and scenario are visible in the field map, but this intersection has no recorded validation.",
+        "supporting_references": [
+          "Dorothea Busse et al. (2010) Competing feedback loops shape IL-2 signaling between helper and regulatory T lymphocytes in cellular microenvironments doi:10.1073/pnas.0812851107",
+          "Beatriz Sáenz-Narciso et al. (2025) ZFP36-family RNA-binding proteins in regulatory T cells reinforce immune homeostasis doi:10.1038/s41467-025-58993-y"
+        ],
+        "semantic_plausibility": {
+          "verdict": "PASS",
+          "score": 0.61,
+          "requirements": [],
+          "scenario_affordances": [
+            "graph",
+            "image",
+            "intervention",
+            "molecular",
+            "omics",
+            "sequence",
+            "spatial_context",
+            "spatial_coordinates"
+          ],
+          "bridge_terms": [
+            "multi-omics",
+            "benchmark dataset"
+          ],
+          "score_breakdown": [
+            {
+              "factor": "base_prior",
+              "delta": 0.45,
+              "reason": "default prior before evidence checks"
+            },
+            {
+              "factor": "bridge_terms",
+              "delta": 0.16,
+              "reason": "2 bridge concept(s) detected"
+            }
+          ],
+          "reason": "bridge concepts detected: multi-omics, benchmark dataset"
+        }
+      },
+      {
+        "topic": "Treg cell-restricted deletion of Zfp36 family members + IL-2 signaling in T cells",
+        "method": "Treg cell-restricted deletion of Zfp36 family members",
+        "scenario": "IL-2 signaling in T cells",
+        "importance_score": 7,
+        "current_evidence_level": "none",
+        "missing_benchmarks": [
+          "Foxp3 expression and Treg induction",
+          "IL-2 signaling",
+          "Treg activation and expansion, reduction in disease severity",
+          "Treg frequency and function, effector T cell response, tissue damage",
+          "a cia mouse model"
+        ],
+        "why_important": "Both the method and scenario are visible in the field map, but this intersection has no recorded validation.",
+        "supporting_references": [
+          "Suyasha Roy et al. (2025) BLIMP1 negatively regulates IL-2 signaling in T cells doi:10.1126/sciadv.adx8105",
+          "Beatriz Sáenz-Narciso et al. (2025) ZFP36-family RNA-binding proteins in regulatory T cells reinforce immune homeostasis doi:10.1038/s41467-025-58993-y"
+        ],
+        "semantic_plausibility": {
+          "verdict": "PASS",
+          "score": 0.61,
+          "requirements": [],
+          "scenario_affordances": [
+            "graph",
+            "image",
+            "intervention",
+            "molecular",
+            "omics",
+            "sequence",
+            "spatial_context",
+            "spatial_coordinates"
+          ],
+          "bridge_terms": [
+            "multi-omics",
+            "benchmark dataset"
+          ],
+          "score_breakdown": [
+            {
+              "factor": "base_prior",
+              "delta": 0.45,
+              "reason": "default prior before evidence checks"
+            },
+            {
+              "factor": "bridge_terms",
+              "delta": 0.16,
+              "reason": "2 bridge concept(s) detected"
+            }
+          ],
+          "reason": "bridge concepts detected: multi-omics, benchmark dataset"
+        }
+      },
+      {
+        "topic": "Treg cell-restricted deletion of Zfp36 family members + immune homeostasis and prevention of excessive immune responses",
+        "method": "Treg cell-restricted deletion of Zfp36 family members",
+        "scenario": "immune homeostasis and prevention of excessive immune responses",
+        "importance_score": 7,
+        "current_evidence_level": "none",
+        "missing_benchmarks": [
+          "Foxp3 expression and Treg induction",
+          "IL-2 signaling",
+          "Treg activation and expansion, reduction in disease severity",
+          "Treg frequency and function, effector T cell response, tissue damage",
+          "a cia mouse model"
+        ],
+        "why_important": "Both the method and scenario are visible in the field map, but this intersection has no recorded validation.",
+        "supporting_references": [
+          "Yuan Zong et al. (2024) Regulation of Treg cells by cytokine signaling and co-stimulatory molecules doi:10.3389/fimmu.2024.1387975",
+          "Beatriz Sáenz-Narciso et al. (2025) ZFP36-family RNA-binding proteins in regulatory T cells reinforce immune homeostasis doi:10.1038/s41467-025-58993-y"
+        ],
+        "semantic_plausibility": {
+          "verdict": "PASS",
+          "score": 0.61,
+          "requirements": [],
+          "scenario_affordances": [
+            "graph",
+            "image",
+            "intervention",
+            "molecular",
+            "omics",
+            "sequence",
+            "spatial_context",
+            "spatial_coordinates"
+          ],
+          "bridge_terms": [
+            "multi-omics",
+            "benchmark dataset"
+          ],
+          "score_breakdown": [
+            {
+              "factor": "base_prior",
+              "delta": 0.45,
+              "reason": "default prior before evidence checks"
+            },
+            {
+              "factor": "bridge_terms",
+              "delta": 0.16,
+              "reason": "2 bridge concept(s) detected"
+            }
+          ],
+          "reason": "bridge concepts detected: multi-omics, benchmark dataset"
+        }
+      },
+      {
+        "topic": "Treg cell-restricted deletion of Zfp36 family members + immune homeostasis and self-tolerance",
+        "method": "Treg cell-restricted deletion of Zfp36 family members",
+        "scenario": "immune homeostasis and self-tolerance",
+        "importance_score": 7,
+        "current_evidence_level": "none",
+        "missing_benchmarks": [
+          "Foxp3 expression and Treg induction",
+          "IL-2 signaling",
+          "Treg activation and expansion, reduction in disease severity",
+          "Treg frequency and function, effector T cell response, tissue damage",
+          "a cia mouse model"
+        ],
+        "why_important": "Both the method and scenario are visible in the field map, but this intersection has no recorded validation.",
+        "supporting_references": [
+          "Beatriz Sáenz-Narciso et al. (2025) ZFP36-family RNA-binding proteins in regulatory T cells reinforce immune homeostasis doi:10.1038/s41467-025-58993-y",
+          "Lingling Wang et al. (2025) Regulatory T cells in homeostasis and disease: molecular mechanisms and therapeutic potential doi:10.1038/s41392-025-02326-4"
+        ],
+        "semantic_plausibility": {
+          "verdict": "PASS",
+          "score": 0.61,
+          "requirements": [],
+          "scenario_affordances": [
+            "graph",
+            "image",
+            "intervention",
+            "molecular",
+            "omics",
+            "sequence",
+            "spatial_context",
+            "spatial_coordinates"
+          ],
+          "bridge_terms": [
+            "multi-omics",
+            "benchmark dataset"
+          ],
+          "score_breakdown": [
+            {
+              "factor": "base_prior",
+              "delta": 0.45,
+              "reason": "default prior before evidence checks"
+            },
+            {
+              "factor": "bridge_terms",
+              "delta": 0.16,
+              "reason": "2 bridge concept(s) detected"
+            }
+          ],
+          "reason": "bridge concepts detected: multi-omics, benchmark dataset"
+        }
+      },
+      {
+        "topic": "Treg cell-restricted deletion of Zfp36 family members + induced regulatory T cell (iTregs) differentiation and function",
+        "method": "Treg cell-restricted deletion of Zfp36 family members",
+        "scenario": "induced regulatory T cell (iTregs) differentiation and function",
+        "importance_score": 7,
+        "current_evidence_level": "none",
+        "missing_benchmarks": [
+          "Foxp3 expression and Treg induction",
+          "IL-2 signaling",
+          "Treg activation and expansion, reduction in disease severity",
+          "Treg frequency and function, effector T cell response, tissue damage",
+          "a cia mouse model"
+        ],
+        "why_important": "Both the method and scenario are visible in the field map, but this intersection has no recorded validation.",
+        "supporting_references": [
+          "Yanzhuo Liu et al. (2023) Mettl14 sustains FOXP3 expression to promote the differentiation and functions of induced-regulatory T cells via the mTOR signaling pathway. doi:10.1016/j.imlet.2023.04.008",
+          "Beatriz Sáenz-Narciso et al. (2025) ZFP36-family RNA-binding proteins in regulatory T cells reinforce immune homeostasis doi:10.1038/s41467-025-58993-y"
+        ],
+        "semantic_plausibility": {
+          "verdict": "PASS",
+          "score": 0.61,
+          "requirements": [],
+          "scenario_affordances": [
+            "graph",
+            "image",
+            "intervention",
+            "molecular",
+            "omics",
+            "sequence",
+            "spatial_context",
+            "spatial_coordinates"
+          ],
+          "bridge_terms": [
+            "multi-omics",
+            "benchmark dataset"
+          ],
+          "score_breakdown": [
+            {
+              "factor": "base_prior",
+              "delta": 0.45,
+              "reason": "default prior before evidence checks"
+            },
+            {
+              "factor": "bridge_terms",
+              "delta": 0.16,
+              "reason": "2 bridge concept(s) detected"
+            }
+          ],
+          "reason": "bridge concepts detected: multi-omics, benchmark dataset"
+        }
+      },
+      {
+        "topic": "Treg cell-restricted deletion of Zfp36 family members + regulatory T cell homeostasis and function",
+        "method": "Treg cell-restricted deletion of Zfp36 family members",
+        "scenario": "regulatory T cell homeostasis and function",
+        "importance_score": 7,
+        "current_evidence_level": "none",
+        "missing_benchmarks": [
+          "Foxp3 expression and Treg induction",
+          "IL-2 signaling",
+          "Treg activation and expansion, reduction in disease severity",
+          "Treg frequency and function, effector T cell response, tissue damage",
+          "a cia mouse model"
+        ],
+        "why_important": "Both the method and scenario are visible in the field map, but this intersection has no recorded validation.",
+        "supporting_references": [
+          "Beatriz Sáenz-Narciso et al. (2025) ZFP36-family RNA-binding proteins in regulatory T cells reinforce immune homeostasis doi:10.1038/s41467-025-58993-y",
+          "T. Katsuyama et al. (2021) Splicing factor SRSF1 is indispensable for regulatory T cell homeostasis and function doi:10.1016/j.celrep.2021.109339"
+        ],
+        "semantic_plausibility": {
+          "verdict": "PASS",
+          "score": 0.61,
+          "requirements": [],
+          "scenario_affordances": [
+            "graph",
+            "image",
+            "intervention",
+            "molecular",
+            "omics",
+            "sequence",
+            "spatial_context",
+            "spatial_coordinates"
+          ],
+          "bridge_terms": [
+            "multi-omics",
+            "benchmark dataset"
+          ],
+          "score_breakdown": [
+            {
+              "factor": "base_prior",
+              "delta": 0.45,
+              "reason": "default prior before evidence checks"
+            },
+            {
+              "factor": "bridge_terms",
+              "delta": 0.16,
+              "reason": "2 bridge concept(s) detected"
+            }
+          ],
+          "reason": "bridge concepts detected: multi-omics, benchmark dataset"
+        }
+      },
+      {
+        "topic": "Treg cell-restricted deletion of Zfp36 family members + rheumatoid arthritis, Treg cell differentiation",
+        "method": "Treg cell-restricted deletion of Zfp36 family members",
+        "scenario": "rheumatoid arthritis, Treg cell differentiation",
+        "importance_score": 7,
+        "current_evidence_level": "none",
+        "missing_benchmarks": [
+          "Foxp3 expression and Treg induction",
+          "IL-2 signaling",
+          "Treg activation and expansion, reduction in disease severity",
+          "Treg frequency and function, effector T cell response, tissue damage",
+          "a cia mouse model"
+        ],
+        "why_important": "Both the method and scenario are visible in the field map, but this intersection has no recorded validation.",
+        "supporting_references": [
+          "Qiaoyu Zhang et al. (2026) Catalpol enhances mTORC1/HIF-1α/PDHK1-mediated oxidative metabolism that leads to promote the differentiation of Treg cells in RA. doi:10.1016/j.molimm.2025.11.016",
+          "Beatriz Sáenz-Narciso et al. (2025) ZFP36-family RNA-binding proteins in regulatory T cells reinforce immune homeostasis doi:10.1038/s41467-025-58993-y"
+        ],
+        "semantic_plausibility": {
+          "verdict": "PASS",
+          "score": 0.61,
+          "requirements": [],
+          "scenario_affordances": [
+            "graph",
+            "image",
+            "intervention",
+            "molecular",
+            "omics",
+            "sequence",
+            "spatial_context",
+            "spatial_coordinates"
+          ],
+          "bridge_terms": [
+            "multi-omics",
+            "benchmark dataset"
+          ],
+          "score_breakdown": [
+            {
+              "factor": "base_prior",
+              "delta": 0.45,
+              "reason": "default prior before evidence checks"
+            },
+            {
+              "factor": "bridge_terms",
+              "delta": 0.16,
+              "reason": "2 bridge concept(s) detected"
+            }
+          ],
+          "reason": "bridge concepts detected: multi-omics, benchmark dataset"
+        }
+      }
+    ],
+    "rejected_density_holes": []
+  },
+  "reasoning_gaps": [
+    {
+      "gap_id": "gap_1783805182654109700",
+      "gap_type": "contradiction",
+      "description": "Potential conclusion conflict: autoimmune diseases contains opposing claims: [\"patients can improve disease outcome11,12. vs Challenges and caveats remain when implementing strategies for Treg generation/expansion..",
+      "supporting_references": [
+        "Seymour de Picciotto et al. (2022) Selective activation and expansion of regulatory T cells using lipid encapsulated mRNA encoding a long-acting IL-2 mutein doi:10.1038/s41467-022-31130-9",
+        "M. Longhi et al. (2021) Regulatory T cells in autoimmune hepatitis: an updated overview doi:10.1016/j.jaut.2021.102619"
+      ],
+      "novelty_score": 5,
+      "application_value": "medium",
+      "feasibility": "high",
+      "suggested_research_path": "Extract the exact claim sentences, verify citation contexts/full text, then design a discriminating experiment, simulation, benchmark, or theoretical derivation that can separate the competing explanations.",
+      "value_argument": "Contradiction gaps are high-value because resolving them can update mechanism understanding, not merely fill a sparse method-scenario cell.",
+      "status": "candidate",
+      "createdAt": 1783805182.6541126,
+      "hypothesis_ingredients": {
+        "methods": [],
+        "scenarios": [],
+        "benchmarks": [],
+        "numerical_bounds": [],
+        "operating_conditions": [],
+        "measurable_metrics": []
+      },
+      "counterfactual_leaves": [],
+      "assessment_dimensions": [
+        "academic novelty",
+        "application value",
+        "implementation feasibility"
+      ],
+      "overlap_risk": "medium",
+      "strongest_overlap": 0.5455,
+      "literature_coverage_factor": 0.9045,
+      "assessment_reason": "refs=2, gap_type=contradiction, strongest_local_overlap=0.545, coverage=0.904, feasibility=high, application_value=medium, semantic_plausibility=not_run",
+      "requires_human_review": false,
+      "reasoning_signal": {
+        "type": "claim_contradiction",
+        "shared_context": "autoimmune diseases",
+        "left_polarity": "positive",
+        "right_polarity": "negative"
+      },
+      "dedupe_signature": "autoimmune can claims conclusion conflict contains diseases opposing patients potential",
+      "deduped_from": 2
+    }
+  ],
+  "cross_disciplinary_unconnected_pairs": [
+    {
+      "field_a": "biomedical",
+      "concept_a": "genome-wide CRISPR-knockout screening",
+      "field_b": "ecology",
+      "concept_b": "literature review",
+      "potential_synergy": "Testing whether genome-wide CRISPR-knockout screening can constrain, evaluate, or operationalize literature review for Immunology / Systems Biology / T Cell Biology / Cytokine Signaling / Regulatory T Cells (Tregs) / Immune Checkpoints / Inflammation / Autoimmunity / Tumor Immunology / Single-cell Multi-omics / Functional Assays / Mathematical Modeling / Translational Medicine may reveal a non-obvious transfer path or boundary condition.",
+      "supporting_references": [
+        "Suyasha Roy et al. (2025) BLIMP1 negatively regulates IL-2 signaling in T cells doi:10.1126/sciadv.adx8105",
+        "Yuan Zong et al. (2024) Regulation of Treg cells by cytokine signaling and co-stimulatory molecules doi:10.3389/fimmu.2024.1387975"
+      ]
+    },
+    {
+      "field_a": "biomedical",
+      "concept_a": "genome-wide CRISPR-knockout screening",
+      "field_b": "ecology",
+      "concept_b": "immunosuppressive properties",
+      "potential_synergy": "Testing whether genome-wide CRISPR-knockout screening can constrain, evaluate, or operationalize immunosuppressive properties for Immunology / Systems Biology / T Cell Biology / Cytokine Signaling / Regulatory T Cells (Tregs) / Immune Checkpoints / Inflammation / Autoimmunity / Tumor Immunology / Single-cell Multi-omics / Functional Assays / Mathematical Modeling / Translational Medicine may reveal a non-obvious transfer path or boundary condition.",
+      "supporting_references": [
+        "Suyasha Roy et al. (2025) BLIMP1 negatively regulates IL-2 signaling in T cells doi:10.1126/sciadv.adx8105",
+        "Lingling Wang et al. (2025) Regulatory T cells in homeostasis and disease: molecular mechanisms and therapeutic potential doi:10.1038/s41392-025-02326-4"
+      ]
+    },
+    {
+      "field_a": "biomedical",
+      "concept_a": "agent workflow",
+      "field_b": "ecology",
+      "concept_b": "literature review",
+      "potential_synergy": "Testing whether agent workflow can constrain, evaluate, or operationalize literature review for Immunology / Systems Biology / T Cell Biology / Cytokine Signaling / Regulatory T Cells (Tregs) / Immune Checkpoints / Inflammation / Autoimmunity / Tumor Immunology / Single-cell Multi-omics / Functional Assays / Mathematical Modeling / Translational Medicine may reveal a non-obvious transfer path or boundary condition.",
+      "supporting_references": [
+        "I. Solomon et al. (2020) CD25-Treg-depleting antibodies preserving IL-2 signaling on effector T cells enhance effector activation and antitumor immunity doi:10.1038/s43018-020-00133-0",
+        "Yuan Zong et al. (2024) Regulation of Treg cells by cytokine signaling and co-stimulatory molecules doi:10.3389/fimmu.2024.1387975"
+      ]
+    },
+    {
+      "field_a": "biomedical",
+      "concept_a": "agent workflow",
+      "field_b": "ecology",
+      "concept_b": "regulates the stability",
+      "potential_synergy": "Testing whether agent workflow can constrain, evaluate, or operationalize regulates the stability for Immunology / Systems Biology / T Cell Biology / Cytokine Signaling / Regulatory T Cells (Tregs) / Immune Checkpoints / Inflammation / Autoimmunity / Tumor Immunology / Single-cell Multi-omics / Functional Assays / Mathematical Modeling / Translational Medicine may reveal a non-obvious transfer path or boundary condition.",
+      "supporting_references": [
+        "I. Solomon et al. (2020) CD25-Treg-depleting antibodies preserving IL-2 signaling on effector T cells enhance effector activation and antitumor immunity doi:10.1038/s43018-020-00133-0",
+        "Yanzhuo Liu et al. (2023) Mettl14 sustains FOXP3 expression to promote the differentiation and functions of induced-regulatory T cells via the mTOR signaling pathway. doi:10.1016/j.imlet.2023.04.008"
+      ]
+    },
+    {
+      "field_a": "biomedical",
+      "concept_a": "agent workflow",
+      "field_b": "ecology",
+      "concept_b": "immunosuppressive properties",
+      "potential_synergy": "Testing whether agent workflow can constrain, evaluate, or operationalize immunosuppressive properties for Immunology / Systems Biology / T Cell Biology / Cytokine Signaling / Regulatory T Cells (Tregs) / Immune Checkpoints / Inflammation / Autoimmunity / Tumor Immunology / Single-cell Multi-omics / Functional Assays / Mathematical Modeling / Translational Medicine may reveal a non-obvious transfer path or boundary condition.",
+      "supporting_references": [
+        "I. Solomon et al. (2020) CD25-Treg-depleting antibodies preserving IL-2 signaling on effector T cells enhance effector activation and antitumor immunity doi:10.1038/s43018-020-00133-0",
+        "Lingling Wang et al. (2025) Regulatory T cells in homeostasis and disease: molecular mechanisms and therapeutic potential doi:10.1038/s41392-025-02326-4"
+      ]
+    },
+    {
+      "field_a": "biomedical",
+      "concept_a": "antitumor immunity in human cancers",
+      "field_b": "ecology",
+      "concept_b": "immunosuppressive properties",
+      "potential_synergy": "Testing whether antitumor immunity in human cancers can constrain, evaluate, or operationalize immunosuppressive properties for Immunology / Systems Biology / T Cell Biology / Cytokine Signaling / Regulatory T Cells (Tregs) / Immune Checkpoints / Inflammation / Autoimmunity / Tumor Immunology / Single-cell Multi-omics / Functional Assays / Mathematical Modeling / Translational Medicine may reveal a non-obvious transfer path or boundary condition.",
+      "supporting_references": [
+        "I. Solomon et al. (2020) CD25-Treg-depleting antibodies preserving IL-2 signaling on effector T cells enhance effector activation and antitumor immunity doi:10.1038/s43018-020-00133-0",
+        "Lingling Wang et al. (2025) Regulatory T cells in homeostasis and disease: molecular mechanisms and therapeutic potential doi:10.1038/s41392-025-02326-4"
+      ]
+    },
+    {
+      "field_a": "biomedical",
+      "concept_a": "genome-wide CRISPR-knockout screening",
+      "field_b": "general",
+      "concept_b": "inducible deletion of CD25 in Tregs",
+      "potential_synergy": "Testing whether genome-wide CRISPR-knockout screening can constrain, evaluate, or operationalize inducible deletion of CD25 in Tregs for Immunology / Systems Biology / T Cell Biology / Cytokine Signaling / Regulatory T Cells (Tregs) / Immune Checkpoints / Inflammation / Autoimmunity / Tumor Immunology / Single-cell Multi-omics / Functional Assays / Mathematical Modeling / Translational Medicine may reveal a non-obvious transfer path or boundary condition.",
+      "supporting_references": [
+        "Suyasha Roy et al. (2025) BLIMP1 negatively regulates IL-2 signaling in T cells doi:10.1126/sciadv.adx8105",
+        "M. Fan et al. (2018) Differential Roles of IL-2 Signaling in Developing versus Mature Tregs doi:10.1016/j.celrep.2018.10.002"
+      ]
+    },
+    {
+      "field_a": "biomedical",
+      "concept_a": "genome-wide CRISPR-knockout screening",
+      "field_b": "general",
+      "concept_b": "lineage stability, survival, suppressor function, glycolytic metabolism",
+      "potential_synergy": "Testing whether genome-wide CRISPR-knockout screening can constrain, evaluate, or operationalize lineage stability, survival, suppressor function, glycolytic metabolism for Immunology / Systems Biology / T Cell Biology / Cytokine Signaling / Regulatory T Cells (Tregs) / Immune Checkpoints / Inflammation / Autoimmunity / Tumor Immunology / Single-cell Multi-omics / Functional Assays / Mathematical Modeling / Translational Medicine may reveal a non-obvious transfer path or boundary condition.",
+      "supporting_references": [
+        "Suyasha Roy et al. (2025) BLIMP1 negatively regulates IL-2 signaling in T cells doi:10.1126/sciadv.adx8105",
+        "M. Fan et al. (2018) Differential Roles of IL-2 Signaling in Developing versus Mature Tregs doi:10.1016/j.celrep.2018.10.002"
+      ]
+    },
+    {
+      "field_a": "biomedical",
+      "concept_a": "genome-wide CRISPR-knockout screening",
+      "field_b": "general",
+      "concept_b": "molecular pathway analysis",
+      "potential_synergy": "Testing whether genome-wide CRISPR-knockout screening can constrain, evaluate, or operationalize molecular pathway analysis for Immunology / Systems Biology / T Cell Biology / Cytokine Signaling / Regulatory T Cells (Tregs) / Immune Checkpoints / Inflammation / Autoimmunity / Tumor Immunology / Single-cell Multi-omics / Functional Assays / Mathematical Modeling / Translational Medicine may reveal a non-obvious transfer path or boundary condition.",
+      "supporting_references": [
+        "Suyasha Roy et al. (2025) BLIMP1 negatively regulates IL-2 signaling in T cells doi:10.1126/sciadv.adx8105",
+        "Xiaolong Zhang et al. (2018) OX40 Costimulation Inhibits Foxp3 Expression and Treg Induction via BATF3-Dependent and Independent Mechanisms. doi:10.1016/j.celrep.2018.06.052"
+      ]
+    },
+    {
+      "field_a": "biomedical",
+      "concept_a": "agent workflow",
+      "field_b": "general",
+      "concept_b": "molecular pathway analysis",
+      "potential_synergy": "Testing whether agent workflow can constrain, evaluate, or operationalize molecular pathway analysis for Immunology / Systems Biology / T Cell Biology / Cytokine Signaling / Regulatory T Cells (Tregs) / Immune Checkpoints / Inflammation / Autoimmunity / Tumor Immunology / Single-cell Multi-omics / Functional Assays / Mathematical Modeling / Translational Medicine may reveal a non-obvious transfer path or boundary condition.",
+      "supporting_references": [
+        "I. Solomon et al. (2020) CD25-Treg-depleting antibodies preserving IL-2 signaling on effector T cells enhance effector activation and antitumor immunity doi:10.1038/s43018-020-00133-0",
+        "Xiaolong Zhang et al. (2018) OX40 Costimulation Inhibits Foxp3 Expression and Treg Induction via BATF3-Dependent and Independent Mechanisms. doi:10.1016/j.celrep.2018.06.052"
+      ]
+    }
+  ],
+  "suspended_problems": [
+    {
+      "problem": "Response to: ‘Circulating regulatory T cells were absolutely decreased in dermatomyositis/polymyositis patients and restored by low-dose IL-2’ by Zhang et al In this issue, Zhang et al report that a short course of low-dose IL-2 improved patients with polymyos...[truncated]",
+      "years_unresolved": 7,
+      "citation_count": 0,
+      "evidence_level": "unknown",
+      "barrier_to_progress": "unspecified conceptual or technical barrier",
+      "supporting_references": [
+        "D. Klatzmann (2019) Response to: ‘Circulating regulatory T cells were absolutely decreased in dermatomyositis/polymyositis patients and restored by low-dose IL-2’ by Zhang et al doi:10.1136/annrheumdis-2019-216267"
+      ]
+    },
+    {
+      "problem": "Response to: ‘Circulating regulatory T cells were absolutely decreased in dermatomyositis/polymyositis patients and restored by low-dose IL-2’ by Zhang et al No explicit limitation extracted.",
+      "years_unresolved": 7,
+      "citation_count": 0,
+      "evidence_level": "unknown",
+      "barrier_to_progress": "unspecified conceptual or technical barrier",
+      "supporting_references": [
+        "D. Klatzmann (2019) Response to: ‘Circulating regulatory T cells were absolutely decreased in dermatomyositis/polymyositis patients and restored by low-dose IL-2’ by Zhang et al doi:10.1136/annrheumdis-2019-216267"
+      ]
+    },
+    {
+      "problem": "Regulatory T cells in autoimmune hepatitis: an updated overview Challenges and caveats remain when implementing strategies for Treg generation/expansion.",
+      "years_unresolved": 5,
+      "citation_count": 0,
+      "evidence_level": "unknown",
+      "barrier_to_progress": "unspecified conceptual or technical barrier",
+      "supporting_references": [
+        "M. Longhi et al. (2021) Regulatory T cells in autoimmune hepatitis: an updated overview doi:10.1016/j.jaut.2021.102619"
+      ]
+    },
+    {
+      "problem": "Regulatory T cells in autoimmune hepatitis: an updated overview Regulatory T-cells (Tregs) are key players in the maintenance of immune homeostasis by preventing immune responses to self-antigens. Defects in Treg frequency and/or function result in overwhelmin...[truncated]",
+      "years_unresolved": 5,
+      "citation_count": 0,
+      "evidence_level": "unknown",
+      "barrier_to_progress": "mechanistic uncertainty",
+      "supporting_references": [
+        "M. Longhi et al. (2021) Regulatory T cells in autoimmune hepatitis: an updated overview doi:10.1016/j.jaut.2021.102619"
+      ]
+    },
+    {
+      "problem": "BLIMP1 negatively regulates IL-2 signaling in T cells BLIMP1 inhibits IL-2 production by T cells; however, its role in IL-2 signaling remains unknown.",
+      "years_unresolved": 1,
+      "citation_count": 0,
+      "evidence_level": "unknown",
+      "barrier_to_progress": "mechanistic uncertainty",
+      "supporting_references": [
+        "Suyasha Roy et al. (2025) BLIMP1 negatively regulates IL-2 signaling in T cells doi:10.1126/sciadv.adx8105"
+      ]
+    },
+    {
+      "problem": "BLIMP1 negatively regulates IL-2 signaling in T cells Interleukin-2 (IL-2) regulates immune homeostasis by fine-tuning the balance between effector and regulatory T (Treg) cells. To identify regulators of IL-2 signaling, we performed genome-wide CRISPR-knockou...[truncated]",
+      "years_unresolved": 1,
+      "citation_count": 0,
+      "evidence_level": "unknown",
+      "barrier_to_progress": "mechanistic uncertainty",
+      "supporting_references": [
+        "Suyasha Roy et al. (2025) BLIMP1 negatively regulates IL-2 signaling in T cells doi:10.1126/sciadv.adx8105"
+      ]
+    },
+    {
+      "problem": "Regulatory T cells in homeostasis and disease: molecular mechanisms and therapeutic potential Regulatory T cells (Treg cells or Tregs), a subset of CD4⁺ T cells with immunosuppressive properties, are essential for immune homeostasis and self-tolerance. Charact...[truncated]",
+      "years_unresolved": 1,
+      "citation_count": 0,
+      "evidence_level": "unknown",
+      "barrier_to_progress": "mechanistic uncertainty",
+      "supporting_references": [
+        "Lingling Wang et al. (2025) Regulatory T cells in homeostasis and disease: molecular mechanisms and therapeutic potential doi:10.1038/s41392-025-02326-4"
+      ]
+    },
+    {
+      "problem": "Regulatory T cells in homeostasis and disease: molecular mechanisms and therapeutic potential challenges persist, including achieving tissue-specific targeting, ensuring the functional stability of engineered Tregs, and minimizing off-target effects",
+      "years_unresolved": 1,
+      "citation_count": 0,
+      "evidence_level": "unknown",
+      "barrier_to_progress": "mechanistic uncertainty",
+      "supporting_references": [
+        "Lingling Wang et al. (2025) Regulatory T cells in homeostasis and disease: molecular mechanisms and therapeutic potential doi:10.1038/s41392-025-02326-4"
+      ]
+    },
+    {
+      "problem": "Catalpol enhances mTORC1/HIF-1α/PDHK1-mediated oxidative metabolism that leads to promote the differentiation of Treg cells in RA Rheumatoid arthritis (RA) is a chronic autoimmune disease in which regulatory T (Treg) cell dysfunction contributes to its pathoge...[truncated]",
+      "years_unresolved": 0,
+      "citation_count": 0,
+      "evidence_level": "unknown",
+      "barrier_to_progress": "mechanistic uncertainty",
+      "supporting_references": [
+        "Qiaoyu Zhang et al. (2026) Catalpol enhances mTORC1/HIF-1α/PDHK1-mediated oxidative metabolism that leads to promote the differentiation of Treg cells in RA. doi:10.1016/j.molimm.2025.11.016"
+      ]
+    }
+  ],
+  "ranked_gaps": [
+    {
+      "gap_id": "gap_1783805183121054600",
+      "gap_type": "implicit_tabi",
+      "description": "Although individual causal links are supported (CD226 maintains Treg cell stability and metabolism via the mTOR/Myc pathway unde and We further checked the altered signaling pathway in METTL14-deficient iTregs. We), the transitive relationship has not been directly validated.",
+      "supporting_references": [
+        "Jingchang Ma et al. (2023) CD226 maintains regulatory T cell phenotype stability and metabolism by the mTOR/Myc pathway under inflammatory conditions. doi:10.1016/j.celrep.2023.113306",
+        "Yanzhuo Liu et al. (2023) Mettl14 sustains FOXP3 expression to promote the differentiation and functions of induced-regulatory T cells via the mTOR signaling pathway. doi:10.1016/j.imlet.2023.04.008"
+      ],
+      "novelty_score": 5,
+      "application_value": "medium",
+      "feasibility": "medium",
+      "suggested_research_path": "Conduct an end-to-end study that directly tests the transitive causal relationship with intermediate variable monitoring.",
+      "value_argument": "TABI abductive inference from causal_chain_gap evidence pair.",
+      "status": "candidate",
+      "createdAt": 1783805183.1210568,
+      "hypothesis_ingredients": {
+        "methods": [],
+        "scenarios": [],
+        "benchmarks": [],
+        "numerical_bounds": [],
+        "operating_conditions": [],
+        "measurable_metrics": []
+      },
+      "counterfactual_leaves": [],
+      "tabi_chain": {
+        "grounds_a": "CD226 maintains Treg cell stability and metabolism via the mTOR/Myc pathway under inflammatory conditions, and its deficiency leads to impaired Treg cell function and metabolic changes",
+        "grounds_b": "We further checked the altered signaling pathway in METTL14-deficient iTregs. We found that reduced METTL14 leads to activation of the mTOR pathway with increased p-mTOR and p-p70S6K, which are known to modulate the suppressive function of iTregs. In conclusion, our study revealed that Mettl14 plays...[truncated]",
+        "warrant": "Evidence establishes separate causal links that share intermediate terms (shared_terms=pathway,leads,mtor,function). If A→B and B→C are independently supported but A→C has not been directly validated, the transitive causal claim remains a knowledge gap.",
+        "claim": "Although individual causal links are supported (CD226 maintains Treg cell stability and metabolism via the mTOR/Myc pathway unde and We further checked the altered signaling pathway in METTL14-deficient iTregs. We), the transitive relationship has not been directly validated.",
+        "pair_type": "causal_chain_gap",
+        "shared_context": "shared_terms=pathway,leads,mtor,function"
+      },
+      "tabi_warrant": "Evidence establishes separate causal links that share intermediate terms (shared_terms=pathway,leads,mtor,function). If A→B and B→C are independently supported but A→C has not been directly validated, the transitive causal claim remains a knowledge gap.",
+      "tabi_claim": "Although individual causal links are supported (CD226 maintains Treg cell stability and metabolism via the mTOR/Myc pathway unde and We further checked the altered signaling pathway in METTL14-deficient iTregs. We), the transitive relationship has not been directly validated.",
+      "gap_discovery_method": "implicit_tabi",
+      "confidence_bucket": "more_probable",
+      "tabi_evidence_type": "causal_chain_gap",
+      "tabi_checks": {
+        "theory_consistency": {
+          "status": "insufficient_comparison",
+          "theory_evidence": [],
+          "empirical_evidence": []
+        },
+        "counterfactual": {
+          "status": "needs_variable",
+          "condition": "Extract a controllable variable from the linked studies."
+        },
+        "mechanism_competition": {
+          "candidates": [
+            "conditional deletion of CD226 within Foxp3+ cells",
+            "the mtor signaling pathway"
+          ],
+          "status": "compare_candidates"
+        },
+        "evidence_gap": [
+          "No theory/model source is linked to this gap.",
+          "No empirical/observational source is linked to this gap."
+        ],
+        "testable_prediction": "No quantitative prediction is asserted until a controllable variable and matched evidence are retrieved.",
+        "contradiction_score": 2,
+        "substantive": false,
+        "required_directed_retrieval": [
+          "theory or simulation prediction",
+          "matched experimental or observational measurement"
+        ]
+      },
+      "dedupe_signature": "although are causal cd226 cell individual links maintains supported treg",
+      "rank": 1,
+      "gap_description": "Although individual causal links are supported (CD226 maintains Treg cell stability and metabolism via the mTOR/Myc pathway unde and We further checked the altered signaling pathway in METTL14-deficient iTregs. We), the transitive relationship has not been directly validated.",
+      "exploration_value_score": 10,
+      "raw_exploration_value_score": 10,
+      "importance": "high",
+      "tractability": "medium",
+      "strategic_alignment": [
+        {
+          "strategic_domain": "Treg Development and Function",
+          "matched_keywords": [
+            "treg"
+          ],
+          "alignment_score": 6
+        },
+        {
+          "strategic_domain": "Cytokine Signaling in Immune Homeostasis",
+          "matched_keywords": [
+            "signaling"
+          ],
+          "alignment_score": 6
+        }
+      ],
+      "recommended_approach": "Conduct an end-to-end study that directly tests the transitive causal relationship with intermediate variable monitoring.",
+      "ranking_reason": "novelty=5, refs=2, application=medium, feasibility=medium, type=implicit_tabi, strategic_matches=2, density_bonus=1 Gap is grounded in core mechanism evidence.",
+      "mechanism_relevance": {
+        "score": 1.0,
+        "eligible_for_mechanism_hypothesis": true,
+        "core_entity_hits": [
+          "cell",
+          "metabolism",
+          "mtor",
+          "pathway",
+          "signaling",
+          "stability",
+          "that",
+          "treg"
+        ],
+        "profile_record_count": 20,
+        "reason": "Gap is grounded in core mechanism evidence."
+      },
+      "counterfactual_tree": {
+        "root": "2 evidence conditions unmet",
+        "branches": [
+          {
+            "condition": "Study: Catalpol enhances mTORC1/HIF-1α/PDHK1-mediated oxidative metabolism that leads t...[truncated]",
+            "missing": "Limitation: In this study, the effects of Catalpol (CAT) on Treg differentiation and its underlying mechanisms were investigated using a CIA mouse model, with ani...[truncated]",
+            "counterfactual": "If limitation addressed, evidence base strengthens",
+            "leaf": false
+          },
+          {
+            "condition": "Study: Mettl14 sustains FOXP3 expression to promote the differentiation and functions o...[truncated]",
+            "missing": "Limitation: However, beyond meeting the epigenetic modification of Treg cells, whether Mettl14 plays a role in the fate determination of iTregs is unclear.",
+            "counterfactual": "If limitation addressed, evidence base strengthens",
+            "leaf": false
+          },
+          {
+            "condition": "Study: Catalpol enhances mTORC1/HIF-1α/PDHK1-mediated oxidative metabolism that leads t...[truncated]",
+            "missing": "Limitation: In this study, the effects of Catalpol (CAT) on Treg differentiation and its underlying mechanisms were investigated using a CIA mouse model, with ani...[truncated]",
+            "counterfactual": "If limitation addressed, evidence base strengthens",
+            "leaf": false
+          },
+          {
+            "condition": "Study: Mettl14 sustains FOXP3 expression to promote the differentiation and functions o...[truncated]",
+            "missing": "Limitation: However, beyond meeting the epigenetic modification of Treg cells, whether Mettl14 plays a role in the fate determination of iTregs is unclear.",
+            "counterfactual": "If limitation addressed, evidence base strengthens",
+            "leaf": false
+          },
+          {
+            "condition": "Conflict: shared_terms=pathway,leads,mtor,function",
+            "missing": "Warrant: Evidence establishes separate causal links that share intermediate terms (shared_terms=pathway,leads,mtor,function). If A→B and B→C are independently...[truncated]",
+            "counterfactual": "If controlled experiment resolved conflict, gap disappears",
+            "leaf": true
+          },
+          {
+            "condition": "Benchmarks: a cia mouse model, regulates the stability",
+            "missing": "No standardized benchmark",
+            "counterfactual": "If standard benchmark existed, gap could be quantitatively assessed",
+            "leaf": true
+          }
+        ],
+        "leaf_conditions": [
+          "If controlled experiment resolved conflict, gap disappears",
+          "If standard benchmark existed, gap could be quantitatively assessed"
+        ],
+        "resolution_complexity": "medium",
+        "related_evidence_count": 4,
+        "missing_evidence_count": 1,
+        "gap_method": "the mtor signaling pathway",
+        "gap_scenario": "rheumatoid arthritis, treg cell differentiation"
+      },
+      "gap_resolution_type": "complement_gap",
+      "leaf_conditions": [
+        "If controlled experiment resolved conflict, gap disappears",
+        "If standard benchmark existed, gap could be quantitatively assessed"
+      ],
+      "resolution_complexity": "medium",
+      "mechanism_draft": {
+        "gap_id": "gap_1783805183121054600",
+        "input": "Although individual causal links are supported (CD226 maintains Treg cell stability and metabolism via the mTOR/Myc pathway unde and We further checked the altered signaling pathway in METTL14-deficient iTregs. We), the transitive relationship has not been directly validated.",
+        "proposed_mediator": "unresolved",
+        "output": "unresolved",
+        "source_clue": "",
+        "unresolved_fields": [
+          "identity",
+          "location_or_scope",
+          "dynamics",
+          "reversibility",
+          "observability",
+          "intervention",
+          "counterfactual"
+        ],
+        "status": "draft_requires_socrates_evidence"
+      }
+    },
+    {
+      "gap_id": "gap_1783805183121993000",
+      "gap_type": "implicit_tabi",
+      "description": "Although individual causal links are supported (Low-dose IL-2 treatment improves the condition of dermatomyositis/polymyositis p and (2021) Splicing factor SRSF1 is indispensable for regulatory T cell homeostasis ), the transitive relationship has not been directly validated.",
+      "supporting_references": [
+        "D. Klatzmann (2019) Response to: ‘Circulating regulatory T cells were absolutely decreased in dermatomyositis/polymyositis patients and restored by low-dose IL-2’ by Zhang et al doi:10.1136/annrheumdis-2019-216267",
+        "T. Katsuyama et al. (2021) Splicing factor SRSF1 is indispensable for regulatory T cell homeostasis and function doi:10.1016/j.celrep.2021.109339"
+      ],
+      "novelty_score": 5,
+      "application_value": "medium",
+      "feasibility": "medium",
+      "suggested_research_path": "Conduct an end-to-end study that directly tests the transitive causal relationship with intermediate variable monitoring.",
+      "value_argument": "TABI abductive inference from causal_chain_gap evidence pair.",
+      "status": "candidate",
+      "createdAt": 1783805183.121995,
+      "hypothesis_ingredients": {
+        "methods": [],
+        "scenarios": [],
+        "benchmarks": [],
+        "numerical_bounds": [],
+        "operating_conditions": [],
+        "measurable_metrics": []
+      },
+      "counterfactual_leaves": [],
+      "tabi_chain": {
+        "grounds_a": "Low-dose IL-2 treatment improves the condition of dermatomyositis/polymyositis patients by stimulating and expanding regulatory T cells.",
+        "grounds_b": "(2021) Splicing factor SRSF1 is indispensable for regulatory T cell homeostasis and function doi:10.1016/j.celrep.2021.109339 Abstract: SUMMARY The ability of regulatory T (Treg) cells to control the immune response and limit the development of autoimmune diseases is determined by distinct molecular...[truncated]",
+        "warrant": "Evidence establishes separate causal links that share intermediate terms (shared_terms=regulatory,cells). If A→B and B→C are independently supported but A→C has not been directly validated, the transitive causal claim remains a knowledge gap.",
+        "claim": "Although individual causal links are supported (Low-dose IL-2 treatment improves the condition of dermatomyositis/polymyositis p and (2021) Splicing factor SRSF1 is indispensable for regulatory T cell homeostasis ), the transitive relationship has not been directly validated.",
+        "pair_type": "causal_chain_gap",
+        "shared_context": "shared_terms=regulatory,cells"
+      },
+      "tabi_warrant": "Evidence establishes separate causal links that share intermediate terms (shared_terms=regulatory,cells). If A→B and B→C are independently supported but A→C has not been directly validated, the transitive causal claim remains a knowledge gap.",
+      "tabi_claim": "Although individual causal links are supported (Low-dose IL-2 treatment improves the condition of dermatomyositis/polymyositis p and (2021) Splicing factor SRSF1 is indispensable for regulatory T cell homeostasis ), the transitive relationship has not been directly validated.",
+      "gap_discovery_method": "implicit_tabi",
+      "confidence_bucket": "least_probable",
+      "tabi_evidence_type": "causal_chain_gap",
+      "tabi_checks": {
+        "theory_consistency": {
+          "status": "insufficient_comparison",
+          "theory_evidence": [],
+          "empirical_evidence": [
+            {
+              "citation": "T. Katsuyama et al. (2021) Splicing factor SRSF1 is indispensable for regulatory T cell homeostasis and function doi:10.1016/j.celrep.2021.109339",
+              "excerpt": "SRSF1 is necessary for the homeostasis and proper function of Treg cells, and its absence leads to autoimmunity and organ inflammation. Our data reveal a molecular mechanism that controls Treg cell plasticity and offer insights into the pathogenesis of autoimmune disease."
+            }
+          ]
+        },
+        "counterfactual": {
+          "status": "needs_variable",
+          "condition": "Extract a controllable variable from the linked studies."
+        },
+        "mechanism_competition": {
+          "candidates": [
+            "low-dose IL-2 treatment",
+            "conditional gene knockout"
+          ],
+          "status": "compare_candidates"
+        },
+        "evidence_gap": [
+          "No theory/model source is linked to this gap."
+        ],
+        "testable_prediction": "No quantitative prediction is asserted until a controllable variable and matched evidence are retrieved.",
+        "contradiction_score": 6,
+        "substantive": false,
+        "required_directed_retrieval": [
+          "theory or simulation prediction",
+          "matched experimental or observational measurement"
+        ]
+      },
+      "dedupe_signature": "although are causal il-2 improves individual links low-dose supported treatment",
+      "rank": 2,
+      "gap_description": "Although individual causal links are supported (Low-dose IL-2 treatment improves the condition of dermatomyositis/polymyositis p and (2021) Splicing factor SRSF1 is indispensable for regulatory T cell homeostasis ), the transitive relationship has not been directly validated.",
+      "exploration_value_score": 10,
+      "raw_exploration_value_score": 10,
+      "importance": "high",
+      "tractability": "medium",
+      "strategic_alignment": [
+        {
+          "strategic_domain": "Cytokine Signaling in Immune Homeostasis",
+          "matched_keywords": [
+            "homeostasis"
+          ],
+          "alignment_score": 6
+        },
+        {
+          "strategic_domain": "Genetic Variants Impacting Immune Homeostasis",
+          "matched_keywords": [
+            "homeostasis"
+          ],
+          "alignment_score": 6
+        }
+      ],
+      "recommended_approach": "Conduct an end-to-end study that directly tests the transitive causal relationship with intermediate variable monitoring.",
+      "ranking_reason": "novelty=5, refs=2, application=medium, feasibility=medium, type=implicit_tabi, strategic_matches=2, density_bonus=1 Gap is grounded in core mechanism evidence.",
+      "mechanism_relevance": {
+        "score": 1.0,
+        "eligible_for_mechanism_hypothesis": true,
+        "core_entity_hits": [
+          "cell",
+          "homeostasis",
+          "il-2",
+          "low-dose",
+          "regulatory",
+          "that",
+          "treatment"
+        ],
+        "profile_record_count": 20,
+        "reason": "Gap is grounded in core mechanism evidence."
+      },
+      "counterfactual_tree": {
+        "root": "2 evidence conditions unmet",
+        "branches": [
+          {
+            "condition": "Study: Response to: ‘Circulating regulatory T cells were absolutely decreased in dermat...[truncated]",
+            "missing": "Limitation: No explicit limitation extracted.",
+            "counterfactual": "If limitation addressed, evidence base strengthens",
+            "leaf": false
+          },
+          {
+            "condition": "Study: Splicing factor SRSF1 is indispensable for regulatory T cell homeostasis and fun...[truncated]",
+            "missing": "Limitation: Our data reveal a molecular mechanism that controls Treg cell plasticity and offer insights into the pathogenesis of autoimmune disease.",
+            "counterfactual": "If limitation addressed, evidence base strengthens",
+            "leaf": false
+          },
+          {
+            "condition": "Study: Response to: ‘Circulating regulatory T cells were absolutely decreased in dermat...[truncated]",
+            "missing": "Limitation: No explicit limitation extracted.",
+            "counterfactual": "If limitation addressed, evidence base strengthens",
+            "leaf": false
+          },
+          {
+            "condition": "Study: Splicing factor SRSF1 is indispensable for regulatory T cell homeostasis and fun...[truncated]",
+            "missing": "Limitation: Our data reveal a molecular mechanism that controls Treg cell plasticity and offer insights into the pathogenesis of autoimmune disease.",
+            "counterfactual": "If limitation addressed, evidence base strengthens",
+            "leaf": false
+          },
+          {
+            "condition": "Conflict: shared_terms=regulatory,cells",
+            "missing": "Warrant: Evidence establishes separate causal links that share intermediate terms (shared_terms=regulatory,cells). If A→B and B→C are independently supported b...[truncated]",
+            "counterfactual": "If controlled experiment resolved conflict, gap disappears",
+            "leaf": true
+          },
+          {
+            "condition": "Benchmarks: clinical response, autoimmunity and organ inflammation",
+            "missing": "No standardized benchmark",
+            "counterfactual": "If standard benchmark existed, gap could be quantitatively assessed",
+            "leaf": true
+          }
+        ],
+        "leaf_conditions": [
+          "If controlled experiment resolved conflict, gap disappears",
+          "If standard benchmark existed, gap could be quantitatively assessed"
+        ],
+        "resolution_complexity": "medium",
+        "related_evidence_count": 4,
+        "missing_evidence_count": 1,
+        "gap_method": "low-dose il-2 treatment",
+        "gap_scenario": "regulatory t cell homeostasis and function"
+      },
+      "gap_resolution_type": "complement_gap",
+      "leaf_conditions": [
+        "If controlled experiment resolved conflict, gap disappears",
+        "If standard benchmark existed, gap could be quantitatively assessed"
+      ],
+      "resolution_complexity": "medium",
+      "mechanism_draft": {
+        "gap_id": "gap_1783805183121993000",
+        "input": "Although individual causal links are supported (Low-dose IL-2 treatment improves the condition of dermatomyositis/polymyositis p and (2021) Splicing factor SRSF1 is indispensable for regulatory T cell homeostasis ), the transitive relationship has not been directly validated.",
+        "proposed_mediator": "unresolved",
+        "output": "unresolved",
+        "source_clue": "",
+        "unresolved_fields": [
+          "identity",
+          "location_or_scope",
+          "dynamics",
+          "reversibility",
+          "observability",
+          "intervention",
+          "counterfactual"
+        ],
+        "status": "draft_requires_socrates_evidence"
+      }
+    },
+    {
+      "gap_id": "gap_1783805183122402700",
+      "gap_type": "implicit_tabi",
+      "description": "Although individual causal links are supported (Our results indicate that ZFP36L1 and ZFP36L2 regulate the availability of IFNγ and (2021) Splicing factor SRSF1 is indispensable for regulatory T cell homeostasis ), the transitive relationship has not been directly validated.",
+      "supporting_references": [
+        "Beatriz Sáenz-Narciso et al. (2025) ZFP36-family RNA-binding proteins in regulatory T cells reinforce immune homeostasis doi:10.1038/s41467-025-58993-y",
+        "T. Katsuyama et al. (2021) Splicing factor SRSF1 is indispensable for regulatory T cell homeostasis and function doi:10.1016/j.celrep.2021.109339"
+      ],
+      "novelty_score": 5,
+      "application_value": "medium",
+      "feasibility": "medium",
+      "suggested_research_path": "Conduct an end-to-end study that directly tests the transitive causal relationship with intermediate variable monitoring.",
+      "value_argument": "TABI abductive inference from causal_chain_gap evidence pair.",
+      "status": "candidate",
+      "createdAt": 1783805183.1224043,
+      "hypothesis_ingredients": {
+        "methods": [],
+        "scenarios": [],
+        "benchmarks": [],
+        "numerical_bounds": [],
+        "operating_conditions": [],
+        "measurable_metrics": []
+      },
+      "counterfactual_leaves": [],
+      "tabi_chain": {
+        "grounds_a": "Our results indicate that ZFP36L1 and ZFP36L2 regulate the availability of IFNγ and are required for the maintenance of Treg cell stability.",
+        "grounds_b": "(2021) Splicing factor SRSF1 is indispensable for regulatory T cell homeostasis and function doi:10.1016/j.celrep.2021.109339 Abstract: SUMMARY The ability of regulatory T (Treg) cells to control the immune response and limit the development of autoimmune diseases is determined by distinct molecular...[truncated]",
+        "warrant": "Evidence establishes separate causal links that share intermediate terms (shared_terms=treg,cell). If A→B and B→C are independently supported but A→C has not been directly validated, the transitive causal claim remains a knowledge gap.",
+        "claim": "Although individual causal links are supported (Our results indicate that ZFP36L1 and ZFP36L2 regulate the availability of IFNγ and (2021) Splicing factor SRSF1 is indispensable for regulatory T cell homeostasis ), the transitive relationship has not been directly validated.",
+        "pair_type": "causal_chain_gap",
+        "shared_context": "shared_terms=treg,cell"
+      },
+      "tabi_warrant": "Evidence establishes separate causal links that share intermediate terms (shared_terms=treg,cell). If A→B and B→C are independently supported but A→C has not been directly validated, the transitive causal claim remains a knowledge gap.",
+      "tabi_claim": "Although individual causal links are supported (Our results indicate that ZFP36L1 and ZFP36L2 regulate the availability of IFNγ and (2021) Splicing factor SRSF1 is indispensable for regulatory T cell homeostasis ), the transitive relationship has not been directly validated.",
+      "gap_discovery_method": "implicit_tabi",
+      "confidence_bucket": "least_probable",
+      "tabi_evidence_type": "causal_chain_gap",
+      "tabi_checks": {
+        "theory_consistency": {
+          "status": "insufficient_comparison",
+          "theory_evidence": [],
+          "empirical_evidence": [
+            {
+              "citation": "T. Katsuyama et al. (2021) Splicing factor SRSF1 is indispensable for regulatory T cell homeostasis and function doi:10.1016/j.celrep.2021.109339",
+              "excerpt": "SRSF1 is necessary for the homeostasis and proper function of Treg cells, and its absence leads to autoimmunity and organ inflammation. Our data reveal a molecular mechanism that controls Treg cell plasticity and offer insights into the pathogenesis of autoimmune disease."
+            }
+          ]
+        },
+        "counterfactual": {
+          "status": "needs_variable",
+          "condition": "Extract a controllable variable from the linked studies."
+        },
+        "mechanism_competition": {
+          "candidates": [
+            "Treg cell-restricted deletion of Zfp36 family members",
+            "conditional gene knockout"
+          ],
+          "status": "compare_candidates"
+        },
+        "evidence_gap": [
+          "No theory/model source is linked to this gap."
+        ],
+        "testable_prediction": "No quantitative prediction is asserted until a controllable variable and matched evidence are retrieved.",
+        "contradiction_score": 6,
+        "substantive": false,
+        "required_directed_retrieval": [
+          "theory or simulation prediction",
+          "matched experimental or observational measurement"
+        ]
+      },
+      "dedupe_signature": "although are causal indicate individual links our results supported that",
+      "rank": 3,
+      "gap_description": "Although individual causal links are supported (Our results indicate that ZFP36L1 and ZFP36L2 regulate the availability of IFNγ and (2021) Splicing factor SRSF1 is indispensable for regulatory T cell homeostasis ), the transitive relationship has not been directly validated.",
+      "exploration_value_score": 10,
+      "raw_exploration_value_score": 10,
+      "importance": "high",
+      "tractability": "medium",
+      "strategic_alignment": [
+        {
+          "strategic_domain": "Cytokine Signaling in Immune Homeostasis",
+          "matched_keywords": [
+            "homeostasis"
+          ],
+          "alignment_score": 6
+        },
+        {
+          "strategic_domain": "Genetic Variants Impacting Immune Homeostasis",
+          "matched_keywords": [
+            "homeostasis"
+          ],
+          "alignment_score": 6
+        }
+      ],
+      "recommended_approach": "Conduct an end-to-end study that directly tests the transitive causal relationship with intermediate variable monitoring.",
+      "ranking_reason": "novelty=5, refs=2, application=medium, feasibility=medium, type=implicit_tabi, strategic_matches=2, density_bonus=1 Gap is grounded in core mechanism evidence.",
+      "mechanism_relevance": {
+        "score": 0.542,
+        "eligible_for_mechanism_hypothesis": true,
+        "core_entity_hits": [
+          "cell",
+          "homeostasis",
+          "regulatory",
+          "that"
+        ],
+        "profile_record_count": 20,
+        "reason": "Gap is grounded in core mechanism evidence."
+      },
+      "counterfactual_tree": {
+        "root": "2 evidence conditions unmet",
+        "branches": [
+          {
+            "condition": "Study: ZFP36-family RNA-binding proteins in regulatory T cells reinforce immune homeost...[truncated]",
+            "missing": "Limitation: Our results indicate that ZFP36L1 and ZFP36L2 regulate the availability of IFNγ and are required for the maintenance of Treg cell stability.",
+            "counterfactual": "If limitation addressed, evidence base strengthens",
+            "leaf": false
+          },
+          {
+            "condition": "Study: Splicing factor SRSF1 is indispensable for regulatory T cell homeostasis and fun...[truncated]",
+            "missing": "Limitation: Our data reveal a molecular mechanism that controls Treg cell plasticity and offer insights into the pathogenesis of autoimmune disease.",
+            "counterfactual": "If limitation addressed, evidence base strengthens",
+            "leaf": false
+          },
+          {
+            "condition": "Study: ZFP36-family RNA-binding proteins in regulatory T cells reinforce immune homeost...[truncated]",
+            "missing": "Limitation: Our results indicate that ZFP36L1 and ZFP36L2 regulate the availability of IFNγ and are required for the maintenance of Treg cell stability.",
+            "counterfactual": "If limitation addressed, evidence base strengthens",
+            "leaf": false
+          },
+          {
+            "condition": "Study: Splicing factor SRSF1 is indispensable for regulatory T cell homeostasis and fun...[truncated]",
+            "missing": "Limitation: Our data reveal a molecular mechanism that controls Treg cell plasticity and offer insights into the pathogenesis of autoimmune disease.",
+            "counterfactual": "If limitation addressed, evidence base strengthens",
+            "leaf": false
+          },
+          {
+            "condition": "Conflict: shared_terms=treg,cell",
+            "missing": "Warrant: Evidence establishes separate causal links that share intermediate terms (shared_terms=treg,cell). If A→B and B→C are independently supported but A→C...[truncated]",
+            "counterfactual": "If controlled experiment resolved conflict, gap disappears",
+            "leaf": true
+          },
+          {
+            "condition": "Benchmarks: autoimmunity and organ inflammation, biological activity",
+            "missing": "No standardized benchmark",
+            "counterfactual": "If standard benchmark existed, gap could be quantitatively assessed",
+            "leaf": true
+          }
+        ],
+        "leaf_conditions": [
+          "If controlled experiment resolved conflict, gap disappears",
+          "If standard benchmark existed, gap could be quantitatively assessed"
+        ],
+        "resolution_complexity": "medium",
+        "related_evidence_count": 4,
+        "missing_evidence_count": 1,
+        "gap_method": "treg cell-restricted deletion of zfp36 family members",
+        "gap_scenario": "regulatory t cell homeostasis and function"
+      },
+      "gap_resolution_type": "complement_gap",
+      "leaf_conditions": [
+        "If controlled experiment resolved conflict, gap disappears",
+        "If standard benchmark existed, gap could be quantitatively assessed"
+      ],
+      "resolution_complexity": "medium",
+      "mechanism_draft": {
+        "gap_id": "gap_1783805183122402700",
+        "input": "Although individual causal links are supported (Our results indicate that ZFP36L1 and ZFP36L2 regulate the availability of IFNγ and (2021) Splicing factor SRSF1 is indispensable for regulatory T cell homeostasis ), the transitive relationship has not been directly validated.",
+        "proposed_mediator": "unresolved",
+        "output": "unresolved",
+        "source_clue": "",
+        "unresolved_fields": [
+          "identity",
+          "location_or_scope",
+          "dynamics",
+          "reversibility",
+          "observability",
+          "intervention",
+          "counterfactual"
+        ],
+        "status": "draft_requires_socrates_evidence"
+      }
+    },
+    {
+      "gap_id": "gap_1783805183122580800",
+      "gap_type": "implicit_tabi",
+      "description": "Although individual causal links are supported (SRSF1 is necessary for the homeostasis and proper function of Treg cells, and it and CD226 maintains Treg cell stability and metabolism via the mTOR/Myc pathway unde), the transitive relationship has not been directly validated.",
+      "supporting_references": [
+        "T. Katsuyama et al. (2021) Splicing factor SRSF1 is indispensable for regulatory T cell homeostasis and function doi:10.1016/j.celrep.2021.109339",
+        "Jingchang Ma et al. (2023) CD226 maintains regulatory T cell phenotype stability and metabolism by the mTOR/Myc pathway under inflammatory conditions. doi:10.1016/j.celrep.2023.113306"
+      ],
+      "novelty_score": 5,
+      "application_value": "medium",
+      "feasibility": "medium",
+      "suggested_research_path": "Conduct an end-to-end study that directly tests the transitive causal relationship with intermediate variable monitoring.",
+      "value_argument": "TABI abductive inference from causal_chain_gap evidence pair.",
+      "status": "candidate",
+      "createdAt": 1783805183.1225827,
+      "hypothesis_ingredients": {
+        "methods": [],
+        "scenarios": [],
+        "benchmarks": [],
+        "numerical_bounds": [],
+        "operating_conditions": [],
+        "measurable_metrics": []
+      },
+      "counterfactual_leaves": [],
+      "tabi_chain": {
+        "grounds_a": "SRSF1 is necessary for the homeostasis and proper function of Treg cells, and its absence leads to autoimmunity and organ inflammation.",
+        "grounds_b": "CD226 maintains Treg cell stability and metabolism via the mTOR/Myc pathway under inflammatory conditions, and its deficiency leads to impaired Treg cell function and metabolic changes",
+        "warrant": "Evidence establishes separate causal links that share intermediate terms (shared_terms=function,leads,treg). If A→B and B→C are independently supported but A→C has not been directly validated, the transitive causal claim remains a knowledge gap.",
+        "claim": "Although individual causal links are supported (SRSF1 is necessary for the homeostasis and proper function of Treg cells, and it and CD226 maintains Treg cell stability and metabolism via the mTOR/Myc pathway unde), the transitive relationship has not been directly validated.",
+        "pair_type": "causal_chain_gap",
+        "shared_context": "shared_terms=function,leads,treg"
+      },
+      "tabi_warrant": "Evidence establishes separate causal links that share intermediate terms (shared_terms=function,leads,treg). If A→B and B→C are independently supported but A→C has not been directly validated, the transitive causal claim remains a knowledge gap.",
+      "tabi_claim": "Although individual causal links are supported (SRSF1 is necessary for the homeostasis and proper function of Treg cells, and it and CD226 maintains Treg cell stability and metabolism via the mTOR/Myc pathway unde), the transitive relationship has not been directly validated.",
+      "gap_discovery_method": "implicit_tabi",
+      "confidence_bucket": "more_probable",
+      "tabi_evidence_type": "causal_chain_gap",
+      "tabi_checks": {
+        "theory_consistency": {
+          "status": "insufficient_comparison",
+          "theory_evidence": [],
+          "empirical_evidence": [
+            {
+              "citation": "T. Katsuyama et al. (2021) Splicing factor SRSF1 is indispensable for regulatory T cell homeostasis and function doi:10.1016/j.celrep.2021.109339",
+              "excerpt": "SRSF1 is necessary for the homeostasis and proper function of Treg cells, and its absence leads to autoimmunity and organ inflammation. Our data reveal a molecular mechanism that controls Treg cell plasticity and offer insights into the pathogenesis of autoimmune disease."
+            }
+          ]
+        },
+        "counterfactual": {
+          "status": "needs_variable",
+          "condition": "Extract a controllable variable from the linked studies."
+        },
+        "mechanism_competition": {
+          "candidates": [
+            "conditional deletion of CD226 within Foxp3+ cells",
+            "conditional gene knockout"
+          ],
+          "status": "compare_candidates"
+        },
+        "evidence_gap": [
+          "No theory/model source is linked to this gap."
+        ],
+        "testable_prediction": "No quantitative prediction is asserted until a controllable variable and matched evidence are retrieved.",
+        "contradiction_score": 6,
+        "substantive": false,
+        "required_directed_retrieval": [
+          "theory or simulation prediction",
+          "matched experimental or observational measurement"
+        ]
+      },
+      "dedupe_signature": "although are causal for individual is links necessary srsf1 supported",
+      "deduped_from": 1,
+      "rank": 4,
+      "gap_description": "Although individual causal links are supported (SRSF1 is necessary for the homeostasis and proper function of Treg cells, and it and CD226 maintains Treg cell stability and metabolism via the mTOR/Myc pathway unde), the transitive relationship has not been directly validated.",
+      "exploration_value_score": 10,
+      "raw_exploration_value_score": 10,
+      "importance": "high",
+      "tractability": "medium",
+      "strategic_alignment": [
+        {
+          "strategic_domain": "Treg Development and Function",
+          "matched_keywords": [
+            "treg",
+            "function"
+          ],
+          "alignment_score": 8
+        },
+        {
+          "strategic_domain": "Cytokine Signaling in Immune Homeostasis",
+          "matched_keywords": [
+            "homeostasis"
+          ],
+          "alignment_score": 6
+        },
+        {
+          "strategic_domain": "Genetic Variants Impacting Immune Homeostasis",
+          "matched_keywords": [
+            "homeostasis"
+          ],
+          "alignment_score": 6
+        }
+      ],
+      "recommended_approach": "Conduct an end-to-end study that directly tests the transitive causal relationship with intermediate variable monitoring.",
+      "ranking_reason": "novelty=5, refs=2, application=medium, feasibility=medium, type=implicit_tabi, strategic_matches=3, density_bonus=1 Gap is grounded in core mechanism evidence.",
+      "mechanism_relevance": {
+        "score": 1.0,
+        "eligible_for_mechanism_hypothesis": true,
+        "core_entity_hits": [
+          "cell",
+          "cells",
+          "function",
+          "homeostasis",
+          "metabolism",
+          "mtor",
+          "pathway",
+          "stability",
+          "that",
+          "treg"
+        ],
+        "profile_record_count": 20,
+        "reason": "Gap is grounded in core mechanism evidence."
+      },
+      "counterfactual_tree": {
+        "root": "2 evidence conditions unmet",
+        "branches": [
+          {
+            "condition": "Study: CD226 maintains regulatory T cell phenotype stability and metabolism by the mTOR...[truncated]",
+            "missing": "Limitation: Here, we show that CD226 primarily maintains the Treg cell stability and metabolism phenotype under inflammatory conditions.",
+            "counterfactual": "If limitation addressed, evidence base strengthens",
+            "leaf": false
+          },
+          {
+            "condition": "Study: Splicing factor SRSF1 is indispensable for regulatory T cell homeostasis and fun...[truncated]",
+            "missing": "Limitation: Our data reveal a molecular mechanism that controls Treg cell plasticity and offer insights into the pathogenesis of autoimmune disease.",
+            "counterfactual": "If limitation addressed, evidence base strengthens",
+            "leaf": false
+          },
+          {
+            "condition": "Study: CD226 maintains regulatory T cell phenotype stability and metabolism by the mTOR...[truncated]",
+            "missing": "Limitation: Here, we show that CD226 primarily maintains the Treg cell stability and metabolism phenotype under inflammatory conditions.",
+            "counterfactual": "If limitation addressed, evidence base strengthens",
+            "leaf": false
+          },
+          {
+            "condition": "Study: Splicing factor SRSF1 is indispensable for regulatory T cell homeostasis and fun...[truncated]",
+            "missing": "Limitation: Our data reveal a molecular mechanism that controls Treg cell plasticity and offer insights into the pathogenesis of autoimmune disease.",
+            "counterfactual": "If limitation addressed, evidence base strengthens",
+            "leaf": false
+          },
+          {
+            "condition": "Conflict: shared_terms=function,leads,treg",
+            "missing": "Warrant: Evidence establishes separate causal links that share intermediate terms (shared_terms=function,leads,treg). If A→B and B→C are independently supporte...[truncated]",
+            "counterfactual": "If controlled experiment resolved conflict, gap disappears",
+            "leaf": true
+          },
+          {
+            "condition": "Benchmarks: autoimmunity and organ inflammation, conversion and selectivity",
+            "missing": "No standardized benchmark",
+            "counterfactual": "If standard benchmark existed, gap could be quantitatively assessed",
+            "leaf": true
+          }
+        ],
+        "leaf_conditions": [
+          "If controlled experiment resolved conflict, gap disappears",
+          "If standard benchmark existed, gap could be quantitatively assessed"
+        ],
+        "resolution_complexity": "medium",
+        "related_evidence_count": 4,
+        "missing_evidence_count": 1,
+        "gap_method": "conditional deletion of cd226 within foxp3+ cells",
+        "gap_scenario": "regulatory t cell homeostasis and function"
+      },
+      "gap_resolution_type": "complement_gap",
+      "leaf_conditions": [
+        "If controlled experiment resolved conflict, gap disappears",
+        "If standard benchmark existed, gap could be quantitatively assessed"
+      ],
+      "resolution_complexity": "medium",
+      "mechanism_draft": {
+        "gap_id": "gap_1783805183122580800",
+        "input": "Although individual causal links are supported (SRSF1 is necessary for the homeostasis and proper function of Treg cells, and it and CD226 maintains Treg cell stability and metabolism via the mTOR/Myc pathway unde), the transitive relationship has not been directly validated.",
+        "proposed_mediator": "unresolved",
+        "output": "unresolved",
+        "source_clue": "",
+        "unresolved_fields": [
+          "identity",
+          "location_or_scope",
+          "dynamics",
+          "reversibility",
+          "observability",
+          "intervention",
+          "counterfactual"
+        ],
+        "status": "draft_requires_socrates_evidence"
+      }
+    },
+    {
+      "gap_id": "gap_1783805183121390400",
+      "gap_type": "implicit_tabi",
+      "description": "Although individual causal links are supported (Treg cell-specific deletion of CD226 increases the Treg cell percentage in immun and We further checked the altered signaling pathway in METTL14-deficient iTregs. We), the transitive relationship has not been directly validated.",
+      "supporting_references": [
+        "Jingchang Ma et al. (2023) CD226 maintains regulatory T cell phenotype stability and metabolism by the mTOR/Myc pathway under inflammatory conditions. doi:10.1016/j.celrep.2023.113306",
+        "Yanzhuo Liu et al. (2023) Mettl14 sustains FOXP3 expression to promote the differentiation and functions of induced-regulatory T cells via the mTOR signaling pathway. doi:10.1016/j.imlet.2023.04.008"
+      ],
+      "novelty_score": 5,
+      "application_value": "medium",
+      "feasibility": "medium",
+      "suggested_research_path": "Conduct an end-to-end study that directly tests the transitive causal relationship with intermediate variable monitoring.",
+      "value_argument": "TABI abductive inference from causal_chain_gap evidence pair.",
+      "status": "candidate",
+      "createdAt": 1783805183.1213925,
+      "hypothesis_ingredients": {
+        "methods": [],
+        "scenarios": [],
+        "benchmarks": [],
+        "numerical_bounds": [],
+        "operating_conditions": [],
+        "measurable_metrics": []
+      },
+      "counterfactual_leaves": [],
+      "tabi_chain": {
+        "grounds_a": "Treg cell-specific deletion of CD226 increases the Treg cell percentage in immune organs but weakens their immunosuppressive function with a T helper 1-like phenotype conversion under inflammation. CD226-deficient Treg cells exhibit reduced oxidative phosphorylation and increased glycolysis rates, w...[truncated]",
+        "grounds_b": "We further checked the altered signaling pathway in METTL14-deficient iTregs. We found that reduced METTL14 leads to activation of the mTOR pathway with increased p-mTOR and p-p70S6K, which are known to modulate the suppressive function of iTregs. In conclusion, our study revealed that Mettl14 plays...[truncated]",
+        "warrant": "Evidence establishes separate causal links that share intermediate terms (shared_terms=with,increased,deficient,truncated,reduced). If A→B and B→C are independently supported but A→C has not been directly validated, the transitive causal claim remains a knowledge gap.",
+        "claim": "Although individual causal links are supported (Treg cell-specific deletion of CD226 increases the Treg cell percentage in immun and We further checked the altered signaling pathway in METTL14-deficient iTregs. We), the transitive relationship has not been directly validated.",
+        "pair_type": "causal_chain_gap",
+        "shared_context": "shared_terms=with,increased,deficient,truncated,reduced"
+      },
+      "tabi_warrant": "Evidence establishes separate causal links that share intermediate terms (shared_terms=with,increased,deficient,truncated,reduced). If A→B and B→C are independently supported but A→C has not been directly validated, the transitive causal claim remains a knowledge gap.",
+      "tabi_claim": "Although individual causal links are supported (Treg cell-specific deletion of CD226 increases the Treg cell percentage in immun and We further checked the altered signaling pathway in METTL14-deficient iTregs. We), the transitive relationship has not been directly validated.",
+      "gap_discovery_method": "implicit_tabi",
+      "confidence_bucket": "more_probable",
+      "tabi_evidence_type": "causal_chain_gap",
+      "tabi_checks": {
+        "theory_consistency": {
+          "status": "insufficient_comparison",
+          "theory_evidence": [],
+          "empirical_evidence": []
+        },
+        "counterfactual": {
+          "status": "needs_variable",
+          "condition": "Extract a controllable variable from the linked studies."
+        },
+        "mechanism_competition": {
+          "candidates": [
+            "conditional deletion of CD226 within Foxp3+ cells",
+            "the mtor signaling pathway"
+          ],
+          "status": "compare_candidates"
+        },
+        "evidence_gap": [
+          "No theory/model source is linked to this gap.",
+          "No empirical/observational source is linked to this gap."
+        ],
+        "testable_prediction": "No quantitative prediction is asserted until a controllable variable and matched evidence are retrieved.",
+        "contradiction_score": 2,
+        "substantive": false,
+        "required_directed_retrieval": [
+          "theory or simulation prediction",
+          "matched experimental or observational measurement"
+        ]
+      },
+      "dedupe_signature": "although are causal cell-specific deletion individual links of supported treg",
+      "rank": 5,
+      "gap_description": "Although individual causal links are supported (Treg cell-specific deletion of CD226 increases the Treg cell percentage in immun and We further checked the altered signaling pathway in METTL14-deficient iTregs. We), the transitive relationship has not been directly validated.",
+      "exploration_value_score": 10,
+      "raw_exploration_value_score": 10,
+      "importance": "high",
+      "tractability": "medium",
+      "strategic_alignment": [
+        {
+          "strategic_domain": "Treg Development and Function",
+          "matched_keywords": [
+            "treg"
+          ],
+          "alignment_score": 6
+        },
+        {
+          "strategic_domain": "Cytokine Signaling in Immune Homeostasis",
+          "matched_keywords": [
+            "signaling"
+          ],
+          "alignment_score": 6
+        }
+      ],
+      "recommended_approach": "Conduct an end-to-end study that directly tests the transitive causal relationship with intermediate variable monitoring.",
+      "ranking_reason": "novelty=5, refs=2, application=medium, feasibility=medium, type=implicit_tabi, strategic_matches=2, density_bonus=1 Gap is grounded in core mechanism evidence.",
+      "mechanism_relevance": {
+        "score": 0.875,
+        "eligible_for_mechanism_hypothesis": true,
+        "core_entity_hits": [
+          "cell",
+          "deletion",
+          "pathway",
+          "signaling",
+          "that",
+          "treg"
+        ],
+        "profile_record_count": 20,
+        "reason": "Gap is grounded in core mechanism evidence."
+      },
+      "counterfactual_tree": {
+        "root": "2 evidence conditions unmet",
+        "branches": [
+          {
+            "condition": "Study: Catalpol enhances mTORC1/HIF-1α/PDHK1-mediated oxidative metabolism that leads t...[truncated]",
+            "missing": "Limitation: In this study, the effects of Catalpol (CAT) on Treg differentiation and its underlying mechanisms were investigated using a CIA mouse model, with ani...[truncated]",
+            "counterfactual": "If limitation addressed, evidence base strengthens",
+            "leaf": false
+          },
+          {
+            "condition": "Study: ZFP36-family RNA-binding proteins in regulatory T cells reinforce immune homeost...[truncated]",
+            "missing": "Limitation: Our results indicate that ZFP36L1 and ZFP36L2 regulate the availability of IFNγ and are required for the maintenance of Treg cell stability.",
+            "counterfactual": "If limitation addressed, evidence base strengthens",
+            "leaf": false
+          },
+          {
+            "condition": "Study: Catalpol enhances mTORC1/HIF-1α/PDHK1-mediated oxidative metabolism that leads t...[truncated]",
+            "missing": "Limitation: In this study, the effects of Catalpol (CAT) on Treg differentiation and its underlying mechanisms were investigated using a CIA mouse model, with ani...[truncated]",
+            "counterfactual": "If limitation addressed, evidence base strengthens",
+            "leaf": false
+          },
+          {
+            "condition": "Study: ZFP36-family RNA-binding proteins in regulatory T cells reinforce immune homeost...[truncated]",
+            "missing": "Limitation: Our results indicate that ZFP36L1 and ZFP36L2 regulate the availability of IFNγ and are required for the maintenance of Treg cell stability.",
+            "counterfactual": "If limitation addressed, evidence base strengthens",
+            "leaf": false
+          },
+          {
+            "condition": "Conflict: shared_terms=with,increased,deficient,truncated,reduced",
+            "missing": "Warrant: Evidence establishes separate causal links that share intermediate terms (shared_terms=with,increased,deficient,truncated,reduced). If A→B and B→C are...[truncated]",
+            "counterfactual": "If controlled experiment resolved conflict, gap disappears",
+            "leaf": true
+          },
+          {
+            "condition": "Benchmarks: a cia mouse model, biological activity",
+            "missing": "No standardized benchmark",
+            "counterfactual": "If standard benchmark existed, gap could be quantitatively assessed",
+            "leaf": true
+          }
+        ],
+        "leaf_conditions": [
+          "If controlled experiment resolved conflict, gap disappears",
+          "If standard benchmark existed, gap could be quantitatively assessed"
+        ],
+        "resolution_complexity": "medium",
+        "related_evidence_count": 4,
+        "missing_evidence_count": 1,
+        "gap_method": "treg cell-restricted deletion of zfp36 family members",
+        "gap_scenario": "rheumatoid arthritis, treg cell differentiation"
+      },
+      "gap_resolution_type": "complement_gap",
+      "leaf_conditions": [
+        "If controlled experiment resolved conflict, gap disappears",
+        "If standard benchmark existed, gap could be quantitatively assessed"
+      ],
+      "resolution_complexity": "medium",
+      "mechanism_draft": {
+        "gap_id": "gap_1783805183121390400",
+        "input": "Although individual causal links are supported (Treg cell-specific deletion of CD226 increases the Treg cell percentage in immun and We further checked the altered signaling pathway in METTL14-deficient iTregs. We), the transitive relationship has not been directly validated.",
+        "proposed_mediator": "unresolved",
+        "output": "unresolved",
+        "source_clue": "",
+        "unresolved_fields": [
+          "identity",
+          "location_or_scope",
+          "dynamics",
+          "reversibility",
+          "observability",
+          "intervention",
+          "counterfactual"
+        ],
+        "status": "draft_requires_socrates_evidence"
+      }
+    },
+    {
+      "gap_id": "gap_1783805183122153100",
+      "gap_type": "implicit_tabi",
+      "description": "Although individual causal links are supported (Treg defects play a key permissive role in autoimmune disease pathogenesis by fa and Our results indicate that ZFP36L1 and ZFP36L2 regulate the availability of IFNγ ), the transitive relationship has not been directly validated.",
+      "supporting_references": [
+        "M. Longhi et al. (2021) Regulatory T cells in autoimmune hepatitis: an updated overview doi:10.1016/j.jaut.2021.102619",
+        "Beatriz Sáenz-Narciso et al. (2025) ZFP36-family RNA-binding proteins in regulatory T cells reinforce immune homeostasis doi:10.1038/s41467-025-58993-y"
+      ],
+      "novelty_score": 5,
+      "application_value": "medium",
+      "feasibility": "medium",
+      "suggested_research_path": "Conduct an end-to-end study that directly tests the transitive causal relationship with intermediate variable monitoring.",
+      "value_argument": "TABI abductive inference from causal_chain_gap evidence pair.",
+      "status": "candidate",
+      "createdAt": 1783805183.1221547,
+      "hypothesis_ingredients": {
+        "methods": [],
+        "scenarios": [],
+        "benchmarks": [],
+        "numerical_bounds": [],
+        "operating_conditions": [],
+        "measurable_metrics": []
+      },
+      "counterfactual_leaves": [],
+      "tabi_chain": {
+        "grounds_a": "Treg defects play a key permissive role in autoimmune disease pathogenesis by favoring overwhelming effector T cell immunity and, consequently, tissue damage exacerbation and progression. Numerical and functional impairment of Tregs and alterations of the associated signaling pathways is pivotal in....[truncated]",
+        "grounds_b": "Our results indicate that ZFP36L1 and ZFP36L2 regulate the availability of IFNγ and are required for the maintenance of Treg cell stability.",
+        "warrant": "Evidence establishes separate causal links that share intermediate terms (shared_terms=treg,cell). If A→B and B→C are independently supported but A→C has not been directly validated, the transitive causal claim remains a knowledge gap.",
+        "claim": "Although individual causal links are supported (Treg defects play a key permissive role in autoimmune disease pathogenesis by fa and Our results indicate that ZFP36L1 and ZFP36L2 regulate the availability of IFNγ ), the transitive relationship has not been directly validated.",
+        "pair_type": "causal_chain_gap",
+        "shared_context": "shared_terms=treg,cell"
+      },
+      "tabi_warrant": "Evidence establishes separate causal links that share intermediate terms (shared_terms=treg,cell). If A→B and B→C are independently supported but A→C has not been directly validated, the transitive causal claim remains a knowledge gap.",
+      "tabi_claim": "Although individual causal links are supported (Treg defects play a key permissive role in autoimmune disease pathogenesis by fa and Our results indicate that ZFP36L1 and ZFP36L2 regulate the availability of IFNγ ), the transitive relationship has not been directly validated.",
+      "gap_discovery_method": "implicit_tabi",
+      "confidence_bucket": "least_probable",
+      "tabi_evidence_type": "causal_chain_gap",
+      "tabi_checks": {
+        "theory_consistency": {
+          "status": "insufficient_comparison",
+          "theory_evidence": [],
+          "empirical_evidence": []
+        },
+        "counterfactual": {
+          "status": "needs_variable",
+          "condition": "Extract a controllable variable from the linked studies."
+        },
+        "mechanism_competition": {
+          "candidates": [
+            "review of studies",
+            "Treg cell-restricted deletion of Zfp36 family members"
+          ],
+          "status": "compare_candidates"
+        },
+        "evidence_gap": [
+          "No theory/model source is linked to this gap.",
+          "No empirical/observational source is linked to this gap."
+        ],
+        "testable_prediction": "No quantitative prediction is asserted until a controllable variable and matched evidence are retrieved.",
+        "contradiction_score": 2,
+        "substantive": false,
+        "required_directed_retrieval": [
+          "theory or simulation prediction",
+          "matched experimental or observational measurement"
+        ]
+      },
+      "dedupe_signature": "a although are causal defects individual links play supported treg",
+      "rank": 6,
+      "gap_description": "Although individual causal links are supported (Treg defects play a key permissive role in autoimmune disease pathogenesis by fa and Our results indicate that ZFP36L1 and ZFP36L2 regulate the availability of IFNγ ), the transitive relationship has not been directly validated.",
+      "exploration_value_score": 10,
+      "raw_exploration_value_score": 10,
+      "importance": "high",
+      "tractability": "medium",
+      "strategic_alignment": [
+        {
+          "strategic_domain": "Treg Development and Function",
+          "matched_keywords": [
+            "treg"
+          ],
+          "alignment_score": 6
+        },
+        {
+          "strategic_domain": "Cytokine Signaling in Immune Homeostasis",
+          "matched_keywords": [
+            "immune"
+          ],
+          "alignment_score": 6
+        },
+        {
+          "strategic_domain": "Metabolic Pathways in Immune Regulation",
+          "matched_keywords": [
+            "immune"
+          ],
+          "alignment_score": 6
+        },
+        {
+          "strategic_domain": "Genetic Variants Impacting Immune Homeostasis",
+          "matched_keywords": [
+            "immune"
+          ],
+          "alignment_score": 6
+        },
+        {
+          "strategic_domain": "Cross-Species and Cross-Tissue Conservation of Immune Mechanisms",
+          "matched_keywords": [
+            "immune"
+          ],
+          "alignment_score": 6
+        }
+      ],
+      "recommended_approach": "Conduct an end-to-end study that directly tests the transitive causal relationship with intermediate variable monitoring.",
+      "ranking_reason": "novelty=5, refs=2, application=medium, feasibility=medium, type=implicit_tabi, strategic_matches=5, density_bonus=1 Gap is grounded in core mechanism evidence.",
+      "mechanism_relevance": {
+        "score": 0.708,
+        "eligible_for_mechanism_hypothesis": true,
+        "core_entity_hits": [
+          "autoimmune",
+          "disease",
+          "pathogenesis",
+          "role",
+          "that",
+          "treg"
+        ],
+        "profile_record_count": 20,
+        "reason": "Gap is grounded in core mechanism evidence."
+      },
+      "counterfactual_tree": {
+        "root": "2 evidence conditions unmet",
+        "branches": [
+          {
+            "condition": "Study: Regulatory T cells and their role in inflammatory bowel disease: molecular targe...[truncated]",
+            "missing": "Limitation: The review also discusses ongoing clinical trials and future opportunities involving omics-driven patient stratification, targeted delivery platforms,...[truncated]",
+            "counterfactual": "If limitation addressed, evidence base strengthens",
+            "leaf": false
+          },
+          {
+            "condition": "Study: ZFP36-family RNA-binding proteins in regulatory T cells reinforce immune homeost...[truncated]",
+            "missing": "Limitation: Our results indicate that ZFP36L1 and ZFP36L2 regulate the availability of IFNγ and are required for the maintenance of Treg cell stability.",
+            "counterfactual": "If limitation addressed, evidence base strengthens",
+            "leaf": false
+          },
+          {
+            "condition": "Study: Regulatory T cells and their role in inflammatory bowel disease: molecular targe...[truncated]",
+            "missing": "Limitation: The review also discusses ongoing clinical trials and future opportunities involving omics-driven patient stratification, targeted delivery platforms,...[truncated]",
+            "counterfactual": "If limitation addressed, evidence base strengthens",
+            "leaf": false
+          },
+          {
+            "condition": "Study: ZFP36-family RNA-binding proteins in regulatory T cells reinforce immune homeost...[truncated]",
+            "missing": "Limitation: Our results indicate that ZFP36L1 and ZFP36L2 regulate the availability of IFNγ and are required for the maintenance of Treg cell stability.",
+            "counterfactual": "If limitation addressed, evidence base strengthens",
+            "leaf": false
+          },
+          {
+            "condition": "Conflict: shared_terms=treg,cell",
+            "missing": "Warrant: Evidence establishes separate causal links that share intermediate terms (shared_terms=treg,cell). If A→B and B→C are independently supported but A→C...[truncated]",
+            "counterfactual": "If controlled experiment resolved conflict, gap disappears",
+            "leaf": true
+          },
+          {
+            "condition": "Benchmarks: biological activity, immune balance, treg stability, suppressive function",
+            "missing": "No standardized benchmark",
+            "counterfactual": "If standard benchmark existed, gap could be quantitatively assessed",
+            "leaf": true
+          }
+        ],
+        "leaf_conditions": [
+          "If controlled experiment resolved conflict, gap disappears",
+          "If standard benchmark existed, gap could be quantitatively assessed"
+        ],
+        "resolution_complexity": "medium",
+        "related_evidence_count": 4,
+        "missing_evidence_count": 1,
+        "gap_method": "treg cell-restricted deletion of zfp36 family members",
+        "gap_scenario": "inflammatory bowel disease (ibd)"
+      },
+      "gap_resolution_type": "complement_gap",
+      "leaf_conditions": [
+        "If controlled experiment resolved conflict, gap disappears",
+        "If standard benchmark existed, gap could be quantitatively assessed"
+      ],
+      "resolution_complexity": "medium",
+      "mechanism_draft": {
+        "gap_id": "gap_1783805183122153100",
+        "input": "Although individual causal links are supported (Treg defects play a key permissive role in autoimmune disease pathogenesis by fa and Our results indicate that ZFP36L1 and ZFP36L2 regulate the availability of IFNγ ), the transitive relationship has not been directly validated.",
+        "proposed_mediator": "unresolved",
+        "output": "unresolved",
+        "source_clue": "",
+        "unresolved_fields": [
+          "identity",
+          "location_or_scope",
+          "dynamics",
+          "reversibility",
+          "observability",
+          "intervention",
+          "counterfactual"
+        ],
+        "status": "draft_requires_socrates_evidence"
+      }
+    },
+    {
+      "gap_id": "gap_1783805183121721200",
+      "gap_type": "implicit_tabi",
+      "description": "Although individual causal links are supported (We further checked the altered signaling pathway in METTL14-deficient iTregs. We and Treg defects play a key permissive role in autoimmune disease pathogenesis by fa), the transitive relationship has not been directly validated.",
+      "supporting_references": [
+        "Yanzhuo Liu et al. (2023) Mettl14 sustains FOXP3 expression to promote the differentiation and functions of induced-regulatory T cells via the mTOR signaling pathway. doi:10.1016/j.imlet.2023.04.008",
+        "M. Longhi et al. (2021) Regulatory T cells in autoimmune hepatitis: an updated overview doi:10.1016/j.jaut.2021.102619"
+      ],
+      "novelty_score": 5,
+      "application_value": "medium",
+      "feasibility": "medium",
+      "suggested_research_path": "Conduct an end-to-end study that directly tests the transitive causal relationship with intermediate variable monitoring.",
+      "value_argument": "TABI abductive inference from causal_chain_gap evidence pair.",
+      "status": "candidate",
+      "createdAt": 1783805183.1217227,
+      "hypothesis_ingredients": {
+        "methods": [],
+        "scenarios": [],
+        "benchmarks": [],
+        "numerical_bounds": [],
+        "operating_conditions": [],
+        "measurable_metrics": []
+      },
+      "counterfactual_leaves": [],
+      "tabi_chain": {
+        "grounds_a": "We further checked the altered signaling pathway in METTL14-deficient iTregs. We found that reduced METTL14 leads to activation of the mTOR pathway with increased p-mTOR and p-p70S6K, which are known to modulate the suppressive function of iTregs. In conclusion, our study revealed that Mettl14 plays...[truncated]",
+        "grounds_b": "Treg defects play a key permissive role in autoimmune disease pathogenesis by favoring overwhelming effector T cell immunity and, consequently, tissue damage exacerbation and progression. Numerical and functional impairment of Tregs and alterations of the associated signaling pathways is pivotal in....[truncated]",
+        "warrant": "Evidence establishes separate causal links that share intermediate terms (shared_terms=signaling,truncated). If A→B and B→C are independently supported but A→C has not been directly validated, the transitive causal claim remains a knowledge gap.",
+        "claim": "Although individual causal links are supported (We further checked the altered signaling pathway in METTL14-deficient iTregs. We and Treg defects play a key permissive role in autoimmune disease pathogenesis by fa), the transitive relationship has not been directly validated.",
+        "pair_type": "causal_chain_gap",
+        "shared_context": "shared_terms=signaling,truncated"
+      },
+      "tabi_warrant": "Evidence establishes separate causal links that share intermediate terms (shared_terms=signaling,truncated). If A→B and B→C are independently supported but A→C has not been directly validated, the transitive causal claim remains a knowledge gap.",
+      "tabi_claim": "Although individual causal links are supported (We further checked the altered signaling pathway in METTL14-deficient iTregs. We and Treg defects play a key permissive role in autoimmune disease pathogenesis by fa), the transitive relationship has not been directly validated.",
+      "gap_discovery_method": "implicit_tabi",
+      "confidence_bucket": "least_probable",
+      "tabi_evidence_type": "causal_chain_gap",
+      "tabi_checks": {
+        "theory_consistency": {
+          "status": "insufficient_comparison",
+          "theory_evidence": [],
+          "empirical_evidence": []
+        },
+        "counterfactual": {
+          "status": "needs_variable",
+          "condition": "Extract a controllable variable from the linked studies."
+        },
+        "mechanism_competition": {
+          "candidates": [
+            "the mtor signaling pathway",
+            "review of studies"
+          ],
+          "status": "compare_candidates"
+        },
+        "evidence_gap": [
+          "No theory/model source is linked to this gap.",
+          "No empirical/observational source is linked to this gap."
+        ],
+        "testable_prediction": "No quantitative prediction is asserted until a controllable variable and matched evidence are retrieved.",
+        "contradiction_score": 2,
+        "substantive": false,
+        "required_directed_retrieval": [
+          "theory or simulation prediction",
+          "matched experimental or observational measurement"
+        ]
+      },
+      "dedupe_signature": "although are causal checked further individual links supported the we",
+      "rank": 7,
+      "gap_description": "Although individual causal links are supported (We further checked the altered signaling pathway in METTL14-deficient iTregs. We and Treg defects play a key permissive role in autoimmune disease pathogenesis by fa), the transitive relationship has not been directly validated.",
+      "exploration_value_score": 10,
+      "raw_exploration_value_score": 10,
+      "importance": "high",
+      "tractability": "medium",
+      "strategic_alignment": [
+        {
+          "strategic_domain": "Treg Development and Function",
+          "matched_keywords": [
+            "treg"
+          ],
+          "alignment_score": 6
+        },
+        {
+          "strategic_domain": "Cytokine Signaling in Immune Homeostasis",
+          "matched_keywords": [
+            "signaling",
+            "immune"
+          ],
+          "alignment_score": 8
+        },
+        {
+          "strategic_domain": "Metabolic Pathways in Immune Regulation",
+          "matched_keywords": [
+            "immune"
+          ],
+          "alignment_score": 6
+        },
+        {
+          "strategic_domain": "Genetic Variants Impacting Immune Homeostasis",
+          "matched_keywords": [
+            "immune"
+          ],
+          "alignment_score": 6
+        },
+        {
+          "strategic_domain": "Cross-Species and Cross-Tissue Conservation of Immune Mechanisms",
+          "matched_keywords": [
+            "immune"
+          ],
+          "alignment_score": 6
+        }
+      ],
+      "recommended_approach": "Conduct an end-to-end study that directly tests the transitive causal relationship with intermediate variable monitoring.",
+      "ranking_reason": "novelty=5, refs=2, application=medium, feasibility=medium, type=implicit_tabi, strategic_matches=5, density_bonus=1 Gap is grounded in core mechanism evidence.",
+      "mechanism_relevance": {
+        "score": 0.958,
+        "eligible_for_mechanism_hypothesis": true,
+        "core_entity_hits": [
+          "autoimmune",
+          "disease",
+          "pathogenesis",
+          "pathway",
+          "role",
+          "signaling",
+          "that",
+          "treg"
+        ],
+        "profile_record_count": 20,
+        "reason": "Gap is grounded in core mechanism evidence."
+      },
+      "counterfactual_tree": {
+        "root": "2 evidence conditions unmet",
+        "branches": [
+          {
+            "condition": "Study: Regulatory T cells and their role in inflammatory bowel disease: molecular targe...[truncated]",
+            "missing": "Limitation: The review also discusses ongoing clinical trials and future opportunities involving omics-driven patient stratification, targeted delivery platforms,...[truncated]",
+            "counterfactual": "If limitation addressed, evidence base strengthens",
+            "leaf": false
+          },
+          {
+            "condition": "Study: Mettl14 sustains FOXP3 expression to promote the differentiation and functions o...[truncated]",
+            "missing": "Limitation: However, beyond meeting the epigenetic modification of Treg cells, whether Mettl14 plays a role in the fate determination of iTregs is unclear.",
+            "counterfactual": "If limitation addressed, evidence base strengthens",
+            "leaf": false
+          },
+          {
+            "condition": "Study: Regulatory T cells and their role in inflammatory bowel disease: molecular targe...[truncated]",
+            "missing": "Limitation: The review also discusses ongoing clinical trials and future opportunities involving omics-driven patient stratification, targeted delivery platforms,...[truncated]",
+            "counterfactual": "If limitation addressed, evidence base strengthens",
+            "leaf": false
+          },
+          {
+            "condition": "Study: Mettl14 sustains FOXP3 expression to promote the differentiation and functions o...[truncated]",
+            "missing": "Limitation: However, beyond meeting the epigenetic modification of Treg cells, whether Mettl14 plays a role in the fate determination of iTregs is unclear.",
+            "counterfactual": "If limitation addressed, evidence base strengthens",
+            "leaf": false
+          },
+          {
+            "condition": "Conflict: shared_terms=signaling,truncated",
+            "missing": "Warrant: Evidence establishes separate causal links that share intermediate terms (shared_terms=signaling,truncated). If A→B and B→C are independently supporte...[truncated]",
+            "counterfactual": "If controlled experiment resolved conflict, gap disappears",
+            "leaf": true
+          },
+          {
+            "condition": "Benchmarks: regulates the stability, immune balance, treg stability, suppressive function",
+            "missing": "No standardized benchmark",
+            "counterfactual": "If standard benchmark existed, gap could be quantitatively assessed",
+            "leaf": true
+          }
+        ],
+        "leaf_conditions": [
+          "If controlled experiment resolved conflict, gap disappears",
+          "If standard benchmark existed, gap could be quantitatively assessed"
+        ],
+        "resolution_complexity": "medium",
+        "related_evidence_count": 4,
+        "missing_evidence_count": 1,
+        "gap_method": "the mtor signaling pathway",
+        "gap_scenario": "inflammatory bowel disease (ibd)"
+      },
+      "gap_resolution_type": "complement_gap",
+      "leaf_conditions": [
+        "If controlled experiment resolved conflict, gap disappears",
+        "If standard benchmark existed, gap could be quantitatively assessed"
+      ],
+      "resolution_complexity": "medium",
+      "mechanism_draft": {
+        "gap_id": "gap_1783805183121721200",
+        "input": "Although individual causal links are supported (We further checked the altered signaling pathway in METTL14-deficient iTregs. We and Treg defects play a key permissive role in autoimmune disease pathogenesis by fa), the transitive relationship has not been directly validated.",
+        "proposed_mediator": "unresolved",
+        "output": "unresolved",
+        "source_clue": "",
+        "unresolved_fields": [
+          "identity",
+          "location_or_scope",
+          "dynamics",
+          "reversibility",
+          "observability",
+          "intervention",
+          "counterfactual"
+        ],
+        "status": "draft_requires_socrates_evidence"
+      }
+    },
+    {
+      "gap_id": "gap_1783805154206956900",
+      "gap_type": "causal_chain_break",
+      "description": "Causal chain 'heuristic_1' from Yuan Zong et al. (2024) Regulation of Treg cells by cytokine signaling and co-stimulatory molecules doi:10.3389/fimmu.2024.1387975 has a missing intermediate_mechanism: Treg cell proliferation and survival under IL-2 signaling. The chain cannot support a causal hypothesis until this link is independently evidenced.",
+      "supporting_references": [
+        "Yuan Zong et al. (2024) Regulation of Treg cells by cytokine signaling and co-stimulatory molecules doi:10.3389/fimmu.2024.1387975"
+      ],
+      "novelty_score": 4,
+      "application_value": "medium",
+      "feasibility": "medium",
+      "suggested_research_path": "Collect an intermediate mechanism measured or derived between trigger and outcome; then test an intervention and a matched control that can distinguish this chain from competing explanations.",
+      "value_argument": "A broken causal link is a direct, falsifiable research opening rather than a sparse method-scenario combination.",
+      "status": "candidate",
+      "createdAt": 1783805154.2069633,
+      "hypothesis_ingredients": {
+        "methods": [
+          "The exploration and deployment of therapeutics targeting Tregs are extensive, chieﬂy be"
+        ],
+        "scenarios": [
+          "Treg cell proliferation and survival under IL-2 signaling"
+        ],
+        "benchmarks": [
+          "these cells express an array of receptors on their surface."
+        ],
+        "numerical_bounds": [],
+        "operating_conditions": [],
+        "measurable_metrics": []
+      },
+      "counterfactual_leaves": [],
+      "causal_gap": {
+        "chain_id": "heuristic_1",
+        "paper_id": "paper_1783803235201058800",
+        "missing_kind": "intermediate_mechanism",
+        "evidence_needed": "an intermediate mechanism measured or derived between trigger and outcome",
+        "trigger": "The exploration and deployment of therapeutics targeting Tregs are extensive, chieﬂy be",
+        "outcome": "these cells express an array of receptors on their surface."
+      },
+      "sub_hypothesis_id": "SH1",
+      "priority": "high",
+      "assessment_dimensions": [
+        "academic novelty",
+        "application value",
+        "implementation feasibility"
+      ],
+      "overlap_risk": "medium",
+      "strongest_overlap": 0.4545,
+      "literature_coverage_factor": 0.8303,
+      "assessment_reason": "refs=1, gap_type=causal_chain_break, strongest_local_overlap=0.455, coverage=0.83, feasibility=medium, application_value=medium, semantic_plausibility=not_run",
+      "requires_human_review": false,
+      "dedupe_signature": "2024 al causal chain et from heuristic_1 regulation yuan zong",
+      "deduped_from": 2,
+      "rank": 8,
+      "gap_description": "Causal chain 'heuristic_1' from Yuan Zong et al. (2024) Regulation of Treg cells by cytokine signaling and co-stimulatory molecules doi:10.3389/fimmu.2024.1387975 has a missing intermediate_mechanism: Treg cell proliferation and survival under IL-2 signaling. The chain cannot support a causal hypothesis until this link is independently evidenced.",
+      "exploration_value_score": 10,
+      "raw_exploration_value_score": 10,
+      "importance": "high",
+      "tractability": "medium",
+      "strategic_alignment": [
+        {
+          "strategic_domain": "Treg Development and Function",
+          "matched_keywords": [
+            "treg"
+          ],
+          "alignment_score": 6
+        },
+        {
+          "strategic_domain": "Cytokine Signaling in Immune Homeostasis",
+          "matched_keywords": [
+            "cytokine",
+            "signaling"
+          ],
+          "alignment_score": 8
+        },
+        {
+          "strategic_domain": "Metabolic Pathways in Immune Regulation",
+          "matched_keywords": [
+            "regulation"
+          ],
+          "alignment_score": 6
+        }
+      ],
+      "recommended_approach": "Collect an intermediate mechanism measured or derived between trigger and outcome; then test an intervention and a matched control that can distinguish this chain from competing explanations.",
+      "ranking_reason": "novelty=4, refs=1, application=medium, feasibility=medium, type=causal_chain_break, strategic_matches=3, density_bonus=1 Gap is grounded in core mechanism evidence.",
+      "mechanism_relevance": {
+        "score": 1.0,
+        "eligible_for_mechanism_hypothesis": true,
+        "core_entity_hits": [
+          "between",
+          "cell",
+          "cells",
+          "control",
+          "cytokine",
+          "il-2",
+          "molecules",
+          "regulation",
+          "signaling",
+          "support",
+          "that",
+          "their"
+        ],
+        "profile_record_count": 20,
+        "reason": "Gap is grounded in core mechanism evidence."
+      },
+      "counterfactual_tree": {
+        "root": "Single validation missing: If standard benchmark existed, gap could be quantitatively assessed",
+        "branches": [
+          {
+            "condition": "Study: Catalpol enhances mTORC1/HIF-1α/PDHK1-mediated oxidative metabolism that leads t...[truncated]",
+            "missing": "Limitation: In this study, the effects of Catalpol (CAT) on Treg differentiation and its underlying mechanisms were investigated using a CIA mouse model, with ani...[truncated]",
+            "counterfactual": "If limitation addressed, evidence base strengthens",
+            "leaf": false
+          },
+          {
+            "condition": "Study: ZFP36-family RNA-binding proteins in regulatory T cells reinforce immune homeost...[truncated]",
+            "missing": "Limitation: Our results indicate that ZFP36L1 and ZFP36L2 regulate the availability of IFNγ and are required for the maintenance of Treg cell stability.",
+            "counterfactual": "If limitation addressed, evidence base strengthens",
+            "leaf": false
+          },
+          {
+            "condition": "Study: Catalpol enhances mTORC1/HIF-1α/PDHK1-mediated oxidative metabolism that leads t...[truncated]",
+            "missing": "Limitation: In this study, the effects of Catalpol (CAT) on Treg differentiation and its underlying mechanisms were investigated using a CIA mouse model, with ani...[truncated]",
+            "counterfactual": "If limitation addressed, evidence base strengthens",
+            "leaf": false
+          },
+          {
+            "condition": "Study: ZFP36-family RNA-binding proteins in regulatory T cells reinforce immune homeost...[truncated]",
+            "missing": "Limitation: Our results indicate that ZFP36L1 and ZFP36L2 regulate the availability of IFNγ and are required for the maintenance of Treg cell stability.",
+            "counterfactual": "If limitation addressed, evidence base strengthens",
+            "leaf": false
+          },
+          {
+            "condition": "Benchmarks: a cia mouse model, biological activity",
+            "missing": "No standardized benchmark",
+            "counterfactual": "If standard benchmark existed, gap could be quantitatively assessed",
+            "leaf": true
+          }
+        ],
+        "leaf_conditions": [
+          "If standard benchmark existed, gap could be quantitatively assessed"
+        ],
+        "resolution_complexity": "low",
+        "related_evidence_count": 4,
+        "missing_evidence_count": 1,
+        "gap_method": "treg cell-restricted deletion of zfp36 family members",
+        "gap_scenario": "rheumatoid arthritis, treg cell differentiation"
+      },
+      "gap_resolution_type": "complement_gap",
+      "leaf_conditions": [
+        "If standard benchmark existed, gap could be quantitatively assessed"
+      ],
+      "resolution_complexity": "low",
+      "tabi_checks": {
+        "theory_consistency": {
+          "status": "insufficient_comparison",
+          "theory_evidence": [],
+          "empirical_evidence": []
+        },
+        "counterfactual": {
+          "status": "needs_variable",
+          "condition": "Extract a controllable variable from the linked studies."
+        },
+        "mechanism_competition": {
+          "candidates": [
+            "literature review"
+          ],
+          "status": "needs_competing_mechanism_evidence"
+        },
+        "evidence_gap": [
+          "No theory/model source is linked to this gap.",
+          "No empirical/observational source is linked to this gap.",
+          "The source pair does not yet establish a theory--observation contradiction."
+        ],
+        "testable_prediction": "No quantitative prediction is asserted until a controllable variable and matched evidence are retrieved.",
+        "contradiction_score": 0,
+        "substantive": false,
+        "required_directed_retrieval": [
+          "theory or simulation prediction",
+          "matched experimental or observational measurement"
+        ]
+      },
+      "mechanism_draft": {
+        "gap_id": "gap_1783805154206956900",
+        "input": "The exploration and deployment of therapeutics targeting Tregs are extensive, chieﬂy be Treg cell proliferation and survival under IL-2 signaling",
+        "proposed_mediator": "unresolved",
+        "output": "these cells express an array of receptors on their surface.",
+        "source_clue": "",
+        "unresolved_fields": [
+          "identity",
+          "location_or_scope",
+          "dynamics",
+          "reversibility",
+          "observability",
+          "intervention",
+          "counterfactual"
+        ],
+        "status": "draft_requires_socrates_evidence"
+      }
+    },
+    {
+      "gap_id": "gap_1783805182975033800",
+      "gap_type": "migration",
+      "description": "Cross-disciplinary unconnected pair: 'agent workflow' from biomedical and 'literature review' from ecology have no recorded bridge in the current PaperGraph.",
+      "supporting_references": [
+        "I. Solomon et al. (2020) CD25-Treg-depleting antibodies preserving IL-2 signaling on effector T cells enhance effector activation and antitumor immunity doi:10.1038/s43018-020-00133-0",
+        "Yuan Zong et al. (2024) Regulation of Treg cells by cytokine signaling and co-stimulatory molecules doi:10.3389/fimmu.2024.1387975",
+        "Yanzhuo Liu et al. (2023) Mettl14 sustains FOXP3 expression to promote the differentiation and functions of induced-regulatory T cells via the mTOR signaling pathway. doi:10.1016/j.imlet.2023.04.008",
+        "Lingling Wang et al. (2025) Regulatory T cells in homeostasis and disease: molecular mechanisms and therapeutic potential doi:10.1038/s41392-025-02326-4"
+      ],
+      "novelty_score": 8,
+      "application_value": "medium",
+      "feasibility": "medium",
+      "suggested_research_path": "Formulate a transfer hypothesis, audit incompatible assumptions, then run a minimal bridge experiment or benchmark.",
+      "value_argument": "Testing whether agent workflow can constrain, evaluate, or operationalize literature review for Immunology / Systems Biology / T Cell Biology / Cytokine Signaling / Regulatory T Cells (Tregs) / Immune Checkpoints / Inflammation / Autoimmunity / Tumor Immunology / Single-cell Multi-omics / Functional Assays / Mathematical Modeling / Translational Medicine may reveal a non-obvious transfer path or boundary condition.",
+      "status": "candidate",
+      "createdAt": 1783805182.975036,
+      "hypothesis_ingredients": {
+        "methods": [],
+        "scenarios": [],
+        "benchmarks": [],
+        "numerical_bounds": [],
+        "operating_conditions": [],
+        "measurable_metrics": []
+      },
+      "counterfactual_leaves": [],
+      "assessment_dimensions": [
+        "academic novelty",
+        "application value",
+        "implementation feasibility"
+      ],
+      "overlap_risk": "low",
+      "strongest_overlap": 0.2143,
+      "literature_coverage_factor": 0.4333,
+      "assessment_reason": "refs=2, gap_type=migration, strongest_local_overlap=0.214, coverage=0.433, feasibility=medium, application_value=medium, semantic_plausibility=not_run",
+      "requires_human_review": false,
+      "semantic_plausibility": {
+        "verdict": "PASS",
+        "score": 0.61,
+        "requirements": [],
+        "scenario_affordances": [
+          "graph",
+          "image",
+          "intervention",
+          "molecular",
+          "omics",
+          "sequence",
+          "spatial_context",
+          "spatial_coordinates"
+        ],
+        "bridge_terms": [
+          "multi-omics",
+          "benchmark dataset"
+        ],
+        "score_breakdown": [
+          {
+            "factor": "base_prior",
+            "delta": 0.45,
+            "reason": "default prior before evidence checks"
+          },
+          {
+            "factor": "bridge_terms",
+            "delta": 0.16,
+            "reason": "2 bridge concept(s) detected"
+          }
+        ],
+        "reason": "bridge concepts detected: multi-omics, benchmark dataset"
+      },
+      "dedupe_signature": "agent and biomedical cross-disciplinary from from pair review unconnected workflow",
+      "deduped_from": 2,
+      "rank": 9,
+      "gap_description": "Cross-disciplinary unconnected pair: 'agent workflow' from biomedical and 'literature review' from ecology have no recorded bridge in the current PaperGraph.",
+      "exploration_value_score": 10,
+      "raw_exploration_value_score": 10,
+      "importance": "high",
+      "tractability": "medium",
+      "strategic_alignment": [
+        {
+          "strategic_domain": "Treg Development and Function",
+          "matched_keywords": [
+            "treg",
+            "function"
+          ],
+          "alignment_score": 8
+        },
+        {
+          "strategic_domain": "Cytokine Signaling in Immune Homeostasis",
+          "matched_keywords": [
+            "cytokine",
+            "signaling",
+            "immune"
+          ],
+          "alignment_score": 10
+        },
+        {
+          "strategic_domain": "Metabolic Pathways in Immune Regulation",
+          "matched_keywords": [
+            "immune"
+          ],
+          "alignment_score": 6
+        },
+        {
+          "strategic_domain": "Genetic Variants Impacting Immune Homeostasis",
+          "matched_keywords": [
+            "immune"
+          ],
+          "alignment_score": 6
+        },
+        {
+          "strategic_domain": "Cross-Species and Cross-Tissue Conservation of Immune Mechanisms",
+          "matched_keywords": [
+            "immune"
+          ],
+          "alignment_score": 6
+        }
+      ],
+      "recommended_approach": "Formulate a transfer hypothesis, audit incompatible assumptions, then run a minimal bridge experiment or benchmark.",
+      "ranking_reason": "novelty=8, refs=4, application=medium, feasibility=medium, type=migration, strategic_matches=5, density_bonus=1 Gap is grounded in core mechanism evidence.",
+      "mechanism_relevance": {
+        "score": 1.0,
+        "eligible_for_mechanism_hypothesis": true,
+        "core_entity_hits": [
+          "cell",
+          "cells",
+          "cytokine",
+          "functional",
+          "immune",
+          "inflammation",
+          "regulatory",
+          "signaling",
+          "translational",
+          "tregs"
+        ],
+        "profile_record_count": 20,
+        "reason": "Gap is grounded in core mechanism evidence."
+      },
+      "counterfactual_tree": {
+        "root": "Single validation missing: If standard benchmark existed, gap could be quantitatively assessed",
+        "branches": [
+          {
+            "condition": "Study: Regulation of Treg cells by cytokine signaling and co-stimulatory molecules",
+            "missing": "Limitation: 10.3389/fimmu.2024.1387975 [SECTION: Funding | pages 10] domains; CTLA, Cytotoxic T lymphocyte-associated antigen; GITR, Glucocorticoid-induced tumor...[truncated]",
+            "counterfactual": "If limitation addressed, evidence base strengthens",
+            "leaf": false
+          },
+          {
+            "condition": "Study: Regulation of Treg cells by cytokine signaling and co-stimulatory molecules",
+            "missing": "Limitation: 10.3389/fimmu.2024.1387975 [SECTION: Funding | pages 10] domains; CTLA, Cytotoxic T lymphocyte-associated antigen; GITR, Glucocorticoid-induced tumor...[truncated]",
+            "counterfactual": "If limitation addressed, evidence base strengthens",
+            "leaf": false
+          },
+          {
+            "condition": "Benchmarks: understanding of treg regulation and therapeutic potential",
+            "missing": "No standardized benchmark",
+            "counterfactual": "If standard benchmark existed, gap could be quantitatively assessed",
+            "leaf": true
+          }
+        ],
+        "leaf_conditions": [
+          "If standard benchmark existed, gap could be quantitatively assessed"
+        ],
+        "resolution_complexity": "low",
+        "related_evidence_count": 2,
+        "missing_evidence_count": 0,
+        "gap_method": "literature review",
+        "gap_scenario": ""
+      },
+      "gap_resolution_type": "complement_gap",
+      "leaf_conditions": [
+        "If standard benchmark existed, gap could be quantitatively assessed"
+      ],
+      "resolution_complexity": "low",
+      "tabi_checks": {
+        "theory_consistency": {
+          "status": "insufficient_comparison",
+          "theory_evidence": [],
+          "empirical_evidence": []
+        },
+        "counterfactual": {
+          "status": "needs_variable",
+          "condition": "Extract a controllable variable from the linked studies."
+        },
+        "mechanism_competition": {
+          "candidates": [
+            "literature review",
+            "agent workflow",
+            "the mtor signaling pathway"
+          ],
+          "status": "compare_candidates"
+        },
+        "evidence_gap": [
+          "No theory/model source is linked to this gap.",
+          "No empirical/observational source is linked to this gap.",
+          "The source pair does not yet establish a theory--observation contradiction."
+        ],
+        "testable_prediction": "No quantitative prediction is asserted until a controllable variable and matched evidence are retrieved.",
+        "contradiction_score": 0,
+        "substantive": false,
+        "required_directed_retrieval": [
+          "theory or simulation prediction",
+          "matched experimental or observational measurement"
+        ]
+      },
+      "mechanism_draft": {
+        "gap_id": "gap_1783805182975033800",
+        "input": "Cross-disciplinary unconnected pair: 'agent workflow' from biomedical and 'literature review' from ecology have no recorded bridge in the current PaperGraph.",
+        "proposed_mediator": "unresolved",
+        "output": "unresolved",
+        "source_clue": "",
+        "unresolved_fields": [
+          "identity",
+          "location_or_scope",
+          "dynamics",
+          "reversibility",
+          "observability",
+          "intervention",
+          "counterfactual"
+        ],
+        "status": "draft_requires_socrates_evidence"
+      }
+    },
+    {
+      "gap_id": "gap_1783805183022033600",
+      "gap_type": "migration",
+      "description": "Cross-disciplinary unconnected pair: 'antitumor immunity in human cancers' from biomedical and 'immunosuppressive properties' from ecology have no recorded bridge in the current PaperGraph.",
+      "supporting_references": [
+        "I. Solomon et al. (2020) CD25-Treg-depleting antibodies preserving IL-2 signaling on effector T cells enhance effector activation and antitumor immunity doi:10.1038/s43018-020-00133-0",
+        "Lingling Wang et al. (2025) Regulatory T cells in homeostasis and disease: molecular mechanisms and therapeutic potential doi:10.1038/s41392-025-02326-4"
+      ],
+      "novelty_score": 7,
+      "application_value": "medium",
+      "feasibility": "medium",
+      "suggested_research_path": "Formulate a transfer hypothesis, audit incompatible assumptions, then run a minimal bridge experiment or benchmark.",
+      "value_argument": "Testing whether antitumor immunity in human cancers can constrain, evaluate, or operationalize immunosuppressive properties for Immunology / Systems Biology / T Cell Biology / Cytokine Signaling / Regulatory T Cells (Tregs) / Immune Checkpoints / Inflammation / Autoimmunity / Tumor Immunology / Single-cell Multi-omics / Functional Assays / Mathematical Modeling / Translational Medicine may reveal a non-obvious transfer path or boundary condition.",
+      "status": "candidate",
+      "createdAt": 1783805183.022036,
+      "hypothesis_ingredients": {
+        "methods": [],
+        "scenarios": [],
+        "benchmarks": [],
+        "numerical_bounds": [],
+        "operating_conditions": [],
+        "measurable_metrics": []
+      },
+      "counterfactual_leaves": [],
+      "assessment_dimensions": [
+        "academic novelty",
+        "application value",
+        "implementation feasibility"
+      ],
+      "overlap_risk": "low",
+      "strongest_overlap": 0.3125,
+      "literature_coverage_factor": 0.4667,
+      "assessment_reason": "refs=2, gap_type=migration, strongest_local_overlap=0.312, coverage=0.467, feasibility=medium, application_value=medium, semantic_plausibility=not_run",
+      "requires_human_review": false,
+      "semantic_plausibility": {
+        "verdict": "PASS",
+        "score": 0.61,
+        "requirements": [],
+        "scenario_affordances": [
+          "graph",
+          "image",
+          "intervention",
+          "molecular",
+          "omics",
+          "sequence",
+          "spatial_context",
+          "spatial_coordinates"
+        ],
+        "bridge_terms": [
+          "multi-omics",
+          "benchmark dataset"
+        ],
+        "score_breakdown": [
+          {
+            "factor": "base_prior",
+            "delta": 0.45,
+            "reason": "default prior before evidence checks"
+          },
+          {
+            "factor": "bridge_terms",
+            "delta": 0.16,
+            "reason": "2 bridge concept(s) detected"
+          }
+        ],
+        "reason": "bridge concepts detected: multi-omics, benchmark dataset"
+      },
+      "dedupe_signature": "antitumor biomedical cancers cross-disciplinary from human immunity in pair unconnected",
+      "rank": 10,
+      "gap_description": "Cross-disciplinary unconnected pair: 'antitumor immunity in human cancers' from biomedical and 'immunosuppressive properties' from ecology have no recorded bridge in the current PaperGraph.",
+      "exploration_value_score": 10,
+      "raw_exploration_value_score": 10,
+      "importance": "high",
+      "tractability": "medium",
+      "strategic_alignment": [
+        {
+          "strategic_domain": "Treg Development and Function",
+          "matched_keywords": [
+            "treg",
+            "function"
+          ],
+          "alignment_score": 8
+        },
+        {
+          "strategic_domain": "Cytokine Signaling in Immune Homeostasis",
+          "matched_keywords": [
+            "cytokine",
+            "signaling",
+            "immune"
+          ],
+          "alignment_score": 10
+        },
+        {
+          "strategic_domain": "Metabolic Pathways in Immune Regulation",
+          "matched_keywords": [
+            "immune"
+          ],
+          "alignment_score": 6
+        },
+        {
+          "strategic_domain": "Genetic Variants Impacting Immune Homeostasis",
+          "matched_keywords": [
+            "immune"
+          ],
+          "alignment_score": 6
+        },
+        {
+          "strategic_domain": "Cross-Species and Cross-Tissue Conservation of Immune Mechanisms",
+          "matched_keywords": [
+            "immune"
+          ],
+          "alignment_score": 6
+        }
+      ],
+      "recommended_approach": "Formulate a transfer hypothesis, audit incompatible assumptions, then run a minimal bridge experiment or benchmark.",
+      "ranking_reason": "novelty=7, refs=2, application=medium, feasibility=medium, type=migration, strategic_matches=5, density_bonus=1 Gap is grounded in core mechanism evidence.",
+      "mechanism_relevance": {
+        "score": 1.0,
+        "eligible_for_mechanism_hypothesis": true,
+        "core_entity_hits": [
+          "cell",
+          "cells",
+          "cytokine",
+          "functional",
+          "immune",
+          "inflammation",
+          "regulatory",
+          "signaling",
+          "translational",
+          "tregs"
+        ],
+        "profile_record_count": 20,
+        "reason": "Gap is grounded in core mechanism evidence."
+      },
+      "counterfactual_tree": {
+        "root": "Single validation missing: If standard benchmark existed, gap could be quantitatively assessed",
+        "branches": [
+          {
+            "condition": "Study: CD25-Treg-depleting antibodies preserving IL-2 signaling on effector T cells enh...[truncated]",
+            "missing": "Limitation: the final effector of Treg depletion in vivo in humans would likely differ between tumour types, depending on the presence of innate effector subsets",
+            "counterfactual": "If limitation addressed, evidence base strengthens",
+            "leaf": false
+          },
+          {
+            "condition": "Study: Regulatory T cells in homeostasis and disease: molecular mechanisms and therapeu...[truncated]",
+            "missing": "Limitation: challenges persist, including achieving tissue-specific targeting, ensuring the functional stability of engineered Tregs, and minimizing off-target ef...[truncated]",
+            "counterfactual": "If limitation addressed, evidence base strengthens",
+            "leaf": false
+          },
+          {
+            "condition": "Study: CD25-Treg-depleting antibodies preserving IL-2 signaling on effector T cells enh...[truncated]",
+            "missing": "Limitation: the final effector of Treg depletion in vivo in humans would likely differ between tumour types, depending on the presence of innate effector subsets",
+            "counterfactual": "If limitation addressed, evidence base strengthens",
+            "leaf": false
+          },
+          {
+            "condition": "Study: Regulatory T cells in homeostasis and disease: molecular mechanisms and therapeu...[truncated]",
+            "missing": "Limitation: challenges persist, including achieving tissue-specific targeting, ensuring the functional stability of engineered Tregs, and minimizing off-target ef...[truncated]",
+            "counterfactual": "If limitation addressed, evidence base strengthens",
+            "leaf": false
+          },
+          {
+            "condition": "Benchmarks: immune balance, event frequency",
+            "missing": "No standardized benchmark",
+            "counterfactual": "If standard benchmark existed, gap could be quantitatively assessed",
+            "leaf": true
+          }
+        ],
+        "leaf_conditions": [
+          "If standard benchmark existed, gap could be quantitatively assessed"
+        ],
+        "resolution_complexity": "low",
+        "related_evidence_count": 4,
+        "missing_evidence_count": 1,
+        "gap_method": "immunosuppressive properties",
+        "gap_scenario": "antitumor immunity in human cancers"
+      },
+      "gap_resolution_type": "complement_gap",
+      "leaf_conditions": [
+        "If standard benchmark existed, gap could be quantitatively assessed"
+      ],
+      "resolution_complexity": "low",
+      "tabi_checks": {
+        "theory_consistency": {
+          "status": "insufficient_comparison",
+          "theory_evidence": [],
+          "empirical_evidence": []
+        },
+        "counterfactual": {
+          "status": "needs_variable",
+          "condition": "Extract a controllable variable from the linked studies."
+        },
+        "mechanism_competition": {
+          "candidates": [
+            "agent workflow",
+            "immunosuppressive properties"
+          ],
+          "status": "compare_candidates"
+        },
+        "evidence_gap": [
+          "No theory/model source is linked to this gap.",
+          "No empirical/observational source is linked to this gap.",
+          "The source pair does not yet establish a theory--observation contradiction."
+        ],
+        "testable_prediction": "No quantitative prediction is asserted until a controllable variable and matched evidence are retrieved.",
+        "contradiction_score": 0,
+        "substantive": false,
+        "required_directed_retrieval": [
+          "theory or simulation prediction",
+          "matched experimental or observational measurement"
+        ]
+      },
+      "mechanism_draft": {
+        "gap_id": "gap_1783805183022033600",
+        "input": "Cross-disciplinary unconnected pair: 'antitumor immunity in human cancers' from biomedical and 'immunosuppressive properties' from ecology have no recorded bridge in the current PaperGraph.",
+        "proposed_mediator": "unresolved",
+        "output": "unresolved",
+        "source_clue": "",
+        "unresolved_fields": [
+          "identity",
+          "location_or_scope",
+          "dynamics",
+          "reversibility",
+          "observability",
+          "intervention",
+          "counterfactual"
+        ],
+        "status": "draft_requires_socrates_evidence"
+      }
+    }
+  ],
+  "constraints_checked": {
+    "requires_supporting_reference": true,
+    "filters_trivial_low_novelty": true,
+    "max_gaps": 10
+  }
+}

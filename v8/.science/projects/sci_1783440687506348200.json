@@ -1,0 +1,424 @@
+{
+  "project_id": "sci_1783440687506348200",
+  "title": "LCO mechanism smoke",
+  "domain": "high-voltage lithium cobalt oxide battery technology",
+  "objective": "verify high-voltage lithium battery performance",
+  "strategic_need": "",
+  "phase": "Gap Discovery",
+  "createdAt": 1783440687.5063522,
+  "updatedAt": 1783440687.5232565,
+  "papergraph": [
+    {
+      "title": "High-voltage LiCoO2 cathode",
+      "citation": "LCO Ref",
+      "method": "surface coating",
+      "scenario": "high-voltage LiCoO2 cathode cycling",
+      "benchmark": "capacity retention at 4.6 V",
+      "abstract": "High-voltage LiCoO2 suffers oxygen release, surface reconstruction, electrolyte oxidation and interfacial degradation. The mechanism of capacity fading remains unclear under high voltage cycling.",
+      "limitation": "Interfacial degradation and oxygen release remain unclear at high voltage.",
+      "extraction_quality": {
+        "score": 0.88,
+        "unknown_ratio": 0.0,
+        "unknown_fields": [],
+        "abstract_chars": 195,
+        "flags": [
+          "short_abstract",
+          "missing_conclusion"
+        ],
+        "needs_enrichment": false,
+        "needs_llm_retry": false,
+        "requires_human_review": false,
+        "initial": {
+          "score": 0.88,
+          "unknown_ratio": 0.0,
+          "unknown_fields": [],
+          "abstract_chars": 195,
+          "flags": [
+            "short_abstract",
+            "missing_conclusion"
+          ],
+          "needs_enrichment": false,
+          "needs_llm_retry": false,
+          "requires_human_review": false
+        },
+        "llm_retry": {
+          "attempted": false,
+          "succeeded": false,
+          "error": ""
+        }
+      },
+      "contribution": "High-voltage LiCoO2 cathode High-voltage LiCoO2 suffers oxygen release, surface reconstruction, electrolyte oxidation and interfacial degradation."
+    }
+  ],
+  "evidence": [],
+  "coverage_matrix": {
+    "surface coating": {
+      "high-voltage LiCoO2 cathode cycling": [
+        "LCO Ref"
+      ]
+    }
+  },
+  "knowledge_gaps": [
+    {
+      "gap_id": "gap_1783440687517528200",
+      "gap_type": "mechanism_problem",
+      "description": "Source-grounded mechanism gap (interface degradation) for method=surface coating, scenario=high-voltage LiCoO2 cathode cycling, benchmark=capacity retention at 4.6 V: High-voltage LiCoO2 cathode High-voltage LiCoO2 suffers oxygen release, surface reconstruction, electrolyte oxidation and interfacial degradation.",
+      "supporting_references": [
+        "LCO Ref"
+      ],
+      "novelty_score": 4,
+      "application_value": "high",
+      "feasibility": "high",
+      "suggested_research_path": "Isolate interfacial degradation pathways with surface/structure diagnostics and test protective modifications under accelerated stress.",
+      "value_argument": "This gap is grounded in a source-level mechanism/limitation/challenge statement, so it should outrank bare method-scenario matrix holes.",
+      "status": "candidate",
+      "createdAt": 1783440687.5175343,
+      "assessment_dimensions": [
+        "academic novelty",
+        "application value",
+        "implementation feasibility"
+      ],
+      "overlap_risk": "high",
+      "strongest_overlap": 0.7391,
+      "literature_coverage_factor": 0.6174,
+      "assessment_reason": "refs=1, gap_type=mechanism_problem, strongest_local_overlap=0.739, coverage=0.617, feasibility=high, application_value=high, semantic_plausibility=not_run",
+      "requires_human_review": true,
+      "mechanism_issue_signal": {
+        "axis": "interface_degradation",
+        "source_text": "High-voltage LiCoO2 cathode High-voltage LiCoO2 suffers oxygen release, surface reconstruction, electrolyte oxidation and interfacial degradation.",
+        "signal_type": "mechanism_issue",
+        "confidence": 0.9
+      },
+      "dedupe_signature": "coating degradation for gap high-voltage interface licoo2 mechanism source-grounded surface",
+      "deduped_from": 2,
+      "tanxi_rank": 4,
+      "exploration_value_score": 10,
+      "ranking_reason": "novelty=4, refs=1, application=high, feasibility=high, type=mechanism_problem, strategic_matches=0, density_bonus=1",
+      "strategic_alignment": [],
+      "recommended_approach": "Isolate interfacial degradation pathways with surface/structure diagnostics and test protective modifications under accelerated stress."
+    },
+    {
+      "gap_id": "gap_1783440687518381700",
+      "gap_type": "mechanism_problem",
+      "description": "Source-grounded mechanism gap (high voltage stability) for method=surface coating, scenario=high-voltage LiCoO2 cathode cycling, benchmark=capacity retention at 4.6 V: The mechanism of capacity fading remains unclear under high voltage cycling.",
+      "supporting_references": [
+        "LCO Ref"
+      ],
+      "novelty_score": 4,
+      "application_value": "high",
+      "feasibility": "high",
+      "suggested_research_path": "Run high-voltage stress tests with structural, interfacial, and electrochemical readouts to separate capacity retention from mechanism fidelity.",
+      "value_argument": "This gap is grounded in a source-level mechanism/limitation/challenge statement, so it should outrank bare method-scenario matrix holes.",
+      "status": "candidate",
+      "createdAt": 1783440687.5183835,
+      "assessment_dimensions": [
+        "academic novelty",
+        "application value",
+        "implementation feasibility"
+      ],
+      "overlap_risk": "high",
+      "strongest_overlap": 0.7143,
+      "literature_coverage_factor": 0.6,
+      "assessment_reason": "refs=1, gap_type=mechanism_problem, strongest_local_overlap=0.714, coverage=0.6, feasibility=high, application_value=high, semantic_plausibility=not_run",
+      "requires_human_review": true,
+      "mechanism_issue_signal": {
+        "axis": "high_voltage_stability",
+        "source_text": "The mechanism of capacity fading remains unclear under high voltage cycling.",
+        "signal_type": "mechanism_issue",
+        "confidence": 0.9
+      },
+      "dedupe_signature": "coating for gap high high-voltage mechanism source-grounded stability surface voltage",
+      "tanxi_rank": 3,
+      "exploration_value_score": 10,
+      "ranking_reason": "novelty=4, refs=1, application=high, feasibility=high, type=mechanism_problem, strategic_matches=0, density_bonus=1",
+      "strategic_alignment": [],
+      "recommended_approach": "Run high-voltage stress tests with structural, interfacial, and electrochemical readouts to separate capacity retention from mechanism fidelity."
+    },
+    {
+      "gap_id": "gap_1783440687518848300",
+      "gap_type": "problem",
+      "description": "Source literature indicates a recognized unresolved problem: High-voltage LiCoO2 suffers oxygen release, surface reconstruction, electrolyte oxidation and interfacial degradation. The mechanism of capacity fading remains unclear under high voltage cycling. Interfacial degradation and oxygen release remain unclear at hig...[truncated]",
+      "supporting_references": [
+        "LCO Ref"
+      ],
+      "novelty_score": 4,
+      "application_value": "high",
+      "feasibility": "medium",
+      "suggested_research_path": "Translate the unresolved problem into a falsifiable hypothesis with acceptance criteria and failure diagnostics.",
+      "value_argument": "Problem gaps are grounded in explicit source statements about unresolved mechanisms or practical bottlenecks.",
+      "status": "candidate",
+      "createdAt": 1783440687.518851,
+      "assessment_dimensions": [
+        "academic novelty",
+        "application value",
+        "implementation feasibility"
+      ],
+      "overlap_risk": "high",
+      "strongest_overlap": 0.7241,
+      "literature_coverage_factor": 0.6069,
+      "assessment_reason": "refs=1, gap_type=problem, strongest_local_overlap=0.724, coverage=0.607, feasibility=medium, application_value=high, semantic_plausibility=not_run",
+      "requires_human_review": true,
+      "dedupe_signature": "a electrolyte high-voltage licoo2 oxygen recognized reconstruction release suffers surface",
+      "tanxi_rank": 2,
+      "exploration_value_score": 10,
+      "ranking_reason": "novelty=4, refs=1, application=high, feasibility=medium, type=problem, strategic_matches=0, density_bonus=1",
+      "strategic_alignment": [],
+      "recommended_approach": "Translate the unresolved problem into a falsifiable hypothesis with acceptance criteria and failure diagnostics."
+    }
+  ],
+  "hypotheses": [],
+  "keynotes": [],
+  "mechanism_reports": [],
+  "pipeline_tasks": [],
+  "knowledge_map": {
+    "dimension": "method-scenario-benchmark",
+    "main_methods": [
+      "surface coating"
+    ],
+    "main_scenarios": [
+      "high-voltage LiCoO2 cathode cycling"
+    ],
+    "main_benchmarks": [
+      "capacity retention at 4.6 V"
+    ],
+    "method_scenario_coverage": {
+      "surface coating": [
+        "high-voltage LiCoO2 cathode cycling"
+      ]
+    },
+    "benchmark_index": {
+      "capacity retention at 4.6 V": [
+        "LCO Ref"
+      ]
+    },
+    "method_scenario_benchmark": {
+      "surface coating": {
+        "high-voltage LiCoO2 cathode cycling": {
+          "capacity retention at 4.6 V": [
+            "LCO Ref"
+          ]
+        }
+      }
+    },
+    "method_scenario_benchmark_triples": [
+      {
+        "method": "surface coating",
+        "scenario": "high-voltage LiCoO2 cathode cycling",
+        "benchmark": "capacity retention at 4.6 V",
+        "references": [
+          "LCO Ref"
+        ],
+        "evidence_type_annotations": [
+          {
+            "claim_type": "methodological_description",
+            "claim": "surface coating",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "empirical_result",
+            "claim": "High-voltage LiCoO2 cathode High-voltage LiCoO2 suffers oxygen release, surface reconstruction, electrolyte oxidation and interfacial degradation.",
+            "support": "structured_field"
+          },
+          {
+            "claim_type": "author_opinion",
+            "claim": "Interfacial degradation and oxygen release remain unclear at high voltage.",
+            "support": "structured_field"
+          }
+        ]
+      }
+    ],
+    "claim_type_counts": {
+      "methodological_description": 1,
+      "empirical_result": 1,
+      "author_opinion": 1
+    },
+    "extraction_repair": {
+      "attempted": 0,
+      "repaired": 1,
+      "still_low_quality": 0,
+      "errors": []
+    },
+    "unknown_summary": {
+      "total_triples": 1,
+      "unknown_triples": 0
+    }
+  },
+  "knowledge_gap_filter": {
+    "min_novelty": 4,
+    "input_count": 3,
+    "rejected_count": 0,
+    "rejected": [],
+    "semantic_rejected_count": 0,
+    "semantic_rejected": []
+  },
+  "semantic_rejected_knowledge_gaps": [],
+  "tanxi_gap_analysis": {
+    "agent": "tanxi",
+    "target_domain": "high-voltage lithium cobalt oxide battery technology",
+    "thought": "TanXi scanned the PaperGraph for low-density but high-importance method-scenario-benchmark regions, claim contradictions, anomaly/tension signals, cross-disciplinary unconnected pairs, suspended unresolved problems, and strategic-need alignment.",
+    "action": {
+      "scan_coverage_density": {
+        "target_domain": "high-voltage lithium cobalt oxide battery technology"
+      },
+      "detect_reasoning_gaps": {
+        "types": [
+          "claim_contradiction",
+          "theory_evidence_anomaly"
+        ]
+      },
+      "find_unconnected_pairs": {
+        "target_domain": "high-voltage lithium cobalt oxide battery technology"
+      },
+      "detect_suspended_problems": {
+        "min_citation_threshold": 50
+      },
+      "prioritize_gaps": {
+        "criteria": [
+          "importance",
+          "tractability",
+          "strategic_value"
+        ]
+      },
+      "align_with_strategic_needs": {
+        "strategic_domains": [
+          "energy"
+        ]
+      }
+    },
+    "coverage_analysis": {
+      "target_domain": "high-voltage lithium cobalt oxide battery technology",
+      "method_count": 1,
+      "scenario_count": 1,
+      "benchmark_count": 1,
+      "dense_areas": [
+        {
+          "topic": "surface coating + high-voltage LiCoO2 cathode cycling",
+          "method": "surface coating",
+          "scenario": "high-voltage LiCoO2 cathode cycling",
+          "evidence_count": 1,
+          "benchmark_count": 1,
+          "importance_score": 7
+        }
+      ],
+      "density_holes": [
+        {
+          "topic": "surface coating + high-voltage LiCoO2 cathode cycling benchmark coverage",
+          "method": "surface coating",
+          "scenario": "high-voltage LiCoO2 cathode cycling",
+          "importance_score": 7,
+          "current_evidence_level": "medium",
+          "missing_benchmarks": [],
+          "why_important": "The method-scenario pair has evidence, but benchmark coverage is sparse, so robustness and generalization remain uncertain.",
+          "supporting_references": [
+            "LCO Ref"
+          ],
+          "semantic_plausibility": {
+            "verdict": "PASS",
+            "score": 0.8,
+            "requirements": [],
+            "scenario_affordances": [],
+            "bridge_terms": [],
+            "reason": "method and scenario already co-occur in at least one PaperGraph record"
+          }
+        }
+      ],
+      "rejected_density_holes": []
+    },
+    "reasoning_gaps": [],
+    "cross_disciplinary_unconnected_pairs": [],
+    "suspended_problems": [
+      {
+        "problem": "High-voltage LiCoO2 cathode High-voltage LiCoO2 suffers oxygen release, surface reconstruction, electrolyte oxidation and interfacial degradation. The mechanism of capacity fading remains unclear under high voltage cycling. Interfacial degradation and oxygen r...[truncated]",
+        "years_unresolved": 0,
+        "citation_count": 0,
+        "evidence_level": "unknown",
+        "barrier_to_progress": "mechanistic uncertainty",
+        "supporting_references": [
+          "LCO Ref"
+        ]
+      }
+    ],
+    "ranked_gaps": [
+      {
+        "rank": 1,
+        "gap_id": "gap_1783440687521318800",
+        "gap_description": "Density hole: 'surface coating' in 'high-voltage LiCoO2 cathode cycling' lacks benchmark coverage for .",
+        "gap_type": "improvement",
+        "exploration_value_score": 10,
+        "importance": "high",
+        "tractability": "high",
+        "strategic_alignment": [],
+        "supporting_references": [
+          "LCO Ref"
+        ],
+        "recommended_approach": "Use the dense neighboring literature as controls, then test the sparse intersection with explicit benchmark coverage.",
+        "ranking_reason": "novelty=5, refs=1, application=high, feasibility=high, type=improvement, strategic_matches=0, density_bonus=1"
+      },
+      {
+        "rank": 2,
+        "gap_id": "gap_1783440687518848300",
+        "gap_description": "Source literature indicates a recognized unresolved problem: High-voltage LiCoO2 suffers oxygen release, surface reconstruction, electrolyte oxidation and interfacial degradation. The mechanism of capacity fading remains unclear under high voltage cycling. Interfacial degradation and oxygen release remain unclear at hig...[truncated]",
+        "gap_type": "problem",
+        "exploration_value_score": 10,
+        "importance": "high",
+        "tractability": "medium",
+        "strategic_alignment": [],
+        "supporting_references": [
+          "LCO Ref"
+        ],
+        "recommended_approach": "Translate the unresolved problem into a falsifiable hypothesis with acceptance criteria and failure diagnostics.",
+        "ranking_reason": "novelty=4, refs=1, application=high, feasibility=medium, type=problem, strategic_matches=0, density_bonus=1"
+      },
+      {
+        "rank": 3,
+        "gap_id": "gap_1783440687518381700",
+        "gap_description": "Source-grounded mechanism gap (high voltage stability) for method=surface coating, scenario=high-voltage LiCoO2 cathode cycling, benchmark=capacity retention at 4.6 V: The mechanism of capacity fading remains unclear under high voltage cycling.",
+        "gap_type": "mechanism_problem",
+        "exploration_value_score": 10,
+        "importance": "high",
+        "tractability": "high",
+        "strategic_alignment": [],
+        "supporting_references": [
+          "LCO Ref"
+        ],
+        "recommended_approach": "Run high-voltage stress tests with structural, interfacial, and electrochemical readouts to separate capacity retention from mechanism fidelity.",
+        "ranking_reason": "novelty=4, refs=1, application=high, feasibility=high, type=mechanism_problem, strategic_matches=0, density_bonus=1"
+      },
+      {
+        "rank": 4,
+        "gap_id": "gap_1783440687517528200",
+        "gap_description": "Source-grounded mechanism gap (interface degradation) for method=surface coating, scenario=high-voltage LiCoO2 cathode cycling, benchmark=capacity retention at 4.6 V: High-voltage LiCoO2 cathode High-voltage LiCoO2 suffers oxygen release, surface reconstruction, electrolyte oxidation and interfacial degradation.",
+        "gap_type": "mechanism_problem",
+        "exploration_value_score": 10,
+        "importance": "high",
+        "tractability": "high",
+        "strategic_alignment": [],
+        "supporting_references": [
+          "LCO Ref"
+        ],
+        "recommended_approach": "Isolate interfacial degradation pathways with surface/structure diagnostics and test protective modifications under accelerated stress.",
+        "ranking_reason": "novelty=4, refs=1, application=high, feasibility=high, type=mechanism_problem, strategic_matches=0, density_bonus=1"
+      },
+      {
+        "rank": 5,
+        "gap_id": "gap_1783440687521530900",
+        "gap_description": "Suspended problem: High-voltage LiCoO2 cathode High-voltage LiCoO2 suffers oxygen release, surface reconstruction, electrolyte oxidation and interfacial degradation. The mechanism of capacity fading remains unclear under high voltage cycling. Interfacial degradation and oxygen r...[truncated]",
+        "gap_type": "problem",
+        "exploration_value_score": 10,
+        "importance": "high",
+        "tractability": "medium",
+        "strategic_alignment": [],
+        "supporting_references": [
+          "LCO Ref"
+        ],
+        "recommended_approach": "Trace the barrier to a concrete scientific question, then test whether a new method or dataset removes the blocker.",
+        "ranking_reason": "novelty=4, refs=1, application=high, feasibility=medium, type=problem, strategic_matches=0, density_bonus=1"
+      }
+    ],
+    "constraints_checked": {
+      "requires_supporting_reference": true,
+      "filters_trivial_low_novelty": true,
+      "max_gaps": 6
+    }
+  }
+}
