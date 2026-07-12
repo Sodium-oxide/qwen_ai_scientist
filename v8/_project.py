@@ -420,79 +420,13 @@ def live_literature_provider_names() -> set[str]:
 
 def default_literature_providers(domain: str = "", query: str = "") -> list[str]:
     try:
+        from ._models import recommended_literature_providers
         from ._utils import normalize_space, unique_preserve_order
     except ImportError:
+        from _models import recommended_literature_providers
         from _utils import normalize_space, unique_preserve_order
-    text = normalize_space(f"{domain} {query}").lower()
-    biomedical_terms = (
-        "cancer",
-        "carcinoma",
-        "tumor",
-        "tumour",
-        "clinical",
-        "medicine",
-        "disease",
-        "genomic",
-        "genomics",
-        "cell",
-        "immunology",
-        "oncology",
-        "hepatocellular",
-        "hcc",
-    )
-    chemistry_terms = (
-        "chemistry",
-        "catalysis",
-        "catalyst",
-        "organic",
-        "inorganic",
-        "organometallic",
-        "polymer",
-        "materials chemistry",
-    )
-    arxiv_terms = (
-        "physics",
-        "astrophysics",
-        "mathematics",
-        "computer science",
-        "machine learning",
-        "artificial intelligence",
-        "quantum",
-        "control",
-        "robotics",
-        "statistics",
-        "electrical engineering",
-        "power",
-        "grid",
-        "transmission",
-        "energy",
-        "engineering",
-        "signal processing",
-        "optimization",
-        "automation",
-    )
-    cs_terms = (
-        "computer science",
-        "machine learning",
-        "artificial intelligence",
-        "deep learning",
-        "neural",
-        "algorithm",
-        "software",
-        "systems",
-        "database",
-        "programming",
-        "nlp",
-        "computer vision",
-        "reinforcement learning",
-    )
-    providers = ["semantic_scholar"]
-    if any(term in text for term in biomedical_terms):
-        providers.extend(["pubmed", "biorxiv", "medrxiv"])
-    if any(term in text for term in chemistry_terms):
-        providers.append("chemrxiv")
-    if any(term in text for term in arxiv_terms):
-        providers.append("arxiv")
+    text = normalize_space(f"{domain} {query}")
+    providers = recommended_literature_providers(text)
     return unique_preserve_order([provider for provider in providers if provider in live_literature_provider_names()])
 
 def explore_domain_subspaces(

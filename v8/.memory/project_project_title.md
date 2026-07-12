@@ -1,6 +1,6 @@
 ---
 name: project_title
-description: The title of the research project
+description: The title of the research project on personalized medicine.
 type: project
 ---
 

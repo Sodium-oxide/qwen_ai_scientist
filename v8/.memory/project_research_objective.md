@@ -1,6 +1,6 @@
 ---
 name: research_objective
-description: The main objective of the research project
+description: The main objective of the research project, focusing on the predictability of treatment outcomes and manufacturing feasibility in personalized medicine.
 type: project
 ---
 

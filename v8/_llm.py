@@ -350,7 +350,7 @@ def normalize_causal_chains(value: Any) -> list[dict[str, Any]]:
         raw_steps = raw_chain.get("steps") or raw_chain.get("intermediate_steps") or []
         if isinstance(raw_steps, (str, int, float)):
             raw_steps = [raw_steps]
-        steps: list[dict[str, str]] = []
+        steps: list[dict[str, Any]] = []
         if isinstance(raw_steps, list):
             for raw_step in raw_steps:
                 if isinstance(raw_step, dict):
@@ -362,23 +362,53 @@ def normalize_causal_chains(value: Any) -> list[dict[str, Any]]:
                     evidence = ""
                     evidence_type = "reported_unclassified"
                 if claim:
-                    steps.append({"claim": claim, "evidence": evidence, "evidence_type": evidence_type})
+                    step = {"claim": claim, "evidence": evidence, "evidence_type": evidence_type}
+                    for key in ("relation", "polarity", "modality", "source_location"):
+                        value = raw_step.get(key) if isinstance(raw_step, dict) else None
+                        if isinstance(value, dict):
+                            step[key] = dict(value)
+                        elif scalar(value):
+                            step[key] = scalar(value)
+                    steps.append(step)
         observables = string_list(raw_chain.get("observables") or raw_chain.get("observable_signals"))
         interventions = string_list(raw_chain.get("interventions") or raw_chain.get("manipulations"))
         if not trigger and not steps and not outcome:
             continue
-        chains.append(
-            {
-                "chain_id": scalar(raw_chain.get("chain_id")) or f"chain_{len(chains) + 1}",
-                "trigger": trigger,
-                "trigger_evidence": scalar(raw_chain.get("trigger_evidence")),
-                "steps": steps,
-                "outcome": outcome,
-                "outcome_evidence": scalar(raw_chain.get("outcome_evidence")),
-                "observables": observables,
-                "interventions": interventions,
-                "confidence": raw_chain.get("confidence") if isinstance(raw_chain.get("confidence"), (int, float)) else None,
-            }
-        )
+        chain = {
+            "chain_id": scalar(raw_chain.get("chain_id")) or f"chain_{len(chains) + 1}",
+            "trigger": trigger,
+            "trigger_evidence": scalar(raw_chain.get("trigger_evidence")),
+            "steps": steps,
+            "outcome": outcome,
+            "outcome_evidence": scalar(raw_chain.get("outcome_evidence")),
+            "observables": observables,
+            "interventions": interventions,
+            "confidence": raw_chain.get("confidence") if isinstance(raw_chain.get("confidence"), (int, float)) else None,
+        }
+        for key in (
+            "relation",
+            "outcome_relation",
+            "polarity",
+            "modality",
+            "extraction_method",
+            "direct_relation",
+            "causal_claim",
+            "trigger_location",
+            "outcome_location",
+        ):
+            value = raw_chain.get(key)
+            if isinstance(value, dict):
+                chain[key] = dict(value)
+            elif isinstance(value, bool):
+                chain[key] = value
+            elif scalar(value):
+                chain[key] = scalar(value)
+        entities = raw_chain.get("entities")
+        if isinstance(entities, list):
+            chain["entities"] = [item for item in entities if isinstance(item, dict) or scalar(item)]
+        evidence_edges = raw_chain.get("evidence_edges")
+        if isinstance(evidence_edges, list):
+            chain["evidence_edges"] = [dict(item) for item in evidence_edges if isinstance(item, dict)]
+        chains.append(chain)
     return chains
 

@@ -1,7 +1,7 @@
 ---
 name: decomposition_rules
-description: 分解规则
+description: Rules for decomposing the research objective into sub-hypotheses.
 type: project
 ---
 
-每个子假设必须揭示干预、可观测结果、证伪条件和证据窗口。只有在相关组件假设独立评估后，才能得出综合结论。缺失的定量界限必须保持未解决状态，不能从目标中捏造。
+Each sub-hypothesis must expose an intervention, observable outcome, falsification condition, and evidence window. A combined conclusion is admissible only after the relevant component hypotheses are independently evaluated. Missing quantitative bounds remain explicitly unresolved; they must not be fabricated from the objective.

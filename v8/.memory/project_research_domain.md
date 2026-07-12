@@ -1,6 +1,6 @@
 ---
 name: research_domain
-description: 领域：Personalized Medicine / Precision Medicine / Pharmacogenomics / Cancer Genomics / Clinical Pharmacology / Multi-omics / Patient-derived Models / Cell and Gene Therapy Manufacturing / Biostatistics / Regulatory Science
+description: The domain or field of the research project.
 type: project
 ---
 

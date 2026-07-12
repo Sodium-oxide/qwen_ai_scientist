@@ -7,21 +7,55 @@ from typing import Any
 from urllib.parse import quote, urlencode
 import ast
 import json
+import math
 import re
 import time
 
 try:
     from .config import (
+        SCIENCE_BRIDGE_SEARCH_ENABLED,
+        SCIENCE_BRIDGE_SEARCH_MAX_RESULTS,
+        SCIENCE_BRIDGE_SEARCH_QUERY_LIMIT,
+        SCIENCE_COMMUNITY_AWARE_SEED_SELECTION,
+        SCIENCE_CROSS_COMMUNITY_EDGE_BONUS,
+        SCIENCE_LOUVAIN_BRIDGE_THRESHOLD,
+        SCIENCE_LOUVAIN_ENABLED,
+        SCIENCE_LOUVAIN_INCLUDE_ARTIFICIAL_EDGES,
+        SCIENCE_LOUVAIN_MAX_NODES,
+        SCIENCE_LOUVAIN_MIN_COMMUNITY_RECORDS,
+        SCIENCE_LOUVAIN_RESOLUTION,
+        SCIENCE_MIN_CROSS_COMMUNITY_SEEDS,
         SCIENCE_SEMANTIC_SCHOLAR_EDGE_LIMIT,
+        SCIENCE_SPARSE_GRAPH_THRESHOLD,
         SEMANTIC_SCHOLAR_API_KEY,
     )
     from .log import log_event
 except ImportError:
     from config import (
+        SCIENCE_BRIDGE_SEARCH_ENABLED,
+        SCIENCE_BRIDGE_SEARCH_MAX_RESULTS,
+        SCIENCE_BRIDGE_SEARCH_QUERY_LIMIT,
+        SCIENCE_COMMUNITY_AWARE_SEED_SELECTION,
+        SCIENCE_CROSS_COMMUNITY_EDGE_BONUS,
+        SCIENCE_LOUVAIN_BRIDGE_THRESHOLD,
+        SCIENCE_LOUVAIN_ENABLED,
+        SCIENCE_LOUVAIN_INCLUDE_ARTIFICIAL_EDGES,
+        SCIENCE_LOUVAIN_MAX_NODES,
+        SCIENCE_LOUVAIN_MIN_COMMUNITY_RECORDS,
+        SCIENCE_LOUVAIN_RESOLUTION,
+        SCIENCE_MIN_CROSS_COMMUNITY_SEEDS,
         SCIENCE_SEMANTIC_SCHOLAR_EDGE_LIMIT,
+        SCIENCE_SPARSE_GRAPH_THRESHOLD,
         SEMANTIC_SCHOLAR_API_KEY,
     )
     from log import log_event
+
+try:
+    import networkx as nx
+except ImportError:
+    nx = None
+
+LOUVAIN_AVAILABLE = bool(nx is not None and hasattr(nx.algorithms.community, "louvain_communities"))
 
 
 
@@ -168,19 +202,93 @@ def expand_literature_graph(
     ranked = rank_literature_results(graph_query, graph_results)[: clamp_int(max_results, 1, 200)]
     selected_depth = clamp_int(depth, 1, 2)
     second_layer_count = 0
+    bridge_activation: dict[str, Any] = {"activated": False, "reason": "not_needed", "count": 0}
     if selected_depth >= 2 and ranked:
-        second_layer_results = expand_second_layer_graph_results(
-            ranked,
-            graph_query,
-            edge_kinds,
-            max_results=max_results,
-            top_k=second_layer_top_k,
-            errors=errors,
+        second_layer_results = (
+            expand_second_layer_graph_results_with_community_awareness(
+                ranked,
+                graph_query,
+                edge_kinds,
+                max_results=max_results,
+                top_k=second_layer_top_k,
+                errors=errors,
+            )
+            if SCIENCE_COMMUNITY_AWARE_SEED_SELECTION
+            else expand_second_layer_graph_results(
+                ranked,
+                graph_query,
+                edge_kinds,
+                max_results=max_results,
+                top_k=second_layer_top_k,
+                errors=errors,
+            )
         )
         second_layer_count = len(second_layer_results)
         if second_layer_results:
             graph_results = dedupe_literature_results(graph_results + second_layer_results)
             ranked = rank_literature_results(graph_query, graph_results)[: clamp_int(max_results, 1, 200)]
+        if SCIENCE_BRIDGE_SEARCH_ENABLED and graph_needs_cross_community_bridge(ranked, max_results):
+            before_summary = graph_community_summary(ranked)
+            try:
+                bridge_payload = json.loads(
+                    search_cross_community_bridges(
+                        search_id,
+                        target_communities=before_summary["communities"],
+                        max_results=max(1, min(int(SCIENCE_BRIDGE_SEARCH_MAX_RESULTS), clamp_int(max_results, 1, 200) // 2)),
+                    )
+                )
+                bridge_search_id = str(bridge_payload.get("bridge_search_id") or "")
+                bridge_record = load_search(bridge_search_id) if bridge_search_id else {}
+                bridge_results = bridge_record.get("results", []) if isinstance(bridge_record.get("results"), list) else []
+                seed_key = literature_result_unique_key(seed)
+                seed_community = infer_literature_community(seed)
+                prepared_bridges: list[dict[str, Any]] = []
+                for item in bridge_results:
+                    if not isinstance(item, dict):
+                        continue
+                    candidate = dict(item)
+                    candidate["graph_relation"] = "cross_community_search"
+                    candidate["graph_parent_key"] = seed_key
+                    candidate["graph_parent_title"] = seed.get("title", "")
+                    candidate["graph_parent_community"] = seed_community
+                    candidate["graph_community"] = infer_literature_community(candidate)
+                    candidate["graph_cross_community_bridge"] = True
+                    candidate["graph_bridge_communities"] = f"{seed_community}->{candidate['graph_community']}"
+                    candidate["expanded_depth"] = 2
+                    prepared_bridges.append(candidate)
+                if prepared_bridges:
+                    graph_results = dedupe_literature_results(graph_results + prepared_bridges)
+                    ranked = retain_community_bridge_candidates(
+                        rank_literature_results(graph_query, graph_results),
+                        prepared_bridges,
+                        max_results=clamp_int(max_results, 1, 200),
+                    )
+                bridge_activation = {
+                    "activated": True,
+                    "reason": "sparse_graph",
+                    "bridge_search_id": bridge_search_id,
+                    "count": len(prepared_bridges),
+                    "before": before_summary,
+                    "after": graph_community_summary(ranked),
+                }
+                errors.append(
+                    {
+                        "edge": "cross_community_bridge_search",
+                        "count": len(prepared_bridges),
+                        "community_coverage_before": before_summary["coverage"],
+                    }
+                )
+                log_event(
+                    "SCIENCE",
+                    "bridge_search_activated",
+                    search_id=search_id,
+                    bridge_search_id=bridge_search_id,
+                    bridge_count=len(prepared_bridges),
+                )
+            except Exception as exc:
+                bridge_activation = {"activated": True, "reason": "bridge_search_failed", "count": 0, "error": str(exc)[:240]}
+                errors.append({"edge": "cross_community_bridge_search", "error": str(exc)[:240]})
+                log_event("SCIENCE", "bridge_search_failed", source_search_id=search_id, error=str(exc)[:160])
 
     # --- Seed rotation: try alternative seeds if primary produced empty graph ---
     seed_rotation_used = False
@@ -280,13 +388,42 @@ def expand_literature_graph(
             reason="rate_limited_empty" if rate_limited_ids else ("seed_not_indexed" if seed_not_indexed else "empty_graph"),
             count=len(ranked),
         )
+    louvain_expansion_analysis = (
+        annotate_expansion_results_with_louvain(seed, ranked, graph_query)
+        if ranked
+        else {"status": "not_run", "reason": "no ranked graph results", "community_map": {}, "bridge_nodes": []}
+    )
     graph_search_id = new_id("graph")
     for index, item in enumerate(ranked):
+        item.setdefault("graph_community", infer_literature_community(item))
         item["result_index"] = index
         item["search_id"] = graph_search_id
         item["expanded_from_search_id"] = search_id
         item["expanded_from_result_index"] = result_index
         item["seed_title"] = seed.get("title", "")
+
+    louvain_expansion_seeds = [
+        {
+            "result_index": item.get("result_index"),
+            "title": item.get("title", ""),
+            "semantic_scholar_id": item.get("semantic_scholar_id"),
+            "louvain_community": item.get("louvain_community"),
+            "connected_communities": item.get("louvain_connected_communities", []),
+            "bridge_score": item.get("louvain_bridge_score", 0.0),
+            "publication_quality_score": item.get("publication_quality_score", 0.0),
+            "relevance_score": item.get("relevance_score", 0.0),
+        }
+        for item in ranked
+        if isinstance(item, dict) and float(item.get("louvain_bridge_score") or 0.0) > 0.0
+    ]
+    louvain_expansion_seeds.sort(
+        key=lambda item: (
+            -float(item.get("bridge_score") or 0.0),
+            -float(item.get("publication_quality_score") or 0.0),
+            -float(item.get("relevance_score") or 0.0),
+            int(item.get("result_index") or 0),
+        )
+    )
 
     record = {
         "search_id": graph_search_id,
@@ -300,6 +437,10 @@ def expand_literature_graph(
         "direction": selected_direction,
         "depth": selected_depth,
         "second_layer_count": second_layer_count,
+        "community_summary": graph_community_summary(ranked),
+        "louvain_analysis": louvain_expansion_analysis,
+        "louvain_expansion_seeds": louvain_expansion_seeds[:10],
+        "bridge_activation": bridge_activation,
         "createdAt": time.time(),
         "total_results": len(ranked),
         "results": ranked,
@@ -331,6 +472,27 @@ def expand_literature_graph(
         "direction": selected_direction,
         "depth": selected_depth,
         "second_layer_count": second_layer_count,
+        "community_summary": record["community_summary"],
+        "louvain_analysis": {
+            "status": louvain_expansion_analysis.get("status", "not_run"),
+            "reason": louvain_expansion_analysis.get("reason", ""),
+            "num_communities": louvain_expansion_analysis.get("num_communities", 0),
+            "modularity": louvain_expansion_analysis.get("modularity"),
+            "structural_node_count": louvain_expansion_analysis.get("structural_node_count", 0),
+            "ignored_artificial_edge_count": louvain_expansion_analysis.get("ignored_artificial_edge_count", 0),
+            "outlier_communities": [
+                {
+                    "community_id": item.get("community_id"),
+                    "size": item.get("size"),
+                    "disposition": item.get("disposition"),
+                    "priority": item.get("priority"),
+                }
+                for item in louvain_expansion_analysis.get("outlier_communities", [])
+                if isinstance(item, dict)
+            ],
+            "bridge_nodes": louvain_expansion_seeds[:5],
+        },
+        "bridge_activation": bridge_activation,
         "total_results": len(ranked),
         "selected": summarize_literature_result(selected) if selected else None,
         "top_results": [summarize_literature_result(item) for item in ranked[:10]],
@@ -338,7 +500,7 @@ def expand_literature_graph(
         "errors": errors,
         "fallback_used": fallback_used,
         "seed_not_indexed": seed_not_indexed,
-        "next_step": "Use select_literature_result(graph_search_id) or import_literature_search_result(project_id, graph_search_id, result_index).",
+        "next_step": "Use louvain_analysis.bridge_nodes as cross-community seeds when present; otherwise use select_literature_result(graph_search_id) or import_literature_search_result(project_id, graph_search_id, result_index).",
     }
     log_event("SCIENCE", "graph_expanded", seed_search_id=search_id, graph_search_id=graph_search_id, count=len(ranked))
     return json.dumps(response, ensure_ascii=False, indent=2)
@@ -350,6 +512,7 @@ def expand_second_layer_graph_results(
     max_results: int,
     top_k: int,
     errors: list[dict[str, Any]],
+    community_aware: bool = False,
 ) -> list[dict[str, Any]]:
     try:
         from ._literature_search import dedupe_literature_results, is_semantic_scholar_not_found_error, is_semantic_scholar_rate_limit_error, literature_result_unique_key, rank_literature_results
@@ -357,7 +520,11 @@ def expand_second_layer_graph_results(
     except ImportError:
         from _literature_search import dedupe_literature_results, is_semantic_scholar_not_found_error, is_semantic_scholar_rate_limit_error, literature_result_unique_key, rank_literature_results
         from _utils import clamp_int, normalize_key
-    seeds = select_second_layer_seeds(first_layer_ranked, top_k=top_k)
+    seeds = (
+        select_second_layer_seeds_with_community_awareness(first_layer_ranked, top_k=top_k)
+        if community_aware
+        else select_second_layer_seeds(first_layer_ranked, top_k=top_k)
+    )
     if not seeds:
         return []
     per_edge_limit = min(
@@ -366,6 +533,7 @@ def expand_second_layer_graph_results(
     )
     expanded: list[dict[str, Any]] = []
     for parent in seeds:
+        parent_community = infer_literature_community(parent)
         lookup_ids = semantic_scholar_lookup_ids(parent)
         if not lookup_ids:
             continue
@@ -411,16 +579,224 @@ def expand_second_layer_graph_results(
                 if not isinstance(edge, dict):
                     continue
                 result = semantic_scholar_edge_to_result(edge)
-                result["graph_relation"] = f"second_layer_{result.get('graph_relation') or normalize_key(edge_kind)}"
+                base_relation = str(result.get("graph_relation") or normalize_key(edge_kind))
+                child_community = infer_literature_community(result)
+                is_bridge = community_aware and communities_are_distinct(parent_community, child_community)
+                result["graph_relation"] = (
+                    f"cross_community_bridge_{base_relation}"
+                    if is_bridge
+                    else f"second_layer_{base_relation}"
+                )
                 result["graph_parent_key"] = parent_key
                 result["graph_parent_title"] = parent.get("title", "")
                 result["graph_parent_result_index"] = parent.get("result_index")
+                result["graph_parent_community"] = parent_community
+                result["graph_community"] = child_community
+                result["graph_cross_community_bridge"] = is_bridge
+                result["graph_bridge_communities"] = f"{parent_community}->{child_community}" if is_bridge else ""
                 result["expanded_depth"] = 2
                 expanded.append(result)
     seed_keys = {literature_result_unique_key(item) for item in first_layer_ranked}
     expanded = [item for item in expanded if literature_result_unique_key(item) not in seed_keys]
     ranked = rank_literature_results(query, dedupe_literature_results(expanded))
     return ranked
+
+
+def expand_second_layer_graph_results_with_community_awareness(
+    first_layer_ranked: list[dict[str, Any]],
+    query: str,
+    edge_kinds: list[str],
+    max_results: int,
+    top_k: int,
+    errors: list[dict[str, Any]],
+) -> list[dict[str, Any]]:
+    return expand_second_layer_graph_results(
+        first_layer_ranked,
+        query,
+        edge_kinds,
+        max_results=max_results,
+        top_k=top_k,
+        errors=errors,
+        community_aware=True,
+    )
+
+
+def graph_community_summary(results: list[dict[str, Any]]) -> dict[str, Any]:
+    profiles = [literature_community_profile(item) for item in results if isinstance(item, dict)]
+    communities = [str(profile.get("community") or "mixed") for profile in profiles]
+    counts = Counter(communities)
+    coverage_set: set[str] = set()
+    for profile in profiles:
+        coverage_set.update(str(community) for community in profile.get("active_communities", []) if community != "general")
+    if not coverage_set:
+        for community in counts:
+            if community == "translational":
+                coverage_set.update({"medicine", "biology"})
+            elif community != "mixed":
+                coverage_set.add(community)
+    return {
+        "counts": dict(sorted(counts.items())),
+        "coverage": len(coverage_set),
+        "communities": sorted(coverage_set),
+    }
+
+
+def graph_needs_cross_community_bridge(results: list[dict[str, Any]], max_results: int) -> bool:
+    target = max(1, int(max_results or 1))
+    threshold = max(0.05, min(1.0, float(SCIENCE_SPARSE_GRAPH_THRESHOLD)))
+    sparse_by_count = len(results) < max(2, math.ceil(target * threshold))
+    summary = graph_community_summary(results)
+    required_coverage = max(1, int(SCIENCE_MIN_CROSS_COMMUNITY_SEEDS))
+    sparse_by_coverage = bool(results) and int(summary["coverage"]) < required_coverage
+    return sparse_by_count or sparse_by_coverage
+
+
+def retain_community_bridge_candidates(
+    ranked_results: list[dict[str, Any]],
+    bridge_candidates: list[dict[str, Any]],
+    max_results: int,
+) -> list[dict[str, Any]]:
+    try:
+        from ._literature_search import literature_result_unique_key
+        from ._utils import clamp_int
+    except ImportError:
+        from _literature_search import literature_result_unique_key
+        from _utils import clamp_int
+    limit = clamp_int(max_results, 1, 200)
+    selected = [item for item in ranked_results[:limit] if isinstance(item, dict)]
+    if any(item.get("graph_cross_community_bridge") for item in selected):
+        return selected
+    bridge_keys = {literature_result_unique_key(item) for item in bridge_candidates if isinstance(item, dict)}
+    bridge = next(
+        (item for item in ranked_results if isinstance(item, dict) and literature_result_unique_key(item) in bridge_keys),
+        None,
+    )
+    if not bridge:
+        return selected
+    selected = [item for item in selected if literature_result_unique_key(item) != literature_result_unique_key(bridge)]
+    if len(selected) >= limit:
+        selected = selected[: limit - 1]
+    selected.append(bridge)
+    return selected
+
+
+def bridge_query_plan(
+    query: str,
+    limit: int | None = None,
+    target_communities: list[str] | None = None,
+) -> list[str]:
+    try:
+        from ._models import infer_research_domain
+    except ImportError:
+        from _models import infer_research_domain
+    core_terms = re.findall(r"[A-Za-z0-9-]{3,}", str(query or "").lower())
+    generic = {"study", "analysis", "research", "effect", "using", "with", "from", "into", "between"}
+    core = " ".join(term for term in core_terms if term not in generic)[:120].strip()
+    if not core:
+        core = "scientific research"
+    inferred_domain = infer_research_domain(query)
+    requested_domains = [str(item) for item in (target_communities or []) if str(item)]
+    domain = requested_domains[0] if requested_domains else inferred_domain
+    bridge_facets = {
+        "physics": ("mathematical modeling", "experimental instrumentation", "data analysis"),
+        "mathematics": ("physical modeling", "statistical inference", "computational application"),
+        "computer_science": ("statistical learning", "scientific computing", "real-world systems"),
+        "quantitative_biology": ("molecular mechanism", "statistical modeling", "clinical translation"),
+        "quantitative_finance": ("econometric modeling", "statistical learning", "market mechanism"),
+        "statistics": ("scientific application", "computational method", "causal inference"),
+        "electrical_engineering": ("signal processing", "control system", "physical instrumentation"),
+        "economics": ("econometric evidence", "statistical inference", "policy mechanism"),
+        "medicine": ("molecular mechanism", "biomarker stratification", "clinical outcome"),
+        "biology": ("molecular mechanism", "quantitative modeling", "translational outcome"),
+        "chemistry": ("computational chemistry", "materials engineering", "reaction mechanism"),
+    }
+    facets = bridge_facets.get(domain, ("theoretical mechanism", "computational analysis", "experimental validation"))
+    queries = [f"{core} {facet}" for facet in facets]
+    configured_limit = max(1, int(limit if limit is not None else SCIENCE_BRIDGE_SEARCH_QUERY_LIMIT))
+    return list(dict.fromkeys(queries))[:configured_limit]
+
+
+def is_cross_community_candidate(result: dict[str, Any]) -> bool:
+    profile = literature_community_profile(result)
+    active_communities = [str(item) for item in profile.get("active_communities", []) if str(item) != "general"]
+    return str(profile["community"]) == "translational" or len(set(active_communities)) >= 2
+
+
+def search_cross_community_bridges(
+    search_id: str,
+    target_communities: list[str] | None = None,
+    max_results: int | None = None,
+) -> str:
+    try:
+        from ._literature_search import dedupe_literature_results, flatten_literature_results, rank_literature_results, search_semantic_scholar
+        from ._project import load_search, save_search
+        from ._utils import clamp_int, new_id
+    except ImportError:
+        from _literature_search import dedupe_literature_results, flatten_literature_results, rank_literature_results, search_semantic_scholar
+        from _project import load_search, save_search
+        from _utils import clamp_int, new_id
+    source_search = load_search(search_id)
+    source_query = str(source_search.get("query") or "")
+    requested = SCIENCE_BRIDGE_SEARCH_MAX_RESULTS if max_results is None else max_results
+    limit = clamp_int(requested, 1, min(40, max(1, int(SCIENCE_BRIDGE_SEARCH_MAX_RESULTS))))
+    queries = bridge_query_plan(source_query, target_communities=target_communities)
+    collected: list[dict[str, Any]] = []
+    errors: list[dict[str, str]] = []
+    per_query = max(1, math.ceil(limit / max(1, len(queries))))
+    for bridge_query in queries:
+        try:
+            block = search_semantic_scholar(bridge_query, max_results=per_query)
+            for item in flatten_literature_results([block]):
+                if not isinstance(item, dict):
+                    continue
+                candidate = dict(item)
+                candidate["bridge_query"] = bridge_query
+                candidate["graph_relation"] = "cross_community_search"
+                candidate["graph_cross_community_bridge"] = True
+                candidate["graph_community"] = infer_literature_community(candidate)
+                collected.append(candidate)
+        except Exception as exc:
+            errors.append({"query": bridge_query, "error": str(exc)[:240]})
+            log_event("SCIENCE", "bridge_search_failed", source_search_id=search_id, query=bridge_query, error=str(exc)[:160])
+    deduped = dedupe_literature_results(collected)
+    filtered = [item for item in deduped if is_cross_community_candidate(item)]
+    ranked = rank_literature_results(source_query, filtered)[:limit]
+    bridge_search_id = new_id("bridge")
+    record = {
+        "search_id": bridge_search_id,
+        "kind": "cross_community_bridge_search",
+        "source_search_id": search_id,
+        "query": source_query,
+        "target_communities": list(target_communities or []),
+        "bridge_queries": queries,
+        "createdAt": time.time(),
+        "total_results": len(ranked),
+        "results": ranked,
+        "errors": errors,
+        "community_summary": graph_community_summary(ranked),
+    }
+    save_search(record)
+    log_event(
+        "SCIENCE",
+        "bridge_search_completed",
+        source_search_id=search_id,
+        bridge_search_id=bridge_search_id,
+        results=len(ranked),
+        queries=len(queries),
+    )
+    return json.dumps(
+        {
+            "bridge_search_id": bridge_search_id,
+            "source_search_id": search_id,
+            "total_results": len(ranked),
+            "bridge_queries_used": queries,
+            "community_summary": record["community_summary"],
+            "errors": errors,
+            "next_step": "Review or import bridge candidates explicitly; bridge search never imports papers automatically.",
+        },
+        ensure_ascii=False,
+        indent=2,
+    )
 
 def select_second_layer_seeds(results: list[dict[str, Any]], top_k: int = 3) -> list[dict[str, Any]]:
     try:
@@ -433,6 +809,128 @@ def select_second_layer_seeds(results: list[dict[str, Any]], top_k: int = 3) -> 
     candidates = [item for item in results if semantic_scholar_lookup_id(item)]
     candidates.sort(key=second_layer_seed_score, reverse=True)
     return candidates[:limit]
+
+
+def infer_literature_community(result: dict[str, Any]) -> str:
+    profile = literature_community_profile(result)
+    return str(profile.get("community") or "mixed")
+
+
+def literature_community_profile(result: dict[str, Any]) -> dict[str, Any]:
+    try:
+        from ._models import research_domain_profile
+    except ImportError:
+        from _models import research_domain_profile
+    text = " ".join(
+        str(result.get(key) or "")
+        for key in ("title", "abstract", "venue", "fields_of_study", "publication_types")
+    ).lower()
+    catalog_profile = research_domain_profile(text)
+    counts = {
+        str(community): int(score)
+        for community, score in dict(catalog_profile.get("scores") or {}).items()
+        if int(score or 0) > 0
+    }
+    total = sum(counts.values())
+    proportions = {
+        community: round(count / total, 4) if total else 0.0
+        for community, count in counts.items()
+    }
+    return {
+        "counts": counts,
+        "proportions": proportions,
+        "community": infer_literature_community_from_counts(counts),
+        "active_communities": list(catalog_profile.get("active_domains") or []),
+        "matched_keywords": catalog_profile.get("matched_keywords") or {},
+        "matched_subfields": catalog_profile.get("matched_subfields") or {},
+    }
+
+
+def infer_literature_community_from_counts(counts: dict[str, int]) -> str:
+    medicine = int(counts.get("medicine") or 0)
+    biology = int(counts.get("biology") or 0)
+    total = max(1, sum(int(value or 0) for value in counts.values()))
+    if medicine and biology and min(medicine, biology) / total >= 0.2:
+        return "translational"
+    ranked = sorted(
+        ((str(community), int(score or 0)) for community, score in counts.items() if int(score or 0) > 0),
+        key=lambda item: (-item[1], item[0]),
+    )
+    return ranked[0][0] if ranked else "mixed"
+
+
+def communities_are_distinct(parent: str, child: str) -> bool:
+    left = str(parent or "mixed")
+    right = str(child or "mixed")
+    if left == right or "mixed" in {left, right}:
+        return False
+    return True
+
+
+def community_diversity_score(result: dict[str, Any]) -> float:
+    proportions = literature_community_profile(result)["proportions"]
+    active = [float(value) for value in proportions.values() if float(value) > 0]
+    if len(active) <= 1:
+        return 0.0
+    entropy = -sum(value * math.log(value) for value in active)
+    return round(min(1.0, entropy / math.log(len(active))), 4)
+
+
+def select_second_layer_seeds_with_community_awareness(
+    results: list[dict[str, Any]],
+    top_k: int = 3,
+    min_bridge_attempts: int | None = None,
+) -> list[dict[str, Any]]:
+    try:
+        from ._utils import clamp_int
+    except ImportError:
+        from _utils import clamp_int
+    limit = clamp_int(top_k, 0, 10)
+    if limit <= 0:
+        return []
+    candidates = [dict(item) for item in results if isinstance(item, dict) and semantic_scholar_lookup_id(item)]
+    if not candidates:
+        return []
+    def selection_community(item: dict[str, Any]) -> str:
+        structural = item.get("louvain_community")
+        if structural is not None and str(structural) != "":
+            return f"louvain:{structural}"
+        return infer_literature_community(item)
+
+    community_counts = Counter(selection_community(item) for item in candidates)
+    scored: list[tuple[float, float, str, dict[str, Any]]] = []
+    for item in candidates:
+        community = selection_community(item)
+        base_score = second_layer_seed_score(item)
+        rarity_bonus = 0.24 / max(1, community_counts[community])
+        diversity_bonus = 0.14 * community_diversity_score(item)
+        bridge_bonus = 0.16 * max(0.0, min(1.0, float(item.get("louvain_bridge_score") or 0.0)))
+        drift_penalty = 0.12 if str(item.get("louvain_priority") or "") == "low" else 0.0
+        score = base_score + rarity_bonus + diversity_bonus + bridge_bonus - drift_penalty
+        item["graph_community"] = community
+        item["community_seed_score"] = round(score, 5)
+        scored.append((score, base_score, community, item))
+    scored.sort(key=lambda entry: (-entry[0], -entry[1], str(entry[3].get("title") or "")))
+    required_communities = min(
+        limit,
+        max(1, int(min_bridge_attempts if min_bridge_attempts is not None else SCIENCE_MIN_CROSS_COMMUNITY_SEEDS)),
+        len(community_counts),
+    )
+    selected: list[dict[str, Any]] = []
+    selected_communities: set[str] = set()
+    for _, _, community, item in scored:
+        if community in selected_communities:
+            continue
+        selected.append(item)
+        selected_communities.add(community)
+        if len(selected) >= required_communities:
+            break
+    for _, _, _, item in scored:
+        if len(selected) >= limit:
+            break
+        if item not in selected:
+            selected.append(item)
+    return selected[:limit]
 
 def second_layer_seed_score(result: dict[str, Any]) -> float:
     try:
@@ -528,12 +1026,473 @@ def semantic_scholar_lookup_ids(result: dict[str, Any]) -> list[str]:
             candidates.append(f"ARXIV:{unversioned}")
     return unique_preserve_order([candidate for candidate in candidates if candidate])
 
+
+def louvain_dependency_status() -> dict[str, Any]:
+    if not SCIENCE_LOUVAIN_ENABLED:
+        return {"available": False, "status": "disabled", "reason": "SCIENCE_LOUVAIN_ENABLED is disabled"}
+    if not LOUVAIN_AVAILABLE:
+        return {"available": False, "status": "unavailable", "reason": "networkx with louvain_communities is not installed"}
+    return {"available": True, "status": "available", "reason": "networkx louvain_communities is available"}
+
+
+def build_louvain_network(
+    nodes: list[dict[str, Any]],
+    edges: list[dict[str, Any]],
+    include_artificial_edges: bool | None = None,
+) -> tuple[Any, dict[str, dict[str, Any]], dict[str, Any]]:
+    if not LOUVAIN_AVAILABLE:
+        return None, {}, {"reason": "networkx is unavailable", "eligible_node_count": 0, "structural_edge_count": 0}
+    include_artificial = (
+        SCIENCE_LOUVAIN_INCLUDE_ARTIFICIAL_EDGES
+        if include_artificial_edges is None
+        else bool(include_artificial_edges)
+    )
+    max_nodes = max(3, int(SCIENCE_LOUVAIN_MAX_NODES))
+    selected_nodes = [item for item in nodes if isinstance(item, dict) and str(item.get("node_id") or "")]
+    selected_nodes.sort(key=lambda item: str(item.get("node_id") or ""))
+    selected_nodes = selected_nodes[:max_nodes]
+    node_attrs = {str(item["node_id"]): item for item in selected_nodes}
+    graph = nx.Graph()
+    structural_edge_count = 0
+    ignored_artificial_edges = 0
+    ignored_missing_node_edges = 0
+    for edge in edges:
+        if not isinstance(edge, dict):
+            continue
+        if edge.get("edge_type") == "artificial" and not include_artificial:
+            ignored_artificial_edges += 1
+            continue
+        source = str(edge.get("source") or "")
+        target = str(edge.get("target") or "")
+        if not source or not target or source == target or source not in node_attrs or target not in node_attrs:
+            ignored_missing_node_edges += 1
+            continue
+        try:
+            weight = float(edge.get("weight") or 0.0)
+        except (TypeError, ValueError):
+            weight = 0.0
+        if weight <= 0:
+            continue
+        if graph.has_edge(source, target):
+            graph[source][target]["weight"] += weight
+            graph[source][target]["edge_count"] += 1
+        else:
+            graph.add_edge(source, target, weight=weight, edge_count=1)
+        structural_edge_count += 1
+    participating_nodes = set(graph.nodes())
+    return graph, node_attrs, {
+        "eligible_node_count": len(node_attrs),
+        "structural_node_count": len(participating_nodes),
+        "excluded_isolate_count": max(0, len(node_attrs) - len(participating_nodes)),
+        "structural_edge_count": structural_edge_count,
+        "unique_edge_count": graph.number_of_edges(),
+        "ignored_artificial_edge_count": ignored_artificial_edges,
+        "ignored_missing_node_edge_count": ignored_missing_node_edges,
+        "include_artificial_edges": include_artificial,
+    }
+
+
+def identify_louvain_bridge_nodes(
+    graph: Any,
+    community_map: dict[str, int],
+    threshold: float | None = None,
+) -> list[dict[str, Any]]:
+    if graph is None or not community_map:
+        return []
+    bridge_threshold = max(0.0, min(1.0, float(
+        SCIENCE_LOUVAIN_BRIDGE_THRESHOLD if threshold is None else threshold
+    )))
+    try:
+        betweenness = nx.betweenness_centrality(graph, normalized=True, weight=None)
+    except Exception:
+        betweenness = {node_id: 0.0 for node_id in graph.nodes()}
+    bridges: list[dict[str, Any]] = []
+    for node_id in graph.nodes():
+        community = community_map.get(str(node_id))
+        if community is None:
+            continue
+        total_weight = 0.0
+        cross_weight = 0.0
+        connected_communities: set[int] = set()
+        for neighbor_id, attrs in graph[node_id].items():
+            weight = max(0.0, float(attrs.get("weight") or 0.0))
+            total_weight += weight
+            neighbor_community = community_map.get(str(neighbor_id))
+            if neighbor_community is not None and neighbor_community != community:
+                cross_weight += weight
+                connected_communities.add(neighbor_community)
+        if total_weight <= 0 or not connected_communities:
+            continue
+        cross_ratio = cross_weight / total_weight
+        diversity = len(connected_communities)
+        bridge_score = min(
+            1.0,
+            0.65 * cross_ratio
+            + 0.2 * min(1.0, diversity / 2.0)
+            + 0.15 * float(betweenness.get(node_id) or 0.0),
+        )
+        if bridge_score < bridge_threshold:
+            continue
+        bridges.append(
+            {
+                "node_id": str(node_id),
+                "community": community,
+                "cross_edge_weight": round(cross_weight, 4),
+                "total_edge_weight": round(total_weight, 4),
+                "cross_ratio": round(cross_ratio, 4),
+                "connected_communities": sorted(connected_communities),
+                "community_diversity": diversity,
+                "betweenness_centrality": round(float(betweenness.get(node_id) or 0.0), 4),
+                "bridge_score": round(bridge_score, 4),
+            }
+        )
+    bridges.sort(
+        key=lambda item: (
+            -float(item["bridge_score"]),
+            -float(item["cross_edge_weight"]),
+            str(item["node_id"]),
+        )
+    )
+    return bridges
+
+
+def summarize_louvain_communities(
+    graph: Any,
+    community_map: dict[str, int],
+    node_attrs: dict[str, dict[str, Any]],
+    bridge_nodes: list[dict[str, Any]],
+) -> list[dict[str, Any]]:
+    grouped: dict[int, list[str]] = defaultdict(list)
+    for node_id, community_id in community_map.items():
+        grouped[int(community_id)].append(str(node_id))
+    bridge_by_community: dict[int, list[dict[str, Any]]] = defaultdict(list)
+    for bridge in bridge_nodes:
+        bridge_by_community[int(bridge["community"])].append(bridge)
+    summaries: list[dict[str, Any]] = []
+    for community_id, member_ids in grouped.items():
+        fields = Counter(
+            str(node_attrs.get(node_id, {}).get("field") or "unknown")
+            for node_id in member_ids
+        )
+        internal_weight = 0.0
+        external_weight = 0.0
+        for source, target, attrs in graph.edges(member_ids, data=True):
+            weight = max(0.0, float(attrs.get("weight") or 0.0))
+            if community_map.get(str(source)) == community_map.get(str(target)) == community_id:
+                internal_weight += weight
+            elif community_map.get(str(source)) == community_id or community_map.get(str(target)) == community_id:
+                external_weight += weight
+        ranked_members = sorted(
+            (node_attrs.get(node_id, {}) for node_id in member_ids),
+            key=lambda item: (
+                -float(item.get("publication_quality_score") or 0.0),
+                -float(item.get("relevance_score") or 0.0),
+                str(item.get("title") or ""),
+            ),
+        )
+        summaries.append(
+            {
+                "community_id": community_id,
+                "size": len(member_ids),
+                "primary_field": fields.most_common(1)[0][0] if fields else "unknown",
+                "field_distribution": dict(fields),
+                "internal_edge_weight": round(internal_weight, 4),
+                "external_edge_weight": round(external_weight, 4),
+                "bridge_count": len(bridge_by_community.get(community_id, [])),
+                "bridge_nodes": bridge_by_community.get(community_id, [])[:5],
+                "top_nodes": [
+                    {
+                        "node_id": str(item.get("node_id") or ""),
+                        "title": str(item.get("title") or ""),
+                        "quality_score": round(float(item.get("publication_quality_score") or 0.0), 4),
+                    }
+                    for item in ranked_members[:5]
+                ],
+            }
+        )
+    summaries.sort(key=lambda item: (-int(item["size"]), int(item["community_id"])))
+    return summaries
+
+
+def assess_louvain_topic_drift(
+    graph: Any,
+    community_map: dict[str, int],
+    node_attrs: dict[str, dict[str, Any]],
+) -> list[dict[str, Any]]:
+    if graph is None or not community_map:
+        return []
+    seed_node_id = next(
+        (
+            str(node_id)
+            for node_id, attrs in node_attrs.items()
+            if str(attrs.get("role") or "") == "seed" and str(node_id) in graph
+        ),
+        "",
+    )
+    seed_community = community_map.get(seed_node_id) if seed_node_id else None
+    grouped: dict[int, list[str]] = defaultdict(list)
+    for node_id, community_id in community_map.items():
+        grouped[int(community_id)].append(str(node_id))
+    assessments: list[dict[str, Any]] = []
+    for community_id, member_ids in grouped.items():
+        relevance_values = [
+            float(node_attrs.get(node_id, {}).get("relevance_score") or 0.0)
+            for node_id in member_ids
+        ]
+        quality_values = [
+            float(node_attrs.get(node_id, {}).get("publication_quality_score") or 0.0)
+            for node_id in member_ids
+        ]
+        has_seed = community_id == seed_community
+        connected_to_seed = bool(
+            seed_node_id
+            and any(nx.has_path(graph, seed_node_id, node_id) for node_id in member_ids)
+        )
+        external_weight = 0.0
+        total_weight = 0.0
+        for node_id in member_ids:
+            for neighbor_id, edge_attrs in graph[node_id].items():
+                weight = max(0.0, float(edge_attrs.get("weight") or 0.0))
+                total_weight += weight
+                if community_map.get(str(neighbor_id)) != community_id:
+                    external_weight += weight
+        external_ratio = external_weight / total_weight if total_weight else 0.0
+        average_relevance = sum(relevance_values) / max(1, len(relevance_values))
+        average_quality = sum(quality_values) / max(1, len(quality_values))
+        if has_seed:
+            disposition = "core"
+            priority = "high"
+        elif not connected_to_seed:
+            disposition = "disconnected_review"
+            priority = "review"
+        elif len(member_ids) <= 2 and external_ratio <= 0.18 and average_relevance < 0.4:
+            disposition = "weakly_attached_review"
+            priority = "low"
+        else:
+            disposition = "connected"
+            priority = "normal"
+        assessments.append(
+            {
+                "community_id": community_id,
+                "size": len(member_ids),
+                "contains_seed": has_seed,
+                "connected_to_seed": connected_to_seed,
+                "external_edge_ratio": round(external_ratio, 4),
+                "average_relevance": round(average_relevance, 4),
+                "average_quality": round(average_quality, 4),
+                "disposition": disposition,
+                "priority": priority,
+                "node_ids": sorted(member_ids),
+            }
+        )
+    assessments.sort(key=lambda item: (0 if item["contains_seed"] else 1, int(item["community_id"])))
+    return assessments
+
+
+def run_louvain_community_analysis(
+    nodes: list[dict[str, Any]],
+    edges: list[dict[str, Any]],
+    resolution: float | None = None,
+    include_artificial_edges: bool | None = None,
+) -> dict[str, Any]:
+    dependency = louvain_dependency_status()
+    base = {
+        "node_count": len(nodes),
+        "edge_count": len(edges),
+        "community_map": {},
+        "communities": [],
+        "bridge_nodes": [],
+        "has_bridges": False,
+    }
+    if not dependency["available"]:
+        return {**base, "status": dependency["status"], "reason": dependency["reason"]}
+    graph, node_attrs, graph_report = build_louvain_network(
+        nodes,
+        edges,
+        include_artificial_edges=include_artificial_edges,
+    )
+    base.update(graph_report)
+    if graph is None or graph.number_of_nodes() < 3 or graph.number_of_edges() < 2:
+        return {
+            **base,
+            "status": "insufficient_structure",
+            "reason": "Louvain requires at least three structurally connected papers and two relation edges.",
+        }
+    used_resolution = max(0.1, min(5.0, float(
+        SCIENCE_LOUVAIN_RESOLUTION if resolution is None else resolution
+    )))
+    try:
+        raw_communities = nx.algorithms.community.louvain_communities(
+            graph,
+            weight="weight",
+            resolution=used_resolution,
+            seed=42,
+        )
+        ordered_communities = sorted(
+            (sorted(str(node_id) for node_id in members) for members in raw_communities),
+            key=lambda members: (-len(members), members[0] if members else ""),
+        )
+        community_map = {
+            node_id: community_id
+            for community_id, members in enumerate(ordered_communities)
+            for node_id in members
+        }
+        modularity = float(nx.algorithms.community.modularity(
+            graph,
+            [set(members) for members in ordered_communities],
+            weight="weight",
+            resolution=used_resolution,
+        ))
+    except Exception as exc:
+        components = [sorted(str(node_id) for node_id in members) for members in nx.connected_components(graph)]
+        ordered_components = sorted(components, key=lambda members: (-len(members), members[0] if members else ""))
+        community_map = {
+            node_id: component_id
+            for component_id, members in enumerate(ordered_components)
+            for node_id in members
+        }
+        bridges = identify_louvain_bridge_nodes(graph, community_map)
+        return {
+            **base,
+            "status": "fallback_components",
+            "reason": f"Louvain failed: {str(exc)[:240]}",
+            "resolution_used": used_resolution,
+            "community_map": community_map,
+            "num_communities": len(ordered_components),
+            "communities": summarize_louvain_communities(graph, community_map, node_attrs, bridges),
+            "bridge_nodes": bridges[:20],
+            "has_bridges": bool(bridges),
+        }
+    bridges = identify_louvain_bridge_nodes(graph, community_map)
+    summaries = summarize_louvain_communities(graph, community_map, node_attrs, bridges)
+    drift_assessment = assess_louvain_topic_drift(graph, community_map, node_attrs)
+    return {
+        **base,
+        "status": "success",
+        "resolution_used": used_resolution,
+        "modularity": round(modularity, 6),
+        "num_communities": len(ordered_communities),
+        "community_map": community_map,
+        "communities": summaries,
+        "topic_drift_assessment": drift_assessment,
+        "outlier_communities": [
+            item for item in drift_assessment
+            if item.get("disposition") in {"disconnected_review", "weakly_attached_review"}
+        ],
+        "bridge_nodes": bridges[:20],
+        "has_bridges": bool(bridges),
+    }
+
+
+def louvain_recommended_expansion_seeds(
+    nodes: list[dict[str, Any]],
+    louvain_analysis: dict[str, Any],
+    limit: int = 5,
+) -> list[dict[str, Any]]:
+    by_node_id = {
+        str(node.get("node_id") or ""): node
+        for node in nodes
+        if isinstance(node, dict) and str(node.get("node_id") or "")
+    }
+    recommendations: list[dict[str, Any]] = []
+    for bridge in louvain_analysis.get("bridge_nodes", []):
+        if not isinstance(bridge, dict):
+            continue
+        node = by_node_id.get(str(bridge.get("node_id") or ""))
+        if not node:
+            continue
+        recommendations.append(
+            {
+                "node_id": str(node.get("node_id") or ""),
+                "title": str(node.get("title") or ""),
+                "community": bridge.get("community"),
+                "connected_communities": bridge.get("connected_communities", []),
+                "bridge_score": bridge.get("bridge_score", 0.0),
+                "publication_quality_score": node.get("publication_quality_score", 0.0),
+                "relevance_score": node.get("relevance_score", 0.0),
+                "semantic_scholar_id": node.get("semantic_scholar_id"),
+            }
+        )
+    recommendations.sort(
+        key=lambda item: (
+            -float(item.get("bridge_score") or 0.0),
+            -float(item.get("publication_quality_score") or 0.0),
+            -float(item.get("relevance_score") or 0.0),
+            str(item.get("node_id") or ""),
+        )
+    )
+    return recommendations[: max(0, int(limit))]
+
+
+def annotate_expansion_results_with_louvain(
+    seed: dict[str, Any],
+    results: list[dict[str, Any]],
+    query: str,
+) -> dict[str, Any]:
+    try:
+        from ._literature_search import literature_result_unique_key
+    except ImportError:
+        from _literature_search import literature_result_unique_key
+    seed_node = relation_graph_node(seed, query, role="seed")
+    nodes = {str(seed_node["node_id"]): seed_node}
+    result_node_ids: dict[str, str] = {}
+    for result in results:
+        if not isinstance(result, dict):
+            continue
+        node = relation_graph_node(result, query, role="paper")
+        node_id = str(node["node_id"])
+        nodes[node_id] = node
+        result_node_ids[literature_result_unique_key(result)] = node_id
+    edges: list[dict[str, Any]] = []
+    for result in results:
+        if not isinstance(result, dict):
+            continue
+        result_key = literature_result_unique_key(result)
+        node_id = result_node_ids.get(result_key)
+        if not node_id:
+            continue
+        parent_id = result_node_ids.get(str(result.get("graph_parent_key") or "")) or str(seed_node["node_id"])
+        edge = relation_graph_edge(parent_id, node_id, str(result.get("graph_relation") or "search_result"), result)
+        if edge:
+            edges.append(edge)
+    analysis = run_louvain_community_analysis(list(nodes.values()), edges)
+    community_map = analysis.get("community_map") if isinstance(analysis.get("community_map"), dict) else {}
+    bridge_scores = {
+        str(bridge.get("node_id") or ""): bridge
+        for bridge in analysis.get("bridge_nodes", [])
+        if isinstance(bridge, dict)
+    }
+    drift_by_community = {
+        int(item.get("community_id")): item
+        for item in analysis.get("topic_drift_assessment", [])
+        if isinstance(item, dict) and item.get("community_id") is not None
+    }
+    for result in results:
+        if not isinstance(result, dict):
+            continue
+        node_id = result_node_ids.get(literature_result_unique_key(result))
+        if not node_id:
+            continue
+        if node_id in community_map:
+            result["louvain_community"] = community_map[node_id]
+            drift = drift_by_community.get(int(community_map[node_id]))
+            if drift:
+                result["louvain_community_disposition"] = drift.get("disposition")
+                result["louvain_priority"] = drift.get("priority")
+        bridge = bridge_scores.get(node_id)
+        if bridge:
+            result["louvain_bridge_score"] = bridge.get("bridge_score", 0.0)
+            result["louvain_connected_communities"] = bridge.get("connected_communities", [])
+    return analysis
+
 def build_literature_relation_graph(
     search_id: str,
     query: str = "",
     max_nodes: int = 80,
     min_quality: float = 0.0,
     max_clusters: int = 8,
+    run_louvain: bool = True,
+    louvain_resolution: float | None = None,
 ) -> str:
     try:
         from ._literature_scoring import publication_quality_assessment
@@ -596,8 +1555,50 @@ def build_literature_relation_graph(
         if edge:
             edges.append(edge)
 
+    louvain_analysis = (
+        run_louvain_community_analysis(
+            list(nodes.values()),
+            edges,
+            resolution=louvain_resolution,
+        )
+        if run_louvain
+        else {"status": "not_run", "reason": "run_louvain=False", "community_map": {}, "bridge_nodes": []}
+    )
+    louvain_map = louvain_analysis.get("community_map") if isinstance(louvain_analysis.get("community_map"), dict) else {}
+    louvain_bridges = {
+        str(bridge.get("node_id") or ""): bridge
+        for bridge in louvain_analysis.get("bridge_nodes", [])
+        if isinstance(bridge, dict)
+    }
+    drift_by_community = {
+        int(item.get("community_id")): item
+        for item in louvain_analysis.get("topic_drift_assessment", [])
+        if isinstance(item, dict) and item.get("community_id") is not None
+    }
+    for node_id, node in nodes.items():
+        if node_id in louvain_map:
+            node["louvain_community"] = louvain_map[node_id]
+            drift = drift_by_community.get(int(louvain_map[node_id]))
+            if drift:
+                node["louvain_community_disposition"] = drift.get("disposition")
+                node["louvain_priority"] = drift.get("priority")
+        if node_id in louvain_bridges:
+            node["louvain_bridge_score"] = louvain_bridges[node_id].get("bridge_score", 0.0)
+            node["louvain_connected_communities"] = louvain_bridges[node_id].get("connected_communities", [])
+
     clusters = build_mechanism_clusters(list(nodes.values()), edges, max_clusters=max_clusters)
     edge_summary = summarize_relation_edges(edges)
+    edge_summary["louvain"] = {
+        "status": louvain_analysis.get("status", "not_run"),
+        "structural_node_count": louvain_analysis.get("structural_node_count", 0),
+        "unique_edge_count": louvain_analysis.get("unique_edge_count", 0),
+        "ignored_artificial_edge_count": louvain_analysis.get("ignored_artificial_edge_count", 0),
+        "num_communities": louvain_analysis.get("num_communities", 0),
+        "modularity": louvain_analysis.get("modularity"),
+        "bridge_count": len(louvain_analysis.get("bridge_nodes", [])),
+        "outlier_community_count": len(louvain_analysis.get("outlier_communities", [])),
+    }
+    community_summary = graph_community_summary(filtered)
     fallback_used = bool(search.get("fallback_used")) or any(edge.get("edge_type") == "artificial" for edge in edges)
     analysis_confidence = 0.65 if fallback_used else 1.0
     pagerank = compute_pagerank(list(nodes), edges)
@@ -615,6 +1616,7 @@ def build_literature_relation_graph(
             -float(item.get("relevance_score", 0.0)),
         ),
     )
+    louvain_seed_recommendations = louvain_recommended_expansion_seeds(ranked_nodes, louvain_analysis)
     graph_id = new_id("relgraph")
     record = {
         "search_id": graph_id,
@@ -629,6 +1631,9 @@ def build_literature_relation_graph(
         "fallback_used": fallback_used,
         "analysis_confidence": analysis_confidence,
         "edge_summary": edge_summary,
+        "community_summary": community_summary,
+        "louvain_analysis": louvain_analysis,
+        "louvain_seed_recommendations": louvain_seed_recommendations,
         "nodes": ranked_nodes,
         "edges": edges,
         "clusters": clusters,
@@ -644,6 +1649,9 @@ def build_literature_relation_graph(
         nodes=len(nodes),
         edges=len(edges),
         clusters=len(clusters),
+        louvain_status=louvain_analysis.get("status", "not_run"),
+        louvain_communities=louvain_analysis.get("num_communities", 0),
+        louvain_modularity=louvain_analysis.get("modularity"),
     )
     response = {
         "relation_graph_id": graph_id,
@@ -655,10 +1663,44 @@ def build_literature_relation_graph(
         "fallback_used": fallback_used,
         "analysis_confidence": analysis_confidence,
         "edge_summary": edge_summary,
+        "community_summary": community_summary,
+        "louvain_analysis": {
+            "status": louvain_analysis.get("status", "not_run"),
+            "reason": louvain_analysis.get("reason", ""),
+            "resolution_used": louvain_analysis.get("resolution_used"),
+            "structural_node_count": louvain_analysis.get("structural_node_count", 0),
+            "unique_edge_count": louvain_analysis.get("unique_edge_count", 0),
+            "excluded_isolate_count": louvain_analysis.get("excluded_isolate_count", 0),
+            "ignored_artificial_edge_count": louvain_analysis.get("ignored_artificial_edge_count", 0),
+            "num_communities": louvain_analysis.get("num_communities", 0),
+            "modularity": louvain_analysis.get("modularity"),
+            "has_bridges": bool(louvain_analysis.get("has_bridges")),
+            "outlier_communities": [
+                {
+                    "community_id": item.get("community_id"),
+                    "size": item.get("size"),
+                    "disposition": item.get("disposition"),
+                    "priority": item.get("priority"),
+                }
+                for item in louvain_analysis.get("outlier_communities", [])
+                if isinstance(item, dict)
+            ],
+            "communities": [
+                {
+                    "community_id": item.get("community_id"),
+                    "size": item.get("size"),
+                    "primary_field": item.get("primary_field"),
+                    "bridge_count": item.get("bridge_count"),
+                }
+                for item in louvain_analysis.get("communities", [])
+                if isinstance(item, dict)
+            ],
+            "bridge_nodes": louvain_seed_recommendations,
+        },
         "central_papers": record["central_papers"],
         "clusters": clusters,
         "mechanism_lineage": record["mechanism_lineage"],
-        "next_step": "Use central_papers for high-trust seeds, clusters for mechanism lineage, and edges/citation_contexts for claim-citation verification.",
+        "next_step": "Use central_papers for high-trust seeds, louvain_analysis.bridge_nodes for cross-community expansion, clusters for mechanism lineage, and edges/citation_contexts for claim-citation verification.",
     }
     return json.dumps(response, ensure_ascii=False, indent=2)
 
@@ -705,6 +1747,7 @@ def relation_graph_node(result: dict[str, Any], query: str, role: str = "paper")
         "year": result.get("year"),
         "venue": result.get("venue"),
         "field": quality["inferred_field"],
+        "community": infer_literature_community(result),
         "mechanism_terms": terms,
         "mechanism_cluster_key": mechanism_cluster_key(quality["inferred_field"], terms),
         "relevance_score": result.get("relevance_score", 0.0),
@@ -728,17 +1771,22 @@ def relation_graph_edge(parent_id: str, node_id: str, relation: str, result: dic
     if node_id == parent_id:
         return {}
     normalized = normalize_key(relation)
-    base_relation = normalized.removeprefix("second_layer_")
-    is_second_layer = normalized.startswith("second_layer_")
-    is_artificial = base_relation in {"keyword_fallback", "search_result"}
+    is_bridge = bool(result.get("graph_cross_community_bridge")) or normalized.startswith("cross_community_bridge_")
+    base_relation = normalized.removeprefix("cross_community_bridge_")
+    is_second_layer = base_relation.startswith("second_layer_") or normalized.startswith("cross_community_bridge_")
+    base_relation = base_relation.removeprefix("second_layer_")
+    is_artificial = base_relation in {"keyword_fallback", "search_result", "cross_community_search"}
     weight = {
         "reference": 1.0,
         "citation": 1.0,
         "keyword_fallback": 0.08,
         "search_result": 0.06,
+        "cross_community_search": 0.12,
     }.get(base_relation, 0.4)
     if is_second_layer and not is_artificial:
         weight *= 0.65
+    if is_bridge and not is_artificial:
+        weight = min(1.0, weight + max(0.0, float(SCIENCE_CROSS_COMMUNITY_EDGE_BONUS)))
     if base_relation == "reference":
         source, target = parent_id, node_id
     elif base_relation == "citation":
@@ -746,7 +1794,9 @@ def relation_graph_edge(parent_id: str, node_id: str, relation: str, result: dic
     else:
         source, target = parent_id, node_id
     contexts = [trim_text(scalar(item), 260) for item in (result.get("citation_contexts") or []) if scalar(item)]
-    return {
+    parent_community = str(result.get("graph_parent_community") or "")
+    child_community = str(result.get("graph_community") or infer_literature_community(result))
+    edge = {
         "source": source,
         "target": target,
         "relation": normalized,
@@ -760,6 +1810,12 @@ def relation_graph_edge(parent_id: str, node_id: str, relation: str, result: dic
         "parent_title": result.get("graph_parent_title", ""),
         "manual_connection": is_artificial,
     }
+    if is_bridge:
+        edge["is_cross_community_bridge"] = True
+        edge["bridge_communities"] = str(result.get("graph_bridge_communities") or f"{parent_community}->{child_community}")
+        edge["parent_community"] = parent_community
+        edge["child_community"] = child_community
+    return edge
 
 def mechanism_terms(result: dict[str, Any], query: str = "", limit: int = 6) -> list[str]:
     try:
@@ -1021,6 +2077,7 @@ def summarize_relation_edges(edges: list[dict[str, Any]]) -> dict[str, Any]:
         "total_edges": len(edges),
         "citation_graph_edges": by_type.get("citation_graph", 0),
         "artificial_edges": by_type.get("artificial", 0),
+        "cross_community_bridges": sum(1 for edge in edges if edge.get("is_cross_community_bridge")),
         "by_relation": dict(sorted(by_relation.items())),
         "by_depth": dict(sorted(depths.items())),
         "fallback_weight_policy": "keyword_fallback/search_result edges are artificial and use very low PageRank weight.",

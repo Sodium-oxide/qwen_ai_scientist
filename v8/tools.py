@@ -489,18 +489,40 @@ def expand_literature_graph(
     )
 
 
+def search_cross_community_bridges(
+    search_id: str,
+    target_communities: list[str] | None = None,
+    max_results: int = 12,
+) -> str:
+    try:
+        from .science_core import search_cross_community_bridges as science_bridge_search
+    except ImportError:
+        from science_core import search_cross_community_bridges as science_bridge_search
+    return science_bridge_search(search_id, target_communities, max_results)
+
+
 def build_literature_relation_graph(
     search_id: str,
     query: str = "",
     max_nodes: int = 80,
     min_quality: float = 0.0,
     max_clusters: int = 8,
+    run_louvain: bool = True,
+    louvain_resolution: float | None = None,
 ) -> str:
     try:
         from .science_core import build_literature_relation_graph as science_relation_graph
     except ImportError:
         from science_core import build_literature_relation_graph as science_relation_graph
-    return science_relation_graph(search_id, query, max_nodes, min_quality, max_clusters)
+    return science_relation_graph(
+        search_id,
+        query,
+        max_nodes,
+        min_quality,
+        max_clusters,
+        run_louvain=run_louvain,
+        louvain_resolution=louvain_resolution,
+    )
 
 
 def create_science_pipeline_tasks(project_id: str) -> str:
@@ -718,6 +740,18 @@ def build_knowledge_map(project_id: str, dimension: str = "method-scenario-bench
     return science_knowledge_map(project_id, dimension)
 
 
+def build_louvain_community_knowledge_maps(
+    project_id: str,
+    relation_graph_id: str = "",
+    min_records: int | None = None,
+) -> str:
+    try:
+        from .science_core import build_louvain_community_knowledge_maps as science_community_maps
+    except ImportError:
+        from science_core import build_louvain_community_knowledge_maps as science_community_maps
+    return science_community_maps(project_id, relation_graph_id, min_records)
+
+
 def add_literature_evidence(
     project_id: str,
     title: str,
@@ -796,12 +830,19 @@ def import_literature_search_result(
     search_id: str,
     result_index: int = 0,
     use_llm: bool = False,
+    force_import: bool = False,
 ) -> str:
     try:
         from .science_core import import_literature_search_result as science_import_search_result
     except ImportError:
         from science_core import import_literature_search_result as science_import_search_result
-    return science_import_search_result(project_id, search_id, result_index, use_llm)
+    return science_import_search_result(
+        project_id,
+        search_id,
+        result_index,
+        use_llm,
+        force_import=force_import,
+    )
 
 
 def domain_review_paper(
@@ -816,6 +857,19 @@ def domain_review_paper(
     except ImportError:
         from science_core import domain_review_paper as science_domain_review
     return science_domain_review(project_id, paper_id, target_domain_profile, min_confidence)
+
+
+def reconcile_project_domain_reviews(
+    project_id: str,
+    target_domain_profile: list[str] | str | None = None,
+    min_confidence: float = 0.6,
+    include_active: bool = False,
+) -> str:
+    try:
+        from .science_core import reconcile_project_domain_reviews as science_reconcile_reviews
+    except ImportError:
+        from science_core import reconcile_project_domain_reviews as science_reconcile_reviews
+    return science_reconcile_reviews(project_id, target_domain_profile, min_confidence, include_active)
 
 
 def extract_paper_keynote(
@@ -1928,7 +1982,7 @@ SCIENCE_TOOLS = [
     },
     {
         "name": "expand_literature_graph",
-        "description": "DeepSurvey-style citation graph expansion from one cached seed paper through Semantic Scholar references/citations, then rank with PaperGraph quality gates. Tries arXiv IDs with and without version suffix. If graph edges are empty, optionally falls back to Semantic Scholar keyword expansion and marks fallback_used.",
+        "description": "DeepSurvey-style citation graph expansion from one cached seed paper through Semantic Scholar references/citations, then rank with PaperGraph quality gates. At depth two, it prefers seeds from different heuristic communities and may run a bounded bridge search only when result count or community coverage is sparse. Tries arXiv IDs with and without version suffix. If graph edges are empty, optionally falls back to Semantic Scholar keyword expansion and marks fallback_used.",
         "input_schema": {
             "type": "object",
             "properties": {
@@ -1946,8 +2000,21 @@ SCIENCE_TOOLS = [
         },
     },
     {
+        "name": "search_cross_community_bridges",
+        "description": "Run a bounded Semantic Scholar bridge search for papers containing both clinical and molecular/mechanistic evidence. Saves candidates for review/import but never imports them automatically.",
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "search_id": {"type": "string", "description": "Source search_id whose query supplies bridge terms."},
+                "target_communities": {"type": "array", "items": {"type": "string"}, "description": "Optional observed communities to record in the bridge-search provenance."},
+                "max_results": {"type": "integer", "description": "Maximum bridge candidates, bounded by SCIENCE_BRIDGE_SEARCH_MAX_RESULTS."},
+            },
+            "required": ["search_id"],
+        },
+    },
+    {
         "name": "build_literature_relation_graph",
-        "description": "Build a mechanism lineage graph from cached search or graph-expansion results. Produces nodes, citation/relevance edges, mechanism clusters, PageRank centrality, and representative papers for claim-citation verification.",
+        "description": "Build a mechanism lineage graph from cached search or graph-expansion results. Produces citation/relevance edges, mechanism clusters, PageRank centrality, and optional Louvain structural communities with bridge-paper recommendations.",
         "input_schema": {
             "type": "object",
             "properties": {
@@ -1956,6 +2023,8 @@ SCIENCE_TOOLS = [
                 "max_nodes": {"type": "integer", "description": "Maximum papers to include in the graph."},
                 "min_quality": {"type": "number", "description": "Optional publication_quality_score floor; use 0.55+ to exclude weak/noisy papers."},
                 "max_clusters": {"type": "integer", "description": "Maximum mechanism clusters after merging singleton clusters; default 8."},
+                "run_louvain": {"type": "boolean", "description": "Run weighted Louvain detection over real citation-graph edges; default true."},
+                "louvain_resolution": {"type": "number", "description": "Optional Louvain resolution in [0.1, 5.0]; higher values produce smaller communities."},
             },
             "required": ["search_id"],
         },
@@ -2134,6 +2203,19 @@ SCIENCE_TOOLS = [
         },
     },
     {
+        "name": "build_louvain_community_knowledge_maps",
+        "description": "Map a persisted Louvain relation graph onto imported PaperGraph evidence, build one evidence-bounded knowledge map per community, and identify communities requiring representative-paper import.",
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "project_id": {"type": "string", "description": "Science project id."},
+                "relation_graph_id": {"type": "string", "description": "Optional persisted relation_graph_id; defaults to the project's latest Louvain relation graph."},
+                "min_records": {"type": "integer", "description": "Minimum imported evidence records before a community can produce gap candidates; default is the configured value."},
+            },
+            "required": ["project_id"],
+        },
+    },
+    {
         "name": "add_literature_evidence",
         "description": "Add one structured PaperGraph evidence record to a science project.",
         "input_schema": {
@@ -2196,7 +2278,7 @@ SCIENCE_TOOLS = [
     },
     {
         "name": "import_literature_search_result",
-        "description": "Import one real paper from a cached search_literature result by search_id and result_index. Fails if the search has no retrieved papers.",
+        "description": "Import one real paper from a cached search_literature result by search_id and result_index. Set force_import only after human review to retain a paper rejected by the domain gate.",
         "input_schema": {
             "type": "object",
             "properties": {
@@ -2204,6 +2286,7 @@ SCIENCE_TOOLS = [
                 "search_id": {"type": "string", "description": "search_id returned by search_literature."},
                 "result_index": {"type": "integer", "description": "Zero-based result_index returned by search_literature."},
                 "use_llm": {"type": "boolean", "description": "Use Qwen/LLM extraction on the result abstract before importing."},
+                "force_import": {"type": "boolean", "description": "Human-reviewed override for a domain-gate rejection; record remains marked for review."},
             },
             "required": ["project_id", "search_id"],
         },
@@ -2508,6 +2591,20 @@ SCIENCE_TOOLS = [
                 "min_confidence": {"type": "number", "description": "Minimum target-anchor coverage for cross-field records; default 0.6."},
             },
             "required": ["project_id", "paper_id"],
+        },
+    },
+    {
+        "name": "reconcile_project_domain_reviews",
+        "description": "Re-run domain review for inactive PaperGraph records and recover their original cached retrieval relevance when available. It can reactivate prior false negatives but keeps review-status records marked for audit.",
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "project_id": {"type": "string", "description": "Science project id."},
+                "target_domain_profile": {"type": ["array", "string"], "description": "Optional replacement domain profile."},
+                "min_confidence": {"type": "number", "description": "Domain-review confidence threshold."},
+                "include_active": {"type": "boolean", "description": "Also re-audit currently active records; defaults to inactive records only."},
+            },
+            "required": ["project_id"],
         },
     },
     {
@@ -2867,6 +2964,7 @@ TOOL_HANDLERS: dict[str, Callable[..., str]] = {
     "extract_structured_info": extract_structured_info,
     "select_literature_result": select_literature_result,
     "expand_literature_graph": expand_literature_graph,
+    "search_cross_community_bridges": search_cross_community_bridges,
     "build_literature_relation_graph": build_literature_relation_graph,
     "create_science_pipeline_tasks": create_science_pipeline_tasks,
     "create_science_delegation_tasks": create_science_delegation_tasks,
@@ -2883,11 +2981,13 @@ TOOL_HANDLERS: dict[str, Callable[..., str]] = {
     "decompose_research_objective": decompose_research_objective,
     "set_research_brief": set_research_brief,
     "build_knowledge_map": build_knowledge_map,
+    "build_louvain_community_knowledge_maps": build_louvain_community_knowledge_maps,
     "add_literature_evidence": add_literature_evidence,
     "import_literature_text": import_literature_text,
     "import_literature_file": import_literature_file,
     "import_literature_search_result": import_literature_search_result,
     "domain_review_paper": domain_review_paper,
+    "reconcile_project_domain_reviews": reconcile_project_domain_reviews,
     "extract_paper_keynote": extract_paper_keynote,
     "import_papergraph_record": import_papergraph_record,
     "list_papergraph_records": list_papergraph_records,

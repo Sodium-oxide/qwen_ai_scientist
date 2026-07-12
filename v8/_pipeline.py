@@ -14,6 +14,7 @@ try:
     from .config import (
         SCIENCE_DIR,
         SCIENCE_ZHIZHI_DEFAULT_IMPORT_TOP_K,
+        SCIENCE_ZHIZHI_IMPORT_LLM_LIMIT,
         SCIENCE_ZHIZHI_MAX_IMPORT_TOP_K,
         SCIENCE_ZHIZHI_SERIAL_SUBSPACE_SEARCH,
         SCIENCE_ZHIZHI_SUBSPACE_ROUNDS,
@@ -26,6 +27,7 @@ except ImportError:
     from config import (
         SCIENCE_DIR,
         SCIENCE_ZHIZHI_DEFAULT_IMPORT_TOP_K,
+        SCIENCE_ZHIZHI_IMPORT_LLM_LIMIT,
         SCIENCE_ZHIZHI_MAX_IMPORT_TOP_K,
         SCIENCE_ZHIZHI_SERIAL_SUBSPACE_SEARCH,
         SCIENCE_ZHIZHI_SUBSPACE_ROUNDS,
@@ -1461,11 +1463,11 @@ def run_zhizhi_serial_subspace_analysis(
     layer quota, import budget, and domain review before moving to the next.
     """
     try:
-        from ._gap_detection import build_knowledge_map, detect_knowledge_gaps, knowledge_map_unknown_summary, zhizhi_standard_output
+        from ._gap_detection import build_knowledge_map, build_louvain_community_knowledge_maps, detect_knowledge_gaps, knowledge_map_unknown_summary, zhizhi_standard_output
         from ._project import build_serial_subspace_query_plan, default_literature_providers, load_project, load_subspace_map, save_project
         from ._utils import clamp_int, unique_preserve_order
     except ImportError:
-        from _gap_detection import build_knowledge_map, detect_knowledge_gaps, knowledge_map_unknown_summary, zhizhi_standard_output
+        from _gap_detection import build_knowledge_map, build_louvain_community_knowledge_maps, detect_knowledge_gaps, knowledge_map_unknown_summary, zhizhi_standard_output
         from _project import build_serial_subspace_query_plan, default_literature_providers, load_project, load_subspace_map, save_project
         from _utils import clamp_int, unique_preserve_order
 
@@ -1689,6 +1691,13 @@ def standard_retrieval_import_limit(
     return min(available, max(10, requested))
 
 
+def zhizhi_import_llm_budget(use_llm: bool, candidate_count: int) -> int:
+    if not use_llm:
+        return 0
+    configured = min(3, max(0, int(SCIENCE_ZHIZHI_IMPORT_LLM_LIMIT)))
+    return min(max(0, int(candidate_count or 0)), configured)
+
+
 def zhizhi_search_action_from_output(payload: dict[str, Any]) -> dict[str, Any]:
     action = payload.get("action") if isinstance(payload.get("action"), dict) else {}
     search = action.get("search_papers_stratified") if isinstance(action.get("search_papers_stratified"), dict) else {}
@@ -1866,7 +1875,7 @@ def run_zhizhi_subhypothesis_analysis(
                                     project_id,
                                     str(preprint_probe["search_id"]),
                                     result_index,
-                                    use_llm=use_llm,
+                                    use_llm=False,
                                     stratified_layer_override="L3_preprint",
                                     query_branch_override=sub_id,
                                 )
@@ -2322,6 +2331,19 @@ def run_zhizhi_literature_analysis(
 
     log_event("SCIENCE", "import_phase_start", search_id=search_id, total_candidates=len(import_candidates),
               layers={layer: len(items) for layer, items in by_layer.items() if items})
+    llm_imports_remaining = zhizhi_import_llm_budget(use_llm, len(import_candidates))
+    action["import_enrichment_policy"] = {
+        "llm_structure_import_budget": llm_imports_remaining,
+        "per_paper_keynote_llm": False,
+        "semantic_scholar_detail_for_existing_search_result": False,
+    }
+    log_event(
+        "SCIENCE",
+        "import_enrichment_budget",
+        search_id=search_id,
+        llm_structure_import_budget=llm_imports_remaining,
+        per_paper_keynote_llm=False,
+    )
 
     # Build pre-filter set from existing papergraph to avoid duplicate imports
     project = load_project(project_id)
@@ -2371,7 +2393,17 @@ def run_zhizhi_literature_analysis(
                 continue
             log_event("SCIENCE", "import_paper_attempt", layer=layer_name, title=result_title, result_index=result_index)
             try:
-                imported = json.loads(import_literature_search_result(project_id, search_id, result_index, use_llm=use_llm))
+                use_llm_for_import = llm_imports_remaining > 0
+                imported = json.loads(
+                    import_literature_search_result(
+                        project_id,
+                        search_id,
+                        result_index,
+                        use_llm=use_llm_for_import,
+                    )
+                )
+                if use_llm_for_import:
+                    llm_imports_remaining -= 1
                 import_status = str(imported.get("status") or "imported")
                 if import_status == "duplicate":
                     log_event("SCIENCE", "paper_skipped_duplicate", layer=layer_name, title=result_title, result_index=result_index,
@@ -2384,7 +2416,7 @@ def run_zhizhi_literature_analysis(
                 log_event("SCIENCE", "stratified_import_completed", layer=layer_name, title=result_title, paper_id=paper_id, result_index=result_index)
                 if paper_id:
                     try:
-                        extract_paper_keynote(project_id, paper_id=str(paper_id), use_llm=use_llm)
+                        extract_paper_keynote(project_id, paper_id=str(paper_id), use_llm=False)
                     except Exception as exc:
                         observations.append(f"keynote extraction failed for {paper_id}: {exc}")
             except Exception as exc:
@@ -2536,6 +2568,25 @@ def run_zhizhi_literature_analysis(
                 "edge_summary": relation_payload.get("edge_summary"),
                 "analysis_confidence": relation_payload.get("analysis_confidence"),
             }
+            relation_graph_id = str(relation_payload.get("relation_graph_id") or "")
+            if relation_graph_id:
+                community_payload = json.loads(
+                    build_louvain_community_knowledge_maps(project_id, relation_graph_id)
+                )
+                action["louvain_community_knowledge_maps"] = {
+                    "status": community_payload.get("status"),
+                    "relation_graph_id": relation_graph_id,
+                    "community_count": community_payload.get("community_count", 0),
+                    "eligible_community_count": community_payload.get("eligible_community_count", 0),
+                    "unassigned_imported_record_count": community_payload.get("unassigned_imported_record_count", 0),
+                    "unmapped_relation_node_count": community_payload.get("unmapped_relation_node_count", 0),
+                    "representative_import_candidates": community_payload.get("representative_import_candidates", []),
+                    "outlier_communities": community_payload.get("outlier_communities", []),
+                }
+                if int(community_payload.get("eligible_community_count") or 0) <= 0:
+                    observations.append(
+                        "Louvain communities were identified, but none has enough already imported PaperGraph evidence for community-level gap analysis."
+                    )
         except Exception as exc:
             observations.append(f"relation graph failed: {exc}")
 

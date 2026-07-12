@@ -76,6 +76,53 @@ def build_knowledge_map(project_id: str, dimension: str = "method-scenario-bench
             still_low_quality=repair_report.get("still_low_quality"),
         )
     records = project_records_for_mapping(project)
+    active_papergraph_count = sum(
+        1 for record in project.get("papergraph", [])
+        if isinstance(record, dict) and record.get("active", True) is not False
+    )
+    knowledge_map = build_knowledge_map_payload(
+        records,
+        dimension=dimension,
+        active_papergraph_count=active_papergraph_count,
+        extraction_repair=repair_report,
+    )
+    msb_louvain = run_method_scenario_benchmark_louvain(records)
+    knowledge_map["method_scenario_benchmark_louvain"] = msb_louvain
+    project["knowledge_map"] = knowledge_map
+    project["method_scenario_benchmark_louvain"] = msb_louvain
+    project["causal_evidence_graph"] = knowledge_map["causal_evidence_graph"]
+    project["coverage_matrix"] = {
+        method: {scenario: sorted({ref for refs in benchmarks.values() for ref in refs}) for scenario, benchmarks in scenarios.items()}
+        for method, scenarios in knowledge_map["method_scenario_benchmark"].items()
+    }
+    project["updatedAt"] = time.time()
+    save_project(project)
+    log_event(
+        "SCIENCE",
+        "knowledge_map_built",
+        project_id=project_id,
+        methods=len(knowledge_map["method_scenario_coverage"]),
+        triples=len(knowledge_map["method_scenario_benchmark_triples"]),
+        msb_louvain_status=msb_louvain.get("status"),
+        msb_louvain_communities=msb_louvain.get("num_communities", 0),
+        msb_louvain_modularity=msb_louvain.get("modularity"),
+    )
+    return json.dumps(knowledge_map, ensure_ascii=False, indent=2)
+
+
+def build_knowledge_map_payload(
+    records: list[dict[str, Any]],
+    *,
+    dimension: str = "method-scenario-benchmark",
+    active_papergraph_count: int | None = None,
+    extraction_repair: dict[str, Any] | None = None,
+) -> dict[str, Any]:
+    try:
+        from ._pipeline import classify_record_evidence
+        from ._utils import normalize_label, record_context_text, repair_unknown_field
+    except ImportError:
+        from _pipeline import classify_record_evidence
+        from _utils import normalize_label, record_context_text, repair_unknown_field
     triples: list[dict[str, Any]] = []
     method_scenario_coverage: dict[str, list[str]] = {}
     benchmark_index: dict[str, list[str]] = {}
@@ -107,10 +154,7 @@ def build_knowledge_map(project_id: str, dimension: str = "method-scenario-bench
     causal_evidence_graph = build_causal_evidence_graph(records)
     knowledge_map = {
         "dimension": dimension,
-        "active_papergraph_count": sum(
-            1 for record in project.get("papergraph", [])
-            if isinstance(record, dict) and record.get("active", True) is not False
-        ),
+        "active_papergraph_count": active_papergraph_count if active_papergraph_count is not None else len(records),
         "main_methods": sorted(method_scenario_coverage),
         "main_scenarios": sorted({scenario for scenarios in method_scenario_coverage.values() for scenario in scenarios}),
         "main_benchmarks": sorted(benchmark_index),
@@ -120,34 +164,472 @@ def build_knowledge_map(project_id: str, dimension: str = "method-scenario-bench
         "method_scenario_benchmark_triples": triples,
         "causal_evidence_graph": causal_evidence_graph,
         "claim_type_counts": dict(Counter(item["claim_type"] for triple in triples for item in triple["evidence_type_annotations"])),
-        "extraction_repair": repair_report,
+        "extraction_repair": extraction_repair or {},
     }
     knowledge_map["unknown_summary"] = knowledge_map_unknown_summary(knowledge_map)
-    project["knowledge_map"] = knowledge_map
-    project["causal_evidence_graph"] = causal_evidence_graph
-    project["coverage_matrix"] = {
-        method: {scenario: sorted({ref for refs in benchmarks.values() for ref in refs}) for scenario, benchmarks in scenarios.items()}
-        for method, scenarios in method_scenario_benchmark.items()
+    return knowledge_map
+
+
+def run_method_scenario_benchmark_louvain(
+    records: list[dict[str, Any]],
+    resolution: float = 1.0,
+) -> dict[str, Any]:
+    """Detect weighted research branches in the method-scenario-benchmark evidence graph.
+
+    This is intentionally separate from citation Louvain: an edge here means
+    that one imported record supplies evidence for two research descriptors.
+    It must never be presented as a paper-to-paper citation edge.
+    """
+    try:
+        import networkx as nx
+    except ImportError:
+        return {
+            "status": "unavailable",
+            "reason": "networkx is not installed",
+            "graph_type": "method_scenario_benchmark_evidence",
+            "num_communities": 0,
+            "communities": [],
+        }
+    try:
+        from ._utils import normalize_label, record_context_text, repair_unknown_field
+    except ImportError:
+        from _utils import normalize_label, record_context_text, repair_unknown_field
+
+    graph = nx.Graph()
+    edge_support: dict[tuple[str, str], set[str]] = defaultdict(set)
+    usable_records = 0
+
+    def add_descriptor(kind: str, value: str) -> str:
+        node_id = f"{kind}:{value.lower()}"
+        graph.add_node(node_id, kind=kind, label=value)
+        return node_id
+
+    def is_known(value: str) -> bool:
+        lowered = value.strip().lower()
+        return bool(lowered) and not lowered.startswith(("unknown", "unspecified", "not reported", "n/a"))
+
+    def record_weight(record: dict[str, Any]) -> float:
+        try:
+            quality = float(record.get("publication_quality_score") or 0.5)
+        except (TypeError, ValueError):
+            quality = 0.5
+        try:
+            citations = float(record.get("citation_count") or 0.0)
+        except (TypeError, ValueError):
+            citations = 0.0
+        return round(max(0.25, min(1.0, quality)) * (1.0 + min(0.5, citations / 100.0)), 4)
+
+    for record in records:
+        if not isinstance(record, dict) or record.get("active", True) is False:
+            continue
+        record_text = record_context_text(record)
+        method = normalize_label(repair_unknown_field(record.get("method", ""), record_text, "method"))
+        scenario = normalize_label(repair_unknown_field(record.get("scenario", ""), record_text, "scenario"))
+        benchmark = normalize_label(repair_unknown_field(record.get("benchmark", ""), record_text, "benchmark"))
+        descriptors = [
+            ("method", method),
+            ("scenario", scenario),
+            ("benchmark", benchmark),
+        ]
+        nodes = [add_descriptor(kind, value) for kind, value in descriptors if is_known(value)]
+        if len(nodes) < 2:
+            continue
+        usable_records += 1
+        citation = str(record.get("citation") or record.get("paper_id") or record.get("title") or "")
+        weight = record_weight(record)
+        for left_index, source in enumerate(nodes):
+            for target in nodes[left_index + 1:]:
+                edge_key = tuple(sorted((source, target)))
+                if graph.has_edge(source, target):
+                    graph[source][target]["weight"] += weight
+                    graph[source][target]["record_count"] += 1
+                else:
+                    graph.add_edge(source, target, weight=weight, record_count=1)
+                if citation:
+                    edge_support[edge_key].add(citation)
+
+    base = {
+        "graph_type": "method_scenario_benchmark_evidence",
+        "edge_basis": "weighted co-occurrence in active imported PaperGraph records; not citation edges",
+        "record_count": usable_records,
+        "node_count": graph.number_of_nodes(),
+        "edge_count": graph.number_of_edges(),
+        "resolution_used": max(0.1, min(5.0, float(resolution))),
+        "num_communities": 0,
+        "modularity": None,
+        "community_map": {},
+        "communities": [],
     }
+    if graph.number_of_nodes() < 3 or graph.number_of_edges() < 2:
+        return {**base, "status": "insufficient_structure", "reason": "Need at least three known descriptors and two evidence edges."}
+    try:
+        raw_communities = nx.algorithms.community.louvain_communities(
+            graph,
+            weight="weight",
+            resolution=base["resolution_used"],
+            seed=42,
+        )
+        ordered = sorted((set(community) for community in raw_communities), key=lambda members: (-len(members), sorted(members)))
+        community_map = {
+            node_id: community_id
+            for community_id, members in enumerate(ordered)
+            for node_id in members
+        }
+        modularity = nx.algorithms.community.modularity(graph, ordered, weight="weight", resolution=base["resolution_used"])
+    except Exception as exc:
+        return {**base, "status": "failed", "reason": f"Louvain failed: {str(exc)[:240]}"}
+
+    communities = []
+    for community_id, members in enumerate(ordered):
+        member_set = set(members)
+        weighted_support = 0.0
+        references: set[str] = set()
+        for source, target, attributes in graph.edges(member_set, data=True):
+            if source not in member_set or target not in member_set:
+                continue
+            weighted_support += float(attributes.get("weight") or 0.0)
+            references.update(edge_support.get(tuple(sorted((source, target))), set()))
+        descriptors = {
+            kind: sorted(
+                str(graph.nodes[node_id].get("label") or "")
+                for node_id in member_set
+                if graph.nodes[node_id].get("kind") == kind
+            )
+            for kind in ("method", "scenario", "benchmark")
+        }
+        communities.append(
+            {
+                "community_id": community_id,
+                "size": len(member_set),
+                "methods": descriptors["method"],
+                "scenarios": descriptors["scenario"],
+                "benchmarks": descriptors["benchmark"],
+                "internal_weight": round(weighted_support, 4),
+                "supporting_references": sorted(references)[:8],
+            }
+        )
+    return {
+        **base,
+        "status": "success",
+        "num_communities": len(communities),
+        "modularity": round(float(modularity), 6),
+        "community_map": community_map,
+        "communities": communities,
+    }
+
+
+def annotate_gap_with_method_scenario_benchmark_communities(
+    gap: dict[str, Any],
+    analysis: dict[str, Any],
+) -> None:
+    """Attach evidence-graph community scope without claiming citation membership."""
+    if not isinstance(analysis, dict) or analysis.get("status") != "success":
+        return
+    ingredients = gap.get("hypothesis_ingredients", {}) if isinstance(gap.get("hypothesis_ingredients"), dict) else {}
+    values_by_kind = {
+        "method": ingredients.get("methods", gap.get("method", "")),
+        "scenario": ingredients.get("scenarios", gap.get("scenario", "")),
+        "benchmark": ingredients.get("benchmarks", gap.get("benchmark", "")),
+    }
+    community_map = analysis.get("community_map", {}) if isinstance(analysis.get("community_map"), dict) else {}
+    community_ids: set[int] = set()
+    for kind, values in values_by_kind.items():
+        candidates = values if isinstance(values, list) else [values]
+        for value in candidates:
+            node_id = f"{kind}:{str(value or '').strip().lower()}"
+            if node_id in community_map:
+                community_ids.add(int(community_map[node_id]))
+    if not community_ids:
+        return
+    gap["method_scenario_benchmark_louvain_communities"] = sorted(community_ids)
+    gap["method_scenario_benchmark_louvain_scope"] = "weighted_evidence_cooccurrence"
+    if len(community_ids) == 1:
+        gap["method_scenario_benchmark_louvain_primary_community"] = next(iter(community_ids))
+
+
+def louvain_record_match_keys(record: dict[str, Any]) -> set[str]:
+    try:
+        from ._utils import normalize_key
+    except ImportError:
+        from _utils import normalize_key
+    keys: set[str] = set()
+    for field in ("unique_key", "node_id", "doi", "arxiv_id", "semantic_scholar_id", "url", "title"):
+        value = str(record.get(field) or "").strip()
+        if not value:
+            continue
+        normalized = normalize_key(value)
+        if normalized:
+            keys.add(normalized)
+        if field == "doi":
+            keys.add(normalize_key(f"doi:{value}"))
+        elif field == "arxiv_id":
+            keys.add(normalize_key(f"arxiv:{value}"))
+        elif field == "semantic_scholar_id":
+            keys.add(normalize_key(f"s2:{value}"))
+    return {key for key in keys if key}
+
+
+def louvain_community_gap_candidates(
+    project: dict[str, Any],
+    community_maps: dict[str, Any],
+    *,
+    max_per_community: int = 2,
+) -> list[dict[str, Any]]:
+    candidates: list[dict[str, Any]] = []
+    for community_id, payload in community_maps.items():
+        if not isinstance(payload, dict) or not payload.get("eligible_for_gap_analysis"):
+            continue
+        knowledge_map = payload.get("knowledge_map") if isinstance(payload.get("knowledge_map"), dict) else {}
+        method_coverage = knowledge_map.get("method_scenario_coverage", {})
+        methods = [str(item) for item in knowledge_map.get("main_methods", []) if str(item) and str(item) != "unknown"]
+        scenarios = [str(item) for item in knowledge_map.get("main_scenarios", []) if str(item) and str(item) != "unknown"]
+        emitted = 0
+        for method in methods:
+            for scenario in scenarios:
+                if scenario in set(method_coverage.get(method, [])):
+                    continue
+                references = []
+                for triple in knowledge_map.get("method_scenario_benchmark_triples", []):
+                    if not isinstance(triple, dict):
+                        continue
+                    if triple.get("method") == method or triple.get("scenario") == scenario:
+                        references.extend(str(ref) for ref in triple.get("references", []) if ref)
+                gap = make_gap(
+                    gap_type="community_combinatorial",
+                    description=(
+                        f"Within Louvain community {community_id} ({payload.get('primary_field') or 'mixed field'}), "
+                        f"method '{method}' has no imported evidence in scenario '{scenario}'."
+                    ),
+                    supporting_references=list(dict.fromkeys(references))[:6],
+                    suggested_research_path=(
+                        "Run a targeted within-community validation using the community's representative papers and explicit "
+                        "method-scenario benchmarks before claiming a cross-community transfer."
+                    ),
+                    value_argument=(
+                        "The absence is measured inside a citation-defined research branch, so it is more specific than a "
+                        "global method-scenario gap."
+                    ),
+                )
+                gap["louvain_community"] = int(community_id)
+                gap["louvain_primary_field"] = payload.get("primary_field")
+                gap["louvain_community_record_count"] = payload.get("record_count", 0)
+                gap["louvain_gap_scope"] = "within_community"
+                candidates.append(assess_gap_dict(project, gap))
+                emitted += 1
+                if emitted >= max(1, int(max_per_community)):
+                    break
+            if emitted >= max(1, int(max_per_community)):
+                break
+    return candidates
+
+
+def build_louvain_community_knowledge_maps(
+    project_id: str,
+    relation_graph_id: str = "",
+    min_records: int | None = None,
+) -> str:
+    try:
+        from .config import SCIENCE_LOUVAIN_MIN_COMMUNITY_RECORDS
+        from ._pipeline import project_records_for_mapping
+        from ._project import load_project, load_search, save_project
+    except ImportError:
+        from config import SCIENCE_LOUVAIN_MIN_COMMUNITY_RECORDS
+        from _pipeline import project_records_for_mapping
+        from _project import load_project, load_search, save_project
+    project = load_project(project_id)
+    graph_id = str(relation_graph_id or project.get("latest_louvain_relation_graph_id") or "")
+    if not graph_id:
+        return json.dumps(
+            {
+                "status": "not_available",
+                "reason": "No relation graph id was supplied or recorded for this project.",
+                "communities": {},
+            },
+            ensure_ascii=False,
+            indent=2,
+        )
+    relation_graph = load_search(graph_id)
+    analysis = relation_graph.get("louvain_analysis") if isinstance(relation_graph.get("louvain_analysis"), dict) else {}
+    community_map = analysis.get("community_map") if isinstance(analysis.get("community_map"), dict) else {}
+    if not community_map:
+        report = {
+            "status": str(analysis.get("status") or "not_available"),
+            "relation_graph_id": graph_id,
+            "reason": str(analysis.get("reason") or "The relation graph has no usable Louvain community map."),
+            "communities": {},
+        }
+        project["louvain_community_knowledge_maps"] = report
+        project["latest_louvain_relation_graph_id"] = graph_id
+        project["updatedAt"] = time.time()
+        save_project(project)
+        return json.dumps(report, ensure_ascii=False, indent=2)
+
+    nodes = [item for item in relation_graph.get("nodes", []) if isinstance(item, dict)]
+    node_to_community: dict[str, int] = {}
+    for node in nodes:
+        node_id = str(node.get("node_id") or "")
+        community_id = node.get("louvain_community", community_map.get(node_id))
+        if node_id and community_id is not None:
+            node_to_community[node_id] = int(community_id)
+    identifier_to_community: dict[str, int] = {}
+    identifier_to_node_id: dict[str, str] = {}
+    for node in nodes:
+        node_id = str(node.get("node_id") or "")
+        community_id = node_to_community.get(node_id)
+        if community_id is None:
+            continue
+        for key in louvain_record_match_keys(node):
+            identifier_to_community.setdefault(key, community_id)
+            identifier_to_node_id.setdefault(key, node_id)
+
+    primary_field_by_community = {
+        int(item.get("community_id")): str(item.get("primary_field") or "unknown")
+        for item in analysis.get("communities", [])
+        if isinstance(item, dict) and item.get("community_id") is not None
+    }
+    drift_by_community = {
+        int(item.get("community_id")): item
+        for item in analysis.get("topic_drift_assessment", [])
+        if isinstance(item, dict) and item.get("community_id") is not None
+    }
+    records = project_records_for_mapping(project)
+    grouped_records: dict[int, list[dict[str, Any]]] = defaultdict(list)
+    unassigned_records: list[dict[str, Any]] = []
+    assigned_node_ids: set[str] = set()
+    for record in records:
+        matching_communities = {
+            identifier_to_community[key]
+            for key in louvain_record_match_keys(record)
+            if key in identifier_to_community
+        }
+        if len(matching_communities) != 1:
+            unassigned_records.append(record)
+            continue
+        community_id = next(iter(matching_communities))
+        assigned_node_ids.update(
+            identifier_to_node_id[key]
+            for key in louvain_record_match_keys(record)
+            if key in identifier_to_node_id
+        )
+        grouped_records[community_id].append(record)
+        record["louvain_relation_graph_id"] = graph_id
+        record["louvain_community"] = community_id
+        drift = drift_by_community.get(community_id, {})
+        record["louvain_community_disposition"] = drift.get("disposition", "connected")
+        record["louvain_priority"] = drift.get("priority", "normal")
+
+    required_records = max(1, int(
+        SCIENCE_LOUVAIN_MIN_COMMUNITY_RECORDS if min_records is None else min_records
+    ))
+    communities: dict[str, dict[str, Any]] = {}
+    for community_id in sorted(set(node_to_community.values())):
+        member_records = grouped_records.get(community_id, [])
+        drift = drift_by_community.get(community_id, {})
+        local_map = build_knowledge_map_payload(
+            member_records,
+            dimension="method-scenario-benchmark",
+            active_papergraph_count=len(member_records),
+            extraction_repair={"scope": "louvain_community", "relation_graph_id": graph_id},
+        )
+        communities[str(community_id)] = {
+            "community_id": community_id,
+            "primary_field": primary_field_by_community.get(community_id, "unknown"),
+            "record_count": len(member_records),
+            "eligible_for_gap_analysis": len(member_records) >= required_records,
+            "disposition": drift.get("disposition", "connected"),
+            "priority": drift.get("priority", "normal"),
+            "knowledge_map": local_map,
+            "representative_records": [
+                {
+                    "paper_id": record.get("paper_id"),
+                    "title": record.get("title"),
+                    "citation": record.get("citation"),
+                }
+                for record in member_records[:5]
+            ],
+        }
+    unmapped_nodes = [
+        {
+            "node_id": node.get("node_id"),
+            "title": node.get("title"),
+            "community_id": node_to_community.get(str(node.get("node_id") or "")),
+            "result_index": node.get("result_index"),
+            "publication_quality_score": node.get("publication_quality_score"),
+            "relevance_score": node.get("relevance_score"),
+        }
+        for node in nodes
+        if str(node.get("node_id") or "") not in assigned_node_ids
+    ]
+    representative_import_candidates: list[dict[str, Any]] = []
+    for community_id, payload in communities.items():
+        if payload.get("eligible_for_gap_analysis"):
+            continue
+        candidates = [item for item in unmapped_nodes if str(item.get("community_id")) == str(community_id)]
+        candidates.sort(
+            key=lambda item: (
+                -float(item.get("publication_quality_score") or 0.0),
+                -float(item.get("relevance_score") or 0.0),
+                str(item.get("title") or ""),
+            )
+        )
+        if candidates:
+            representative_import_candidates.append(
+                {
+                    "community_id": int(community_id),
+                    "primary_field": payload.get("primary_field"),
+                    "records_needed": max(0, required_records - int(payload.get("record_count") or 0)),
+                    "source_search_id": relation_graph.get("source_search_id"),
+                    "candidate": candidates[0],
+                }
+            )
+    report = {
+        "status": "ready",
+        "relation_graph_id": graph_id,
+        "louvain_status": analysis.get("status"),
+        "min_records_for_gap_analysis": required_records,
+        "community_count": len(communities),
+        "eligible_community_count": sum(1 for item in communities.values() if item.get("eligible_for_gap_analysis")),
+        "communities": communities,
+        "unassigned_imported_record_count": len(unassigned_records),
+        "unmapped_relation_node_count": len(unmapped_nodes),
+        "unmapped_relation_nodes": unmapped_nodes[:20],
+        "representative_import_candidates": representative_import_candidates,
+        "outlier_communities": analysis.get("outlier_communities", []),
+        "next_step": (
+            "Run detect_knowledge_gaps to include eligible within-community gaps. "
+            "Representative import candidates are explicit, bounded recommendations; import them before evidence-level gap analysis rather than inferring methods from metadata."
+        ),
+    }
+    project["louvain_community_knowledge_maps"] = report
+    project["latest_louvain_relation_graph_id"] = graph_id
     project["updatedAt"] = time.time()
     save_project(project)
-    log_event("SCIENCE", "knowledge_map_built", project_id=project_id, methods=len(method_scenario_coverage), triples=len(triples))
-    return json.dumps(knowledge_map, ensure_ascii=False, indent=2)
+    log_event(
+        "SCIENCE",
+        "louvain_community_knowledge_maps_built",
+        project_id=project_id,
+        relation_graph_id=graph_id,
+        communities=len(communities),
+        eligible=report["eligible_community_count"],
+        unmapped_nodes=len(unmapped_nodes),
+    )
+    return json.dumps(report, ensure_ascii=False, indent=2)
 
 def build_causal_evidence_graph(records: list[dict[str, Any]]) -> dict[str, Any]:
     nodes: dict[str, dict[str, Any]] = {}
     edges: list[dict[str, Any]] = []
     chains: list[dict[str, Any]] = []
+    non_causal_claims: list[dict[str, Any]] = []
     edge_keys: set[tuple[str, str, str, str]] = set()
 
     def add_node(label: Any, node_type: str, citation: str) -> str:
         text = str(label or "").strip()
         if not text:
             return ""
-        key = text.lower()
+        key = canonical_causal_node_key(text)
         item = nodes.setdefault(
             key,
-            {"id": f"node_{len(nodes) + 1}", "label": text, "types": [], "supporting_references": []},
+            {"id": f"node_{len(nodes) + 1}", "label": text, "canonical_label": key, "types": [], "supporting_references": []},
         )
         if node_type not in item["types"]:
             item["types"].append(node_type)
@@ -155,23 +637,42 @@ def build_causal_evidence_graph(records: list[dict[str, Any]]) -> dict[str, Any]
             item["supporting_references"].append(citation)
         return item["id"]
 
-    def add_edge(source: str, target: str, relation: str, citation: str, excerpt: str, evidence_type: str) -> bool:
+    def add_edge(
+        source: str,
+        target: str,
+        relation: str,
+        citation: str,
+        excerpt: str,
+        evidence_type: str,
+        *,
+        polarity: str = "",
+        modality: str = "",
+        source_location: dict[str, Any] | None = None,
+        confidence: Any = None,
+    ) -> bool:
         if not source or not target:
             return False
         key = (source, target, relation, citation)
         if key in edge_keys:
             return False
         edge_keys.add(key)
-        edges.append(
-            {
-                "source": source,
-                "target": target,
-                "relation": relation,
-                "citation": citation,
-                "evidence_excerpt": str(excerpt or "")[:600],
-                "evidence_type": evidence_type or "reported_unclassified",
-            }
-        )
+        edge = {
+            "source": source,
+            "target": target,
+            "relation": relation,
+            "citation": citation,
+            "evidence_excerpt": str(excerpt or "")[:600],
+            "evidence_type": evidence_type or "reported_unclassified",
+        }
+        if polarity:
+            edge["polarity"] = polarity
+        if modality:
+            edge["modality"] = modality
+        if isinstance(source_location, dict) and source_location:
+            edge["source_location"] = dict(source_location)
+        if isinstance(confidence, (int, float)):
+            edge["confidence"] = float(confidence)
+        edges.append(edge)
         return True
 
     for record in records:
@@ -179,6 +680,19 @@ def build_causal_evidence_graph(records: list[dict[str, Any]]) -> dict[str, Any]
         raw_chains = record.get("causal_chains", [])
         for chain in raw_chains if isinstance(raw_chains, list) else []:
             if not isinstance(chain, dict):
+                continue
+            if chain.get("causal_claim") is False or str(chain.get("modality") or "") == "speculative":
+                non_causal_claims.append(
+                    {
+                        "paper_id": str(record.get("paper_id") or ""),
+                        "citation": citation,
+                        "trigger": str(chain.get("trigger") or ""),
+                        "outcome": str(chain.get("outcome") or ""),
+                        "relation": str(chain.get("relation") or ""),
+                        "modality": str(chain.get("modality") or "speculative"),
+                        "evidence": str(chain.get("outcome_evidence") or chain.get("trigger_evidence") or "")[:600],
+                    }
+                )
                 continue
             trigger_id = add_node(chain.get("trigger"), "external_intervention_or_condition", citation)
             prior_id = trigger_id
@@ -189,22 +703,45 @@ def build_causal_evidence_graph(records: list[dict[str, Any]]) -> dict[str, Any]
                     claim = step.get("claim") or step.get("text")
                     excerpt = str(step.get("evidence") or "")
                     evidence_type = str(step.get("evidence_type") or "reported_unclassified")
+                    relation = str(step.get("relation") or chain.get("relation") or "leads_to")
+                    polarity = str(step.get("polarity") or chain.get("polarity") or "")
+                    modality = str(step.get("modality") or chain.get("modality") or "")
+                    source_location = step.get("source_location") if isinstance(step.get("source_location"), dict) else chain.get("trigger_location")
                 else:
                     claim = step
                     excerpt = ""
                     evidence_type = "reported_unclassified"
+                    relation = str(chain.get("relation") or "leads_to")
+                    polarity = str(chain.get("polarity") or "")
+                    modality = str(chain.get("modality") or "")
+                    source_location = chain.get("trigger_location")
                 step_id = add_node(claim, "intermediate_process", citation)
-                if add_edge(prior_id, step_id, "leads_to", citation, excerpt, evidence_type):
+                if add_edge(
+                    prior_id,
+                    step_id,
+                    relation,
+                    citation,
+                    excerpt,
+                    evidence_type,
+                    polarity=polarity,
+                    modality=modality,
+                    source_location=source_location if isinstance(source_location, dict) else None,
+                    confidence=chain.get("confidence"),
+                ):
                     edge_indexes.append(len(edges) - 1)
                 prior_id = step_id or prior_id
             outcome_id = add_node(chain.get("outcome"), "macro_outcome", citation)
             if add_edge(
                 prior_id,
                 outcome_id,
-                "leads_to",
+                str(chain.get("outcome_relation") or chain.get("relation") or "leads_to"),
                 citation,
                 str(chain.get("outcome_evidence") or ""),
                 "reported_unclassified",
+                polarity=str(chain.get("polarity") or ""),
+                modality=str(chain.get("modality") or ""),
+                source_location=chain.get("outcome_location") if isinstance(chain.get("outcome_location"), dict) else None,
+                confidence=chain.get("confidence"),
             ):
                 edge_indexes.append(len(edges) - 1)
             raw_observables = chain.get("observables", [])
@@ -227,9 +764,68 @@ def build_causal_evidence_graph(records: list[dict[str, Any]]) -> dict[str, Any]
                     "observables": list(raw_observables) if isinstance(raw_observables, list) else [],
                     "interventions": list(raw_interventions) if isinstance(raw_interventions, list) else [],
                     "edge_indexes": edge_indexes,
+                    "relation": str(chain.get("relation") or "leads_to"),
+                    "polarity": str(chain.get("polarity") or ""),
+                    "modality": str(chain.get("modality") or ""),
+                    "direct_relation": bool(chain.get("direct_relation")),
+                    "evidence_edges": list(chain.get("evidence_edges") or []),
                 }
             )
-    return {"nodes": list(nodes.values()), "edges": edges, "chains": chains}
+    supported_paths = causal_supported_paths(edges, nodes)
+    return {
+        "nodes": list(nodes.values()),
+        "edges": edges,
+        "chains": chains,
+        "supported_paths": supported_paths,
+        "non_causal_claims": non_causal_claims,
+    }
+
+
+def canonical_causal_node_key(value: str) -> str:
+    text = str(value or "").lower().replace("\u03b2", " beta ").replace("\u03b1", " alpha ")
+    text = re.sub(r"[^a-z0-9]+", " ", text)
+    key = " ".join(text.split())
+    aliases = {
+        "interleukin 2": "il2",
+        "il 2": "il2",
+        "interleukin 6": "il6",
+        "il 6": "il6",
+        "tumor necrosis factor alpha": "tnf alpha",
+    }
+    return aliases.get(key, key)
+
+
+def causal_supported_paths(edges: list[dict[str, Any]], nodes: dict[str, dict[str, Any]], limit: int = 80) -> list[dict[str, Any]]:
+    by_source: dict[str, list[tuple[int, dict[str, Any]]]] = defaultdict(list)
+    for index, edge in enumerate(edges):
+        if not isinstance(edge, dict) or not edge.get("source") or not edge.get("target"):
+            continue
+        by_source[str(edge["source"])].append((index, edge))
+    node_by_id = {str(item.get("id") or ""): item for item in nodes.values() if isinstance(item, dict)}
+    paths: list[dict[str, Any]] = []
+    seen: set[tuple[int, int]] = set()
+    for first_index, first in enumerate(edges):
+        if not isinstance(first, dict):
+            continue
+        for second_index, second in by_source.get(str(first.get("target") or ""), []):
+            key = (first_index, second_index)
+            if key in seen or first_index == second_index:
+                continue
+            seen.add(key)
+            paths.append(
+                {
+                    "path_id": f"path_{len(paths) + 1}",
+                    "source": node_by_id.get(str(first.get("source") or ""), {}).get("label", ""),
+                    "intermediate": node_by_id.get(str(first.get("target") or ""), {}).get("label", ""),
+                    "target": node_by_id.get(str(second.get("target") or ""), {}).get("label", ""),
+                    "edge_indexes": [first_index, second_index],
+                    "supporting_references": sorted({str(first.get("citation") or ""), str(second.get("citation") or "")} - {""}),
+                    "status": "shared_node_evidence_path_not_transitive_claim",
+                }
+            )
+            if len(paths) >= limit:
+                return paths
+    return paths
 
 
 def build_coverage_matrix(project_id: str) -> str:
@@ -552,6 +1148,8 @@ def causal_chain_missing_requirement(chain: dict[str, Any]) -> tuple[str, str]:
         return "trigger or boundary condition", "the condition that initiates the proposed mechanism"
     steps = chain.get("steps", []) if isinstance(chain.get("steps"), list) else []
     if not steps:
+        if bool(chain.get("direct_relation")):
+            return "", ""
         return "intermediate_mechanism", "an intermediate mechanism measured or derived between trigger and outcome"
     if any(isinstance(step, dict) and not str(step.get("evidence") or "").strip() for step in steps):
         return "step-level evidence", "a source excerpt, measurement, or derivation for each intermediate step"
@@ -618,6 +1216,16 @@ def detect_knowledge_gaps(project_id: str, max_gaps: int = 10) -> str:
 
     if len(gaps) < max_gaps:
         gaps.extend(detect_reasoning_gaps(project, min(per_type_quota + 1, max_gaps - len(gaps))))
+
+    community_report = project.get("louvain_community_knowledge_maps")
+    community_maps = community_report.get("communities", {}) if isinstance(community_report, dict) else {}
+    community_gap_candidates = louvain_community_gap_candidates(
+        project,
+        community_maps if isinstance(community_maps, dict) else {},
+        max_per_community=1,
+    )
+    if len(gaps) < max_gaps and community_gap_candidates:
+        gaps.extend(community_gap_candidates[: min(per_type_quota + 1, max_gaps - len(gaps))])
 
     if len(gaps) < max_gaps:
         gaps.extend(detect_mechanism_issue_gaps(project, max_gaps - len(gaps)))
@@ -769,6 +1377,7 @@ def detect_knowledge_gaps(project_id: str, max_gaps: int = 10) -> str:
         "semantic_rejected": semantic_rejected_gaps[:10],
     }
     project["semantic_rejected_knowledge_gaps"] = semantic_rejected_gaps
+    project["louvain_community_gap_candidates"] = community_gap_candidates
     project["tanxi_gap_analysis"] = tanxi_report
     project["knowledge_gaps"] = prioritized_gaps[:max_gaps]
     project["updatedAt"] = time.time()
@@ -803,7 +1412,11 @@ def run_tanxi_gap_exploration(
         if isinstance(project.get("knowledge_map"), dict)
         else None
     )
-    if not project.get("knowledge_map") or map_active_count != active_papergraph_count:
+    if (
+        not project.get("knowledge_map")
+        or map_active_count != active_papergraph_count
+        or not isinstance(project.get("method_scenario_benchmark_louvain"), dict)
+    ):
         build_knowledge_map(project_id)
         project = load_project(project_id)
         # Existing gaps may have been derived from records that a later domain
@@ -820,9 +1433,12 @@ def run_tanxi_gap_exploration(
         strategic_domains=strategic_domains or default_strategic_domains(project),
         max_gaps=max_gaps,
     )
+    report["method_scenario_benchmark_louvain"] = project.get("method_scenario_benchmark_louvain", {})
     ranked = report.get("ranked_gaps", []) if isinstance(report.get("ranked_gaps"), list) else []
+    msb_louvain = project.get("method_scenario_benchmark_louvain", {})
     for gap in ranked:
         if isinstance(gap, dict):
+            annotate_gap_with_method_scenario_benchmark_communities(gap, msb_louvain)
             gap["mechanism_draft"] = build_tanxi_mechanism_draft(gap)
     # Keep the canonical project gaps and the ranked TanXi view in sync so
     # Socrates can resolve a gap by id without relying on transient tool output.
@@ -837,7 +1453,14 @@ def run_tanxi_gap_exploration(
     project["tanxi_gap_analysis"] = report
     project["updatedAt"] = time.time()
     save_project(project)
-    log_event("SCIENCE", "tanxi_gap_exploration", project_id=project_id, ranked=len(report.get("ranked_gaps", [])))
+    log_event(
+        "SCIENCE",
+        "tanxi_gap_exploration",
+        project_id=project_id,
+        ranked=len(report.get("ranked_gaps", [])),
+        msb_louvain_status=msb_louvain.get("status") if isinstance(msb_louvain, dict) else "not_available",
+        msb_louvain_communities=msb_louvain.get("num_communities", 0) if isinstance(msb_louvain, dict) else 0,
+    )
     return json.dumps(report, ensure_ascii=False, indent=2)
 
 
@@ -3184,7 +3807,14 @@ def knowledge_map_unknown_summary(knowledge_map: dict[str, Any]) -> dict[str, in
             unknown_triples += 1
     return {"total_triples": len(triples), "unknown_triples": unknown_triples}
 
-def extract_gap_signals_from_text(text: str, *, citation: str = "", limit: int = 12) -> list[dict[str, Any]]:
+def extract_gap_signals_from_text(
+    text: str,
+    *,
+    citation: str = "",
+    limit: int = 12,
+    evidence_spans: list[dict[str, Any]] | None = None,
+    source_url: str = "",
+) -> list[dict[str, Any]]:
     try:
         from ._utils import new_id, normalize_space, split_sentences, trim_text
     except ImportError:
@@ -3200,8 +3830,9 @@ def extract_gap_signals_from_text(text: str, *, citation: str = "", limit: int =
         if not signal_type:
             continue
         rendered = trim_text(sentence, 360)
-        if len(rendered.split()) < 5:
+        if len(rendered) < 25:
             continue
+        source_location = gap_signal_location(rendered, evidence_spans, source_url)
         signals.append(
             {
                 "signal_id": new_id("sig"),
@@ -3210,6 +3841,7 @@ def extract_gap_signals_from_text(text: str, *, citation: str = "", limit: int =
                 "evidence_type": "author_opinion" if signal_type in {"future_work", "limitation"} else "problem_statement",
                 "supporting_reference": citation,
                 "confidence": gap_signal_confidence(signal_type, sentence),
+                "source_location": source_location,
             }
         )
     signals.sort(key=lambda item: (-float(item["confidence"]), item["signal_type"], item["text"]))
@@ -3248,23 +3880,47 @@ def extract_gap_relevant_sections(text: str) -> list[str]:
         section = extract_section(text, [heading])
         if section:
             sections.append(section)
+    section_matches = re.finditer(
+        r"\[SECTION:\s*(?P<heading>[^|\]]+?)(?:\s*\|\s*pages?[^\]]*)?\]\s*(?P<body>.*?)(?=\n\s*\[SECTION:|\n\s*\[(?:KEYWORD|TABLES|FIGURE)|\Z)",
+        str(text or ""),
+        flags=re.IGNORECASE | re.DOTALL,
+    )
+    for match in section_matches:
+        heading = str(match.group("heading") or "").lower()
+        if any(term in heading for term in headings):
+            sections.append(str(match.group("body") or ""))
     return unique_preserve_order([trim_text(section, 3000) for section in sections if section])
 
 def classify_gap_signal(sentence: str) -> str:
     lowered = sentence.lower()
-    if mechanism_issue_axis(sentence):
-        return "mechanism_issue"
-    if any(term in lowered for term in ("future work", "future research", "future direction", "should investigate", "warrants further")):
+    if any(term in lowered for term in ("future work", "future research", "future direction", "should investigate", "warrants further", "\u672a\u6765\u7814\u7a76", "\u6709\u5f85\u8fdb\u4e00\u6b65")):
         return "future_work"
-    if any(term in lowered for term in ("limitation", "limited by", "we did not", "does not address", "cannot", "unable to")):
+    if any(term in lowered for term in ("limitation", "limited by", "we did not", "does not address", "cannot", "unable to", "\u5c40\u9650\u6027", "\u53d7\u9650\u4e8e", "\u65e0\u6cd5")):
         return "limitation"
-    if any(term in lowered for term in ("remain unclear", "remains unclear", "unknown", "open problem", "unresolved", "not well understood")):
+    if any(term in lowered for term in ("remain unclear", "remains unclear", "unknown", "open problem", "unresolved", "not well understood", "\u5c1a\u4e0d\u6e05\u695a", "\u672a\u89e3\u51b3", "\u4e0d\u660e\u786e")):
         return "open_problem"
     if any(term in lowered for term in ("challenge", "bottleneck", "barrier", "difficult", "failure mode", "degradation")):
         return "challenge"
     if any(term in lowered for term in ("needs", "requires", "lack of", "scarce", "insufficient", "underexplored")):
         return "missing_evidence"
+    if mechanism_issue_axis(sentence):
+        return "mechanism_issue"
     return ""
+
+
+def gap_signal_location(
+    evidence_text: str,
+    evidence_spans: list[dict[str, Any]] | None,
+    source_url: str,
+) -> dict[str, Any]:
+    try:
+        from ._pdf_extraction import locate_evidence_span
+    except ImportError:
+        from _pdf_extraction import locate_evidence_span
+    location = locate_evidence_span(evidence_text, evidence_spans)
+    if not location and source_url:
+        location = {"source_url": source_url}
+    return location
 
 def gap_signal_confidence(signal_type: str, sentence: str) -> float:
     base = {
@@ -3300,16 +3956,17 @@ def normalize_gap_signals(signals: list[dict[str, Any]], *, citation: str = "", 
             continue
         seen.add(key)
         signal_type = str(signal.get("signal_type") or classify_gap_signal(text) or "gap_signal")
-        normalized.append(
-            {
-                "signal_id": str(signal.get("signal_id") or new_id("sig")),
-                "signal_type": signal_type,
-                "text": text,
-                "evidence_type": str(signal.get("evidence_type") or ("author_opinion" if signal_type in {"future_work", "limitation"} else "problem_statement")),
-                "supporting_reference": str(signal.get("supporting_reference") or citation),
-                "confidence": float(signal.get("confidence") or gap_signal_confidence(signal_type, text)),
-            }
-        )
+        item = {
+            "signal_id": str(signal.get("signal_id") or new_id("sig")),
+            "signal_type": signal_type,
+            "text": text,
+            "evidence_type": str(signal.get("evidence_type") or ("author_opinion" if signal_type in {"future_work", "limitation"} else "problem_statement")),
+            "supporting_reference": str(signal.get("supporting_reference") or citation),
+            "confidence": float(signal.get("confidence") or gap_signal_confidence(signal_type, text)),
+        }
+        if isinstance(signal.get("source_location"), dict):
+            item["source_location"] = dict(signal["source_location"])
+        normalized.append(item)
         if len(normalized) >= limit:
             break
     normalized.sort(key=lambda item: (-float(item["confidence"]), item["signal_type"], item["text"]))

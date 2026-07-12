@@ -9,17 +9,43 @@ import math
 import re
 import time
 import xml.etree.ElementTree as ET
+from pathlib import Path
 
 try:
     from .config import (
+        SCIENCE_DOMAIN_EMBEDDINGS_ENABLED,
+        SCIENCE_DOMAIN_EMBEDDING_MODEL_PATH,
+        SCIENCE_DOMAIN_EMBEDDING_REJECT_THRESHOLD,
+        SCIENCE_DOMAIN_EMBEDDING_REVIEW_THRESHOLD,
         SCIENCE_ZHIZHI_MAX_IMPORT_TOP_K,
     )
     from .log import log_event
 except ImportError:
     from config import (
+        SCIENCE_DOMAIN_EMBEDDINGS_ENABLED,
+        SCIENCE_DOMAIN_EMBEDDING_MODEL_PATH,
+        SCIENCE_DOMAIN_EMBEDDING_REJECT_THRESHOLD,
+        SCIENCE_DOMAIN_EMBEDDING_REVIEW_THRESHOLD,
         SCIENCE_ZHIZHI_MAX_IMPORT_TOP_K,
     )
     from log import log_event
+
+
+DOMAIN_FIELD_PROTOTYPES = {
+    "physics": "Fundamental physical laws, quantum phenomena, matter, fields, and measurement.",
+    "mathematics": "Mathematical proofs, algebra, geometry, analysis, probability, and differential equations.",
+    "computer_science": "Algorithms, software, artificial intelligence, machine learning, and computation.",
+    "quantitative_biology": "Quantitative models, bioinformatics, systems biology, and biological networks.",
+    "statistics": "Statistical inference, probability, experimental design, and uncertainty quantification.",
+    "electrical_engineering": "Circuits, signals, control systems, communications, and engineered devices.",
+    "economics": "Economic behavior, markets, policy, econometrics, and incentives.",
+    "medicine": "Human health, disease, diagnosis, clinical care, therapeutics, and epidemiology.",
+    "biology": "Cells, organisms, genes, proteins, development, physiology, and evolution.",
+    "chemistry": "Molecules, reactions, catalysis, materials chemistry, electrochemistry, and synthesis.",
+}
+
+_DOMAIN_EMBEDDER: Any = None
+_DOMAIN_EMBEDDER_LOAD_ATTEMPTED = False
 
 
 
@@ -291,6 +317,105 @@ def slug_label(text: str) -> str:
     value = re.sub(r"[^a-z0-9]+", "_", value)
     return value.strip("_")[:80]
 
+
+def local_domain_embedding_model() -> Any | None:
+    global _DOMAIN_EMBEDDER, _DOMAIN_EMBEDDER_LOAD_ATTEMPTED
+    if _DOMAIN_EMBEDDER_LOAD_ATTEMPTED:
+        return _DOMAIN_EMBEDDER
+    _DOMAIN_EMBEDDER_LOAD_ATTEMPTED = True
+    if not SCIENCE_DOMAIN_EMBEDDINGS_ENABLED or not SCIENCE_DOMAIN_EMBEDDING_MODEL_PATH:
+        return None
+    model_path = Path(SCIENCE_DOMAIN_EMBEDDING_MODEL_PATH)
+    if not model_path.is_dir():
+        log_event("WARN", "domain_embedding_model_unavailable", model_path=str(model_path))
+        return None
+    try:
+        from sentence_transformers import SentenceTransformer
+        _DOMAIN_EMBEDDER = SentenceTransformer(str(model_path))
+    except Exception as exc:
+        log_event("WARN", "domain_embedding_model_load_failed", error=str(exc)[:200])
+    return _DOMAIN_EMBEDDER
+
+
+def cosine_similarity(left: Any, right: Any) -> float:
+    numerator = sum(float(a) * float(b) for a, b in zip(left, right))
+    left_norm = math.sqrt(sum(float(value) * float(value) for value in left))
+    right_norm = math.sqrt(sum(float(value) * float(value) for value in right))
+    if left_norm <= 0 or right_norm <= 0:
+        return 0.0
+    return max(-1.0, min(1.0, numerator / (left_norm * right_norm)))
+
+
+def semantic_domain_similarity(target_text: str, paper_text: str) -> dict[str, Any]:
+    model = local_domain_embedding_model()
+    if model is None:
+        return {"available": False, "similarity": None, "source": "structured_fallback"}
+    if not str(target_text or "").strip() or not str(paper_text or "").strip():
+        return {"available": True, "similarity": None, "source": "local_embedding"}
+    try:
+        target_embedding, paper_embedding = model.encode([target_text, paper_text])
+    except Exception as exc:
+        log_event("WARN", "domain_embedding_similarity_failed", error=str(exc)[:200])
+        return {"available": False, "similarity": None, "source": "structured_fallback"}
+    return {
+        "available": True,
+        "similarity": round(cosine_similarity(target_embedding, paper_embedding), 4),
+        "source": "local_embedding",
+    }
+
+
+def infer_field_by_embedding(result: dict[str, Any]) -> str:
+    model = local_domain_embedding_model()
+    if model is None:
+        return ""
+    text = " ".join(str(result.get(key) or "") for key in ("title", "abstract", "venue"))
+    if not text.strip():
+        return ""
+    fields = list(DOMAIN_FIELD_PROTOTYPES)
+    try:
+        embeddings = model.encode([text] + [DOMAIN_FIELD_PROTOTYPES[field] for field in fields])
+    except Exception as exc:
+        log_event("WARN", "domain_embedding_field_inference_failed", error=str(exc)[:200])
+        return ""
+    paper_embedding = embeddings[0]
+    scores = [cosine_similarity(paper_embedding, prototype) for prototype in embeddings[1:]]
+    if not scores:
+        return ""
+    best_index = max(range(len(scores)), key=lambda index: scores[index])
+    return fields[best_index] if scores[best_index] >= 0.35 else ""
+
+
+def biological_mechanism_evidence(result: dict[str, Any], target_field: str = "") -> dict[str, Any]:
+    text = " ".join(
+        str(result.get(key) or "")
+        for key in ("title", "abstract", "venue", "citation", "method", "scenario", "benchmark")
+    ).lower()
+    biological_fields = {
+        "biology", "quantitative_biology", "biomedical", "medicine", "biophysics",
+        "biochemistry", "cell_biology", "developmental_biology", "molecular_biology",
+        "genetics", "genomics", "systems_biology", "synthetic_biology",
+    }
+    mechanism_terms = (
+        "transcription factor", "transcriptional", "gene regulatory", "regulatory network",
+        "chromatin", "epigenetic", "dna methylation", "histone", "cell fate",
+        "lineage", "cellular reprogramming", "transdifferentiation", "pluripotency",
+        "cellular plasticity",
+    )
+    biological_context_terms = (
+        "stem cell", "differentiation", "development", "developmental", "organogenesis",
+        "morphogenesis", "drosophila", "zebrafish", "caenorhabditis", "c. elegans",
+        "arabidopsis", "mus musculus", "murine", "xenopus", "saccharomyces", "yeast",
+        "hepatoblastoma", "leukemia", "cell type", "cell identity",
+    )
+    mechanism_hits = [term for term in mechanism_terms if term in text]
+    context_hits = [term for term in biological_context_terms if term in text]
+    return {
+        "qualified": str(target_field or "").lower() in biological_fields and bool(mechanism_hits) and bool(context_hits),
+        "mechanism_hits": mechanism_hits[:8],
+        "context_hits": context_hits[:8],
+    }
+
+
 def domain_relevance_assessment(result: dict[str, Any], domain: str = "", query: str = "") -> dict[str, Any]:
     try:
         from ._literature_search import is_preprint_literature_result, query_terms
@@ -324,6 +449,7 @@ def domain_relevance_assessment(result: dict[str, Any], domain: str = "", query:
     flags: list[str] = []
     target_field = infer_research_field({"title": domain, "abstract": query, "venue": ""}) if (domain or query) else "general"
     result_field = infer_research_field(result)
+    mechanism_evidence = biological_mechanism_evidence(result, target_field=target_field)
     strong_text_signal = len(query_hits) >= max(2, min(4, len(query_term_list) // 3)) or len(anchor_hits) >= 2 or bool(topic_hits)
     field_mismatch = fields_are_incompatible(target_field, result_field)
     if noise_hits:
@@ -341,8 +467,12 @@ def domain_relevance_assessment(result: dict[str, Any], domain: str = "", query:
     core_alignment = core_domain_alignment(result, domain=domain, query=query)
     if core_alignment["enabled"]:
         if not core_alignment["passes"]:
-            flags.append("core_domain_mismatch")
-            score = round(score * 0.45, 4)
+            if mechanism_evidence["qualified"]:
+                flags.append("biological_mechanism_exception")
+                score = round(max(score, 0.3), 4)
+            else:
+                flags.append("core_domain_mismatch")
+                score = round(score * 0.45, 4)
         elif core_alignment["specific_hit_count"] >= 2:
             score = round(min(1.0, score + 0.08), 4)
             flags.append("core_domain_hit")
@@ -352,7 +482,7 @@ def domain_relevance_assessment(result: dict[str, Any], domain: str = "", query:
     verdict = "keep"
     if noise_hits:
         verdict = "reject"
-    elif core_alignment["enabled"] and not core_alignment["passes"]:
+    elif core_alignment["enabled"] and not core_alignment["passes"] and not mechanism_evidence["qualified"]:
         verdict = "reject"
     elif field_mismatch and not strong_text_signal and score < 0.25:
         verdict = "reject"
@@ -370,9 +500,66 @@ def domain_relevance_assessment(result: dict[str, Any], domain: str = "", query:
         "flags": unique_preserve_order(flags),
         "is_preprint": is_preprint,
         "core_domain_alignment": core_alignment,
+        "biological_mechanism_evidence": mechanism_evidence,
         "verdict": verdict,
-        "requires_human_review": bool((is_preprint and score < 0.16 and verdict != "reject") or (field_mismatch and verdict != "reject")),
+        "requires_human_review": bool(
+            (is_preprint and score < 0.16 and verdict != "reject")
+            or (field_mismatch and verdict != "reject")
+            or (mechanism_evidence["qualified"] and not core_alignment["passes"])
+        ),
     }
+
+def _record_domain_gate_assessment(
+    result: dict[str, Any],
+    relevance: dict[str, Any],
+    *,
+    verdict: str,
+    decision_stage: str,
+    reason: str,
+    review: dict[str, Any] | None = None,
+    matched_exclusions: list[str] | None = None,
+) -> bool:
+    review_data = review if isinstance(review, dict) else {}
+    result["domain_gate"] = {
+        "verdict": verdict,
+        "decision_stage": decision_stage,
+        "rejecting_stage": decision_stage if verdict == "reject" else "",
+        "reason": reason,
+        "primary_relevance_verdict": str(relevance.get("verdict") or "unknown"),
+        "primary_relevance_score": relevance.get("score"),
+        "review_verdict": str(review_data.get("verdict") or "not_run"),
+        "review_score": review_data.get("score"),
+        "matched_exclusion_markers": list(matched_exclusions or []),
+        "requires_human_review": verdict in {"review", "override"} or bool(review_data.get("requires_human_review")),
+    }
+    return verdict == "reject"
+
+
+def domain_gate_review_rescue(result: dict[str, Any], review: dict[str, Any]) -> tuple[bool, str]:
+    try:
+        from ._literature_search import is_preprint_literature_result
+        from ._utils import numeric_value
+    except ImportError:
+        from _literature_search import is_preprint_literature_result
+        from _utils import numeric_value
+    semantic_similarity = float(review.get("semantic_similarity") or 0.0)
+    probability_overlap = float((review.get("probability_alignment") or {}).get("overlap") or 0.0)
+    mechanism_evidence = review.get("biological_mechanism_evidence") or {}
+    plausible_bridge = (
+        semantic_similarity >= SCIENCE_DOMAIN_EMBEDDING_REJECT_THRESHOLD
+        or probability_overlap >= 0.16
+        or bool(mechanism_evidence.get("qualified"))
+    )
+    if bool(review.get("distinct_physics_conflict")) or not plausible_bridge:
+        return False, ""
+    if is_preprint_literature_result(result):
+        return True, "Preprint has nontrivial semantic or interdisciplinary evidence and is retained for review."
+    if numeric_value(result.get("citation_count")) >= 20:
+        return True, "Highly cited paper has nontrivial semantic or interdisciplinary evidence and is retained for review."
+    if float(result.get("publication_quality_score") or 0.0) >= 0.85:
+        return True, "High-quality paper has nontrivial semantic or interdisciplinary evidence and is retained for review."
+    return False, ""
+
 
 def should_reject_for_domain(result: dict[str, Any], domain: str = "", query: str = "") -> bool:
     try:
@@ -381,18 +568,47 @@ def should_reject_for_domain(result: dict[str, Any], domain: str = "", query: st
     except ImportError:
         from _literature_search import is_preprint_literature_result
         from _utils import numeric_value
-    if not domain:
-        return False
     assessment = result.get("domain_relevance")
     if not isinstance(assessment, dict):
         assessment = domain_relevance_assessment(result, domain=domain, query=query)
         result["domain_relevance"] = assessment
-    if assessment.get("verdict") == "reject":
-        return True
+    if not domain:
+        return _record_domain_gate_assessment(
+            result,
+            assessment,
+            verdict="keep",
+            decision_stage="no_domain_constraint",
+            reason="No project domain was supplied, so no domain exclusion gate was applied.",
+        )
     review = domain_review_assessment(result, domain=domain, query=query)
     result["domain_review"] = review
-    if review.get("verdict") == "reject":
-        return True
+    rescue_allowed, rescue_reason = domain_gate_review_rescue(result, review)
+    if assessment.get("verdict") == "reject" and review.get("verdict") == "reject" and not rescue_allowed:
+        return _record_domain_gate_assessment(
+            result,
+            assessment,
+            verdict="reject",
+            decision_stage="primary_and_domain_review",
+            reason=str(review.get("reason") or "Primary and secondary domain gates rejected the candidate."),
+            review=review,
+        )
+    if review.get("verdict") == "reject" and not rescue_allowed:
+        return _record_domain_gate_assessment(
+            result,
+            assessment,
+            verdict="reject",
+            decision_stage="domain_review",
+            reason=str(review.get("reason") or "Secondary domain review rejected the candidate."),
+            review=review,
+        )
+    if rescue_allowed:
+        review = {
+            **review,
+            "verdict": "review",
+            "rescue_applied": True,
+            "reason": rescue_reason,
+        }
+        result["domain_review"] = review
     # Domain exclusion marker check: reject papers from clearly different disciplines
     exclusion_markers = domain_exclusion_markers(domain)
     if exclusion_markers:
@@ -402,25 +618,91 @@ def should_reject_for_domain(result: dict[str, Any], domain: str = "", query: st
         ).lower()
         matched_exclusions = [marker for marker in exclusion_markers if marker in paper_text]
         if matched_exclusions:
-            log_event(
-                "SCIENCE",
-                "domain_exclusion_marker_hit",
-                domain=domain,
-                title=str(result.get("title", ""))[:80],
-                markers=matched_exclusions,
-            )
-            return True
+            probability_overlap = float((review.get("probability_alignment") or {}).get("overlap") or 0.0)
+            semantic_similarity = float(review.get("semantic_similarity") or 0.0)
+            if probability_overlap < 0.12 and semantic_similarity < SCIENCE_DOMAIN_EMBEDDING_REJECT_THRESHOLD:
+                log_event(
+                    "SCIENCE",
+                    "domain_exclusion_marker_hit",
+                    domain=domain,
+                    title=str(result.get("title", ""))[:80],
+                    markers=matched_exclusions,
+                )
+                return _record_domain_gate_assessment(
+                    result,
+                    assessment,
+                    verdict="reject",
+                    decision_stage="exclusion_marker",
+                    reason="Project-domain exclusion markers matched without semantic or interdisciplinary overlap.",
+                    review=review,
+                    matched_exclusions=matched_exclusions,
+                )
+            review = {
+                **review,
+                "verdict": "review",
+                "soft_exclusion_markers": matched_exclusions,
+                "reason": "Exclusion-like terms occurred, but cross-domain probability overlap requires review rather than rejection.",
+            }
+            result["domain_review"] = review
     # Preprint providers generally cannot supply a meaningful citation count at
     # first posting. Semantic and reviewer gates above still reject irrelevant
     # material; zero citations must not become a second P0 rejection criterion.
     if is_preprint_literature_result(result):
-        return False
+        return _record_domain_gate_assessment(
+            result,
+            assessment,
+            verdict="review" if review.get("verdict") == "review" else "keep",
+            decision_stage="preprint_protection",
+            reason="Preprint passed hard domain gates; citation count is not used as an exclusion criterion.",
+            review=review,
+        )
     score = float(assessment.get("score") or 0.0)
     quality = float(result.get("publication_quality_score") or publication_quality_assessment(result)["quality_score"])
     citations = numeric_value(result.get("citation_count"))
     if "field_mismatch" in set(assessment.get("flags") or []) and score < 0.18 and citations <= 5:
-        return True
-    return score < 0.1 and quality < 0.55 and citations <= 0
+        if review.get("verdict") == "review":
+            return _record_domain_gate_assessment(
+                result,
+                assessment,
+                verdict="review",
+                decision_stage="low_signal_field_mismatch",
+                reason="Low-signal field mismatch is retained for review because the secondary assessment found a plausible bridge.",
+                review=review,
+            )
+        return _record_domain_gate_assessment(
+            result,
+            assessment,
+            verdict="reject",
+            decision_stage="low_signal_field_mismatch",
+            reason="Candidate has a low-signal field mismatch with insufficient citation support.",
+            review=review,
+        )
+    if score < 0.1 and quality < 0.55 and citations <= 0:
+        if review.get("verdict") == "review":
+            return _record_domain_gate_assessment(
+                result,
+                assessment,
+                verdict="review",
+                decision_stage="low_relevance_low_quality",
+                reason="Low-quality candidate is retained for review because the secondary assessment found a plausible bridge.",
+                review=review,
+            )
+        return _record_domain_gate_assessment(
+            result,
+            assessment,
+            verdict="reject",
+            decision_stage="low_relevance_low_quality",
+            reason="Candidate has low domain relevance, low quality, and no citation support.",
+            review=review,
+        )
+    return _record_domain_gate_assessment(
+        result,
+        assessment,
+        verdict="review" if review.get("verdict") == "review" else "keep",
+        decision_stage="domain_review" if review.get("verdict") == "review" else "accepted",
+        reason=str(review.get("reason") or "Candidate passed primary relevance, domain review, and quality gates."),
+        review=review,
+    )
 
 
 def domain_review_assessment(
@@ -459,33 +741,85 @@ def domain_review_assessment(
     target_hits = [term for term in target_terms if term in text]
     coverage = len(target_hits) / max(1, len(target_terms))
     relevance = result.get("domain_relevance")
-    if not isinstance(relevance, dict):
-        relevance = domain_relevance_assessment(result, domain=domain, query=query)
+    has_retrieval_assessment = isinstance(relevance, dict)
+    if not has_retrieval_assessment:
+        if normalize_space(query):
+            relevance = domain_relevance_assessment(result, domain=domain, query=query)
+        else:
+            relevance = {
+                "verdict": "not_assessed",
+                "score": None,
+                "reason": "No retrieval query or preserved relevance assessment was available for the post-import audit.",
+            }
     target_field = infer_research_field({"title": domain, "abstract": query, "venue": ""})
     result_field = infer_research_field(result)
-    life_science_fields = {"biology", "biomedical", "medicine", "digital_medicine", "biophysics", "plant_biology"}
-    same_life_science_family = target_field in life_science_fields and result_field in life_science_fields
+    mechanism_evidence = biological_mechanism_evidence(result, target_field=target_field)
+    same_research_domain_family = not fields_are_incompatible(target_field, result_field)
     foreign_field = fields_are_incompatible(target_field, result_field) or (
         target_field not in {"", "general", "multidisciplinary"}
         and result_field not in {"", "general", "multidisciplinary"}
         and target_field != result_field
-        and not same_life_science_family
+        and not same_research_domain_family
     )
-    threshold = max(0.25, min(0.9, float(min_confidence)))
+    try:
+        from ._domain_terms import domain_probability_alignment
+    except ImportError:
+        from _domain_terms import domain_probability_alignment
+    target_text = normalize_space(f"{domain} {query}")
+    probability_alignment = domain_probability_alignment(
+        target_text,
+        text,
+        target_field=target_field,
+        result_field=result_field,
+    )
+    semantic_assessment = semantic_domain_similarity(target_text, text)
+    relevance_score = relevance.get("score") if isinstance(relevance.get("score"), (int, float)) else 0.0
+    structured_similarity = min(
+        1.0,
+        0.5 * coverage + 0.3 * max(0.0, float(relevance_score)) + 0.2 * float(probability_alignment.get("overlap") or 0.0),
+    )
+    semantic_similarity = semantic_assessment.get("similarity")
+    if not isinstance(semantic_similarity, (int, float)):
+        semantic_similarity = structured_similarity
+        semantic_source = "structured_catalog_overlap"
+    else:
+        semantic_source = str(semantic_assessment.get("source") or "local_embedding")
+    distinct_physics_conflict = (
+        foreign_field
+        and target_field in {"astrophysics", "high_energy_physics", "nuclear_physics", "photonics"}
+        and result_field in {"astrophysics", "high_energy_physics", "nuclear_physics", "photonics"}
+    )
+    probability_bridge = float(probability_alignment.get("overlap") or 0.0) >= 0.16 and not distinct_physics_conflict
+    cross_field_tolerated = not foreign_field or probability_bridge or mechanism_evidence["qualified"]
+    review_threshold = max(0.12, min(0.35, float(min_confidence) * 0.35, SCIENCE_DOMAIN_EMBEDDING_REVIEW_THRESHOLD + 0.08))
     verdict = "keep"
     reason = "Target-domain anchors and field context are consistent."
-    if relevance.get("verdict") == "reject":
-        verdict = "reject"
-        reason = "Primary domain-relevance gate rejected the candidate."
-    elif foreign_field and coverage < threshold:
-        verdict = "reject"
-        reason = "Detected field differs from the target and the paper lacks sufficient target-domain anchors."
-    elif not target_hits and foreign_field:
-        verdict = "reject"
-        reason = "No target-domain anchors were found in a paper classified to another field."
-    elif foreign_field or coverage < threshold:
+    if relevance.get("verdict") == "reject" and not mechanism_evidence["qualified"]:
+        if (semantic_similarity >= review_threshold and not distinct_physics_conflict) or cross_field_tolerated:
+            verdict = "review"
+            reason = "Primary lexical relevance is low, but semantic or cross-domain evidence warrants review rather than rejection."
+        else:
+            verdict = "reject"
+            reason = "Primary domain-relevance gate rejected the candidate with no semantic or interdisciplinary bridge."
+    elif relevance.get("verdict") == "reject" and mechanism_evidence["qualified"]:
         verdict = "review"
-        reason = "Some target evidence exists, but the field context or anchor coverage remains ambiguous."
+        reason = "Biological mechanism evidence matches the target domain, so the primary lexical rejection requires review rather than deactivation."
+    elif distinct_physics_conflict:
+        verdict = "reject"
+        reason = "Distinct physics subfields conflict without an explicit bridge in the target domain."
+    elif foreign_field and semantic_similarity < review_threshold and not cross_field_tolerated:
+        verdict = "reject"
+        reason = "Semantic similarity and cross-domain probability overlap are both too low for the detected field mismatch."
+    elif foreign_field and not cross_field_tolerated:
+        if mechanism_evidence["qualified"]:
+            verdict = "review"
+            reason = "Biological mechanism evidence matches the target domain despite an ambiguous field label; retain for review."
+        else:
+            verdict = "review"
+            reason = "Detected field differs from the target and needs review before use as core evidence."
+    elif foreign_field or semantic_similarity < review_threshold or coverage < review_threshold:
+        verdict = "review"
+        reason = "Some target evidence exists, but semantic consistency or field context remains ambiguous."
     return {
         "verdict": verdict,
         "score": round(coverage, 4),
@@ -494,6 +828,13 @@ def domain_review_assessment(
         "foreign_field": foreign_field,
         "target_terms": target_terms,
         "target_hits": target_hits,
+        "retrieval_assessment_preserved": has_retrieval_assessment,
+        "biological_mechanism_evidence": mechanism_evidence,
+        "probability_alignment": probability_alignment,
+        "semantic_similarity": round(float(semantic_similarity), 4),
+        "semantic_similarity_source": semantic_source,
+        "cross_field_tolerated": cross_field_tolerated,
+        "distinct_physics_conflict": distinct_physics_conflict,
         "reason": reason,
     }
 
@@ -1142,8 +1483,10 @@ def publication_quality_assessment_no_citation(result: dict[str, Any]) -> dict[s
 
 def infer_research_field(result: dict[str, Any]) -> str:
     try:
+        from ._models import infer_research_domain
         from ._utils import normalize_space
     except ImportError:
+        from _models import infer_research_domain
         from _utils import normalize_space
     text = " ".join(
         normalize_space(result.get(key, "")).lower()
@@ -1152,6 +1495,17 @@ def infer_research_field(result: dict[str, Any]) -> str:
     arxiv_field = infer_arxiv_field(result)
     if arxiv_field:
         return arxiv_field
+    embedding_field = infer_field_by_embedding(result)
+    if embedding_field:
+        return embedding_field
+    model_organisms = (
+        "drosophila", "zebrafish", "caenorhabditis", "c. elegans", "arabidopsis",
+        "mus musculus", "murine", "xenopus", "saccharomyces", "yeast",
+    )
+    if any(term in text for term in model_organisms):
+        return "biology"
+    if biological_mechanism_evidence(result, target_field="biology")["qualified"]:
+        return "biology"
     metric = journal_metric_for_venue(normalize_space(result.get("venue", "")).lower())
     if metric.get("field"):
         return metric["field"]
@@ -1201,24 +1555,57 @@ def infer_research_field(result: dict[str, Any]) -> str:
         return "biomedical"
     if any(term in text for term in ("agent", "llm", "language model", "neural", "dataset")):
         return "computer_science"
-    return "general"
+    catalog_domain = infer_research_domain(text)
+    return {
+        "quantitative_biology": "quantitative_biology",
+        "quantitative_finance": "quantitative_finance",
+        "electrical_engineering": "electrical_engineering",
+    }.get(catalog_domain, catalog_domain if catalog_domain != "general" else "general")
 
 def fields_are_incompatible(target_field: str, result_field: str) -> bool:
+    try:
+        from ._models import research_domain_for_field
+    except ImportError:
+        from _models import research_domain_for_field
     target = str(target_field or "general")
     result = str(result_field or "general")
     if not target or not result or target in {"general", "multidisciplinary"} or result in {"general", "multidisciplinary"}:
         return False
     if target == result:
         return False
+    target_domain = research_domain_for_field(target)
+    result_domain = research_domain_for_field(result)
+    if target_domain != "general" and target_domain == result_domain:
+        distinct_physics_fields = {
+            "astrophysics",
+            "high_energy_physics",
+            "nuclear_physics",
+            "complex_systems",
+            "instrumentation",
+            "photonics",
+        }
+        if target in distinct_physics_fields and result in distinct_physics_fields:
+            return True
+        return False
+    related_domains = (
+        {"physics", "mathematics", "statistics", "electrical_engineering"},
+        {"physics", "chemistry", "electrical_engineering"},
+        {"computer_science", "mathematics", "statistics", "electrical_engineering"},
+        {"biology", "quantitative_biology", "medicine", "statistics"},
+        {"chemistry", "biology", "quantitative_biology", "medicine"},
+        {"quantitative_finance", "economics", "mathematics", "statistics"},
+    )
+    if any(target_domain in group and result_domain in group for group in related_domains):
+        return False
     groups = [
-        {"physics", "astrophysics", "high_energy_physics", "nuclear_physics", "complex_systems", "computational_science", "instrumentation", "photonics"},
+        {"physics", "astrophysics", "high_energy_physics", "nuclear_physics", "complex_systems", "computational_science", "instrumentation", "photonics", "earth_science"},
         {"chemistry", "chemical_biology", "biochemistry", "materials", "materials_energy", "electrochemistry"},
-        {"biology", "biomedical", "medicine", "digital_medicine", "biophysics", "plant_biology"},
+        {"biology", "quantitative_biology", "biomedical", "medicine", "digital_medicine", "biophysics", "plant_biology", "ecology", "agriculture", "biochemistry", "cell_biology", "developmental_biology", "molecular_biology", "genetics", "genomics", "systems_biology", "synthetic_biology"},
         {"computer_science", "artificial_intelligence", "statistics", "information_theory", "robotics"},
         {"electrical_engineering", "automation_control", "energy_engineering", "electronics", "communications"},
         {"ecology", "environmental_science", "earth_science", "agriculture"},
         {"mathematics", "statistics", "information_theory"},
-        {"finance", "economics", "social_science"},
+        {"quantitative_finance", "finance", "economics", "social_science"},
     ]
     return not any(target in group and result in group for group in groups)
 
@@ -1285,6 +1672,8 @@ def field_citation_baseline(field: str) -> float:
         "multidisciplinary": 600.0,
         "mathematics": 250.0,
         "statistics": 300.0,
+        "quantitative_biology": 500.0,
+        "quantitative_finance": 300.0,
         "electrical_engineering": 400.0,
         "automation_control": 350.0,
         "energy_engineering": 500.0,

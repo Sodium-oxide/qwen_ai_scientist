@@ -85,7 +85,7 @@
 - [project_debate_id.md](project_debate_id.md) - project: Socratic debate instance initiated for hypothesis validation, paused at Round 1 pending human review
 - [project_debate_stall_point.md](project_debate_stall_point.md) - project: step where闭环 failed
 - [project_debate_state.md](project_debate_state.md) - project: Status of Socratic debate loop
-- [project_decomposition_rules.md](project_decomposition_rules.md) - project: 分解规则
+- [project_decomposition_rules.md](project_decomposition_rules.md) - project: Rules for decomposing the research objective into sub-hypotheses.
 - [project_domain.md](project_domain.md) - project: core research domain
 - [project_domain_coverage_diagnostic_findings.md](project_domain_coverage_diagnostic_findings.md) - project: Key underrepresented subfields identified by live probe reports.
 - [project_domain_subspaces_explored.md](project_domain_subspaces_explored.md) - project: 子空间探测配置与关键输出
@@ -95,6 +95,7 @@
 - [project_elnino_closed_loop_project.md](project_elnino_closed_loop_project.md) - project: 厄尔尼诺现象研究与预测闭环验证项目初始化完成
 - [project_elnino_pipeline_validation_failure.md](project_elnino_pipeline_validation_failure.md) - project: Pipeline executed but failed domain validation due to irrelevant literature retrieval
 - [project_enso_climate_knowledge_pyramid_validation.md](project_enso_climate_knowledge_pyramid_validation.md) - project: Research project validating review-rooted knowledge graph construction for ENSO/climate teleconnection; failed due to L0 review root policy violation.
+- [project_evidence_quality_requirements.md](project_evidence_quality_requirements.md) - project: Requirements for the quality and coverage of the literature and evidence.
 - [project_evidence_tiers.md](project_evidence_tiers.md) - project: P0–P4 分层的文献证据层级划分，用于构建DeepSurvey风格的知识库。
 - [project_example_knowledge_gap.md](project_example_knowledge_gap.md) - project: 一个典型的知识缺口示例
 - [project_execution_mode.md](project_execution_mode.md) - project: Boxue pipeline execution mode
@@ -125,6 +126,7 @@
 - [project_hcc_mechanism_validation_project.md](project_hcc_mechanism_validation_project.md) - project: Research project validating ZhiZhi's literature retrieval, knowledge graph construction, and gap detection capabilities in hepatocellular carcinoma formation and cell variation mechanisms.
 - [project_high_energy_physics_dse_zhizhi_tanxi_project_id.md](project_high_energy_physics_dse_zhizhi_tanxi_project_id.md) - project: Project ID for the closed-loop validation study in high energy physics
 - [project_hook_events.md](project_hook_events.md) - project: Configured hook events available in v4/v8
+- [project_hypothesis_generation_criteria.md](project_hypothesis_generation_criteria.md) - project: Criteria for generating and evaluating hypotheses in the research project.
 - [project_hypothesis_generation_guidelines.md](project_hypothesis_generation_guidelines.md) - project: Guidelines for generating hypotheses based on Socrates COMPLETE mechanism contracts
 - [project_hypothesis_generation_requirements.md](project_hypothesis_generation_requirements.md) - project: 假设生成要求
 - [project_hypothesis_id.md](project_hypothesis_id.md) - project: Draft hypothesis linking kinetic trapping (not equilibrium) to calcination dynamics and proposing CTAB + ramp-rate control to suppress segregation
@@ -188,16 +190,16 @@
 - [project_project_electric_field_deformation_nanostructures.md](project_project_electric_field_deformation_nanostructures.md) - project: 科学研究项目：Electric-Field-Driven Deformation Dynamics in Metal Nanostructures
 - [project_project_id.md](project_project_id.md) - project: 科学研究项目的ID
 - [project_project_objective.md](project_project_objective.md) - project: 项目目标
-- [project_project_title.md](project_project_title.md) - project: The title of the research project
+- [project_project_title.md](project_project_title.md) - project: The title of the research project on personalized medicine.
 - [project_project_title_and_goal.md](project_project_title_and_goal.md) - project: 项目标题和目标
 - [project_provider_failure_summary.md](project_provider_failure_summary.md) - project: Stable record of failed providers and reasons
 - [project_python_interpreter_path.md](project_python_interpreter_path.md) - project: Python interpreter to use for running tests/scripts
 - [project_relation_graph_id.md](project_relation_graph_id.md) - project: ID of the filtered literature relation graph (min_quality=0.55)
 - [project_repo_structure_claude_code_versions.md](project_repo_structure_claude_code_versions.md) - project: Repo layout: v1-v8 iterative Python versions
-- [project_research_domain.md](project_research_domain.md) - project: 领域：Personalized Medicine / Precision Medicine / Pharmacogenomics / Cancer Genomics / Clinical Pharmacology / Multi-omics / Patient-derived Models / Cell and Gene Therapy Manufacturing / Biostatistics / Regulatory Science
+- [project_research_domain.md](project_research_domain.md) - project: The domain or field of the research project.
 - [project_research_domains.md](project_research_domains.md) - project: Domains related to the research project
 - [project_research_flow_run_details.md](project_research_flow_run_details.md) - project: 科研流程运行细节
-- [project_research_objective.md](project_research_objective.md) - project: The main objective of the research project
+- [project_research_objective.md](project_research_objective.md) - project: The main objective of the research project, focusing on the predictability of treatment outcomes and manufacturing feasibility in personalized medicine.
 - [project_research_phases.md](project_research_phases.md) - project: The research project is designed to follow a specific sequence of phases for collaboration: Boxue -> ZhiZhi -> TanXi -> GRADE -> Socrates -> MingLi -> YanZhen -> DuZhi -> BianLun. Each phase has distinct responsibilities and must be completed before moving to the next, with specific conditions for progressing or revisiting earlier stages based on evidence thresholds and mechanism checks.
 - [project_research_process_steps.md](project_research_process_steps.md) - project: 执行完整闭环的步骤：Boxue → Objective Decomposition → ZhiZhi → TanXi → Socrates → MingLi → YanZhen → DuZhi → BianLun → MingLi 修订 → YanZhen 复审。
 - [project_research_project_id.md](project_research_project_id.md) - project: ID of the created scientific research project on repeating fast radio bursts
@@ -277,6 +279,7 @@
 - [reference_knowledge_gap_summary.md](reference_knowledge_gap_summary.md) - reference: Structured summary of two validated knowledge gaps from ZhiZhi analysis
 - [reference_known_infrastructure_issues.md](reference_known_infrastructure_issues.md) - reference: Recurring backend degradations to watch for
 - [reference_literature_search_requirements.md](reference_literature_search_requirements.md) - reference: 文献检索要求
+- [reference_literature_sources.md](reference_literature_sources.md) - reference: Primary sources for literature and evidence gathering.
 - [reference_mechanism_audit_requirements.md](reference_mechanism_audit_requirements.md) - reference: 机制审计要求
 - [reference_mechanism_enrichment_requirements.md](reference_mechanism_enrichment_requirements.md) - reference: 机制补全要求
 - [reference_normalize_words_pattern.md](reference_normalize_words_pattern.md) - reference: Preferred implementation for whitespace normalization

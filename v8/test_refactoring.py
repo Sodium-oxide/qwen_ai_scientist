@@ -233,6 +233,177 @@ def t_domain_reviewer_rejects_surface_word_collisions():
     assert not scoring.should_reject_for_domain(nuclear, target)
 test("domain reviewer rejects cross-field surface-word collisions", t_domain_reviewer_rejects_surface_word_collisions)
 
+def t_arxiv_category_precedes_keyword_field_heuristics():
+    import _literature_scoring as scoring
+
+    misleading_title = {
+        "title": "Lithium battery signatures in a cosmological survey",
+        "abstract": "Lithium observations constrain early-universe cosmology.",
+        "arxiv_categories": ["astro-ph.CO"],
+    }
+    assert scoring.infer_research_field(misleading_title) == "astrophysics"
+test("arXiv category anchors field before keyword heuristics", t_arxiv_category_precedes_keyword_field_heuristics)
+
+def t_interdisciplinary_domain_gate_uses_review_not_reject():
+    import _literature_scoring as scoring
+
+    domain = "superheavy element synthesis nuclear decay spectroscopy"
+    candidate = {
+        "title": "Machine learning prediction of superheavy element half-lives",
+        "abstract": "A neural network predicts nuclear decay half-lives and reaction cross sections for superheavy nuclei.",
+        "venue": "Physical Review C",
+        "arxiv_categories": ["cs.LG"],
+    }
+    candidate["domain_relevance"] = scoring.domain_relevance_assessment(candidate, domain=domain, query=domain)
+    assert not scoring.should_reject_for_domain(candidate, domain=domain, query=domain)
+    assert candidate["domain_gate"]["verdict"] == "review"
+    assert candidate["domain_gate"]["requires_human_review"]
+test("interdisciplinary evidence receives a review decision", t_interdisciplinary_domain_gate_uses_review_not_reject)
+
+def t_import_domain_gate_reports_secondary_rejection():
+    import _literature_import as literature_import
+    import _project as project_store
+
+    domain = (
+        "Stem Cell Biology; Developmental Biology; Cell Fate Determination; "
+        "Epigenetics; Chromatin Biology; Cell Reprogramming; Regenerative Medicine"
+    )
+    query = "stem cell pluripotency differentiation cell fate chromatin epigenetic reprogramming"
+    candidate = {
+        "title": "Intrinsic plasticity underlies malleability of neural network heterogeneity",
+        "abstract": "We study intrinsic plasticity in artificial neural networks and heterogeneous network dynamics.",
+        "venue": "Neural Networks",
+        "provider": "biorxiv",
+        "domain_relevance": {"verdict": "keep", "score": 0.3913, "flags": []},
+    }
+    with (
+        patch.object(project_store, "load_project", return_value={"domain": domain}),
+        patch.object(project_store, "load_search", return_value={"query": query, "results": [candidate]}),
+        patch.object(literature_import, "log_event") as log_event,
+    ):
+        try:
+            literature_import.import_literature_search_result("project", "search", 0)
+            raise AssertionError("Expected the secondary domain review to reject the unrelated neural-network paper.")
+        except ValueError as exc:
+            error_text = str(exc)
+
+    logged = log_event.call_args.kwargs
+    assert "final domain gate" in error_text
+    assert logged["verdict"] == "reject"
+    assert logged["primary_verdict"] == "keep"
+    assert logged["gate_verdict"] == "reject"
+    assert logged["rejecting_stage"] == "domain_review"
+    assert logged["review_verdict"] == "reject"
+    assert "field mismatch" in str(logged["reason"]).lower()
+test("import domain gate records final verdict after primary keep", t_import_domain_gate_reports_secondary_rejection)
+
+def t_biology_mechanism_gate_keeps_model_organism_evidence():
+    import _literature_scoring as scoring
+
+    domain = (
+        "Stem Cell Biology; Developmental Biology; Cell Fate Determination; "
+        "Epigenetics; Chromatin Biology; Cell Reprogramming; Regenerative Medicine"
+    )
+    query = "transcription factor network cellular plasticity"
+    candidate = {
+        "title": "A hierarchical transcription factor cascade regulates enteroendocrine cell diversity and plasticity in Drosophila",
+        "abstract": (
+            "Drosophila enteroendocrine cells are specified by a hierarchical transcription factor code. "
+            "Changing the code switches subtype identity and demonstrates cellular plasticity during differentiation."
+        ),
+        "venue": "Nature Communications",
+        "provider": "semantic_scholar",
+    }
+    relevance = scoring.domain_relevance_assessment(candidate, domain=domain, query=query)
+    review = scoring.domain_review_assessment(
+        {**candidate, "domain_relevance": relevance},
+        domain=domain,
+    )
+
+    assert scoring.infer_research_field(candidate) == "biology"
+    assert relevance["verdict"] == "keep"
+    assert relevance["biological_mechanism_evidence"]["qualified"]
+    assert review["verdict"] != "reject"
+    assert review["retrieval_assessment_preserved"]
+test("biology mechanism evidence survives domain review", t_biology_mechanism_gate_keeps_model_organism_evidence)
+
+def t_domain_review_recovers_cached_retrieval_assessment():
+    import _literature_import as literature_import
+    import _literature_scoring as scoring
+    import _project as project_store
+
+    domain = "Stem Cell Biology; Developmental Biology; Cell Fate Determination; Epigenetics; Chromatin Biology"
+    query = "transcription factor network cellular plasticity"
+    title = "A hierarchical transcription factor cascade regulates enteroendocrine cell diversity and plasticity in Drosophila"
+    source_result = {
+        "title": title,
+        "abstract": "Drosophila transcription factor codes switch enteroendocrine cell identities and reveal cellular plasticity.",
+        "venue": "Nature Communications",
+        "provider": "semantic_scholar",
+    }
+    source_result["domain_relevance"] = scoring.domain_relevance_assessment(source_result, domain=domain, query=query)
+    project = {
+        "domain": domain,
+        "papergraph": [{
+            "paper_id": "paper_recover",
+            "title": title,
+            "abstract": source_result["abstract"],
+            "venue": source_result["venue"],
+            "provider": source_result["provider"],
+            "active": False,
+            "import_context": {"search_id": "search_recover", "result_index": 0},
+        }],
+        "evidence": [],
+    }
+    with (
+        patch.object(project_store, "load_project", return_value=project),
+        patch.object(project_store, "load_search", return_value={"query": query, "results": [source_result]}),
+        patch.object(project_store, "save_project"),
+    ):
+        review = literature_import.domain_review_paper("project_recover", "paper_recover")
+
+    restored = project["papergraph"][0]
+    assert review["verdict"] != "reject"
+    assert restored["active"] is True
+    assert restored["retrieval_query"] == query
+    assert restored["domain_relevance"]["verdict"] == "keep"
+test("domain review restores cached retrieval relevance", t_domain_review_recovers_cached_retrieval_assessment)
+
+def t_force_import_preserves_user_override():
+    import _literature_import as literature_import
+    import _literature_search as literature_search
+    import _project as project_store
+
+    domain = "Stem Cell Biology; Developmental Biology; Cell Fate Determination"
+    candidate = {
+        "title": "Intrinsic plasticity underlies malleability of neural network heterogeneity",
+        "abstract": "We study intrinsic plasticity in artificial neural networks and heterogeneous network dynamics.",
+        "venue": "Neural Networks",
+        "provider": "biorxiv",
+        "domain_relevance": {"verdict": "keep", "score": 0.3913, "flags": []},
+        "papergraph_input": {
+            "title": "Intrinsic plasticity underlies malleability of neural network heterogeneity",
+            "citation": "Example et al. (2025)",
+            "abstract": "We study intrinsic plasticity in artificial neural networks and heterogeneous network dynamics.",
+            "venue": "Neural Networks",
+            "provider": "biorxiv",
+            "year": "2025",
+        },
+    }
+    with (
+        patch.object(project_store, "load_project", return_value={"domain": domain}),
+        patch.object(project_store, "load_search", return_value={"query": "stem cell plasticity", "results": [candidate]}),
+        patch.object(literature_search, "enrich_papergraph_payload", side_effect=lambda payload, _result: (payload, [])),
+        patch.object(literature_import, "import_papergraph_record", return_value=json.dumps({"status": "imported", "record": {"paper_id": "forced"}})) as store_record,
+    ):
+        response = json.loads(literature_import.import_literature_search_result("project", "search", 0, force_import=True))
+
+    stored = store_record.call_args.kwargs
+    assert response["status"] == "imported"
+    assert stored["domain_gate"]["verdict"] == "override"
+    assert stored["domain_override"]["force_import"] is True
+test("force import records a reversible domain override", t_force_import_preserves_user_override)
+
 def t_preprint_l3_query_and_classification():
     import _literature_search as ls
     import _literature_scoring as scoring
@@ -398,6 +569,197 @@ def t_preprint_recovery_retries_medrxiv_before_arxiv():
     assert not arxiv.called
     assert report["outcome"] == "recovered"
 test("P0 recovery retries medRxiv before arXiv", t_preprint_recovery_retries_medrxiv_before_arxiv)
+
+
+def t_preprint_zero_result_cache_avoids_repeat_metadata_scan():
+    import _literature_search as ls
+
+    calls = []
+
+    def fake_get_json(url, headers=None, timeout=20.0):
+        calls.append(url)
+        return {
+            "collection": [{
+                "title": "Unrelated clinical metadata record",
+                "abstract": "No matching mechanism terms are present.",
+                "authors": "Researcher A",
+                "date": "2026-06-01",
+                "doi": "10.1101/2026.06.01.999999",
+                "category": "clinical trial",
+            }],
+            "messages": [{"total": "1"}],
+        }
+
+    ls.PREPRINT_ZERO_RESULT_CACHE.clear()
+    try:
+        with patch.object(ls, "http_get_json", side_effect=fake_get_json):
+            first = ls.search_biorxiv_or_medrxiv(
+                "medrxiv",
+                "unique cache miss chromatin sentinel",
+                max_results=5,
+                days_back=365,
+                scan_limit=30,
+            )
+            second = ls.search_biorxiv_or_medrxiv(
+                "medrxiv",
+                "unique cache miss chromatin sentinel",
+                max_results=5,
+                days_back=365,
+                scan_limit=30,
+            )
+        assert first["matched_result_count"] == 0
+        assert not first["zero_result_cache_hit"]
+        assert second["matched_result_count"] == 0
+        assert second["zero_result_cache_hit"]
+        assert second["scanned_result_count"] == 0
+        assert len(calls) == 1
+    finally:
+        ls.PREPRINT_ZERO_RESULT_CACHE.clear()
+test("zero-result preprint cache prevents repeat metadata scans", t_preprint_zero_result_cache_avoids_repeat_metadata_scan)
+
+
+def t_socrates_retrieval_limits_preprints_to_l3_with_small_budget():
+    import _socrates as socrates
+    import _literature_search as ls
+
+    captured = {}
+
+    def fake_stratified(**kwargs):
+        captured.update(kwargs)
+        return json.dumps({"search_id": "search_socrates_preprint", "total_results": 0})
+
+    with patch.object(ls, "search_literature_stratified", side_effect=fake_stratified):
+        report = socrates.socrates_call_zhizhi_targeted_search(
+            project_id="project_socrates_preprint",
+            query="chromatin accessibility cellular plasticity reversibility",
+            domain="Stem Cell Biology",
+            field="reversibility",
+            question="What makes the mechanism reversible?",
+            providers=["semantic_scholar", "biorxiv", "medrxiv"],
+            max_results=12,
+            imports_per_query=2,
+            use_llm=False,
+            preprint_scan_limit=180,
+            preprint_provider_result_target=3,
+        )
+    assert report["searches"] == 1
+    assert captured["preprint_layers"] == {"L3_preprint"}
+    assert captured["preprint_scan_limit"] == 180
+    assert captured["preprint_provider_result_target"] == 3
+    assert captured["preprint_recovery_windows"] == (12,)
+    assert captured["preprint_recovery_max_variants"] == 1
+    assert captured["preprint_max_branches"] == 1
+test("Socrates uses a bounded L3-only preprint policy", t_socrates_retrieval_limits_preprints_to_l3_with_small_budget)
+
+
+def t_socrates_preprint_target_skips_extra_slow_providers():
+    import _literature_search as ls
+
+    arxiv_block = {
+        "provider": "arxiv",
+        "query": "chromatin plasticity",
+        "status": "ok",
+        "results": [{"title": "P1"}, {"title": "P2"}, {"title": "P3"}],
+    }
+    with patch.object(ls, "search_arxiv", return_value=arxiv_block), patch.object(ls, "search_preprint_api") as preprint_search:
+        blocks = ls.fetch_stratified_layer_blocks(
+            "chromatin plasticity",
+            ["arxiv", "biorxiv", "medrxiv"],
+            {"layer": "L3_preprint", "quota": 1, "query_suffix": ""},
+            query_plan=[{"branch": "primary", "query": "chromatin plasticity"}],
+            domain="Stem Cell Biology",
+            preprint_layers={"L3_preprint"},
+            preprint_provider_result_target=3,
+        )
+    assert not preprint_search.called
+    skipped = [block for block in blocks if block.get("status") == "skipped"]
+    assert {block["provider"] for block in skipped} == {"biorxiv", "medrxiv"}
+    assert all("sufficient_preprint_candidates=3" in block.get("skipped_provider_reason", "") for block in skipped)
+test("Socrates skips slow preprint providers after sufficient candidates", t_socrates_preprint_target_skips_extra_slow_providers)
+
+
+def t_socrates_query_selection_deduplicates_across_fields():
+    import _socrates as socrates
+
+    selected = socrates.select_untried_socrates_queries(
+        ["identity", "dynamics"],
+        {
+            "identity": ["shared mechanism evidence"],
+            "dynamics": ["shared mechanism evidence"],
+        },
+        attempted_queries=set(),
+        limit=2,
+        attempted_retrieval_queries=set(),
+    )
+    assert selected == [("identity", "shared mechanism evidence")]
+test("Socrates does not retrieve the same query for two fields", t_socrates_query_selection_deduplicates_across_fields)
+
+
+def t_socrates_skips_generic_density_holes_without_external_search():
+    import _socrates as socrates
+
+    ready, reason = socrates.socrates_retrieval_ready({
+        "proposed_mediator": "unresolved",
+        "input": "Density hole: method in scenario",
+        "output": "unresolved",
+    })
+    assert not ready
+    assert "concrete proposed mediator" in reason
+test("Socrates does not search a generic density-hole mechanism", t_socrates_skips_generic_density_holes_without_external_search)
+
+
+def t_socrates_import_continues_after_top_duplicate_candidate():
+    import _literature_import as literature_import
+    import _literature_search as literature_search
+    import _socrates as socrates
+
+    attempted_indexes = []
+
+    def fake_search(**kwargs):
+        return json.dumps({"search_id": "search_duplicate_first", "total_results": 3})
+
+    def fake_import(project_id, search_id, result_index, use_llm=False):
+        attempted_indexes.append(result_index)
+        if result_index == 0:
+            return json.dumps({"status": "duplicate", "existing_record": {"paper_id": "old"}})
+        return json.dumps({"status": "imported", "record": {"paper_id": "new_evidence"}})
+
+    with patch.object(literature_search, "search_literature_stratified", side_effect=fake_search), patch.object(literature_import, "import_literature_search_result", side_effect=fake_import), patch.object(literature_import, "domain_review_paper", return_value={"verdict": "keep"}), patch.object(literature_import, "extract_paper_keynote"):
+        report = socrates.socrates_call_zhizhi_targeted_search(
+            project_id="project_duplicate_first",
+            query="chromatin accessibility reprogramming reversibility",
+            domain="Stem Cell Biology",
+            field="reversibility",
+            question="Is chromatin resetting reversible?",
+            providers=["semantic_scholar"],
+            max_results=8,
+            imports_per_query=1,
+            use_llm=False,
+        )
+    assert attempted_indexes == [0, 1]
+    assert report["duplicate_candidates"] == 1
+    assert report["imports"] == 1
+    assert report["paper_ids"] == ["new_evidence"]
+test("Socrates checks later candidates after a duplicate", t_socrates_import_continues_after_top_duplicate_candidate)
+
+
+def t_method_scenario_benchmark_louvain_detects_weighted_research_branches():
+    from _gap_detection import run_method_scenario_benchmark_louvain
+
+    records = [
+        {"paper_id": "p1", "citation": "P1", "method": "ATAC-seq", "scenario": "iPSC reprogramming", "benchmark": "chromatin accessibility", "publication_quality_score": 0.9, "citation_count": 20},
+        {"paper_id": "p2", "citation": "P2", "method": "ATAC-seq", "scenario": "iPSC reprogramming", "benchmark": "pluripotency marker expression", "publication_quality_score": 0.8, "citation_count": 10},
+        {"paper_id": "p3", "citation": "P3", "method": "lineage tracing", "scenario": "intestinal regeneration", "benchmark": "cell fate stability", "publication_quality_score": 0.9, "citation_count": 30},
+        {"paper_id": "p4", "citation": "P4", "method": "lineage tracing", "scenario": "intestinal regeneration", "benchmark": "clonal persistence", "publication_quality_score": 0.8, "citation_count": 15},
+    ]
+    result = run_method_scenario_benchmark_louvain(records)
+    assert result["status"] == "success"
+    assert result["graph_type"] == "method_scenario_benchmark_evidence"
+    assert result["edge_basis"].startswith("weighted co-occurrence")
+    assert result["num_communities"] >= 2
+    assert result["modularity"] is not None
+    assert all("supporting_references" in item for item in result["communities"])
+test("MSB Louvain identifies weighted research branches", t_method_scenario_benchmark_louvain_detects_weighted_research_branches)
 
 def t_open_access_pdf_excerpt_is_not_gated_by_abstract_quality():
     import _literature_search as literature_search
@@ -1197,6 +1559,370 @@ def t_standard_fifteen_result_search_imports_at_least_ten_candidates():
     assert pipeline.standard_retrieval_import_limit(5, 15, retrieval_phase="subhypothesis_evidence") == 5
 test("standard 15-to-20-result retrieval enforces a ten-paper import floor", t_standard_fifteen_result_search_imports_at_least_ten_candidates)
 
+def t_import_latency_policy_bounds_llm_and_semantic_scholar_retries():
+    import _literature_search as literature_search
+    import _pipeline as pipeline
+
+    assert pipeline.zhizhi_import_llm_budget(True, 12) == 2
+    assert pipeline.zhizhi_import_llm_budget(True, 1) == 1
+    assert pipeline.zhizhi_import_llm_budget(False, 12) == 0
+    original_limit = literature_search.SCIENCE_SEMANTIC_SCHOLAR_RETRY_LIMIT
+    original_llm_limit = pipeline.SCIENCE_ZHIZHI_IMPORT_LLM_LIMIT
+    try:
+        literature_search.SCIENCE_SEMANTIC_SCHOLAR_RETRY_LIMIT = 20
+        assert literature_search.semantic_scholar_retry_limit() == 3
+        pipeline.SCIENCE_ZHIZHI_IMPORT_LLM_LIMIT = 20
+        assert pipeline.zhizhi_import_llm_budget(True, 12) == 3
+    finally:
+        literature_search.SCIENCE_SEMANTIC_SCHOLAR_RETRY_LIMIT = original_limit
+        pipeline.SCIENCE_ZHIZHI_IMPORT_LLM_LIMIT = original_llm_limit
+test("import latency policy bounds LLM work and Semantic Scholar retries", t_import_latency_policy_bounds_llm_and_semantic_scholar_retries)
+
+def t_semantic_scholar_search_result_does_not_reprobe_missing_pdf():
+    import _literature_search as literature_search
+
+    payload = {
+        "title": "Complete Semantic Scholar record",
+        "abstract": "A" * 500,
+        "method": "clinical cohort study",
+        "scenario": "precision medicine",
+        "benchmark": "treatment response",
+        "semantic_scholar_id": "semantic-id",
+    }
+    result = {"provider": "semantic_scholar", "semantic_scholar_id": "semantic-id"}
+    with patch.object(literature_search, "fetch_semantic_scholar_paper_detail", side_effect=AssertionError("redundant detail probe")):
+        enriched, _ = literature_search.enrich_papergraph_payload(payload, result)
+    assert enriched["_full_text_enrichment"]["status"] == "no_open_access_pdf"
+test("Semantic Scholar search records skip redundant detail probes", t_semantic_scholar_search_result_does_not_reprobe_missing_pdf)
+
+def t_community_aware_graph_expansion_preserves_diversity_and_evidence_weight():
+    import _literature_graph as literature_graph
+    import tools
+
+    medicine = {
+        "title": "Clinical trial in patients with cancer treatment outcomes",
+        "abstract": "A patient cohort study of therapeutic response and prognosis.",
+        "semantic_scholar_id": "medicine-seed",
+        "publication_quality_score": 0.95,
+        "relevance_score": 0.92,
+        "relevance_components": {"impact_score": 0.8},
+    }
+    biology = {
+        "title": "Molecular gene pathway controls cytokine signaling in immune cells",
+        "abstract": "Protein receptor mechanisms regulate cellular transcription.",
+        "semantic_scholar_id": "biology-seed",
+        "publication_quality_score": 0.83,
+        "relevance_score": 0.79,
+        "relevance_components": {"impact_score": 0.7},
+    }
+    translational = {
+        "title": "Molecular biomarker stratifies clinical cancer patients",
+        "abstract": "Gene pathway profiling predicts therapeutic response in a clinical cohort.",
+        "semantic_scholar_id": "bridge-seed",
+        "publication_quality_score": 0.88,
+        "relevance_score": 0.85,
+        "relevance_components": {"impact_score": 0.75},
+    }
+    assert literature_graph.infer_literature_community(medicine) == "medicine"
+    assert literature_graph.infer_literature_community(biology) == "biology"
+    assert literature_graph.infer_literature_community(translational) == "translational"
+    selected = literature_graph.select_second_layer_seeds_with_community_awareness(
+        [medicine, biology, translational],
+        top_k=2,
+        min_bridge_attempts=2,
+    )
+    assert len({literature_graph.infer_literature_community(item) for item in selected}) == 2
+    assert literature_graph.graph_needs_cross_community_bridge([medicine], 20)
+    ordinary = literature_graph.relation_graph_edge(
+        "parent",
+        "child",
+        "second_layer_reference",
+        {"graph_community": "biology"},
+    )
+    bridge = literature_graph.relation_graph_edge(
+        "parent",
+        "child",
+        "cross_community_bridge_reference",
+        {
+            "graph_cross_community_bridge": True,
+            "graph_parent_community": "medicine",
+            "graph_community": "biology",
+        },
+    )
+    assert bridge["is_cross_community_bridge"] and bridge["weight"] > ordinary["weight"]
+    retained = literature_graph.retain_community_bridge_candidates(
+        [medicine, biology, translational],
+        [translational],
+        max_results=2,
+    )
+    assert any(item.get("semantic_scholar_id") == "bridge-seed" for item in retained)
+    assert tools.TOOL_HANDLERS["search_cross_community_bridges"] is tools.search_cross_community_bridges
+test("Community-aware graph expansion diversifies seeds and weights bridge citations", t_community_aware_graph_expansion_preserves_diversity_and_evidence_weight)
+
+def t_louvain_uses_structural_citation_edges_and_recommends_bridges():
+    import _literature_graph as literature_graph
+
+    nodes = [
+        {
+            "node_id": node_id,
+            "title": node_id,
+            "field": "physics" if node_id.startswith("p") else "mathematics",
+            "publication_quality_score": 0.8,
+            "relevance_score": 0.7,
+        }
+        for node_id in ("p1", "p2", "p3", "m1", "m2", "m3")
+    ]
+    edges = [
+        {"source": "p1", "target": "p2", "weight": 1.0, "edge_type": "citation_graph"},
+        {"source": "p2", "target": "p3", "weight": 1.0, "edge_type": "citation_graph"},
+        {"source": "p1", "target": "p3", "weight": 1.0, "edge_type": "citation_graph"},
+        {"source": "m1", "target": "m2", "weight": 1.0, "edge_type": "citation_graph"},
+        {"source": "m2", "target": "m3", "weight": 1.0, "edge_type": "citation_graph"},
+        {"source": "m1", "target": "m3", "weight": 1.0, "edge_type": "citation_graph"},
+        {"source": "p3", "target": "m1", "weight": 1.0, "edge_type": "citation_graph"},
+    ]
+    analysis = literature_graph.run_louvain_community_analysis(nodes, edges)
+    if literature_graph.LOUVAIN_AVAILABLE:
+        assert analysis["status"] == "success"
+        assert analysis["num_communities"] == 2
+        assert analysis["modularity"] > 0.3
+        bridge_ids = {item["node_id"] for item in analysis["bridge_nodes"]}
+        assert {"p3", "m1"}.issubset(bridge_ids)
+        recommendations = literature_graph.louvain_recommended_expansion_seeds(nodes, analysis)
+        assert recommendations and recommendations[0]["bridge_score"] > 0.3
+
+    artificial_only = literature_graph.run_louvain_community_analysis(
+        nodes,
+        [{"source": "p1", "target": "m1", "weight": 1.0, "edge_type": "artificial"}],
+    )
+    assert artificial_only["status"] in {"insufficient_structure", "disabled", "unavailable"}
+    if artificial_only["status"] == "insufficient_structure":
+        assert artificial_only["ignored_artificial_edge_count"] == 1
+test("Louvain communities use citation structure and surface bridge papers", t_louvain_uses_structural_citation_edges_and_recommends_bridges)
+
+def t_relation_graph_persists_louvain_analysis_and_node_annotations():
+    import _literature_graph as literature_graph
+    import _project as project_store
+    from _literature_search import literature_result_unique_key
+
+    papers = []
+    parent_names = {"p1": "", "p2": "p1", "p3": "p1", "m1": "", "m2": "m1", "m3": "m1"}
+    for node_id in parent_names:
+        papers.append(
+            {
+                "title": f"{node_id} structural paper",
+                "abstract": "Citation graph community structure.",
+                "semantic_scholar_id": node_id,
+                "publication_quality_score": 0.8,
+                "relevance_score": 0.7,
+                "graph_relation": "reference",
+            }
+        )
+    by_name = {item["semantic_scholar_id"]: item for item in papers}
+    for item in papers:
+        parent_name = parent_names[item["semantic_scholar_id"]]
+        if parent_name:
+            item["graph_parent_key"] = literature_result_unique_key(by_name[parent_name])
+    source = {
+        "search_id": "synthetic_louvain",
+        "query": "citation graph community",
+        "seed_title": "Seed paper",
+        "results": papers,
+    }
+    with (
+        patch.object(project_store, "load_search", return_value=source),
+        patch.object(project_store, "save_search") as save_search,
+    ):
+        response = json.loads(literature_graph.build_literature_relation_graph("synthetic_louvain"))
+    stored = save_search.call_args.args[0]
+    status = response["louvain_analysis"]["status"]
+    assert status in {"success", "fallback_components", "disabled", "unavailable"}
+    assert stored["louvain_analysis"]["status"] == status
+    if status == "success":
+        assert response["louvain_analysis"]["num_communities"] >= 2
+        assert any("louvain_community" in node for node in stored["nodes"])
+        assert "louvain_analysis.bridge_nodes" in response["next_step"]
+test("Relation graph persists Louvain analysis and bridge-expansion annotations", t_relation_graph_persists_louvain_analysis_and_node_annotations)
+
+def t_louvain_community_maps_are_evidence_bounded_and_emit_local_gaps():
+    import _gap_detection as gaps
+    import _project as project_store
+    import tools
+
+    project = {
+        "project_id": "community_map_test",
+        "papergraph": [
+            {
+                "paper_id": "paper_a",
+                "unique_key": "s2:a",
+                "semantic_scholar_id": "a",
+                "title": "A",
+                "citation": "A",
+                "method": "spectroscopy",
+                "scenario": "astrophysical observation",
+                "benchmark": "discovery significance",
+            },
+            {
+                "paper_id": "paper_b",
+                "unique_key": "s2:b",
+                "semantic_scholar_id": "b",
+                "title": "B",
+                "citation": "B",
+                "method": "numerical simulation",
+                "scenario": "detector simulation in high energy physics",
+                "benchmark": "simulation fidelity",
+            },
+            {
+                "paper_id": "paper_c",
+                "unique_key": "s2:c",
+                "semantic_scholar_id": "c",
+                "title": "C",
+                "citation": "C",
+                "method": "theoretical proof",
+                "scenario": "mathematical modeling",
+                "benchmark": "theorem strength",
+            },
+        ],
+        "evidence": [],
+    }
+    relation_graph = {
+        "search_id": "relation_community_map",
+        "nodes": [
+            {"node_id": "s2_a", "semantic_scholar_id": "a", "title": "A", "louvain_community": 0, "field": "physics"},
+            {"node_id": "s2_b", "semantic_scholar_id": "b", "title": "B", "louvain_community": 0, "field": "physics"},
+            {"node_id": "s2_c", "semantic_scholar_id": "c", "title": "C", "louvain_community": 1, "field": "mathematics"},
+            {"node_id": "s2_unimported", "semantic_scholar_id": "unimported", "title": "Unimported", "louvain_community": 1, "field": "mathematics"},
+        ],
+        "louvain_analysis": {
+            "status": "success",
+            "community_map": {"s2_a": 0, "s2_b": 0, "s2_c": 1, "s2_unimported": 1},
+            "communities": [{"community_id": 0, "primary_field": "physics"}, {"community_id": 1, "primary_field": "mathematics"}],
+            "topic_drift_assessment": [{"community_id": 0, "disposition": "core", "priority": "high"}, {"community_id": 1, "disposition": "connected", "priority": "normal"}],
+            "outlier_communities": [],
+        },
+    }
+    with (
+        patch.object(project_store, "load_project", return_value=project),
+        patch.object(project_store, "save_project"),
+        patch.object(project_store, "load_search", return_value=relation_graph),
+    ):
+        report = json.loads(gaps.build_louvain_community_knowledge_maps("community_map_test", "relation_community_map", 2))
+    assert report["status"] == "ready"
+    assert report["communities"]["0"]["record_count"] == 2
+    assert report["communities"]["0"]["eligible_for_gap_analysis"]
+    assert not report["communities"]["1"]["eligible_for_gap_analysis"]
+    assert report["unmapped_relation_node_count"] == 1
+    assert report["representative_import_candidates"][0]["candidate"]["node_id"] == "s2_unimported"
+    candidates = gaps.louvain_community_gap_candidates(project, report["communities"])
+    assert candidates and all(item["gap_type"] == "community_combinatorial" for item in candidates)
+    assert all(item["louvain_community"] == 0 for item in candidates)
+    assert project["papergraph"][0]["louvain_priority"] == "high"
+    assert tools.TOOL_HANDLERS["build_louvain_community_knowledge_maps"] is tools.build_louvain_community_knowledge_maps
+test("Louvain community maps remain evidence-bounded and emit local gaps", t_louvain_community_maps_are_evidence_bounded_and_emit_local_gaps)
+
+def t_louvain_bridge_priority_guides_later_second_layer_seed_selection():
+    import _literature_graph as literature_graph
+
+    candidates = [
+        {
+            "title": "Core paper",
+            "semantic_scholar_id": "core",
+            "publication_quality_score": 0.84,
+            "relevance_score": 0.82,
+            "relevance_components": {"impact_score": 0.7},
+            "louvain_community": 0,
+            "louvain_priority": "normal",
+        },
+        {
+            "title": "Structural bridge paper",
+            "semantic_scholar_id": "bridge",
+            "publication_quality_score": 0.8,
+            "relevance_score": 0.8,
+            "relevance_components": {"impact_score": 0.7},
+            "louvain_community": 1,
+            "louvain_bridge_score": 0.9,
+            "louvain_priority": "normal",
+        },
+        {
+            "title": "Weak detached paper",
+            "semantic_scholar_id": "weak",
+            "publication_quality_score": 0.89,
+            "relevance_score": 0.86,
+            "relevance_components": {"impact_score": 0.75},
+            "louvain_community": 2,
+            "louvain_priority": "low",
+        },
+    ]
+    selected = literature_graph.select_second_layer_seeds_with_community_awareness(
+        candidates,
+        top_k=2,
+        min_bridge_attempts=2,
+    )
+    selected_ids = {item["semantic_scholar_id"] for item in selected}
+    assert "bridge" in selected_ids
+    assert "weak" not in selected_ids
+test("Louvain bridge priority guides later second-layer seed selection", t_louvain_bridge_priority_guides_later_second_layer_seed_selection)
+
+def t_research_domain_catalog_routes_and_gates_cross_domain_queries():
+    import _literature_graph as literature_graph
+    import _literature_scoring as scoring
+    from _models import research_domain_profile
+    from _project import default_literature_providers
+
+    cases = {
+        "Astrophysics cosmology gravitational waves": ("physics", {"semantic_scholar", "arxiv"}),
+        "Quantum materials superconductivity condensed matter": ("physics", {"semantic_scholar", "arxiv"}),
+        "Graph neural networks for information retrieval": ("computer_science", {"semantic_scholar", "arxiv"}),
+        "Econometrics causal inference market design": ("economics", {"semantic_scholar", "arxiv"}),
+        "Catalysis and polymer chemistry": ("chemistry", {"semantic_scholar", "chemrxiv"}),
+        "Clinical oncology pharmacogenomics trial": ("medicine", {"semantic_scholar", "pubmed", "medrxiv", "biorxiv"}),
+    }
+    for query, (expected_domain, expected_providers) in cases.items():
+        assert research_domain_profile(query)["domain"] == expected_domain
+        assert expected_providers.issubset(set(default_literature_providers(domain=query)))
+        assert literature_graph.infer_literature_community({"title": query}) in {expected_domain, "translational"}
+
+    astrophysics_paper = {
+        "title": "Gravitational wave cosmology with galaxy surveys",
+        "abstract": "Astrophysical standard sirens constrain cosmology.",
+    }
+    assert not scoring.should_reject_for_domain(
+        astrophysics_paper,
+        domain="Astrophysics cosmology gravitational waves",
+        query="Astrophysics cosmology gravitational waves",
+    )
+    assert not scoring.fields_are_incompatible("physics", "mathematics")
+    assert scoring.fields_are_incompatible("medicine", "physics")
+    assert "mathematical modeling" in literature_graph.bridge_query_plan("gravitational wave cosmology")[0]
+test("Research-domain catalog routes, gates, and bridges across disciplines", t_research_domain_catalog_routes_and_gates_cross_domain_queries)
+
+def t_bridge_search_is_bounded_and_never_imports_automatically():
+    import _literature_graph as literature_graph
+    import _literature_search as literature_search
+    import _project as project_store
+
+    candidate = {
+        "title": "Molecular gene biomarker predicts clinical patient treatment response",
+        "abstract": "A gene pathway mechanism supports clinical stratification in a patient cohort.",
+        "semantic_scholar_id": "bridge-candidate",
+        "publication_quality_score": 0.9,
+        "relevance_score": 0.8,
+    }
+    with (
+        patch.object(project_store, "load_search", return_value={"search_id": "source", "query": "Treg homeostasis"}),
+        patch.object(project_store, "save_search") as mocked_save,
+        patch.object(literature_search, "search_semantic_scholar", return_value={"provider": "semantic_scholar"}) as mocked_search,
+        patch.object(literature_search, "flatten_literature_results", return_value=[candidate]),
+        patch.object(literature_search, "dedupe_literature_results", side_effect=lambda items: items),
+        patch.object(literature_search, "rank_literature_results", side_effect=lambda _query, items: items),
+    ):
+        payload = json.loads(literature_graph.search_cross_community_bridges("source", max_results=4))
+    assert payload["total_results"] >= 1
+    assert mocked_search.call_count <= literature_graph.SCIENCE_BRIDGE_SEARCH_QUERY_LIMIT
+    assert mocked_save.call_args.args[0]["kind"] == "cross_community_bridge_search"
+    assert "never imports" in payload["next_step"]
+test("Bridge search is bounded and leaves import under explicit control", t_bridge_search_is_bounded_and_never_imports_automatically)
+
 def t_subhypothesis_preprints_are_independent_and_nonblocking():
     import _gap_detection as gaps
     import _literature_search as literature_search
@@ -1418,7 +2144,7 @@ TOOLS_IMPORTS = [
     "create_science_pipeline_tasks", "create_science_delegation_tasks",
     "create_boxue_delegation_tasks", "run_boxue_research_round",
     "build_knowledge_map", "add_literature_evidence", "import_literature_text",
-    "import_literature_file", "import_literature_search_result", "domain_review_paper",
+    "import_literature_file", "import_literature_search_result", "domain_review_paper", "reconcile_project_domain_reviews",
     "extract_paper_keynote", "import_papergraph_record", "list_papergraph_records",
     "verify_citation_uniqueness", "assess_novelty", "verify_uniqueness",
     "run_zhizhi_literature_analysis", "run_zhizhi_subhypothesis_analysis", "parse_literature_text", "build_coverage_matrix",

@@ -41,9 +41,9 @@ _PAPER_TYPE_PATTERNS = {
 }
 
 _SECTION_PATTERNS = (
-    ("methodology", r"(?:materials?\s+and\s+)?methods?|methodology|experimental(?:\s+section)?|study\s+design|patients?\s+and\s+methods?"),
-    ("results", r"results?|findings?|observations?"),
-    ("discussion", r"discussion|interpretation|implications?"),
+    ("methodology", r"(?:materials?\s+and\s+)?methods?|methodology|experimental(?:\s+(?:section|procedures?))?|study\s+design|patients?\s+and\s+methods?|statistical\s+analysis|data\s+analysis|methods?\s+and\s+analysis"),
+    ("results", r"results?(?:\s+and\s+discussion)?|findings?|observations?"),
+    ("discussion", r"discussion|interpretation|implications?|results?\s+and\s+discussion"),
     ("conclusion", r"conclusions?|concluding\s+remarks?|summary"),
     ("introduction", r"introduction"),
     ("background", r"background|literature\s+review"),
@@ -110,6 +110,13 @@ def extract_pdf_content(
     if not page_texts or not any(item["text"].strip() for item in page_texts):
         raise RuntimeError("No extractable text found in PDF")
     metadata = dict(paper_metadata or {})
+    source_url = str(
+        metadata.get("source_url")
+        or metadata.get("open_access_pdf")
+        or metadata.get("url")
+        or metadata.get("source_path")
+        or ""
+    ).strip()
     full_text = "\n\n".join(item["text"] for item in page_texts if item["text"])
     paper_type = classify_paper_type(metadata, full_text[:6000])
     page_budget, char_budget = get_extraction_params(
@@ -122,7 +129,18 @@ def extract_pdf_content(
     sections = detect_sections(page_texts)
     selected_sections = smart_extraction(sections, keywords, char_limit=max(1_500, int(output_limit * 0.6)))
     keyword_result = keyword_driven_extraction(full_text, sub_hypothesis, keywords, max_sentences=40)
-    non_text = extract_non_text_content(data, keywords=keywords)
+    non_text = extract_non_text_content(
+        data,
+        keywords=keywords,
+        page_texts=page_texts,
+        source_url=source_url,
+    )
+    complex_content_review = assess_complex_content_review(page_texts, non_text)
+    evidence_spans = build_evidence_spans(
+        page_texts,
+        source_url=source_url,
+        keywords=keywords,
+    )
     content = compose_extracted_content(
         metadata=metadata,
         paper_type=paper_type,
@@ -139,6 +157,11 @@ def extract_pdf_content(
         "backend": backend,
         "page_count": len(page_texts),
         "pages_scanned": len(page_texts),
+        "source_url": source_url,
+        "page_layouts": [
+            {"page": int(page.get("page") or 0), "layout": str(page.get("layout") or "unknown")}
+            for page in page_texts
+        ],
         "page_budget": page_budget,
         "selected_pages": selected_pages,
         "paper_type": paper_type,
@@ -171,7 +194,11 @@ def extract_pdf_content(
             "table_count": len(non_text["tables"]),
             "caption_count": len(non_text["captions"]),
             "table_backend": non_text["table_backend"],
+            "table_evidence": non_text.get("table_evidence", []),
+            "caption_evidence": non_text.get("caption_evidence", []),
+            "complex_content_review": complex_content_review,
         },
+        "evidence_spans": evidence_spans,
         "validation": validation,
         "page_errors": page_errors[:6],
     }
@@ -204,7 +231,23 @@ def _extract_page_texts(data: bytes) -> tuple[list[dict[str, Any]], str, list[st
         except Exception as exc:
             text = ""
             errors.append(f"page_{number}: {exc}")
-        pages.append({"page": number, "text": normalize_pdf_text(text)})
+        normalized = normalize_pdf_text(text)
+        pages.append(
+            {
+                "page": number,
+                "text": normalized,
+                "layout": "fallback_single_stream",
+                "blocks": [
+                    {
+                        "block_index": 0,
+                        "text": normalized,
+                        "bbox": [],
+                        "offset_start": 0,
+                        "offset_end": len(normalized),
+                    }
+                ] if normalized else [],
+            }
+        )
     return pages, "pypdf", errors
 
 
@@ -217,13 +260,94 @@ def _extract_pages_with_pymupdf(data: bytes) -> tuple[list[dict[str, Any]], str]
         document = fitz.open(stream=data, filetype="pdf")
         pages: list[dict[str, Any]] = []
         for number, page in enumerate(document, start=1):
-            blocks = page.get_text("blocks", sort=True)
-            text = "\n".join(str(block[4]) for block in blocks if len(block) > 4 and str(block[4]).strip())
-            pages.append({"page": number, "text": normalize_pdf_text(text)})
+            ordered_blocks, layout = order_pymupdf_blocks(
+                page.get_text("blocks"),
+                float(page.rect.width),
+                float(page.rect.height),
+            )
+            rendered_blocks: list[dict[str, Any]] = []
+            parts: list[str] = []
+            offset = 0
+            for block_index, block in enumerate(ordered_blocks):
+                text = normalize_pdf_text(str(block.get("text") or ""))
+                if not text:
+                    continue
+                if parts:
+                    offset += 1
+                start = offset
+                parts.append(text)
+                offset += len(text)
+                rendered_blocks.append(
+                    {
+                        "block_index": block_index,
+                        "text": text,
+                        "bbox": [round(float(value), 2) for value in block.get("bbox", ())[:4]],
+                        "offset_start": start,
+                        "offset_end": offset,
+                    }
+                )
+            text = "\n".join(parts)
+            pages.append(
+                {
+                    "page": number,
+                    "text": text,
+                    "layout": layout,
+                    "blocks": rendered_blocks,
+                }
+            )
         document.close()
         return pages, ""
     except Exception as exc:
         return [], f"pymupdf: {exc}"
+
+
+def order_pymupdf_blocks(
+    raw_blocks: list[Any],
+    page_width: float,
+    page_height: float,
+) -> tuple[list[dict[str, Any]], str]:
+    blocks: list[dict[str, Any]] = []
+    for raw in raw_blocks or []:
+        if len(raw) < 5:
+            continue
+        text = str(raw[4] or "").strip()
+        if not text:
+            continue
+        blocks.append(
+            {
+                "text": text,
+                "bbox": tuple(float(value) for value in raw[:4]),
+            }
+        )
+    if len(blocks) < 4 or page_width <= 0:
+        return sorted(blocks, key=lambda item: (item["bbox"][1], item["bbox"][0])), "single_column"
+
+    width_threshold = page_width * 0.72
+    full_width = [item for item in blocks if item["bbox"][2] - item["bbox"][0] >= width_threshold]
+    body = [item for item in blocks if item not in full_width]
+    midpoint = page_width * 0.5
+    left = [item for item in body if item["bbox"][0] < midpoint and item["bbox"][2] <= page_width * 0.62]
+    right = [item for item in body if item["bbox"][2] > midpoint and item["bbox"][0] >= page_width * 0.38]
+    assigned = {id(item) for item in left + right}
+    unassigned = [item for item in body if id(item) not in assigned]
+    has_two_columns = len(left) >= 2 and len(right) >= 2
+    if not has_two_columns:
+        return sorted(blocks, key=lambda item: (item["bbox"][1], item["bbox"][0])), "single_column"
+
+    body_top = min(item["bbox"][1] for item in left + right)
+    body_bottom = max(item["bbox"][3] for item in left + right)
+    headers = [item for item in full_width if item["bbox"][1] <= body_top]
+    footers = [item for item in full_width if item["bbox"][1] >= body_bottom]
+    in_flow = [item for item in full_width if item not in headers and item not in footers]
+    ordered = (
+        sorted(headers, key=lambda item: (item["bbox"][1], item["bbox"][0]))
+        + sorted(in_flow, key=lambda item: (item["bbox"][1], item["bbox"][0]))
+        + sorted(left, key=lambda item: item["bbox"][1])
+        + sorted(right, key=lambda item: item["bbox"][1])
+        + sorted(unassigned, key=lambda item: (item["bbox"][1], item["bbox"][0]))
+        + sorted(footers, key=lambda item: (item["bbox"][1], item["bbox"][0]))
+    )
+    return ordered, "two_column"
 
 
 def normalize_pdf_text(value: str) -> str:
@@ -405,8 +529,14 @@ def extract_relevant_text(text: str, keywords: list[str], limit: int) -> str:
     return truncate_text(text, limit)
 
 
-def extract_non_text_content(data: bytes, keywords: list[str] | None = None) -> dict[str, Any]:
+def extract_non_text_content(
+    data: bytes,
+    keywords: list[str] | None = None,
+    page_texts: list[dict[str, Any]] | None = None,
+    source_url: str = "",
+) -> dict[str, Any]:
     tables: list[str] = []
+    table_evidence: list[dict[str, Any]] = []
     table_backend = "unavailable"
     try:
         import pdfplumber
@@ -418,6 +548,14 @@ def extract_non_text_content(data: bytes, keywords: list[str] | None = None) -> 
                     rendered = table_to_text_description(table, page_number)
                     if rendered and (contains_numeric(rendered) or keyword_hits(rendered, keywords or []) > 0):
                         tables.append(rendered)
+                        table_evidence.append(
+                            {
+                                "source_type": "table",
+                                "page": page_number,
+                                "source_url": source_url,
+                                "text": rendered,
+                            }
+                        )
                     if len(tables) >= 5:
                         break
                 if len(tables) >= 5:
@@ -426,18 +564,36 @@ def extract_non_text_content(data: bytes, keywords: list[str] | None = None) -> 
         table_backend = "pdfplumber_not_installed"
     except Exception as exc:
         table_backend = f"pdfplumber_failed: {str(exc)[:160]}"
-    page_texts, _, _ = _extract_page_texts(data)
+    extracted_pages = page_texts
+    if extracted_pages is None:
+        extracted_pages, _, _ = _extract_page_texts(data)
     captions: list[str] = []
-    for page in page_texts:
+    caption_evidence: list[dict[str, Any]] = []
+    for page in extracted_pages:
         for line in str(page.get("text") or "").splitlines():
             clean = line.strip()
             if re.match(r"^(?:fig(?:ure)?|table)\s*\d+\b", clean, flags=re.IGNORECASE):
-                captions.append(f"Page {page.get('page')}: {clean}")
+                rendered = f"Page {page.get('page')}: {clean}"
+                captions.append(rendered)
+                caption_evidence.append(
+                    {
+                        "source_type": "caption",
+                        "page": int(page.get("page") or 0),
+                        "source_url": source_url,
+                        "text": clean,
+                    }
+                )
             if len(captions) >= 10:
                 break
         if len(captions) >= 10:
             break
-    return {"tables": tables[:5], "captions": captions[:10], "table_backend": table_backend}
+    return {
+        "tables": tables[:5],
+        "captions": captions[:10],
+        "table_backend": table_backend,
+        "table_evidence": table_evidence[:5],
+        "caption_evidence": caption_evidence[:10],
+    }
 
 
 def table_to_text_description(table: list[list[Any]], page_number: int) -> str:
@@ -449,6 +605,142 @@ def table_to_text_description(table: list[list[Any]], page_number: int) -> str:
     for row in rows[:16]:
         lines.append(" | ".join(cell[:240] for cell in row))
     return "\n".join(lines)
+
+
+def build_evidence_spans(
+    page_texts: list[dict[str, Any]],
+    source_url: str = "",
+    keywords: list[str] | None = None,
+    limit: int = 140,
+) -> list[dict[str, Any]]:
+    spans: list[dict[str, Any]] = []
+    selected_keywords = keywords or []
+    for page in page_texts:
+        page_number = int(page.get("page") or 0)
+        layout = str(page.get("layout") or "unknown")
+        heading = "Document body"
+        section_type = "body"
+        blocks = page.get("blocks") if isinstance(page.get("blocks"), list) else []
+        if not blocks:
+            text = str(page.get("text") or "")
+            blocks = [{"block_index": 0, "text": text, "bbox": [], "offset_start": 0, "offset_end": len(text)}]
+        for block in blocks:
+            block_text = str(block.get("text") or "")
+            block_start = int(block.get("offset_start") or 0)
+            line_offset = 0
+            for line in block_text.splitlines() or [block_text]:
+                clean = line.strip()
+                line_start = block_start + line_offset + max(0, len(line) - len(line.lstrip()))
+                line_offset += len(line) + 1
+                if not clean:
+                    continue
+                detected_type = classify_section(clean)
+                if detected_type and is_heading(clean):
+                    heading = clean
+                    section_type = detected_type
+                    continue
+                sentence_cursor = 0
+                for sentence in split_sentences(clean):
+                    local_offset = clean.find(sentence, sentence_cursor)
+                    if local_offset < 0:
+                        local_offset = sentence_cursor
+                    sentence_cursor = local_offset + len(sentence)
+                    if len(sentence) < 25:
+                        continue
+                    spans.append(
+                        {
+                            "span_id": f"p{page_number}_b{int(block.get('block_index') or 0)}_s{len(spans) + 1}",
+                            "source_type": "body_text",
+                            "source_url": source_url,
+                            "page": page_number,
+                            "section": heading,
+                            "section_type": section_type,
+                            "offset_start": line_start + local_offset,
+                            "offset_end": line_start + local_offset + len(sentence),
+                            "block_index": int(block.get("block_index") or 0),
+                            "bbox": list(block.get("bbox") or []),
+                            "layout": layout,
+                            "text": sentence[:700],
+                        }
+                    )
+    if len(spans) <= limit:
+        return spans
+    scored = sorted(
+        spans,
+        key=lambda item: (
+            -(
+                SECTION_PRIORITY.get(str(item.get("section_type") or "body"), 5)
+                + min(6, keyword_hits(str(item.get("text") or ""), selected_keywords))
+            ),
+            int(item.get("page") or 0),
+            int(item.get("offset_start") or 0),
+        ),
+    )[:limit]
+    return sorted(scored, key=lambda item: (int(item.get("page") or 0), int(item.get("offset_start") or 0)))
+
+
+def locate_evidence_span(evidence_text: str, evidence_spans: list[dict[str, Any]] | None) -> dict[str, Any]:
+    candidate = normalize_evidence_text(evidence_text)
+    if not candidate or not evidence_spans:
+        return {}
+    best: tuple[float, dict[str, Any]] | None = None
+    candidate_terms = set(re.findall(r"[a-z0-9]{3,}", candidate))
+    for span in evidence_spans:
+        if not isinstance(span, dict):
+            continue
+        text = normalize_evidence_text(str(span.get("text") or ""))
+        if not text:
+            continue
+        if candidate in text or text in candidate:
+            score = min(len(candidate), len(text)) + 10_000
+        else:
+            span_terms = set(re.findall(r"[a-z0-9]{3,}", text))
+            score = len(candidate_terms & span_terms) / max(1, len(candidate_terms | span_terms))
+        if best is None or score > best[0]:
+            best = (score, span)
+    if best is None or best[0] < 0.2:
+        return {}
+    span = best[1]
+    return {
+        "span_id": str(span.get("span_id") or ""),
+        "source_type": str(span.get("source_type") or "body_text"),
+        "source_url": str(span.get("source_url") or ""),
+        "page": int(span.get("page") or 0),
+        "section": str(span.get("section") or ""),
+        "section_type": str(span.get("section_type") or ""),
+        "offset_start": int(span.get("offset_start") or 0),
+        "offset_end": int(span.get("offset_end") or 0),
+    }
+
+
+def normalize_evidence_text(value: str) -> str:
+    text = re.sub(r"\s+", " ", str(value or "").lower())
+    text = re.sub(r"[^a-z0-9\s]", " ", text)
+    return re.sub(r"\s+", " ", text).strip()
+
+
+def assess_complex_content_review(
+    page_texts: list[dict[str, Any]],
+    non_text: dict[str, Any],
+) -> dict[str, Any]:
+    reasons: list[str] = []
+    captions = non_text.get("captions") if isinstance(non_text.get("captions"), list) else []
+    if any(re.search(r"(?:fig|figure)\s*\d+\b", str(caption), flags=re.IGNORECASE) for caption in captions):
+        reasons.append("figure_caption_detected")
+    formula_like_pages: list[int] = []
+    for page in page_texts:
+        text = str(page.get("text") or "")
+        formula_count = len(re.findall(r"[=\u2264\u2265\u00b1\u2211\u2202\u222b\u03b1\u03b2\u03b3]", text))
+        if formula_count >= 4:
+            formula_like_pages.append(int(page.get("page") or 0))
+    if formula_like_pages:
+        reasons.append("formula_like_text_detected")
+    return {
+        "requires_human_or_visual_review": bool(reasons),
+        "reasons": reasons,
+        "formula_like_pages": formula_like_pages[:12],
+        "policy": "captions may be used as text evidence; visual or formula semantics are not inferred automatically",
+    }
 
 
 def contains_numeric(text: str) -> bool:

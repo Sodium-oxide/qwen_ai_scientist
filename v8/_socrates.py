@@ -7,20 +7,34 @@ remains explicitly unsupported when the literature does not resolve it.
 """
 from __future__ import annotations
 
+import copy
+import hashlib
 import json
 import re
 import time
 from typing import Any
 
 try:
+    from .config import (
+        SCIENCE_SOCRATES_PREPRINT_PROVIDER_RESULT_TARGET,
+        SCIENCE_SOCRATES_PREPRINT_SCAN_LIMIT,
+    )
     from .log import log_event
 except ImportError:
+    from config import (
+        SCIENCE_SOCRATES_PREPRINT_PROVIDER_RESULT_TARGET,
+        SCIENCE_SOCRATES_PREPRINT_SCAN_LIMIT,
+    )
     from log import log_event
 
 
 SOCRATES_MAX_ITERATIONS = 3
 SOCRATES_MAX_FIELDS_PER_ITERATION = 2
 SOCRATES_MAX_IMPORTS_PER_QUERY = 2
+SOCRATES_PREPRINT_LAYERS = {"L3_preprint"}
+SOCRATES_PREPRINT_RECOVERY_WINDOWS = (12,)
+SOCRATES_PREPRINT_RECOVERY_MAX_VARIANTS = 1
+SOCRATES_PREPRINT_MAX_BRANCHES = 1
 MECHANISM_FIELDS = (
     "identity",
     "location_or_scope",
@@ -135,6 +149,63 @@ def check_mechanism_contract_completeness(contract: dict[str, Any]) -> list[str]
     return unresolved_mechanism_fields(contract if isinstance(contract, dict) else {})
 
 
+def is_specific_mechanism_mediator(value: Any) -> bool:
+    mediator = _clean_text(value).lower()
+    if mediator in {"", "unknown", "unspecified", "unresolved", "the proposed mediator"}:
+        return False
+    generic_markers = (
+        "density hole", "no record validates", "no validation", "missing evidence",
+        "method-scenario", "coverage gap", "literature gap", "untested",
+    )
+    if any(marker in mediator for marker in generic_markers):
+        return False
+    return len(_context_terms(mediator)) >= 1
+
+
+def socrates_retrieval_ready(contract: dict[str, Any]) -> tuple[bool, str]:
+    mediator = _clean_text(contract.get("proposed_mediator") or contract.get("mediator"))
+    if not is_specific_mechanism_mediator(mediator):
+        return False, "The gap has no concrete proposed mediator; Socrates will not spend retrieval budget on a generic coverage or density-hole query."
+    context_terms = _context_terms(
+        mediator,
+        _clean_text(contract.get("input")),
+        _clean_text(contract.get("output")),
+    )
+    if len(context_terms) < 2:
+        return False, "The mechanism context lacks enough specific anchors for targeted retrieval."
+    return True, ""
+
+
+def compact_socrates_query_context(
+    domain: str,
+    method: str = "",
+    scenario: str = "",
+    mediator: str = "",
+    context: str = "",
+) -> str:
+    """Build a specific retrieval anchor instead of concatenating a full taxonomy and gap prose."""
+    parts: list[str] = []
+    if is_specific_mechanism_mediator(mediator):
+        parts.append(_clean_text(mediator))
+    for value in (method, scenario):
+        cleaned = _clean_text(value)
+        if cleaned and cleaned.lower() not in {"unknown", "unspecified", "unresolved"}:
+            parts.append(cleaned)
+    if not parts:
+        cleaned_context = _clean_text(context)
+        if cleaned_context:
+            parts.append(cleaned_context)
+    domain_anchors = [
+        _clean_text(item)
+        for item in str(domain or "").replace("/", ";").split(";")
+        if _clean_text(item)
+    ]
+    if domain_anchors:
+        parts.append(domain_anchors[0])
+    compact = _clean_text(" ".join(parts))
+    return compact[:220] or "scientific mechanism"
+
+
 def translate_unresolved_to_queries(
     unresolved_fields: list[str],
     domain: str,
@@ -144,9 +215,13 @@ def translate_unresolved_to_queries(
     context: str = "",
 ) -> dict[str, list[str]]:
     """Turn an evidence question into neutral, domain-general query variants."""
-    query_context = _clean_text(" ".join(part for part in (domain, method, scenario, mediator, context) if part))
-    if not query_context:
-        query_context = "scientific mechanism"
+    query_context = compact_socrates_query_context(
+        domain,
+        method=method,
+        scenario=scenario,
+        mediator=mediator,
+        context=context,
+    )
     queries: dict[str, list[str]] = {}
     for raw_field in unresolved_fields:
         field = canonical_mechanism_field(raw_field)
@@ -264,6 +339,81 @@ def socrates_paper_alignment(project: dict[str, Any], paper: dict[str, Any], anc
     return {"passes": passes, "core_hits": core_hits[:10], "anchor_hits": anchor_hits[:10]}
 
 
+def socrates_evidence_corpus_signature(project: dict[str, Any]) -> str:
+    """Identify the active evidence state without treating report timestamps as new literature."""
+    entries = []
+    for paper in project.get("papergraph", []):
+        if not isinstance(paper, dict) or paper.get("active", True) is False:
+            continue
+        entries.append(
+            "|".join(
+                (
+                    str(paper.get("paper_id") or ""),
+                    str(paper.get("doi") or ""),
+                    str(paper.get("title") or ""),
+                    str(paper.get("full_text_excerpt") or "")[:160],
+                )
+            )
+        )
+    return hashlib.sha1("\n".join(sorted(entries)).encode("utf-8")).hexdigest()[:16]
+
+
+def prior_socrates_query_keys(
+    project: dict[str, Any],
+    gap_id: str,
+    corpus_signature: str,
+) -> set[str]:
+    history_root = project.get("socrates_retrieval_history", {})
+    history = history_root.get(gap_id, []) if isinstance(history_root, dict) else []
+    return {
+        normalize_socrates_retrieval_query(item.get("query"))
+        for item in history
+        if isinstance(item, dict)
+        and str(item.get("corpus_signature") or "") == corpus_signature
+        and str(item.get("query") or "").strip()
+    }
+
+
+def append_socrates_retrieval_history(
+    project: dict[str, Any],
+    gap_id: str,
+    corpus_signature: str,
+    reports: list[dict[str, Any]],
+) -> None:
+    history_root = project.setdefault("socrates_retrieval_history", {})
+    if not isinstance(history_root, dict):
+        history_root = {}
+        project["socrates_retrieval_history"] = history_root
+    history = history_root.setdefault(gap_id, [])
+    if not isinstance(history, list):
+        history = []
+        history_root[gap_id] = history
+    known = {
+        (str(item.get("corpus_signature") or ""), normalize_socrates_retrieval_query(item.get("query")))
+        for item in history
+        if isinstance(item, dict)
+    }
+    for report in reports:
+        query = normalize_socrates_retrieval_query(report.get("query"))
+        key = (corpus_signature, query)
+        if not query or key in known:
+            continue
+        history.append(
+            {
+                "field": report.get("field"),
+                "query": query,
+                "corpus_signature": corpus_signature,
+                "search_id": report.get("search_id", ""),
+                "result_count": int(report.get("result_count") or 0),
+                "imports": int(report.get("imports") or 0),
+                "duplicate_candidates": int(report.get("duplicate_candidates") or 0),
+                "completed_at": time.time(),
+            }
+        )
+        known.add(key)
+    history_root[gap_id] = history[-80:]
+
+
 def run_socrates_mechanism_enrichment(
     project_id: str,
     gap: dict[str, Any] | str = "",
@@ -291,8 +441,16 @@ def run_socrates_mechanism_enrichment(
     project = load_project(project_id)
     selected_gap = _resolve_gap(project, gap=gap, gap_id=gap_id)
     actual_domain = _clean_text(domain or project.get("domain"))
-    contract = dict(mechanism_contract) if isinstance(mechanism_contract, dict) else mechanism_draft_from_gap(selected_gap, actual_domain)
-    contract.setdefault("gap_id", str(selected_gap.get("gap_id") or ""))
+    resolved_gap_id = str(selected_gap.get("gap_id") or "unassigned")
+    prior_contracts = project.get("socrates_mechanism_contracts", {})
+    prior_contract = prior_contracts.get(resolved_gap_id) if isinstance(prior_contracts, dict) else None
+    if isinstance(mechanism_contract, dict):
+        contract = copy.deepcopy(mechanism_contract)
+    elif isinstance(prior_contract, dict):
+        contract = copy.deepcopy(prior_contract)
+    else:
+        contract = mechanism_draft_from_gap(selected_gap, actual_domain)
+    contract.setdefault("gap_id", resolved_gap_id)
     contract.setdefault("evidence", {})
     contract.setdefault("context", _clean_text(selected_gap.get("description")))
     for field in MECHANISM_FIELDS:
@@ -309,10 +467,55 @@ def run_socrates_mechanism_enrichment(
     max_results_per_query = max(5, min(int(max_results_per_query or 12), 30))
     imports_per_query = max(1, min(int(imports_per_query or SOCRATES_MAX_IMPORTS_PER_QUERY), 3))
 
+    retrieval_ready, retrieval_skip_reason = socrates_retrieval_ready(contract)
+    if not retrieval_ready:
+        remaining = unresolved_mechanism_fields(contract)
+        causal_inference_plan = build_causal_inference_plan(selected_gap, contract)
+        report = {
+            "project_id": project_id,
+            "gap_id": resolved_gap_id,
+            "mechanism_contract": contract,
+            "verdict": "INSUFFICIENT_EVIDENCE",
+            "iterations": [],
+            "searches": 0,
+            "imports": 0,
+            "remaining_unresolved": remaining,
+            "retrieval_skipped": True,
+            "retrieval_skip_reason": retrieval_skip_reason,
+            "reading_focus": _reading_focus(remaining),
+            "causal_inference_plan": causal_inference_plan,
+            "next_step": "Return this gap to TanXi: define a concrete, source-grounded mediator before Socrates performs a targeted evidence search.",
+        }
+        contract["socrates_enrichment"] = {
+            "verdict": "INSUFFICIENT_EVIDENCE",
+            "iterations_run": 0,
+            "searches": 0,
+            "imports": 0,
+            "remaining_unresolved": remaining,
+            "retrieval_skipped": True,
+            "reason": retrieval_skip_reason,
+        }
+        contract["causal_inference_plan"] = causal_inference_plan
+        project.setdefault("socrates_mechanism_contracts", {})[resolved_gap_id] = contract
+        project.setdefault("socrates_reports", []).append(report)
+        project["updatedAt"] = time.time()
+        save_project(project)
+        log_event(
+            "SCIENCE",
+            "socrates_retrieval_skipped",
+            project_id=project_id,
+            gap_id=resolved_gap_id,
+            reason=retrieval_skip_reason,
+        )
+        return json.dumps(report, ensure_ascii=False, indent=2)
+
     iterations: list[dict[str, Any]] = []
     searches = 0
     imports = 0
     attempted_queries: set[tuple[str, str]] = set()
+    corpus_signature = socrates_evidence_corpus_signature(project)
+    attempted_retrieval_queries = prior_socrates_query_keys(project, resolved_gap_id, corpus_signature)
+    skipped_previously_attempted_queries = len(attempted_retrieval_queries)
     for iteration in range(1, max_iterations + 1):
         project = load_project(project_id)
         validate_mechanism_contract_evidence(project, contract)
@@ -331,15 +534,28 @@ def run_socrates_mechanism_enrichment(
             unresolved, actual_domain, method, scenario, mediator, str(contract.get("context") or ""),
         )
         selected_queries = select_untried_socrates_queries(
-            unresolved, query_plan, attempted_queries, max_fields_per_iteration,
+            unresolved,
+            query_plan,
+            attempted_queries,
+            max_fields_per_iteration,
+            attempted_retrieval_queries=attempted_retrieval_queries,
         )
         if not selected_queries:
+            log_event(
+                "SCIENCE",
+                "socrates_no_untried_queries",
+                project_id=project_id,
+                gap_id=resolved_gap_id,
+                corpus_signature=corpus_signature,
+                prior_query_count=len(attempted_retrieval_queries),
+            )
             break
         search_reports: list[dict[str, Any]] = []
         updated_from_new = 0
 
         for field, query in selected_queries:
             attempted_queries.add((field, query))
+            attempted_retrieval_queries.add(normalize_socrates_retrieval_query(query))
             question = socrates_field_question(field, contract)
             report = socrates_call_zhizhi_targeted_search(
                 project_id=project_id,
@@ -351,6 +567,8 @@ def run_socrates_mechanism_enrichment(
                 max_results=max_results_per_query,
                 imports_per_query=imports_per_query,
                 use_llm=use_llm,
+                preprint_scan_limit=SCIENCE_SOCRATES_PREPRINT_SCAN_LIMIT,
+                preprint_provider_result_target=SCIENCE_SOCRATES_PREPRINT_PROVIDER_RESULT_TARGET,
             )
             searches += int(report.get("searches", 0))
             imports += int(report.get("imports", 0))
@@ -381,7 +599,11 @@ def run_socrates_mechanism_enrichment(
             resolved=updated_from_existing + updated_from_new, remaining=len(remaining),
         )
         queries_remain = any(
-            any((field, query) not in attempted_queries for query in query_plan.get(field, []))
+            any(
+                (field, query) not in attempted_queries
+                and normalize_socrates_retrieval_query(query) not in attempted_retrieval_queries
+                for query in query_plan.get(field, [])
+            )
             for field in remaining
         )
         if updated_from_existing + updated_from_new == 0 and not queries_remain:
@@ -400,6 +622,8 @@ def run_socrates_mechanism_enrichment(
         "iterations": iterations,
         "searches": searches,
         "imports": imports,
+        "corpus_signature": corpus_signature,
+        "skipped_previously_attempted_queries": skipped_previously_attempted_queries,
         "remaining_unresolved": remaining,
         "reading_focus": _reading_focus(remaining),
         "causal_inference_plan": causal_inference_plan,
@@ -418,7 +642,13 @@ def run_socrates_mechanism_enrichment(
     }
     contract["causal_inference_plan"] = causal_inference_plan
     project = load_project(project_id)
-    project.setdefault("socrates_mechanism_contracts", {})[str(selected_gap.get("gap_id") or "unassigned")] = contract
+    append_socrates_retrieval_history(project, resolved_gap_id, corpus_signature, [
+        item
+        for iteration in iterations
+        for item in iteration.get("search_reports", [])
+        if isinstance(item, dict)
+    ])
+    project.setdefault("socrates_mechanism_contracts", {})[resolved_gap_id] = contract
     project.setdefault("socrates_reports", []).append(report)
     project["updatedAt"] = time.time()
     save_project(project)
@@ -464,22 +694,51 @@ def build_causal_inference_plan(gap: dict[str, Any], contract: dict[str, Any]) -
     }
 
 
+def normalize_socrates_retrieval_query(query: str) -> str:
+    return " ".join(str(query or "").lower().split())
+
+
 def select_untried_socrates_queries(
     unresolved_fields: list[str],
     query_plan: dict[str, list[str]],
     attempted_queries: set[tuple[str, str]],
     limit: int,
+    attempted_retrieval_queries: set[str] | None = None,
 ) -> list[tuple[str, str]]:
     """Choose untried field-query pairs in deterministic, bounded order."""
     selected: list[tuple[str, str]] = []
+    seen_retrieval_queries = set(attempted_retrieval_queries or set())
     for field in unresolved_fields:
         canonical = canonical_mechanism_field(field)
         query = next(
-            (item for item in query_plan.get(canonical, []) if (canonical, item) not in attempted_queries),
+            (
+                item
+                for item in query_plan.get(canonical, [])
+                if (canonical, item) not in attempted_queries
+                and normalize_socrates_retrieval_query(item) not in seen_retrieval_queries
+            ),
             "",
         )
+        duplicate_query = next(
+            (
+                item
+                for item in query_plan.get(canonical, [])
+                if (canonical, item) not in attempted_queries
+                and normalize_socrates_retrieval_query(item) in seen_retrieval_queries
+            ),
+            "",
+        )
+        if duplicate_query:
+            log_event(
+                "SCIENCE",
+                "socrates_duplicate_query_skipped",
+                field=canonical,
+                query=duplicate_query[:180],
+                reason="same_normalized_query_already_retrieved_for_another_mechanism_field",
+            )
         if query:
             selected.append((canonical, query))
+            seen_retrieval_queries.add(normalize_socrates_retrieval_query(query))
         if len(selected) >= limit:
             break
     return selected
@@ -496,6 +755,8 @@ def socrates_call_zhizhi_targeted_search(
     max_results: int,
     imports_per_query: int,
     use_llm: bool,
+    preprint_scan_limit: int | None = None,
+    preprint_provider_result_target: int = 0,
 ) -> dict[str, Any]:
     """Run one small, persisted ZhiZhi retrieval pass for one evidence question."""
     try:
@@ -504,7 +765,16 @@ def socrates_call_zhizhi_targeted_search(
     except ImportError:
         from _literature_import import domain_review_paper, extract_paper_keynote, import_literature_search_result
         from _literature_search import search_literature_stratified
-    output = {"field": field, "question": question, "query": query, "searches": 0, "imports": 0, "paper_ids": [], "errors": []}
+    output = {
+        "field": field,
+        "question": question,
+        "query": query,
+        "searches": 0,
+        "imports": 0,
+        "paper_ids": [],
+        "duplicate_candidates": 0,
+        "errors": [],
+    }
     try:
         search = json.loads(
             search_literature_stratified(
@@ -514,15 +784,32 @@ def socrates_call_zhizhi_targeted_search(
                 domain=domain,
                 focus_branches=[f"Socrates evidence for {field}"],
                 use_llm=use_llm,
+                preprint_layers=SOCRATES_PREPRINT_LAYERS,
+                preprint_scan_limit=preprint_scan_limit,
+                preprint_provider_result_target=preprint_provider_result_target,
+                preprint_recovery_windows=SOCRATES_PREPRINT_RECOVERY_WINDOWS,
+                preprint_recovery_max_variants=SOCRATES_PREPRINT_RECOVERY_MAX_VARIANTS,
+                preprint_max_branches=SOCRATES_PREPRINT_MAX_BRANCHES,
             )
         )
         output["searches"] = 1
         output["search_id"] = str(search.get("search_id") or "")
         output["result_count"] = int(search.get("total_results") or 0)
-        for result_index in range(min(output["result_count"], imports_per_query)):
+        for result_index in range(output["result_count"]):
+            if output["imports"] >= imports_per_query:
+                break
             try:
                 imported = json.loads(import_literature_search_result(project_id, output["search_id"], result_index, use_llm=use_llm))
                 if str(imported.get("status") or "") == "duplicate":
+                    output["duplicate_candidates"] += 1
+                    log_event(
+                        "SCIENCE",
+                        "socrates_duplicate_candidate_skipped",
+                        project_id=project_id,
+                        field=field,
+                        search_id=output["search_id"],
+                        result_index=result_index,
+                    )
                     continue
                 record = imported.get("record") or {}
                 paper_id = str(record.get("paper_id") or "") if isinstance(record, dict) else ""

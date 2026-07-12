@@ -1,7 +1,10 @@
 from __future__ import annotations
 
 import unittest
+from unittest.mock import patch
 
+import _gap_detection as gap_detection
+import _literature_import as literature_import
 import _literature_search as literature_search
 import _pdf_extraction as pdf_extraction
 from _project import default_literature_providers
@@ -54,6 +57,152 @@ class PdfExtractionTests(unittest.TestCase):
         result = pdf_extraction.validate_extraction("CYP metabolism was measured.", "SH1")
         self.assertTrue(result["needs_supplement"])
         self.assertLess(result["coverage_score"], 0.5)
+
+    def test_method_section_vocabulary_covers_experimental_and_statistical_headings(self) -> None:
+        self.assertEqual(pdf_extraction.classify_section("Experimental Procedures"), "methodology")
+        self.assertEqual(pdf_extraction.classify_section("Statistical Analysis"), "methodology")
+
+    def test_evidence_spans_keep_page_section_offset_and_source(self) -> None:
+        page_texts = [
+            {
+                "page": 5,
+                "layout": "two_column",
+                "text": "Results\nIL-2 increases STAT5 phosphorylation in regulatory T cells.",
+                "blocks": [
+                    {
+                        "block_index": 0,
+                        "text": "Results\nIL-2 increases STAT5 phosphorylation in regulatory T cells.",
+                        "bbox": [0, 0, 100, 50],
+                        "offset_start": 0,
+                        "offset_end": 66,
+                    }
+                ],
+            }
+        ]
+        spans = pdf_extraction.build_evidence_spans(
+            page_texts,
+            source_url="https://example.org/paper.pdf",
+        )
+        self.assertEqual(len(spans), 1)
+        span = spans[0]
+        self.assertEqual(span["page"], 5)
+        self.assertEqual(span["section"], "Results")
+        self.assertEqual(span["source_url"], "https://example.org/paper.pdf")
+        self.assertGreaterEqual(span["offset_start"], 0)
+        self.assertEqual(pdf_extraction.locate_evidence_span(span["text"], spans)["span_id"], span["span_id"])
+
+    def test_two_column_order_keeps_each_column_contiguous(self) -> None:
+        blocks, layout = pdf_extraction.order_pymupdf_blocks(
+            [
+                (0, 10, 40, 20, "Left one", 0, 0),
+                (60, 10, 100, 20, "Right one", 0, 0),
+                (0, 30, 40, 40, "Left two", 0, 0),
+                (60, 30, 100, 40, "Right two", 0, 0),
+            ],
+            100,
+            100,
+        )
+        self.assertEqual(layout, "two_column")
+        self.assertEqual([block["text"] for block in blocks], ["Left one", "Left two", "Right one", "Right two"])
+
+    def test_figures_and_formulas_are_marked_for_non_automatic_review(self) -> None:
+        review = pdf_extraction.assess_complex_content_review(
+            [{"page": 7, "text": "x = \u03b1 + \u03b2 + \u03b3 \u2264 1"}],
+            {"captions": ["Page 7: Figure 2. Proposed causal pathway."]},
+        )
+        self.assertTrue(review["requires_human_or_visual_review"])
+        self.assertIn("figure_caption_detected", review["reasons"])
+        self.assertIn("formula_like_text_detected", review["reasons"])
+
+    def test_rule_extraction_distinguishes_causation_association_and_methodology(self) -> None:
+        spans = [
+            {
+                "span_id": "p5_b0_s1",
+                "source_type": "body_text",
+                "source_url": "https://example.org/paper.pdf",
+                "page": 5,
+                "section": "Results",
+                "section_type": "results",
+                "offset_start": 0,
+                "offset_end": 90,
+                "text": "IL-2 increases STAT5 phosphorylation in regulatory T cells.",
+            }
+        ]
+        chains = literature_import.extract_causal_chains_heuristic(
+            "IL-2 increases STAT5 phosphorylation in regulatory T cells.",
+            evidence_spans=spans,
+            source_url="https://example.org/paper.pdf",
+        )
+        self.assertEqual(chains[0]["relation"], "promotes")
+        self.assertEqual(chains[0]["polarity"], "positive")
+        self.assertEqual(chains[0]["modality"], "asserted")
+        self.assertTrue(chains[0]["direct_relation"])
+        self.assertEqual(chains[0]["outcome_location"]["page"], 5)
+        associations = literature_import.extract_association_signals(
+            "High exposure was associated with toxicity.",
+        )
+        self.assertFalse(associations[0]["causal_claim"])
+        speculative = literature_import.extract_causal_chains_heuristic(
+            "IL-2 may promote Treg stability.",
+        )
+        self.assertEqual(speculative[0]["modality"], "speculative")
+        self.assertFalse(speculative[0]["causal_claim"])
+        speculative_graph = gap_detection.build_causal_evidence_graph(
+            [{"paper_id": "paper-speculative", "citation": "Speculative (2026)", "causal_chains": speculative}]
+        )
+        self.assertFalse(speculative_graph["edges"])
+        self.assertEqual(len(speculative_graph["non_causal_claims"]), 1)
+        methodology = literature_import.extract_methodology_evidence(
+            "[SECTION: Methods | pages 3]\nWe conducted a randomized single-cell RNA-seq study in n=120 patients.\n"
+            "[SECTION: Results | pages 4]\nThe primary endpoint was survival with a hazard ratio.",
+        )
+        self.assertIn("randomized trial", methodology["method"])
+        self.assertIn("single-cell rna-seq", methodology["method"])
+        self.assertTrue(methodology["population"])
+        self.assertIn("primary endpoint", methodology["benchmark"])
+
+    def test_shared_node_paths_and_author_gap_keep_evidence_boundaries(self) -> None:
+        chains = literature_import.extract_causal_chains_heuristic(
+            "IL-2 increases STAT5 phosphorylation. STAT5 phosphorylation maintains Foxp3 expression.",
+        )
+        graph = gap_detection.build_causal_evidence_graph(
+            [{"paper_id": "paper-1", "citation": "Example (2026)", "causal_chains": chains}]
+        )
+        self.assertEqual(len(graph["supported_paths"]), 1)
+        self.assertEqual(graph["supported_paths"][0]["intermediate"], "STAT5 phosphorylation")
+        self.assertEqual(gap_detection.causal_chain_missing_requirement(graph["chains"][0]), ("", ""))
+        signals = gap_detection.extract_gap_signals_from_text(
+            "[SECTION: Limitations | pages 8]\nThis study was limited by the lack of an external validation cohort.",
+            citation="Example (2026)",
+            evidence_spans=[
+                {
+                    "span_id": "p8_b0_s1",
+                    "source_url": "https://example.org/paper.pdf",
+                    "page": 8,
+                    "section": "Limitations",
+                    "section_type": "discussion",
+                    "offset_start": 0,
+                    "offset_end": 90,
+                    "text": "This study was limited by the lack of an external validation cohort.",
+                }
+            ],
+            source_url="https://example.org/paper.pdf",
+        )
+        self.assertEqual(signals[0]["signal_type"], "limitation")
+        self.assertEqual(signals[0]["source_location"]["page"], 8)
+
+    def test_offline_subhypothesis_is_saved_as_retrieval_provenance(self) -> None:
+        with patch.object(literature_import, "import_papergraph_record", return_value="imported") as mocked_import:
+            result = literature_import.import_literature_text(
+                project_id="offline-project",
+                title="Offline PDF",
+                text="Methods: randomized trial. Results: IL-2 increases STAT5 activation.",
+                source_type="pdf",
+                use_llm=False,
+                sub_hypothesis="SH2",
+            )
+        self.assertEqual(result, "imported")
+        self.assertEqual(mocked_import.call_args.kwargs["import_context"], {"query_branch": "SH2"})
 
 
 class RetrievalPlanningTests(unittest.TestCase):

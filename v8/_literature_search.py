@@ -5,6 +5,7 @@ from dataclasses import asdict, dataclass, field
 from datetime import date, timedelta
 from io import BytesIO
 from pathlib import Path
+from threading import Lock
 from typing import Any
 from urllib.error import HTTPError, URLError
 from urllib.parse import quote, urlencode
@@ -27,6 +28,7 @@ try:
         SCIENCE_SEMANTIC_SCHOLAR_CIRCUIT_SECONDS,
         SCIENCE_SEMANTIC_SCHOLAR_FAIL_FAST_ON_429,
         SCIENCE_SEMANTIC_SCHOLAR_RETRY_LIMIT,
+        SCIENCE_PREPRINT_ZERO_RESULT_TTL_SECONDS,
         SCIENCE_STRATIFIED_MAX_BRANCHES_PER_LAYER,
         SEMANTIC_SCHOLAR_API_KEY,
     )
@@ -43,6 +45,7 @@ except ImportError:
         SCIENCE_SEMANTIC_SCHOLAR_CIRCUIT_SECONDS,
         SCIENCE_SEMANTIC_SCHOLAR_FAIL_FAST_ON_429,
         SCIENCE_SEMANTIC_SCHOLAR_RETRY_LIMIT,
+        SCIENCE_PREPRINT_ZERO_RESULT_TTL_SECONDS,
         SCIENCE_STRATIFIED_MAX_BRANCHES_PER_LAYER,
         SEMANTIC_SCHOLAR_API_KEY,
     )
@@ -71,6 +74,8 @@ ARXIV_TIMEOUT_COUNT = 0
 PREPRINT_API_PAGE_SIZE = 30
 PREPRINT_API_MAX_SCAN_RECORDS = 600
 MAX_CONTROLLED_L4_BACKFILL = 3
+PREPRINT_ZERO_RESULT_CACHE: dict[tuple[str, str, str, str, int], tuple[float, dict[str, Any]]] = {}
+PREPRINT_ZERO_RESULT_CACHE_LOCK = Lock()
 
 _CJK_QUERY_PATTERN = re.compile(r"[\u3400-\u9fff\uf900-\ufaff]")
 _ENGLISH_QUERY_CACHE: dict[tuple[str, str], dict[str, str]] = {}
@@ -488,6 +493,12 @@ def search_literature_stratified(
     use_llm: bool = False,
     explicit_query_plan: list[dict[str, Any]] | None = None,
     layer_quotas: dict[str, int] | None = None,
+    preprint_layers: list[str] | set[str] | tuple[str, ...] | None = None,
+    preprint_scan_limit: int | None = None,
+    preprint_provider_result_target: int = 0,
+    preprint_recovery_windows: tuple[int, ...] | None = None,
+    preprint_recovery_max_variants: int | None = None,
+    preprint_max_branches: int | None = None,
 ) -> str:
     try:
         from ._literature_import import import_literature_search_result
@@ -525,6 +536,11 @@ def search_literature_stratified(
         query_plan = [{"branch": "primary", "query": query}]
     ranking_query = expanded_ranking_query(query, domain, query_plan)
     quotas = normalize_stratified_layer_quotas(layer_quotas, max_results=max_results)
+    allowed_preprint_layers = {
+        str(layer).strip()
+        for layer in (preprint_layers if preprint_layers is not None else {"L0_review", "L3_preprint", "L4_regular"})
+        if str(layer).strip()
+    }
     provider_blocks: list[dict[str, Any]] = []
     selected_results: list[dict[str, Any]] = []
     seen: set[str] = set()
@@ -535,19 +551,37 @@ def search_literature_stratified(
         if target <= 0:
             strata_reports.append({**layer, "target": target, "selected": 0, "carried_to_next": 0})
             continue
-        blocks = fetch_stratified_layer_blocks(query, selected, layer, query_plan=query_plan, domain=domain)
+        blocks = fetch_stratified_layer_blocks(
+            query,
+            selected,
+            layer,
+            query_plan=query_plan,
+            domain=domain,
+            preprint_layers=allowed_preprint_layers,
+            preprint_scan_limit=preprint_scan_limit,
+            preprint_provider_result_target=preprint_provider_result_target,
+            preprint_max_branches=preprint_max_branches,
+        )
         provider_blocks.extend(blocks)
         raw_candidates = rank_literature_results(ranking_query, dedupe_literature_results(flatten_literature_results(blocks)))
         candidates = [item for item in raw_candidates if stratified_candidate_matches(layer["layer"], item)]
         recovery_used = ""
         preprint_recovery: dict[str, Any] = {}
-        if not candidates and layer["layer"] == "L3_preprint":
+        if not candidates and layer["layer"] == "L3_preprint" and "L3_preprint" in allowed_preprint_layers:
+            recovery_options: dict[str, Any] = {}
+            if preprint_scan_limit is not None:
+                recovery_options["scan_limit"] = preprint_scan_limit
+            if preprint_recovery_windows is not None:
+                recovery_options["windows_months"] = preprint_recovery_windows
+            if preprint_recovery_max_variants is not None:
+                recovery_options["max_variants"] = preprint_recovery_max_variants
             recovery_blocks, preprint_recovery = recover_preprint_layer_candidates(
                 query=query,
                 query_plan=query_plan,
                 domain=domain,
                 max_results=max(4, target),
                 providers=selected,
+                **recovery_options,
             )
             provider_blocks.extend(recovery_blocks)
             retry_candidates = rank_literature_results(
@@ -760,6 +794,9 @@ def search_literature_stratified(
         "focus_branches": focus_branches or [],
         "providers": selected,
         "requested_providers": requested_providers,
+        "preprint_layers": sorted(allowed_preprint_layers),
+        "preprint_scan_limit": preprint_scan_limit,
+        "preprint_provider_result_target": preprint_provider_result_target,
         "createdAt": time.time(),
         "strategy": "stratified_cascade",
         "query_plan": query_plan,
@@ -781,6 +818,9 @@ def search_literature_stratified(
         "focus_branches": focus_branches or [],
         "providers": selected,
         "requested_providers": requested_providers,
+        "preprint_layers": sorted(allowed_preprint_layers),
+        "preprint_scan_limit": preprint_scan_limit,
+        "preprint_provider_result_target": preprint_provider_result_target,
         "strategy": "stratified_cascade",
         "query_plan": query_plan,
         "strata": strata_reports,
@@ -816,10 +856,14 @@ def recover_preprint_layer_candidates(
     domain: str,
     max_results: int,
     providers: list[str] | None = None,
+    scan_limit: int | None = None,
+    windows_months: tuple[int, ...] | None = None,
+    max_variants: int | None = None,
 ) -> tuple[list[dict[str, Any]], dict[str, Any]]:
     base_queries = [str(item.get("query") or "") for item in query_plan if isinstance(item, dict)] or [query]
     variants: list[str] = []
-    for base_query in base_queries[:3]:
+    variant_limit = clamp_int(max_variants, 1, 3) if max_variants is not None else 3
+    for base_query in base_queries[:variant_limit]:
         compact = compact_preprint_retrieval_query(base_query, domain=domain)
         expanded = compact_preprint_retrieval_query(expand_query_with_synonyms(base_query), domain=domain)
         for candidate in (compact, expanded):
@@ -829,17 +873,19 @@ def recover_preprint_layer_candidates(
     attempts: list[dict[str, Any]] = []
     selected = {database_to_provider(provider) for provider in (providers or ["arxiv"])}
     recovery_providers = [provider for provider in ("medrxiv", "biorxiv", "arxiv") if provider in selected]
-    for months in (6, 12, 24):
-        for variant in variants[:3]:
+    recovery_windows = tuple(months for months in (windows_months or (6, 12, 24)) if int(months) > 0)
+    for months in recovery_windows:
+        for variant in variants[:variant_limit]:
             for provider in recovery_providers:
                 if provider == "arxiv":
                     block = search_arxiv(variant, max_results=max_results, sort_by="submittedDate")
                 else:
-                    block = search_preprint_api(
+                    block = _search_preprint_with_controls(
                         provider,
                         variant,
                         max_results=max_results,
                         days_back=months * 31,
+                        scan_limit=scan_limit,
                     )
                 block["retrieval_strategy"] = "preprint_recovery"
                 block["preprint_recovery_window_months"] = months
@@ -847,6 +893,17 @@ def recover_preprint_layer_candidates(
                 blocks.append(block)
                 count = len(block.get("results") or []) if isinstance(block, dict) else 0
                 attempts.append({"query": variant, "window_months": months, "provider": provider, "results": count})
+                log_event(
+                    "SCIENCE",
+                    "preprint_recovery_attempt",
+                    provider=provider,
+                    query=variant[:180],
+                    query_variant_reason="l3_preprint_recovery",
+                    window_months=months,
+                    result_count=count,
+                    scan_budget=block.get("scan_budget"),
+                    zero_result_cache_hit=bool(block.get("zero_result_cache_hit")),
+                )
                 if count:
                     return blocks, {"attempted": True, "attempts": attempts, "outcome": "recovered"}
     return blocks, {
@@ -1186,12 +1243,86 @@ def build_branch_user_interaction(coverage_diagnostic: dict[str, Any]) -> dict[s
         "continue_with": "Pass selected option labels or custom branch keywords as focus_branches to run_zhizhi_literature_analysis/search_papers_stratified.",
     }
 
+def _search_preprint_with_controls(
+    provider: str,
+    query: str,
+    max_results: int,
+    *,
+    days_back: int = 365,
+    scan_limit: int | None = None,
+) -> dict[str, Any]:
+    options: dict[str, Any] = {"max_results": max_results, "days_back": days_back}
+    if scan_limit is not None:
+        options["scan_limit"] = scan_limit
+    return search_preprint_api(provider, query, **options)
+
+
+def _skipped_preprint_provider_block(
+    provider: str,
+    query: str,
+    reason: str,
+    *,
+    query_branch: str,
+    retrieval_strategy: str,
+    source_query: str,
+) -> dict[str, Any]:
+    log_event(
+        "SCIENCE",
+        "preprint_provider_skipped",
+        provider=provider,
+        query=query[:180],
+        reason=reason,
+        query_variant_reason=retrieval_strategy,
+    )
+    return {
+        "provider": provider,
+        "query": query,
+        "status": "skipped",
+        "results": [],
+        "skipped_provider_reason": reason,
+        "query_branch": query_branch,
+        "retrieval_strategy": retrieval_strategy,
+        "source_query": source_query,
+        "query_variant_reason": retrieval_strategy,
+    }
+
+
+def _annotate_preprint_layer_block(
+    block: dict[str, Any],
+    *,
+    query_branch: str,
+    retrieval_strategy: str,
+    source_query: str,
+) -> dict[str, Any]:
+    block["query_branch"] = query_branch
+    block["retrieval_strategy"] = retrieval_strategy
+    block["source_query"] = source_query
+    block["query_variant_reason"] = retrieval_strategy
+    log_event(
+        "SCIENCE",
+        "preprint_layer_query",
+        provider=block.get("provider"),
+        query=str(block.get("query") or "")[:180],
+        query_variant_reason=retrieval_strategy,
+        query_branch=query_branch,
+        result_count=len(block.get("results") or []),
+        scan_budget=block.get("scan_budget"),
+        scanned=block.get("scanned_result_count"),
+        zero_result_cache_hit=bool(block.get("zero_result_cache_hit")),
+    )
+    return block
+
+
 def fetch_stratified_layer_blocks(
     query: str,
     providers: list[str],
     layer: dict[str, Any],
     query_plan: list[dict[str, str]] | None = None,
     domain: str = "",
+    preprint_layers: set[str] | None = None,
+    preprint_scan_limit: int | None = None,
+    preprint_provider_result_target: int = 0,
+    preprint_max_branches: int | None = None,
 ) -> list[dict[str, Any]]:
     try:
         from ._utils import clamp_int
@@ -1203,30 +1334,57 @@ def fetch_stratified_layer_blocks(
     blocks: list[dict[str, Any]] = []
     plans = query_plan or [{"branch": "primary", "query": query}]
     plans = plans[: clamp_int(SCIENCE_STRATIFIED_MAX_BRANCHES_PER_LAYER, 1, 20)]
+    if layer_name == "L3_preprint" and preprint_max_branches is not None:
+        plans = plans[: clamp_int(preprint_max_branches, 1, len(plans))]
     per_query_limit = max(4, min(fetch_limit, max(4, fetch_limit // max(1, len(plans)) + 2)))
+    allowed_preprint_layers = preprint_layers if preprint_layers is not None else {"L0_review", "L3_preprint", "L4_regular"}
     for plan in plans:
         branch = str(plan.get("branch") or "primary")
         planned_query = str(plan.get("query") or query)
         layer_query = stratified_layer_retrieval_query(layer_name, planned_query, suffix)
         if layer_name == "L3_preprint":
+            if layer_name not in allowed_preprint_layers:
+                continue
             # Preprint endpoints do not perform the same semantic expansion as
             # Semantic Scholar. Passing an entire user objective or every
             # sub-branch token into arXiv makes it silently return unrelated
             # newest papers. Use a compact, provider-safe query instead.
             preprint_query = compact_preprint_retrieval_query(planned_query, domain=domain)
+            preprint_result_count = 0
             if "arxiv" in providers:
                 block = arxiv_skip_block(preprint_query) or search_arxiv(preprint_query, max_results=per_query_limit, sort_by="submittedDate")
-                block["query_branch"] = branch
-                block["retrieval_strategy"] = "latest_preprint_query"
-                block["source_query"] = planned_query
-                blocks.append(block)
+                blocks.append(_annotate_preprint_layer_block(
+                    block,
+                    query_branch=branch,
+                    retrieval_strategy="latest_preprint_query",
+                    source_query=planned_query,
+                ))
+                preprint_result_count += len(block.get("results") or [])
             for provider in ("biorxiv", "medrxiv", "chemrxiv"):
                 if provider in providers:
-                    block = search_preprint_api(provider, preprint_query, max_results=min(per_query_limit, 20))
-                    block["query_branch"] = branch
-                    block["retrieval_strategy"] = "latest_preprint_query"
-                    block["source_query"] = planned_query
-                    blocks.append(block)
+                    if preprint_provider_result_target and preprint_result_count >= preprint_provider_result_target:
+                        blocks.append(_skipped_preprint_provider_block(
+                            provider,
+                            preprint_query,
+                            f"sufficient_preprint_candidates={preprint_result_count}; target={preprint_provider_result_target}",
+                            query_branch=branch,
+                            retrieval_strategy="latest_preprint_query",
+                            source_query=planned_query,
+                        ))
+                        continue
+                    block = _search_preprint_with_controls(
+                        provider,
+                        preprint_query,
+                        max_results=min(per_query_limit, 20),
+                        scan_limit=preprint_scan_limit,
+                    )
+                    blocks.append(_annotate_preprint_layer_block(
+                        block,
+                        query_branch=branch,
+                        retrieval_strategy="latest_preprint_query",
+                        source_query=planned_query,
+                    ))
+                    preprint_result_count += len(block.get("results") or [])
             # L3 is intentionally sourced only from preprint servers. A
             # Semantic Scholar record with an arXiv id may already represent a
             # published journal article, so it belongs to L4/L2 rather than
@@ -1242,34 +1400,50 @@ def fetch_stratified_layer_blocks(
             block["query_branch"] = branch
             block["retrieval_strategy"] = stratified_layer_retrieval_strategy(layer_name)
             blocks.append(block)
-        if layer_name == "L0_review" and "arxiv" in providers:
+        if layer_name == "L0_review" and layer_name in allowed_preprint_layers and "arxiv" in providers:
             arxiv_q = compact_preprint_retrieval_query(layer_query, domain=domain)
             block = arxiv_skip_block(arxiv_q) or search_arxiv(arxiv_q, max_results=min(per_query_limit, 20))
             block["query_branch"] = branch
             block["retrieval_strategy"] = "review_query"
             blocks.append(block)
-        if layer_name == "L0_review":
+        if layer_name == "L0_review" and layer_name in allowed_preprint_layers:
             for provider in ("biorxiv", "medrxiv", "chemrxiv"):
                 if provider in providers:
                     pre_q = compact_preprint_retrieval_query(layer_query, domain=domain)
-                    block = search_preprint_api(provider, pre_q, max_results=min(per_query_limit, 20))
-                    block["query_branch"] = branch
-                    block["retrieval_strategy"] = "review_query"
-                    blocks.append(block)
-        if layer_name == "L4_regular" and "arxiv" in providers:
+                    block = _search_preprint_with_controls(
+                        provider,
+                        pre_q,
+                        max_results=min(per_query_limit, 20),
+                        scan_limit=preprint_scan_limit,
+                    )
+                    blocks.append(_annotate_preprint_layer_block(
+                        block,
+                        query_branch=branch,
+                        retrieval_strategy="review_query",
+                        source_query=layer_query,
+                    ))
+        if layer_name == "L4_regular" and layer_name in allowed_preprint_layers and "arxiv" in providers:
             arxiv_q = compact_preprint_retrieval_query(planned_query, domain=domain)
             block = arxiv_skip_block(arxiv_q) or search_arxiv(arxiv_q, max_results=min(per_query_limit, 20))
             block["query_branch"] = branch
             block["retrieval_strategy"] = "regular_backfill_query"
             blocks.append(block)
-        if layer_name == "L4_regular":
+        if layer_name == "L4_regular" and layer_name in allowed_preprint_layers:
             for provider in ("biorxiv", "medrxiv", "chemrxiv"):
                 if provider in providers:
                     pre_q = compact_preprint_retrieval_query(planned_query, domain=domain)
-                    block = search_preprint_api(provider, pre_q, max_results=min(per_query_limit, 20))
-                    block["query_branch"] = branch
-                    block["retrieval_strategy"] = "regular_backfill_query"
-                    blocks.append(block)
+                    block = _search_preprint_with_controls(
+                        provider,
+                        pre_q,
+                        max_results=min(per_query_limit, 20),
+                        scan_limit=preprint_scan_limit,
+                    )
+                    blocks.append(_annotate_preprint_layer_block(
+                        block,
+                        query_branch=branch,
+                        retrieval_strategy="regular_backfill_query",
+                        source_query=planned_query,
+                    ))
     return blocks
 
 def stratified_layer_retrieval_query(layer_name: str, planned_query: str, suffix: str) -> str:
@@ -1900,6 +2074,11 @@ def summarize_provider_blocks(provider_blocks: list[dict[str, Any]]) -> list[dic
                 "note": block.get("note"),
                 "error": block.get("error"),
                 "result_count": len(results) if isinstance(results, list) else 0,
+                "scanned_result_count": block.get("scanned_result_count"),
+                "scan_budget": block.get("scan_budget"),
+                "zero_result_cache_hit": bool(block.get("zero_result_cache_hit")),
+                "query_variant_reason": block.get("query_variant_reason", ""),
+                "skipped_provider_reason": block.get("skipped_provider_reason", ""),
             }
         )
     return summaries
@@ -2183,6 +2362,7 @@ def search_preprint_api(
     query: str,
     max_results: int = 10,
     days_back: int = 365,
+    scan_limit: int | None = None,
 ) -> dict[str, Any]:
     selected = database_to_provider(provider)
     query, language_error = require_english_provider_query(query, selected)
@@ -2194,6 +2374,7 @@ def search_preprint_api(
             query,
             max_results=max_results,
             days_back=days_back,
+            scan_limit=scan_limit,
         )
     if selected == "chemrxiv":
         return search_chemrxiv(query, max_results=max_results)
@@ -2204,7 +2385,59 @@ def search_preprint_api(
         "results": [],
     }
 
-def search_biorxiv_or_medrxiv(server: str, query: str, max_results: int = 10, days_back: int = 365) -> dict[str, Any]:
+def _preprint_zero_result_cache_key(
+    server: str,
+    query: str,
+    start: date,
+    end: date,
+    scan_budget: int,
+) -> tuple[str, str, str, str, int]:
+    return (
+        normalize_space(server).lower(),
+        normalize_space(query).lower(),
+        start.isoformat(),
+        end.isoformat(),
+        int(scan_budget),
+    )
+
+
+def _cached_preprint_zero_result(
+    cache_key: tuple[str, str, str, str, int],
+) -> dict[str, Any] | None:
+    if SCIENCE_PREPRINT_ZERO_RESULT_TTL_SECONDS <= 0:
+        return None
+    now = time.monotonic()
+    with PREPRINT_ZERO_RESULT_CACHE_LOCK:
+        cached = PREPRINT_ZERO_RESULT_CACHE.get(cache_key)
+        if not cached:
+            return None
+        expires_at, metadata = cached
+        if expires_at <= now:
+            PREPRINT_ZERO_RESULT_CACHE.pop(cache_key, None)
+            return None
+        return dict(metadata)
+
+
+def _cache_preprint_zero_result(
+    cache_key: tuple[str, str, str, str, int],
+    metadata: dict[str, Any],
+) -> None:
+    if SCIENCE_PREPRINT_ZERO_RESULT_TTL_SECONDS <= 0:
+        return
+    with PREPRINT_ZERO_RESULT_CACHE_LOCK:
+        PREPRINT_ZERO_RESULT_CACHE[cache_key] = (
+            time.monotonic() + SCIENCE_PREPRINT_ZERO_RESULT_TTL_SECONDS,
+            dict(metadata),
+        )
+
+
+def search_biorxiv_or_medrxiv(
+    server: str,
+    query: str,
+    max_results: int = 10,
+    days_back: int = 365,
+    scan_limit: int | None = None,
+) -> dict[str, Any]:
     try:
         from ._literature_import import import_literature_search_result
         from ._utils import clamp_int, normalize_space
@@ -2215,6 +2448,36 @@ def search_biorxiv_or_medrxiv(server: str, query: str, max_results: int = 10, da
     start = today - timedelta(days=clamp_int(days_back, 30, 1825))
     try:
         max_items = max(PREPRINT_API_PAGE_SIZE, min(PREPRINT_API_MAX_SCAN_RECORDS, clamp_int(max_results, 1, 50) * 40))
+        if scan_limit is not None:
+            max_items = min(max_items, clamp_int(scan_limit, PREPRINT_API_PAGE_SIZE, PREPRINT_API_MAX_SCAN_RECORDS))
+        cache_key = _preprint_zero_result_cache_key(server, query, start, today, max_items)
+        cached = _cached_preprint_zero_result(cache_key)
+        if cached:
+            log_event(
+                "SCIENCE",
+                "preprint_zero_result_cache_hit",
+                provider=server,
+                query=query[:180],
+                days_back=clamp_int(days_back, 30, 1825),
+                scan_budget=max_items,
+                prior_scanned=int(cached.get("prior_scanned") or 0),
+            )
+            return {
+                "provider": server,
+                "query": query,
+                "status": "ok",
+                "api": f"api.biorxiv.org/details/{server}",
+                "date_window": {"from": start.isoformat(), "to": today.isoformat()},
+                "pages_scanned": 0,
+                "scanned_result_count": 0,
+                "matched_result_count": 0,
+                "total_available": int(cached.get("total_available") or 0),
+                "scan_budget": max_items,
+                "zero_result_cache_hit": True,
+                "prior_scanned_result_count": int(cached.get("prior_scanned") or 0),
+                "results": [],
+                "next_step": "Reused a recent zero-result preprint search; no provider scan was required.",
+            }
         cursor = 0
         total_available = 0
         pages_scanned = 0
@@ -2250,11 +2513,13 @@ def search_biorxiv_or_medrxiv(server: str, query: str, max_results: int = 10, da
             query=query[:180],
             pages=pages_scanned,
             scanned=len(scanned_items),
+            scan_budget=max_items,
             matched=len(filtered),
             returned=len(papers),
             total_available=total_available,
+            zero_result_cache_hit=False,
         )
-        return {
+        response = {
             "provider": server,
             "query": query,
             "status": "ok",
@@ -2264,9 +2529,17 @@ def search_biorxiv_or_medrxiv(server: str, query: str, max_results: int = 10, da
             "scanned_result_count": len(scanned_items),
             "matched_result_count": len(filtered),
             "total_available": total_available,
+            "scan_budget": max_items,
+            "zero_result_cache_hit": False,
             "results": papers,
             "next_step": "Import a result with import_literature_search_result; these are preprint metadata records filtered locally by query.",
         }
+        if not filtered:
+            _cache_preprint_zero_result(
+                cache_key,
+                {"prior_scanned": len(scanned_items), "total_available": total_available},
+            )
+        return response
     except Exception as exc:
         log_event("SCIENCE", "literature_search_failed", provider=server, error=str(exc))
         return provider_error_result(server, query, exc)
@@ -2697,7 +2970,13 @@ def enrich_papergraph_payload(
     ).strip()
     doi = normalize_doi(str(enriched.get("doi") or result.get("doi") or ""))
     s2_identifier = semantic_id or (f"DOI:{doi}" if doi else "")
-    if s2_identifier and (needs_metadata_enrichment or (needs_full_text_enrichment and not direct_pdf_url)):
+    source_provider = normalize_space(str(result.get("provider") or enriched.get("provider") or "")).lower()
+    needs_semantic_full_text_probe = (
+        needs_full_text_enrichment
+        and not direct_pdf_url
+        and source_provider != "semantic_scholar"
+    )
+    if s2_identifier and (needs_metadata_enrichment or needs_semantic_full_text_probe):
         metadata_lookup_attempted = True
         try:
             detail = fetch_semantic_scholar_paper_detail(
@@ -2845,8 +3124,14 @@ def fetch_semantic_scholar_paper_detail(identifier: str, *, fast_fail: bool = Fa
         cached = semantic_scholar_cache_get(url)
         if cached is not None:
             return json.loads(cached)
+        wait_for_semantic_scholar_circuit_if_needed("fast_fail")
         wait_for_semantic_scholar_rate_limit()
-        payload = http_get_json(url, headers=headers, timeout=8.0)
+        try:
+            payload = http_get_json(url, headers=headers, timeout=8.0)
+        except RuntimeError as exc:
+            if is_rate_limit_error(str(exc)):
+                register_semantic_scholar_429(semantic_scholar_backoff_seconds(0, str(exc)))
+            raise
         semantic_scholar_cache_put(url, json.dumps(payload, ensure_ascii=False))
         return payload
     return semantic_scholar_get_json(url, headers=headers)
@@ -2916,9 +3201,11 @@ def fetch_pdf_content(
         raise RuntimeError(f"URL error: {exc.reason}") from exc
     if len(data) > max_bytes:
         raise RuntimeError(f"PDF exceeds {max_bytes} byte safety limit")
+    metadata = dict(paper_metadata or {})
+    metadata.setdefault("source_url", normalize_space(url))
     extracted = extract_pdf_content(
         data,
-        paper_metadata=paper_metadata or {},
+        paper_metadata=metadata,
         sub_hypothesis=sub_hypothesis,
         max_output_chars=max_output_chars,
     )
@@ -3019,7 +3306,7 @@ def semantic_scholar_get_json(url: str, headers: dict[str, str] | None = None) -
             "All further SS API calls are skipped for this session to avoid wasting time."
         )
     wait_for_semantic_scholar_circuit_if_needed("pre_request")
-    retry_limit = max(20, int(SCIENCE_SEMANTIC_SCHOLAR_RETRY_LIMIT))
+    retry_limit = semantic_scholar_retry_limit()
     last_error: RuntimeError | None = None
     for attempt in range(retry_limit + 1):
         # Check session kill switch inside retry loop too
@@ -3049,9 +3336,11 @@ def semantic_scholar_get_json(url: str, headers: dict[str, str] | None = None) -
                 delay_seconds=round(delay, 2),
                 fail_fast=bool(SCIENCE_SEMANTIC_SCHOLAR_FAIL_FAST_ON_429),
             )
-            if SCIENCE_SEMANTIC_SCHOLAR_FAIL_FAST_ON_429 or attempt >= retry_limit:
+            circuit_open, retry_after = semantic_scholar_circuit_open()
+            if SCIENCE_SEMANTIC_SCHOLAR_FAIL_FAST_ON_429 or circuit_open or attempt >= retry_limit:
                 raise RuntimeError(
-                    f"Semantic Scholar rate limited after {retry_limit + 1} attempts with backoff: {exc}"
+                    f"Semantic Scholar rate limited after {attempt + 1} attempts; "
+                    f"circuit_retry_after_seconds={retry_after:.1f}: {exc}"
                 ) from exc
             wait_seconds = semantic_scholar_retry_wait_seconds(delay)
             log_event(
@@ -3072,11 +3361,15 @@ def wait_for_semantic_scholar_circuit_if_needed(reason: str = "request") -> None
     wait_seconds = min(retry_after, 120.0)
     log_event(
         "SCIENCE",
-        "semantic_scholar_circuit_wait",
+        "semantic_scholar_circuit_skip",
         reason=reason,
-        wait_seconds=round(wait_seconds, 2),
+        retry_after_seconds=round(wait_seconds, 2),
     )
-    time.sleep(wait_seconds)
+    raise RuntimeError(f"Semantic Scholar circuit open; retry_after_seconds={wait_seconds:.1f}")
+
+
+def semantic_scholar_retry_limit() -> int:
+    return min(3, max(0, int(SCIENCE_SEMANTIC_SCHOLAR_RETRY_LIMIT)))
 
 def semantic_scholar_retry_wait_seconds(delay: float) -> float:
     """Return actual wait time for retry, respecting the computed delay.
