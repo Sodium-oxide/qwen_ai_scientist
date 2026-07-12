@@ -1,9 +1,18 @@
 from __future__ import annotations
 
 import json
+import os
 import time
 from dataclasses import dataclass
 from typing import Any
+
+# TokenPlan 的默认 base URL（OpenAI 兼容协议，直连阿里云 MaaS）
+TOKENPLAN_DEFAULT_BASE = "https://token-plan.cn-beijing.maas.aliyuncs.com/compatible-mode/v1"
+
+
+def _is_tokenplan_key(api_key: str) -> bool:
+    """TokenPlan 的 key 以 sk-sp-D 开头，走 OpenAI 兼容协议。"""
+    return bool(api_key and api_key.startswith("sk-sp-D"))
 
 
 @dataclass
@@ -17,6 +26,7 @@ class QwenMessages:
         self.api_key = api_key
         self.default_model = default_model
         self.api_base = api_base
+        self._use_tokenplan = _is_tokenplan_key(api_key)
 
     def create(
         self,
@@ -28,6 +38,33 @@ class QwenMessages:
         tools: list[dict[str, Any]] | None = None,
         **_: Any,
     ) -> QwenResponse:
+        effective_model = self.effective_model(model)
+
+        if self._use_tokenplan:
+            return self._create_via_tokenplan(
+                model=effective_model,
+                max_tokens=max_tokens,
+                system=system,
+                messages=messages,
+                tools=tools or [],
+            )
+
+        return self._create_via_dashscope(
+            model=effective_model,
+            max_tokens=max_tokens,
+            system=system,
+            messages=messages,
+            tools=tools or [],
+        )
+
+    def _create_via_dashscope(
+        self,
+        model: str,
+        max_tokens: int | None,
+        system: str,
+        messages: list[dict[str, Any]],
+        tools: list[dict[str, Any]],
+    ) -> QwenResponse:
         try:
             import dashscope
             from dashscope import Generation
@@ -36,9 +73,9 @@ class QwenMessages:
 
         if self.api_base:
             dashscope.base_http_api_url = self.api_base
-        qwen_messages = to_qwen_messages(system, messages, tools or [])
+        qwen_messages = to_qwen_messages(system, messages, tools)
         kwargs: dict[str, Any] = {
-            "model": self.effective_model(model),
+            "model": model,
             "messages": qwen_messages,
             "result_format": "message",
             "api_key": self.api_key,
@@ -49,7 +86,51 @@ class QwenMessages:
         response = Generation.call(**kwargs)
         ensure_success(response)
         text = extract_qwen_text(response)
-        return QwenResponse(content=parse_qwen_content(text, tools or []))
+        return QwenResponse(content=parse_qwen_content(text, tools))
+
+    def _create_via_tokenplan(
+        self,
+        model: str,
+        max_tokens: int | None,
+        system: str,
+        messages: list[dict[str, Any]],
+        tools: list[dict[str, Any]],
+    ) -> QwenResponse:
+        """TokenPlan 走 OpenAI 兼容协议。"""
+        try:
+            from openai import OpenAI
+        except ImportError as exc:
+            raise RuntimeError(
+                "TokenPlan requires the openai package. Run: pip install openai"
+            ) from exc
+
+        base_url = self.api_base or TOKENPLAN_DEFAULT_BASE
+        clean_key = self.api_key.strip()
+        client = OpenAI(api_key=clean_key, base_url=base_url)
+
+        # 构建 OpenAI 格式的 messages
+        openai_msgs: list[dict[str, Any]] = []
+        if system.strip():
+            openai_msgs.append({"role": "system", "content": system.strip()})
+        for msg in messages:
+            openai_msgs.append({
+                "role": msg.get("role", "user"),
+                "content": _flatten_content(msg.get("content", "")),
+            })
+
+        kwargs: dict[str, Any] = {
+            "model": model,
+            "messages": openai_msgs,
+        }
+        if max_tokens is not None:
+            kwargs["max_tokens"] = max_tokens
+
+        response = client.chat.completions.create(**kwargs)
+        text = response.choices[0].message.content or ""
+
+        if tools:
+            return QwenResponse(content=parse_qwen_content(text, tools))
+        return QwenResponse(content=[{"type": "text", "text": text}])
 
     def effective_model(self, requested: str | None) -> str:
         value = str(requested or "").strip()
@@ -58,6 +139,26 @@ class QwenMessages:
         if value.startswith("claude") or value.startswith("anthropic."):
             return self.default_model
         return value
+
+
+def _flatten_content(content: Any) -> str:
+    """展平内部消息格式为纯文本。"""
+    if isinstance(content, str):
+        return content
+    if isinstance(content, list):
+        parts: list[str] = []
+        for block in content:
+            if isinstance(block, dict):
+                if block.get("type") == "text":
+                    parts.append(str(block.get("text", "")))
+                elif block.get("type") == "tool_use":
+                    parts.append(f"[tool_use: {block.get('name', '')}]")
+                elif block.get("type") == "tool_result":
+                    parts.append(str(block.get("content", ""))[:500])
+            else:
+                parts.append(str(block))
+        return "\n".join(parts)
+    return str(content)
 
 
 class QwenClient:

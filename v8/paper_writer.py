@@ -107,19 +107,19 @@ Return a JSON object with this structure:
 # LaTeX 模板
 # ---------------------------------------------------------------------------
 
-LATEX_TEMPLATE = r"""\documentclass[11pt,a4paper]{article}
+LATEX_TEMPLATE = r"""\documentclass[11pt,a4paper]{{article}}
 
-\usepackage[utf8]{inputenc}
-\usepackage{amsmath,amssymb,amsfonts}
-\usepackage{graphicx}
-\usepackage{hyperref}
-\usepackage{booktabs}
-\usepackage{caption}
-\usepackage{subcaption}
-\usepackage[margin=1in]{geometry}
-\usepackage{natbib}
+\usepackage[utf8]{{inputenc}}
+\usepackage{{amsmath,amssymb,amsfonts}}
+\usepackage{{graphicx}}
+\usepackage{{hyperref}}
+\usepackage{{booktabs}}
+\usepackage{{caption}}
+\usepackage{{subcaption}}
+\usepackage[margin=1in]{{geometry}}
+\usepackage{{natbib}}
 
-\title{{title}}
+\title{{{title}}}
 \author{{Qwen-智勘 AI Scientist}}
 
 \date{{\today}}
@@ -171,16 +171,25 @@ def _get_client() -> Any:
 
 def _call_llm(system: str, user_prompt: str, max_tokens: int = 4000) -> dict[str, Any]:
     """调用 LLM 并解析返回的 JSON。"""
+    import traceback as _tb
     client = _get_client()
-    response = client.messages.create(
-        model=None,
-        max_tokens=max_tokens,
-        system=system,
-        messages=[{"role": "user", "content": user_prompt}],
-        tools=[],
-    )
+    try:
+        response = client.messages.create(
+            model=None,
+            max_tokens=max_tokens,
+            system=system,
+            messages=[{"role": "user", "content": user_prompt}],
+            tools=[],
+        )
+    except Exception as exc:
+        raise RuntimeError(
+            f"LLM API call failed: {exc}\n"
+            "Check your QWEN_API_KEY and QWEN_MODEL_ID env vars."
+        ) from exc
+
     content = getattr(response, "content", response)
     text = _render_text(content)
+
     parsed = _parse_json(text)
     if not parsed:
         raise ValueError(
@@ -206,18 +215,85 @@ def _render_text(content: Any) -> str:
 
 def _parse_json(text: str) -> dict[str, Any]:
     stripped = text.strip()
+
+    # 去掉 markdown 代码块
     if stripped.startswith("```"):
         lines = stripped.splitlines()
         if len(lines) >= 3:
             stripped = "\n".join(lines[1:-1]).strip()
+
+    # 找 JSON 对象
     start = stripped.find("{")
     end = stripped.rfind("}")
-    if start != -1 and end > start:
-        try:
-            return json.loads(stripped[start:end + 1])
-        except json.JSONDecodeError:
-            pass
+    if start == -1 or end <= start:
+        return {}
+
+    candidate = stripped[start:end + 1]
+
+    # 尝试直接解析
+    try:
+        return json.loads(candidate)
+    except json.JSONDecodeError as e:
+        print(f"[DEBUG] JSON parse error at pos {e.pos}: {e.msg}")
+        print(f"[DEBUG] Context around error: ...{candidate[max(0,e.pos-50):e.pos+50]}...")
+
+    # 修复常见 LLM 输出问题后重试
+    try:
+        fixed = _repair_json(candidate)
+        return json.loads(fixed)
+    except json.JSONDecodeError:
+        pass
+
     return {}
+
+
+def _repair_json(text: str) -> str:
+    """修复 LLM 输出中常见的 JSON 格式问题。"""
+    # 1. 去掉尾部逗号（如 "key": "value",}）
+    text = re.sub(r",\s*}", "}", text)
+    text = re.sub(r",\s*]", "]", text)
+
+    # 2. 修复 LaTeX 反斜杠：把 JSON 字符串内的 \ 变成 \\
+    #    LLM 经常在 JSON 里直接输出 $\theta$ 这样的 LaTeX，其中的 \t \e 等
+    #    不是合法 JSON 转义序列。在 JSON 字符串值内部，\ 必须写成 \\。
+    text = _escape_latex_in_json(text)
+
+    # 3. 修复未闭合的字符串（LLM 可能因 max_tokens 截断 JSON）
+    if not text.rstrip().endswith("}"):
+        last_complete = max(
+            text.rfind('"}'),
+            text.rfind('"]'),
+            text.rfind('}}'),
+        )
+        if last_complete > 0:
+            text = text[:last_complete + 2] + "\n}"
+
+    return text
+
+
+def _escape_latex_in_json(text: str) -> str:
+    """把 JSON 字符串内的 LaTeX 反斜杠转义为 \\，避免 json.loads 报 Invalid \\escape。"""
+    # 有效 JSON 转义: \" \\ \/ \b \f \n \r \t \uXXXX
+    valid_escapes = {'"', '\\', '/', 'b', 'f', 'n', 'r', 't', 'u'}
+    result: list[str] = []
+    i = 0
+    in_string = False
+    while i < len(text):
+        ch = text[i]
+        if ch == '"' and (i == 0 or text[i - 1] != '\\'):
+            in_string = not in_string
+            result.append(ch)
+        elif ch == '\\' and in_string:
+            # 只在字符串内部处理
+            if i + 1 < len(text) and text[i + 1] not in valid_escapes:
+                # LLM 输出的 LaTeX 命令如 \theta → 需要变成 \\theta
+                result.append('\\\\')
+            else:
+                result.append('\\')
+        else:
+            result.append(ch)
+        i += 1
+    return ''.join(result)
 
 
 # ---------------------------------------------------------------------------
@@ -877,8 +953,9 @@ def _interactive():
         print(_paper_to_text(result["paper"]))
 
     except Exception as exc:
+        import traceback
         print(f"\n[ERROR] {exc}")
-        print("Check that your LLM API key is set.\n")
+        print(f"[TRACEBACK]\n{traceback.format_exc()}")
         sys.exit(1)
 
 
