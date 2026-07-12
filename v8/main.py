@@ -16,7 +16,6 @@ try:
     from .mcp_plugin import assemble_tool_pool
     from .recovery import RecoveryState, create_response_with_recovery
     from .skill import build_system
-    from .agent_teams import consume_lead_inbox
     from .task_system import collect_background_notifications, should_run_background, start_background_task, strip_control_args
     from .tools import TOOL_HANDLERS as BUILTIN_TOOL_HANDLERS, TOOLS as BUILTIN_TOOLS
 except ImportError:
@@ -30,7 +29,6 @@ except ImportError:
     from mcp_plugin import assemble_tool_pool
     from recovery import RecoveryState, create_response_with_recovery
     from skill import build_system
-    from agent_teams import consume_lead_inbox
     from task_system import collect_background_notifications, should_run_background, start_background_task, strip_control_args
     from tools import TOOL_HANDLERS as BUILTIN_TOOL_HANDLERS, TOOLS as BUILTIN_TOOLS
 
@@ -70,6 +68,53 @@ def tool_result(tool_use_id: str, output: str, is_error: bool = False) -> dict[s
     return result
 
 
+def resolve_tool_placeholders(
+    tool_input: dict[str, Any],
+    previous_results: list[dict[str, Any]],
+) -> dict[str, Any]:
+    """Resolve placeholder references in tool input values.
+
+    Supports patterns like:
+    - {{previous_tool_result.<field>}}
+    - ${previous_tool_result.<field>}
+    - ${<tool_name>.<field>}
+
+    Looks up field values from the most recent tool results in the same batch.
+    Returns a new dict with placeholders replaced by actual values.
+    """
+    import re as _re
+    if not previous_results:
+        return tool_input
+    # Build a lookup from all previous results in this batch
+    lookup: dict[str, str] = {}
+    for prev in previous_results:
+        content = str(prev.get("content", ""))
+        # Try to parse JSON content for field access
+        try:
+            parsed = json.loads(content)
+            if isinstance(parsed, dict):
+                for key, value in parsed.items():
+                    lookup[key] = str(value)
+                    lookup[f"previous_tool_result.{key}"] = str(value)
+        except (json.JSONDecodeError, TypeError):
+            pass
+    if not lookup:
+        return tool_input
+    # Resolve placeholders in each input value
+    resolved: dict[str, Any] = {}
+    placeholder_re = _re.compile(r'\{\{([^}]+)\}\}|\$\{([^}]+)\}')
+    for key, value in tool_input.items():
+        if isinstance(value, str):
+            def _replace(m):
+                ref = m.group(1) or m.group(2)
+                ref = ref.strip()
+                return lookup.get(ref, m.group(0))
+            new_value = placeholder_re.sub(_replace, value)
+            resolved[key] = new_value
+        else:
+            resolved[key] = value
+    return resolved
+
 def run_tool(
     block: Any,
     messages: list[dict[str, Any]],
@@ -88,6 +133,35 @@ def run_tool(
         )
         log_event("WARN", "duplicate_tool_call_suppressed", name=name, count=duplicate_count)
         return tool_result(tool_use_id, output, is_error=True)
+
+    # General file-operation loop detector: suppress repeated identical file reads/globs
+    _FILE_LOOP_TOOLS = {"read_file", "read", "glob", "list_dir", "list_papergraph_records", "get_research_project"}
+    if name in _FILE_LOOP_TOOLS and duplicate_count >= 2:
+        path_hint = str(tool_input.get("path") or tool_input.get("pattern") or tool_input.get("project_id") or "")
+        output = (
+            f"Repeated file operation suppressed: `{name}` with similar input has been called "
+            f"{duplicate_count} times. The file or data you are looking for is likely NOT at this path. "
+            f"Path/pattern tried: {path_hint[:200]}. "
+            "STOP retrying this path. Instead: (1) use list_papergraph_records or get_research_project to see what "
+            "records/papers actually exist, (2) check if the data is embedded inside a project JSON rather than "
+            "stored as separate files, (3) try a completely different approach to access the information you need."
+        )
+        log_event("WARN", "file_loop_suppressed", name=name, count=duplicate_count, path=path_hint[:120])
+        return tool_result(tool_use_id, output, is_error=True)
+
+    # Cross-extension loop detector: same base path, different extensions
+    if name in {"read_file", "read"} and duplicate_count < 3:
+        base_path = str(tool_input.get("path", ""))
+        similar_count = similar_path_tool_call_count(messages, name, base_path)
+        if similar_count >= 4:
+            output = (
+                f"Extension-cycling loop detected: you have tried {similar_count} different extensions on "
+                f"the same base path `{base_path[:200]}`. This file does not exist in any format. "
+                "STOP trying different extensions. The data you need is likely stored inside a project JSON "
+                "(access via get_research_project or list_papergraph_records), not as individual files on disk."
+            )
+            log_event("WARN", "extension_cycling_suppressed", name=name, count=similar_count, path=base_path[:120])
+            return tool_result(tool_use_id, output, is_error=True)
 
     blocked = trigger_hook("PreToolUse", block)
     if blocked is not None:
@@ -140,6 +214,44 @@ def tool_call_signature(name: str, tool_input: dict[str, Any]) -> str:
     return f"{name}:{payload}"
 
 
+def _strip_extension(path: str) -> str:
+    """Remove the file extension from a path for base-path comparison."""
+    dot_idx = path.rfind(".")
+    slash_idx = max(path.rfind("/"), path.rfind("\\"))
+    if dot_idx > slash_idx + 1:
+        return path[:dot_idx]
+    return path
+
+
+def similar_path_tool_call_count(
+    messages: list[dict[str, Any]],
+    name: str,
+    path: str,
+) -> int:
+    """Count how many times the same base path (ignoring extension) was used with this tool."""
+    base = _strip_extension(path)
+    if not base:
+        return 0
+    count = 0
+    for message in messages[-120:]:
+        if message.get("role") != "assistant":
+            continue
+        content = message.get("content")
+        if not isinstance(content, list):
+            continue
+        for block in content:
+            if not isinstance(block, dict) or block.get("type") != "tool_use":
+                continue
+            prior_name = normalize_tool_name(block.get("name"))
+            if prior_name != name:
+                continue
+            prior_input = block.get("input") or {}
+            prior_path = str(prior_input.get("path", ""))
+            if _strip_extension(prior_path) == base:
+                count += 1
+    return count
+
+
 def normalize_tool_name(name: Any) -> str:
     raw = str(name)
     aliases = {
@@ -172,29 +284,9 @@ def normalize_tool_name(name: Any) -> str:
         "claim_task": "claim_task",
         "completetask": "complete_task",
         "complete_task": "complete_task",
-        "spawnteammate": "spawn_teammate",
-        "spawn_teammate": "spawn_teammate",
-        "sendmessage": "send_message",
-        "send_message": "send_message",
-        "messageactiongateway": "send_message",
+                                        "messageactiongateway": "send_message",
         "message_action_gateway": "send_message",
-        "checkinbox": "check_inbox",
-        "check_inbox": "check_inbox",
-        "requestshutdown": "request_shutdown",
-        "request_shutdown": "request_shutdown",
-        "requestplan": "request_plan",
-        "request_plan": "request_plan",
-        "reviewplan": "review_plan",
-        "review_plan": "review_plan",
-        "createworktree": "create_worktree",
-        "create_worktree": "create_worktree",
-        "removeworktree": "remove_worktree",
-        "remove_worktree": "remove_worktree",
-        "keepworktree": "keep_worktree",
-        "keep_worktree": "keep_worktree",
-        "connectmcp": "connect_mcp",
-        "connect_mcp": "connect_mcp",
-        "schedulecron": "schedule_cron",
+                                                                                                                                        "schedulecron": "schedule_cron",
         "schedule_cron": "schedule_cron",
         "listcrons": "list_crons",
         "list_crons": "list_crons",
@@ -238,6 +330,22 @@ def normalize_tool_name(name: Any) -> str:
         "create_boxue_delegation_tasks": "create_boxue_delegation_tasks",
         "runboxueresearchround": "run_boxue_research_round",
         "run_boxue_research_round": "run_boxue_research_round",
+        "createautogengroupchat": "create_autogen_groupchat",
+        "create_autogen_groupchat": "create_autogen_groupchat",
+        "runautogenresearchflow": "run_autogen_research_flow",
+        "run_autogen_research_flow": "run_autogen_research_flow",
+        "listautogengroupchats": "list_autogen_groupchats",
+        "list_autogen_groupchats": "list_autogen_groupchats",
+        "getautogenrun": "get_autogen_run",
+        "get_autogen_run": "get_autogen_run",
+        "createsciencecrew": "create_autogen_groupchat",
+        "create_science_crew": "create_autogen_groupchat",
+        "runsciencecrewflow": "run_autogen_research_flow",
+        "run_science_crew_flow": "run_autogen_research_flow",
+        "listsciencecrews": "list_autogen_groupchats",
+        "list_science_crews": "list_autogen_groupchats",
+        "getsciencecrewrun": "get_autogen_run",
+        "get_science_crew_run": "get_autogen_run",
         "buildknowledgemap": "build_knowledge_map",
         "build_knowledge_map": "build_knowledge_map",
         "addliteratureevidence": "add_literature_evidence",
@@ -270,10 +378,48 @@ def normalize_tool_name(name: Any) -> str:
         "detect_knowledge_gaps": "detect_knowledge_gaps",
         "runtanxigapexploration": "run_tanxi_gap_exploration",
         "run_tanxi_gap_exploration": "run_tanxi_gap_exploration",
+        "checksemanticplausibility": "check_semantic_plausibility",
+        "check_semantic_plausibility": "check_semantic_plausibility",
+        "runsocratesmechanismenrichment": "run_socrates_mechanism_enrichment",
+        "run_socrates_mechanism_enrichment": "run_socrates_mechanism_enrichment",
+        "generateidea": "generate_idea",
+        "generate_idea": "generate_idea",
+        "designexperiment": "design_experiment",
+        "design_experiment": "design_experiment",
+        "finalizeidea": "finalize_idea",
+        "finalize_idea": "finalize_idea",
         "createhypothesis": "create_hypothesis",
         "create_hypothesis": "create_hypothesis",
+        "asksocraticquestions": "ask_socratic_questions",
+        "ask_socratic_questions": "ask_socratic_questions",
+        "askcriticalquestions": "ask_critical_questions",
+        "ask_critical_questions": "ask_critical_questions",
+        "findcounterexamples": "find_counterexamples",
+        "find_counterexamples": "find_counterexamples",
+        "stresstestassumptions": "stress_test_assumptions",
+        "stress_test_assumptions": "stress_test_assumptions",
+        "moderateround": "moderate_round",
+        "moderate_round": "moderate_round",
+        "summarizepositions": "summarize_positions",
+        "summarize_positions": "summarize_positions",
+        "extractemergentmethod": "extract_emergent_method",
+        "extract_emergent_method": "extract_emergent_method",
+        "runsocratichypothesisdebate": "run_socratic_hypothesis_debate",
+        "run_socratic_hypothesis_debate": "run_socratic_hypothesis_debate",
         "runmechanismcheck": "run_mechanism_check",
         "run_mechanism_check": "run_mechanism_check",
+        "checkinternalconsistency": "check_internal_consistency",
+        "check_internal_consistency": "check_internal_consistency",
+        "checkdataconsistency": "check_data_consistency",
+        "check_data_consistency": "check_data_consistency",
+        "regimeshifttest": "regime_shift_test",
+        "regime_shift_test": "regime_shift_test",
+        "detectselectivecitation": "detect_selective_citation",
+        "detect_selective_citation": "detect_selective_citation",
+        "causalchainaudit": "causal_chain_audit",
+        "causal_chain_audit": "causal_chain_audit",
+        "runyanzhenmechanismverification": "run_yanzhen_mechanism_verification",
+        "run_yanzhen_mechanism_verification": "run_yanzhen_mechanism_verification",
         "exportresearchplan": "export_research_plan",
         "export_research_plan": "export_research_plan",
     }
@@ -314,20 +460,13 @@ def run_agent_locked(user_input: str) -> str:
     messages: list[dict[str, Any]] = [{"role": "user", "content": prompt}]
     tracked_task_ids: set[str] = set()
     validation_attempts = 0
+    recent_tool_patterns: list[str] = []  # track per-iteration tool call patterns
 
     while True:
         current_tools, current_handlers = assemble_tool_pool(BUILTIN_TOOLS, BUILTIN_TOOL_HANDLERS)
         fired_crons = consume_cron_queue()
         if fired_crons:
             messages.append({"role": "user", "content": render_scheduled_prompt(fired_crons)})
-        team_messages = consume_lead_inbox()
-        if team_messages:
-            messages.append(
-                {
-                    "role": "user",
-                    "content": "<team_inbox>\n" + "\n\n".join(team_messages) + "\n</team_inbox>",
-                }
-            )
         notifications = collect_background_notifications()
         if notifications:
             messages.append({"role": "user", "content": "\n\n".join(notifications)})
@@ -364,11 +503,57 @@ def run_agent_locked(user_input: str) -> str:
                 "content": [block_to_dict(block) for block in response.content],
             }
         )
-        tool_results = [run_tool(block, messages, current_handlers) for block in tool_blocks]
+        tool_results: list[dict[str, Any]] = []
+        for block in tool_blocks:
+            # Resolve placeholders like {{previous_tool_result.project_id}} using earlier results in this batch
+            tool_input = block_attr(block, "input", {}) or {}
+            if tool_input and tool_results:
+                resolved_input = resolve_tool_placeholders(tool_input, tool_results)
+                if resolved_input != tool_input:
+                    log_event("AGENT", "placeholder_resolved", tool=block_attr(block, "name"), resolved_keys=[k for k in resolved_input if resolved_input.get(k) != tool_input.get(k)])
+                    # Patch the block's input with resolved values
+                    if hasattr(block, "input"):
+                        block.input = resolved_input
+                    elif isinstance(block, dict):
+                        block["input"] = resolved_input
+            result = run_tool(block, messages, current_handlers)
+            tool_results.append(result)
         for block, result in zip(tool_blocks, tool_results):
             if normalize_tool_name(block_attr(block, "name")) == "create_task":
                 tracked_task_ids.update(extract_task_ids(str(result.get("content", ""))))
         messages.append({"role": "user", "content": tool_results})
+
+        # Stuck-loop detector: track tool-name patterns across iterations
+        iteration_pattern = "+".join(
+            sorted(normalize_tool_name(block_attr(b, "name")) for b in tool_blocks)
+        )
+        recent_tool_patterns.append(iteration_pattern)
+        if len(recent_tool_patterns) > 8:
+            recent_tool_patterns[:] = recent_tool_patterns[-8:]
+        if len(recent_tool_patterns) >= 5:
+            tail = recent_tool_patterns[-5:]
+            # Check if 4+ of the last 5 iterations use the same tool set
+            from collections import Counter as _Counter
+            pattern_counts = _Counter(tail)
+            most_common_pattern, most_common_count = pattern_counts.most_common(1)[0]
+            if most_common_count >= 4 and any(
+                t in most_common_pattern for t in ("read_file", "glob", "read", "list_")
+            ):
+                nudge = (
+                    f"[SYSTEM: STUCK LOOP DETECTED] You have called `{most_common_pattern}` "
+                    f"in {most_common_count} of the last 5 iterations without making progress. "
+                    "This is a dead loop. STOP repeating the same operations. "
+                    "Reassess: (1) What are you actually trying to find or accomplish? "
+                    "(2) Why have your previous attempts failed? "
+                    "(3) What DIFFERENT approach can you take? "
+                    "If you cannot find a file, the data may be stored inside a JSON structure "
+                    "rather than as individual files. Use get_research_project or list_papergraph_records "
+                    "to access it. If you are done, produce your final answer now."
+                )
+                messages.append({"role": "user", "content": nudge})
+                log_event("WARN", "stuck_loop_nudge", pattern=most_common_pattern, count=most_common_count)
+                recent_tool_patterns.clear()  # reset after nudge to avoid spamming
+
         messages[:] = compact_messages(messages)
 
 

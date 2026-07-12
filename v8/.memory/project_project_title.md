@@ -1,7 +1,7 @@
 ---
 name: project_title
-description: research project title
+description: 项目标题
 type: project
 ---
 
-电力系统仿真 ZhiZhi-TanXi-MingLi 验证
+4.5V以上高压锂电池机制与稳定性研究

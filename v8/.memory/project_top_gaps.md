@@ -1,7 +1,7 @@
 ---
 name: top_gaps
-description: list of top 5 knowledge gaps by severity and priority
+description: TanXi-identified priority knowledge gaps
 type: project
 ---
 
-['gap_1783344141620902200', 'gap_1783344118045814200', 'gap_1783344118049218500', 'gap_1783344118055810300', 'gap_1783344118059218700']
+['Mechanism Gap: No unified causal model linking surface reconstruction → oxygen release → electrolyte oxidation → CEI breakdown → impedance rise under >4.5V cycling.', 'Contradiction Gap: Coating (e.g., Al₂O₃) improves interfacial stability in LiCoO₂ but reduces Li⁺ conductivity in Ni-rich NMC — no systematic trade-off quantification across voltage, temperature, and loading.', 'Boundary Gap: Performance divergence at 4.6V vs. 4.7V is inconsistently attributed to electrolyte composition, temperature, or cathode morphology — no controlled multi-variable study exists.']
