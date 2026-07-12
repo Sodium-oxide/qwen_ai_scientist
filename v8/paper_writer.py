@@ -581,7 +581,7 @@ def _paper_to_text(paper: dict) -> str:
         ("4. EXPERIMENTS", paper.get("experiments", "")),
         ("5. CONCLUSION", paper.get("conclusion", "")),
         ("REFERENCES", "\n".join(
-            f"[{r.get('index', i+1)}] {r.get('citation', '')}"
+            f"[{i+1}] {r.get('citation', str(r)) if isinstance(r, dict) else str(r)}"
             for i, r in enumerate(paper.get("references", []))
         )),
     ]
@@ -757,9 +757,15 @@ def format_latex(paper: dict[str, Any], template: str = "default") -> str:
     references = paper.get("references", [])
     bib_lines: list[str] = []
     for ref in references:
-        idx = ref.get("index", len(bib_lines) + 1)
-        citation = ref.get("citation", "")
-        bib_lines.append(f"\\bibitem{{ref{idx}}} {citation}")
+        if isinstance(ref, str):
+            # LLM 有时返回纯字符串引用
+            bib_lines.append(f"\\bibitem{{ref{len(bib_lines)+1}}} {ref}")
+        elif isinstance(ref, dict):
+            idx = ref.get("index", len(bib_lines) + 1)
+            citation = ref.get("citation", str(ref))
+            bib_lines.append(f"\\bibitem{{ref{idx}}} {citation}")
+        else:
+            bib_lines.append(f"\\bibitem{{ref{len(bib_lines)+1}}} {str(ref)}")
 
     latex = LATEX_TEMPLATE.format(
         title=_latex_escape(paper.get("title", "Untitled")),
@@ -879,6 +885,123 @@ def write_paper_from_project(project_id: str) -> dict[str, Any]:
     }
 
     return write_paper(ctx)
+
+
+# ---------------------------------------------------------------------------
+# 论文修改（配合 Reviewer 的迭代循环）
+# ---------------------------------------------------------------------------
+
+REVISE_SYSTEM_PROMPT = """\
+You are PaperWriter, the Academic Paper Writer. You are revising a manuscript based on
+peer review feedback. Your goal is to address every weakness and question raised by the
+reviewer while preserving the paper's strengths.
+
+## REVISION RULES
+1. Address EVERY weakness listed in the review feedback.
+2. Add missing details, numbers, or citations that the reviewer flagged.
+3. Improve clarity where the reviewer found the text hard to follow.
+4. Do NOT remove content that the reviewer praised.
+5. If the reviewer asks for specific experiments or comparisons, add them.
+
+## OUTPUT FORMAT
+Return the COMPLETE revised paper as JSON (same schema as original):
+{
+  "thought": "How I addressed each weakness...",
+  "paper": {
+    "title": "...",
+    "abstract": "...",
+    "introduction": "...",
+    "related_work": "...",
+    "methodology": "...",
+    "experiments": "...",
+    "conclusion": "...",
+    "references": [...]
+  }
+}\
+"""
+
+
+def revise_paper(
+    current_paper: dict[str, Any] | str,
+    review_feedback: dict[str, Any] | str,
+    project_context: dict[str, Any] | None = None,
+    *,
+    max_tokens: int = 4000,
+) -> dict[str, Any]:
+    """
+    根据评审反馈修改论文。
+
+    参数:
+        current_paper: 当前论文（dict 或纯文本）
+        review_feedback: Reviewer 返回的 review dict，或纯文本反馈
+        project_context: 可选项目上下文
+        max_tokens: LLM 最大输出
+
+    返回:
+        修改后的论文 dict（同 write_paper 输出格式）
+    """
+    ctx = project_context or {}
+
+    # 统一为文本格式
+    if isinstance(current_paper, dict):
+        paper_text = _paper_to_text(current_paper)
+    else:
+        paper_text = str(current_paper)
+
+    if isinstance(review_feedback, dict):
+        fb = review_feedback
+        scores = fb.get("scores", {})
+        weaknesses = fb.get("weaknesses", [])
+        questions = fb.get("questions_for_authors", [])
+        feedback_parts = []
+        if scores:
+            feedback_parts.append(
+                f"Scores: Novelty={scores.get('novelty','?')}, "
+                f"Quality={scores.get('quality','?')}, "
+                f"Clarity={scores.get('clarity','?')}, "
+                f"Significance={scores.get('significance','?')}"
+            )
+        if weaknesses:
+            feedback_parts.append("Weaknesses to fix:\n" + "\n".join(f"- {w}" for w in weaknesses))
+        if questions:
+            feedback_parts.append("Questions to address:\n" + "\n".join(f"- {q}" for q in questions))
+        feedback_text = "\n\n".join(feedback_parts)
+    else:
+        feedback_text = str(review_feedback)
+
+    prompt = f"""## CURRENT PAPER
+{paper_text[:10000]}
+
+## REVIEWER FEEDBACK (must address ALL points)
+{feedback_text[:4000]}
+
+## ADDITIONAL CONTEXT
+Domain: {ctx.get('domain', 'N/A')}
+References available: {len(ctx.get('papergraph_records', []))}
+
+## TASK
+Revise the paper to address EVERY weakness and question in the review feedback.
+Return the COMPLETE revised paper as JSON."""
+
+    result = _call_llm(REVISE_SYSTEM_PROMPT, prompt, max_tokens=max_tokens)
+    paper = result.get("paper", result)
+    paper = _ensure_all_sections(paper)
+    paper = _fill_missing_sections(paper, ctx)
+
+    latex = format_latex(paper)
+    saved = _save_paper(paper, latex, ctx)
+
+    return {
+        "thought": result.get("thought", ""),
+        "paper": paper,
+        "latex": latex,
+        "saved_paths": saved,
+        "paper_status": {
+            "completed_sections": list(paper.keys()),
+            "total_words": _count_words(paper),
+            "citation_count": len(paper.get("references", [])),
+        },
+    }
 
 
 # =====================================================================

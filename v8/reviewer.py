@@ -342,6 +342,145 @@ def write_review(scores: dict, checks: dict) -> str:
     )
 
 
+# ---------------------------------------------------------------------------
+# 修改迭代循环（模块10 核心交付物）
+# ---------------------------------------------------------------------------
+
+def review_and_revise(
+    paper_text: str,
+    project_context: dict[str, Any] | None = None,
+    *,
+    max_rounds: int = 3,
+    pass_threshold: int = 30,
+    verbose: bool = True,
+) -> dict[str, Any]:
+    """
+    评审 → 修改 → 再评审循环，直到论文达标或达到最大轮次。
+
+    参数:
+        paper_text: 初始论文文本（或 PaperWriter 输出的 dict）
+        project_context: 项目上下文
+        max_rounds: 最大迭代轮数
+        pass_threshold: 通过分数线（默认 30/50）
+        verbose: 是否打印每轮进度
+
+    返回:
+        {
+            "final_paper": dict,        # 最终论文
+            "final_review": dict,       # 最终评审报告
+            "rounds": [                 # 每轮历史
+                {"round": 1, "score": 25, "action": "revised", ...},
+            ],
+            "passed": bool,             # 是否达标
+            "total_rounds": int,
+        }
+    """
+    ctx = project_context or {}
+    history: list[dict[str, Any]] = []
+
+    if isinstance(paper_text, dict):
+        paper_text = _paper_dict_to_text(paper_text)
+
+    current_paper_text = paper_text
+
+    for rnd in range(1, max_rounds + 1):
+        if verbose:
+            print(f"\n{'='*50}\n  Round {rnd}/{max_rounds}: Reviewing...\n{'='*50}")
+
+        # 1. 评审当前论文
+        review_report = review_paper(current_paper_text, ctx, save=False)
+        review = review_report["review"]
+        score = review.get("total_score", 0)
+        passed = review.get("pass_threshold_30", score >= pass_threshold)
+
+        round_record = {
+            "round": rnd,
+            "score": score,
+            "recommendation": review.get("recommended_action", ""),
+            "weaknesses": review.get("weaknesses", []),
+            "passed": passed,
+        }
+
+        if verbose:
+            print(f"  Score: {score}/50  →  {review.get('recommended_action', '?')}")
+            for w in review.get("weaknesses", [])[:3]:
+                print(f"    [!] {w}")
+
+        # 2. 通过 → 结束
+        if passed:
+            round_record["action"] = "accepted"
+            history.append(round_record)
+            if verbose:
+                print(f"\n  [PASS] Accepted at round {rnd}!")
+            break
+
+        # 3. 最后一轮 → 标记未通过
+        if rnd == max_rounds:
+            round_record["action"] = "max_rounds_reached"
+            history.append(round_record)
+            if verbose:
+                print(f"\n  [WARN] Max rounds ({max_rounds}) reached. Score: {score}/50")
+            break
+
+        # 4. 未通过 → 修改
+        round_record["action"] = "revised"
+        history.append(round_record)
+
+        if verbose:
+            print(f"  Revising based on {len(review.get('weaknesses', []))} weaknesses...")
+
+        try:
+            from .paper_writer import revise_paper
+        except ImportError:
+            from paper_writer import revise_paper
+
+        revised = revise_paper(current_paper_text, review, ctx)
+        current_paper_text = revised["paper"]  # dict 格式
+        # 同时保存文本用于下轮评审
+        if isinstance(current_paper_text, dict):
+            current_paper_text = _paper_dict_to_text(current_paper_text)
+        elif "paper" in revised:
+            current_paper_text = _paper_dict_to_text(revised["paper"])
+
+    # 最终评审（如果循环因 max_rounds 结束）
+    final_review = review_paper(current_paper_text, ctx, save=True)
+    final_paper = current_paper_text
+
+    # 如果是 dict，保存一份
+    if isinstance(final_paper, str):
+        try:
+            from .paper_writer import _ensure_all_sections, _fill_missing_sections
+        except ImportError:
+            from paper_writer import _ensure_all_sections, _fill_missing_sections
+        # 纯文本，不转回 dict
+
+    return {
+        "final_paper": final_paper,
+        "final_review": final_review["review"],
+        "rounds": history,
+        "passed": history[-1]["passed"] if history else False,
+        "total_rounds": len(history),
+    }
+
+
+def _paper_dict_to_text(paper: dict) -> str:
+    """论文 dict → 纯文本（用于 Reviewer 输入）。"""
+    sections = [
+        ("TITLE", paper.get("title", "")),
+        ("ABSTRACT", paper.get("abstract", "")),
+        ("1. INTRODUCTION", paper.get("introduction", "")),
+        ("2. RELATED WORK", paper.get("related_work", "")),
+        ("3. METHODOLOGY", paper.get("methodology", "")),
+        ("4. EXPERIMENTS", paper.get("experiments", "")),
+        ("5. CONCLUSION", paper.get("conclusion", "")),
+        ("REFERENCES", "\n".join(
+            f"[{i+1}] {r.get('citation', str(r)) if isinstance(r, dict) else str(r)}"
+            for i, r in enumerate(paper.get("references", []))
+        )),
+    ]
+    return "\n\n".join(f"{h}\n{b}" for h, b in sections if b.strip())
+
+
 # =====================================================================
 # CLI
 # =====================================================================
