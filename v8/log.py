@@ -24,9 +24,9 @@ CATEGORY_COLORS = {
     "SUBAGENT": "magenta",
     "USER": "cyan",
     "COMPACT": "yellow",
-    "WORKTREE": "magenta",
+    
     "MCP": "cyan",
-    "TEAMMATE": "magenta",
+    
     "TASK": "cyan",
     "CRON": "cyan",
     "TODO": "cyan",
@@ -49,8 +49,8 @@ def format_event(category: str, event: str, **data: Any) -> str:
 
 def format_value(value: Any) -> str:
     text = str(value).replace("\n", "\\n")
-    if len(text) > 300:
-        return text[:300] + "...[truncated]"
+    if len(text) > 2000:
+        return text[:2000] + "...[truncated]"
     return text
 
 
