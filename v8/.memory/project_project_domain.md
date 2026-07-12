@@ -1,7 +1,7 @@
 ---
 name: project_domain
-description: 项目领域
+description: Personalized Medicine / Precision Medicine / Pharmacogenomics / Cancer Genomics / Clinical Pharmacology / Multi-omics / Patient-derived Models / Cell and Gene Therapy Manufacturing / Biostatistics / Regulatory Science
 type: project
 ---
 
-High-voltage lithium batteries above 4.5 V
+领域：Personalized Medicine / Precision Medicine / Pharmacogenomics / Cancer Genomics / Clinical Pharmacology / Multi-omics / Patient-derived Models / Cell and Gene Therapy Manufacturing / Biostatistics / Regulatory Science

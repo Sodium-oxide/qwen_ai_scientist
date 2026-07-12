@@ -295,12 +295,43 @@ def cancel_cron(job_id: str) -> str:
     return cron_cancel(job_id)
 
 
-def create_research_project(title: str, domain: str, objective: str, strategic_need: str = "") -> str:
+def create_research_project(
+    title: str,
+    domain: str,
+    objective: str,
+    strategic_need: str = "",
+    research_brief: str = "",
+) -> str:
     try:
         from .science_core import create_research_project as science_create
     except ImportError:
         from science_core import create_research_project as science_create
-    return science_create(title, domain, objective, strategic_need)
+    return science_create(title, domain, objective, strategic_need, research_brief)
+
+
+def decompose_research_objective(
+    project_id: str,
+    max_subhypotheses: int = 6,
+    use_llm: bool = True,
+) -> str:
+    try:
+        from .science_core import decompose_research_objective as science_decompose
+    except ImportError:
+        from science_core import decompose_research_objective as science_decompose
+    return science_decompose(project_id, max_subhypotheses, use_llm)
+
+
+def set_research_brief(
+    project_id: str,
+    research_brief: str,
+    redecompose: bool = False,
+    use_llm: bool = True,
+) -> str:
+    try:
+        from .science_core import set_research_brief as science_set_brief
+    except ImportError:
+        from science_core import set_research_brief as science_set_brief
+    return science_set_brief(project_id, research_brief, redecompose, use_llm)
 
 
 def list_research_projects() -> str:
@@ -458,18 +489,40 @@ def expand_literature_graph(
     )
 
 
+def search_cross_community_bridges(
+    search_id: str,
+    target_communities: list[str] | None = None,
+    max_results: int = 12,
+) -> str:
+    try:
+        from .science_core import search_cross_community_bridges as science_bridge_search
+    except ImportError:
+        from science_core import search_cross_community_bridges as science_bridge_search
+    return science_bridge_search(search_id, target_communities, max_results)
+
+
 def build_literature_relation_graph(
     search_id: str,
     query: str = "",
     max_nodes: int = 80,
     min_quality: float = 0.0,
     max_clusters: int = 8,
+    run_louvain: bool = True,
+    louvain_resolution: float | None = None,
 ) -> str:
     try:
         from .science_core import build_literature_relation_graph as science_relation_graph
     except ImportError:
         from science_core import build_literature_relation_graph as science_relation_graph
-    return science_relation_graph(search_id, query, max_nodes, min_quality, max_clusters)
+    return science_relation_graph(
+        search_id,
+        query,
+        max_nodes,
+        min_quality,
+        max_clusters,
+        run_louvain=run_louvain,
+        louvain_resolution=louvain_resolution,
+    )
 
 
 def create_science_pipeline_tasks(project_id: str) -> str:
@@ -521,7 +574,7 @@ def run_boxue_research_round(
     goal: str = "",
     phases: list[str] | None = None,
     plan_id: str = "",
-    execution_mode: str = "async",
+    execution_mode: str = "pipeline",
     max_steps: int = 20,
     max_parallel_agents: int = 3,
     max_runtime_seconds: int = 45,
@@ -687,6 +740,18 @@ def build_knowledge_map(project_id: str, dimension: str = "method-scenario-bench
     return science_knowledge_map(project_id, dimension)
 
 
+def build_louvain_community_knowledge_maps(
+    project_id: str,
+    relation_graph_id: str = "",
+    min_records: int | None = None,
+) -> str:
+    try:
+        from .science_core import build_louvain_community_knowledge_maps as science_community_maps
+    except ImportError:
+        from science_core import build_louvain_community_knowledge_maps as science_community_maps
+    return science_community_maps(project_id, relation_graph_id, min_records)
+
+
 def add_literature_evidence(
     project_id: str,
     title: str,
@@ -751,12 +816,13 @@ def import_literature_file(
     provider: str = "manual_file",
     source_type: str = "file",
     use_llm: bool = False,
+    sub_hypothesis: str = "",
 ) -> str:
     try:
         from .science_core import import_literature_file as science_import_file
     except ImportError:
         from science_core import import_literature_file as science_import_file
-    return science_import_file(project_id, path, title, citation, provider, source_type, use_llm)
+    return science_import_file(project_id, path, title, citation, provider, source_type, use_llm, sub_hypothesis)
 
 
 def import_literature_search_result(
@@ -764,12 +830,46 @@ def import_literature_search_result(
     search_id: str,
     result_index: int = 0,
     use_llm: bool = False,
+    force_import: bool = False,
 ) -> str:
     try:
         from .science_core import import_literature_search_result as science_import_search_result
     except ImportError:
         from science_core import import_literature_search_result as science_import_search_result
-    return science_import_search_result(project_id, search_id, result_index, use_llm)
+    return science_import_search_result(
+        project_id,
+        search_id,
+        result_index,
+        use_llm,
+        force_import=force_import,
+    )
+
+
+def domain_review_paper(
+    project_id: str,
+    paper_id: str,
+    target_domain_profile: list[str] | str | None = None,
+    min_confidence: float = 0.6,
+) -> dict[str, Any]:
+    """Audit an already imported paper and deactivate clear domain noise."""
+    try:
+        from .science_core import domain_review_paper as science_domain_review
+    except ImportError:
+        from science_core import domain_review_paper as science_domain_review
+    return science_domain_review(project_id, paper_id, target_domain_profile, min_confidence)
+
+
+def reconcile_project_domain_reviews(
+    project_id: str,
+    target_domain_profile: list[str] | str | None = None,
+    min_confidence: float = 0.6,
+    include_active: bool = False,
+) -> str:
+    try:
+        from .science_core import reconcile_project_domain_reviews as science_reconcile_reviews
+    except ImportError:
+        from science_core import reconcile_project_domain_reviews as science_reconcile_reviews
+    return science_reconcile_reviews(project_id, target_domain_profile, min_confidence, include_active)
 
 
 def extract_paper_keynote(
@@ -906,26 +1006,60 @@ def run_zhizhi_literature_analysis(
     subspace_map_id: str = "",
     selected_subfields: list[str] | None = None,
     interactive_mode: bool = False,
+    serial_subspace_search: bool | None = None,
+    retrieval_brief: str = "",
+    subspace_rounds: int = 8,
+    boundary_extension_rounds: int = 3,
+    per_subspace_results: int = 12,
+    per_subspace_imports: int = 6,
 ) -> str:
     try:
         from .science_core import run_zhizhi_literature_analysis as science_zhizhi
     except ImportError:
         from science_core import run_zhizhi_literature_analysis as science_zhizhi
     return science_zhizhi(
+        project_id=project_id,
+        domain=domain,
+        query=query,
+        max_results=max_results,
+        years=years,
+        providers=providers,
+        import_top_k=import_top_k,
+        graph_depth=graph_depth,
+        use_llm=use_llm,
+        focus_branches=focus_branches,
+        live_coverage_check=live_coverage_check,
+        subspace_map_id=subspace_map_id,
+        selected_subfields=selected_subfields,
+        interactive_mode=interactive_mode,
+        serial_subspace_search=serial_subspace_search,
+        retrieval_brief=retrieval_brief,
+        subspace_rounds=subspace_rounds,
+        boundary_extension_rounds=boundary_extension_rounds,
+        per_subspace_results=per_subspace_results,
+        per_subspace_imports=per_subspace_imports,
+    )
+
+
+def run_zhizhi_subhypothesis_analysis(
+    project_id: str,
+    sub_hypothesis_ids: list[str] | None = None,
+    max_results_per_hypothesis: int = 24,
+    import_top_k_per_hypothesis: int = 10,
+    providers: list[str] | None = None,
+    use_llm: bool = True,
+) -> str:
+    try:
+        from .science_core import run_zhizhi_subhypothesis_analysis as science_zhizhi_subhypothesis
+    except ImportError:
+        from science_core import run_zhizhi_subhypothesis_analysis as science_zhizhi_subhypothesis
+    return science_zhizhi_subhypothesis(
         project_id,
-        domain,
-        query,
-        max_results,
-        years,
+        sub_hypothesis_ids,
+        max_results_per_hypothesis,
+        import_top_k_per_hypothesis,
         providers,
-        import_top_k,
-        graph_depth,
         use_llm,
-        focus_branches,
-        live_coverage_check,
-        subspace_map_id,
-        selected_subfields,
-        interactive_mode,
     )
 
 
@@ -1662,8 +1796,36 @@ SCIENCE_TOOLS = [
                 "domain": {"type": "string", "description": "Scientific domain."},
                 "objective": {"type": "string", "description": "Research objective."},
                 "strategic_need": {"type": "string", "description": "Optional strategic or application need."},
+                "research_brief": {"type": "string", "description": "Complete original user task, preserved verbatim as the authoritative downstream specification. The runtime injects the current user prompt when omitted."},
             },
             "required": ["title", "domain", "objective"],
+        },
+    },
+    {
+        "name": "decompose_research_objective",
+        "description": "Boxue Decomposer gate: split a composite objective into independently falsifiable causal sub-hypotheses before retrieval or task delegation.",
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "project_id": {"type": "string", "description": "Science project id."},
+                "max_subhypotheses": {"type": "integer", "description": "Maximum independently testable sub-hypotheses; default 6."},
+                "use_llm": {"type": "boolean", "description": "Use Qwen JSON decomposition when configured; otherwise use a conservative heuristic fallback."},
+            },
+            "required": ["project_id"],
+        },
+    },
+    {
+        "name": "set_research_brief",
+        "description": "Attach the complete original task instructions verbatim to an existing project, optionally then rerun decomposition so retrieval and gap discovery use the restored constraints.",
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "project_id": {"type": "string", "description": "Science project id."},
+                "research_brief": {"type": "string", "description": "Complete original user task; do not summarize or omit constraints."},
+                "redecompose": {"type": "boolean", "description": "Immediately regenerate the decomposition from the restored brief."},
+                "use_llm": {"type": "boolean", "description": "Use Qwen JSON decomposition when configured."},
+            },
+            "required": ["project_id", "research_brief"],
         },
     },
     {
@@ -1820,7 +1982,7 @@ SCIENCE_TOOLS = [
     },
     {
         "name": "expand_literature_graph",
-        "description": "DeepSurvey-style citation graph expansion from one cached seed paper through Semantic Scholar references/citations, then rank with PaperGraph quality gates. Tries arXiv IDs with and without version suffix. If graph edges are empty, optionally falls back to Semantic Scholar keyword expansion and marks fallback_used.",
+        "description": "DeepSurvey-style citation graph expansion from one cached seed paper through Semantic Scholar references/citations, then rank with PaperGraph quality gates. At depth two, it prefers seeds from different heuristic communities and may run a bounded bridge search only when result count or community coverage is sparse. Tries arXiv IDs with and without version suffix. If graph edges are empty, optionally falls back to Semantic Scholar keyword expansion and marks fallback_used.",
         "input_schema": {
             "type": "object",
             "properties": {
@@ -1838,8 +2000,21 @@ SCIENCE_TOOLS = [
         },
     },
     {
+        "name": "search_cross_community_bridges",
+        "description": "Run a bounded Semantic Scholar bridge search for papers containing both clinical and molecular/mechanistic evidence. Saves candidates for review/import but never imports them automatically.",
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "search_id": {"type": "string", "description": "Source search_id whose query supplies bridge terms."},
+                "target_communities": {"type": "array", "items": {"type": "string"}, "description": "Optional observed communities to record in the bridge-search provenance."},
+                "max_results": {"type": "integer", "description": "Maximum bridge candidates, bounded by SCIENCE_BRIDGE_SEARCH_MAX_RESULTS."},
+            },
+            "required": ["search_id"],
+        },
+    },
+    {
         "name": "build_literature_relation_graph",
-        "description": "Build a mechanism lineage graph from cached search or graph-expansion results. Produces nodes, citation/relevance edges, mechanism clusters, PageRank centrality, and representative papers for claim-citation verification.",
+        "description": "Build a mechanism lineage graph from cached search or graph-expansion results. Produces citation/relevance edges, mechanism clusters, PageRank centrality, and optional Louvain structural communities with bridge-paper recommendations.",
         "input_schema": {
             "type": "object",
             "properties": {
@@ -1848,6 +2023,8 @@ SCIENCE_TOOLS = [
                 "max_nodes": {"type": "integer", "description": "Maximum papers to include in the graph."},
                 "min_quality": {"type": "number", "description": "Optional publication_quality_score floor; use 0.55+ to exclude weak/noisy papers."},
                 "max_clusters": {"type": "integer", "description": "Maximum mechanism clusters after merging singleton clusters; default 8."},
+                "run_louvain": {"type": "boolean", "description": "Run weighted Louvain detection over real citation-graph edges; default true."},
+                "louvain_resolution": {"type": "number", "description": "Optional Louvain resolution in [0.1, 5.0]; higher values produce smaller communities."},
             },
             "required": ["search_id"],
         },
@@ -1887,7 +2064,7 @@ SCIENCE_TOOLS = [
     },
     {
         "name": "create_boxue_delegation_tasks",
-        "description": "Implement Boxue's Chief Research Scheduler prompt as a persistent multi-agent DAG: assign role-bound tasks to ZhiZhi, TanXi, MingLi, DuZhi, BianLun, YanZhen, GeWu, CodeEngineer, MingBian, PaperWriter, Reviewer, and Boxue final synthesis, each with dependencies, deliverables, acceptance criteria, and risks.",
+        "description": "Plan only: create Boxue's persistent multi-agent DAG with role-bound tasks, dependencies, deliverables, acceptance criteria, and risks. This does not start specialists or a closed loop. For a user request to run a workflow, call run_boxue_research_round with execution_mode='pipeline' immediately afterwards.",
         "input_schema": {
             "type": "object",
             "properties": {
@@ -1906,7 +2083,7 @@ SCIENCE_TOOLS = [
     },
     {
         "name": "run_boxue_research_round",
-        "description": "Run Boxue's automatic scheduling loop for one bounded research round. Recommended: execution_mode='pipeline' or 'autogen' runs the AutoGen 2.0-style GroupChat layer ZhiZhi -> TanXi -> MingLi -> YanZhen -> DuZhi -> BianLun without CrewAI, worktrees, or background teammates. Legacy async mode still creates/monitors teammate tasks.",
+        "description": "Run Boxue's automatic closed-loop research round. Default execution_mode='pipeline' runs the AutoGen 2.0-style ZhiZhi -> TanXi -> Socrates -> MingLi -> YanZhen -> DuZhi -> BianLun pipeline without CrewAI or worktrees. Use execution_mode='async' only to monitor legacy persistent tasks; it does not execute specialists by itself.",
         "input_schema": {
             "type": "object",
             "properties": {
@@ -1919,7 +2096,7 @@ SCIENCE_TOOLS = [
                 },
                 "plan_id": {
                     "type": "string",
-                    "description": "Optional existing boxue_delegation_plan_id to continue; if omitted, an active unfinished plan is reused or a new one is created.",
+                    "description": "Optional exact boxue_delegation_plan_id returned by an earlier successful Boxue tool call. Never invent this value. For a first run, omit plan_id: an active unfinished plan is reused or a new plan is created automatically.",
                 },
                 "execution_mode": {
                     "type": "string",
@@ -2026,6 +2203,19 @@ SCIENCE_TOOLS = [
         },
     },
     {
+        "name": "build_louvain_community_knowledge_maps",
+        "description": "Map a persisted Louvain relation graph onto imported PaperGraph evidence, build one evidence-bounded knowledge map per community, and identify communities requiring representative-paper import.",
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "project_id": {"type": "string", "description": "Science project id."},
+                "relation_graph_id": {"type": "string", "description": "Optional persisted relation_graph_id; defaults to the project's latest Louvain relation graph."},
+                "min_records": {"type": "integer", "description": "Minimum imported evidence records before a community can produce gap candidates; default is the configured value."},
+            },
+            "required": ["project_id"],
+        },
+    },
+    {
         "name": "add_literature_evidence",
         "description": "Add one structured PaperGraph evidence record to a science project.",
         "input_schema": {
@@ -2070,7 +2260,7 @@ SCIENCE_TOOLS = [
     },
     {
         "name": "import_literature_file",
-        "description": "Import a workspace text/PDF file into PaperGraph. PDF extraction uses optional pypdf and mines limitations/future-work/open-problem sections into gap_signals for TanXi.",
+        "description": "Import a workspace text/PDF file into PaperGraph. PDF import uses structure-aware section selection, causal-keyword evidence, optional table extraction, and an extraction coverage report for TanXi/Socrates.",
         "input_schema": {
             "type": "object",
             "properties": {
@@ -2081,13 +2271,14 @@ SCIENCE_TOOLS = [
                 "provider": {"type": "string", "description": "Optional provider."},
                 "source_type": {"type": "string", "description": "Optional source type."},
                 "use_llm": {"type": "boolean", "description": "Use Qwen/LLM JSON extraction after text/PDF extraction."},
+                "sub_hypothesis": {"type": "string", "description": "Optional SH identifier or causal focus used to validate PDF evidence coverage."},
             },
             "required": ["project_id", "path"],
         },
     },
     {
         "name": "import_literature_search_result",
-        "description": "Import one real paper from a cached search_literature result by search_id and result_index. Fails if the search has no retrieved papers.",
+        "description": "Import one real paper from a cached search_literature result by search_id and result_index. Set force_import only after human review to retain a paper rejected by the domain gate.",
         "input_schema": {
             "type": "object",
             "properties": {
@@ -2095,6 +2286,7 @@ SCIENCE_TOOLS = [
                 "search_id": {"type": "string", "description": "search_id returned by search_literature."},
                 "result_index": {"type": "integer", "description": "Zero-based result_index returned by search_literature."},
                 "use_llm": {"type": "boolean", "description": "Use Qwen/LLM extraction on the result abstract before importing."},
+                "force_import": {"type": "boolean", "description": "Human-reviewed override for a domain-gate rejection; record remains marked for review."},
             },
             "required": ["project_id", "search_id"],
         },
@@ -2232,8 +2424,30 @@ SCIENCE_TOOLS = [
                     "description": "User-selected subspace names/ids from the DSE map. Custom user-entered subspaces are allowed and become custom retrieval branches.",
                 },
                 "interactive_mode": {"type": "boolean", "description": "If true and no subspace_map_id is provided, stop after DSE and return user_interaction before importing papers."},
+                "serial_subspace_search": {"type": "boolean", "description": "Default true. Search each scientific subspace serially with its own cache and import budget rather than one broad mixed query."},
+                "retrieval_brief": {"type": "string", "description": "Full user research brief used only to derive explicit subspaces; provider queries remain compact per subspace."},
+                "subspace_rounds": {"type": "integer", "description": "Core subspace rounds, constrained to 6-10; default 8."},
+                "boundary_extension_rounds": {"type": "integer", "description": "Boundary-extension rounds after core coverage, constrained to 3-4; default 3."},
+                "per_subspace_results": {"type": "integer", "description": "Candidate budget per subspace, constrained to 10-14; default 12."},
+                "per_subspace_imports": {"type": "integer", "description": "Imported papers per subspace, constrained to 5-7; default 6."},
             },
             "required": ["project_id", "domain", "query"],
+        },
+    },
+    {
+        "name": "run_zhizhi_subhypothesis_analysis",
+        "description": "Run ZhiZhi retrieval separately for each decomposed sub-hypothesis, enforce its P0-P4 evidence window, and mark a branch evidence-insufficient instead of filling a missing P0 preprint with older literature.",
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "project_id": {"type": "string", "description": "Science project id."},
+                "sub_hypothesis_ids": {"type": "array", "items": {"type": "string"}, "description": "Optional SH identifiers; default runs all decomposed branches."},
+                "max_results_per_hypothesis": {"type": "integer", "description": "Candidate budget per sub-hypothesis."},
+                "import_top_k_per_hypothesis": {"type": "integer", "description": "Import budget per sub-hypothesis."},
+                "providers": {"type": "array", "items": {"type": "string"}, "description": "Optional literature providers; arXiv is used for P0 recovery."},
+                "use_llm": {"type": "boolean", "description": "Use Qwen for extraction and judging when configured."},
+            },
+            "required": ["project_id"],
         },
     },
     {
@@ -2361,6 +2575,34 @@ SCIENCE_TOOLS = [
                 "generations": {"type": "integer", "description": "Tournament evolution generations."},
                 "top_k": {"type": "integer", "description": "Number of final hypotheses to persist."},
                 "use_llm": {"type": "boolean", "description": "Reserved for future LLM seed generation; v1 uses auditable templates."},
+            },
+            "required": ["project_id"],
+        },
+    },
+    {
+        "name": "domain_review_paper",
+        "description": "Re-audit one imported PaperGraph record against the project's domain. Clear mismatches are retained for audit but marked inactive so knowledge maps and TanXi ignore them.",
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "project_id": {"type": "string", "description": "Science project id."},
+                "paper_id": {"type": "string", "description": "Imported PaperGraph paper_id."},
+                "target_domain_profile": {"description": "Optional domain string or keyword list; defaults to the project domain."},
+                "min_confidence": {"type": "number", "description": "Minimum target-anchor coverage for cross-field records; default 0.6."},
+            },
+            "required": ["project_id", "paper_id"],
+        },
+    },
+    {
+        "name": "reconcile_project_domain_reviews",
+        "description": "Re-run domain review for inactive PaperGraph records and recover their original cached retrieval relevance when available. It can reactivate prior false negatives but keeps review-status records marked for audit.",
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "project_id": {"type": "string", "description": "Science project id."},
+                "target_domain_profile": {"type": ["array", "string"], "description": "Optional replacement domain profile."},
+                "min_confidence": {"type": "number", "description": "Domain-review confidence threshold."},
+                "include_active": {"type": "boolean", "description": "Also re-audit currently active records; defaults to inactive records only."},
             },
             "required": ["project_id"],
         },
@@ -2722,6 +2964,7 @@ TOOL_HANDLERS: dict[str, Callable[..., str]] = {
     "extract_structured_info": extract_structured_info,
     "select_literature_result": select_literature_result,
     "expand_literature_graph": expand_literature_graph,
+    "search_cross_community_bridges": search_cross_community_bridges,
     "build_literature_relation_graph": build_literature_relation_graph,
     "create_science_pipeline_tasks": create_science_pipeline_tasks,
     "create_science_delegation_tasks": create_science_delegation_tasks,
@@ -2735,11 +2978,16 @@ TOOL_HANDLERS: dict[str, Callable[..., str]] = {
     "run_science_crew_flow": run_science_crew_flow,
     "list_science_crews": list_science_crews,
     "get_science_crew_run": get_science_crew_run,
+    "decompose_research_objective": decompose_research_objective,
+    "set_research_brief": set_research_brief,
     "build_knowledge_map": build_knowledge_map,
+    "build_louvain_community_knowledge_maps": build_louvain_community_knowledge_maps,
     "add_literature_evidence": add_literature_evidence,
     "import_literature_text": import_literature_text,
     "import_literature_file": import_literature_file,
     "import_literature_search_result": import_literature_search_result,
+    "domain_review_paper": domain_review_paper,
+    "reconcile_project_domain_reviews": reconcile_project_domain_reviews,
     "extract_paper_keynote": extract_paper_keynote,
     "import_papergraph_record": import_papergraph_record,
     "list_papergraph_records": list_papergraph_records,
@@ -2747,6 +2995,7 @@ TOOL_HANDLERS: dict[str, Callable[..., str]] = {
     "assess_novelty": assess_novelty,
     "verify_uniqueness": verify_uniqueness,
     "run_zhizhi_literature_analysis": run_zhizhi_literature_analysis,
+    "run_zhizhi_subhypothesis_analysis": run_zhizhi_subhypothesis_analysis,
     "parse_literature_text": parse_literature_text,
     "build_coverage_matrix": build_coverage_matrix,
     "detect_knowledge_gaps": detect_knowledge_gaps,

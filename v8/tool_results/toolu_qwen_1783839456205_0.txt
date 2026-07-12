@@ -1,0 +1,3621 @@
+{
+  "agent": "tanxi",
+  "target_domain": "Personalized Medicine / Precision Medicine / Pharmacogenomics / Cancer Genomics / Clinical Pharmacology / Multi-omics / Patient-derived Models / Cell and Gene Therapy Manufacturing / Biostatistics / Regulatory Science",
+  "thought": "TanXi scanned the PaperGraph for low-density but high-importance method-scenario-benchmark regions, claim contradictions, anomaly/tension signals, cross-disciplinary unconnected pairs, suspended unresolved problems, and strategic-need alignment.",
+  "action": {
+    "scan_coverage_density": {
+      "target_domain": "Personalized Medicine / Precision Medicine / Pharmacogenomics / Cancer Genomics / Clinical Pharmacology / Multi-omics / Patient-derived Models / Cell and Gene Therapy Manufacturing / Biostatistics / Regulatory Science"
+    },
+    "detect_reasoning_gaps": {
+      "types": [
+        "claim_contradiction",
+        "theory_evidence_anomaly"
+      ]
+    },
+    "detect_source_gap_signals": {
+      "types": [
+        "limitations",
+        "future_work",
+        "open_problem",
+        "missing_evidence"
+      ]
+    },
+    "detect_mechanism_issue_gaps": {
+      "priority": "higher_than_matrix_holes"
+    },
+    "find_unconnected_pairs": {
+      "target_domain": "Personalized Medicine / Precision Medicine / Pharmacogenomics / Cancer Genomics / Clinical Pharmacology / Multi-omics / Patient-derived Models / Cell and Gene Therapy Manufacturing / Biostatistics / Regulatory Science"
+    },
+    "detect_suspended_problems": {
+      "min_citation_threshold": 50
+    },
+    "prioritize_gaps": {
+      "criteria": [
+        "importance",
+        "tractability",
+        "strategic_value",
+        "core_mechanism_relevance"
+      ]
+    },
+    "tabi_mechanism_audit": {
+      "checks": [
+        "theory_consistency",
+        "counterfactual",
+        "mechanism_competition",
+        "evidence_gap",
+        "testable_prediction",
+        "contradiction_score"
+      ]
+    },
+    "align_with_strategic_needs": {
+      "strategic_domains": [
+        "Pharmacogenomics",
+        "Cancer Genomics",
+        "Clinical Pharmacology",
+        "Multi-omics",
+        "Patient-derived Models",
+        "Cell and Gene Therapy Manufacturing",
+        "Biostatistics",
+        "Regulatory Science"
+      ]
+    }
+  },
+  "coverage_analysis": {
+    "target_domain": "Personalized Medicine / Precision Medicine / Pharmacogenomics / Cancer Genomics / Clinical Pharmacology / Multi-omics / Patient-derived Models / Cell and Gene Therapy Manufacturing / Biostatistics / Regulatory Science",
+    "method_count": 47,
+    "scenario_count": 58,
+    "benchmark_count": 53,
+    "dense_areas": [
+      {
+        "topic": "16S (V3-V4) rRNA sequencing, Kaplan-Meier and Cox proportional hazard models + metastatic triple-negative breast cancer (mTNBC) treated with chemo-immunotherapy",
+        "method": "16S (V3-V4) rRNA sequencing, Kaplan-Meier and Cox proportional hazard models",
+        "scenario": "metastatic triple-negative breast cancer (mTNBC) treated with chemo-immunotherapy",
+        "evidence_count": 1,
+        "benchmark_count": 1,
+        "importance_score": 7
+      },
+      {
+        "topic": "Least Absolute Shrinkage and Selection Operator regression analysis + gastric cancer",
+        "method": "Least Absolute Shrinkage and Selection Operator regression analysis",
+        "scenario": "gastric cancer",
+        "evidence_count": 1,
+        "benchmark_count": 1,
+        "importance_score": 7
+      },
+      {
+        "topic": "PCR-ARMS and PCR-RFLP genotyping, plasma MTX concentration measurement + Acute lymphoblastic leukaemia (ALL) or Non-Hodgkin lymphoma (NHL) in Egyptian adult patients",
+        "method": "PCR-ARMS and PCR-RFLP genotyping, plasma MTX concentration measurement",
+        "scenario": "Acute lymphoblastic leukaemia (ALL) or Non-Hodgkin lymphoma (NHL) in Egyptian adult patients",
+        "evidence_count": 1,
+        "benchmark_count": 1,
+        "importance_score": 5
+      },
+      {
+        "topic": "Quality Management System (QMS) framework with centralized Control Site model + decentralized manufacturing of cell and gene therapy products",
+        "method": "Quality Management System (QMS) framework with centralized Control Site model",
+        "scenario": "decentralized manufacturing of cell and gene therapy products",
+        "evidence_count": 1,
+        "benchmark_count": 1,
+        "importance_score": 7
+      },
+      {
+        "topic": "RapidArc technology with Varian Millennium MLC system + prostate SBRT",
+        "method": "RapidArc technology with Varian Millennium MLC system",
+        "scenario": "prostate SBRT",
+        "evidence_count": 1,
+        "benchmark_count": 1,
+        "importance_score": 5
+      },
+      {
+        "topic": "XGBoost ensemble model + breast cancer risk prediction for Indian women",
+        "method": "XGBoost ensemble model",
+        "scenario": "breast cancer risk prediction for Indian women",
+        "evidence_count": 1,
+        "benchmark_count": 1,
+        "importance_score": 7
+      },
+      {
+        "topic": "agent-based model with spatial statistics and machine learning classification + cancer cells, specifically interactions between drug-sensitive and drug-resistant subpopulations",
+        "method": "agent-based model with spatial statistics and machine learning classification",
+        "scenario": "cancer cells, specifically interactions between drug-sensitive and drug-resistant subpopulations",
+        "evidence_count": 1,
+        "benchmark_count": 1,
+        "importance_score": 7
+      },
+      {
+        "topic": "allele frequency analysis + genetic disease",
+        "method": "allele frequency analysis",
+        "scenario": "genetic disease",
+        "evidence_count": 1,
+        "benchmark_count": 1,
+        "importance_score": 5
+      },
+      {
+        "topic": "biomarkers + cancer therapy, personalized medicine, precision oncology",
+        "method": "biomarkers",
+        "scenario": "cancer therapy, personalized medicine, precision oncology",
+        "evidence_count": 1,
+        "benchmark_count": 1,
+        "importance_score": 7
+      },
+      {
+        "topic": "case studies + cell and gene therapy regulatory filings",
+        "method": "case studies",
+        "scenario": "cell and gene therapy regulatory filings",
+        "evidence_count": 1,
+        "benchmark_count": 1,
+        "importance_score": 7
+      }
+    ],
+    "density_holes": [
+      {
+        "topic": "clinical study design + pregabalin pharmacokinetics and safety",
+        "method": "clinical study design",
+        "scenario": "pregabalin pharmacokinetics and safety",
+        "importance_score": 10,
+        "current_evidence_level": "none",
+        "missing_benchmarks": [
+          "AUC scores, sensitivity, specificity, Dice scores, K-statistic",
+          "AUC∞, Cmax, t1/2, adverse drug reaction (ADR) occurrence",
+          "CTCAE criteria; grade ≥3 treatment-related toxicity",
+          "Common Terminology Criteria for Adverse Events, v4.03",
+          "Harrell's c-index, area under the curve (AUC), and accuracy in high-risk populations"
+        ],
+        "why_important": "Both the method and scenario are visible in the field map, but this intersection has no recorded validation.",
+        "supporting_references": [
+          "M. E. van de Velde et al. (2022) Genetic Polymorphisms Associated with Vincristine Pharmacokinetics and Vincristine-Induced Peripheral Neuropathy in Pediatric Oncology Patients doi:10.3390/cancers14143510",
+          "Sofía Calleja et al. (2025) Impact of Genetic Variants on Pregabalin Pharmacokinetics and Safety doi:10.3390/ph18020151",
+          "C. Pui (2009) Acute Lymphoblastic Leukemia: Introduction doi:10.1053/j.seminhematol.2008.09.011",
+          "Jeffrey Teoh et al. (2022) Developing lisocabtagene maraleucel chimeric antigen receptor T-cell manufacturing for improved process, product quality and consistency across CD19+ hematologic indications. doi:10.1016/j.jcyt.2022.03.013"
+        ],
+        "semantic_plausibility": {
+          "verdict": "HUMAN_REVIEW",
+          "score": 0.53,
+          "requirements": [],
+          "scenario_affordances": [
+            "graph",
+            "image",
+            "intervention",
+            "molecular",
+            "omics",
+            "sequence"
+          ],
+          "bridge_terms": [
+            "multi-omics"
+          ],
+          "score_breakdown": [
+            {
+              "factor": "base_prior",
+              "delta": 0.45,
+              "reason": "default prior before evidence checks"
+            },
+            {
+              "factor": "bridge_terms",
+              "delta": 0.08,
+              "reason": "1 bridge concept(s) detected"
+            }
+          ],
+          "reason": "bridge concepts detected: multi-omics"
+        }
+      },
+      {
+        "topic": "clinical study design + acute lymphoblastic leukemia (ALL) treatment benchmark coverage",
+        "method": "clinical study design",
+        "scenario": "acute lymphoblastic leukemia (ALL) treatment",
+        "importance_score": 9,
+        "current_evidence_level": "medium",
+        "missing_benchmarks": [
+          "AUC scores, sensitivity, specificity, Dice scores, K-statistic",
+          "AUC∞, Cmax, t1/2, adverse drug reaction (ADR) occurrence",
+          "CTCAE criteria; grade ≥3 treatment-related toxicity",
+          "Common Terminology Criteria for Adverse Events, v4.03",
+          "Harrell's c-index, area under the curve (AUC), and accuracy in high-risk populations"
+        ],
+        "why_important": "The method-scenario pair has evidence, but benchmark coverage is sparse, so robustness and generalization remain uncertain.",
+        "supporting_references": [
+          "C. Pui (2009) Acute Lymphoblastic Leukemia: Introduction doi:10.1053/j.seminhematol.2008.09.011"
+        ],
+        "semantic_plausibility": {
+          "verdict": "PASS",
+          "score": 0.88,
+          "requirements": [],
+          "scenario_affordances": [
+            "graph",
+            "image",
+            "intervention",
+            "molecular",
+            "omics",
+            "sequence"
+          ],
+          "bridge_terms": [
+            "multi-omics"
+          ],
+          "score_breakdown": [
+            {
+              "factor": "base_prior",
+              "delta": 0.45,
+              "reason": "default prior before evidence checks"
+            },
+            {
+              "factor": "papergraph_cooccurrence",
+              "delta": 0.35,
+              "reason": "method and scenario co-occur in PaperGraph"
+            },
+            {
+              "factor": "bridge_terms",
+              "delta": 0.08,
+              "reason": "1 bridge concept(s) detected"
+            }
+          ],
+          "reason": "method and scenario already co-occur in at least one PaperGraph record; bridge concepts detected: multi-omics"
+        }
+      },
+      {
+        "topic": "clinical study design + maraleucel chimeric antigen receptor t-cell manufacturing for improved process benchmark coverage",
+        "method": "clinical study design",
+        "scenario": "maraleucel chimeric antigen receptor t-cell manufacturing for improved process",
+        "importance_score": 9,
+        "current_evidence_level": "medium",
+        "missing_benchmarks": [
+          "AUC scores, sensitivity, specificity, Dice scores, K-statistic",
+          "AUC∞, Cmax, t1/2, adverse drug reaction (ADR) occurrence",
+          "CTCAE criteria; grade ≥3 treatment-related toxicity",
+          "Common Terminology Criteria for Adverse Events, v4.03",
+          "Harrell's c-index, area under the curve (AUC), and accuracy in high-risk populations"
+        ],
+        "why_important": "The method-scenario pair has evidence, but benchmark coverage is sparse, so robustness and generalization remain uncertain.",
+        "supporting_references": [
+          "Jeffrey Teoh et al. (2022) Developing lisocabtagene maraleucel chimeric antigen receptor T-cell manufacturing for improved process, product quality and consistency across CD19+ hematologic indications. doi:10.1016/j.jcyt.2022.03.013"
+        ],
+        "semantic_plausibility": {
+          "verdict": "PASS",
+          "score": 0.88,
+          "requirements": [],
+          "scenario_affordances": [
+            "graph",
+            "image",
+            "intervention",
+            "molecular",
+            "omics",
+            "sequence"
+          ],
+          "bridge_terms": [
+            "multi-omics"
+          ],
+          "score_breakdown": [
+            {
+              "factor": "base_prior",
+              "delta": 0.45,
+              "reason": "default prior before evidence checks"
+            },
+            {
+              "factor": "papergraph_cooccurrence",
+              "delta": 0.35,
+              "reason": "method and scenario co-occur in PaperGraph"
+            },
+            {
+              "factor": "bridge_terms",
+              "delta": 0.08,
+              "reason": "1 bridge concept(s) detected"
+            }
+          ],
+          "reason": "method and scenario already co-occur in at least one PaperGraph record; bridge concepts detected: multi-omics"
+        }
+      },
+      {
+        "topic": "clinical study design + vincristine-induced peripheral neuropathy in pediatric oncology patients benchmark coverage",
+        "method": "clinical study design",
+        "scenario": "vincristine-induced peripheral neuropathy in pediatric oncology patients",
+        "importance_score": 9,
+        "current_evidence_level": "medium",
+        "missing_benchmarks": [
+          "AUC scores, sensitivity, specificity, Dice scores, K-statistic",
+          "AUC∞, Cmax, t1/2, adverse drug reaction (ADR) occurrence",
+          "CTCAE criteria; grade ≥3 treatment-related toxicity",
+          "Common Terminology Criteria for Adverse Events, v4.03",
+          "Harrell's c-index, area under the curve (AUC), and accuracy in high-risk populations"
+        ],
+        "why_important": "The method-scenario pair has evidence, but benchmark coverage is sparse, so robustness and generalization remain uncertain.",
+        "supporting_references": [
+          "M. E. van de Velde et al. (2022) Genetic Polymorphisms Associated with Vincristine Pharmacokinetics and Vincristine-Induced Peripheral Neuropathy in Pediatric Oncology Patients doi:10.3390/cancers14143510"
+        ],
+        "semantic_plausibility": {
+          "verdict": "PASS",
+          "score": 0.88,
+          "requirements": [],
+          "scenario_affordances": [
+            "graph",
+            "image",
+            "intervention",
+            "molecular",
+            "omics",
+            "sequence"
+          ],
+          "bridge_terms": [
+            "multi-omics"
+          ],
+          "score_breakdown": [
+            {
+              "factor": "base_prior",
+              "delta": 0.45,
+              "reason": "default prior before evidence checks"
+            },
+            {
+              "factor": "papergraph_cooccurrence",
+              "delta": 0.35,
+              "reason": "method and scenario co-occur in PaperGraph"
+            },
+            {
+              "factor": "bridge_terms",
+              "delta": 0.08,
+              "reason": "1 bridge concept(s) detected"
+            }
+          ],
+          "reason": "method and scenario already co-occur in at least one PaperGraph record; bridge concepts detected: multi-omics"
+        }
+      },
+      {
+        "topic": "imaging and characterization + mesenchymal stromal cell-based product development for clinical practice benchmark coverage",
+        "method": "imaging and characterization",
+        "scenario": "mesenchymal stromal cell-based product development for clinical practice",
+        "importance_score": 9,
+        "current_evidence_level": "medium",
+        "missing_benchmarks": [
+          "AUC scores, sensitivity, specificity, Dice scores, K-statistic",
+          "AUC∞, Cmax, t1/2, adverse drug reaction (ADR) occurrence",
+          "CTCAE criteria; grade ≥3 treatment-related toxicity",
+          "Common Terminology Criteria for Adverse Events, v4.03",
+          "Harrell's c-index, area under the curve (AUC), and accuracy in high-risk populations"
+        ],
+        "why_important": "The method-scenario pair has evidence, but benchmark coverage is sparse, so robustness and generalization remain uncertain.",
+        "supporting_references": [
+          "C. Rebelatto et al. (2023) Quality Control Optimization for Minimizing Security Risks Associated with Mesenchymal Stromal Cell-Based Product Development doi:10.3390/ijms241612955"
+        ],
+        "semantic_plausibility": {
+          "verdict": "PASS",
+          "score": 0.88,
+          "requirements": [],
+          "scenario_affordances": [
+            "graph",
+            "image",
+            "intervention",
+            "molecular",
+            "omics",
+            "sequence"
+          ],
+          "bridge_terms": [
+            "multi-omics"
+          ],
+          "score_breakdown": [
+            {
+              "factor": "base_prior",
+              "delta": 0.45,
+              "reason": "default prior before evidence checks"
+            },
+            {
+              "factor": "papergraph_cooccurrence",
+              "delta": 0.35,
+              "reason": "method and scenario co-occur in PaperGraph"
+            },
+            {
+              "factor": "bridge_terms",
+              "delta": 0.08,
+              "reason": "1 bridge concept(s) detected"
+            }
+          ],
+          "reason": "method and scenario already co-occur in at least one PaperGraph record; bridge concepts detected: multi-omics"
+        }
+      },
+      {
+        "topic": "imaging and characterization + regulatory T cell (Treg) therapies benchmark coverage",
+        "method": "imaging and characterization",
+        "scenario": "regulatory T cell (Treg) therapies",
+        "importance_score": 9,
+        "current_evidence_level": "medium",
+        "missing_benchmarks": [
+          "AUC scores, sensitivity, specificity, Dice scores, K-statistic",
+          "AUC∞, Cmax, t1/2, adverse drug reaction (ADR) occurrence",
+          "CTCAE criteria; grade ≥3 treatment-related toxicity",
+          "Common Terminology Criteria for Adverse Events, v4.03",
+          "Harrell's c-index, area under the curve (AUC), and accuracy in high-risk populations"
+        ],
+        "why_important": "The method-scenario pair has evidence, but benchmark coverage is sparse, so robustness and generalization remain uncertain.",
+        "supporting_references": [
+          "Z. Cheng et al. (2025) Transcriptional fingerprinting of regulatory T cells: ensuring quality in cell therapy applications doi:10.3389/fimmu.2025.1602172"
+        ],
+        "semantic_plausibility": {
+          "verdict": "PASS",
+          "score": 0.88,
+          "requirements": [],
+          "scenario_affordances": [
+            "graph",
+            "image",
+            "intervention",
+            "molecular",
+            "omics",
+            "sequence"
+          ],
+          "bridge_terms": [
+            "multi-omics"
+          ],
+          "score_breakdown": [
+            {
+              "factor": "base_prior",
+              "delta": 0.45,
+              "reason": "default prior before evidence checks"
+            },
+            {
+              "factor": "papergraph_cooccurrence",
+              "delta": 0.35,
+              "reason": "method and scenario co-occur in PaperGraph"
+            },
+            {
+              "factor": "bridge_terms",
+              "delta": 0.08,
+              "reason": "1 bridge concept(s) detected"
+            }
+          ],
+          "reason": "method and scenario already co-occur in at least one PaperGraph record; bridge concepts detected: multi-omics"
+        }
+      },
+      {
+        "topic": "systematic review + cell gene therapies development and approval benchmark coverage",
+        "method": "systematic review",
+        "scenario": "cell gene therapies development and approval",
+        "importance_score": 9,
+        "current_evidence_level": "medium",
+        "missing_benchmarks": [
+          "AUC scores, sensitivity, specificity, Dice scores, K-statistic",
+          "AUC∞, Cmax, t1/2, adverse drug reaction (ADR) occurrence",
+          "CTCAE criteria; grade ≥3 treatment-related toxicity",
+          "Common Terminology Criteria for Adverse Events, v4.03",
+          "Harrell's c-index, area under the curve (AUC), and accuracy in high-risk populations"
+        ],
+        "why_important": "The method-scenario pair has evidence, but benchmark coverage is sparse, so robustness and generalization remain uncertain.",
+        "supporting_references": [
+          "C. Iglesias-López et al. (2026) Outlook of Cell Gene Therapies Development and Approval from Quality and Regulatory Perspective doi:10.1007/s43441-026-00920-4"
+        ],
+        "semantic_plausibility": {
+          "verdict": "PASS",
+          "score": 0.88,
+          "requirements": [],
+          "scenario_affordances": [
+            "graph",
+            "image",
+            "intervention",
+            "molecular",
+            "omics",
+            "sequence"
+          ],
+          "bridge_terms": [
+            "multi-omics"
+          ],
+          "score_breakdown": [
+            {
+              "factor": "base_prior",
+              "delta": 0.45,
+              "reason": "default prior before evidence checks"
+            },
+            {
+              "factor": "papergraph_cooccurrence",
+              "delta": 0.35,
+              "reason": "method and scenario co-occur in PaperGraph"
+            },
+            {
+              "factor": "bridge_terms",
+              "delta": 0.08,
+              "reason": "1 bridge concept(s) detected"
+            }
+          ],
+          "reason": "method and scenario already co-occur in at least one PaperGraph record; bridge concepts detected: multi-omics"
+        }
+      },
+      {
+        "topic": "systematic review and meta-analysis + small cell lung cancer (SCLC) treatment benchmark coverage",
+        "method": "systematic review and meta-analysis",
+        "scenario": "small cell lung cancer (SCLC) treatment",
+        "importance_score": 9,
+        "current_evidence_level": "medium",
+        "missing_benchmarks": [
+          "AUC scores, sensitivity, specificity, Dice scores, K-statistic",
+          "AUC∞, Cmax, t1/2, adverse drug reaction (ADR) occurrence",
+          "CTCAE criteria; grade ≥3 treatment-related toxicity",
+          "Common Terminology Criteria for Adverse Events, v4.03",
+          "Harrell's c-index, area under the curve (AUC), and accuracy in high-risk populations"
+        ],
+        "why_important": "The method-scenario pair has evidence, but benchmark coverage is sparse, so robustness and generalization remain uncertain.",
+        "supporting_references": [
+          "Rebaz M. Ali et al. (2025) Small Cell Lung Cancer and Tarlatamab: A Meta-Analysis of Clinical Trials doi:10.58742/bmj.v4i1.216"
+        ],
+        "semantic_plausibility": {
+          "verdict": "PASS",
+          "score": 0.88,
+          "requirements": [],
+          "scenario_affordances": [
+            "graph",
+            "image",
+            "intervention",
+            "molecular",
+            "omics",
+            "sequence"
+          ],
+          "bridge_terms": [
+            "multi-omics"
+          ],
+          "score_breakdown": [
+            {
+              "factor": "base_prior",
+              "delta": 0.45,
+              "reason": "default prior before evidence checks"
+            },
+            {
+              "factor": "papergraph_cooccurrence",
+              "delta": 0.35,
+              "reason": "method and scenario co-occur in PaperGraph"
+            },
+            {
+              "factor": "bridge_terms",
+              "delta": 0.08,
+              "reason": "1 bridge concept(s) detected"
+            }
+          ],
+          "reason": "method and scenario already co-occur in at least one PaperGraph record; bridge concepts detected: multi-omics"
+        }
+      },
+      {
+        "topic": "clinical study design + Acute lymphoblastic leukaemia (ALL) or Non-Hodgkin lymphoma (NHL) in Egyptian adult patients",
+        "method": "clinical study design",
+        "scenario": "Acute lymphoblastic leukaemia (ALL) or Non-Hodgkin lymphoma (NHL) in Egyptian adult patients",
+        "importance_score": 9,
+        "current_evidence_level": "none",
+        "missing_benchmarks": [
+          "AUC scores, sensitivity, specificity, Dice scores, K-statistic",
+          "AUC∞, Cmax, t1/2, adverse drug reaction (ADR) occurrence",
+          "CTCAE criteria; grade ≥3 treatment-related toxicity",
+          "Common Terminology Criteria for Adverse Events, v4.03",
+          "Harrell's c-index, area under the curve (AUC), and accuracy in high-risk populations"
+        ],
+        "why_important": "Both the method and scenario are visible in the field map, but this intersection has no recorded validation.",
+        "supporting_references": [
+          "Khloud Shendy et al. (2024) The effects of genetic polymorphism on toxicity and pharmacokinetics of methotrexate in Egyptian adult patients with leukaemia or lymphoma doi:10.1080/00498254.2024.2320778",
+          "M. E. van de Velde et al. (2022) Genetic Polymorphisms Associated with Vincristine Pharmacokinetics and Vincristine-Induced Peripheral Neuropathy in Pediatric Oncology Patients doi:10.3390/cancers14143510",
+          "C. Pui (2009) Acute Lymphoblastic Leukemia: Introduction doi:10.1053/j.seminhematol.2008.09.011",
+          "Jeffrey Teoh et al. (2022) Developing lisocabtagene maraleucel chimeric antigen receptor T-cell manufacturing for improved process, product quality and consistency across CD19+ hematologic indications. doi:10.1016/j.jcyt.2022.03.013"
+        ],
+        "semantic_plausibility": {
+          "verdict": "HUMAN_REVIEW",
+          "score": 0.53,
+          "requirements": [],
+          "scenario_affordances": [
+            "graph",
+            "image",
+            "intervention",
+            "molecular",
+            "omics",
+            "sequence"
+          ],
+          "bridge_terms": [
+            "multi-omics"
+          ],
+          "score_breakdown": [
+            {
+              "factor": "base_prior",
+              "delta": 0.45,
+              "reason": "default prior before evidence checks"
+            },
+            {
+              "factor": "bridge_terms",
+              "delta": 0.08,
+              "reason": "1 bridge concept(s) detected"
+            }
+          ],
+          "reason": "bridge concepts detected: multi-omics"
+        }
+      },
+      {
+        "topic": "clinical study design + CAR-T cell therapy manufacturing",
+        "method": "clinical study design",
+        "scenario": "CAR-T cell therapy manufacturing",
+        "importance_score": 9,
+        "current_evidence_level": "none",
+        "missing_benchmarks": [
+          "AUC scores, sensitivity, specificity, Dice scores, K-statistic",
+          "AUC∞, Cmax, t1/2, adverse drug reaction (ADR) occurrence",
+          "CTCAE criteria; grade ≥3 treatment-related toxicity",
+          "Common Terminology Criteria for Adverse Events, v4.03",
+          "Harrell's c-index, area under the curve (AUC), and accuracy in high-risk populations"
+        ],
+        "why_important": "Both the method and scenario are visible in the field map, but this intersection has no recorded validation.",
+        "supporting_references": [
+          "M. E. van de Velde et al. (2022) Genetic Polymorphisms Associated with Vincristine Pharmacokinetics and Vincristine-Induced Peripheral Neuropathy in Pediatric Oncology Patients doi:10.3390/cancers14143510",
+          "C. Pui (2009) Acute Lymphoblastic Leukemia: Introduction doi:10.1053/j.seminhematol.2008.09.011",
+          "Jeffrey Teoh et al. (2022) Developing lisocabtagene maraleucel chimeric antigen receptor T-cell manufacturing for improved process, product quality and consistency across CD19+ hematologic indications. doi:10.1016/j.jcyt.2022.03.013",
+          "A. Skelley et al. (2026) Cell therapy manufacturing at full clinical scale: enhancing the quality CAR-T cell therapy starting materials through massively parallel automated microfluidic cell sorting doi:10.1039/d6lc00072j"
+        ],
+        "semantic_plausibility": {
+          "verdict": "HUMAN_REVIEW",
+          "score": 0.53,
+          "requirements": [],
+          "scenario_affordances": [
+            "graph",
+            "image",
+            "intervention",
+            "molecular",
+            "omics",
+            "sequence"
+          ],
+          "bridge_terms": [
+            "multi-omics"
+          ],
+          "score_breakdown": [
+            {
+              "factor": "base_prior",
+              "delta": 0.45,
+              "reason": "default prior before evidence checks"
+            },
+            {
+              "factor": "bridge_terms",
+              "delta": 0.08,
+              "reason": "1 bridge concept(s) detected"
+            }
+          ],
+          "reason": "bridge concepts detected: multi-omics"
+        }
+      },
+      {
+        "topic": "clinical study design + GMP-compliant cell and extracellular vesicles therapy production",
+        "method": "clinical study design",
+        "scenario": "GMP-compliant cell and extracellular vesicles therapy production",
+        "importance_score": 9,
+        "current_evidence_level": "none",
+        "missing_benchmarks": [
+          "AUC scores, sensitivity, specificity, Dice scores, K-statistic",
+          "AUC∞, Cmax, t1/2, adverse drug reaction (ADR) occurrence",
+          "CTCAE criteria; grade ≥3 treatment-related toxicity",
+          "Common Terminology Criteria for Adverse Events, v4.03",
+          "Harrell's c-index, area under the curve (AUC), and accuracy in high-risk populations"
+        ],
+        "why_important": "Both the method and scenario are visible in the field map, but this intersection has no recorded validation.",
+        "supporting_references": [
+          "M. E. van de Velde et al. (2022) Genetic Polymorphisms Associated with Vincristine Pharmacokinetics and Vincristine-Induced Peripheral Neuropathy in Pediatric Oncology Patients doi:10.3390/cancers14143510",
+          "C. Pui (2009) Acute Lymphoblastic Leukemia: Introduction doi:10.1053/j.seminhematol.2008.09.011",
+          "Jeffrey Teoh et al. (2022) Developing lisocabtagene maraleucel chimeric antigen receptor T-cell manufacturing for improved process, product quality and consistency across CD19+ hematologic indications. doi:10.1016/j.jcyt.2022.03.013",
+          "Yu-Sung Chiu et al. (2025) Isolator-based point-of-care manufacturing: a practical solution for GMP-compliant cell and extracellular vesicles therapy production doi:10.3389/fbioe.2025.1644318"
+        ],
+        "semantic_plausibility": {
+          "verdict": "HUMAN_REVIEW",
+          "score": 0.53,
+          "requirements": [],
+          "scenario_affordances": [
+            "graph",
+            "image",
+            "intervention",
+            "molecular",
+            "omics",
+            "sequence"
+          ],
+          "bridge_terms": [
+            "multi-omics"
+          ],
+          "score_breakdown": [
+            {
+              "factor": "base_prior",
+              "delta": 0.45,
+              "reason": "default prior before evidence checks"
+            },
+            {
+              "factor": "bridge_terms",
+              "delta": 0.08,
+              "reason": "1 bridge concept(s) detected"
+            }
+          ],
+          "reason": "bridge concepts detected: multi-omics"
+        }
+      },
+      {
+        "topic": "clinical study design + KRAS-mutant non-small cell lung cancer",
+        "method": "clinical study design",
+        "scenario": "KRAS-mutant non-small cell lung cancer",
+        "importance_score": 9,
+        "current_evidence_level": "none",
+        "missing_benchmarks": [
+          "AUC scores, sensitivity, specificity, Dice scores, K-statistic",
+          "AUC∞, Cmax, t1/2, adverse drug reaction (ADR) occurrence",
+          "CTCAE criteria; grade ≥3 treatment-related toxicity",
+          "Common Terminology Criteria for Adverse Events, v4.03",
+          "Harrell's c-index, area under the curve (AUC), and accuracy in high-risk populations"
+        ],
+        "why_important": "Both the method and scenario are visible in the field map, but this intersection has no recorded validation.",
+        "supporting_references": [
+          "M. E. van de Velde et al. (2022) Genetic Polymorphisms Associated with Vincristine Pharmacokinetics and Vincristine-Induced Peripheral Neuropathy in Pediatric Oncology Patients doi:10.3390/cancers14143510",
+          "M. Santarpia et al. (2023) Targeted therapies for KRAS-mutant non-small cell lung cancer: from preclinical studies to clinical development—a narrative review doi:10.21037/tlcr-22-639",
+          "C. Pui (2009) Acute Lymphoblastic Leukemia: Introduction doi:10.1053/j.seminhematol.2008.09.011",
+          "Jeffrey Teoh et al. (2022) Developing lisocabtagene maraleucel chimeric antigen receptor T-cell manufacturing for improved process, product quality and consistency across CD19+ hematologic indications. doi:10.1016/j.jcyt.2022.03.013"
+        ],
+        "semantic_plausibility": {
+          "verdict": "HUMAN_REVIEW",
+          "score": 0.53,
+          "requirements": [],
+          "scenario_affordances": [
+            "graph",
+            "image",
+            "intervention",
+            "molecular",
+            "omics",
+            "sequence"
+          ],
+          "bridge_terms": [
+            "multi-omics"
+          ],
+          "score_breakdown": [
+            {
+              "factor": "base_prior",
+              "delta": 0.45,
+              "reason": "default prior before evidence checks"
+            },
+            {
+              "factor": "bridge_terms",
+              "delta": 0.08,
+              "reason": "1 bridge concept(s) detected"
+            }
+          ],
+          "reason": "bridge concepts detected: multi-omics"
+        }
+      },
+      {
+        "topic": "clinical study design + Opioid Use Disorder (OUD) risk assessment",
+        "method": "clinical study design",
+        "scenario": "Opioid Use Disorder (OUD) risk assessment",
+        "importance_score": 9,
+        "current_evidence_level": "none",
+        "missing_benchmarks": [
+          "AUC scores, sensitivity, specificity, Dice scores, K-statistic",
+          "AUC∞, Cmax, t1/2, adverse drug reaction (ADR) occurrence",
+          "CTCAE criteria; grade ≥3 treatment-related toxicity",
+          "Common Terminology Criteria for Adverse Events, v4.03",
+          "Harrell's c-index, area under the curve (AUC), and accuracy in high-risk populations"
+        ],
+        "why_important": "Both the method and scenario are visible in the field map, but this intersection has no recorded validation.",
+        "supporting_references": [
+          "M. E. van de Velde et al. (2022) Genetic Polymorphisms Associated with Vincristine Pharmacokinetics and Vincristine-Induced Peripheral Neuropathy in Pediatric Oncology Patients doi:10.3390/cancers14143510",
+          "C. Pui (2009) Acute Lymphoblastic Leukemia: Introduction doi:10.1053/j.seminhematol.2008.09.011",
+          "Jeffrey Teoh et al. (2022) Developing lisocabtagene maraleucel chimeric antigen receptor T-cell manufacturing for improved process, product quality and consistency across CD19+ hematologic indications. doi:10.1016/j.jcyt.2022.03.013",
+          "Akhter, S. et al. (2025) Identifying Key Predictive Features for Opioid Use Disorder Using Machine Learning doi:10.1101/2025.07.12.25331446"
+        ],
+        "semantic_plausibility": {
+          "verdict": "HUMAN_REVIEW",
+          "score": 0.53,
+          "requirements": [],
+          "scenario_affordances": [
+            "graph",
+            "image",
+            "intervention",
+            "molecular",
+            "omics",
+            "sequence"
+          ],
+          "bridge_terms": [
+            "multi-omics"
+          ],
+          "score_breakdown": [
+            {
+              "factor": "base_prior",
+              "delta": 0.45,
+              "reason": "default prior before evidence checks"
+            },
+            {
+              "factor": "bridge_terms",
+              "delta": 0.08,
+              "reason": "1 bridge concept(s) detected"
+            }
+          ],
+          "reason": "bridge concepts detected: multi-omics"
+        }
+      },
+      {
+        "topic": "clinical study design + Pemphigus Vulgaris (PV)",
+        "method": "clinical study design",
+        "scenario": "Pemphigus Vulgaris (PV)",
+        "importance_score": 9,
+        "current_evidence_level": "none",
+        "missing_benchmarks": [
+          "AUC scores, sensitivity, specificity, Dice scores, K-statistic",
+          "AUC∞, Cmax, t1/2, adverse drug reaction (ADR) occurrence",
+          "CTCAE criteria; grade ≥3 treatment-related toxicity",
+          "Common Terminology Criteria for Adverse Events, v4.03",
+          "Harrell's c-index, area under the curve (AUC), and accuracy in high-risk populations"
+        ],
+        "why_important": "Both the method and scenario are visible in the field map, but this intersection has no recorded validation.",
+        "supporting_references": [
+          "M. E. van de Velde et al. (2022) Genetic Polymorphisms Associated with Vincristine Pharmacokinetics and Vincristine-Induced Peripheral Neuropathy in Pediatric Oncology Patients doi:10.3390/cancers14143510",
+          "C. Pui (2009) Acute Lymphoblastic Leukemia: Introduction doi:10.1053/j.seminhematol.2008.09.011",
+          "C. Hudemann et al. (2019) Development of a mouse model of Pemphigus Vulgaris as a tool to evaluate nanoparticle induced antigen-specific tolerance doi:10.1016/j.jid.2019.07.034",
+          "Jeffrey Teoh et al. (2022) Developing lisocabtagene maraleucel chimeric antigen receptor T-cell manufacturing for improved process, product quality and consistency across CD19+ hematologic indications. doi:10.1016/j.jcyt.2022.03.013"
+        ],
+        "semantic_plausibility": {
+          "verdict": "HUMAN_REVIEW",
+          "score": 0.53,
+          "requirements": [],
+          "scenario_affordances": [
+            "graph",
+            "image",
+            "intervention",
+            "molecular",
+            "omics",
+            "sequence"
+          ],
+          "bridge_terms": [
+            "multi-omics"
+          ],
+          "score_breakdown": [
+            {
+              "factor": "base_prior",
+              "delta": 0.45,
+              "reason": "default prior before evidence checks"
+            },
+            {
+              "factor": "bridge_terms",
+              "delta": 0.08,
+              "reason": "1 bridge concept(s) detected"
+            }
+          ],
+          "reason": "bridge concepts detected: multi-omics"
+        }
+      },
+      {
+        "topic": "clinical study design + academic CAR T-Cell therapy, lentiviral vector production",
+        "method": "clinical study design",
+        "scenario": "academic CAR T-Cell therapy, lentiviral vector production",
+        "importance_score": 9,
+        "current_evidence_level": "none",
+        "missing_benchmarks": [
+          "AUC scores, sensitivity, specificity, Dice scores, K-statistic",
+          "AUC∞, Cmax, t1/2, adverse drug reaction (ADR) occurrence",
+          "CTCAE criteria; grade ≥3 treatment-related toxicity",
+          "Common Terminology Criteria for Adverse Events, v4.03",
+          "Harrell's c-index, area under the curve (AUC), and accuracy in high-risk populations"
+        ],
+        "why_important": "Both the method and scenario are visible in the field map, but this intersection has no recorded validation.",
+        "supporting_references": [
+          "M. E. van de Velde et al. (2022) Genetic Polymorphisms Associated with Vincristine Pharmacokinetics and Vincristine-Induced Peripheral Neuropathy in Pediatric Oncology Patients doi:10.3390/cancers14143510",
+          "C. Pui (2009) Acute Lymphoblastic Leukemia: Introduction doi:10.1053/j.seminhematol.2008.09.011",
+          "Jeffrey Teoh et al. (2022) Developing lisocabtagene maraleucel chimeric antigen receptor T-cell manufacturing for improved process, product quality and consistency across CD19+ hematologic indications. doi:10.1016/j.jcyt.2022.03.013",
+          "Maribel Lara-Chica et al. (2026) Bridging preclinical development and clinical manufacturing: a translational GMP-Platform for lentiviral vector production in academic CAR T-Cell therapy. doi:10.1186/s12967-026-08566-4"
+        ],
+        "semantic_plausibility": {
+          "verdict": "HUMAN_REVIEW",
+          "score": 0.53,
+          "requirements": [],
+          "scenario_affordances": [
+            "graph",
+            "image",
+            "intervention",
+            "molecular",
+            "omics",
+            "sequence"
+          ],
+          "bridge_terms": [
+            "multi-omics"
+          ],
+          "score_breakdown": [
+            {
+              "factor": "base_prior",
+              "delta": 0.45,
+              "reason": "default prior before evidence checks"
+            },
+            {
+              "factor": "bridge_terms",
+              "delta": 0.08,
+              "reason": "1 bridge concept(s) detected"
+            }
+          ],
+          "reason": "bridge concepts detected: multi-omics"
+        }
+      },
+      {
+        "topic": "clinical study design + advanced colorectal cancer",
+        "method": "clinical study design",
+        "scenario": "advanced colorectal cancer",
+        "importance_score": 9,
+        "current_evidence_level": "none",
+        "missing_benchmarks": [
+          "AUC scores, sensitivity, specificity, Dice scores, K-statistic",
+          "AUC∞, Cmax, t1/2, adverse drug reaction (ADR) occurrence",
+          "CTCAE criteria; grade ≥3 treatment-related toxicity",
+          "Common Terminology Criteria for Adverse Events, v4.03",
+          "Harrell's c-index, area under the curve (AUC), and accuracy in high-risk populations"
+        ],
+        "why_important": "Both the method and scenario are visible in the field map, but this intersection has no recorded validation.",
+        "supporting_references": [
+          "Leslie Carol Cerpa-Castro et al. (2025) Genetic variants and clinical factors affecting the response to 5-fluorouracil–based treatment in Chilean patients with advanced colorectal cancer. doi:10.1200/jco.2025.43.4_suppl.114",
+          "M. E. van de Velde et al. (2022) Genetic Polymorphisms Associated with Vincristine Pharmacokinetics and Vincristine-Induced Peripheral Neuropathy in Pediatric Oncology Patients doi:10.3390/cancers14143510",
+          "C. Pui (2009) Acute Lymphoblastic Leukemia: Introduction doi:10.1053/j.seminhematol.2008.09.011",
+          "Jeffrey Teoh et al. (2022) Developing lisocabtagene maraleucel chimeric antigen receptor T-cell manufacturing for improved process, product quality and consistency across CD19+ hematologic indications. doi:10.1016/j.jcyt.2022.03.013"
+        ],
+        "semantic_plausibility": {
+          "verdict": "HUMAN_REVIEW",
+          "score": 0.53,
+          "requirements": [],
+          "scenario_affordances": [
+            "graph",
+            "image",
+            "intervention",
+            "molecular",
+            "omics",
+            "sequence"
+          ],
+          "bridge_terms": [
+            "multi-omics"
+          ],
+          "score_breakdown": [
+            {
+              "factor": "base_prior",
+              "delta": 0.45,
+              "reason": "default prior before evidence checks"
+            },
+            {
+              "factor": "bridge_terms",
+              "delta": 0.08,
+              "reason": "1 bridge concept(s) detected"
+            }
+          ],
+          "reason": "bridge concepts detected: multi-omics"
+        }
+      },
+      {
+        "topic": "clinical study design + adverse drug events in clinical research",
+        "method": "clinical study design",
+        "scenario": "adverse drug events in clinical research",
+        "importance_score": 9,
+        "current_evidence_level": "none",
+        "missing_benchmarks": [
+          "AUC scores, sensitivity, specificity, Dice scores, K-statistic",
+          "AUC∞, Cmax, t1/2, adverse drug reaction (ADR) occurrence",
+          "CTCAE criteria; grade ≥3 treatment-related toxicity",
+          "Common Terminology Criteria for Adverse Events, v4.03",
+          "Harrell's c-index, area under the curve (AUC), and accuracy in high-risk populations"
+        ],
+        "why_important": "Both the method and scenario are visible in the field map, but this intersection has no recorded validation.",
+        "supporting_references": [
+          "M. E. van de Velde et al. (2022) Genetic Polymorphisms Associated with Vincristine Pharmacokinetics and Vincristine-Induced Peripheral Neuropathy in Pediatric Oncology Patients doi:10.3390/cancers14143510",
+          "C. Pui (2009) Acute Lymphoblastic Leukemia: Introduction doi:10.1053/j.seminhematol.2008.09.011",
+          "Jeffrey Teoh et al. (2022) Developing lisocabtagene maraleucel chimeric antigen receptor T-cell manufacturing for improved process, product quality and consistency across CD19+ hematologic indications. doi:10.1016/j.jcyt.2022.03.013",
+          "Schreier, O. et al. (2025) A scoping review of the application of artificial intelligence for the analysis of adverse drug events in clinical research doi:10.1101/2025.07.14.25331486"
+        ],
+        "semantic_plausibility": {
+          "verdict": "HUMAN_REVIEW",
+          "score": 0.53,
+          "requirements": [],
+          "scenario_affordances": [
+            "graph",
+            "image",
+            "intervention",
+            "molecular",
+            "omics",
+            "sequence"
+          ],
+          "bridge_terms": [
+            "multi-omics"
+          ],
+          "score_breakdown": [
+            {
+              "factor": "base_prior",
+              "delta": 0.45,
+              "reason": "default prior before evidence checks"
+            },
+            {
+              "factor": "bridge_terms",
+              "delta": 0.08,
+              "reason": "1 bridge concept(s) detected"
+            }
+          ],
+          "reason": "bridge concepts detected: multi-omics"
+        }
+      },
+      {
+        "topic": "clinical study design + antidepressant response",
+        "method": "clinical study design",
+        "scenario": "antidepressant response",
+        "importance_score": 9,
+        "current_evidence_level": "none",
+        "missing_benchmarks": [
+          "AUC scores, sensitivity, specificity, Dice scores, K-statistic",
+          "AUC∞, Cmax, t1/2, adverse drug reaction (ADR) occurrence",
+          "CTCAE criteria; grade ≥3 treatment-related toxicity",
+          "Common Terminology Criteria for Adverse Events, v4.03",
+          "Harrell's c-index, area under the curve (AUC), and accuracy in high-risk populations"
+        ],
+        "why_important": "Both the method and scenario are visible in the field map, but this intersection has no recorded validation.",
+        "supporting_references": [
+          "Luiza Blambila et al. (2026) Pharmacogenetics of antidepressant response: a focused review on CYP2C19, CYP2D6, SLC6A4, and HTR2A polymorphisms. doi:10.3389/fphar.2026.1773677",
+          "M. E. van de Velde et al. (2022) Genetic Polymorphisms Associated with Vincristine Pharmacokinetics and Vincristine-Induced Peripheral Neuropathy in Pediatric Oncology Patients doi:10.3390/cancers14143510",
+          "C. Pui (2009) Acute Lymphoblastic Leukemia: Introduction doi:10.1053/j.seminhematol.2008.09.011",
+          "Jeffrey Teoh et al. (2022) Developing lisocabtagene maraleucel chimeric antigen receptor T-cell manufacturing for improved process, product quality and consistency across CD19+ hematologic indications. doi:10.1016/j.jcyt.2022.03.013"
+        ],
+        "semantic_plausibility": {
+          "verdict": "HUMAN_REVIEW",
+          "score": 0.53,
+          "requirements": [],
+          "scenario_affordances": [
+            "graph",
+            "image",
+            "intervention",
+            "molecular",
+            "omics",
+            "sequence"
+          ],
+          "bridge_terms": [
+            "multi-omics"
+          ],
+          "score_breakdown": [
+            {
+              "factor": "base_prior",
+              "delta": 0.45,
+              "reason": "default prior before evidence checks"
+            },
+            {
+              "factor": "bridge_terms",
+              "delta": 0.08,
+              "reason": "1 bridge concept(s) detected"
+            }
+          ],
+          "reason": "bridge concepts detected: multi-omics"
+        }
+      },
+      {
+        "topic": "clinical study design + antimicrobial therapy and antimicrobial resistance (AMR)",
+        "method": "clinical study design",
+        "scenario": "antimicrobial therapy and antimicrobial resistance (AMR)",
+        "importance_score": 9,
+        "current_evidence_level": "none",
+        "missing_benchmarks": [
+          "AUC scores, sensitivity, specificity, Dice scores, K-statistic",
+          "AUC∞, Cmax, t1/2, adverse drug reaction (ADR) occurrence",
+          "CTCAE criteria; grade ≥3 treatment-related toxicity",
+          "Common Terminology Criteria for Adverse Events, v4.03",
+          "Harrell's c-index, area under the curve (AUC), and accuracy in high-risk populations"
+        ],
+        "why_important": "Both the method and scenario are visible in the field map, but this intersection has no recorded validation.",
+        "supporting_references": [
+          "M. E. van de Velde et al. (2022) Genetic Polymorphisms Associated with Vincristine Pharmacokinetics and Vincristine-Induced Peripheral Neuropathy in Pediatric Oncology Patients doi:10.3390/cancers14143510",
+          "C. Pui (2009) Acute Lymphoblastic Leukemia: Introduction doi:10.1053/j.seminhematol.2008.09.011",
+          "Jeffrey Teoh et al. (2022) Developing lisocabtagene maraleucel chimeric antigen receptor T-cell manufacturing for improved process, product quality and consistency across CD19+ hematologic indications. doi:10.1016/j.jcyt.2022.03.013",
+          "Tetsushu Onita et al. (2025) PK/PD-Guided Strategies for Appropriate Antibiotic Use in the Era of Antimicrobial Resistance doi:10.3390/antibiotics14010092"
+        ],
+        "semantic_plausibility": {
+          "verdict": "HUMAN_REVIEW",
+          "score": 0.53,
+          "requirements": [],
+          "scenario_affordances": [
+            "graph",
+            "image",
+            "intervention",
+            "molecular",
+            "omics",
+            "sequence"
+          ],
+          "bridge_terms": [
+            "multi-omics"
+          ],
+          "score_breakdown": [
+            {
+              "factor": "base_prior",
+              "delta": 0.45,
+              "reason": "default prior before evidence checks"
+            },
+            {
+              "factor": "bridge_terms",
+              "delta": 0.08,
+              "reason": "1 bridge concept(s) detected"
+            }
+          ],
+          "reason": "bridge concepts detected: multi-omics"
+        }
+      },
+      {
+        "topic": "clinical study design + behavioral interventions for high-risk pregnant women in the United States",
+        "method": "clinical study design",
+        "scenario": "behavioral interventions for high-risk pregnant women in the United States",
+        "importance_score": 9,
+        "current_evidence_level": "none",
+        "missing_benchmarks": [
+          "AUC scores, sensitivity, specificity, Dice scores, K-statistic",
+          "AUC∞, Cmax, t1/2, adverse drug reaction (ADR) occurrence",
+          "CTCAE criteria; grade ≥3 treatment-related toxicity",
+          "Common Terminology Criteria for Adverse Events, v4.03",
+          "Harrell's c-index, area under the curve (AUC), and accuracy in high-risk populations"
+        ],
+        "why_important": "Both the method and scenario are visible in the field map, but this intersection has no recorded validation.",
+        "supporting_references": [
+          "M. E. van de Velde et al. (2022) Genetic Polymorphisms Associated with Vincristine Pharmacokinetics and Vincristine-Induced Peripheral Neuropathy in Pediatric Oncology Patients doi:10.3390/cancers14143510",
+          "Phipps et al. (2025) A systematic review of behavioral interventions to improve maternal outcomes for women in the United States at high risk for adverse pregnancy outcomes doi:10.1101/2025.07.18.25331742",
+          "C. Pui (2009) Acute Lymphoblastic Leukemia: Introduction doi:10.1053/j.seminhematol.2008.09.011",
+          "Jeffrey Teoh et al. (2022) Developing lisocabtagene maraleucel chimeric antigen receptor T-cell manufacturing for improved process, product quality and consistency across CD19+ hematologic indications. doi:10.1016/j.jcyt.2022.03.013"
+        ],
+        "semantic_plausibility": {
+          "verdict": "HUMAN_REVIEW",
+          "score": 0.53,
+          "requirements": [],
+          "scenario_affordances": [
+            "graph",
+            "image",
+            "intervention",
+            "molecular",
+            "omics",
+            "sequence"
+          ],
+          "bridge_terms": [
+            "multi-omics"
+          ],
+          "score_breakdown": [
+            {
+              "factor": "base_prior",
+              "delta": 0.45,
+              "reason": "default prior before evidence checks"
+            },
+            {
+              "factor": "bridge_terms",
+              "delta": 0.08,
+              "reason": "1 bridge concept(s) detected"
+            }
+          ],
+          "reason": "bridge concepts detected: multi-omics"
+        }
+      }
+    ],
+    "rejected_density_holes": [
+      {
+        "topic": "logistic regression + Acute lymphoblastic leukaemia (ALL) or Non-Hodgkin lymphoma (NHL) in Egyptian adult patients",
+        "method": "logistic regression",
+        "scenario": "Acute lymphoblastic leukaemia (ALL) or Non-Hodgkin lymphoma (NHL) in Egyptian adult patients",
+        "importance_score": 5,
+        "current_evidence_level": "none",
+        "missing_benchmarks": [
+          "AUC scores, sensitivity, specificity, Dice scores, K-statistic",
+          "AUC∞, Cmax, t1/2, adverse drug reaction (ADR) occurrence",
+          "CTCAE criteria; grade ≥3 treatment-related toxicity",
+          "Common Terminology Criteria for Adverse Events, v4.03",
+          "Harrell's c-index, area under the curve (AUC), and accuracy in high-risk populations"
+        ],
+        "why_important": "Both the method and scenario are visible in the field map, but this intersection has no recorded validation.",
+        "supporting_references": [
+          "Khloud Shendy et al. (2024) The effects of genetic polymorphism on toxicity and pharmacokinetics of methotrexate in Egyptian adult patients with leukaemia or lymphoma doi:10.1080/00498254.2024.2320778",
+          "Iftikhar et al. (2025) AI-Driven Personalization of Dual Antiplatelet Therapy Duration Post-PCI: A Novel Approach Balancing Ischemic and Bleeding Risks in the UAE Population doi:10.1101/2025.03.16.25324067"
+        ],
+        "semantic_plausibility": {
+          "verdict": "REJECT",
+          "score": 0.05,
+          "requirements": [
+            "spatial_coordinates"
+          ],
+          "scenario_affordances": [
+            "graph",
+            "image",
+            "intervention",
+            "molecular",
+            "omics",
+            "sequence"
+          ],
+          "bridge_terms": [
+            "multi-omics"
+          ],
+          "score_breakdown": [
+            {
+              "factor": "base_prior",
+              "delta": 0.45,
+              "reason": "default prior before evidence checks"
+            },
+            {
+              "factor": "bridge_terms",
+              "delta": 0.08,
+              "reason": "1 bridge concept(s) detected"
+            },
+            {
+              "factor": "missing_method_affordances",
+              "delta": -0.18,
+              "reason": "spatial_coordinates"
+            },
+            {
+              "factor": "narrow_tool_modality_mismatch",
+              "delta": -0.3,
+              "reason": "tool implies a data modality absent from scenario/context"
+            }
+          ],
+          "reason": "bridge concepts detected: multi-omics; method input requirements not visible in scenario/context: spatial_coordinates; narrow tool/software method appears without matching data modality in the scenario"
+        }
+      },
+      {
+        "topic": "logistic regression + CAR-T cell therapy manufacturing",
+        "method": "logistic regression",
+        "scenario": "CAR-T cell therapy manufacturing",
+        "importance_score": 7,
+        "current_evidence_level": "none",
+        "missing_benchmarks": [
+          "AUC scores, sensitivity, specificity, Dice scores, K-statistic",
+          "AUC∞, Cmax, t1/2, adverse drug reaction (ADR) occurrence",
+          "CTCAE criteria; grade ≥3 treatment-related toxicity",
+          "Common Terminology Criteria for Adverse Events, v4.03",
+          "Harrell's c-index, area under the curve (AUC), and accuracy in high-risk populations"
+        ],
+        "why_important": "Both the method and scenario are visible in the field map, but this intersection has no recorded validation.",
+        "supporting_references": [
+          "Iftikhar et al. (2025) AI-Driven Personalization of Dual Antiplatelet Therapy Duration Post-PCI: A Novel Approach Balancing Ischemic and Bleeding Risks in the UAE Population doi:10.1101/2025.03.16.25324067",
+          "A. Skelley et al. (2026) Cell therapy manufacturing at full clinical scale: enhancing the quality CAR-T cell therapy starting materials through massively parallel automated microfluidic cell sorting doi:10.1039/d6lc00072j"
+        ],
+        "semantic_plausibility": {
+          "verdict": "REJECT",
+          "score": 0.05,
+          "requirements": [
+            "spatial_coordinates"
+          ],
+          "scenario_affordances": [
+            "graph",
+            "image",
+            "intervention",
+            "molecular",
+            "omics",
+            "sequence"
+          ],
+          "bridge_terms": [
+            "multi-omics"
+          ],
+          "score_breakdown": [
+            {
+              "factor": "base_prior",
+              "delta": 0.45,
+              "reason": "default prior before evidence checks"
+            },
+            {
+              "factor": "bridge_terms",
+              "delta": 0.08,
+              "reason": "1 bridge concept(s) detected"
+            },
+            {
+              "factor": "missing_method_affordances",
+              "delta": -0.18,
+              "reason": "spatial_coordinates"
+            },
+            {
+              "factor": "narrow_tool_modality_mismatch",
+              "delta": -0.3,
+              "reason": "tool implies a data modality absent from scenario/context"
+            }
+          ],
+          "reason": "bridge concepts detected: multi-omics; method input requirements not visible in scenario/context: spatial_coordinates; narrow tool/software method appears without matching data modality in the scenario"
+        }
+      },
+      {
+        "topic": "logistic regression + GMP-compliant cell and extracellular vesicles therapy production",
+        "method": "logistic regression",
+        "scenario": "GMP-compliant cell and extracellular vesicles therapy production",
+        "importance_score": 7,
+        "current_evidence_level": "none",
+        "missing_benchmarks": [
+          "AUC scores, sensitivity, specificity, Dice scores, K-statistic",
+          "AUC∞, Cmax, t1/2, adverse drug reaction (ADR) occurrence",
+          "CTCAE criteria; grade ≥3 treatment-related toxicity",
+          "Common Terminology Criteria for Adverse Events, v4.03",
+          "Harrell's c-index, area under the curve (AUC), and accuracy in high-risk populations"
+        ],
+        "why_important": "Both the method and scenario are visible in the field map, but this intersection has no recorded validation.",
+        "supporting_references": [
+          "Iftikhar et al. (2025) AI-Driven Personalization of Dual Antiplatelet Therapy Duration Post-PCI: A Novel Approach Balancing Ischemic and Bleeding Risks in the UAE Population doi:10.1101/2025.03.16.25324067",
+          "Yu-Sung Chiu et al. (2025) Isolator-based point-of-care manufacturing: a practical solution for GMP-compliant cell and extracellular vesicles therapy production doi:10.3389/fbioe.2025.1644318"
+        ],
+        "semantic_plausibility": {
+          "verdict": "REJECT",
+          "score": 0.05,
+          "requirements": [
+            "spatial_coordinates"
+          ],
+          "scenario_affordances": [
+            "graph",
+            "image",
+            "intervention",
+            "molecular",
+            "omics",
+            "sequence"
+          ],
+          "bridge_terms": [
+            "multi-omics"
+          ],
+          "score_breakdown": [
+            {
+              "factor": "base_prior",
+              "delta": 0.45,
+              "reason": "default prior before evidence checks"
+            },
+            {
+              "factor": "bridge_terms",
+              "delta": 0.08,
+              "reason": "1 bridge concept(s) detected"
+            },
+            {
+              "factor": "missing_method_affordances",
+              "delta": -0.18,
+              "reason": "spatial_coordinates"
+            },
+            {
+              "factor": "narrow_tool_modality_mismatch",
+              "delta": -0.3,
+              "reason": "tool implies a data modality absent from scenario/context"
+            }
+          ],
+          "reason": "bridge concepts detected: multi-omics; method input requirements not visible in scenario/context: spatial_coordinates; narrow tool/software method appears without matching data modality in the scenario"
+        }
+      },
+      {
+        "topic": "logistic regression + KRAS-mutant non-small cell lung cancer",
+        "method": "logistic regression",
+        "scenario": "KRAS-mutant non-small cell lung cancer",
+        "importance_score": 7,
+        "current_evidence_level": "none",
+        "missing_benchmarks": [
+          "AUC scores, sensitivity, specificity, Dice scores, K-statistic",
+          "AUC∞, Cmax, t1/2, adverse drug reaction (ADR) occurrence",
+          "CTCAE criteria; grade ≥3 treatment-related toxicity",
+          "Common Terminology Criteria for Adverse Events, v4.03",
+          "Harrell's c-index, area under the curve (AUC), and accuracy in high-risk populations"
+        ],
+        "why_important": "Both the method and scenario are visible in the field map, but this intersection has no recorded validation.",
+        "supporting_references": [
+          "M. Santarpia et al. (2023) Targeted therapies for KRAS-mutant non-small cell lung cancer: from preclinical studies to clinical development—a narrative review doi:10.21037/tlcr-22-639",
+          "Iftikhar et al. (2025) AI-Driven Personalization of Dual Antiplatelet Therapy Duration Post-PCI: A Novel Approach Balancing Ischemic and Bleeding Risks in the UAE Population doi:10.1101/2025.03.16.25324067"
+        ],
+        "semantic_plausibility": {
+          "verdict": "REJECT",
+          "score": 0.05,
+          "requirements": [
+            "spatial_coordinates"
+          ],
+          "scenario_affordances": [
+            "graph",
+            "image",
+            "intervention",
+            "molecular",
+            "omics",
+            "sequence"
+          ],
+          "bridge_terms": [
+            "multi-omics"
+          ],
+          "score_breakdown": [
+            {
+              "factor": "base_prior",
+              "delta": 0.45,
+              "reason": "default prior before evidence checks"
+            },
+            {
+              "factor": "bridge_terms",
+              "delta": 0.08,
+              "reason": "1 bridge concept(s) detected"
+            },
+            {
+              "factor": "missing_method_affordances",
+              "delta": -0.18,
+              "reason": "spatial_coordinates"
+            },
+            {
+              "factor": "narrow_tool_modality_mismatch",
+              "delta": -0.3,
+              "reason": "tool implies a data modality absent from scenario/context"
+            }
+          ],
+          "reason": "bridge concepts detected: multi-omics; method input requirements not visible in scenario/context: spatial_coordinates; narrow tool/software method appears without matching data modality in the scenario"
+        }
+      },
+      {
+        "topic": "logistic regression + Opioid Use Disorder (OUD) risk assessment",
+        "method": "logistic regression",
+        "scenario": "Opioid Use Disorder (OUD) risk assessment",
+        "importance_score": 5,
+        "current_evidence_level": "none",
+        "missing_benchmarks": [
+          "AUC scores, sensitivity, specificity, Dice scores, K-statistic",
+          "AUC∞, Cmax, t1/2, adverse drug reaction (ADR) occurrence",
+          "CTCAE criteria; grade ≥3 treatment-related toxicity",
+          "Common Terminology Criteria for Adverse Events, v4.03",
+          "Harrell's c-index, area under the curve (AUC), and accuracy in high-risk populations"
+        ],
+        "why_important": "Both the method and scenario are visible in the field map, but this intersection has no recorded validation.",
+        "supporting_references": [
+          "Iftikhar et al. (2025) AI-Driven Personalization of Dual Antiplatelet Therapy Duration Post-PCI: A Novel Approach Balancing Ischemic and Bleeding Risks in the UAE Population doi:10.1101/2025.03.16.25324067",
+          "Akhter, S. et al. (2025) Identifying Key Predictive Features for Opioid Use Disorder Using Machine Learning doi:10.1101/2025.07.12.25331446"
+        ],
+        "semantic_plausibility": {
+          "verdict": "REJECT",
+          "score": 0.05,
+          "requirements": [
+            "spatial_coordinates"
+          ],
+          "scenario_affordances": [
+            "graph",
+            "image",
+            "intervention",
+            "molecular",
+            "omics",
+            "sequence"
+          ],
+          "bridge_terms": [
+            "multi-omics"
+          ],
+          "score_breakdown": [
+            {
+              "factor": "base_prior",
+              "delta": 0.45,
+              "reason": "default prior before evidence checks"
+            },
+            {
+              "factor": "bridge_terms",
+              "delta": 0.08,
+              "reason": "1 bridge concept(s) detected"
+            },
+            {
+              "factor": "missing_method_affordances",
+              "delta": -0.18,
+              "reason": "spatial_coordinates"
+            },
+            {
+              "factor": "narrow_tool_modality_mismatch",
+              "delta": -0.3,
+              "reason": "tool implies a data modality absent from scenario/context"
+            }
+          ],
+          "reason": "bridge concepts detected: multi-omics; method input requirements not visible in scenario/context: spatial_coordinates; narrow tool/software method appears without matching data modality in the scenario"
+        }
+      },
+      {
+        "topic": "logistic regression + Pemphigus Vulgaris (PV)",
+        "method": "logistic regression",
+        "scenario": "Pemphigus Vulgaris (PV)",
+        "importance_score": 5,
+        "current_evidence_level": "none",
+        "missing_benchmarks": [
+          "AUC scores, sensitivity, specificity, Dice scores, K-statistic",
+          "AUC∞, Cmax, t1/2, adverse drug reaction (ADR) occurrence",
+          "CTCAE criteria; grade ≥3 treatment-related toxicity",
+          "Common Terminology Criteria for Adverse Events, v4.03",
+          "Harrell's c-index, area under the curve (AUC), and accuracy in high-risk populations"
+        ],
+        "why_important": "Both the method and scenario are visible in the field map, but this intersection has no recorded validation.",
+        "supporting_references": [
+          "C. Hudemann et al. (2019) Development of a mouse model of Pemphigus Vulgaris as a tool to evaluate nanoparticle induced antigen-specific tolerance doi:10.1016/j.jid.2019.07.034",
+          "Iftikhar et al. (2025) AI-Driven Personalization of Dual Antiplatelet Therapy Duration Post-PCI: A Novel Approach Balancing Ischemic and Bleeding Risks in the UAE Population doi:10.1101/2025.03.16.25324067"
+        ],
+        "semantic_plausibility": {
+          "verdict": "REJECT",
+          "score": 0.05,
+          "requirements": [
+            "spatial_coordinates"
+          ],
+          "scenario_affordances": [
+            "graph",
+            "image",
+            "intervention",
+            "molecular",
+            "omics",
+            "sequence"
+          ],
+          "bridge_terms": [
+            "multi-omics"
+          ],
+          "score_breakdown": [
+            {
+              "factor": "base_prior",
+              "delta": 0.45,
+              "reason": "default prior before evidence checks"
+            },
+            {
+              "factor": "bridge_terms",
+              "delta": 0.08,
+              "reason": "1 bridge concept(s) detected"
+            },
+            {
+              "factor": "missing_method_affordances",
+              "delta": -0.18,
+              "reason": "spatial_coordinates"
+            },
+            {
+              "factor": "narrow_tool_modality_mismatch",
+              "delta": -0.3,
+              "reason": "tool implies a data modality absent from scenario/context"
+            }
+          ],
+          "reason": "bridge concepts detected: multi-omics; method input requirements not visible in scenario/context: spatial_coordinates; narrow tool/software method appears without matching data modality in the scenario"
+        }
+      },
+      {
+        "topic": "logistic regression + academic CAR T-Cell therapy, lentiviral vector production",
+        "method": "logistic regression",
+        "scenario": "academic CAR T-Cell therapy, lentiviral vector production",
+        "importance_score": 7,
+        "current_evidence_level": "none",
+        "missing_benchmarks": [
+          "AUC scores, sensitivity, specificity, Dice scores, K-statistic",
+          "AUC∞, Cmax, t1/2, adverse drug reaction (ADR) occurrence",
+          "CTCAE criteria; grade ≥3 treatment-related toxicity",
+          "Common Terminology Criteria for Adverse Events, v4.03",
+          "Harrell's c-index, area under the curve (AUC), and accuracy in high-risk populations"
+        ],
+        "why_important": "Both the method and scenario are visible in the field map, but this intersection has no recorded validation.",
+        "supporting_references": [
+          "Iftikhar et al. (2025) AI-Driven Personalization of Dual Antiplatelet Therapy Duration Post-PCI: A Novel Approach Balancing Ischemic and Bleeding Risks in the UAE Population doi:10.1101/2025.03.16.25324067",
+          "Maribel Lara-Chica et al. (2026) Bridging preclinical development and clinical manufacturing: a translational GMP-Platform for lentiviral vector production in academic CAR T-Cell therapy. doi:10.1186/s12967-026-08566-4"
+        ],
+        "semantic_plausibility": {
+          "verdict": "REJECT",
+          "score": 0.05,
+          "requirements": [
+            "spatial_coordinates"
+          ],
+          "scenario_affordances": [
+            "graph",
+            "image",
+            "intervention",
+            "molecular",
+            "omics",
+            "sequence"
+          ],
+          "bridge_terms": [
+            "multi-omics"
+          ],
+          "score_breakdown": [
+            {
+              "factor": "base_prior",
+              "delta": 0.45,
+              "reason": "default prior before evidence checks"
+            },
+            {
+              "factor": "bridge_terms",
+              "delta": 0.08,
+              "reason": "1 bridge concept(s) detected"
+            },
+            {
+              "factor": "missing_method_affordances",
+              "delta": -0.18,
+              "reason": "spatial_coordinates"
+            },
+            {
+              "factor": "narrow_tool_modality_mismatch",
+              "delta": -0.3,
+              "reason": "tool implies a data modality absent from scenario/context"
+            }
+          ],
+          "reason": "bridge concepts detected: multi-omics; method input requirements not visible in scenario/context: spatial_coordinates; narrow tool/software method appears without matching data modality in the scenario"
+        }
+      },
+      {
+        "topic": "logistic regression + acute lymphoblastic leukemia (ALL) treatment",
+        "method": "logistic regression",
+        "scenario": "acute lymphoblastic leukemia (ALL) treatment",
+        "importance_score": 5,
+        "current_evidence_level": "none",
+        "missing_benchmarks": [
+          "AUC scores, sensitivity, specificity, Dice scores, K-statistic",
+          "AUC∞, Cmax, t1/2, adverse drug reaction (ADR) occurrence",
+          "CTCAE criteria; grade ≥3 treatment-related toxicity",
+          "Common Terminology Criteria for Adverse Events, v4.03",
+          "Harrell's c-index, area under the curve (AUC), and accuracy in high-risk populations"
+        ],
+        "why_important": "Both the method and scenario are visible in the field map, but this intersection has no recorded validation.",
+        "supporting_references": [
+          "C. Pui (2009) Acute Lymphoblastic Leukemia: Introduction doi:10.1053/j.seminhematol.2008.09.011",
+          "Iftikhar et al. (2025) AI-Driven Personalization of Dual Antiplatelet Therapy Duration Post-PCI: A Novel Approach Balancing Ischemic and Bleeding Risks in the UAE Population doi:10.1101/2025.03.16.25324067"
+        ],
+        "semantic_plausibility": {
+          "verdict": "REJECT",
+          "score": 0.05,
+          "requirements": [
+            "spatial_coordinates"
+          ],
+          "scenario_affordances": [
+            "graph",
+            "image",
+            "intervention",
+            "molecular",
+            "omics",
+            "sequence"
+          ],
+          "bridge_terms": [
+            "multi-omics"
+          ],
+          "score_breakdown": [
+            {
+              "factor": "base_prior",
+              "delta": 0.45,
+              "reason": "default prior before evidence checks"
+            },
+            {
+              "factor": "bridge_terms",
+              "delta": 0.08,
+              "reason": "1 bridge concept(s) detected"
+            },
+            {
+              "factor": "missing_method_affordances",
+              "delta": -0.18,
+              "reason": "spatial_coordinates"
+            },
+            {
+              "factor": "narrow_tool_modality_mismatch",
+              "delta": -0.3,
+              "reason": "tool implies a data modality absent from scenario/context"
+            }
+          ],
+          "reason": "bridge concepts detected: multi-omics; method input requirements not visible in scenario/context: spatial_coordinates; narrow tool/software method appears without matching data modality in the scenario"
+        }
+      },
+      {
+        "topic": "logistic regression + advanced colorectal cancer",
+        "method": "logistic regression",
+        "scenario": "advanced colorectal cancer",
+        "importance_score": 7,
+        "current_evidence_level": "none",
+        "missing_benchmarks": [
+          "AUC scores, sensitivity, specificity, Dice scores, K-statistic",
+          "AUC∞, Cmax, t1/2, adverse drug reaction (ADR) occurrence",
+          "CTCAE criteria; grade ≥3 treatment-related toxicity",
+          "Common Terminology Criteria for Adverse Events, v4.03",
+          "Harrell's c-index, area under the curve (AUC), and accuracy in high-risk populations"
+        ],
+        "why_important": "Both the method and scenario are visible in the field map, but this intersection has no recorded validation.",
+        "supporting_references": [
+          "Leslie Carol Cerpa-Castro et al. (2025) Genetic variants and clinical factors affecting the response to 5-fluorouracil–based treatment in Chilean patients with advanced colorectal cancer. doi:10.1200/jco.2025.43.4_suppl.114",
+          "Iftikhar et al. (2025) AI-Driven Personalization of Dual Antiplatelet Therapy Duration Post-PCI: A Novel Approach Balancing Ischemic and Bleeding Risks in the UAE Population doi:10.1101/2025.03.16.25324067"
+        ],
+        "semantic_plausibility": {
+          "verdict": "REJECT",
+          "score": 0.05,
+          "requirements": [
+            "spatial_coordinates"
+          ],
+          "scenario_affordances": [
+            "graph",
+            "image",
+            "intervention",
+            "molecular",
+            "omics",
+            "sequence"
+          ],
+          "bridge_terms": [
+            "multi-omics"
+          ],
+          "score_breakdown": [
+            {
+              "factor": "base_prior",
+              "delta": 0.45,
+              "reason": "default prior before evidence checks"
+            },
+            {
+              "factor": "bridge_terms",
+              "delta": 0.08,
+              "reason": "1 bridge concept(s) detected"
+            },
+            {
+              "factor": "missing_method_affordances",
+              "delta": -0.18,
+              "reason": "spatial_coordinates"
+            },
+            {
+              "factor": "narrow_tool_modality_mismatch",
+              "delta": -0.3,
+              "reason": "tool implies a data modality absent from scenario/context"
+            }
+          ],
+          "reason": "bridge concepts detected: multi-omics; method input requirements not visible in scenario/context: spatial_coordinates; narrow tool/software method appears without matching data modality in the scenario"
+        }
+      },
+      {
+        "topic": "logistic regression + adverse drug events in clinical research",
+        "method": "logistic regression",
+        "scenario": "adverse drug events in clinical research",
+        "importance_score": 7,
+        "current_evidence_level": "none",
+        "missing_benchmarks": [
+          "AUC scores, sensitivity, specificity, Dice scores, K-statistic",
+          "AUC∞, Cmax, t1/2, adverse drug reaction (ADR) occurrence",
+          "CTCAE criteria; grade ≥3 treatment-related toxicity",
+          "Common Terminology Criteria for Adverse Events, v4.03",
+          "Harrell's c-index, area under the curve (AUC), and accuracy in high-risk populations"
+        ],
+        "why_important": "Both the method and scenario are visible in the field map, but this intersection has no recorded validation.",
+        "supporting_references": [
+          "Iftikhar et al. (2025) AI-Driven Personalization of Dual Antiplatelet Therapy Duration Post-PCI: A Novel Approach Balancing Ischemic and Bleeding Risks in the UAE Population doi:10.1101/2025.03.16.25324067",
+          "Schreier, O. et al. (2025) A scoping review of the application of artificial intelligence for the analysis of adverse drug events in clinical research doi:10.1101/2025.07.14.25331486"
+        ],
+        "semantic_plausibility": {
+          "verdict": "REJECT",
+          "score": 0.05,
+          "requirements": [
+            "spatial_coordinates"
+          ],
+          "scenario_affordances": [
+            "graph",
+            "image",
+            "intervention",
+            "molecular",
+            "omics",
+            "sequence"
+          ],
+          "bridge_terms": [
+            "multi-omics"
+          ],
+          "score_breakdown": [
+            {
+              "factor": "base_prior",
+              "delta": 0.45,
+              "reason": "default prior before evidence checks"
+            },
+            {
+              "factor": "bridge_terms",
+              "delta": 0.08,
+              "reason": "1 bridge concept(s) detected"
+            },
+            {
+              "factor": "missing_method_affordances",
+              "delta": -0.18,
+              "reason": "spatial_coordinates"
+            },
+            {
+              "factor": "narrow_tool_modality_mismatch",
+              "delta": -0.3,
+              "reason": "tool implies a data modality absent from scenario/context"
+            }
+          ],
+          "reason": "bridge concepts detected: multi-omics; method input requirements not visible in scenario/context: spatial_coordinates; narrow tool/software method appears without matching data modality in the scenario"
+        }
+      },
+      {
+        "topic": "logistic regression + antidepressant response",
+        "method": "logistic regression",
+        "scenario": "antidepressant response",
+        "importance_score": 5,
+        "current_evidence_level": "none",
+        "missing_benchmarks": [
+          "AUC scores, sensitivity, specificity, Dice scores, K-statistic",
+          "AUC∞, Cmax, t1/2, adverse drug reaction (ADR) occurrence",
+          "CTCAE criteria; grade ≥3 treatment-related toxicity",
+          "Common Terminology Criteria for Adverse Events, v4.03",
+          "Harrell's c-index, area under the curve (AUC), and accuracy in high-risk populations"
+        ],
+        "why_important": "Both the method and scenario are visible in the field map, but this intersection has no recorded validation.",
+        "supporting_references": [
+          "Luiza Blambila et al. (2026) Pharmacogenetics of antidepressant response: a focused review on CYP2C19, CYP2D6, SLC6A4, and HTR2A polymorphisms. doi:10.3389/fphar.2026.1773677",
+          "Iftikhar et al. (2025) AI-Driven Personalization of Dual Antiplatelet Therapy Duration Post-PCI: A Novel Approach Balancing Ischemic and Bleeding Risks in the UAE Population doi:10.1101/2025.03.16.25324067"
+        ],
+        "semantic_plausibility": {
+          "verdict": "REJECT",
+          "score": 0.05,
+          "requirements": [
+            "spatial_coordinates"
+          ],
+          "scenario_affordances": [
+            "graph",
+            "image",
+            "intervention",
+            "molecular",
+            "omics",
+            "sequence"
+          ],
+          "bridge_terms": [
+            "multi-omics"
+          ],
+          "score_breakdown": [
+            {
+              "factor": "base_prior",
+              "delta": 0.45,
+              "reason": "default prior before evidence checks"
+            },
+            {
+              "factor": "bridge_terms",
+              "delta": 0.08,
+              "reason": "1 bridge concept(s) detected"
+            },
+            {
+              "factor": "missing_method_affordances",
+              "delta": -0.18,
+              "reason": "spatial_coordinates"
+            },
+            {
+              "factor": "narrow_tool_modality_mismatch",
+              "delta": -0.3,
+              "reason": "tool implies a data modality absent from scenario/context"
+            }
+          ],
+          "reason": "bridge concepts detected: multi-omics; method input requirements not visible in scenario/context: spatial_coordinates; narrow tool/software method appears without matching data modality in the scenario"
+        }
+      },
+      {
+        "topic": "logistic regression + antimicrobial therapy and antimicrobial resistance (AMR)",
+        "method": "logistic regression",
+        "scenario": "antimicrobial therapy and antimicrobial resistance (AMR)",
+        "importance_score": 7,
+        "current_evidence_level": "none",
+        "missing_benchmarks": [
+          "AUC scores, sensitivity, specificity, Dice scores, K-statistic",
+          "AUC∞, Cmax, t1/2, adverse drug reaction (ADR) occurrence",
+          "CTCAE criteria; grade ≥3 treatment-related toxicity",
+          "Common Terminology Criteria for Adverse Events, v4.03",
+          "Harrell's c-index, area under the curve (AUC), and accuracy in high-risk populations"
+        ],
+        "why_important": "Both the method and scenario are visible in the field map, but this intersection has no recorded validation.",
+        "supporting_references": [
+          "Iftikhar et al. (2025) AI-Driven Personalization of Dual Antiplatelet Therapy Duration Post-PCI: A Novel Approach Balancing Ischemic and Bleeding Risks in the UAE Population doi:10.1101/2025.03.16.25324067",
+          "Tetsushu Onita et al. (2025) PK/PD-Guided Strategies for Appropriate Antibiotic Use in the Era of Antimicrobial Resistance doi:10.3390/antibiotics14010092"
+        ],
+        "semantic_plausibility": {
+          "verdict": "REJECT",
+          "score": 0.05,
+          "requirements": [
+            "spatial_coordinates"
+          ],
+          "scenario_affordances": [
+            "graph",
+            "image",
+            "intervention",
+            "molecular",
+            "omics",
+            "sequence"
+          ],
+          "bridge_terms": [
+            "multi-omics"
+          ],
+          "score_breakdown": [
+            {
+              "factor": "base_prior",
+              "delta": 0.45,
+              "reason": "default prior before evidence checks"
+            },
+            {
+              "factor": "bridge_terms",
+              "delta": 0.08,
+              "reason": "1 bridge concept(s) detected"
+            },
+            {
+              "factor": "missing_method_affordances",
+              "delta": -0.18,
+              "reason": "spatial_coordinates"
+            },
+            {
+              "factor": "narrow_tool_modality_mismatch",
+              "delta": -0.3,
+              "reason": "tool implies a data modality absent from scenario/context"
+            }
+          ],
+          "reason": "bridge concepts detected: multi-omics; method input requirements not visible in scenario/context: spatial_coordinates; narrow tool/software method appears without matching data modality in the scenario"
+        }
+      },
+      {
+        "topic": "logistic regression + behavioral interventions for high-risk pregnant women in the United States",
+        "method": "logistic regression",
+        "scenario": "behavioral interventions for high-risk pregnant women in the United States",
+        "importance_score": 5,
+        "current_evidence_level": "none",
+        "missing_benchmarks": [
+          "AUC scores, sensitivity, specificity, Dice scores, K-statistic",
+          "AUC∞, Cmax, t1/2, adverse drug reaction (ADR) occurrence",
+          "CTCAE criteria; grade ≥3 treatment-related toxicity",
+          "Common Terminology Criteria for Adverse Events, v4.03",
+          "Harrell's c-index, area under the curve (AUC), and accuracy in high-risk populations"
+        ],
+        "why_important": "Both the method and scenario are visible in the field map, but this intersection has no recorded validation.",
+        "supporting_references": [
+          "Phipps et al. (2025) A systematic review of behavioral interventions to improve maternal outcomes for women in the United States at high risk for adverse pregnancy outcomes doi:10.1101/2025.07.18.25331742",
+          "Iftikhar et al. (2025) AI-Driven Personalization of Dual Antiplatelet Therapy Duration Post-PCI: A Novel Approach Balancing Ischemic and Bleeding Risks in the UAE Population doi:10.1101/2025.03.16.25324067"
+        ],
+        "semantic_plausibility": {
+          "verdict": "REJECT",
+          "score": 0.05,
+          "requirements": [
+            "spatial_coordinates"
+          ],
+          "scenario_affordances": [
+            "graph",
+            "image",
+            "intervention",
+            "molecular",
+            "omics",
+            "sequence"
+          ],
+          "bridge_terms": [
+            "multi-omics"
+          ],
+          "score_breakdown": [
+            {
+              "factor": "base_prior",
+              "delta": 0.45,
+              "reason": "default prior before evidence checks"
+            },
+            {
+              "factor": "bridge_terms",
+              "delta": 0.08,
+              "reason": "1 bridge concept(s) detected"
+            },
+            {
+              "factor": "missing_method_affordances",
+              "delta": -0.18,
+              "reason": "spatial_coordinates"
+            },
+            {
+              "factor": "narrow_tool_modality_mismatch",
+              "delta": -0.3,
+              "reason": "tool implies a data modality absent from scenario/context"
+            }
+          ],
+          "reason": "bridge concepts detected: multi-omics; method input requirements not visible in scenario/context: spatial_coordinates; narrow tool/software method appears without matching data modality in the scenario"
+        }
+      },
+      {
+        "topic": "logistic regression + breast cancer risk prediction for Indian women",
+        "method": "logistic regression",
+        "scenario": "breast cancer risk prediction for Indian women",
+        "importance_score": 7,
+        "current_evidence_level": "none",
+        "missing_benchmarks": [
+          "AUC scores, sensitivity, specificity, Dice scores, K-statistic",
+          "AUC∞, Cmax, t1/2, adverse drug reaction (ADR) occurrence",
+          "CTCAE criteria; grade ≥3 treatment-related toxicity",
+          "Common Terminology Criteria for Adverse Events, v4.03",
+          "Harrell's c-index, area under the curve (AUC), and accuracy in high-risk populations"
+        ],
+        "why_important": "Both the method and scenario are visible in the field map, but this intersection has no recorded validation.",
+        "supporting_references": [
+          "Iftikhar et al. (2025) AI-Driven Personalization of Dual Antiplatelet Therapy Duration Post-PCI: A Novel Approach Balancing Ischemic and Bleeding Risks in the UAE Population doi:10.1101/2025.03.16.25324067",
+          "Prakash, P. et al. (2025) A Population-Specific Breast Cancer Risk Prediction Model for Indian Women (A Pilot Study): Advancing Beyond Traditional Assessment Tools doi:10.1101/2025.07.20.25331883"
+        ],
+        "semantic_plausibility": {
+          "verdict": "REJECT",
+          "score": 0.05,
+          "requirements": [
+            "spatial_coordinates"
+          ],
+          "scenario_affordances": [
+            "graph",
+            "image",
+            "intervention",
+            "molecular",
+            "omics",
+            "sequence"
+          ],
+          "bridge_terms": [
+            "multi-omics"
+          ],
+          "score_breakdown": [
+            {
+              "factor": "base_prior",
+              "delta": 0.45,
+              "reason": "default prior before evidence checks"
+            },
+            {
+              "factor": "bridge_terms",
+              "delta": 0.08,
+              "reason": "1 bridge concept(s) detected"
+            },
+            {
+              "factor": "missing_method_affordances",
+              "delta": -0.18,
+              "reason": "spatial_coordinates"
+            },
+            {
+              "factor": "narrow_tool_modality_mismatch",
+              "delta": -0.3,
+              "reason": "tool implies a data modality absent from scenario/context"
+            }
+          ],
+          "reason": "bridge concepts detected: multi-omics; method input requirements not visible in scenario/context: spatial_coordinates; narrow tool/software method appears without matching data modality in the scenario"
+        }
+      },
+      {
+        "topic": "logistic regression + cancer cells, specifically interactions between drug-sensitive and drug-resistant subpopulations",
+        "method": "logistic regression",
+        "scenario": "cancer cells, specifically interactions between drug-sensitive and drug-resistant subpopulations",
+        "importance_score": 7,
+        "current_evidence_level": "none",
+        "missing_benchmarks": [
+          "AUC scores, sensitivity, specificity, Dice scores, K-statistic",
+          "AUC∞, Cmax, t1/2, adverse drug reaction (ADR) occurrence",
+          "CTCAE criteria; grade ≥3 treatment-related toxicity",
+          "Common Terminology Criteria for Adverse Events, v4.03",
+          "Harrell's c-index, area under the curve (AUC), and accuracy in high-risk populations"
+        ],
+        "why_important": "Both the method and scenario are visible in the field map, but this intersection has no recorded validation.",
+        "supporting_references": [
+          "Iftikhar et al. (2025) AI-Driven Personalization of Dual Antiplatelet Therapy Duration Post-PCI: A Novel Approach Balancing Ischemic and Bleeding Risks in the UAE Population doi:10.1101/2025.03.16.25324067",
+          "Leither, S. et al. (2025) Using spatial statistics to infer game-theoretic interactions in an agent-based model of cancer cells doi:10.1101/2025.07.09.664005"
+        ],
+        "semantic_plausibility": {
+          "verdict": "REJECT",
+          "score": 0.05,
+          "requirements": [
+            "spatial_coordinates"
+          ],
+          "scenario_affordances": [
+            "graph",
+            "image",
+            "intervention",
+            "molecular",
+            "omics",
+            "sequence"
+          ],
+          "bridge_terms": [
+            "multi-omics"
+          ],
+          "score_breakdown": [
+            {
+              "factor": "base_prior",
+              "delta": 0.45,
+              "reason": "default prior before evidence checks"
+            },
+            {
+              "factor": "bridge_terms",
+              "delta": 0.08,
+              "reason": "1 bridge concept(s) detected"
+            },
+            {
+              "factor": "missing_method_affordances",
+              "delta": -0.18,
+              "reason": "spatial_coordinates"
+            },
+            {
+              "factor": "narrow_tool_modality_mismatch",
+              "delta": -0.3,
+              "reason": "tool implies a data modality absent from scenario/context"
+            }
+          ],
+          "reason": "bridge concepts detected: multi-omics; method input requirements not visible in scenario/context: spatial_coordinates; narrow tool/software method appears without matching data modality in the scenario"
+        }
+      },
+      {
+        "topic": "logistic regression + cancer therapy, personalized medicine, precision oncology",
+        "method": "logistic regression",
+        "scenario": "cancer therapy, personalized medicine, precision oncology",
+        "importance_score": 7,
+        "current_evidence_level": "none",
+        "missing_benchmarks": [
+          "AUC scores, sensitivity, specificity, Dice scores, K-statistic",
+          "AUC∞, Cmax, t1/2, adverse drug reaction (ADR) occurrence",
+          "CTCAE criteria; grade ≥3 treatment-related toxicity",
+          "Common Terminology Criteria for Adverse Events, v4.03",
+          "Harrell's c-index, area under the curve (AUC), and accuracy in high-risk populations"
+        ],
+        "why_important": "Both the method and scenario are visible in the field map, but this intersection has no recorded validation.",
+        "supporting_references": [
+          "Milan Zarić et al. (2025) The Three Musketeers in Cancer Therapy: Pharmacokinetics, Pharmacodynamics and Personalised Approach doi:10.3390/jpm15110516",
+          "Iftikhar et al. (2025) AI-Driven Personalization of Dual Antiplatelet Therapy Duration Post-PCI: A Novel Approach Balancing Ischemic and Bleeding Risks in the UAE Population doi:10.1101/2025.03.16.25324067"
+        ],
+        "semantic_plausibility": {
+          "verdict": "REJECT",
+          "score": 0.05,
+          "requirements": [
+            "spatial_coordinates"
+          ],
+          "scenario_affordances": [
+            "graph",
+            "image",
+            "intervention",
+            "molecular",
+            "omics",
+            "sequence"
+          ],
+          "bridge_terms": [
+            "multi-omics"
+          ],
+          "score_breakdown": [
+            {
+              "factor": "base_prior",
+              "delta": 0.45,
+              "reason": "default prior before evidence checks"
+            },
+            {
+              "factor": "bridge_terms",
+              "delta": 0.08,
+              "reason": "1 bridge concept(s) detected"
+            },
+            {
+              "factor": "missing_method_affordances",
+              "delta": -0.18,
+              "reason": "spatial_coordinates"
+            },
+            {
+              "factor": "narrow_tool_modality_mismatch",
+              "delta": -0.3,
+              "reason": "tool implies a data modality absent from scenario/context"
+            }
+          ],
+          "reason": "bridge concepts detected: multi-omics; method input requirements not visible in scenario/context: spatial_coordinates; narrow tool/software method appears without matching data modality in the scenario"
+        }
+      },
+      {
+        "topic": "logistic regression + cell and gene therapy regulatory filings",
+        "method": "logistic regression",
+        "scenario": "cell and gene therapy regulatory filings",
+        "importance_score": 7,
+        "current_evidence_level": "none",
+        "missing_benchmarks": [
+          "AUC scores, sensitivity, specificity, Dice scores, K-statistic",
+          "AUC∞, Cmax, t1/2, adverse drug reaction (ADR) occurrence",
+          "CTCAE criteria; grade ≥3 treatment-related toxicity",
+          "Common Terminology Criteria for Adverse Events, v4.03",
+          "Harrell's c-index, area under the curve (AUC), and accuracy in high-risk populations"
+        ],
+        "why_important": "Both the method and scenario are visible in the field map, but this intersection has no recorded validation.",
+        "supporting_references": [
+          "Iftikhar et al. (2025) AI-Driven Personalization of Dual Antiplatelet Therapy Duration Post-PCI: A Novel Approach Balancing Ischemic and Bleeding Risks in the UAE Population doi:10.1101/2025.03.16.25324067",
+          "K. Kime et al. (2025) Ensuring compliance through collaboration: managing raw material changes in cell and gene therapy regulatory filings doi:10.18609/cgti.2025.032"
+        ],
+        "semantic_plausibility": {
+          "verdict": "REJECT",
+          "score": 0.05,
+          "requirements": [
+            "spatial_coordinates"
+          ],
+          "scenario_affordances": [
+            "graph",
+            "image",
+            "intervention",
+            "molecular",
+            "omics",
+            "sequence"
+          ],
+          "bridge_terms": [
+            "multi-omics"
+          ],
+          "score_breakdown": [
+            {
+              "factor": "base_prior",
+              "delta": 0.45,
+              "reason": "default prior before evidence checks"
+            },
+            {
+              "factor": "bridge_terms",
+              "delta": 0.08,
+              "reason": "1 bridge concept(s) detected"
+            },
+            {
+              "factor": "missing_method_affordances",
+              "delta": -0.18,
+              "reason": "spatial_coordinates"
+            },
+            {
+              "factor": "narrow_tool_modality_mismatch",
+              "delta": -0.3,
+              "reason": "tool implies a data modality absent from scenario/context"
+            }
+          ],
+          "reason": "bridge concepts detected: multi-omics; method input requirements not visible in scenario/context: spatial_coordinates; narrow tool/software method appears without matching data modality in the scenario"
+        }
+      },
+      {
+        "topic": "logistic regression + cell gene therapies development and approval",
+        "method": "logistic regression",
+        "scenario": "cell gene therapies development and approval",
+        "importance_score": 7,
+        "current_evidence_level": "none",
+        "missing_benchmarks": [
+          "AUC scores, sensitivity, specificity, Dice scores, K-statistic",
+          "AUC∞, Cmax, t1/2, adverse drug reaction (ADR) occurrence",
+          "CTCAE criteria; grade ≥3 treatment-related toxicity",
+          "Common Terminology Criteria for Adverse Events, v4.03",
+          "Harrell's c-index, area under the curve (AUC), and accuracy in high-risk populations"
+        ],
+        "why_important": "Both the method and scenario are visible in the field map, but this intersection has no recorded validation.",
+        "supporting_references": [
+          "Iftikhar et al. (2025) AI-Driven Personalization of Dual Antiplatelet Therapy Duration Post-PCI: A Novel Approach Balancing Ischemic and Bleeding Risks in the UAE Population doi:10.1101/2025.03.16.25324067",
+          "C. Iglesias-López et al. (2026) Outlook of Cell Gene Therapies Development and Approval from Quality and Regulatory Perspective doi:10.1007/s43441-026-00920-4"
+        ],
+        "semantic_plausibility": {
+          "verdict": "REJECT",
+          "score": 0.05,
+          "requirements": [
+            "spatial_coordinates"
+          ],
+          "scenario_affordances": [
+            "graph",
+            "image",
+            "intervention",
+            "molecular",
+            "omics",
+            "sequence"
+          ],
+          "bridge_terms": [
+            "multi-omics"
+          ],
+          "score_breakdown": [
+            {
+              "factor": "base_prior",
+              "delta": 0.45,
+              "reason": "default prior before evidence checks"
+            },
+            {
+              "factor": "bridge_terms",
+              "delta": 0.08,
+              "reason": "1 bridge concept(s) detected"
+            },
+            {
+              "factor": "missing_method_affordances",
+              "delta": -0.18,
+              "reason": "spatial_coordinates"
+            },
+            {
+              "factor": "narrow_tool_modality_mismatch",
+              "delta": -0.3,
+              "reason": "tool implies a data modality absent from scenario/context"
+            }
+          ],
+          "reason": "bridge concepts detected: multi-omics; method input requirements not visible in scenario/context: spatial_coordinates; narrow tool/software method appears without matching data modality in the scenario"
+        }
+      },
+      {
+        "topic": "logistic regression + cell therapy manufacturing",
+        "method": "logistic regression",
+        "scenario": "cell therapy manufacturing",
+        "importance_score": 7,
+        "current_evidence_level": "none",
+        "missing_benchmarks": [
+          "AUC scores, sensitivity, specificity, Dice scores, K-statistic",
+          "AUC∞, Cmax, t1/2, adverse drug reaction (ADR) occurrence",
+          "CTCAE criteria; grade ≥3 treatment-related toxicity",
+          "Common Terminology Criteria for Adverse Events, v4.03",
+          "Harrell's c-index, area under the curve (AUC), and accuracy in high-risk populations"
+        ],
+        "why_important": "Both the method and scenario are visible in the field map, but this intersection has no recorded validation.",
+        "supporting_references": [
+          "Iftikhar et al. (2025) AI-Driven Personalization of Dual Antiplatelet Therapy Duration Post-PCI: A Novel Approach Balancing Ischemic and Bleeding Risks in the UAE Population doi:10.1101/2025.03.16.25324067",
+          "Bryan Wang et al. (2024) Interfacing data science with cell therapy manufacturing: where we are and where we need to be. doi:10.1016/j.jcyt.2024.03.011"
+        ],
+        "semantic_plausibility": {
+          "verdict": "REJECT",
+          "score": 0.05,
+          "requirements": [
+            "spatial_coordinates"
+          ],
+          "scenario_affordances": [
+            "graph",
+            "image",
+            "intervention",
+            "molecular",
+            "omics",
+            "sequence"
+          ],
+          "bridge_terms": [
+            "multi-omics"
+          ],
+          "score_breakdown": [
+            {
+              "factor": "base_prior",
+              "delta": 0.45,
+              "reason": "default prior before evidence checks"
+            },
+            {
+              "factor": "bridge_terms",
+              "delta": 0.08,
+              "reason": "1 bridge concept(s) detected"
+            },
+            {
+              "factor": "missing_method_affordances",
+              "delta": -0.18,
+              "reason": "spatial_coordinates"
+            },
+            {
+              "factor": "narrow_tool_modality_mismatch",
+              "delta": -0.3,
+              "reason": "tool implies a data modality absent from scenario/context"
+            }
+          ],
+          "reason": "bridge concepts detected: multi-omics; method input requirements not visible in scenario/context: spatial_coordinates; narrow tool/software method appears without matching data modality in the scenario"
+        }
+      },
+      {
+        "topic": "logistic regression + chemotherapy-related severe toxicity in testicular cancer patients",
+        "method": "logistic regression",
+        "scenario": "chemotherapy-related severe toxicity in testicular cancer patients",
+        "importance_score": 7,
+        "current_evidence_level": "none",
+        "missing_benchmarks": [
+          "AUC scores, sensitivity, specificity, Dice scores, K-statistic",
+          "AUC∞, Cmax, t1/2, adverse drug reaction (ADR) occurrence",
+          "CTCAE criteria; grade ≥3 treatment-related toxicity",
+          "Common Terminology Criteria for Adverse Events, v4.03",
+          "Harrell's c-index, area under the curve (AUC), and accuracy in high-risk populations"
+        ],
+        "why_important": "Both the method and scenario are visible in the field map, but this intersection has no recorded validation.",
+        "supporting_references": [
+          "M. Lavanderos et al. (2019) Association Study Among Candidate Genetic Polymorphisms and Chemotherapy-Related Severe Toxicity in Testicular Cancer Patients doi:10.3389/fphar.2019.00206",
+          "Iftikhar et al. (2025) AI-Driven Personalization of Dual Antiplatelet Therapy Duration Post-PCI: A Novel Approach Balancing Ischemic and Bleeding Risks in the UAE Population doi:10.1101/2025.03.16.25324067"
+        ],
+        "semantic_plausibility": {
+          "verdict": "REJECT",
+          "score": 0.05,
+          "requirements": [
+            "spatial_coordinates"
+          ],
+          "scenario_affordances": [
+            "graph",
+            "image",
+            "intervention",
+            "molecular",
+            "omics",
+            "sequence"
+          ],
+          "bridge_terms": [
+            "multi-omics"
+          ],
+          "score_breakdown": [
+            {
+              "factor": "base_prior",
+              "delta": 0.45,
+              "reason": "default prior before evidence checks"
+            },
+            {
+              "factor": "bridge_terms",
+              "delta": 0.08,
+              "reason": "1 bridge concept(s) detected"
+            },
+            {
+              "factor": "missing_method_affordances",
+              "delta": -0.18,
+              "reason": "spatial_coordinates"
+            },
+            {
+              "factor": "narrow_tool_modality_mismatch",
+              "delta": -0.3,
+              "reason": "tool implies a data modality absent from scenario/context"
+            }
+          ],
+          "reason": "bridge concepts detected: multi-omics; method input requirements not visible in scenario/context: spatial_coordinates; narrow tool/software method appears without matching data modality in the scenario"
+        }
+      }
+    ]
+  },
+  "reasoning_gaps": [
+    {
+      "gap_id": "gap_1783843987958336300",
+      "gap_type": "contradiction",
+      "description": "Potential conclusion conflict: decentralized manufacturing of cell and gene therapy products contains opposing claims: This approach aims to streamline cell therapy production at or near point of care, supporting rapid and cost-effective clinical implementation. vs This article examines the challenges of raw material changes across clinical development and commercial manufacturing, the regulatory considerations involved, and best practices fo...[truncated].",
+      "supporting_references": [
+        "H. von der Leyen et al. (2025) Implementation of a quality management system for decentralized manufacturing of cell and gene therapy products - technical and regulatory considerations doi:10.3389/fmed.2025.1591751",
+        "K. Kime et al. (2025) Ensuring compliance through collaboration: managing raw material changes in cell and gene therapy regulatory filings doi:10.18609/cgti.2025.032"
+      ],
+      "novelty_score": 5,
+      "application_value": "medium",
+      "feasibility": "low",
+      "suggested_research_path": "Extract the exact claim sentences, verify citation contexts/full text, then design a discriminating experiment, simulation, benchmark, or theoretical derivation that can separate the competing explanations.",
+      "value_argument": "Contradiction gaps are high-value because resolving them can update mechanism understanding, not merely fill a sparse method-scenario cell.",
+      "status": "candidate",
+      "createdAt": 1783843987.9583414,
+      "hypothesis_ingredients": {
+        "methods": [],
+        "scenarios": [],
+        "benchmarks": [],
+        "numerical_bounds": [],
+        "operating_conditions": [],
+        "measurable_metrics": []
+      },
+      "counterfactual_leaves": [],
+      "assessment_dimensions": [
+        "academic novelty",
+        "application value",
+        "implementation feasibility"
+      ],
+      "overlap_risk": "medium",
+      "strongest_overlap": 0.575,
+      "literature_coverage_factor": 0.9417,
+      "assessment_reason": "refs=2, gap_type=contradiction, strongest_local_overlap=0.575, coverage=0.942, feasibility=low, application_value=medium, semantic_plausibility=not_run",
+      "requires_human_review": false,
+      "reasoning_signal": {
+        "type": "claim_contradiction",
+        "shared_context": "decentralized manufacturing of cell and gene therapy products",
+        "left_polarity": "positive",
+        "right_polarity": "negative"
+      },
+      "dedupe_signature": "and cell conclusion conflict decentralized gene manufacturing of potential therapy",
+      "deduped_from": 1
+    },
+    {
+      "gap_id": "gap_1783843987993328200",
+      "gap_type": "anomaly",
+      "description": "Unexplained anomaly or theory-evidence tension reported in the literature: comprehensive information on the effects of Ara-C-based therapies and pharmacogenomic biomarkers (2021) Response and Toxicity to Cytarabine Therapy in Leukemia and Lymphoma: From Dose Puzzle to Pharmacogenomic Biomarkers doi:10.3390/cancers13050966 Abstract: S...[truncated]",
+      "supporting_references": [
+        "R. Di Francia et al. (2021) Response and Toxicity to Cytarabine Therapy in Leukemia and Lymphoma: From Dose Puzzle to Pharmacogenomic Biomarkers doi:10.3390/cancers13050966"
+      ],
+      "novelty_score": 3,
+      "application_value": "medium",
+      "feasibility": "high",
+      "suggested_research_path": "Turn the anomaly into competing mechanistic explanations, then test which assumptions fail under controlled conditions, ablation, counterexample construction, or independent data.",
+      "value_argument": "Anomaly gaps can drive explanatory progress because they point to observations or results that current mechanisms do not fully account for.",
+      "status": "candidate",
+      "createdAt": 1783843987.9933317,
+      "hypothesis_ingredients": {
+        "methods": [],
+        "scenarios": [],
+        "benchmarks": [],
+        "numerical_bounds": [],
+        "operating_conditions": [],
+        "measurable_metrics": []
+      },
+      "counterfactual_leaves": [],
+      "assessment_dimensions": [
+        "academic novelty",
+        "application value",
+        "implementation feasibility"
+      ],
+      "overlap_risk": "high",
+      "strongest_overlap": 0.8148,
+      "literature_coverage_factor": 0.886,
+      "assessment_reason": "refs=1, gap_type=anomaly, strongest_local_overlap=0.815, coverage=0.886, feasibility=high, application_value=medium, semantic_plausibility=not_run",
+      "requires_human_review": true,
+      "reasoning_signal": {
+        "type": "theory_evidence_anomaly",
+        "source_field": "biology"
+      },
+      "dedupe_signature": "anomaly comprehensive in information or reported tension the theory-evidence unexplained"
+    },
+    {
+      "gap_id": "gap_1783843988045517500",
+      "gap_type": "anomaly",
+      "description": "Unexplained anomaly or theory-evidence tension reported in the literature: Seven published POPPK models were employed using the reported model equations, parameter values, covariate relationships, interpatient variability, parameter covariance, and unexplained residual variability in NONMEM (Version 7.4.3).",
+      "supporting_references": [
+        "P. Hanafin et al. (2021) Assessing the predictive performance of population pharmacokinetic models for intravenous polymyxin B in critically ill patients doi:10.1002/psp4.12720"
+      ],
+      "novelty_score": 3,
+      "application_value": "medium",
+      "feasibility": "high",
+      "suggested_research_path": "Turn the anomaly into competing mechanistic explanations, then test which assumptions fail under controlled conditions, ablation, counterexample construction, or independent data.",
+      "value_argument": "Anomaly gaps can drive explanatory progress because they point to observations or results that current mechanisms do not fully account for.",
+      "status": "candidate",
+      "createdAt": 1783843988.0455213,
+      "hypothesis_ingredients": {
+        "methods": [],
+        "scenarios": [],
+        "benchmarks": [],
+        "numerical_bounds": [],
+        "operating_conditions": [],
+        "measurable_metrics": []
+      },
+      "counterfactual_leaves": [],
+      "assessment_dimensions": [
+        "academic novelty",
+        "application value",
+        "implementation feasibility"
+      ],
+      "overlap_risk": "high",
+      "strongest_overlap": 0.84,
+      "literature_coverage_factor": 0.8281,
+      "assessment_reason": "refs=1, gap_type=anomaly, strongest_local_overlap=0.84, coverage=0.828, feasibility=high, application_value=medium, semantic_plausibility=not_run",
+      "requires_human_review": true,
+      "reasoning_signal": {
+        "type": "theory_evidence_anomaly",
+        "source_field": "biomedical"
+      },
+      "dedupe_signature": "anomaly in or published reported seven tension the theory-evidence unexplained"
+    }
+  ],
+  "cross_disciplinary_unconnected_pairs": [
+    {
+      "field_a": "biology",
+      "concept_a": "omics profiling",
+      "field_b": "general",
+      "concept_b": "systematic review",
+      "potential_synergy": "Testing whether omics profiling can constrain, evaluate, or operationalize systematic review for Personalized Medicine / Precision Medicine / Pharmacogenomics / Cancer Genomics / Clinical Pharmacology / Multi-omics / Patient-derived Models / Cell and Gene Therapy Manufacturing / Biostatistics / Regulatory Science may reveal a non-obvious transfer path or boundary condition.",
+      "supporting_references": [
+        "E. De Mattia et al. (2023) The burden of rare variants in DPYS gene is a novel predictor of the risk of developing severe fluoropyrimidine-related toxicity doi:10.1186/s40246-023-00546-9",
+        "C. Iglesias-López et al. (2026) Outlook of Cell Gene Therapies Development and Approval from Quality and Regulatory Perspective doi:10.1007/s43441-026-00920-4"
+      ]
+    },
+    {
+      "field_a": "biology",
+      "concept_a": "omics profiling",
+      "field_b": "general",
+      "concept_b": "systematic review and meta-analysis",
+      "potential_synergy": "Testing whether omics profiling can constrain, evaluate, or operationalize systematic review and meta-analysis for Personalized Medicine / Precision Medicine / Pharmacogenomics / Cancer Genomics / Clinical Pharmacology / Multi-omics / Patient-derived Models / Cell and Gene Therapy Manufacturing / Biostatistics / Regulatory Science may reveal a non-obvious transfer path or boundary condition.",
+      "supporting_references": [
+        "E. De Mattia et al. (2023) The burden of rare variants in DPYS gene is a novel predictor of the risk of developing severe fluoropyrimidine-related toxicity doi:10.1186/s40246-023-00546-9",
+        "Tongu, Y. et al. (2025) Cytisine for smoking cessation: A systematic review and meta-analysis suggesting potential benefits of extended treatment protocols doi:10.1101/2025.07.23.25332030"
+      ]
+    },
+    {
+      "field_a": "biology",
+      "concept_a": "omics profiling",
+      "field_b": "general",
+      "concept_b": "smoking cessation",
+      "potential_synergy": "Testing whether omics profiling can constrain, evaluate, or operationalize smoking cessation for Personalized Medicine / Precision Medicine / Pharmacogenomics / Cancer Genomics / Clinical Pharmacology / Multi-omics / Patient-derived Models / Cell and Gene Therapy Manufacturing / Biostatistics / Regulatory Science may reveal a non-obvious transfer path or boundary condition.",
+      "supporting_references": [
+        "E. De Mattia et al. (2023) The burden of rare variants in DPYS gene is a novel predictor of the risk of developing severe fluoropyrimidine-related toxicity doi:10.1186/s40246-023-00546-9",
+        "Tongu, Y. et al. (2025) Cytisine for smoking cessation: A systematic review and meta-analysis suggesting potential benefits of extended treatment protocols doi:10.1101/2025.07.23.25332030"
+      ]
+    },
+    {
+      "field_a": "biomedical",
+      "concept_a": "PCR-ARMS and PCR-RFLP genotyping, plasma MTX concentration measurement",
+      "field_b": "general",
+      "concept_b": "smoking cessation",
+      "potential_synergy": "Testing whether PCR-ARMS and PCR-RFLP genotyping, plasma MTX concentration measurement can constrain, evaluate, or operationalize smoking cessation for Personalized Medicine / Precision Medicine / Pharmacogenomics / Cancer Genomics / Clinical Pharmacology / Multi-omics / Patient-derived Models / Cell and Gene Therapy Manufacturing / Biostatistics / Regulatory Science may reveal a non-obvious transfer path or boundary condition.",
+      "supporting_references": [
+        "Khloud Shendy et al. (2024) The effects of genetic polymorphism on toxicity and pharmacokinetics of methotrexate in Egyptian adult patients with leukaemia or lymphoma doi:10.1080/00498254.2024.2320778",
+        "Tongu, Y. et al. (2025) Cytisine for smoking cessation: A systematic review and meta-analysis suggesting potential benefits of extended treatment protocols doi:10.1101/2025.07.23.25332030"
+      ]
+    },
+    {
+      "field_a": "general",
+      "concept_a": "smoking cessation",
+      "field_b": "medicine",
+      "concept_b": "biomarkers",
+      "potential_synergy": "Testing whether smoking cessation can constrain, evaluate, or operationalize biomarkers for Personalized Medicine / Precision Medicine / Pharmacogenomics / Cancer Genomics / Clinical Pharmacology / Multi-omics / Patient-derived Models / Cell and Gene Therapy Manufacturing / Biostatistics / Regulatory Science may reveal a non-obvious transfer path or boundary condition.",
+      "supporting_references": [
+        "Tongu, Y. et al. (2025) Cytisine for smoking cessation: A systematic review and meta-analysis suggesting potential benefits of extended treatment protocols doi:10.1101/2025.07.23.25332030",
+        "Milan Zarić et al. (2025) The Three Musketeers in Cancer Therapy: Pharmacokinetics, Pharmacodynamics and Personalised Approach doi:10.3390/jpm15110516"
+      ]
+    }
+  ],
+  "suspended_problems": [
+    {
+      "problem": "Acute Lymphoblastic Leukemia: Introduction Contemporary treatments for acute lymphoblastic leukemia (ALL) can cure more than 80% of children with this disease but fewer than 50% of adults. Current risk-directed therapy is intended to improve not only the cure...[truncated]",
+      "years_unresolved": 17,
+      "citation_count": 0,
+      "evidence_level": "unknown",
+      "barrier_to_progress": "mechanistic uncertainty",
+      "supporting_references": [
+        "C. Pui (2009) Acute Lymphoblastic Leukemia: Introduction doi:10.1053/j.seminhematol.2008.09.011"
+      ]
+    },
+    {
+      "problem": "Biological Insights into Myeloma and Other B Cell Malignancies Multiple myeloma (MM) is a hematologic cancer characterized by the accumulation of malignant plasma cells in the bone marrow, which causes bone destruction and marrow failure [1]. Despite the fact...[truncated]",
+      "years_unresolved": 10,
+      "citation_count": 0,
+      "evidence_level": "unknown",
+      "barrier_to_progress": "data or measurement bottleneck",
+      "supporting_references": [
+        "M. Fulciniti et al. (2016) Biological Insights into Myeloma and Other B Cell Malignancies doi:10.1155/2016/5218093"
+      ]
+    },
+    {
+      "problem": "Individualization of Irinotecan Treatment: A Review of Pharmacokinetics, Pharmacodynamics, and Pharmacogenetics Since its clinical introduction in 1998, the topoisomerase I inhibitor irinotecan has been widely used in the treatment of solid tumors, including c...[truncated]",
+      "years_unresolved": 8,
+      "citation_count": 0,
+      "evidence_level": "unknown",
+      "barrier_to_progress": "mechanistic uncertainty",
+      "supporting_references": [
+        "F. D. de Man et al. (2018) Individualization of Irinotecan Treatment: A Review of Pharmacokinetics, Pharmacodynamics, and Pharmacogenetics doi:10.1007/s40262-018-0644-7"
+      ]
+    },
+    {
+      "problem": "Developing lisocabtagene maraleucel chimeric antigen receptor T-cell manufacturing for improved process, product quality and consistency across CD19+ hematologic indications. BACKGROUND AIMS\nAutologous chimeric antigen receptor (CAR) T-cell therapies have demo...[truncated]",
+      "years_unresolved": 4,
+      "citation_count": 0,
+      "evidence_level": "unknown",
+      "barrier_to_progress": "data or measurement bottleneck",
+      "supporting_references": [
+        "Jeffrey Teoh et al. (2022) Developing lisocabtagene maraleucel chimeric antigen receptor T-cell manufacturing for improved process, product quality and consistency across CD19+ hematologic indications. doi:10.1016/j.jcyt.2022.03.013"
+      ]
+    },
+    {
+      "problem": "Leukapheresis guidance and best practices for optimal chimeric antigen receptor T-cell manufacturing Challenges of obtaining optimal leukapheresis product for CAR T-cell manufacturing include vascular access for smaller patients, achieving sufficient T-cell yi...[truncated]",
+      "years_unresolved": 4,
+      "citation_count": 0,
+      "evidence_level": "unknown",
+      "barrier_to_progress": "unspecified conceptual or technical barrier",
+      "supporting_references": [
+        "M. Qayed et al. (2022) Leukapheresis guidance and best practices for optimal chimeric antigen receptor T-cell manufacturing. doi:10.1016/j.jcyt.2022.05.003"
+      ]
+    },
+    {
+      "problem": "Leukapheresis guidance and best practices for optimal chimeric antigen receptor T-cell manufacturing Chimeric antigen receptor (CAR) T-cell therapy is an individualized immunotherapy that genetically reprograms a patient's T cells to target and eliminate cance...[truncated]",
+      "years_unresolved": 4,
+      "citation_count": 0,
+      "evidence_level": "unknown",
+      "barrier_to_progress": "data or measurement bottleneck",
+      "supporting_references": [
+        "M. Qayed et al. (2022) Leukapheresis guidance and best practices for optimal chimeric antigen receptor T-cell manufacturing. doi:10.1016/j.jcyt.2022.05.003"
+      ]
+    },
+    {
+      "problem": "Predictive Modeling of Survival and Toxicity in Patients With Hepatocellular Carcinoma After Radiotherapy PURPOSE To stratify patients and aid clinical decision making, we developed machine learning models to predict treatment failure and radiation-induced tox...[truncated]",
+      "years_unresolved": 4,
+      "citation_count": 0,
+      "evidence_level": "unknown",
+      "barrier_to_progress": "data or measurement bottleneck",
+      "supporting_references": [
+        "Ibrahim Chamseddine et al. (2022) Predictive Modeling of Survival and Toxicity in Patients With Hepatocellular Carcinoma After Radiotherapy doi:10.1200/CCI.21.00169"
+      ]
+    },
+    {
+      "problem": "Quality Control Optimization for Minimizing Security Risks Associated with Mesenchymal Stromal Cell-Based Product Development Mesenchymal stromal cells (MSCs) have been considered a therapeutic strategy in regenerative medicine because of their regenerative an...[truncated]",
+      "years_unresolved": 3,
+      "citation_count": 0,
+      "evidence_level": "unknown",
+      "barrier_to_progress": "robustness or stability barrier",
+      "supporting_references": [
+        "C. Rebelatto et al. (2023) Quality Control Optimization for Minimizing Security Risks Associated with Mesenchymal Stromal Cell-Based Product Development doi:10.3390/ijms241612955"
+      ]
+    },
+    {
+      "problem": "Echinocandins Pharmacokinetics: A Comprehensive Review of Micafungin, Caspofungin, Anidulafungin, and Rezafungin Population Pharmacokinetic Models and Dose Optimization in Special Populations In recent years, many population pharmacokinetic (popPK) models have...[truncated]",
+      "years_unresolved": 2,
+      "citation_count": 0,
+      "evidence_level": "unknown",
+      "barrier_to_progress": "data or measurement bottleneck",
+      "supporting_references": [
+        "M. Albanell-Fernández (2024) Echinocandins Pharmacokinetics: A Comprehensive Review of Micafungin, Caspofungin, Anidulafungin, and Rezafungin Population Pharmacokinetic Models and Dose Optimization in Special Populations doi:10.1007/s40262-024-01461-5"
+      ]
+    },
+    {
+      "problem": "Interfacing data science with cell therapy manufacturing: where we are and where we need to be. Although several cell-based therapies have received FDA approval, and others are showing promising results, scalable, and quality-driven reproducible manufacturing...[truncated]",
+      "years_unresolved": 2,
+      "citation_count": 0,
+      "evidence_level": "unknown",
+      "barrier_to_progress": "data or measurement bottleneck",
+      "supporting_references": [
+        "Bryan Wang et al. (2024) Interfacing data science with cell therapy manufacturing: where we are and where we need to be. doi:10.1016/j.jcyt.2024.03.011"
+      ]
+    }
+  ],
+  "ranked_gaps": [
+    {
+      "gap_id": "gap_1783843895341353100",
+      "gap_type": "causal_chain_break",
+      "description": "Causal chain 'chain_1' from Khloud Shendy et al. (2024) The effects of genetic polymorphism on toxicity and pharmacokinetics of methotrexate in Egyptian adult patients with leukaemia or lymphoma doi:10.1080/00498254.2024.2320778 has a missing intervention: Genetic variants and molecular phenotypes predict pharmacokinetics (PK) exposure, toxicity, and optimal dosing of a treatment regimen.. The chain cannot support a causal hypothesis until this link is independently evidenced.",
+      "supporting_references": [
+        "Khloud Shendy et al. (2024) The effects of genetic polymorphism on toxicity and pharmacokinetics of methotrexate in Egyptian adult patients with leukaemia or lymphoma doi:10.1080/00498254.2024.2320778"
+      ],
+      "novelty_score": 5,
+      "application_value": "medium",
+      "feasibility": "medium",
+      "suggested_research_path": "Collect a feasible intervention or natural experiment that varies the causal input; then test an intervention and a matched control that can distinguish this chain from competing explanations.",
+      "value_argument": "A broken causal link is a direct, falsifiable research opening rather than a sparse method-scenario combination.",
+      "status": "candidate",
+      "createdAt": 1783843895.3413603,
+      "hypothesis_ingredients": {
+        "methods": [
+          "MTHFR C677T T variants"
+        ],
+        "scenarios": [
+          "Genetic variants and molecular phenotypes predict pharmacokinetics (PK) exposure, toxicity, and optimal dosing of a treatment regimen."
+        ],
+        "benchmarks": [
+          "Leukopenia"
+        ],
+        "numerical_bounds": [],
+        "operating_conditions": [],
+        "measurable_metrics": [
+          "Leukopenia"
+        ]
+      },
+      "counterfactual_leaves": [],
+      "causal_gap": {
+        "chain_id": "chain_1",
+        "paper_id": "paper_1783839979368517300",
+        "missing_kind": "intervention",
+        "evidence_needed": "a feasible intervention or natural experiment that varies the causal input",
+        "trigger": "MTHFR C677T T variants",
+        "outcome": "Increased risk of leukopenia"
+      },
+      "sub_hypothesis_id": "SH1",
+      "priority": "high",
+      "assessment_dimensions": [
+        "academic novelty",
+        "application value",
+        "implementation feasibility"
+      ],
+      "overlap_risk": "low",
+      "strongest_overlap": 0.2927,
+      "literature_coverage_factor": 0.9177,
+      "assessment_reason": "refs=1, gap_type=causal_chain_break, strongest_local_overlap=0.293, coverage=0.918, feasibility=medium, application_value=medium, semantic_plausibility=not_run",
+      "requires_human_review": false,
+      "dedupe_signature": "2024 al causal chain chain_1 et from khloud shendy the",
+      "deduped_from": 2,
+      "tanxi_rank": 2,
+      "exploration_value_score": 10,
+      "ranking_reason": "novelty=5, refs=1, application=medium, feasibility=medium, type=causal_chain_break, strategic_matches=1, density_bonus=2 Gap is grounded in core mechanism evidence.",
+      "strategic_alignment": [
+        {
+          "strategic_domain": "Cell and Gene Therapy Manufacturing",
+          "matched_keywords": [
+            "gene"
+          ],
+          "alignment_score": 6
+        }
+      ],
+      "recommended_approach": "Collect a feasible intervention or natural experiment that varies the causal input; then test an intervention and a matched control that can distinguish this chain from competing explanations.",
+      "rank": 1,
+      "gap_description": "Causal chain 'chain_1' from Khloud Shendy et al. (2024) The effects of genetic polymorphism on toxicity and pharmacokinetics of methotrexate in Egyptian adult patients with leukaemia or lymphoma doi:10.1080/00498254.2024.2320778 has a missing intervention: Genetic variants and molecular phenotypes predict pharmacokinetics (PK) exposure, toxicity, and optimal dosing of a treatment regimen.. The chain cannot support a causal hypothesis until this link is independently evidenced.",
+      "raw_exploration_value_score": 10,
+      "importance": "high",
+      "tractability": "medium",
+      "mechanism_relevance": {
+        "score": 1.0,
+        "eligible_for_mechanism_hypothesis": true,
+        "core_entity_hits": [
+          "effects",
+          "genetic",
+          "patients",
+          "predict",
+          "that",
+          "this",
+          "toxicity",
+          "treatment",
+          "variants"
+        ],
+        "profile_record_count": 67,
+        "reason": "Gap is grounded in core mechanism evidence."
+      },
+      "counterfactual_tree": {
+        "root": "2 evidence conditions unmet",
+        "branches": [
+          {
+            "condition": "Study: The effects of genetic polymorphism on toxicity and pharmacokinetics of methotre...[truncated]",
+            "missing": "Limitation: MTHFR polymorphism played the main role in MTX toxicities.",
+            "counterfactual": "If limitation addressed, evidence base strengthens",
+            "leaf": false
+          },
+          {
+            "condition": "Study: Using spatial statistics to infer game-theoretic interactions in an agent-based...[truncated]",
+            "missing": "Limitation: Furthermore, pairs of spatial statistics can contribute synergistic information with the Training a simple neural network model on a selected set of s...[truncated]",
+            "counterfactual": "If limitation addressed, evidence base strengthens",
+            "leaf": false
+          },
+          {
+            "condition": "Study: The effects of genetic polymorphism on toxicity and pharmacokinetics of methotre...[truncated]",
+            "missing": "Limitation: MTHFR polymorphism played the main role in MTX toxicities.",
+            "counterfactual": "If limitation addressed, evidence base strengthens",
+            "leaf": false
+          },
+          {
+            "condition": "Study: Using spatial statistics to infer game-theoretic interactions in an agent-based...[truncated]",
+            "missing": "Limitation: Furthermore, pairs of spatial statistics can contribute synergistic information with the Training a simple neural network model on a selected set of s...[truncated]",
+            "counterfactual": "If limitation addressed, evidence base strengthens",
+            "leaf": false
+          },
+          {
+            "condition": "Measurable metric: Leukopenia",
+            "missing": "Leukopenia not measured in current evidence",
+            "counterfactual": "If Leukopenia were measured and met threshold, this gap would be resolved",
+            "leaf": true
+          },
+          {
+            "condition": "Benchmarks: mtx toxicity and pharmacokinetics, classification accuracy of game types based on spatial statistics",
+            "missing": "No standardized benchmark",
+            "counterfactual": "If standard benchmark existed, gap could be quantitatively assessed",
+            "leaf": true
+          }
+        ],
+        "leaf_conditions": [
+          "If Leukopenia were measured and met threshold, this gap would be resolved",
+          "If standard benchmark existed, gap could be quantitatively assessed"
+        ],
+        "resolution_complexity": "medium",
+        "related_evidence_count": 4,
+        "missing_evidence_count": 1,
+        "gap_method": "agent-based model with spatial statistics and machine learning classification",
+        "gap_scenario": "acute lymphoblastic leukaemia (all) or non-hodgkin lymphoma (nhl) in egyptian adult patients"
+      },
+      "gap_resolution_type": "complement_gap",
+      "leaf_conditions": [
+        "If Leukopenia were measured and met threshold, this gap would be resolved",
+        "If standard benchmark existed, gap could be quantitatively assessed"
+      ],
+      "resolution_complexity": "medium",
+      "tabi_checks": {
+        "theory_consistency": {
+          "status": "insufficient_comparison",
+          "theory_evidence": [],
+          "empirical_evidence": []
+        },
+        "counterfactual": {
+          "status": "testable",
+          "condition": "Hold confounders fixed and vary Leukopenia."
+        },
+        "mechanism_competition": {
+          "candidates": [
+            "PCR-ARMS and PCR-RFLP genotyping, plasma MTX concentration measurement"
+          ],
+          "status": "needs_competing_mechanism_evidence"
+        },
+        "evidence_gap": [
+          "No theory/model source is linked to this gap.",
+          "No empirical/observational source is linked to this gap.",
+          "The source pair does not yet establish a theory--observation contradiction."
+        ],
+        "testable_prediction": "A parameter-matched intervention on Leukopenia should discriminate the competing explanations before endpoint performance changes.",
+        "contradiction_score": 0,
+        "substantive": false,
+        "required_directed_retrieval": [
+          "theory or simulation prediction",
+          "matched experimental or observational measurement"
+        ]
+      },
+      "mechanism_draft": {
+        "gap_id": "gap_1783843895341353100",
+        "input": "MTHFR C677T T variants Genetic variants and molecular phenotypes predict pharmacokinetics (PK) exposure, toxicity, and optimal dosing of a treatment regimen.",
+        "proposed_mediator": "unresolved",
+        "output": "Leukopenia",
+        "source_clue": "",
+        "unresolved_fields": [
+          "identity",
+          "location_or_scope",
+          "dynamics",
+          "reversibility",
+          "observability",
+          "intervention",
+          "counterfactual"
+        ],
+        "status": "draft_requires_socrates_evidence"
+      }
+    },
+    {
+      "gap_id": "gap_1783843988829064100",
+      "gap_type": "migration",
+      "description": "Cross-disciplinary unconnected pair: 'omics profiling' from biology and 'systematic review' from general have no recorded bridge in the current PaperGraph.",
+      "supporting_references": [
+        "E. De Mattia et al. (2023) The burden of rare variants in DPYS gene is a novel predictor of the risk of developing severe fluoropyrimidine-related toxicity doi:10.1186/s40246-023-00546-9",
+        "C. Iglesias-López et al. (2026) Outlook of Cell Gene Therapies Development and Approval from Quality and Regulatory Perspective doi:10.1007/s43441-026-00920-4",
+        "Tongu, Y. et al. (2025) Cytisine for smoking cessation: A systematic review and meta-analysis suggesting potential benefits of extended treatment protocols doi:10.1101/2025.07.23.25332030"
+      ],
+      "novelty_score": 7,
+      "application_value": "medium",
+      "feasibility": "medium",
+      "suggested_research_path": "Formulate a transfer hypothesis, audit incompatible assumptions, then run a minimal bridge experiment or benchmark.",
+      "value_argument": "Testing whether omics profiling can constrain, evaluate, or operationalize systematic review for Personalized Medicine / Precision Medicine / Pharmacogenomics / Cancer Genomics / Clinical Pharmacology / Multi-omics / Patient-derived Models / Cell and Gene Therapy Manufacturing / Biostatistics / Regulatory Science may reveal a non-obvious transfer path or boundary condition.",
+      "status": "candidate",
+      "createdAt": 1783843988.8290699,
+      "hypothesis_ingredients": {
+        "methods": [],
+        "scenarios": [],
+        "benchmarks": [],
+        "numerical_bounds": [],
+        "operating_conditions": [],
+        "measurable_metrics": []
+      },
+      "counterfactual_leaves": [],
+      "assessment_dimensions": [
+        "academic novelty",
+        "application value",
+        "implementation feasibility"
+      ],
+      "overlap_risk": "low",
+      "strongest_overlap": 0.2857,
+      "literature_coverage_factor": 0.7466,
+      "assessment_reason": "refs=2, gap_type=migration, strongest_local_overlap=0.286, coverage=0.747, feasibility=medium, application_value=medium, semantic_plausibility=not_run",
+      "requires_human_review": false,
+      "semantic_plausibility": {
+        "verdict": "PASS",
+        "score": 0.73,
+        "requirements": [
+          "omics"
+        ],
+        "scenario_affordances": [
+          "graph",
+          "image",
+          "intervention",
+          "molecular",
+          "omics",
+          "sequence"
+        ],
+        "bridge_terms": [
+          "multi-omics"
+        ],
+        "score_breakdown": [
+          {
+            "factor": "base_prior",
+            "delta": 0.45,
+            "reason": "default prior before evidence checks"
+          },
+          {
+            "factor": "bridge_terms",
+            "delta": 0.08,
+            "reason": "1 bridge concept(s) detected"
+          },
+          {
+            "factor": "matched_method_affordances",
+            "delta": 0.2,
+            "reason": "scenario/context exposes required data affordances"
+          }
+        ],
+        "reason": "bridge concepts detected: multi-omics; scenario/context exposes the required data affordances"
+      },
+      "dedupe_signature": "and biology cross-disciplinary from omics pair profiling review systematic unconnected",
+      "deduped_from": 2,
+      "rank": 2,
+      "gap_description": "Cross-disciplinary unconnected pair: 'omics profiling' from biology and 'systematic review' from general have no recorded bridge in the current PaperGraph.",
+      "exploration_value_score": 10,
+      "raw_exploration_value_score": 10,
+      "importance": "high",
+      "tractability": "medium",
+      "strategic_alignment": [
+        {
+          "strategic_domain": "Pharmacogenomics",
+          "matched_keywords": [
+            "pharmacogenomics"
+          ],
+          "alignment_score": 6
+        },
+        {
+          "strategic_domain": "Cancer Genomics",
+          "matched_keywords": [
+            "cancer",
+            "genomics"
+          ],
+          "alignment_score": 8
+        },
+        {
+          "strategic_domain": "Clinical Pharmacology",
+          "matched_keywords": [
+            "clinical",
+            "pharmacology"
+          ],
+          "alignment_score": 8
+        },
+        {
+          "strategic_domain": "Multi-omics",
+          "matched_keywords": [
+            "multi-omics"
+          ],
+          "alignment_score": 6
+        },
+        {
+          "strategic_domain": "Patient-derived Models",
+          "matched_keywords": [
+            "patient-derived",
+            "models"
+          ],
+          "alignment_score": 8
+        },
+        {
+          "strategic_domain": "Cell and Gene Therapy Manufacturing",
+          "matched_keywords": [
+            "cell",
+            "gene",
+            "therapy",
+            "manufacturing"
+          ],
+          "alignment_score": 10
+        },
+        {
+          "strategic_domain": "Biostatistics",
+          "matched_keywords": [
+            "biostatistics"
+          ],
+          "alignment_score": 6
+        },
+        {
+          "strategic_domain": "Regulatory Science",
+          "matched_keywords": [
+            "regulatory",
+            "science"
+          ],
+          "alignment_score": 8
+        }
+      ],
+      "recommended_approach": "Formulate a transfer hypothesis, audit incompatible assumptions, then run a minimal bridge experiment or benchmark.",
+      "ranking_reason": "novelty=7, refs=3, application=medium, feasibility=medium, type=migration, strategic_matches=8, density_bonus=2 Gap is grounded in core mechanism evidence.",
+      "mechanism_relevance": {
+        "score": 1.0,
+        "eligible_for_mechanism_hypothesis": true,
+        "core_entity_hits": [
+          "cancer",
+          "cell",
+          "clinical",
+          "current",
+          "gene",
+          "manufacturing",
+          "models",
+          "precision",
+          "regulatory",
+          "systematic",
+          "therapy"
+        ],
+        "profile_record_count": 67,
+        "reason": "Gap is grounded in core mechanism evidence."
+      },
+      "counterfactual_tree": {
+        "root": "Single validation missing: If standard benchmark existed, gap could be quantitatively assessed",
+        "branches": [
+          {
+            "condition": "Study: UGT1A1 gene variants associated with irinotecan toxicity in patients from northe...[truncated]",
+            "missing": "Limitation: Limited sample size; exploratory association between UGT1A1 variants and severe toxicity",
+            "counterfactual": "If limitation addressed, evidence base strengthens",
+            "leaf": false
+          },
+          {
+            "condition": "Study: A systematic review of behavioral interventions to improve maternal outcomes for...[truncated]",
+            "missing": "Limitation: Trials are limited by heterogeneous designs, narrow inclusion criteria, and inconsistent outcome reporting.",
+            "counterfactual": "If limitation addressed, evidence base strengthens",
+            "leaf": false
+          },
+          {
+            "condition": "Study: Outlook of Cell Gene Therapies Development and Approval from Quality and Regulat...[truncated]",
+            "missing": "Limitation: The study is descriptive and does not include inferential statistics due to the limited sample size. The analysis is based on publicly available data,...[truncated]",
+            "counterfactual": "If limitation addressed, evidence base strengthens",
+            "leaf": false
+          },
+          {
+            "condition": "Study: Machine learning in paediatric haematological malignancies: a systematic review...[truncated]",
+            "missing": "Limitation: Lack of external validation and methodological heterogeneity in many studies, limited diversity in datasets",
+            "counterfactual": "If limitation addressed, evidence base strengthens",
+            "leaf": false
+          },
+          {
+            "condition": "Study: UGT1A1 gene variants associated with irinotecan toxicity in patients from northe...[truncated]",
+            "missing": "Limitation: Limited sample size; exploratory association between UGT1A1 variants and severe toxicity",
+            "counterfactual": "If limitation addressed, evidence base strengthens",
+            "leaf": false
+          },
+          {
+            "condition": "Study: A systematic review of behavioral interventions to improve maternal outcomes for...[truncated]",
+            "missing": "Limitation: Trials are limited by heterogeneous designs, narrow inclusion criteria, and inconsistent outcome reporting.",
+            "counterfactual": "If limitation addressed, evidence base strengthens",
+            "leaf": false
+          }
+        ],
+        "leaf_conditions": [
+          "If standard benchmark existed, gap could be quantitatively assessed"
+        ],
+        "resolution_complexity": "low",
+        "related_evidence_count": 8,
+        "missing_evidence_count": 1,
+        "gap_method": "systematic review",
+        "gap_scenario": "irinotecan toxicity in patients from northeastern mexico"
+      },
+      "gap_resolution_type": "complement_gap",
+      "leaf_conditions": [
+        "If standard benchmark existed, gap could be quantitatively assessed"
+      ],
+      "resolution_complexity": "low",
+      "tabi_checks": {
+        "theory_consistency": {
+          "status": "insufficient_comparison",
+          "theory_evidence": [],
+          "empirical_evidence": [
+            {
+              "citation": "C. Iglesias-López et al. (2026) Outlook of Cell Gene Therapies Development and Approval from Quality and Regulatory Perspective doi:10.1007/s43441-026-00920-4",
+              "excerpt": "Identification of key regulatory milestones and quality issues during the marketing authorization of cell gene therapies in the EU and US, highlighting the need for robust quality data packages, early integration of quality-by-design principles, and continuous dialogue with regulatory agencies. The...[truncated]"
+            }
+          ]
+        },
+        "counterfactual": {
+          "status": "needs_variable",
+          "condition": "Extract a controllable variable from the linked studies."
+        },
+        "mechanism_competition": {
+          "candidates": [
+            "omics profiling",
+            "systematic review",
+            "systematic review and meta-analysis"
+          ],
+          "status": "compare_candidates"
+        },
+        "evidence_gap": [
+          "No theory/model source is linked to this gap.",
+          "The source pair does not yet establish a theory--observation contradiction."
+        ],
+        "testable_prediction": "No quantitative prediction is asserted until a controllable variable and matched evidence are retrieved.",
+        "contradiction_score": 4,
+        "substantive": false,
+        "required_directed_retrieval": [
+          "theory or simulation prediction",
+          "matched experimental or observational measurement"
+        ]
+      },
+      "mechanism_draft": {
+        "gap_id": "gap_1783843988829064100",
+        "input": "Cross-disciplinary unconnected pair: 'omics profiling' from biology and 'systematic review' from general have no recorded bridge in the current PaperGraph.",
+        "proposed_mediator": "unresolved",
+        "output": "unresolved",
+        "source_clue": "",
+        "unresolved_fields": [
+          "identity",
+          "location_or_scope",
+          "dynamics",
+          "reversibility",
+          "observability",
+          "intervention",
+          "counterfactual"
+        ],
+        "status": "draft_requires_socrates_evidence"
+      }
+    },
+    {
+      "gap_id": "gap_1783843988589550000",
+      "gap_type": "improvement",
+      "description": "Density hole: 'imaging and characterization' in 'regulatory T cell (Treg) therapies' lacks benchmark coverage for AUC scores, sensitivity, specificity, Dice scores, K-statistic, AUC∞, Cmax, t1/2, adverse drug reaction (ADR) occurrence, CTCAE criteria; grade ≥3 treatment-related toxicity.",
+      "supporting_references": [
+        "Z. Cheng et al. (2025) Transcriptional fingerprinting of regulatory T cells: ensuring quality in cell therapy applications doi:10.3389/fimmu.2025.1602172",
+        "C. Iglesias-López et al. (2026) Outlook of Cell Gene Therapies Development and Approval from Quality and Regulatory Perspective doi:10.1007/s43441-026-00920-4"
+      ],
+      "novelty_score": 5,
+      "application_value": "medium",
+      "feasibility": "high",
+      "suggested_research_path": "Use the dense neighboring literature as controls, then test the sparse intersection with explicit benchmark coverage.",
+      "value_argument": "The method-scenario pair has evidence, but benchmark coverage is sparse, so robustness and generalization remain uncertain.",
+      "status": "candidate",
+      "createdAt": 1783843988.5895522,
+      "hypothesis_ingredients": {
+        "methods": [],
+        "scenarios": [],
+        "benchmarks": [],
+        "numerical_bounds": [],
+        "operating_conditions": [],
+        "measurable_metrics": []
+      },
+      "counterfactual_leaves": [],
+      "assessment_dimensions": [
+        "academic novelty",
+        "application value",
+        "implementation feasibility"
+      ],
+      "overlap_risk": "low",
+      "strongest_overlap": 0.3214,
+      "literature_coverage_factor": 0.894,
+      "assessment_reason": "refs=1, gap_type=improvement, strongest_local_overlap=0.321, coverage=0.894, feasibility=high, application_value=medium, semantic_plausibility=not_run",
+      "requires_human_review": false,
+      "dedupe_signature": "and cell characterization density hole imaging in regulatory t treg",
+      "deduped_from": 1,
+      "rank": 3,
+      "gap_description": "Density hole: 'imaging and characterization' in 'regulatory T cell (Treg) therapies' lacks benchmark coverage for AUC scores, sensitivity, specificity, Dice scores, K-statistic, AUC∞, Cmax, t1/2, adverse drug reaction (ADR) occurrence, CTCAE criteria; grade ≥3 treatment-related toxicity.",
+      "exploration_value_score": 10,
+      "raw_exploration_value_score": 10,
+      "importance": "high",
+      "tractability": "high",
+      "strategic_alignment": [
+        {
+          "strategic_domain": "Cell and Gene Therapy Manufacturing",
+          "matched_keywords": [
+            "cell",
+            "gene"
+          ],
+          "alignment_score": 8
+        },
+        {
+          "strategic_domain": "Regulatory Science",
+          "matched_keywords": [
+            "regulatory"
+          ],
+          "alignment_score": 6
+        }
+      ],
+      "recommended_approach": "Use the dense neighboring literature as controls, then test the sparse intersection with explicit benchmark coverage.",
+      "ranking_reason": "novelty=5, refs=2, application=medium, feasibility=high, type=improvement, strategic_matches=2, density_bonus=2 Gap is grounded in core mechanism evidence.",
+      "mechanism_relevance": {
+        "score": 1.0,
+        "eligible_for_mechanism_hypothesis": true,
+        "core_entity_hits": [
+          "adverse",
+          "cell",
+          "drug",
+          "regulatory",
+          "therapies",
+          "toxicity"
+        ],
+        "profile_record_count": 67,
+        "reason": "Gap is grounded in core mechanism evidence."
+      },
+      "counterfactual_tree": {
+        "root": "Single validation missing: If standard benchmark existed, gap could be quantitatively assessed",
+        "branches": [
+          {
+            "condition": "Study: Development of a mouse model of Pemphigus Vulgaris as a tool to evaluate nanopar...[truncated]",
+            "missing": "Limitation: For characterization of low-frequent Dsg3-specific CD4+ T cells in lymphatic tissues we use DRB1*04:02 HLA class II Dextramers loaded with immunodomin...[truncated]",
+            "counterfactual": "If limitation addressed, evidence base strengthens",
+            "leaf": false
+          },
+          {
+            "condition": "Study: Quality Control Optimization for Minimizing Security Risks Associated with Mesen...[truncated]",
+            "missing": "Limitation: This study shows the relevance of standardizing the manufacturing process and quality controls to reduce variability due to the heterogeneity between...[truncated]",
+            "counterfactual": "If limitation addressed, evidence base strengthens",
+            "leaf": false
+          },
+          {
+            "condition": "Study: Transcriptional fingerprinting of regulatory T cells: ensuring quality in cell t...[truncated]",
+            "missing": "Limitation: Discussion This Treg fingerprinting method provides a powerful tool to molecularly characterize Treg products, potentially enabling correlative analys...[truncated]",
+            "counterfactual": "If limitation addressed, evidence base strengthens",
+            "leaf": false
+          },
+          {
+            "condition": "Study: Development of a mouse model of Pemphigus Vulgaris as a tool to evaluate nanopar...[truncated]",
+            "missing": "Limitation: For characterization of low-frequent Dsg3-specific CD4+ T cells in lymphatic tissues we use DRB1*04:02 HLA class II Dextramers loaded with immunodomin...[truncated]",
+            "counterfactual": "If limitation addressed, evidence base strengthens",
+            "leaf": false
+          },
+          {
+            "condition": "Study: Quality Control Optimization for Minimizing Security Risks Associated with Mesen...[truncated]",
+            "missing": "Limitation: This study shows the relevance of standardizing the manufacturing process and quality controls to reduce variability due to the heterogeneity between...[truncated]",
+            "counterfactual": "If limitation addressed, evidence base strengthens",
+            "leaf": false
+          },
+          {
+            "condition": "Study: Transcriptional fingerprinting of regulatory T cells: ensuring quality in cell t...[truncated]",
+            "missing": "Limitation: Discussion This Treg fingerprinting method provides a powerful tool to molecularly characterize Treg products, potentially enabling correlative analys...[truncated]",
+            "counterfactual": "If limitation addressed, evidence base strengthens",
+            "leaf": false
+          }
+        ],
+        "leaf_conditions": [
+          "If standard benchmark existed, gap could be quantitatively assessed"
+        ],
+        "resolution_complexity": "low",
+        "related_evidence_count": 6,
+        "missing_evidence_count": 0,
+        "gap_method": "imaging and characterization",
+        "gap_scenario": "regulatory t cell (treg) therapies"
+      },
+      "gap_resolution_type": "complement_gap",
+      "leaf_conditions": [
+        "If standard benchmark existed, gap could be quantitatively assessed"
+      ],
+      "resolution_complexity": "low",
+      "tabi_checks": {
+        "theory_consistency": {
+          "status": "insufficient_comparison",
+          "theory_evidence": [],
+          "empirical_evidence": [
+            {
+              "citation": "C. Iglesias-López et al. (2026) Outlook of Cell Gene Therapies Development and Approval from Quality and Regulatory Perspective doi:10.1007/s43441-026-00920-4",
+              "excerpt": "Identification of key regulatory milestones and quality issues during the marketing authorization of cell gene therapies in the EU and US, highlighting the need for robust quality data packages, early integration of quality-by-design principles, and continuous dialogue with regulatory agencies. The...[truncated]"
+            }
+          ]
+        },
+        "counterfactual": {
+          "status": "needs_variable",
+          "condition": "Extract a controllable variable from the linked studies."
+        },
+        "mechanism_competition": {
+          "candidates": [
+            "systematic review",
+            "imaging and characterization"
+          ],
+          "status": "compare_candidates"
+        },
+        "evidence_gap": [
+          "No theory/model source is linked to this gap.",
+          "The source pair does not yet establish a theory--observation contradiction."
+        ],
+        "testable_prediction": "No quantitative prediction is asserted until a controllable variable and matched evidence are retrieved.",
+        "contradiction_score": 4,
+        "substantive": false,
+        "required_directed_retrieval": [
+          "theory or simulation prediction",
+          "matched experimental or observational measurement"
+        ]
+      },
+      "mechanism_draft": {
+        "gap_id": "gap_1783843988589550000",
+        "input": "Density hole: 'imaging and characterization' in 'regulatory T cell (Treg) therapies' lacks benchmark coverage for AUC scores, sensitivity, specificity, Dice scores, K-statistic, AUC∞, Cmax, t1/2, adverse drug reaction (ADR) occurrence, CTCAE criteria; grade ≥3 treatment-related toxicity.",
+        "proposed_mediator": "unresolved",
+        "output": "unresolved",
+        "source_clue": "",
+        "unresolved_fields": [
+          "identity",
+          "location_or_scope",
+          "dynamics",
+          "reversibility",
+          "observability",
+          "intervention",
+          "counterfactual"
+        ],
+        "status": "draft_requires_socrates_evidence"
+      }
+    },
+    {
+      "gap_id": "gap_1783843988652050500",
+      "gap_type": "improvement",
+      "description": "Density hole: 'systematic review and meta-analysis' in 'small cell lung cancer (SCLC) treatment' lacks benchmark coverage for AUC scores, sensitivity, specificity, Dice scores, K-statistic, AUC∞, Cmax, t1/2, adverse drug reaction (ADR) occurrence, CTCAE criteria; grade ≥3 treatment-related toxicity.",
+      "supporting_references": [
+        "Rebaz M. Ali et al. (2025) Small Cell Lung Cancer and Tarlatamab: A Meta-Analysis of Clinical Trials doi:10.58742/bmj.v4i1.216"
+      ],
+      "novelty_score": 5,
+      "application_value": "medium",
+      "feasibility": "high",
+      "suggested_research_path": "Use the dense neighboring literature as controls, then test the sparse intersection with explicit benchmark coverage.",
+      "value_argument": "The method-scenario pair has evidence, but benchmark coverage is sparse, so robustness and generalization remain uncertain.",
+      "status": "candidate",
+      "createdAt": 1783843988.6520524,
+      "hypothesis_ingredients": {
+        "methods": [],
+        "scenarios": [],
+        "benchmarks": [],
+        "numerical_bounds": [],
+        "operating_conditions": [],
+        "measurable_metrics": []
+      },
+      "counterfactual_leaves": [],
+      "assessment_dimensions": [
+        "academic novelty",
+        "application value",
+        "implementation feasibility"
+      ],
+      "overlap_risk": "low",
+      "strongest_overlap": 0.3548,
+      "literature_coverage_factor": 0.9193,
+      "assessment_reason": "refs=1, gap_type=improvement, strongest_local_overlap=0.355, coverage=0.919, feasibility=high, application_value=medium, semantic_plausibility=not_run",
+      "requires_human_review": false,
+      "dedupe_signature": "and cell density hole in lung meta-analysis review small systematic",
+      "rank": 4,
+      "gap_description": "Density hole: 'systematic review and meta-analysis' in 'small cell lung cancer (SCLC) treatment' lacks benchmark coverage for AUC scores, sensitivity, specificity, Dice scores, K-statistic, AUC∞, Cmax, t1/2, adverse drug reaction (ADR) occurrence, CTCAE criteria; grade ≥3 treatment-related toxicity.",
+      "exploration_value_score": 10,
+      "raw_exploration_value_score": 10,
+      "importance": "high",
+      "tractability": "high",
+      "strategic_alignment": [
+        {
+          "strategic_domain": "Cancer Genomics",
+          "matched_keywords": [
+            "cancer"
+          ],
+          "alignment_score": 6
+        },
+        {
+          "strategic_domain": "Cell and Gene Therapy Manufacturing",
+          "matched_keywords": [
+            "cell",
+            "gene"
+          ],
+          "alignment_score": 8
+        }
+      ],
+      "recommended_approach": "Use the dense neighboring literature as controls, then test the sparse intersection with explicit benchmark coverage.",
+      "ranking_reason": "novelty=5, refs=1, application=medium, feasibility=high, type=improvement, strategic_matches=2, density_bonus=2 Gap is grounded in core mechanism evidence.",
+      "mechanism_relevance": {
+        "score": 1.0,
+        "eligible_for_mechanism_hypothesis": true,
+        "core_entity_hits": [
+          "adverse",
+          "cancer",
+          "cell",
+          "drug",
+          "systematic",
+          "toxicity",
+          "treatment"
+        ],
+        "profile_record_count": 67,
+        "reason": "Gap is grounded in core mechanism evidence."
+      },
+      "counterfactual_tree": {
+        "root": "Single validation missing: If standard benchmark existed, gap could be quantitatively assessed",
+        "branches": [
+          {
+            "condition": "Study: A systematic review of behavioral interventions to improve maternal outcomes for...[truncated]",
+            "missing": "Limitation: Trials are limited by heterogeneous designs, narrow inclusion criteria, and inconsistent outcome reporting.",
+            "counterfactual": "If limitation addressed, evidence base strengthens",
+            "leaf": false
+          },
+          {
+            "condition": "Study: Small Cell Lung Cancer and Tarlatamab: A Meta-Analysis of Clinical Trials",
+            "missing": "Limitation: safety reporting was incomplete in several studies",
+            "counterfactual": "If limitation addressed, evidence base strengthens",
+            "leaf": false
+          },
+          {
+            "condition": "Study: Outlook of Cell Gene Therapies Development and Approval from Quality and Regulat...[truncated]",
+            "missing": "Limitation: The study is descriptive and does not include inferential statistics due to the limited sample size. The analysis is based on publicly available data,...[truncated]",
+            "counterfactual": "If limitation addressed, evidence base strengthens",
+            "leaf": false
+          },
+          {
+            "condition": "Study: Machine learning in paediatric haematological malignancies: a systematic review...[truncated]",
+            "missing": "Limitation: Lack of external validation and methodological heterogeneity in many studies, limited diversity in datasets",
+            "counterfactual": "If limitation addressed, evidence base strengthens",
+            "leaf": false
+          },
+          {
+            "condition": "Study: A systematic review of behavioral interventions to improve maternal outcomes for...[truncated]",
+            "missing": "Limitation: Trials are limited by heterogeneous designs, narrow inclusion criteria, and inconsistent outcome reporting.",
+            "counterfactual": "If limitation addressed, evidence base strengthens",
+            "leaf": false
+          },
+          {
+            "condition": "Study: Small Cell Lung Cancer and Tarlatamab: A Meta-Analysis of Clinical Trials",
+            "missing": "Limitation: safety reporting was incomplete in several studies",
+            "counterfactual": "If limitation addressed, evidence base strengthens",
+            "leaf": false
+          }
+        ],
+        "leaf_conditions": [
+          "If standard benchmark existed, gap could be quantitatively assessed"
+        ],
+        "resolution_complexity": "low",
+        "related_evidence_count": 8,
+        "missing_evidence_count": 1,
+        "gap_method": "systematic review",
+        "gap_scenario": "small cell lung cancer (sclc) treatment"
+      },
+      "gap_resolution_type": "complement_gap",
+      "leaf_conditions": [
+        "If standard benchmark existed, gap could be quantitatively assessed"
+      ],
+      "resolution_complexity": "low",
+      "tabi_checks": {
+        "theory_consistency": {
+          "status": "insufficient_comparison",
+          "theory_evidence": [],
+          "empirical_evidence": []
+        },
+        "counterfactual": {
+          "status": "needs_variable",
+          "condition": "Extract a controllable variable from the linked studies."
+        },
+        "mechanism_competition": {
+          "candidates": [
+            "systematic review and meta-analysis"
+          ],
+          "status": "needs_competing_mechanism_evidence"
+        },
+        "evidence_gap": [
+          "No theory/model source is linked to this gap.",
+          "No empirical/observational source is linked to this gap.",
+          "The source pair does not yet establish a theory--observation contradiction."
+        ],
+        "testable_prediction": "No quantitative prediction is asserted until a controllable variable and matched evidence are retrieved.",
+        "contradiction_score": 0,
+        "substantive": false,
+        "required_directed_retrieval": [
+          "theory or simulation prediction",
+          "matched experimental or observational measurement"
+        ]
+      },
+      "mechanism_draft": {
+        "gap_id": "gap_1783843988652050500",
+        "input": "Density hole: 'systematic review and meta-analysis' in 'small cell lung cancer (SCLC) treatment' lacks benchmark coverage for AUC scores, sensitivity, specificity, Dice scores, K-statistic, AUC∞, Cmax, t1/2, adverse drug reaction (ADR) occurrence, CTCAE criteria; grade ≥3 treatment-related toxicity.",
+        "proposed_mediator": "unresolved",
+        "output": "unresolved",
+        "source_clue": "",
+        "unresolved_fields": [
+          "identity",
+          "location_or_scope",
+          "dynamics",
+          "reversibility",
+          "observability",
+          "intervention",
+          "counterfactual"
+        ],
+        "status": "draft_requires_socrates_evidence"
+      }
+    },
+    {
+      "gap_id": "gap_1783843988109884300",
+      "gap_type": "improvement",
+      "description": "PDF/full-text mechanism issue signal for PCR-ARMS and PCR-RFLP genotyping, plasma MTX concentration measurement in Acute lymphoblastic leukaemia (ALL) or Non-Hodgkin lymphoma (NHL) in Egyptian adult patients: MTHFR polymorphism played the main role in MTX toxicities.",
+      "supporting_references": [
+        "Khloud Shendy et al. (2024) The effects of genetic polymorphism on toxicity and pharmacokinetics of methotrexate in Egyptian adult patients with leukaemia or lymphoma doi:10.1080/00498254.2024.2320778"
+      ],
+      "novelty_score": 4,
+      "application_value": "medium",
+      "feasibility": "high",
+      "suggested_research_path": "Run a targeted evidence expansion and validation study for PCR-ARMS and PCR-RFLP genotyping, plasma MTX concentration measurement in Acute lymphoblastic leukaemia (ALL) or Non-Hodgkin lymphoma (NHL) in Egyptian adult patients.",
+      "value_argument": "This gap is grounded in an explicit limitations/future-work/open-problem statement extracted from the source text, so it provides strong handoff material for TanXi prioritization.",
+      "status": "candidate",
+      "createdAt": 1783843988.1098878,
+      "hypothesis_ingredients": {
+        "methods": [],
+        "scenarios": [],
+        "benchmarks": [],
+        "numerical_bounds": [],
+        "operating_conditions": [],
+        "measurable_metrics": []
+      },
+      "counterfactual_leaves": [],
+      "assessment_dimensions": [
+        "academic novelty",
+        "application value",
+        "implementation feasibility"
+      ],
+      "overlap_risk": "high",
+      "strongest_overlap": 0.8214,
+      "literature_coverage_factor": 0.8845,
+      "assessment_reason": "refs=1, gap_type=improvement, strongest_local_overlap=0.821, coverage=0.884, feasibility=high, application_value=medium, semantic_plausibility=not_run",
+      "requires_human_review": true,
+      "gap_signal": {
+        "signal_type": "mechanism_issue",
+        "confidence": 0.84,
+        "evidence_type": "problem_statement"
+      },
+      "dedupe_signature": "and for full-text genotyping issue mechanism pcr-arms pcr-rflp pdf signal",
+      "deduped_from": 4,
+      "rank": 5,
+      "gap_description": "PDF/full-text mechanism issue signal for PCR-ARMS and PCR-RFLP genotyping, plasma MTX concentration measurement in Acute lymphoblastic leukaemia (ALL) or Non-Hodgkin lymphoma (NHL) in Egyptian adult patients: MTHFR polymorphism played the main role in MTX toxicities.",
+      "exploration_value_score": 10,
+      "raw_exploration_value_score": 10,
+      "importance": "high",
+      "tractability": "high",
+      "strategic_alignment": [],
+      "recommended_approach": "Run a targeted evidence expansion and validation study for PCR-ARMS and PCR-RFLP genotyping, plasma MTX concentration measurement in Acute lymphoblastic leukaemia (ALL) or Non-Hodgkin lymphoma (NHL) in Egyptian adult patients.",
+      "ranking_reason": "novelty=4, refs=1, application=medium, feasibility=high, type=improvement, strategic_matches=0, density_bonus=2 Gap is grounded in core mechanism evidence.",
+      "mechanism_relevance": {
+        "score": 1.0,
+        "eligible_for_mechanism_hypothesis": true,
+        "core_entity_hits": [
+          "patients",
+          "role",
+          "targeted",
+          "this"
+        ],
+        "profile_record_count": 67,
+        "reason": "Gap is grounded in core mechanism evidence."
+      },
+      "counterfactual_tree": {
+        "root": "Single validation missing: If standard benchmark existed, gap could be quantitatively assessed",
+        "branches": [
+          {
+            "condition": "Study: The effects of genetic polymorphism on toxicity and pharmacokinetics of methotre...[truncated]",
+            "missing": "Limitation: MTHFR polymorphism played the main role in MTX toxicities.",
+            "counterfactual": "If limitation addressed, evidence base strengthens",
+            "leaf": false
+          },
+          {
+            "condition": "Study: The effects of genetic polymorphism on toxicity and pharmacokinetics of methotre...[truncated]",
+            "missing": "Limitation: MTHFR polymorphism played the main role in MTX toxicities.",
+            "counterfactual": "If limitation addressed, evidence base strengthens",
+            "leaf": false
+          },
+          {
+            "condition": "Benchmarks: mtx toxicity and pharmacokinetics",
+            "missing": "No standardized benchmark",
+            "counterfactual": "If standard benchmark existed, gap could be quantitatively assessed",
+            "leaf": true
+          }
+        ],
+        "leaf_conditions": [
+          "If standard benchmark existed, gap could be quantitatively assessed"
+        ],
+        "resolution_complexity": "low",
+        "related_evidence_count": 2,
+        "missing_evidence_count": 0,
+        "gap_method": "pcr-arms and pcr-rflp genotyping, plasma mtx concentration measurement",
+        "gap_scenario": "acute lymphoblastic leukaemia (all) or non-hodgkin lymphoma (nhl) in egyptian adult patients"
+      },
+      "gap_resolution_type": "complement_gap",
+      "leaf_conditions": [
+        "If standard benchmark existed, gap could be quantitatively assessed"
+      ],
+      "resolution_complexity": "low",
+      "tabi_checks": {
+        "theory_consistency": {
+          "status": "insufficient_comparison",
+          "theory_evidence": [],
+          "empirical_evidence": []
+        },
+        "counterfactual": {
+          "status": "needs_variable",
+          "condition": "Extract a controllable variable from the linked studies."
+        },
+        "mechanism_competition": {
+          "candidates": [
+            "PCR-ARMS and PCR-RFLP genotyping, plasma MTX concentration measurement"
+          ],
+          "status": "needs_competing_mechanism_evidence"
+        },
+        "evidence_gap": [
+          "No theory/model source is linked to this gap.",
+          "No empirical/observational source is linked to this gap.",
+          "The source pair does not yet establish a theory--observation contradiction."
+        ],
+        "testable_prediction": "No quantitative prediction is asserted until a controllable variable and matched evidence are retrieved.",
+        "contradiction_score": 0,
+        "substantive": false,
+        "required_directed_retrieval": [
+          "theory or simulation prediction",
+          "matched experimental or observational measurement"
+        ]
+      },
+      "mechanism_draft": {
+        "gap_id": "gap_1783843988109884300",
+        "input": "PDF/full-text mechanism issue signal for PCR-ARMS and PCR-RFLP genotyping, plasma MTX concentration measurement in Acute lymphoblastic leukaemia (ALL) or Non-Hodgkin lymphoma (NHL) in Egyptian adult patients: MTHFR polymorphism played the main role in MTX toxicities.",
+        "proposed_mediator": "unresolved",
+        "output": "unresolved",
+        "source_clue": "",
+        "unresolved_fields": [
+          "identity",
+          "location_or_scope",
+          "dynamics",
+          "reversibility",
+          "observability",
+          "intervention",
+          "counterfactual"
+        ],
+        "status": "draft_requires_socrates_evidence"
+      }
+    }
+  ],
+  "constraints_checked": {
+    "requires_supporting_reference": true,
+    "filters_trivial_low_novelty": true,
+    "max_gaps": 5
+  }
+}

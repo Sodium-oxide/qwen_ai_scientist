@@ -70,6 +70,7 @@ def run_mingli_hypothesis_evolution(
             mechanism=str(item.get("mechanism") or ""),
             expected_value=str(item.get("expected_value") or ""),
             test_plan=str(item.get("test_plan") or ""),
+            sub_hypothesis_id=str(item.get("sub_hypothesis_id") or ""),
         )
         payload = asdict(hypothesis)
         payload.update(
@@ -82,6 +83,9 @@ def run_mingli_hypothesis_evolution(
                 "verification_plan": item.get("verification_plan", {}),
                 "source_gap": item.get("source_gap", {}),
                 "gap_ids": item.get("gap_ids", []),
+                "sub_hypothesis_id": item.get("sub_hypothesis_id", ""),
+                "counterfactual_experiments": item.get("counterfactual_experiments", []),
+                "mechanism_competition": item.get("mechanism_competition", {}),
                 "tournament_generation": item.get("generation", 0),
             }
         )
@@ -116,9 +120,44 @@ def select_gaps_for_hypothesis(project: dict[str, Any], gap_ids: list[str] | Non
 
     # Filter out gaps without substantive descriptions — they cause MingLi to generate templates
     valid_gaps = []
+    sub_hypothesis_evidence = {
+        str(item.get("id") or ""): {
+            "status": str(item.get("status") or ""),
+            "primary_results": int(
+                (item.get("retrieval") or {}).get("total_results") or 0
+            ) if isinstance(item.get("retrieval"), dict) else 0,
+        }
+        for item in project.get("sub_hypotheses", [])
+        if isinstance(item, dict)
+    }
     for gap in gaps:
         desc = str(gap.get("description") or "").strip()
         # Must have at least 20 chars of real content (not just boilerplate)
+        sub_hypothesis_id = str(gap.get("sub_hypothesis_id") or "")
+        evidence_state = sub_hypothesis_evidence.get(sub_hypothesis_id, {})
+        evidence_status = str(evidence_state.get("status") or "")
+        legacy_preprint_only_alert = (
+            evidence_status == "evidence_insufficient_preprint"
+            and int(evidence_state.get("primary_results") or 0) > 0
+        )
+        if legacy_preprint_only_alert:
+            gap["preprint_evidence_nonblocking"] = True
+            log_event(
+                "SCIENCE",
+                "mingli_legacy_preprint_alert_nonblocking",
+                gap_id=gap.get("gap_id"),
+                sub_hypothesis_id=sub_hypothesis_id,
+            )
+        if (
+            sub_hypothesis_id
+            and evidence_status
+            and evidence_status != "ready_for_causal_gap_detection"
+            and not legacy_preprint_only_alert
+        ):
+            gap["requires_human_review"] = True
+            gap["hypothesis_blocked_reason"] = f"sub-hypothesis {sub_hypothesis_id} has evidence status {evidence_status}"
+            log_event("WARN", "mingli_subhypothesis_evidence_gate", gap_id=gap.get("gap_id"), sub_hypothesis_id=sub_hypothesis_id, status=evidence_status)
+            continue
         if len(desc) >= 20 and not desc.lower().startswith(("none", "null", "n/a", "todo")):
             valid_gaps.append(gap)
         else:
@@ -130,14 +169,30 @@ def select_gaps_for_hypothesis(project: dict[str, Any], gap_ids: list[str] | Non
         wanted = set(gap_ids)
         valid_gaps = [g for g in valid_gaps if g.get("gap_id") in wanted]
 
-    # Fall back to all gaps if filtering removed everything (don't break the pipeline)
-    pool = valid_gaps if valid_gaps else gaps
+    # A hypothesis must start from the core evidence corpus, not a landscape
+    # extension. This is project-local and therefore works for any science
+    # domain; it does not hard-code battery, medical, or physics vocabulary.
+    try:
+        from ._gap_detection import mechanism_gap_relevance
+    except ImportError:
+        from _gap_detection import mechanism_gap_relevance
+    eligible = []
+    for gap in valid_gaps:
+        relevance = gap.get("mechanism_relevance") if isinstance(gap.get("mechanism_relevance"), dict) else mechanism_gap_relevance(project, gap)
+        gap["mechanism_relevance"] = relevance
+        if relevance.get("eligible_for_mechanism_hypothesis"):
+            eligible.append(gap)
+    # Fall back only when the project genuinely has no enough core context yet.
+    pool = eligible or valid_gaps or gaps
+    if valid_gaps and not eligible:
+        log_event("WARN", "no_core_grounded_gaps_for_mingli", total=len(valid_gaps))
     if not valid_gaps and gaps:
         log_event("WARN", "no_valid_gaps_after_filter", total=len(gaps), valid=0)
 
     return sorted(
         pool,
         key=lambda gap: (
+            -float((gap.get("mechanism_relevance") or {}).get("score") or 0.0),
             -float(gap.get("exploration_value_score") or 0.0),
             -int(gap.get("novelty_score") or 0),
             str(gap.get("gap_id", "")),
@@ -320,6 +375,62 @@ def socrates_contract_summary(contract: dict[str, Any]) -> str:
             parts.append(f"{field}: {excerpt} [{citation}]")
     return " ".join(parts[:3])
 
+
+def subhypothesis_for_gap(project: dict[str, Any], gap: dict[str, Any]) -> dict[str, Any]:
+    target_id = str(gap.get("sub_hypothesis_id") or "")
+    if not target_id:
+        return {}
+    for item in project.get("sub_hypotheses", []):
+        if isinstance(item, dict) and str(item.get("id") or "") == target_id:
+            return item
+    return {}
+
+
+def causal_counterfactual_experiments(
+    gap: dict[str, Any],
+    sub_hypothesis: dict[str, Any],
+    *,
+    variable: str,
+    outcome: str,
+) -> list[dict[str, Any]]:
+    causal_chain = sub_hypothesis.get("causal_chain", []) if isinstance(sub_hypothesis.get("causal_chain"), list) else []
+    mediator = str(causal_chain[1] if len(causal_chain) > 2 else causal_chain[0] if causal_chain else gap.get("causal_gap", {}).get("missing_kind") or "the proposed mediator")
+    focus = str(sub_hypothesis.get("focus") or gap.get("description") or "the proposed mechanism")
+    return [
+        {
+            "experiment_id": f"cf_{str(gap.get('gap_id') or 'candidate')[:16]}",
+            "question": f"Does changing {variable} alter {outcome} through {mediator}, rather than only correlating with it?",
+            "design": f"Compare matched control and intervention conditions that vary {variable} while measuring {mediator} and {outcome}; include a negative control that leaves {variable} unchanged.",
+            "predicted_outcome_if_mechanism_true": f"The intervention changes {mediator} before or together with a reproducible directional change in {outcome}.",
+            "predicted_outcome_if_mechanism_false": f"{outcome} does not change systematically when {variable} is varied, or it changes without the predicted mediator response.",
+            "observability": outcome,
+            "intervention": variable,
+            "source_boundary": f"Proposal generated for {focus}; concrete instruments and thresholds require source-backed evidence.",
+        }
+    ]
+
+
+def causal_mechanism_competition(
+    gap: dict[str, Any],
+    sub_hypothesis: dict[str, Any],
+    *,
+    variable: str,
+    outcome: str,
+) -> dict[str, Any]:
+    causal_chain = sub_hypothesis.get("causal_chain", []) if isinstance(sub_hypothesis.get("causal_chain"), list) else []
+    primary = " → ".join(str(item) for item in causal_chain if str(item).strip()) or str(gap.get("description") or "primary causal chain")
+    alternatives = [str(item) for item in sub_hypothesis.get("alternative_mechanisms", []) if str(item).strip()]
+    return {
+        "phenomenon": outcome,
+        "candidates": [{"id": "M1", "mechanism": primary, "prediction": f"Varying {variable} changes the named mediator before {outcome}."}]
+        + [
+            {"id": f"M{index + 2}", "mechanism": alternative, "prediction": "Produces the outcome without the primary mediator pattern."}
+            for index, alternative in enumerate(alternatives[:3])
+        ],
+        "discriminating_experiment": f"Use matched interventions and measurements that separately observe the primary mediator and {outcome}; compare their ordering and effect sizes across controls.",
+        "decision_rule": "Favor the mechanism whose preregistered mediator and outcome pattern is observed; retain multiple mechanisms when effects are non-additive or no discriminator is decisive.",
+    }
+
 def make_hypothesis_seed(
     project: dict[str, Any],
     gap: dict[str, Any],
@@ -346,16 +457,24 @@ def make_hypothesis_seed(
     ]
     condition = conditions[variant % len(conditions)]
     transferred = ""
+    # A distant analogy may inspire a mechanism only when its proposed method
+    # is already inside this project's core entity boundary.  Otherwise it is a
+    # prompt-level metaphor, not admissible scientific input.
     if analogy.get("candidate_methods_to_transfer"):
-        transferred = str(analogy["candidate_methods_to_transfer"][0])
-        method = transferred
+        candidate_transfer = str(analogy["candidate_methods_to_transfer"][0])
+        if is_core_mechanism_entity(project, candidate_transfer):
+            transferred = candidate_transfer
+            method = transferred
     if hotspot.get("concept") and variant % 2 == 1:
         condition = f"while tracking emerging hotspot '{hotspot.get('concept')}'"
     semantic_gate = semantic_plausibility_for_pair(project, method, scenario, gap)
     socrates_contract = socrates_contract_for_gap(project, gap)
     socrates_evidence = socrates_contract_summary(socrates_contract)
-    variable = hypothesis_control_variable(gap, method, scenario)
-    boundary = hypothesis_boundary_condition(gap)
+    sub_hypothesis = subhypothesis_for_gap(project, gap)
+    variable = str(sub_hypothesis.get("independent_variable") or hypothesis_control_variable(gap, method, scenario))
+    dependent_variables = sub_hypothesis.get("dependent_variables", []) if isinstance(sub_hypothesis.get("dependent_variables"), list) else []
+    causal_outcome = ", ".join(str(item) for item in dependent_variables if str(item).strip()) or benchmark
+    boundary = str(sub_hypothesis.get("threshold_to_test") or sub_hypothesis.get("quantifiable_bounds") or hypothesis_boundary_condition(gap))
     if str(gap.get("gap_type") or "") == "contradiction":
         statement = (
             f"If the competing claims about {scenario} are evaluated under matched {variable} conditions, "
@@ -364,22 +483,36 @@ def make_hypothesis_seed(
     else:
         statement = (
             f"If {method} is used to perturb or stratify {variable} in {scenario} {condition}, "
-            f"then {benchmark} will show a directional or non-monotonic boundary at {boundary}."
+            f"then {causal_outcome} will show a directional or non-monotonic boundary at {boundary}."
         )
     mechanism = specific_mechanism_text(project, method, scenario, benchmark, gap, semantic_gate)
     if socrates_evidence:
         mechanism += f" Socrates retrieved the following field-level source evidence: {socrates_evidence}"
     if analogy:
         mechanism += f" The structural analogy to {analogy.get('analog_source_scenario')} supports transfer because the encoded problem structures are similar."
-    causal_chain = [
+    causal_chain = sub_hypothesis.get("causal_chain", []) if isinstance(sub_hypothesis.get("causal_chain"), list) else []
+    if not causal_chain:
+        causal_chain = [
         f"Input/intervention: vary {variable} for {method} in {scenario}",
         (
             f"Mechanism: interpret {method} through the Socrates source-cited mechanism dossier before making a stronger causal claim."
             if socrates_evidence
             else f"Mechanism: {method} must act through {method_capability_description(method)} on {scenario_target_description(scenario, project)}"
         ),
-        f"Observable output: measure {benchmark} and locate boundary condition {boundary}",
-    ]
+        f"Observable output: measure {causal_outcome} and locate boundary condition {boundary}",
+        ]
+    counterfactual_experiments = causal_counterfactual_experiments(
+        gap,
+        sub_hypothesis,
+        variable=variable,
+        outcome=causal_outcome,
+    )
+    mechanism_competition = causal_mechanism_competition(
+        gap,
+        sub_hypothesis,
+        variable=variable,
+        outcome=causal_outcome,
+    )
     return {
         "candidate_id": new_id("hcand"),
         "gap_id": gap.get("gap_id"),
@@ -387,6 +520,7 @@ def make_hypothesis_seed(
         "statement": statement,
         "mechanism": mechanism,
         "causal_chain": causal_chain,
+        "sub_hypothesis_id": str(sub_hypothesis.get("id") or gap.get("sub_hypothesis_id") or ""),
         "expected_value": gap.get("value_argument") or "Potential to convert a mapped knowledge gap into a testable scientific mechanism.",
         "test_plan": (
             f"Build a minimal benchmark for {scenario}; compare {method} against canonical baselines; measure {benchmark}; "
@@ -398,7 +532,11 @@ def make_hypothesis_seed(
             "falsification_condition": (
                 f"No directional, non-monotonic, or mechanism-separating change in {benchmark} when {variable} crosses {boundary}."
             ),
+            "counterfactual_experiments": counterfactual_experiments,
+            "mechanism_competition": mechanism_competition,
         },
+        "counterfactual_experiments": counterfactual_experiments,
+        "mechanism_competition": mechanism_competition,
         "semantic_plausibility": semantic_gate,
         "socrates_mechanism_contract": socrates_contract,
         "source_gap": gap,
@@ -803,6 +941,67 @@ def generate_idea(
         indent=2,
     )
 
+
+def combine_finalized_hypotheses(project_id: str, hypothesis_ids: list[str]) -> str:
+    """Create an auditable composite only from compatible finalized ideas.
+
+    The composite does not claim that unrelated mechanisms are synergistic.
+    It explicitly states the joint prediction and carries every parent gap and
+    hypothesis id, so YanZhen can reject the conjunction independently.
+    """
+    try:
+        from ._project import load_project, save_project
+        from ._utils import new_id
+        from ._literature_search import query_terms
+    except ImportError:
+        from _project import load_project, save_project
+        from _utils import new_id
+        from _literature_search import query_terms
+    project = load_project(project_id)
+    wanted = {str(item) for item in hypothesis_ids if str(item)}
+    parents = [item for item in project.get("hypotheses", []) if isinstance(item, dict) and str(item.get("hypothesis_id") or "") in wanted]
+    if len(parents) < 2:
+        return json.dumps({"status": "not_combined", "reason": "at least two finalized hypotheses are required"}, ensure_ascii=False, indent=2)
+    entity_sets = [set(query_terms(" ".join(str(item.get(key) or "") for key in ("statement", "mechanism", "expected_value")))) for item in parents]
+    common = set.intersection(*entity_sets) if entity_sets else set()
+    if len(common) < 1:
+        return json.dumps({"status": "not_combined", "reason": "parent hypotheses have no shared project-local mechanism entity", "parent_hypothesis_ids": sorted(wanted)}, ensure_ascii=False, indent=2)
+    parent_ids = [str(item.get("hypothesis_id") or "") for item in parents]
+    parent_gaps = [str(item.get("gap_id") or "") for item in parents if str(item.get("gap_id") or "")]
+    primary = parents[0]
+    composite = {
+        "hypothesis_id": new_id("hyp"),
+        "gap_id": primary.get("gap_id", ""),
+        "gap_ids": parent_gaps,
+        "hypothesis_type": "combined",
+        "parent_hypothesis_ids": parent_ids,
+        "statement": (
+            "Combined hypothesis: under a shared, pre-registered operating regime, the parent mechanisms should each produce "
+            "their stated intermediate observation; the joint outcome is supported only if their combined intervention outperforms "
+            "every single-mechanism intervention without reversing either parent falsification criterion."
+        ),
+        "mechanism": "This is a conjunction of independently grounded mechanisms, not a claim that they are automatically compatible. " + " ".join(
+            f"Parent {item.get('hypothesis_id')}: {str(item.get('mechanism') or '')[:500]}" for item in parents
+        ),
+        "expected_value": "Tests whether independently supported mechanisms interact constructively, additively, or antagonistically under matched conditions.",
+        "test_plan": (
+            "Run the parent interventions singly and jointly under identical controls; measure each parent mediator before endpoints; "
+            "pre-register interaction, additivity, and failure criteria."
+        ),
+        "verification_plan": {
+            "parents": parent_ids,
+            "required_controls": ["each parent intervention alone", "joint intervention", "matched no-intervention control"],
+            "falsification_condition": "Reject the composite if either parent mediator fails, or if the joint condition is not distinguishable from the best single parent condition.",
+        },
+        "lineage": [{"generation": 1, "operation": "evidence_bounded_combination", "parent_hypothesis_ids": parent_ids}],
+        "status": "finalized",
+        "createdAt": time.time(),
+    }
+    project.setdefault("hypotheses", []).append(composite)
+    project.setdefault("mingli_combinations", []).append({"createdAt": time.time(), "composite_hypothesis_id": composite["hypothesis_id"], "parents": parent_ids})
+    save_project(project)
+    return json.dumps({"status": "combined", "hypothesis": composite}, ensure_ascii=False, indent=2)
+
 def design_experiment(
     project_id: str,
     idea: dict[str, Any] | str = "",
@@ -1010,6 +1209,20 @@ def enforce_hypothesis_specificity(idea: dict[str, Any]) -> dict[str, Any]:
             if missing else "Hypothesis passes all specificity checks."
         ),
     }
+
+
+def is_core_mechanism_entity(project: dict[str, Any], value: str) -> bool:
+    try:
+        from ._gap_detection import mechanism_entity_profile
+        from ._literature_search import query_terms
+    except ImportError:
+        from _gap_detection import mechanism_entity_profile
+        from _literature_search import query_terms
+    profile = mechanism_entity_profile(project)
+    terms = set(query_terms(value))
+    if not terms or not profile.get("record_count"):
+        return False
+    return bool(terms & set(profile.get("entities", [])))
 
 
 def mingli_acceptance_check(idea: dict[str, Any], gap: dict[str, Any]) -> dict[str, Any]:

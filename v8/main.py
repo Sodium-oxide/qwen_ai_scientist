@@ -115,14 +115,32 @@ def resolve_tool_placeholders(
             resolved[key] = value
     return resolved
 
+def inject_verbatim_research_brief(
+    tool_name: str,
+    tool_input: dict[str, Any],
+    raw_user_prompt: str,
+) -> dict[str, Any]:
+    if tool_name != "create_research_project" or not raw_user_prompt or str(tool_input.get("research_brief") or "").strip():
+        return tool_input
+    enriched = dict(tool_input)
+    enriched["research_brief"] = raw_user_prompt
+    return enriched
+
+
 def run_tool(
     block: Any,
     messages: list[dict[str, Any]],
     handlers: dict[str, Any],
+    raw_user_prompt: str = "",
 ) -> dict[str, Any]:
     name = normalize_tool_name(block_attr(block, "name"))
     tool_input = block_attr(block, "input", {}) or {}
     tool_use_id = block_attr(block, "id")
+
+    enriched_tool_input = inject_verbatim_research_brief(name, tool_input, raw_user_prompt)
+    if enriched_tool_input is not tool_input:
+        tool_input = enriched_tool_input
+        log_event("SCIENCE", "research_brief_auto_injected", chars=len(raw_user_prompt))
 
     duplicate_count = repeated_tool_call_count(messages, name, strip_control_args(tool_input))
     if name in {"verify_citation_uniqueness"} and duplicate_count >= 3:
@@ -356,6 +374,8 @@ def normalize_tool_name(name: Any) -> str:
         "import_literature_file": "import_literature_file",
         "importliteraturesearchresult": "import_literature_search_result",
         "import_literature_search_result": "import_literature_search_result",
+        "domainreviewpaper": "domain_review_paper",
+        "domain_review_paper": "domain_review_paper",
         "extractpaperkeynote": "extract_paper_keynote",
         "extract_paper_keynote": "extract_paper_keynote",
         "importpapergraphrecord": "import_papergraph_record",
@@ -460,6 +480,7 @@ def run_agent_locked(user_input: str) -> str:
     messages: list[dict[str, Any]] = [{"role": "user", "content": prompt}]
     tracked_task_ids: set[str] = set()
     validation_attempts = 0
+    incomplete_tool_json_attempts = 0
     recent_tool_patterns: list[str] = []  # track per-iteration tool call patterns
 
     while True:
@@ -471,7 +492,39 @@ def run_agent_locked(user_input: str) -> str:
         if notifications:
             messages.append({"role": "user", "content": "\n\n".join(notifications)})
         messages[:] = compact_messages(messages)
+        log_event("AGENT", "model_request", messages=len(messages), tools=len(current_tools))
         response = create_response(client, user_input, messages, recovery_state, current_tools)
+
+        if getattr(response, "requires_tool_json_retry", False):
+            incomplete_tool_json_attempts += 1
+            if incomplete_tool_json_attempts <= 2:
+                log_event("WARN", "incomplete_tool_json_retry", attempt=incomplete_tool_json_attempts)
+                messages.append(
+                    {
+                        "role": "assistant",
+                        "content": "[Previous tool-call JSON was truncated before it could be executed.]",
+                    }
+                )
+                messages.append(
+                    {
+                        "role": "user",
+                        "content": (
+                            "Retry the tool call as compact JSON only. Do not repeat the research brief or any long user text. "
+                            "For create_research_project, include only title, domain, objective, and optional strategic_need; "
+                            "the runtime injects research_brief automatically."
+                        ),
+                    }
+                )
+                messages[:] = compact_messages(messages)
+                continue
+            final_text = (
+                "The model repeatedly returned truncated tool-call JSON, so no tool was executed. "
+                "Please retry the request; the runtime will preserve the original research brief automatically."
+            )
+            trigger_hook("Stop", final_text)
+            extract_memories(messages, final_text)
+            log_event("AGENT", "final", text=final_text)
+            return final_text
 
         tool_blocks = [
             block for block in response.content if block_attr(block, "type") == "tool_use"
@@ -516,7 +569,7 @@ def run_agent_locked(user_input: str) -> str:
                         block.input = resolved_input
                     elif isinstance(block, dict):
                         block["input"] = resolved_input
-            result = run_tool(block, messages, current_handlers)
+            result = run_tool(block, messages, current_handlers, raw_user_prompt=user_input)
             tool_results.append(result)
         for block, result in zip(tool_blocks, tool_results):
             if normalize_tool_name(block_attr(block, "name")) == "create_task":
@@ -575,7 +628,9 @@ def main() -> None:
         user_input = input("User> ").strip()
     if not user_input:
         raise SystemExit("Empty prompt.")
-    run_agent(user_input)
+    final_text = run_agent(user_input)
+    if final_text.strip():
+        print(final_text, flush=True)
     if args.serve_cron:
         while True:
             time.sleep(60)

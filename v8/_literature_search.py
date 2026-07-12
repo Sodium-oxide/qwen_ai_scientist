@@ -5,6 +5,7 @@ from dataclasses import asdict, dataclass, field
 from datetime import date, timedelta
 from io import BytesIO
 from pathlib import Path
+from threading import Lock
 from typing import Any
 from urllib.error import HTTPError, URLError
 from urllib.parse import quote, urlencode
@@ -27,10 +28,12 @@ try:
         SCIENCE_SEMANTIC_SCHOLAR_CIRCUIT_SECONDS,
         SCIENCE_SEMANTIC_SCHOLAR_FAIL_FAST_ON_429,
         SCIENCE_SEMANTIC_SCHOLAR_RETRY_LIMIT,
+        SCIENCE_PREPRINT_ZERO_RESULT_TTL_SECONDS,
         SCIENCE_STRATIFIED_MAX_BRANCHES_PER_LAYER,
         SEMANTIC_SCHOLAR_API_KEY,
     )
     from .log import log_event
+    from ._utils import normalize_space
 except ImportError:
     from config import (
         SCIENCE_ARXIV_CIRCUIT_SECONDS,
@@ -42,10 +45,12 @@ except ImportError:
         SCIENCE_SEMANTIC_SCHOLAR_CIRCUIT_SECONDS,
         SCIENCE_SEMANTIC_SCHOLAR_FAIL_FAST_ON_429,
         SCIENCE_SEMANTIC_SCHOLAR_RETRY_LIMIT,
+        SCIENCE_PREPRINT_ZERO_RESULT_TTL_SECONDS,
         SCIENCE_STRATIFIED_MAX_BRANCHES_PER_LAYER,
         SEMANTIC_SCHOLAR_API_KEY,
     )
     from log import log_event
+    from _utils import normalize_space
 
 
 
@@ -66,6 +71,141 @@ ARXIV_COOLDOWN_UNTIL = 0.0
 ARXIV_429_COUNT = 0
 
 ARXIV_TIMEOUT_COUNT = 0
+PREPRINT_API_PAGE_SIZE = 30
+PREPRINT_API_MAX_SCAN_RECORDS = 600
+MAX_CONTROLLED_L4_BACKFILL = 3
+PREPRINT_ZERO_RESULT_CACHE: dict[tuple[str, str, str, str, int], tuple[float, dict[str, Any]]] = {}
+PREPRINT_ZERO_RESULT_CACHE_LOCK = Lock()
+
+_CJK_QUERY_PATTERN = re.compile(r"[\u3400-\u9fff\uf900-\ufaff]")
+_ENGLISH_QUERY_CACHE: dict[tuple[str, str], dict[str, str]] = {}
+
+_SCIENTIFIC_QUERY_TRANSLATIONS = {
+    "药物代谢酶活性": "drug metabolizing enzyme activity",
+    "药代动力学参数": "pharmacokinetic parameters",
+    "药物代谢酶": "drug metabolizing enzyme",
+    "遗传变异": "genetic variation",
+    "药物基因组学": "pharmacogenomics",
+    "个体化医疗": "personalized medicine",
+    "精准医疗": "precision medicine",
+    "剂量反应": "dose response",
+    "不良反应": "adverse drug reaction",
+    "临床疗效": "clinical efficacy",
+    "肿瘤分子分型": "tumor molecular profiling",
+    "免疫治疗": "immunotherapy",
+    "细胞治疗": "cell therapy",
+    "基因治疗": "gene therapy",
+    "生物标志物": "biomarker",
+    "电极材料": "electrode material",
+    "电解液": "electrolyte",
+    "离子迁移": "ion transport",
+    "循环寿命": "cycle life",
+    "容量衰减": "capacity degradation",
+    "阳离子混排": "cation mixing",
+    "氧气析出": "oxygen evolution",
+    "固态电解质": "solid electrolyte",
+    "界面阻抗": "interfacial impedance",
+}
+
+
+def contains_cjk_query_text(value: str) -> bool:
+    return bool(_CJK_QUERY_PATTERN.search(str(value or "")))
+
+
+def is_english_provider_query(value: str) -> bool:
+    text = normalize_space(str(value or ""))
+    return bool(text and not contains_cjk_query_text(text) and re.search(r"[A-Za-z]{2,}", text))
+
+
+def heuristic_english_scientific_query(query: str) -> str:
+    translated = str(query or "")
+    for chinese, english in sorted(_SCIENTIFIC_QUERY_TRANSLATIONS.items(), key=lambda item: len(item[0]), reverse=True):
+        translated = translated.replace(chinese, english)
+    if contains_cjk_query_text(translated):
+        return ""
+    translated = re.sub(r"\b(?:AND|OR|NOT)\b", " ", translated, flags=re.IGNORECASE)
+    translated = re.sub(r"[^A-Za-z0-9+_.\-/ ]+", " ", translated)
+    return normalize_space(translated)
+
+
+def english_provider_query(query: str, domain: str = "", *, allow_llm: bool = True) -> dict[str, str]:
+    source_query = normalize_space(str(query or ""))
+    source_domain = normalize_space(str(domain or ""))
+    if is_english_provider_query(source_query):
+        return {
+            "query": source_query,
+            "source_query": source_query,
+            "translation_method": "already_english",
+        }
+    cache_key = (source_query, source_domain)
+    cached = _ENGLISH_QUERY_CACHE.get(cache_key)
+    if cached:
+        return dict(cached)
+
+    translated = heuristic_english_scientific_query(source_query)
+    method = "glossary"
+    if not is_english_provider_query(translated) and allow_llm:
+        try:
+            try:
+                from ._llm import translate_scientific_query_to_english
+            except ImportError:
+                from _llm import translate_scientific_query_to_english
+            translated = translate_scientific_query_to_english(source_query, domain=source_domain)
+            method = "llm_translation"
+        except Exception as exc:
+            log_event("WARN", "scientific_query_translation_failed", query=source_query[:160], error=str(exc)[:200])
+
+    if not is_english_provider_query(translated):
+        translated = heuristic_english_scientific_query(source_domain)
+        method = "english_domain_fallback"
+    result = {
+        "query": translated if is_english_provider_query(translated) else "",
+        "source_query": source_query,
+        "translation_method": method if is_english_provider_query(translated) else "unresolved",
+    }
+    _ENGLISH_QUERY_CACHE[cache_key] = dict(result)
+    return result
+
+
+def require_english_provider_query(query: str, provider: str, domain: str = "") -> tuple[str, dict[str, str] | None]:
+    resolution = english_provider_query(query, domain=domain)
+    resolved = resolution.get("query", "")
+    if resolved:
+        return resolved, None
+    return "", {
+        "provider": provider,
+        "query": str(query or ""),
+        "status": "query_language_error",
+        "results": [],
+        "warning": "External literature providers require an English retrieval query. Translation could not derive a safe English query.",
+        "next_step": "Provide English scientific keywords or rerun with a configured science LLM so the query can be translated before retrieval.",
+    }
+
+
+def normalize_english_query_plan(
+    query_plan: list[dict[str, Any]],
+    *,
+    domain: str = "",
+    allow_llm: bool = True,
+) -> list[dict[str, Any]]:
+    normalized: list[dict[str, Any]] = []
+    for item in query_plan:
+        if not isinstance(item, dict):
+            continue
+        source_query = str(item.get("query") or "").strip()
+        if not source_query:
+            continue
+        resolution = english_provider_query(source_query, domain=domain, allow_llm=allow_llm)
+        if not resolution.get("query"):
+            log_event("WARN", "provider_query_skipped_non_english", query=source_query[:160])
+            continue
+        prepared = dict(item)
+        prepared["query"] = resolution["query"]
+        if resolution["query"] != resolution["source_query"]:
+            prepared["source_query"] = resolution["source_query"]
+            prepared["query_language"] = resolution
+        normalized.append(prepared)
+    return normalized
 
 def search_papers(
     query: str,
@@ -95,6 +235,8 @@ def search_papers_stratified(
     domain: str = "",
     focus_branches: list[str] | None = None,
     use_llm: bool = False,
+    explicit_query_plan: list[dict[str, Any]] | None = None,
+    layer_quotas: dict[str, int] | None = None,
 ) -> str:
     try:
         from ._project import default_literature_providers
@@ -112,6 +254,8 @@ def search_papers_stratified(
             domain=domain,
             focus_branches=focus_branches,
             use_llm=use_llm,
+            explicit_query_plan=explicit_query_plan,
+            layer_quotas=layer_quotas,
         )
     )
     result["zhizhi_action"] = "search_papers_stratified"
@@ -223,10 +367,15 @@ def search_literature(
         from _literature_import import import_literature_search_result
         from _project import default_literature_providers, live_literature_provider_names, save_search
         from _utils import new_id, unique_preserve_order
+    query_language = english_provider_query(query)
+    source_query = query_language["source_query"]
+    query = query_language["query"]
+    if not query:
+        raise ValueError(
+            "External literature retrieval requires an English query. "
+            "Automatic translation could not derive safe English scientific keywords."
+        )
     search_id = new_id("search")
-    # Sanitize tag-soup queries for better provider recall.
-    original_query = query
-    query = sanitize_search_query(query)
     selected = [database_to_provider(provider) for provider in (providers or default_literature_providers(query=query))]
     selected = unique_preserve_order([provider for provider in selected if provider in live_literature_provider_names()])
     if not selected:
@@ -254,6 +403,8 @@ def search_literature(
     search_record = {
         "search_id": search_id,
         "query": query,
+        "source_query": source_query,
+        "query_language": query_language,
         "providers": selected,
         "createdAt": time.time(),
         "total_results": len(flattened),
@@ -264,6 +415,8 @@ def search_literature(
     response = {
         "search_id": search_id,
         "query": query,
+        "source_query": source_query,
+        "query_language": query_language,
         "providers": selected,
         "total_results": len(flattened),
         "results": summarize_literature_results(flattened),
@@ -277,166 +430,6 @@ def search_literature(
     }
     log_event("SCIENCE", "literature_search", query=query, providers=",".join(selected), max_results=max_results)
     return json.dumps(response, ensure_ascii=False, indent=2)
-
-
-# ---------------------------------------------------------------------------
-# Query sanitization: detect and repair "tag-soup" queries that produce
-# near-zero recall on semantic search APIs.
-# ---------------------------------------------------------------------------
-
-_TAG_SOUP_STOPWORDS = {
-    "elements", "physics", "chemistry", "science", "theory", "research",
-    "study", "analysis", "technology", "model", "system", "methods",
-    "method", "applications", "application", "criteria", "reactions",
-    "reaction", "properties", "property", "effects", "effect", "nuclear",
-    "quantum", "experimental", "theoretical", "computational", "molecular",
-    "structural", "chemical", "physical", "biological", "materials",
-}
-
-_COMPOUND_PHRASE_PATTERNS = [
-    # Superheavy / nuclear physics
-    "superheavy elements", "island of stability", "nuclear shell model",
-    "shell closure", "magic number", "fusion reaction", "fusion-evaporation",
-    "cold fusion", "hot fusion", "actinide target", "actinide targets",
-    "recoil separator", "gas-filled recoil separator", "alpha decay",
-    "spontaneous fission", "superheavy nuclei", "synthesis reaction",
-    "compound nucleus", "evaporation residue", "cross section",
-    "discovery criteria", "IUPAC criteria", "element discovery",
-    "critical charge", "quantum electrodynamics", "relativistic effects",
-    "electronic structure", "nuclear shell", "shell gap",
-    # Materials / energy
-    "solid-state battery", "lithium ion battery", "solid electrolyte",
-    "garnet electrolyte", "sulfide electrolyte", "oxide electrolyte",
-    "polymer electrolyte", "halide electrolyte", "cathode coating",
-    "interface engineering", "dendrite suppression", "ionic conductivity",
-    "critical current density", "coulombic efficiency", "rate capability",
-    "interface resistance", "molecular dynamics simulation",
-    "density functional theory", "machine learning model",
-    # Catalysis / electrochemistry
-    "bifunctional electrocatalyst", "layered double hydroxide",
-    "transition metal phosphide", "single-atom catalyst",
-    "hydrogen evolution reaction", "oxygen evolution reaction",
-    "overall water splitting", "tafel slope", "faradaic efficiency",
-    "operational stability", "overpotential",
-    # Climate / ecology
-    "regime shift", "compound extreme event", "ecological disturbance",
-    "agricultural stress", "hydrological deficit", "meteorological anomaly",
-    "vapor pressure deficit", "soil moisture", "drought characteristics",
-    "drought duration", "drought frequency", "drought severity",
-    "model ensemble", "remote sensing", "extreme event attribution",
-    # AI for Science
-    "large language model", "knowledge graph", "multi-agent system",
-    "autonomous agent", "scientific discovery", "ai for science",
-    # Biomedical
-    "protein structure prediction", "drug discovery", "clinical trial",
-    "single-cell sequencing", "gene expression", "binding affinity",
-]
-
-
-def is_tag_soup_query(query: str, threshold_words: int = 7) -> bool:
-    """Return True when *query* looks like a concatenation of domain tags
-    rather than a natural-language retrieval phrase.
-
-    Heuristics:
-    - Many Title-Cased tokens in a row (e.g. ``Superheavy Elements Nuclear
-      Physics …``) signal tag concatenation.
-    - Total word count exceeds *threshold_words* AND more than half the words
-      are capitalised.
-    - No boolean operators or punctuation suggesting a structured query.
-    """
-    if not query:
-        return False
-    words = query.split()
-    if len(words) < threshold_words:
-        return False
-    title_case = sum(1 for w in words if w[:1].isupper() and len(w) > 1)
-    ratio = title_case / max(1, len(words))
-    if ratio >= 0.5 and len(words) >= threshold_words:
-        return True
-    # Very long query with no natural-language connectors
-    connectors = {"the", "a", "an", "of", "in", "on", "for", "with", "and", "or", "to", "from", "is", "are", "by", "that", "which", "how", "what", "why"}
-    lower_words = [w.lower() for w in words]
-    connector_count = sum(1 for w in lower_words if w in connectors)
-    if len(words) >= 10 and connector_count <= 1:
-        return True
-    return False
-
-
-def extract_compound_phrases(query: str) -> list[str]:
-    """Extract known compound noun phrases from *query* (case-insensitive)."""
-    lower = query.lower()
-    found: list[str] = []
-    for phrase in _COMPOUND_PHRASE_PATTERNS:
-        if phrase in lower:
-            found.append(phrase)
-    return found
-
-
-def sanitize_search_query(query: str, domain: str = "", max_phrases: int = 4, max_terms: int = 6) -> str:
-    """Reduce a tag-soup or overly-broad query into a compact, effective
-    retrieval string.
-
-    Strategy:
-    1. If the query is *not* a tag soup, return it unchanged.
-    2. Extract known compound phrases first (preserves scientific meaning).
-    3. Fall back to filtering stop-words and keeping the most specific tokens.
-    4. Prepend the *domain* if it is non-empty and not already covered.
-    """
-    if not is_tag_soup_query(query):
-        # Even non-tag-soup queries can benefit from length capping for
-        # provider APIs that silently truncate.
-        words = query.split()
-        if len(words) <= max_terms + 2:
-            return query
-        # Check for compound phrases even in non-tag-soup queries — they
-        # carry much more semantic weight than individual tokens.
-        phrases = extract_compound_phrases(query)
-        if phrases:
-            result = " ".join(phrases[:max_phrases])
-            if domain:
-                domain_tokens = [w for w in domain.lower().split() if w not in _TAG_SOUP_STOPWORDS and len(w) > 2]
-                phrase_text = " ".join(p.lower() for p in phrases[:max_phrases])
-                covered = sum(1 for t in domain_tokens if t in phrase_text)
-                if covered < max(1, len(domain_tokens) // 2):
-                    result = f"{domain} {result}"
-            log_event("SCIENCE", "query_sanitized", original_words=len(words), method="non_tag_soup_phrases", result_words=len(result.split()))
-            return result
-        # Mild truncation: keep first max_terms meaningful words.
-        filtered = [w for w in words if w.lower() not in _TAG_SOUP_STOPWORDS and len(w) > 2]
-        if len(filtered) <= max_terms:
-            return query
-        return " ".join(filtered[:max_terms])
-
-    # ---- Tag-soup path ----
-    phrases = extract_compound_phrases(query)
-    if phrases:
-        result = " ".join(phrases[:max_phrases])
-        # Prepend domain only if its significant tokens are not already
-        # covered by the selected phrases.  A simple substring check on
-        # the full domain string is too strict — we compare the domain's
-        # non-stopword tokens against the phrases.
-        if domain:
-            domain_tokens = [w for w in domain.lower().split() if w not in _TAG_SOUP_STOPWORDS and len(w) > 2]
-            phrase_text = " ".join(p.lower() for p in phrases[:max_phrases])
-            covered = sum(1 for t in domain_tokens if t in phrase_text)
-            if covered < max(1, len(domain_tokens) // 2):
-                result = f"{domain} {result}"
-        log_event("SCIENCE", "query_sanitized", original_words=len(query.split()), method="compound_phrases", result_words=len(result.split()))
-        return result
-
-    # No known compound phrases — filter to specific tokens.
-    words = query.lower().split()
-    specific = [w for w in words if w not in _TAG_SOUP_STOPWORDS and len(w) > 2]
-    # Preserve original casing for the first occurrence.
-    original_tokens = {w.lower(): w for w in query.split()}
-    kept = [original_tokens.get(w, w) for w in specific[:max_terms]]
-    if domain:
-        domain_lower = domain.lower()
-        if not any(domain_lower in w.lower() for w in kept):
-            kept.insert(0, domain)
-    result = " ".join(kept) if kept else query[:120]
-    log_event("SCIENCE", "query_sanitized", original_words=len(query.split()), method="token_filter", result_words=len(result.split()))
-    return result
 
 
 _SYNONYM_MAP: dict[str, list[str]] = {
@@ -498,6 +491,14 @@ def search_literature_stratified(
     domain: str = "",
     focus_branches: list[str] | None = None,
     use_llm: bool = False,
+    explicit_query_plan: list[dict[str, Any]] | None = None,
+    layer_quotas: dict[str, int] | None = None,
+    preprint_layers: list[str] | set[str] | tuple[str, ...] | None = None,
+    preprint_scan_limit: int | None = None,
+    preprint_provider_result_target: int = 0,
+    preprint_recovery_windows: tuple[int, ...] | None = None,
+    preprint_recovery_max_variants: int | None = None,
+    preprint_max_branches: int | None = None,
 ) -> str:
     try:
         from ._literature_import import import_literature_search_result
@@ -509,41 +510,94 @@ def search_literature_stratified(
         from _literature_scoring import domain_relevance_assessment, should_reject_for_domain
         from _project import default_literature_providers, live_literature_provider_names, save_search
         from _utils import new_id, unique_preserve_order
+    query_language = english_provider_query(query, domain=domain, allow_llm=use_llm)
+    source_query = query_language["source_query"]
+    query = query_language["query"]
+    if not query:
+        raise ValueError(
+            "External literature retrieval requires an English query. "
+            "Automatic translation could not derive safe English scientific keywords."
+        )
     search_id = new_id("search")
-    # Sanitize tag-soup queries before any provider API call.  The original
-    # raw query is preserved in the search record for auditability.
-    original_query = query
-    query = sanitize_search_query(query, domain=domain)
-    selected = [database_to_provider(provider) for provider in (providers or default_literature_providers(domain=domain, query=query))]
-    selected = unique_preserve_order([provider for provider in selected if provider in live_literature_provider_names()])
+    requested_providers = [database_to_provider(provider) for provider in (providers or [])]
+    domain_defaults = default_literature_providers(domain=domain, query=query)
+    selected = unique_preserve_order(requested_providers + domain_defaults)
+    selected = [provider for provider in selected if provider in live_literature_provider_names()]
     if not selected:
         selected = default_literature_providers(domain=domain, query=query) or ["semantic_scholar"]
-    query_plan = build_domain_query_plan(query, domain=domain, focus_branches=focus_branches, use_llm=use_llm)
+    query_plan = explicit_query_plan or build_domain_query_plan(
+        query,
+        domain=domain,
+        focus_branches=focus_branches,
+        use_llm=use_llm,
+    )
+    query_plan = normalize_english_query_plan(query_plan, domain=domain, allow_llm=use_llm)
+    if not query_plan:
+        query_plan = [{"branch": "primary", "query": query}]
     ranking_query = expanded_ranking_query(query, domain, query_plan)
-    quotas = stratified_literature_quotas(max_results)
+    quotas = normalize_stratified_layer_quotas(layer_quotas, max_results=max_results)
+    allowed_preprint_layers = {
+        str(layer).strip()
+        for layer in (preprint_layers if preprint_layers is not None else {"L0_review", "L3_preprint", "L4_regular"})
+        if str(layer).strip()
+    }
     provider_blocks: list[dict[str, Any]] = []
     selected_results: list[dict[str, Any]] = []
     seen: set[str] = set()
-    carry = 0
     strata_reports: list[dict[str, Any]] = []
 
     for layer in stratified_literature_layers(quotas):
-        target = layer["quota"] + carry
+        target = layer["quota"]
         if target <= 0:
             strata_reports.append({**layer, "target": target, "selected": 0, "carried_to_next": 0})
             continue
-        blocks = fetch_stratified_layer_blocks(query, selected, layer, query_plan=query_plan, domain=domain)
+        blocks = fetch_stratified_layer_blocks(
+            query,
+            selected,
+            layer,
+            query_plan=query_plan,
+            domain=domain,
+            preprint_layers=allowed_preprint_layers,
+            preprint_scan_limit=preprint_scan_limit,
+            preprint_provider_result_target=preprint_provider_result_target,
+            preprint_max_branches=preprint_max_branches,
+        )
         provider_blocks.extend(blocks)
         raw_candidates = rank_literature_results(ranking_query, dedupe_literature_results(flatten_literature_results(blocks)))
         candidates = [item for item in raw_candidates if stratified_candidate_matches(layer["layer"], item)]
         recovery_used = ""
+        preprint_recovery: dict[str, Any] = {}
+        if not candidates and layer["layer"] == "L3_preprint" and "L3_preprint" in allowed_preprint_layers:
+            recovery_options: dict[str, Any] = {}
+            if preprint_scan_limit is not None:
+                recovery_options["scan_limit"] = preprint_scan_limit
+            if preprint_recovery_windows is not None:
+                recovery_options["windows_months"] = preprint_recovery_windows
+            if preprint_recovery_max_variants is not None:
+                recovery_options["max_variants"] = preprint_recovery_max_variants
+            recovery_blocks, preprint_recovery = recover_preprint_layer_candidates(
+                query=query,
+                query_plan=query_plan,
+                domain=domain,
+                max_results=max(4, target),
+                providers=selected,
+                **recovery_options,
+            )
+            provider_blocks.extend(recovery_blocks)
+            retry_candidates = rank_literature_results(
+                ranking_query,
+                dedupe_literature_results(flatten_literature_results(recovery_blocks)),
+            )
+            candidates = [item for item in retry_candidates if stratified_candidate_matches(layer["layer"], item)]
+            if candidates:
+                recovery_used = "preprint_query_and_provider_retry"
         if not candidates and layer["layer"] in {"L1_milestone", "L2_top_latest"}:
             candidates, recovery_used = recover_stratified_layer_candidates(layer["layer"], raw_candidates)
         picked: list[dict[str, Any]] = []
         rejected_for_domain = 0
         for candidate in candidates:
             candidate["domain_relevance"] = domain_relevance_assessment(candidate, domain=domain, query=query)
-            if should_reject_for_domain(candidate, domain=domain):
+            if should_reject_for_domain(candidate, domain=domain, query=query):
                 rejected_for_domain += 1
                 continue
             key = literature_result_unique_key(candidate)
@@ -560,7 +614,7 @@ def search_literature_stratified(
             if len(picked) >= target:
                 break
         selected_results.extend(picked)
-        carry = max(0, target - len(picked))
+        unfilled_reserved_quota = max(0, target - len(picked))
         strata_reports.append(
             {
                 **layer,
@@ -570,23 +624,33 @@ def search_literature_stratified(
                 "selected": len(picked),
                 "domain_rejected": rejected_for_domain,
                 "recovery_used": recovery_used,
-                "carried_to_next": carry,
+                "preprint_recovery": preprint_recovery,
+                "carried_to_next": 0,
+                "unfilled_reserved_quota": unfilled_reserved_quota,
             }
         )
         if len(selected_results) >= max_results:
-            carry = 0
             break
 
-    if len(selected_results) < max_results:
-        regular_needed = max_results - len(selected_results)
-        blocks = fetch_regular_backfill_blocks(query, selected, regular_needed + carry, query_plan=query_plan)
+    review_promotions = promote_high_impact_l4_reviews(selected_results, strata_reports, quotas)
+    if review_promotions:
+        log_event(
+            "SCIENCE",
+            "high_impact_review_reclassified_from_l4",
+            count=len(review_promotions),
+            titles=[str(item.get("title") or "")[:100] for item in review_promotions],
+        )
+    selected_regular = sum(1 for item in selected_results if item.get("stratified_layer") == "L4_regular")
+    regular_needed = max(0, int(quotas.get("L4_regular", 0)) - selected_regular)
+    if regular_needed:
+        blocks = fetch_regular_backfill_blocks(query, selected, regular_needed, query_plan=query_plan)
         provider_blocks.extend(blocks)
         candidates = rank_literature_results(ranking_query, dedupe_literature_results(flatten_literature_results(blocks)))
         picked = []
         rejected_for_domain = 0
         for candidate in candidates:
             candidate["domain_relevance"] = domain_relevance_assessment(candidate, domain=domain, query=query)
-            if should_reject_for_domain(candidate, domain=domain):
+            if should_reject_for_domain(candidate, domain=domain, query=query):
                 rejected_for_domain += 1
                 continue
             key = literature_result_unique_key(candidate)
@@ -610,7 +674,50 @@ def search_literature_stratified(
                 "candidate_count": len(candidates),
                 "selected": len(picked),
                 "domain_rejected": rejected_for_domain,
-                "carried_to_next": max(0, regular_needed - len(picked)),
+                "carried_to_next": 0,
+                "unfilled_reserved_quota": max(0, regular_needed - len(picked)),
+            }
+        )
+
+    controlled_backfill = controlled_l4_backfill_budget(strata_reports)
+    controlled_needed = int(controlled_backfill["quota"])
+    if controlled_needed:
+        blocks = fetch_regular_backfill_blocks(query, selected, controlled_needed, query_plan=query_plan)
+        provider_blocks.extend(blocks)
+        candidates = rank_literature_results(ranking_query, dedupe_literature_results(flatten_literature_results(blocks)))
+        picked = []
+        rejected_for_domain = 0
+        for candidate in candidates:
+            candidate["domain_relevance"] = domain_relevance_assessment(candidate, domain=domain, query=query)
+            if should_reject_for_domain(candidate, domain=domain, query=query):
+                rejected_for_domain += 1
+                continue
+            key = literature_result_unique_key(candidate)
+            if key in seen:
+                continue
+            seen.add(key)
+            item = dict(candidate)
+            item["stratified_layer"] = "L4_regular"
+            item["stratified_label"] = "controlled L4 evidence backfill"
+            item["stratified_recovery"] = "controlled_l4_backfill"
+            item["backfilled_reserved_layers"] = controlled_backfill["source_layers"]
+            item["_why_selected"] = "controlled_l4_backfill_for_missing_special_evidence"
+            picked.append(item)
+            if len(picked) >= controlled_needed:
+                break
+        selected_results.extend(picked)
+        strata_reports.append(
+            {
+                "layer": "L4_controlled_backfill",
+                "label": "capped regular-evidence replacement for unfilled special layers",
+                "quota": controlled_needed,
+                "target": controlled_needed,
+                "candidate_count": len(candidates),
+                "selected": len(picked),
+                "domain_rejected": rejected_for_domain,
+                "source_layers": controlled_backfill["source_layers"],
+                "carried_to_next": 0,
+                "unfilled_reserved_quota": max(0, controlled_needed - len(picked)),
             }
         )
 
@@ -621,7 +728,9 @@ def search_literature_stratified(
     # domain tags are too specific for the provider's semantic index.
     low_result_threshold = max(3, max_results // 4)
     synonym_expansion_used = False
-    if len(selected_results) < low_result_threshold:
+    selected_regular = sum(1 for item in selected_results if item.get("stratified_layer") == "L4_regular")
+    regular_remaining = max(0, int(quotas.get("L4_regular", 0)) - selected_regular)
+    if len(selected_results) < low_result_threshold and regular_remaining:
         expanded = expand_query_with_synonyms(query)
         if expanded != query:
             synonym_expansion_used = True
@@ -629,7 +738,7 @@ def search_literature_stratified(
             try:
                 expanded_blocks: list[dict[str, Any]] = []
                 for provider in selected:
-                    exp_q = sanitize_search_query(expanded, domain=domain, max_terms=8)
+                    exp_q = expanded
                     try:
                         block = search_literature_provider_block(provider, exp_q, max_results=max(8, max_results // len(selected)))
                     except Exception:
@@ -645,16 +754,16 @@ def search_literature_stratified(
                     item["stratified_label"] = "synonym-expanded backfill"
                     item["_why_selected"] = "synonym_expansion_fallback"
                     selected_results.append(item)
-                    if len(selected_results) >= max_results:
+                    if sum(1 for item in selected_results if item.get("stratified_layer") == "L4_regular") >= int(quotas.get("L4_regular", 0)):
                         break
                 provider_blocks.extend(expanded_blocks)
                 strata_reports.append(
                     {
                         "layer": "synonym_expansion",
                         "label": "synonym-expanded backfill",
-                        "quota": max_results,
-                        "target": max_results - len(selected_results) + low_result_threshold,
-                        "selected": max(0, len(selected_results) - low_result_threshold),
+                        "quota": regular_remaining,
+                        "target": regular_remaining,
+                        "selected": min(regular_remaining, sum(1 for item in selected_results if item.get("stratified_label") == "synonym-expanded backfill")),
                         "expanded_query": expanded[:200],
                     }
                 )
@@ -666,20 +775,34 @@ def search_literature_stratified(
         item["result_index"] = index
         item["search_id"] = search_id
     knowledge_pyramid = build_knowledge_pyramid(query, final_results, strata_reports)
+    evidence_window_alerts = [
+        {
+            "priority": "P0",
+            "status": "insufficient_preprint_evidence",
+            "action": "Do not fill this frontier-evidence requirement with older literature; narrow or defer the affected sub-hypothesis.",
+        }
+        for report in strata_reports
+        if report.get("layer") == "L3_preprint" and int(report.get("selected") or 0) == 0
+    ]
     search_record = {
         "search_id": search_id,
         "query": query,
-        "original_query": original_query if original_query != query else "",
-        "query_sanitized": original_query != query,
+        "source_query": source_query,
+        "query_language": query_language,
         "synonym_expansion_used": synonym_expansion_used,
         "domain": domain,
         "focus_branches": focus_branches or [],
         "providers": selected,
+        "requested_providers": requested_providers,
+        "preprint_layers": sorted(allowed_preprint_layers),
+        "preprint_scan_limit": preprint_scan_limit,
+        "preprint_provider_result_target": preprint_provider_result_target,
         "createdAt": time.time(),
         "strategy": "stratified_cascade",
         "query_plan": query_plan,
         "strata": strata_reports,
         "knowledge_pyramid": knowledge_pyramid,
+        "evidence_window_alerts": evidence_window_alerts,
         "total_results": len(final_results),
         "results": final_results,
         "provider_blocks": provider_blocks,
@@ -688,16 +811,21 @@ def search_literature_stratified(
     response = {
         "search_id": search_id,
         "query": query,
-        "original_query": original_query if original_query != query else "",
-        "query_sanitized": original_query != query,
+        "source_query": source_query,
+        "query_language": query_language,
         "synonym_expansion_used": synonym_expansion_used,
         "domain": domain,
         "focus_branches": focus_branches or [],
         "providers": selected,
+        "requested_providers": requested_providers,
+        "preprint_layers": sorted(allowed_preprint_layers),
+        "preprint_scan_limit": preprint_scan_limit,
+        "preprint_provider_result_target": preprint_provider_result_target,
         "strategy": "stratified_cascade",
         "query_plan": query_plan,
         "strata": strata_reports,
         "knowledge_pyramid": knowledge_pyramid,
+        "evidence_window_alerts": evidence_window_alerts,
         "root_result_index": knowledge_pyramid.get("root_result_index"),
         "root_policy": knowledge_pyramid.get("root_policy"),
         "total_results": len(final_results),
@@ -709,21 +837,82 @@ def search_literature_stratified(
             "Each result has stratified_layer and _why_selected explaining its role in the literature map."
         ),
     }
-    if original_query != query:
-        response["sanitization_note"] = (
-            f"The original query ({len(original_query.split())} words) was sanitized to a compact form "
-            f"({len(query.split())} words) because tag-soup queries produce near-zero recall on semantic "
-            f"search APIs. Original: '{original_query[:120]}...'. Sanitized: '{query}'."
-        )
     log_event(
         "SCIENCE",
         "literature_search_stratified",
         query=query,
         providers=",".join(selected),
+        requested_providers=",".join(requested_providers),
+        quotas=quotas,
         max_results=max_results,
         results=len(final_results),
     )
     return json.dumps(response, ensure_ascii=False, indent=2)
+
+def recover_preprint_layer_candidates(
+    *,
+    query: str,
+    query_plan: list[dict[str, Any]],
+    domain: str,
+    max_results: int,
+    providers: list[str] | None = None,
+    scan_limit: int | None = None,
+    windows_months: tuple[int, ...] | None = None,
+    max_variants: int | None = None,
+) -> tuple[list[dict[str, Any]], dict[str, Any]]:
+    base_queries = [str(item.get("query") or "") for item in query_plan if isinstance(item, dict)] or [query]
+    variants: list[str] = []
+    variant_limit = clamp_int(max_variants, 1, 3) if max_variants is not None else 3
+    for base_query in base_queries[:variant_limit]:
+        compact = compact_preprint_retrieval_query(base_query, domain=domain)
+        expanded = compact_preprint_retrieval_query(expand_query_with_synonyms(base_query), domain=domain)
+        for candidate in (compact, expanded):
+            if candidate and candidate not in variants:
+                variants.append(candidate)
+    blocks: list[dict[str, Any]] = []
+    attempts: list[dict[str, Any]] = []
+    selected = {database_to_provider(provider) for provider in (providers or ["arxiv"])}
+    recovery_providers = [provider for provider in ("medrxiv", "biorxiv", "arxiv") if provider in selected]
+    recovery_windows = tuple(months for months in (windows_months or (6, 12, 24)) if int(months) > 0)
+    for months in recovery_windows:
+        for variant in variants[:variant_limit]:
+            for provider in recovery_providers:
+                if provider == "arxiv":
+                    block = search_arxiv(variant, max_results=max_results, sort_by="submittedDate")
+                else:
+                    block = _search_preprint_with_controls(
+                        provider,
+                        variant,
+                        max_results=max_results,
+                        days_back=months * 31,
+                        scan_limit=scan_limit,
+                    )
+                block["retrieval_strategy"] = "preprint_recovery"
+                block["preprint_recovery_window_months"] = months
+                block["preprint_recovery_query"] = variant
+                blocks.append(block)
+                count = len(block.get("results") or []) if isinstance(block, dict) else 0
+                attempts.append({"query": variant, "window_months": months, "provider": provider, "results": count})
+                log_event(
+                    "SCIENCE",
+                    "preprint_recovery_attempt",
+                    provider=provider,
+                    query=variant[:180],
+                    query_variant_reason="l3_preprint_recovery",
+                    window_months=months,
+                    result_count=count,
+                    scan_budget=block.get("scan_budget"),
+                    zero_result_cache_hit=bool(block.get("zero_result_cache_hit")),
+                )
+                if count:
+                    return blocks, {"attempted": True, "attempts": attempts, "outcome": "recovered"}
+    return blocks, {
+        "attempted": bool(attempts),
+        "attempts": attempts,
+        "outcome": "no_preprint_evidence",
+        "next_step": "Mark the affected sub-hypothesis as evidence-insufficient or supply a narrower retrieval query; do not substitute older papers for P0.",
+    }
+
 
 def diverse_rerank_literature_results(results: list[dict[str, Any]], max_results: int) -> list[dict[str, Any]]:
     try:
@@ -772,54 +961,163 @@ def stratified_literature_quotas(max_results: int) -> dict[str, int]:
     except ImportError:
         from _utils import clamp_int
     total = clamp_int(max_results, 1, 100)
-    base = {
-        "L0_review": 3,
-        "L1_milestone": 4,
-        "L2_top_latest": 4,
-        "L3_preprint": 3,
+    remaining = total
+    preprint = min(3, remaining)
+    remaining -= preprint
+    latest = min(3, remaining)
+    remaining -= latest
+    review = min(1, remaining)
+    remaining -= review
+    milestone = min(2, remaining)
+    remaining -= milestone
+    return {
+        "L3_preprint": preprint,
+        "L2_top_latest": latest,
+        "L0_review": review,
+        "L1_milestone": milestone,
+        "L4_regular": remaining,
     }
-    if total <= 1:
-        return {"L0_review": total, "L1_milestone": 0, "L2_top_latest": 0, "L3_preprint": 0, "L4_regular": 0}
-    assigned = 0
-    quotas: dict[str, int] = {}
-    for key in ("L0_review", "L1_milestone", "L2_top_latest", "L3_preprint"):
-        value = min(base[key], max(0, total - assigned))
-        quotas[key] = value
-        assigned += value
-    quotas["L4_regular"] = max(0, total - assigned)
-    return quotas
+
+
+def normalize_stratified_layer_quotas(
+    requested: dict[str, int] | None,
+    *,
+    max_results: int,
+) -> dict[str, int]:
+    """Normalize user quotas while enforcing the evidence-layer ceilings."""
+    defaults = stratified_literature_quotas(max_results)
+    if not isinstance(requested, dict):
+        return defaults
+    names = ("L3_preprint", "L2_top_latest", "L4_regular", "L0_review", "L1_milestone")
+    raw = {name: max(0, int(requested.get(name, 0) or 0)) for name in names}
+    if sum(raw.values()) <= 0:
+        return defaults
+    total = max(1, int(max_results))
+    preprint = min(3, raw["L3_preprint"], total)
+    remaining = total - preprint
+    latest = min(3, raw["L2_top_latest"], remaining)
+    remaining -= latest
+    review = min(3, raw["L0_review"], remaining)
+    remaining -= review
+    milestone = min(3 - review, raw["L1_milestone"], remaining)
+    remaining -= milestone
+    return {
+        "L3_preprint": preprint,
+        "L2_top_latest": latest,
+        "L0_review": review,
+        "L1_milestone": milestone,
+        "L4_regular": remaining,
+    }
+
+
+def controlled_l4_backfill_budget(
+    strata_reports: list[dict[str, Any]],
+    max_backfill: int = MAX_CONTROLLED_L4_BACKFILL,
+) -> dict[str, Any]:
+    special_layers = {"L3_preprint", "L2_top_latest", "L0_review", "L1_milestone"}
+    source_layers = [
+        str(report.get("layer"))
+        for report in strata_reports
+        if str(report.get("layer")) in special_layers and int(report.get("unfilled_reserved_quota") or 0) > 0
+    ]
+    missing = sum(
+        int(report.get("unfilled_reserved_quota") or 0)
+        for report in strata_reports
+        if str(report.get("layer")) in special_layers
+    )
+    return {
+        "quota": min(max(0, int(max_backfill)), max(0, missing)),
+        "source_layers": source_layers,
+        "missing_special_quota": missing,
+    }
+
+
+def promote_high_impact_l4_reviews(
+    selected_results: list[dict[str, Any]],
+    strata_reports: list[dict[str, Any]],
+    quotas: dict[str, int],
+) -> list[dict[str, Any]]:
+    review_limit = max(0, int(quotas.get("L0_review", 0)))
+    already_selected = sum(1 for item in selected_results if item.get("stratified_layer") == "L0_review")
+    remaining = max(0, review_limit - already_selected)
+    if not remaining:
+        return []
+    candidates = [
+        item
+        for item in selected_results
+        if item.get("stratified_layer") == "L4_regular"
+        and is_review_like_paper(item)
+        and is_top_venue_result(item)
+    ]
+    candidates.sort(
+        key=lambda item: (
+            -float(item.get("publication_quality_score") or 0.0),
+            -float(item.get("relevance_score") or 0.0),
+            -float(item.get("citation_count") or 0.0),
+        )
+    )
+    promoted = candidates[:remaining]
+    for item in promoted:
+        item["retrieved_as_layer"] = "L4_regular"
+        item["stratified_layer"] = "L0_review"
+        item["stratified_label"] = "P3 review / field map"
+        item["stratified_recovery"] = "high_impact_review_reclassified_from_l4"
+        item["_why_selected"] = stratified_selection_reason("L0_review", item)
+    if promoted:
+        report = next((item for item in strata_reports if item.get("layer") == "L0_review"), None)
+        if report is not None:
+            report["selected"] = int(report.get("selected") or 0) + len(promoted)
+            report["reclassified_from_l4"] = len(promoted)
+            report["unfilled_reserved_quota"] = max(
+                0,
+                int(report.get("target") or 0) - int(report["selected"]),
+            )
+        l4_report = next((item for item in strata_reports if item.get("layer") == "L4_regular"), None)
+        if l4_report is not None:
+            l4_report["selected"] = max(0, int(l4_report.get("selected") or 0) - len(promoted))
+            l4_report["reclassified_to_l0_review"] = len(promoted)
+            l4_report["unfilled_reserved_quota"] = max(
+                0,
+                int(l4_report.get("target") or 0) - int(l4_report["selected"]),
+            )
+    return promoted
 
 def stratified_literature_layers(quotas: dict[str, int]) -> list[dict[str, Any]]:
     return [
         {
+            "layer": "L3_preprint",
+            "priority": "P0",
+            "label": "P0 latest preprint / frontier signal",
+            "quota": int(quotas.get("L3_preprint", 0)),
+            "query_suffix": "",
+        },
+        {
+            "layer": "L2_top_latest",
+            "priority": "P1",
+            "label": "P1 recent top-venue primary evidence",
+            "quota": int(quotas.get("L2_top_latest", 0)),
+            "query_suffix": "latest recent top journal high impact breakthrough advance frontier",
+        },
+        {
             "layer": "L0_review",
-            "label": "high-impact review / field map",
+            "priority": "P3",
+            "label": "P3 review / field map",
             "quota": int(quotas.get("L0_review", 0)),
             "query_suffix": "review survey progress perspective tutorial systematic review meta-analysis",
         },
         {
             "layer": "L1_milestone",
-            "label": "milestone / highly cited foundation",
+            "priority": "P4",
+            "label": "P4 milestone / historical foundation",
             "quota": int(quotas.get("L1_milestone", 0)),
             "query_suffix": "seminal foundational highly cited landmark classic influential",
         },
         {
-            "layer": "L2_top_latest",
-            "label": "recent top-venue frontier",
-            "quota": int(quotas.get("L2_top_latest", 0)),
-            "query_suffix": "latest recent top journal high impact breakthrough advance frontier",
-        },
-        {
-            "layer": "L3_preprint",
-            "label": "latest arXiv preprint frontier",
-            "quota": int(quotas.get("L3_preprint", 0)),
-            "query_suffix": "",
-        },
-        {
             "layer": "L4_regular",
-            "label": "regular journal / supplemental evidence",
+            "priority": "P2",
+            "label": "P2 primary experimental or theoretical evidence",
             "quota": int(quotas.get("L4_regular", 0)),
-            "query_suffix": "",
+            "query_suffix": "experimental theoretical mechanism measurement validation",
         },
     ]
 
@@ -837,16 +1135,11 @@ def build_domain_query_plan(
         from _literature_scoring import domain_topic_profile, slug_label
         from _utils import normalize_space
     primary = normalize_space(query)
-    # Sanitize tag-soup queries so branch queries sent to provider APIs
-    # are compact and semantically coherent.
-    sanitized_primary = sanitize_search_query(primary, domain=domain)
-    plan: list[dict[str, str]] = [{"branch": "primary", "query": sanitized_primary}]
+    plan: list[dict[str, str]] = [{"branch": "primary", "query": primary}]
     profile = domain_topic_profile(domain or query, query=query, use_llm=use_llm)
     focus_branches = [normalize_space(item) for item in (focus_branches or []) if normalize_space(item)]
     for focus in focus_branches:
-        # Use sanitized primary when building branch queries so we do not
-        # re-introduce the tag-soup string into sub-branch retrievals.
-        branch_query = normalize_space(f"{sanitized_primary} {focus}")
+        branch_query = normalize_space(f"{primary} {focus}")
         plan.append({"branch": slug_label(focus), "query": branch_query})
     topics = list(profile.get("core_topics", [])) + list(profile.get("retrieval_facets", []))
     for topic in topics[: max(0, max_branches)]:
@@ -854,7 +1147,7 @@ def build_domain_query_plan(
         terms = str(topic.get("query") or "")
         if not terms:
             continue
-        branch_query = normalize_space(terms if sanitized_primary.lower() in terms.lower() else f"{sanitized_primary} {terms}")
+        branch_query = normalize_space(terms if primary.lower() in terms.lower() else f"{primary} {terms}")
         plan.append({"branch": branch, "query": branch_query, "topic_type": str(topic.get("topic_type") or "subfield")})
     deduped: list[dict[str, str]] = []
     seen: set[str] = set()
@@ -950,12 +1243,86 @@ def build_branch_user_interaction(coverage_diagnostic: dict[str, Any]) -> dict[s
         "continue_with": "Pass selected option labels or custom branch keywords as focus_branches to run_zhizhi_literature_analysis/search_papers_stratified.",
     }
 
+def _search_preprint_with_controls(
+    provider: str,
+    query: str,
+    max_results: int,
+    *,
+    days_back: int = 365,
+    scan_limit: int | None = None,
+) -> dict[str, Any]:
+    options: dict[str, Any] = {"max_results": max_results, "days_back": days_back}
+    if scan_limit is not None:
+        options["scan_limit"] = scan_limit
+    return search_preprint_api(provider, query, **options)
+
+
+def _skipped_preprint_provider_block(
+    provider: str,
+    query: str,
+    reason: str,
+    *,
+    query_branch: str,
+    retrieval_strategy: str,
+    source_query: str,
+) -> dict[str, Any]:
+    log_event(
+        "SCIENCE",
+        "preprint_provider_skipped",
+        provider=provider,
+        query=query[:180],
+        reason=reason,
+        query_variant_reason=retrieval_strategy,
+    )
+    return {
+        "provider": provider,
+        "query": query,
+        "status": "skipped",
+        "results": [],
+        "skipped_provider_reason": reason,
+        "query_branch": query_branch,
+        "retrieval_strategy": retrieval_strategy,
+        "source_query": source_query,
+        "query_variant_reason": retrieval_strategy,
+    }
+
+
+def _annotate_preprint_layer_block(
+    block: dict[str, Any],
+    *,
+    query_branch: str,
+    retrieval_strategy: str,
+    source_query: str,
+) -> dict[str, Any]:
+    block["query_branch"] = query_branch
+    block["retrieval_strategy"] = retrieval_strategy
+    block["source_query"] = source_query
+    block["query_variant_reason"] = retrieval_strategy
+    log_event(
+        "SCIENCE",
+        "preprint_layer_query",
+        provider=block.get("provider"),
+        query=str(block.get("query") or "")[:180],
+        query_variant_reason=retrieval_strategy,
+        query_branch=query_branch,
+        result_count=len(block.get("results") or []),
+        scan_budget=block.get("scan_budget"),
+        scanned=block.get("scanned_result_count"),
+        zero_result_cache_hit=bool(block.get("zero_result_cache_hit")),
+    )
+    return block
+
+
 def fetch_stratified_layer_blocks(
     query: str,
     providers: list[str],
     layer: dict[str, Any],
     query_plan: list[dict[str, str]] | None = None,
     domain: str = "",
+    preprint_layers: set[str] | None = None,
+    preprint_scan_limit: int | None = None,
+    preprint_provider_result_target: int = 0,
+    preprint_max_branches: int | None = None,
 ) -> list[dict[str, Any]]:
     try:
         from ._utils import clamp_int
@@ -967,86 +1334,116 @@ def fetch_stratified_layer_blocks(
     blocks: list[dict[str, Any]] = []
     plans = query_plan or [{"branch": "primary", "query": query}]
     plans = plans[: clamp_int(SCIENCE_STRATIFIED_MAX_BRANCHES_PER_LAYER, 1, 20)]
+    if layer_name == "L3_preprint" and preprint_max_branches is not None:
+        plans = plans[: clamp_int(preprint_max_branches, 1, len(plans))]
     per_query_limit = max(4, min(fetch_limit, max(4, fetch_limit // max(1, len(plans)) + 2)))
+    allowed_preprint_layers = preprint_layers if preprint_layers is not None else {"L0_review", "L3_preprint", "L4_regular"}
     for plan in plans:
         branch = str(plan.get("branch") or "primary")
         planned_query = str(plan.get("query") or query)
         layer_query = stratified_layer_retrieval_query(layer_name, planned_query, suffix)
         if layer_name == "L3_preprint":
+            if layer_name not in allowed_preprint_layers:
+                continue
             # Preprint endpoints do not perform the same semantic expansion as
             # Semantic Scholar. Passing an entire user objective or every
             # sub-branch token into arXiv makes it silently return unrelated
             # newest papers. Use a compact, provider-safe query instead.
             preprint_query = compact_preprint_retrieval_query(planned_query, domain=domain)
+            preprint_result_count = 0
             if "arxiv" in providers:
                 block = arxiv_skip_block(preprint_query) or search_arxiv(preprint_query, max_results=per_query_limit, sort_by="submittedDate")
-                block["query_branch"] = branch
-                block["retrieval_strategy"] = "latest_preprint_query"
-                block["source_query"] = planned_query
-                blocks.append(block)
+                blocks.append(_annotate_preprint_layer_block(
+                    block,
+                    query_branch=branch,
+                    retrieval_strategy="latest_preprint_query",
+                    source_query=planned_query,
+                ))
+                preprint_result_count += len(block.get("results") or [])
             for provider in ("biorxiv", "medrxiv", "chemrxiv"):
                 if provider in providers:
-                    block = search_preprint_api(provider, preprint_query, max_results=min(per_query_limit, 20))
-                    block["query_branch"] = branch
-                    block["retrieval_strategy"] = "latest_preprint_query"
-                    block["source_query"] = planned_query
-                    blocks.append(block)
-            # arXiv can occasionally acknowledge an overly broad query yet
-            # return a newest-feed slice unrelated to it. Semantic Scholar's
-            # external ArXiv identifiers provide an independent, metadata-rich
-            # preprint fallback. Limit it to one request per L3 layer to honor
-            # the shared provider rate limiter.
-            if "semantic_scholar" in providers and plan is plans[0]:
-                block = search_semantic_scholar(preprint_query, max_results=per_query_limit)
-                block["query_branch"] = branch
-                block["retrieval_strategy"] = "preprint_metadata_fallback"
-                block["source_query"] = planned_query
-                blocks.append(block)
+                    if preprint_provider_result_target and preprint_result_count >= preprint_provider_result_target:
+                        blocks.append(_skipped_preprint_provider_block(
+                            provider,
+                            preprint_query,
+                            f"sufficient_preprint_candidates={preprint_result_count}; target={preprint_provider_result_target}",
+                            query_branch=branch,
+                            retrieval_strategy="latest_preprint_query",
+                            source_query=planned_query,
+                        ))
+                        continue
+                    block = _search_preprint_with_controls(
+                        provider,
+                        preprint_query,
+                        max_results=min(per_query_limit, 20),
+                        scan_limit=preprint_scan_limit,
+                    )
+                    blocks.append(_annotate_preprint_layer_block(
+                        block,
+                        query_branch=branch,
+                        retrieval_strategy="latest_preprint_query",
+                        source_query=planned_query,
+                    ))
+                    preprint_result_count += len(block.get("results") or [])
+            # L3 is intentionally sourced only from preprint servers. A
+            # Semantic Scholar record with an arXiv id may already represent a
+            # published journal article, so it belongs to L4/L2 rather than
+            # being used as a preprint fallback.
             continue
         if "semantic_scholar" in providers:
-            # Semantic Scholar is a semantic search API: long tag-soup queries
-            # produce near-zero recall.  Cap the query to a compact form.
-            ss_query = sanitize_search_query(layer_query, domain=domain, max_terms=8)
-            block = search_semantic_scholar(ss_query, max_results=per_query_limit)
+            block = search_semantic_scholar(layer_query, max_results=per_query_limit)
             block["query_branch"] = branch
             block["retrieval_strategy"] = stratified_layer_retrieval_strategy(layer_name)
             blocks.append(block)
         if "pubmed" in providers:
-            # PubMed E-utilities use lexical matching; overly long queries
-            # are silently truncated.  Keep it compact.
-            pm_query = sanitize_search_query(layer_query, domain=domain, max_terms=8)
-            block = search_pubmed(pm_query, max_results=per_query_limit)
+            block = search_pubmed(layer_query, max_results=per_query_limit)
             block["query_branch"] = branch
             block["retrieval_strategy"] = stratified_layer_retrieval_strategy(layer_name)
             blocks.append(block)
-        if layer_name == "L0_review" and "arxiv" in providers:
+        if layer_name == "L0_review" and layer_name in allowed_preprint_layers and "arxiv" in providers:
             arxiv_q = compact_preprint_retrieval_query(layer_query, domain=domain)
             block = arxiv_skip_block(arxiv_q) or search_arxiv(arxiv_q, max_results=min(per_query_limit, 20))
             block["query_branch"] = branch
             block["retrieval_strategy"] = "review_query"
             blocks.append(block)
-        if layer_name == "L0_review":
+        if layer_name == "L0_review" and layer_name in allowed_preprint_layers:
             for provider in ("biorxiv", "medrxiv", "chemrxiv"):
                 if provider in providers:
                     pre_q = compact_preprint_retrieval_query(layer_query, domain=domain)
-                    block = search_preprint_api(provider, pre_q, max_results=min(per_query_limit, 20))
-                    block["query_branch"] = branch
-                    block["retrieval_strategy"] = "review_query"
-                    blocks.append(block)
-        if layer_name == "L4_regular" and "arxiv" in providers:
+                    block = _search_preprint_with_controls(
+                        provider,
+                        pre_q,
+                        max_results=min(per_query_limit, 20),
+                        scan_limit=preprint_scan_limit,
+                    )
+                    blocks.append(_annotate_preprint_layer_block(
+                        block,
+                        query_branch=branch,
+                        retrieval_strategy="review_query",
+                        source_query=layer_query,
+                    ))
+        if layer_name == "L4_regular" and layer_name in allowed_preprint_layers and "arxiv" in providers:
             arxiv_q = compact_preprint_retrieval_query(planned_query, domain=domain)
             block = arxiv_skip_block(arxiv_q) or search_arxiv(arxiv_q, max_results=min(per_query_limit, 20))
             block["query_branch"] = branch
             block["retrieval_strategy"] = "regular_backfill_query"
             blocks.append(block)
-        if layer_name == "L4_regular":
+        if layer_name == "L4_regular" and layer_name in allowed_preprint_layers:
             for provider in ("biorxiv", "medrxiv", "chemrxiv"):
                 if provider in providers:
                     pre_q = compact_preprint_retrieval_query(planned_query, domain=domain)
-                    block = search_preprint_api(provider, pre_q, max_results=min(per_query_limit, 20))
-                    block["query_branch"] = branch
-                    block["retrieval_strategy"] = "regular_backfill_query"
-                    blocks.append(block)
+                    block = _search_preprint_with_controls(
+                        provider,
+                        pre_q,
+                        max_results=min(per_query_limit, 20),
+                        scan_limit=preprint_scan_limit,
+                    )
+                    blocks.append(_annotate_preprint_layer_block(
+                        block,
+                        query_branch=branch,
+                        retrieval_strategy="regular_backfill_query",
+                        source_query=planned_query,
+                    ))
     return blocks
 
 def stratified_layer_retrieval_query(layer_name: str, planned_query: str, suffix: str) -> str:
@@ -1066,6 +1463,28 @@ PREPRINT_LOW_SIGNAL_TERMS = {
     "literature", "method", "model", "paper", "preprint", "prediction", "recent",
     "research", "review", "science", "search", "study", "survey", "system",
     "testing", "validation", "workflow",
+}
+
+PREPRINT_BROAD_DOMAIN_TERMS = {
+    "biostatistics", "clinical", "gene", "genes", "manufacturing", "medicine",
+    "medical", "model", "models", "multiomics", "omics", "patient", "patients",
+    "patient-derived", "personalized", "pharmacology", "precision", "regulatory",
+    "science", "therapy", "therapies",
+}
+
+PREPRINT_MATCH_LOW_SIGNAL_TERMS = PREPRINT_LOW_SIGNAL_TERMS | {
+    "associated", "association", "background", "data", "effect", "effects",
+    "evidence", "health", "human", "humans", "impact", "impacts", "result",
+    "results", "risk", "risks", "studies", "using",
+}
+
+PREPRINT_GENERIC_SCIENCE_TERMS = {
+    "balance", "cell", "cells", "clinical", "concentration", "differentiation",
+    "disease", "diseases", "expression", "function", "functions", "gene", "genes",
+    "genetic", "genetics", "genome", "genomes", "genomic", "homeostasis",
+    "immune", "inflammation", "medical", "medicine", "molecular", "patient", "patients",
+    "proliferation", "protein", "proteins", "regulation", "regulatory", "response",
+    "responses", "signaling",
 }
 
 
@@ -1099,13 +1518,23 @@ def compact_preprint_retrieval_query(planned_query: str, domain: str = "", max_t
     domain_set = set(domain_tokens)
     query_positions = {token: index for index, token in enumerate(query_tokens)}
     candidates = list(dict.fromkeys(query_tokens + domain_tokens))
+    specific_candidates = [token for token in candidates if token not in PREPRINT_BROAD_DOMAIN_TERMS]
+    if len(specific_candidates) >= 2:
+        candidates = specific_candidates
+    elif specific_candidates:
+        fallback_candidates = [
+            token
+            for token in candidates
+            if token in {"manufacturing", "patient-derived", "pharmacology", "clinical"}
+        ]
+        candidates = specific_candidates + fallback_candidates
 
     def score(token: str) -> tuple[float, int, int]:
         value = float(min(len(token), 14)) / 6.0
         if any(char.isdigit() for char in token):
             value += 1.2
-        if token in domain_set:
-            value += 0.75
+        if token in domain_set and token not in PREPRINT_BROAD_DOMAIN_TERMS:
+            value += 0.35
         # Subspace plans append the concrete focus terms at the end. Favoring
         # those terms prevents a long project objective from drowning out the
         # actual scientific branch being searched.
@@ -1116,7 +1545,7 @@ def compact_preprint_retrieval_query(planned_query: str, domain: str = "", max_t
         return value, int(token in domain_set), -query_positions.get(token, 10_000)
 
     ranked = sorted(candidates, key=score, reverse=True)
-    chosen = ranked[: max(2, min(int(max_terms), 8))]
+    chosen = ranked[: max(2, min(int(max_terms), 4))]
     return " ".join(chosen)
 
 
@@ -1133,14 +1562,26 @@ def arxiv_search_query_expression(query: str) -> str:
 
 
 def preprint_result_matches_query(result: dict[str, Any], query: str) -> bool:
-    """Defend L3 against a provider returning an unrelated newest-feed page."""
+    """Defend L3 against broad newest-feed matches from preprint providers."""
     tokens = preprint_query_tokens(query)
     if not tokens:
         return False
     text = " ".join(str(result.get(key) or "") for key in ("title", "abstract")).lower()
-    hits = sum(1 for token in tokens if token in text)
-    required = 2 if len(tokens) >= 4 else 1
-    return hits >= required
+    normalized_text = re.sub(r"[-_/]", " ", text)
+    match_tokens = [token for token in tokens if token not in PREPRINT_MATCH_LOW_SIGNAL_TERMS]
+    if not match_tokens:
+        return False
+    matched_tokens = {
+        token
+        for token in match_tokens
+        if re.sub(r"[-_/]", " ", token) in normalized_text
+    }
+    specific_anchors = [token for token in match_tokens if token not in PREPRINT_GENERIC_SCIENCE_TERMS]
+    required_specific_hits = 2 if len(specific_anchors) >= 2 else 1
+    if specific_anchors and sum(token in matched_tokens for token in specific_anchors) < required_specific_hits:
+        return False
+    required = 2 if len(match_tokens) >= 4 else 1
+    return len(matched_tokens) >= required
 
 def stratified_layer_retrieval_strategy(layer_name: str) -> str:
     if layer_name == "L1_milestone":
@@ -1255,12 +1696,22 @@ def stratified_candidate_matches(layer: str, item: dict[str, Any]) -> bool:
     if layer == "L2_top_latest":
         return is_recent_paper(item, max_age=3) and is_top_venue_result(item) and not is_low_quality_literature_result(item)
     if layer == "L3_preprint":
-        return is_preprint_literature_result(item) and not has_suspicious_literature_flags(item)
+        return (
+            is_preprint_literature_result(item)
+            and is_recent_paper(item, max_age=2)
+            and not has_suspicious_literature_flags(item)
+        )
     if layer == "L4_regular":
         return not is_preprint_literature_result(item) and not is_low_quality_literature_result(item)
     return True
 
-def is_preprint_literature_result(item: dict[str, Any]) -> bool:
+def preprint_publication_status(item: dict[str, Any]) -> str:
+    """Classify whether a record is an unpublished preprint or a published work.
+
+    Repository presence alone is not publication status: authors commonly keep
+    an arXiv copy after journal publication. Only direct preprint-server
+    metadata without a journal/linked-publication signal qualifies for L3.
+    """
     try:
         from ._models import PREPRINT_API_PROVIDERS
         from ._utils import normalize_space
@@ -1272,13 +1723,38 @@ def is_preprint_literature_result(item: dict[str, Any]) -> bool:
     payload = item.get("papergraph_input") if isinstance(item.get("papergraph_input"), dict) else {}
     payload_provider = normalize_space(str(payload.get("provider") or "")).lower()
     payload_venue = normalize_space(str(payload.get("venue") or "")).lower()
-    arxiv_id = normalize_space(str(item.get("arxiv_id") or payload.get("arxiv_id") or "")).lower()
-    url = normalize_space(str(item.get("url") or payload.get("url") or item.get("open_access_pdf") or "")).lower()
-    candidates = {provider, venue, payload_provider, payload_venue, arxiv_id, url}
-    return bool(arxiv_id) or bool(candidates & PREPRINT_API_PROVIDERS) or any(
-        marker in " ".join(candidates)
-        for marker in ("preprint", "arxiv", "biorxiv", "medrxiv", "chemrxiv")
+    doi = normalize_space(str(item.get("doi") or payload.get("doi") or "")).lower()
+    journal_reference = normalize_space(
+        str(item.get("journal_reference") or item.get("published_venue") or payload.get("journal_reference") or "")
+    ).lower()
+    direct_provider = provider if provider in PREPRINT_API_PROVIDERS else payload_provider
+    direct_venue = venue if venue in PREPRINT_API_PROVIDERS else payload_venue
+    preprint_doi = (
+        doi.startswith("10.1101/")
+        or doi.startswith("10.26434/")
+        or doi.startswith("10.48550/arxiv.")
     )
+    formal_venue = next(
+        (
+            value
+            for value in (venue, payload_venue)
+            if value and value not in PREPRINT_API_PROVIDERS and "preprint" not in value
+        ),
+        "",
+    )
+    if not direct_provider and not direct_venue:
+        return "not_preprint"
+    if formal_venue or journal_reference:
+        return "published"
+    # arXiv records expose arxiv:doi when a journal DOI is linked. Conversely,
+    # bio/med/ChemRxiv DOI prefixes identify the repository deposition itself.
+    if doi and not preprint_doi:
+        return "published"
+    return "unpublished_preprint"
+
+
+def is_preprint_literature_result(item: dict[str, Any]) -> bool:
+    return preprint_publication_status(item) == "unpublished_preprint"
 
 def has_suspicious_literature_flags(item: dict[str, Any]) -> bool:
     flags = set(item.get("quality_flags") or [])
@@ -1598,6 +2074,11 @@ def summarize_provider_blocks(provider_blocks: list[dict[str, Any]]) -> list[dic
                 "note": block.get("note"),
                 "error": block.get("error"),
                 "result_count": len(results) if isinstance(results, list) else 0,
+                "scanned_result_count": block.get("scanned_result_count"),
+                "scan_budget": block.get("scan_budget"),
+                "zero_result_cache_hit": bool(block.get("zero_result_cache_hit")),
+                "query_variant_reason": block.get("query_variant_reason", ""),
+                "skipped_provider_reason": block.get("skipped_provider_reason", ""),
             }
         )
     return summaries
@@ -1712,6 +2193,9 @@ def search_arxiv(query: str, max_results: int = 10, sort_by: str = "relevance") 
     except ImportError:
         from _literature_import import import_literature_text, import_papergraph_record
         from _utils import clamp_int
+    query, language_error = require_english_provider_query(query, "arxiv")
+    if language_error:
+        return language_error
     skipped = arxiv_skip_block(query)
     if skipped:
         return skipped
@@ -1766,6 +2250,9 @@ def search_semantic_scholar(query: str, max_results: int = 10) -> dict[str, Any]
     except ImportError:
         from _literature_import import import_literature_text, import_papergraph_record
         from _utils import clamp_int
+    query, language_error = require_english_provider_query(query, "semantic_scholar")
+    if language_error:
+        return language_error
     fields = ",".join(
         [
             "title",
@@ -1809,6 +2296,9 @@ def search_pubmed(query: str, max_results: int = 10) -> dict[str, Any]:
     except ImportError:
         from _literature_import import import_literature_search_result, import_papergraph_record
         from _utils import clamp_int
+    query, language_error = require_english_provider_query(query, "pubmed")
+    if language_error:
+        return language_error
     retmax = clamp_int(max_results, 1, 50)
     search_params = urlencode(
         {
@@ -1867,10 +2357,25 @@ def search_pubmed(query: str, max_results: int = 10) -> dict[str, Any]:
         log_event("SCIENCE", "literature_search_failed", provider="pubmed", error=str(exc))
         return provider_error_result("pubmed", query, exc)
 
-def search_preprint_api(provider: str, query: str, max_results: int = 10) -> dict[str, Any]:
+def search_preprint_api(
+    provider: str,
+    query: str,
+    max_results: int = 10,
+    days_back: int = 365,
+    scan_limit: int | None = None,
+) -> dict[str, Any]:
     selected = database_to_provider(provider)
+    query, language_error = require_english_provider_query(query, selected)
+    if language_error:
+        return language_error
     if selected in {"biorxiv", "medrxiv"}:
-        return search_biorxiv_or_medrxiv(selected, query, max_results=max_results)
+        return search_biorxiv_or_medrxiv(
+            selected,
+            query,
+            max_results=max_results,
+            days_back=days_back,
+            scan_limit=scan_limit,
+        )
     if selected == "chemrxiv":
         return search_chemrxiv(query, max_results=max_results)
     return {
@@ -1880,7 +2385,59 @@ def search_preprint_api(provider: str, query: str, max_results: int = 10) -> dic
         "results": [],
     }
 
-def search_biorxiv_or_medrxiv(server: str, query: str, max_results: int = 10, days_back: int = 365) -> dict[str, Any]:
+def _preprint_zero_result_cache_key(
+    server: str,
+    query: str,
+    start: date,
+    end: date,
+    scan_budget: int,
+) -> tuple[str, str, str, str, int]:
+    return (
+        normalize_space(server).lower(),
+        normalize_space(query).lower(),
+        start.isoformat(),
+        end.isoformat(),
+        int(scan_budget),
+    )
+
+
+def _cached_preprint_zero_result(
+    cache_key: tuple[str, str, str, str, int],
+) -> dict[str, Any] | None:
+    if SCIENCE_PREPRINT_ZERO_RESULT_TTL_SECONDS <= 0:
+        return None
+    now = time.monotonic()
+    with PREPRINT_ZERO_RESULT_CACHE_LOCK:
+        cached = PREPRINT_ZERO_RESULT_CACHE.get(cache_key)
+        if not cached:
+            return None
+        expires_at, metadata = cached
+        if expires_at <= now:
+            PREPRINT_ZERO_RESULT_CACHE.pop(cache_key, None)
+            return None
+        return dict(metadata)
+
+
+def _cache_preprint_zero_result(
+    cache_key: tuple[str, str, str, str, int],
+    metadata: dict[str, Any],
+) -> None:
+    if SCIENCE_PREPRINT_ZERO_RESULT_TTL_SECONDS <= 0:
+        return
+    with PREPRINT_ZERO_RESULT_CACHE_LOCK:
+        PREPRINT_ZERO_RESULT_CACHE[cache_key] = (
+            time.monotonic() + SCIENCE_PREPRINT_ZERO_RESULT_TTL_SECONDS,
+            dict(metadata),
+        )
+
+
+def search_biorxiv_or_medrxiv(
+    server: str,
+    query: str,
+    max_results: int = 10,
+    days_back: int = 365,
+    scan_limit: int | None = None,
+) -> dict[str, Any]:
     try:
         from ._literature_import import import_literature_search_result
         from ._utils import clamp_int, normalize_space
@@ -1889,32 +2446,100 @@ def search_biorxiv_or_medrxiv(server: str, query: str, max_results: int = 10, da
         from _utils import clamp_int, normalize_space
     today = date.today()
     start = today - timedelta(days=clamp_int(days_back, 30, 1825))
-    params = f"{server}/{start.isoformat()}/{today.isoformat()}/0"
-    url = f"https://api.biorxiv.org/details/{params}"
     try:
-        payload = http_get_json(url, headers={"User-Agent": "qwen-zhikan-papergraph/0.1"}, timeout=30.0)
-        items = payload.get("collection") if isinstance(payload, dict) else []
-        if not isinstance(items, list):
-            items = []
-        candidates = [biorxiv_item_to_result(item, server) for item in items if isinstance(item, dict)]
+        max_items = max(PREPRINT_API_PAGE_SIZE, min(PREPRINT_API_MAX_SCAN_RECORDS, clamp_int(max_results, 1, 50) * 40))
+        if scan_limit is not None:
+            max_items = min(max_items, clamp_int(scan_limit, PREPRINT_API_PAGE_SIZE, PREPRINT_API_MAX_SCAN_RECORDS))
+        cache_key = _preprint_zero_result_cache_key(server, query, start, today, max_items)
+        cached = _cached_preprint_zero_result(cache_key)
+        if cached:
+            log_event(
+                "SCIENCE",
+                "preprint_zero_result_cache_hit",
+                provider=server,
+                query=query[:180],
+                days_back=clamp_int(days_back, 30, 1825),
+                scan_budget=max_items,
+                prior_scanned=int(cached.get("prior_scanned") or 0),
+            )
+            return {
+                "provider": server,
+                "query": query,
+                "status": "ok",
+                "api": f"api.biorxiv.org/details/{server}",
+                "date_window": {"from": start.isoformat(), "to": today.isoformat()},
+                "pages_scanned": 0,
+                "scanned_result_count": 0,
+                "matched_result_count": 0,
+                "total_available": int(cached.get("total_available") or 0),
+                "scan_budget": max_items,
+                "zero_result_cache_hit": True,
+                "prior_scanned_result_count": int(cached.get("prior_scanned") or 0),
+                "results": [],
+                "next_step": "Reused a recent zero-result preprint search; no provider scan was required.",
+            }
+        cursor = 0
+        total_available = 0
+        pages_scanned = 0
+        scanned_items: list[dict[str, Any]] = []
+        while len(scanned_items) < max_items:
+            params = f"{server}/{start.isoformat()}/{today.isoformat()}/{cursor}"
+            url = f"https://api.biorxiv.org/details/{params}"
+            payload = http_get_json(url, headers={"User-Agent": "qwen-zhikan-papergraph/0.1"}, timeout=30.0)
+            items = payload.get("collection") if isinstance(payload, dict) else []
+            if not isinstance(items, list) or not items:
+                break
+            page_items = [item for item in items if isinstance(item, dict)]
+            scanned_items.extend(page_items)
+            pages_scanned += 1
+            messages = payload.get("messages") if isinstance(payload, dict) else []
+            if isinstance(messages, list) and messages and isinstance(messages[0], dict):
+                try:
+                    total_available = int(messages[0].get("total") or 0)
+                except (TypeError, ValueError):
+                    total_available = 0
+            cursor += len(page_items)
+            if not page_items or (total_available and cursor >= total_available):
+                break
+
+        candidates = [biorxiv_item_to_result(item, server) for item in scanned_items]
         ranked = rank_literature_results(query, candidates)
-        query_words = set(query_terms(query))
-        filtered = [
-            item
-            for item in ranked
-            if not query_words
-            or any(term in normalize_space(f"{item.get('title', '')} {item.get('abstract', '')}").lower() for term in query_words)
-        ]
+        filtered = [item for item in ranked if preprint_result_matches_query(item, query)]
         papers = filtered[: clamp_int(max_results, 1, 50)]
-        return {
+        log_event(
+            "SCIENCE",
+            "preprint_search_complete",
+            provider=server,
+            query=query[:180],
+            pages=pages_scanned,
+            scanned=len(scanned_items),
+            scan_budget=max_items,
+            matched=len(filtered),
+            returned=len(papers),
+            total_available=total_available,
+            zero_result_cache_hit=False,
+        )
+        response = {
             "provider": server,
             "query": query,
             "status": "ok",
             "api": f"api.biorxiv.org/details/{server}",
             "date_window": {"from": start.isoformat(), "to": today.isoformat()},
+            "pages_scanned": pages_scanned,
+            "scanned_result_count": len(scanned_items),
+            "matched_result_count": len(filtered),
+            "total_available": total_available,
+            "scan_budget": max_items,
+            "zero_result_cache_hit": False,
             "results": papers,
             "next_step": "Import a result with import_literature_search_result; these are preprint metadata records filtered locally by query.",
         }
+        if not filtered:
+            _cache_preprint_zero_result(
+                cache_key,
+                {"prior_scanned": len(scanned_items), "total_available": total_available},
+            )
+        return response
     except Exception as exc:
         log_event("SCIENCE", "literature_search_failed", provider=server, error=str(exc))
         return provider_error_result(server, query, exc)
@@ -2029,6 +2654,7 @@ def arxiv_entry_to_result(entry: ET.Element, ns: dict[str, str]) -> dict[str, An
         "arxiv_categories": categories,
         "url": url,
         "pdf_url": pdf_url,
+        "open_access_pdf": pdf_url,
         "abstract": abstract,
         "papergraph_input": input_payload,
     }
@@ -2187,7 +2813,12 @@ def biorxiv_item_to_result(item: dict[str, Any], server: str) -> dict[str, Any]:
     year = first_year(str(item.get("date") or item.get("published") or item.get("version") or ""))
     doi = normalize_doi(str(item.get("doi") or ""))
     category = normalize_space(str(item.get("category") or ""))
+    version = normalize_space(str(item.get("version") or ""))
     url = f"https://www.{server}.org/content/{doi}" if doi else str(item.get("url") or "")
+    pdf_url = ""
+    if doi:
+        version_suffix = f"v{version}" if version and re.fullmatch(r"\d+", version) else ""
+        pdf_url = f"https://www.{server}.org/content/{doi}{version_suffix}.full.pdf"
     citation = build_citation(title=title, authors=authors, year=year, doi=doi, arxiv_id="")
     input_payload = {
         "title": title,
@@ -2199,6 +2830,7 @@ def biorxiv_item_to_result(item: dict[str, Any], server: str) -> dict[str, Any]:
         "source_type": "api",
         "doi": doi,
         "url": url,
+        "open_access_pdf": pdf_url,
         "abstract": abstract,
         "conclusion": "",
     }
@@ -2301,26 +2933,35 @@ def provider_error_result(provider: str, query: str, exc: Exception) -> dict[str
         "next_step": "Network/API failed. Retry later, configure API keys, or use manual import_literature_text.",
     }
 
-def enrich_papergraph_payload(payload: dict[str, Any], result: dict[str, Any] | None = None) -> tuple[dict[str, Any], list[str]]:
+def enrich_papergraph_payload(
+    payload: dict[str, Any],
+    result: dict[str, Any] | None = None,
+    *,
+    include_full_text: bool = True,
+) -> tuple[dict[str, Any], list[str]]:
     try:
         from ._literature_import import extraction_quality_report, normalize_doi
-        from ._utils import unique_preserve_order
+        from ._utils import normalize_space, unique_preserve_order
     except ImportError:
         from _literature_import import extraction_quality_report, normalize_doi
-        from _utils import unique_preserve_order
+        from _utils import normalize_space, unique_preserve_order
     """Best-effort metadata enrichment before structured extraction.
 
-    This intentionally avoids hard PDF parsing dependencies. It first asks
-    Semantic Scholar for a single-paper detail record, then tries arXiv when an
-    arXiv id is available. Callers can still attach a PDF parser later.
+    It first asks Semantic Scholar for a single-paper detail record, then tries
+    arXiv when an arXiv id is available. When a provider supplies an open-access
+    PDF, it independently attempts a bounded PDF excerpt extraction. A complete
+    abstract must not suppress this full-text evidence path.
     """
     enriched = dict(payload)
     result = result or {}
     sources: list[str] = []
     errors: list[str] = []
+    metadata_lookup_attempted = False
     initial_quality = extraction_quality_report(enriched)
-    if not initial_quality.get("needs_enrichment"):
-        return enriched, sources
+    has_full_text_excerpt = bool(normalize_space(str(enriched.get("full_text_excerpt") or "")))
+    direct_pdf_url = str(result.get("open_access_pdf") or enriched.get("open_access_pdf") or "").strip()
+    needs_metadata_enrichment = bool(initial_quality.get("needs_enrichment"))
+    needs_full_text_enrichment = bool(include_full_text and not has_full_text_excerpt)
 
     semantic_id = str(
         enriched.get("semantic_scholar_id")
@@ -2329,13 +2970,24 @@ def enrich_papergraph_payload(payload: dict[str, Any], result: dict[str, Any] | 
     ).strip()
     doi = normalize_doi(str(enriched.get("doi") or result.get("doi") or ""))
     s2_identifier = semantic_id or (f"DOI:{doi}" if doi else "")
-    if s2_identifier:
+    source_provider = normalize_space(str(result.get("provider") or enriched.get("provider") or "")).lower()
+    needs_semantic_full_text_probe = (
+        needs_full_text_enrichment
+        and not direct_pdf_url
+        and source_provider != "semantic_scholar"
+    )
+    if s2_identifier and (needs_metadata_enrichment or needs_semantic_full_text_probe):
+        metadata_lookup_attempted = True
         try:
-            detail = fetch_semantic_scholar_paper_detail(s2_identifier)
+            detail = fetch_semantic_scholar_paper_detail(
+                s2_identifier,
+                fast_fail=needs_full_text_enrichment,
+            )
             before_len = len(str(enriched.get("abstract") or ""))
+            before_pdf_url = str(enriched.get("open_access_pdf") or "")
             enriched = merge_semantic_scholar_detail(enriched, detail)
             after_len = len(str(enriched.get("abstract") or ""))
-            if after_len > before_len:
+            if after_len > before_len or str(enriched.get("open_access_pdf") or "") != before_pdf_url:
                 sources.append("semantic_scholar_detail")
         except Exception as exc:
             error = str(exc)
@@ -2343,13 +2995,19 @@ def enrich_papergraph_payload(payload: dict[str, Any], result: dict[str, Any] | 
             log_event("SCIENCE", "metadata_enrichment_failed", provider="semantic_scholar", error=error)
 
     arxiv_id = str(enriched.get("arxiv_id") or result.get("arxiv_id") or "").strip()
-    if arxiv_id and extraction_quality_report(enriched).get("needs_enrichment"):
+    current_pdf_url = str(result.get("open_access_pdf") or enriched.get("open_access_pdf") or "").strip()
+    if arxiv_id and (needs_metadata_enrichment or (needs_full_text_enrichment and not current_pdf_url)):
+        metadata_lookup_attempted = True
         try:
-            arxiv_payload = fetch_arxiv_by_id(arxiv_id)
+            arxiv_payload = fetch_arxiv_by_id(
+                arxiv_id,
+                fast_fail=needs_full_text_enrichment,
+            )
             before_len = len(str(enriched.get("abstract") or ""))
+            before_pdf_url = str(enriched.get("open_access_pdf") or "")
             enriched = merge_nonempty(enriched, arxiv_payload)
             after_len = len(str(enriched.get("abstract") or ""))
-            if after_len > before_len:
+            if after_len > before_len or str(enriched.get("open_access_pdf") or "") != before_pdf_url:
                 sources.append("arxiv_detail")
         except Exception as exc:
             error = str(exc)
@@ -2357,24 +3015,90 @@ def enrich_papergraph_payload(payload: dict[str, Any], result: dict[str, Any] | 
             log_event("SCIENCE", "metadata_enrichment_failed", provider="arxiv", error=error)
 
     pdf_url = str(result.get("open_access_pdf") or enriched.get("open_access_pdf") or "").strip()
+    full_text_report: dict[str, Any] | None = None
     if pdf_url:
         enriched["open_access_pdf"] = pdf_url
         sources.append("open_access_pdf_available")
-        if extraction_quality_report(enriched).get("needs_enrichment"):
+        if has_full_text_excerpt:
+            full_text_report = {
+                "status": "already_present",
+                "attempted": False,
+                "source_url": pdf_url,
+                "excerpt_chars": len(str(enriched.get("full_text_excerpt") or "")),
+            }
+        elif needs_full_text_enrichment:
             try:
-                excerpt = fetch_pdf_text_excerpt(pdf_url)
+                excerpt_payload = fetch_pdf_text_excerpt(
+                    pdf_url,
+                    paper_metadata=enriched,
+                    sub_hypothesis=str(result.get("retrieval_branch") or enriched.get("retrieval_branch") or ""),
+                )
+                excerpt = str(excerpt_payload or "")
                 if excerpt:
                     enriched["full_text_excerpt"] = excerpt
                     sources.append("open_access_pdf_text")
+                    full_text_report = dict(getattr(excerpt_payload, "report", {}) or {})
+                    full_text_report.update(
+                        {
+                            "status": "extracted",
+                            "attempted": True,
+                            "attempted_at": time.time(),
+                            "source_url": pdf_url,
+                            "excerpt_chars": len(excerpt),
+                        }
+                    )
+                    log_event("SCIENCE", "paper_full_text_excerpt_extracted", url=pdf_url, chars=len(excerpt))
+                else:
+                    full_text_report = {
+                        "status": "no_extractable_text",
+                        "attempted": True,
+                        "attempted_at": time.time(),
+                        "source_url": pdf_url,
+                        "excerpt_chars": 0,
+                    }
             except Exception as exc:
                 error = str(exc)
                 errors.append(f"open_access_pdf: {error}")
                 log_event("SCIENCE", "metadata_enrichment_failed", provider="open_access_pdf", error=error)
+                full_text_report = {
+                    "status": "fetch_failed",
+                    "attempted": True,
+                    "attempted_at": time.time(),
+                    "retry_after_seconds": 900,
+                    "source_url": pdf_url,
+                    "error": error,
+                }
+    elif has_full_text_excerpt:
+        full_text_report = {
+            "status": "already_present",
+            "attempted": False,
+            "source_url": "",
+            "excerpt_chars": len(str(enriched.get("full_text_excerpt") or "")),
+        }
+    elif needs_full_text_enrichment and metadata_lookup_attempted and errors:
+        full_text_report = {
+            "status": "metadata_lookup_failed",
+            "attempted": True,
+            "attempted_at": time.time(),
+            "retry_after_seconds": 900,
+            "source_url": "",
+            "excerpt_chars": 0,
+            "error": "; ".join(errors),
+        }
+    elif needs_full_text_enrichment:
+        full_text_report = {
+            "status": "no_open_access_pdf",
+            "attempted": False,
+            "source_url": "",
+            "excerpt_chars": 0,
+        }
+    if full_text_report is not None:
+        enriched["_full_text_enrichment"] = full_text_report
     if errors:
         enriched["_enrichment_errors"] = errors
     return enriched, unique_preserve_order(sources)
 
-def fetch_semantic_scholar_paper_detail(identifier: str) -> dict[str, Any]:
+def fetch_semantic_scholar_paper_detail(identifier: str, *, fast_fail: bool = False) -> dict[str, Any]:
     fields = ",".join(
         [
             "title",
@@ -2396,6 +3120,20 @@ def fetch_semantic_scholar_paper_detail(identifier: str) -> dict[str, Any]:
     headers = {"User-Agent": "qwen-zhikan-papergraph/0.1"}
     if SEMANTIC_SCHOLAR_API_KEY:
         headers["x-api-key"] = SEMANTIC_SCHOLAR_API_KEY
+    if fast_fail:
+        cached = semantic_scholar_cache_get(url)
+        if cached is not None:
+            return json.loads(cached)
+        wait_for_semantic_scholar_circuit_if_needed("fast_fail")
+        wait_for_semantic_scholar_rate_limit()
+        try:
+            payload = http_get_json(url, headers=headers, timeout=8.0)
+        except RuntimeError as exc:
+            if is_rate_limit_error(str(exc)):
+                register_semantic_scholar_429(semantic_scholar_backoff_seconds(0, str(exc)))
+            raise
+        semantic_scholar_cache_put(url, json.dumps(payload, ensure_ascii=False))
+        return payload
     return semantic_scholar_get_json(url, headers=headers)
 
 def merge_semantic_scholar_detail(payload: dict[str, Any], detail: dict[str, Any]) -> dict[str, Any]:
@@ -2413,33 +3151,49 @@ def merge_semantic_scholar_detail(payload: dict[str, Any], detail: dict[str, Any
         merged["open_access_pdf"] = result.get("open_access_pdf")
     return merged
 
-def fetch_arxiv_by_id(arxiv_id: str) -> dict[str, Any]:
+def fetch_arxiv_by_id(arxiv_id: str, *, fast_fail: bool = False) -> dict[str, Any]:
     clean_id = arxiv_id.strip()
     if not clean_id:
         return {}
     url = f"https://export.arxiv.org/api/query?{urlencode({'id_list': clean_id})}"
-    raw = arxiv_get_text(url, headers={"User-Agent": "qwen-zhikan-papergraph/0.1"})
+    headers = {"User-Agent": "qwen-zhikan-papergraph/0.1"}
+    raw = (
+        http_get_text(url, headers=headers, timeout=8.0)
+        if fast_fail
+        else arxiv_get_text(url, headers=headers)
+    )
     root = ET.fromstring(raw)
     ns = {"atom": "http://www.w3.org/2005/Atom", "arxiv": "http://arxiv.org/schemas/atom"}
     entry = root.find("atom:entry", ns)
     if entry is None:
         return {}
     result = arxiv_entry_to_result(entry, ns)
-    return result.get("papergraph_input", {}) if isinstance(result.get("papergraph_input"), dict) else {}
+    payload = result.get("papergraph_input", {}) if isinstance(result.get("papergraph_input"), dict) else {}
+    payload = dict(payload)
+    if result.get("pdf_url"):
+        payload["open_access_pdf"] = result.get("pdf_url")
+    return payload
 
-def fetch_pdf_text_excerpt(url: str, max_bytes: int = 8_000_000, max_pages: int = 4) -> str:
+def fetch_pdf_content(
+    url: str,
+    paper_metadata: dict[str, Any] | None = None,
+    sub_hypothesis: str | dict[str, Any] | None = None,
+    max_bytes: int = 20_000_000,
+    max_output_chars: int = 20_000,
+    timeout_seconds: float = 12.0,
+) -> dict[str, Any]:
     try:
-        from ._utils import normalize_space, trim_text
+        from ._pdf_extraction import extract_pdf_content
     except ImportError:
-        from _utils import normalize_space, trim_text
+        from _pdf_extraction import extract_pdf_content
     try:
-        from pypdf import PdfReader
-    except ImportError as exc:
-        raise RuntimeError("pypdf is not installed; install pypdf to enable PDF full-text fallback") from exc
+        from ._utils import normalize_space
+    except ImportError:
+        from _utils import normalize_space
     request = Request(url, headers={"User-Agent": "qwen-zhikan-papergraph/0.1"})
     context = ssl_context()
     try:
-        with urlopen(request, timeout=30.0, context=context) as response:
+        with urlopen(request, timeout=max(1.0, min(float(timeout_seconds or 12.0), 30.0)), context=context) as response:
             data = response.read(max_bytes + 1)
     except HTTPError as exc:
         raise RuntimeError(f"HTTP {exc.code}: PDF fetch failed") from exc
@@ -2447,16 +3201,50 @@ def fetch_pdf_text_excerpt(url: str, max_bytes: int = 8_000_000, max_pages: int 
         raise RuntimeError(f"URL error: {exc.reason}") from exc
     if len(data) > max_bytes:
         raise RuntimeError(f"PDF exceeds {max_bytes} byte safety limit")
-    reader = PdfReader(BytesIO(data))
-    chunks: list[str] = []
-    for page in reader.pages[: max(1, max_pages)]:
-        try:
-            text = normalize_space(page.extract_text() or "")
-        except Exception:
-            text = ""
-        if text:
-            chunks.append(text)
-    return trim_text("\n\n".join(chunks), 8000)
+    metadata = dict(paper_metadata or {})
+    metadata.setdefault("source_url", normalize_space(url))
+    extracted = extract_pdf_content(
+        data,
+        paper_metadata=metadata,
+        sub_hypothesis=sub_hypothesis,
+        max_output_chars=max_output_chars,
+    )
+    report = extracted.get("report") if isinstance(extracted.get("report"), dict) else {}
+    report["source_url"] = normalize_space(url)
+    extracted["report"] = report
+    return extracted
+
+
+class PdfTextExcerpt(str):
+    def __new__(cls, text: str, report: dict[str, Any] | None = None):
+        value = super().__new__(cls, text)
+        value.report = dict(report or {})
+        return value
+
+
+def fetch_pdf_text_excerpt(
+    url: str,
+    max_bytes: int = 20_000_000,
+    max_pages: int | None = None,
+    timeout_seconds: float = 12.0,
+    paper_metadata: dict[str, Any] | None = None,
+    sub_hypothesis: str | dict[str, Any] | None = None,
+) -> PdfTextExcerpt:
+    output_limit = 20_000
+    if max_pages is not None:
+        output_limit = max(2_000, min(20_000, int(max_pages) * 4_000))
+    extracted = fetch_pdf_content(
+        url,
+        paper_metadata=paper_metadata,
+        sub_hypothesis=sub_hypothesis,
+        max_bytes=max_bytes,
+        max_output_chars=output_limit,
+        timeout_seconds=timeout_seconds,
+    )
+    return PdfTextExcerpt(
+        str(extracted.get("text") or ""),
+        extracted.get("report") if isinstance(extracted.get("report"), dict) else {},
+    )
 
 def merge_nonempty(base: dict[str, Any], overlay: dict[str, Any]) -> dict[str, Any]:
     try:
@@ -2518,7 +3306,7 @@ def semantic_scholar_get_json(url: str, headers: dict[str, str] | None = None) -
             "All further SS API calls are skipped for this session to avoid wasting time."
         )
     wait_for_semantic_scholar_circuit_if_needed("pre_request")
-    retry_limit = max(20, int(SCIENCE_SEMANTIC_SCHOLAR_RETRY_LIMIT))
+    retry_limit = semantic_scholar_retry_limit()
     last_error: RuntimeError | None = None
     for attempt in range(retry_limit + 1):
         # Check session kill switch inside retry loop too
@@ -2548,9 +3336,11 @@ def semantic_scholar_get_json(url: str, headers: dict[str, str] | None = None) -
                 delay_seconds=round(delay, 2),
                 fail_fast=bool(SCIENCE_SEMANTIC_SCHOLAR_FAIL_FAST_ON_429),
             )
-            if SCIENCE_SEMANTIC_SCHOLAR_FAIL_FAST_ON_429 or attempt >= retry_limit:
+            circuit_open, retry_after = semantic_scholar_circuit_open()
+            if SCIENCE_SEMANTIC_SCHOLAR_FAIL_FAST_ON_429 or circuit_open or attempt >= retry_limit:
                 raise RuntimeError(
-                    f"Semantic Scholar rate limited after {retry_limit + 1} attempts with backoff: {exc}"
+                    f"Semantic Scholar rate limited after {attempt + 1} attempts; "
+                    f"circuit_retry_after_seconds={retry_after:.1f}: {exc}"
                 ) from exc
             wait_seconds = semantic_scholar_retry_wait_seconds(delay)
             log_event(
@@ -2571,11 +3361,15 @@ def wait_for_semantic_scholar_circuit_if_needed(reason: str = "request") -> None
     wait_seconds = min(retry_after, 120.0)
     log_event(
         "SCIENCE",
-        "semantic_scholar_circuit_wait",
+        "semantic_scholar_circuit_skip",
         reason=reason,
-        wait_seconds=round(wait_seconds, 2),
+        retry_after_seconds=round(wait_seconds, 2),
     )
-    time.sleep(wait_seconds)
+    raise RuntimeError(f"Semantic Scholar circuit open; retry_after_seconds={wait_seconds:.1f}")
+
+
+def semantic_scholar_retry_limit() -> int:
+    return min(3, max(0, int(SCIENCE_SEMANTIC_SCHOLAR_RETRY_LIMIT)))
 
 def semantic_scholar_retry_wait_seconds(delay: float) -> float:
     """Return actual wait time for retry, respecting the computed delay.

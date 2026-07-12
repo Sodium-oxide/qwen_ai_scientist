@@ -29,6 +29,7 @@ except ImportError:
 def select_zhizhi_import_results(
     results: list[dict[str, Any]],
     import_top_k: int,
+    layer_minimums: dict[str, int] | None = None,
 ) -> tuple[list[dict[str, Any]], dict[str, Any]]:
     try:
         from ._literature_scoring import zhizhi_import_candidate_key, zhizhi_import_minimum_plan, zhizhi_import_priority_score
@@ -43,7 +44,17 @@ def select_zhizhi_import_results(
     candidate_counts = Counter(str(item.get("stratified_layer") or "unlayered") for item in candidates)
     selected: list[dict[str, Any]] = []
     selected_keys: set[str] = set()
-    min_plan = zhizhi_import_minimum_plan(limit)
+    default_plan = zhizhi_import_minimum_plan(limit)
+    if isinstance(layer_minimums, dict):
+        min_plan = {
+            layer: max(0, int(layer_minimums.get(layer, 0) or 0))
+            for layer in ZHIZHI_IMPORT_LAYER_PRIORITY
+        }
+        remaining = max(0, limit - sum(min_plan.values()))
+        if remaining:
+            min_plan["L4_regular"] = min_plan.get("L4_regular", 0) + remaining
+    else:
+        min_plan = default_plan
 
     def add_candidate(candidate: dict[str, Any], reason: str) -> bool:
         key = zhizhi_import_candidate_key(candidate)
@@ -91,6 +102,7 @@ def select_zhizhi_import_results(
     ]
     report = {
         "strategy": "layer_minimum_then_score_backfill",
+        "custom_layer_minimums": bool(layer_minimums),
         "requested_import_top_k": import_top_k,
         "effective_import_top_k": limit,
         "min_per_layer": min_plan,
@@ -116,6 +128,9 @@ def import_literature_text(
     year: str = "",
     venue: str = "",
     use_llm: bool = False,
+    extraction_quality: dict[str, Any] | None = None,
+    full_text_enrichment: dict[str, Any] | None = None,
+    sub_hypothesis: str = "",
 ) -> str:
     try:
         from ._utils import first_sentences, trim_text
@@ -157,8 +172,12 @@ def import_literature_text(
         benchmark=parsed["benchmark"],
         contribution=parsed["contribution"],
         limitation=parsed["limitation"],
-        full_text_excerpt=trim_text(text, 16000) if source_type in {"file", "pdf", "full_text", "manual_file"} or len(text) > 2500 else "",
+        full_text_excerpt=trim_text(text, 20000) if source_type in {"file", "pdf", "full_text", "manual_file"} or len(text) > 2500 else "",
+        extraction_quality=extraction_quality,
+        full_text_enrichment=full_text_enrichment,
         gap_signals=parsed.get("gap_signals") if isinstance(parsed.get("gap_signals"), list) else None,
+        causal_chains=parsed.get("causal_chains") if isinstance(parsed.get("causal_chains"), list) else None,
+        import_context={"query_branch": str(sub_hypothesis).strip()} if str(sub_hypothesis).strip() else None,
     )
 
 def import_literature_file(
@@ -169,23 +188,47 @@ def import_literature_file(
     provider: str = "manual_file",
     source_type: str = "file",
     use_llm: bool = False,
+    sub_hypothesis: str = "",
 ) -> str:
     try:
+        from ._pdf_extraction import extract_pdf_content
         from ._utils import read_literature_file, safe_workspace_path
     except ImportError:
+        from _pdf_extraction import extract_pdf_content
         from _utils import read_literature_file, safe_workspace_path
     target = safe_workspace_path(path)
-    text = read_literature_file(target)
     inferred_title = title or target.stem.replace("_", " ")
     inferred_citation = citation or inferred_title
+    extraction_quality: dict[str, Any] | None = None
+    full_text_enrichment: dict[str, Any] | None = None
+    effective_source_type = source_type
+    if target.suffix.lower() == ".pdf":
+        extracted = extract_pdf_content(
+            target,
+            {"title": inferred_title, "citation": inferred_citation, "source_path": str(target)},
+            sub_hypothesis or None,
+        )
+        text = str(extracted["text"])
+        full_text_enrichment = dict(extracted["report"])
+        full_text_enrichment["source_path"] = str(target)
+        extraction_quality = {
+            "pdf_extraction": full_text_enrichment,
+            "needs_supplement": bool((full_text_enrichment.get("validation") or {}).get("needs_supplement")),
+        }
+        effective_source_type = "pdf"
+    else:
+        text = read_literature_file(target)
     return import_literature_text(
         project_id=project_id,
         title=inferred_title,
         citation=inferred_citation,
         text=text,
         provider=provider,
-        source_type=source_type,
+        source_type=effective_source_type,
         use_llm=use_llm,
+        extraction_quality=extraction_quality,
+        full_text_enrichment=full_text_enrichment,
+        sub_hypothesis=sub_hypothesis,
     )
 
 def import_literature_search_result(
@@ -193,6 +236,9 @@ def import_literature_search_result(
     search_id: str,
     result_index: int = 0,
     use_llm: bool = False,
+    stratified_layer_override: str = "",
+    query_branch_override: str = "",
+    force_import: bool = False,
 ) -> str:
     try:
         from ._literature_scoring import domain_relevance_assessment, publication_quality_assessment, should_reject_for_domain
@@ -217,7 +263,11 @@ def import_literature_search_result(
         raise ValueError(f"Invalid result_index: {result_index}") from exc
     if index < 0 or index >= len(results):
         raise ValueError(f"result_index {index} out of range for search {search_id}; total_results={len(results)}")
-    result = results[index]
+    result = dict(results[index])
+    if stratified_layer_override:
+        result["stratified_layer"] = str(stratified_layer_override)
+    if query_branch_override:
+        result["query_branch"] = str(query_branch_override)
     project_domain = str(project.get("domain") or search_record.get("domain") or "")
     # Preserve domain_relevance from search phase if already assessed
     existing_relevance = result.get("domain_relevance")
@@ -227,7 +277,15 @@ def import_literature_search_result(
             domain=project_domain,
             query=str(search_record.get("query") or ""),
         )
-    if should_reject_for_domain(result, domain=project_domain):
+    rejected_by_domain_gate = should_reject_for_domain(
+        result,
+        domain=project_domain,
+        query=str(search_record.get("query") or ""),
+    )
+    domain_gate = result.get("domain_gate") if isinstance(result.get("domain_gate"), dict) else {}
+    domain_review = result.get("domain_review") if isinstance(result.get("domain_review"), dict) else {}
+    domain_override: dict[str, Any] = {}
+    if rejected_by_domain_gate and not force_import:
         log_event(
             "SCIENCE",
             "import_rejected_by_domain_gate",
@@ -236,12 +294,43 @@ def import_literature_search_result(
             title=trim_text(str(result.get("title") or ""), 120),
             domain=project_domain,
             score=result.get("domain_relevance", {}).get("score"),
-            verdict=result.get("domain_relevance", {}).get("verdict"),
+            verdict=domain_gate.get("verdict") or result.get("domain_relevance", {}).get("verdict"),
+            primary_verdict=result.get("domain_relevance", {}).get("verdict"),
+            gate_verdict=domain_gate.get("verdict"),
+            rejecting_stage=domain_gate.get("rejecting_stage"),
+            reason=domain_gate.get("reason"),
+            review_verdict=domain_review.get("verdict"),
         )
         raise ValueError(
-            "Search result rejected before import by domain relevance gate: "
+            "Search result rejected before import by final domain gate: "
             f"title={trim_text(str(result.get('title') or ''), 120)}, "
-            f"domain={project_domain}, assessment={json.dumps(result['domain_relevance'], ensure_ascii=False)}"
+            f"domain={project_domain}, gate={json.dumps(domain_gate, ensure_ascii=False)}, "
+            f"primary_assessment={json.dumps(result['domain_relevance'], ensure_ascii=False)}, "
+            f"review={json.dumps(domain_review, ensure_ascii=False)}"
+        )
+    if rejected_by_domain_gate and force_import:
+        original_verdict = str(domain_gate.get("verdict") or "reject")
+        domain_gate = {
+            **domain_gate,
+            "verdict": "override",
+            "overridden_by_user": True,
+            "original_verdict": original_verdict,
+            "reason": "User explicitly forced import after reviewing the domain-gate rejection.",
+        }
+        result["domain_gate"] = domain_gate
+        domain_override = {
+            "force_import": True,
+            "original_gate_verdict": original_verdict,
+            "original_rejecting_stage": domain_gate.get("rejecting_stage"),
+        }
+        log_event(
+            "SCIENCE",
+            "import_forced_by_user",
+            search_id=search_id,
+            result_index=index,
+            title=trim_text(str(result.get("title") or ""), 120),
+            original_gate_verdict=original_verdict,
+            original_rejecting_stage=domain_gate.get("rejecting_stage"),
         )
     payload = result.get("papergraph_input")
     if not isinstance(payload, dict):
@@ -251,7 +340,16 @@ def import_literature_search_result(
     initial_extraction_quality = extraction_quality_report(payload)
     enrichment_sources: list[str] = []
 
-    if initial_extraction_quality.get("needs_enrichment"):
+    needs_full_text_probe = (
+        not str(payload.get("full_text_excerpt") or "").strip()
+        and bool(
+            result.get("open_access_pdf")
+            or payload.get("open_access_pdf")
+            or payload.get("semantic_scholar_id")
+            or payload.get("arxiv_id")
+        )
+    )
+    if initial_extraction_quality.get("needs_enrichment") or needs_full_text_probe:
         payload, enrichment_sources = enrich_papergraph_payload(payload, result)
         if enrichment_sources:
             log_event(
@@ -263,15 +361,25 @@ def import_literature_search_result(
             )
 
     llm_retry: dict[str, Any] = {"attempted": False, "succeeded": False, "error": ""}
-    if use_llm or extraction_quality_report(payload).get("needs_llm_retry"):
+    if use_llm:
         payload, llm_retry = maybe_llm_reextract_structure(payload, force=use_llm)
         if llm_retry.get("attempted"):
-            log_event("SCIENCE", "paper_extraction_llm_retry", search_id=search_id, result_index=index)
+            log_event(
+                "SCIENCE",
+                "paper_extraction_llm_retry",
+                project_id=project_id,
+                search_id=search_id,
+                result_index=index,
+                layer=str(result.get("stratified_layer") or ""),
+                title=str(result.get("title") or "")[:120],
+            )
         if llm_retry.get("error"):
             log_event("WARN", "paper_extraction_llm_retry_failed", error=llm_retry.get("error"))
     final_extraction_quality = extraction_quality_report(payload)
     final_extraction_quality["initial"] = initial_extraction_quality
     final_extraction_quality["llm_retry"] = llm_retry
+    if isinstance(payload.get("_full_text_enrichment"), dict):
+        final_extraction_quality["full_text"] = payload["_full_text_enrichment"]
     if payload.get("_enrichment_errors"):
         final_extraction_quality["enrichment_errors"] = payload.get("_enrichment_errors")
 
@@ -290,6 +398,8 @@ def import_literature_search_result(
         url=str(payload.get("url", "")),
         abstract=str(payload.get("abstract", "")),
         full_text_excerpt=str(payload.get("full_text_excerpt", "")),
+        open_access_pdf=str(payload.get("open_access_pdf", result.get("open_access_pdf", ""))),
+        full_text_enrichment=payload.get("_full_text_enrichment") if isinstance(payload.get("_full_text_enrichment"), dict) else None,
         conclusion=str(payload.get("conclusion", "")),
         strengths=payload.get("strengths") if isinstance(payload.get("strengths"), list) else None,
         improvements=payload.get("improvements") if isinstance(payload.get("improvements"), list) else None,
@@ -301,6 +411,18 @@ def import_literature_search_result(
         extraction_quality=final_extraction_quality,
         enrichment_sources=enrichment_sources,
         gap_signals=payload.get("gap_signals") if isinstance(payload.get("gap_signals"), list) else None,
+        causal_chains=payload.get("causal_chains") if isinstance(payload.get("causal_chains"), list) else None,
+        import_context={
+            "search_id": search_id,
+            "result_index": index,
+            "stratified_layer": str(result.get("stratified_layer") or ""),
+            "query_branch": str(result.get("query_branch") or ""),
+        },
+        retrieval_query=str(search_record.get("query") or ""),
+        domain_relevance=result.get("domain_relevance") if isinstance(result.get("domain_relevance"), dict) else None,
+        domain_review=result.get("domain_review") if isinstance(result.get("domain_review"), dict) else None,
+        domain_gate=domain_gate,
+        domain_override=domain_override,
     )
     try:
         imported_payload = json.loads(imported)
@@ -313,6 +435,8 @@ def import_literature_search_result(
         quality["venue_quality"] in {"suspicious", "missing"}
         or quality["quality_score"] < 0.55
         or bool(final_extraction_quality.get("requires_human_review"))
+        or str(domain_gate.get("verdict") or "") in {"review", "override"}
+        or str(domain_review.get("verdict") or "") == "review"
     )
     return json.dumps(imported_payload, ensure_ascii=False, indent=2)
 
@@ -331,6 +455,8 @@ def import_papergraph_record(
     url: str = "",
     abstract: str = "",
     full_text_excerpt: str = "",
+    open_access_pdf: str = "",
+    full_text_enrichment: dict[str, Any] | None = None,
     conclusion: str = "",
     strengths: list[str] | None = None,
     improvements: list[str] | None = None,
@@ -342,16 +468,23 @@ def import_papergraph_record(
     extraction_quality: dict[str, Any] | None = None,
     enrichment_sources: list[str] | None = None,
     gap_signals: list[dict[str, Any]] | None = None,
+    causal_chains: list[dict[str, Any]] | None = None,
+    import_context: dict[str, Any] | None = None,
+    retrieval_query: str = "",
+    domain_relevance: dict[str, Any] | None = None,
+    domain_review: dict[str, Any] | None = None,
+    domain_gate: dict[str, Any] | None = None,
+    domain_override: dict[str, Any] | None = None,
 ) -> str:
     try:
         from ._gap_detection import extract_gap_signals_from_text, normalize_gap_signals
         from ._models import PaperEvidence, PaperGraphRecord
-        from ._project import load_project, save_project
+        from ._project import load_project, load_search, save_project
         from ._utils import find_by_id, first_sentences, is_unknown_value, new_id, normalize_space, repair_unknown_field
     except ImportError:
         from _gap_detection import extract_gap_signals_from_text, normalize_gap_signals
         from _models import PaperEvidence, PaperGraphRecord
-        from _project import load_project, save_project
+        from _project import load_project, load_search, save_project
         from _utils import find_by_id, first_sentences, is_unknown_value, new_id, normalize_space, repair_unknown_field
     project = load_project(project_id)
     unique_key = paper_unique_key(title=title, citation=citation, doi=doi, arxiv_id=arxiv_id, semantic_scholar_id=semantic_scholar_id, url=url)
@@ -432,16 +565,65 @@ def import_papergraph_record(
     final_contribution = contribution or parsed_fallback["contribution"]
     final_limitation = limitation or parsed_fallback["limitation"]
     context_text = "\n".join(part for part in [title, final_abstract, conclusion, full_text_excerpt, final_contribution, final_limitation] if part)
+    final_full_text_enrichment = dict(full_text_enrichment or {})
+    evidence_spans = final_full_text_enrichment.get("evidence_spans")
+    if not isinstance(evidence_spans, list):
+        evidence_spans = []
+    source_url = str(
+        open_access_pdf
+        or final_full_text_enrichment.get("source_url")
+        or url
+        or final_full_text_enrichment.get("source_path")
+        or ""
+    )
+    methodology = extract_methodology_evidence(
+        context_text,
+        evidence_spans=evidence_spans,
+        source_url=source_url,
+    )
+    final_method = prefer_structured_field(final_method, str(methodology.get("method") or ""), "method")
+    final_scenario = prefer_structured_field(final_scenario, str(methodology.get("scenario") or ""), "scenario")
+    final_benchmark = prefer_structured_field(final_benchmark, str(methodology.get("benchmark") or ""), "benchmark")
     final_method = repair_unknown_field(final_method, context_text, "method")
     final_scenario = repair_unknown_field(final_scenario, context_text, "scenario")
     final_benchmark = repair_unknown_field(final_benchmark, context_text, "benchmark")
-    extracted_gap_signals = extract_gap_signals_from_text(context_text, citation=citation or title)
+    extracted_gap_signals = extract_gap_signals_from_text(
+        context_text,
+        citation=citation or title,
+        evidence_spans=evidence_spans,
+        source_url=source_url,
+    )
     final_gap_signals = normalize_gap_signals(list(gap_signals or []) + extracted_gap_signals, citation=citation or title)
+    final_causal_chains = normalize_causal_chains(causal_chains or [])
+    if not final_causal_chains:
+        final_causal_chains = extract_causal_chains_heuristic(
+            context_text,
+            evidence_spans=evidence_spans,
+            source_url=source_url,
+        )
+    speculative_causal_signals = [
+        chain
+        for chain in final_causal_chains
+        if isinstance(chain, dict) and (chain.get("causal_claim") is False or chain.get("modality") == "speculative")
+    ]
+    final_causal_chains = [
+        chain
+        for chain in final_causal_chains
+        if not isinstance(chain, dict) or (chain.get("causal_claim") is not False and chain.get("modality") != "speculative")
+    ]
+    association_signals = extract_association_signals(
+        context_text,
+        evidence_spans=evidence_spans,
+        source_url=source_url,
+    )
+    final_full_text_enrichment["structured_methodology"] = methodology
+    final_full_text_enrichment["association_signals"] = association_signals
+    final_full_text_enrichment["speculative_causal_signals"] = speculative_causal_signals
     if final_gap_signals and is_unknown_value(final_limitation):
         final_limitation = str(final_gap_signals[0].get("text", final_limitation))
     elif final_gap_signals and final_limitation == "No explicit limitation extracted.":
         final_limitation = str(final_gap_signals[0].get("text", final_limitation))
-    final_extraction_quality = extraction_quality or extraction_quality_report(
+    final_extraction_quality = dict(extraction_quality or {}) or extraction_quality_report(
         {
             "title": title,
             "abstract": final_abstract,
@@ -454,6 +636,14 @@ def import_papergraph_record(
             "limitation": final_limitation,
         }
     )
+    final_extraction_quality["rule_extraction"] = {
+        "methodology_evidence_count": len(methodology.get("evidence") or []),
+        "causal_chain_count": len(final_causal_chains),
+        "speculative_causal_signal_count": len(speculative_causal_signals),
+        "association_signal_count": len(association_signals),
+        "gap_signal_count": len(final_gap_signals),
+        "evidence_span_count": len(evidence_spans),
+    }
     score, reasons = score_evidence_credibility(
         title=title,
         citation=citation,
@@ -495,28 +685,241 @@ def import_papergraph_record(
         credibility_reasons=reasons,
         extraction_quality=final_extraction_quality,
         enrichment_sources=list(enrichment_sources or []),
+        open_access_pdf=open_access_pdf,
+        full_text_enrichment=final_full_text_enrichment,
         gap_signals=final_gap_signals,
+        causal_chains=final_causal_chains,
     )
-    project.setdefault("papergraph", []).append(asdict(record))
-    project.setdefault("evidence", []).append(
-        asdict(
-            PaperEvidence(
-                evidence_id=new_id("ev"),
-                title=title,
-                citation=citation,
-                method=final_method,
-                scenario=final_scenario,
-                benchmark=final_benchmark,
-                contribution=final_contribution,
-                limitation=final_limitation,
-                url=url,
-            )
+    record_payload = asdict(record)
+    record_payload["active"] = True
+    if retrieval_query:
+        record_payload["retrieval_query"] = retrieval_query
+    if isinstance(domain_relevance, dict):
+        record_payload["domain_relevance"] = dict(domain_relevance)
+    if isinstance(domain_review, dict):
+        record_payload["domain_review"] = dict(domain_review)
+    if isinstance(domain_gate, dict):
+        record_payload["domain_gate"] = dict(domain_gate)
+    if isinstance(domain_override, dict) and domain_override:
+        record_payload["domain_override"] = dict(domain_override)
+    domain_review_verdict = str((domain_review or {}).get("verdict") or "")
+    domain_gate_verdict = str((domain_gate or {}).get("verdict") or "")
+    record_payload["requires_human_review"] = (
+        domain_review_verdict == "review"
+        or domain_gate_verdict in {"review", "override"}
+        or bool((domain_gate or {}).get("requires_human_review"))
+    )
+    normalized_import_context = {
+        key: value
+        for key, value in dict(import_context or {}).items()
+        if value not in (None, "")
+    }
+    if normalized_import_context:
+        record_payload["import_context"] = normalized_import_context
+    retrieval_branch = str(
+        normalized_import_context.get("query_branch")
+        or normalized_import_context.get("retrieval_branch")
+        or ""
+    ).strip()
+    if retrieval_branch:
+        record_payload["retrieval_branch"] = retrieval_branch
+    evidence_payload = asdict(
+        PaperEvidence(
+            evidence_id=new_id("ev"),
+            title=title,
+            citation=citation,
+            method=final_method,
+            scenario=final_scenario,
+            benchmark=final_benchmark,
+            contribution=final_contribution,
+            limitation=final_limitation,
+            url=url,
         )
     )
+    evidence_payload["paper_id"] = record.paper_id
+    evidence_payload["active"] = True
+    evidence_payload["causal_chains"] = final_causal_chains
+    if retrieval_branch:
+        evidence_payload["retrieval_branch"] = retrieval_branch
+    project.setdefault("papergraph", []).append(record_payload)
+    project.setdefault("evidence", []).append(evidence_payload)
     project["updatedAt"] = time.time()
     save_project(project)
-    log_event("SCIENCE", "paper_imported", project_id=project_id, paper_id=record.paper_id, credibility=score, title=str(title or "")[:120])
-    return json.dumps({"status": "imported", "record": asdict(record)}, ensure_ascii=False, indent=2)
+    log_event(
+        "SCIENCE",
+        "paper_imported",
+        project_id=project_id,
+        paper_id=record.paper_id,
+        title=str(title or "")[:120],
+        provider=provider,
+        source_type=source_type,
+        credibility=score,
+        search_id=normalized_import_context.get("search_id", ""),
+        result_index=normalized_import_context.get("result_index", ""),
+        layer=normalized_import_context.get("stratified_layer", ""),
+        query_branch=normalized_import_context.get("query_branch", ""),
+    )
+    return json.dumps({"status": "imported", "record": record_payload}, ensure_ascii=False, indent=2)
+
+
+def domain_review_paper(
+    project_id: str,
+    paper_id: str,
+    target_domain_profile: list[str] | str | None = None,
+    min_confidence: float = 0.6,
+) -> dict[str, Any]:
+    """Audit one imported record and deactivate only clear domain mismatches."""
+    try:
+        from ._literature_scoring import domain_review_assessment
+        from ._project import load_project, load_search, save_project
+        from ._utils import find_by_id, normalize_space
+    except ImportError:
+        from _literature_scoring import domain_review_assessment
+        from _project import load_project, load_search, save_project
+        from _utils import find_by_id, normalize_space
+    project = load_project(project_id)
+    paper = find_by_id(project.get("papergraph", []), "paper_id", paper_id)
+    if not isinstance(paper, dict):
+        return {"status": "not_found", "paper_id": paper_id}
+    if isinstance(target_domain_profile, list):
+        target_domain = normalize_space(" ".join(str(item) for item in target_domain_profile if str(item).strip()))
+    else:
+        target_domain = normalize_space(str(target_domain_profile or project.get("domain") or ""))
+    import_context = paper.get("import_context") if isinstance(paper.get("import_context"), dict) else {}
+    retrieval_query = normalize_space(str(paper.get("retrieval_query") or import_context.get("retrieval_query") or ""))
+    review_input = dict(paper)
+    if not isinstance(review_input.get("domain_relevance"), dict) and import_context.get("search_id") is not None:
+        try:
+            search_record = load_search(str(import_context.get("search_id") or ""))
+            result_index = int(import_context.get("result_index") or 0)
+            search_results = search_record.get("results") if isinstance(search_record.get("results"), list) else []
+            source_result = search_results[result_index] if 0 <= result_index < len(search_results) else {}
+            if isinstance(source_result, dict):
+                source_relevance = source_result.get("domain_relevance")
+                if isinstance(source_relevance, dict):
+                    review_input["domain_relevance"] = dict(source_relevance)
+                    paper["domain_relevance"] = dict(source_relevance)
+                source_gate = source_result.get("domain_gate")
+                if isinstance(source_gate, dict):
+                    paper["domain_gate"] = dict(source_gate)
+                retrieval_query = retrieval_query or normalize_space(str(search_record.get("query") or ""))
+                if retrieval_query:
+                    paper["retrieval_query"] = retrieval_query
+        except Exception as exc:
+            log_event(
+                "WARN",
+                "domain_review_provenance_recovery_failed",
+                project_id=project_id,
+                paper_id=paper_id,
+                error=str(exc)[:200],
+            )
+    review = domain_review_assessment(
+        review_input,
+        domain=target_domain,
+        query=retrieval_query,
+        min_confidence=min_confidence,
+    )
+    domain_override = paper.get("domain_override") if isinstance(paper.get("domain_override"), dict) else {}
+    if domain_override.get("force_import") and review.get("verdict") == "reject":
+        review["original_verdict"] = "reject"
+        review["verdict"] = "review"
+        review["forced_by_user"] = True
+        review["reason"] = "User-forced import retained despite a domain-review rejection; keep it marked for human review."
+    review.update({
+        "paper_id": paper_id,
+        "title": str(paper.get("title") or ""),
+        "target_domain": target_domain,
+        "reviewedAt": time.time(),
+    })
+    active = review.get("verdict") != "reject"
+    paper["active"] = active
+    paper["domain_review"] = review
+    paper["domain_review_verdict"] = review.get("verdict")
+    paper["domain_review_score"] = review.get("score")
+    for evidence in project.get("evidence", []):
+        if not isinstance(evidence, dict):
+            continue
+        if evidence.get("paper_id") == paper_id or (
+            str(evidence.get("citation") or "") and str(evidence.get("citation") or "") == str(paper.get("citation") or "")
+        ):
+            evidence["active"] = active
+    project.setdefault("domain_reviews", {})[paper_id] = review
+    save_project(project)
+    if not active:
+        log_event(
+            "SCIENCE",
+            "paper_domain_rejected",
+            project_id=project_id,
+            paper_id=paper_id,
+            title=str(paper.get("title") or "")[:120],
+            score=review.get("score"),
+            reason=review.get("reason"),
+        )
+    return review
+
+
+def review_imported_papers_for_domain(
+    project_id: str,
+    paper_ids: list[str],
+    target_domain_profile: list[str] | str | None = None,
+    min_confidence: float = 0.6,
+) -> list[dict[str, Any]]:
+    """Run the same domain audit across an import batch for ZhiZhi."""
+    reviews: list[dict[str, Any]] = []
+    for paper_id in dict.fromkeys(str(item) for item in paper_ids if str(item).strip()):
+        reviews.append(
+            domain_review_paper(
+                project_id=project_id,
+                paper_id=paper_id,
+                target_domain_profile=target_domain_profile,
+                min_confidence=min_confidence,
+            )
+        )
+    return reviews
+
+
+def reconcile_project_domain_reviews(
+    project_id: str,
+    target_domain_profile: list[str] | str | None = None,
+    min_confidence: float = 0.6,
+    include_active: bool = False,
+) -> str:
+    try:
+        from ._project import load_project
+    except ImportError:
+        from _project import load_project
+    project = load_project(project_id)
+    records = [record for record in project.get("papergraph", []) if isinstance(record, dict)]
+    prior_active = {str(record.get("paper_id") or ""): bool(record.get("active", True)) for record in records}
+    paper_ids = [
+        str(record.get("paper_id") or "")
+        for record in records
+        if include_active or not bool(record.get("active", True))
+    ]
+    reviews = review_imported_papers_for_domain(
+        project_id=project_id,
+        paper_ids=paper_ids,
+        target_domain_profile=target_domain_profile,
+        min_confidence=min_confidence,
+    )
+    reactivated = [
+        review for review in reviews
+        if review.get("verdict") != "reject" and not prior_active.get(str(review.get("paper_id") or ""), True)
+    ]
+    return json.dumps(
+        {
+            "project_id": project_id,
+            "reviewed_count": len(reviews),
+            "reactivated_count": len(reactivated),
+            "remaining_rejected_count": sum(1 for review in reviews if review.get("verdict") == "reject"),
+            "review_count": sum(1 for review in reviews if review.get("verdict") == "review"),
+            "reactivated": reactivated,
+            "reviews": reviews,
+            "next_step": "Inspect review-status records before using them as high-confidence causal evidence.",
+        },
+        ensure_ascii=False,
+        indent=2,
+    )
 
 def extract_paper_keynote(
     project_id: str,
@@ -540,7 +943,7 @@ def extract_paper_keynote(
         if not source:
             raise ValueError(f"Paper not found in project PaperGraph: {paper_id}")
         source_text = "\n\n".join(
-            part for part in [source.get("title", ""), source.get("abstract", ""), source.get("conclusion", ""), source.get("limitation", "")] if part
+            part for part in [source.get("title", ""), source.get("abstract", ""), source.get("conclusion", ""), source.get("contribution", ""), source.get("limitation", ""), source.get("full_text_excerpt", "")] if part
         )
     elif search_id:
         search_record = load_search(search_id)
@@ -575,6 +978,10 @@ def extract_paper_keynote(
         "keynote": keynote,
     }
     project.setdefault("keynotes", []).append(item)
+    if paper_id and isinstance(source, dict):
+        source["causal_chains"] = normalize_causal_chains(
+            keynote.get("causal_chains") or source.get("causal_chains") or []
+        )
     save_project(project)
     return json.dumps(item, ensure_ascii=False, indent=2)
 
@@ -768,6 +1175,19 @@ def extract_paper_structure_with_llm(text: str) -> dict[str, Any]:
         "benchmark": "string",
         "contribution": "string",
         "limitation": "string",
+        "causal_chains": [
+            {
+                "chain_id": "string",
+                "trigger": "string",
+                "trigger_evidence": "short source-grounded excerpt",
+                "steps": [{"claim": "string", "evidence": "short source-grounded excerpt", "evidence_type": "experimental | theoretical | observational | inferred"}],
+                "outcome": "string",
+                "outcome_evidence": "short source-grounded excerpt",
+                "observables": ["measured signal"],
+                "interventions": ["manipulated condition"],
+                "confidence": 0.0,
+            }
+        ],
         "gap_signals": [{"signal_type": "limitation | future_work | open_problem | challenge | missing_evidence", "text": "string"}],
     }
     payload = call_llm_json(
@@ -783,6 +1203,8 @@ def extract_paper_structure_with_llm(text: str) -> dict[str, Any]:
             "- benchmark: the evaluated metric, observable, endpoint, dataset, response variable, performance criterion, experimental readout, or validation target.\n"
             "- contribution: the paper's main supported finding or methodological advance.\n"
             "- limitation: an explicit limitation, unresolved problem, boundary condition, or future-work point; use an empty string if not stated.\n\n"
+            "- causal_chains: extract only causal relations that the paper claims or tests. Keep intermediate steps and attach a short source-grounded excerpt to every step when available. "
+            "Use experimental, theoretical, observational, or inferred evidence types. Do not convert co-occurrence into causation; return an empty list when a causal chain is unsupported.\n\n"
             "- gap_signals: extract multiple explicit limitations, future-work directions, open problems, unresolved challenges, and missing-evidence statements when present, especially from PDF/full-text discussion, limitations, conclusion, and outlook sections.\n\n"
             "Cross-domain examples for choosing compact labels:\n"
             "- mathematics/statistics: method=theoretical proof | bayesian inference | causal inference; scenario=statistical inference | dynamical system; benchmark=uncertainty | convergence rate | effect size.\n"
@@ -822,6 +1244,15 @@ def extract_keynote_with_llm(text: str) -> dict[str, Any]:
         "datasets_or_materials": ["string"],
         "code_or_implementation": ["string"],
         "important_claims": [{"claim": "string", "evidence": "string"}],
+        "causal_chains": [
+            {
+                "trigger": "string",
+                "steps": [{"claim": "string", "evidence": "string", "evidence_type": "experimental | theoretical | observational | inferred"}],
+                "outcome": "string",
+                "observables": ["string"],
+                "interventions": ["string"],
+            }
+        ],
         "reuse_value_for_research": "string",
     }
     payload = call_llm_json(
@@ -829,6 +1260,7 @@ def extract_keynote_with_llm(text: str) -> dict[str, Any]:
         max_tokens=2500,
         prompt=(
             "Extract a structured keynote for cross-paper comparison. Do not invent facts. "
+            "Extract causal chains only when the source supports the stated links. Preserve intermediate steps and evidence excerpts, and do not infer causation from two concepts merely appearing together. "
             "If only abstract is provided, mark missing details as empty arrays.\n\n"
             f"Schema:\n{json.dumps(schema, ensure_ascii=False, indent=2)}\n\n"
             f"Paper text:\n{trim_text(text, 14000)}"
@@ -854,6 +1286,7 @@ def extract_keynote_heuristic(text: str) -> dict[str, Any]:
         "datasets_or_materials": extract_bullets_or_sentences(text, ["dataset", "benchmark", "data", "material", "sample"], limit=5),
         "code_or_implementation": extract_bullets_or_sentences(text, ["code", "repository", "implementation", "github"], limit=5),
         "important_claims": [{"claim": parsed.get("contribution", ""), "evidence": parsed.get("abstract", "")} if parsed.get("contribution") else {}],
+        "causal_chains": extract_causal_chains_heuristic(text),
         "reuse_value_for_research": "Useful as structured evidence if quality and citation checks pass.",
     }
 
@@ -893,9 +1326,245 @@ def normalize_keynote(payload: dict[str, Any]) -> dict[str, Any]:
         "datasets_or_materials": string_list(payload.get("datasets_or_materials")),
         "code_or_implementation": string_list(payload.get("code_or_implementation")),
         "important_claims": normalized_claims,
+        "causal_chains": normalize_causal_chains(payload.get("causal_chains")),
         "reuse_value_for_research": scalar(payload.get("reuse_value_for_research")),
         "extractor": f"{SCIENCE_LLM_EXTRACTOR}_keynote",
     }
+
+
+def normalize_causal_chains(value: Any) -> list[dict[str, Any]]:
+    try:
+        from ._llm import normalize_causal_chains as normalize
+    except ImportError:
+        from _llm import normalize_causal_chains as normalize
+    return normalize(value)
+
+
+def extract_causal_chains_heuristic_legacy(text: str, limit: int = 4) -> list[dict[str, Any]]:
+    clean = str(text or "").strip()
+    if not clean:
+        return []
+    markers = r"(?:→|leads to|lead to|causes|cause|drives|results? in|induces|promotes|inhibits|导致|引起|促进|抑制|造成)"
+    chains: list[dict[str, Any]] = []
+    sentences = re.split(r"(?<=[.!?。！？])\s+|\n+", clean)
+    for sentence in sentences:
+        compact = " ".join(sentence.split())
+        if len(compact) < 16:
+            continue
+        match = re.search(rf"(.{{3,220}}?)\s*{markers}\s*(.{{3,220}})", compact, flags=re.IGNORECASE)
+        if not match:
+            continue
+        trigger = match.group(1).strip(" ,;:：，；")
+        outcome = match.group(2).strip(" ,;:：，；")
+        if not trigger or not outcome:
+            continue
+        chains.append(
+            {
+                "chain_id": f"heuristic_{len(chains) + 1}",
+                "trigger": trigger,
+                "trigger_evidence": compact[:500],
+                "steps": [],
+                "outcome": outcome,
+                "outcome_evidence": compact[:500],
+                "observables": [],
+                "interventions": [],
+                "confidence": 0.3,
+            }
+        )
+        if len(chains) >= limit:
+            break
+    return chains
+
+_CAUSAL_VERB_PATTERN = (
+    r"leads?\s+to|results?\s+in|causes?|drives?|induces?|triggers?|"
+    r"promotes?|enhances?|increases?|activates?|maintains?|mediates?|enables?|"
+    r"inhibits?|suppresses?|reduces?|decreases?|prevents?|attenuates?|"
+    r"\u5bfc\u81f4|\u5f15\u8d77|\u4fc3\u8fdb|\u589e\u52a0|\u6fc0\u6d3b|\u7ef4\u6301|\u6291\u5236|\u964d\u4f4e|\u963b\u65ad"
+)
+
+
+def extract_causal_chains_heuristic(
+    text: str,
+    limit: int = 4,
+    evidence_spans: list[dict[str, Any]] | None = None,
+    source_url: str = "",
+) -> list[dict[str, Any]]:
+    clean = str(text or "").strip()
+    if not clean:
+        return []
+    relation_pattern = re.compile(
+        rf"(?P<source>[^.;:\n]{{2,220}}?)\s+(?P<verb>{_CAUSAL_VERB_PATTERN})\s+(?P<target>[^.;\n]{{2,240}})",
+        flags=re.IGNORECASE,
+    )
+    inverse_pattern = re.compile(
+        rf"(?P<target>[^.;:\n]{{2,220}}?)\s+(?:is|was|were|be)\s+(?P<verb>{_CAUSAL_VERB_PATTERN})\s+by\s+(?P<source>[^.;\n]{{2,240}})",
+        flags=re.IGNORECASE,
+    )
+    chains: list[dict[str, Any]] = []
+    for sentence in split_heuristic_sentences(clean):
+        compact = " ".join(sentence.split())
+        if len(compact) < 16 or causal_statement_is_negated(compact):
+            continue
+        match = inverse_pattern.search(compact) or relation_pattern.search(compact)
+        if not match:
+            continue
+        trigger = clean_causal_endpoint(match.group("source"), role="source")
+        outcome = clean_causal_endpoint(match.group("target"), role="target")
+        if not trigger or not outcome or canonical_causal_entity(trigger) == canonical_causal_entity(outcome):
+            continue
+        relation, polarity = classify_causal_relation(str(match.group("verb") or ""))
+        modality = causal_modality(compact)
+        location = locate_causal_evidence(compact, evidence_spans, source_url)
+        chains.append(
+            {
+                "chain_id": f"heuristic_{len(chains) + 1}",
+                "trigger": trigger,
+                "trigger_evidence": compact[:700],
+                "trigger_location": location,
+                "steps": [],
+                "outcome": outcome,
+                "outcome_evidence": compact[:700],
+                "outcome_location": location,
+                "relation": relation,
+                "polarity": polarity,
+                "modality": modality,
+                "direct_relation": True,
+                "causal_claim": modality == "asserted",
+                "entities": [
+                    {"text": trigger, "canonical": canonical_causal_entity(trigger), "role": "cause"},
+                    {"text": outcome, "canonical": canonical_causal_entity(outcome), "role": "effect"},
+                ],
+                "observables": [],
+                "interventions": [],
+                "extraction_method": "explicit_causal_trigger_rule",
+                "confidence": 0.76 if modality == "asserted" else 0.52,
+            }
+        )
+        if len(chains) >= limit:
+            break
+    return chains
+
+
+def extract_association_signals(
+    text: str,
+    limit: int = 6,
+    evidence_spans: list[dict[str, Any]] | None = None,
+    source_url: str = "",
+) -> list[dict[str, Any]]:
+    pattern = re.compile(
+        r"(?P<left>[^.;:\n]{2,220}?)\s+(?:is|was|were|are|be)?\s*"
+        r"(?P<relation>associated with|correlated with|linked to|related to)\s+(?P<right>[^.;\n]{2,240})",
+        flags=re.IGNORECASE,
+    )
+    signals: list[dict[str, Any]] = []
+    for sentence in split_heuristic_sentences(text):
+        compact = " ".join(sentence.split())
+        match = pattern.search(compact)
+        if not match:
+            continue
+        left = clean_causal_endpoint(match.group("left"), role="source")
+        right = clean_causal_endpoint(match.group("right"), role="target")
+        if not left or not right:
+            continue
+        signals.append(
+            {
+                "left": left,
+                "right": right,
+                "relation": "associated_with",
+                "causal_claim": False,
+                "modality": "non_causal_association",
+                "evidence": compact[:700],
+                "source_location": locate_causal_evidence(compact, evidence_spans, source_url),
+                "extraction_method": "explicit_association_rule",
+                "confidence": 0.72,
+            }
+        )
+        if len(signals) >= limit:
+            break
+    return signals
+
+
+def split_heuristic_sentences(text: str) -> list[str]:
+    return [
+        sentence.strip()
+        for sentence in re.split(r"(?<=[.!?\u3002\uff01\uff1f])\s+|\n+", str(text or ""))
+        if sentence.strip()
+    ]
+
+
+def clean_causal_endpoint(value: str, *, role: str) -> str:
+    text = " ".join(str(value or "").split()).strip(" ,;:\u3002\uff0c\uff1a")
+    text = re.sub(
+        r"^(?:we|our (?:data|results)|this study|the study|the results|these findings)\s+"
+        r"(?:show|shows|demonstrate|demonstrates|indicate|indicates|suggest|suggests|found|finds)\s+that\s+",
+        "",
+        text,
+        flags=re.IGNORECASE,
+    )
+    if role == "source" and "," in text:
+        text = text.rsplit(",", 1)[-1].strip()
+    if role == "target":
+        text = re.split(r"\s*(?:,|;|\bthereby\b|\bwhich\b|\bwhile\b|\bwhereas\b|\band thus\b)\s*", text, maxsplit=1, flags=re.IGNORECASE)[0]
+    text = re.sub(r"^(?:the|a|an)\s+", "", text, flags=re.IGNORECASE)
+    return text.strip(" ,;:\u3002\uff0c\uff1a")[:180]
+
+
+def classify_causal_relation(verb: str) -> tuple[str, str]:
+    normalized = str(verb or "").lower().strip()
+    if any(token in normalized for token in ("inhibit", "suppress", "reduce", "decrease", "prevent", "attenuat", "\u6291\u5236", "\u964d\u4f4e", "\u963b\u65ad")):
+        return "inhibits", "negative"
+    if any(token in normalized for token in ("increase", "activate", "promote", "enhance", "maintain", "\u4fc3\u8fdb", "\u589e\u52a0", "\u6fc0\u6d3b", "\u7ef4\u6301")):
+        return "promotes", "positive"
+    if "mediate" in normalized:
+        return "mediates", "positive"
+    return "causes", "positive"
+
+
+def causal_modality(sentence: str) -> str:
+    lowered = str(sentence or "").lower()
+    if re.search(r"\b(?:may|might|could|possibly|potentially|suggests?|appears? to|likely)\b", lowered):
+        return "speculative"
+    return "asserted"
+
+
+def causal_statement_is_negated(sentence: str) -> bool:
+    return bool(
+        re.search(
+            rf"\b(?:does not|did not|do not|no evidence (?:that|for)|failed to)\s+(?:{_CAUSAL_VERB_PATTERN})\b",
+            str(sentence or ""),
+            flags=re.IGNORECASE,
+        )
+    )
+
+
+def canonical_causal_entity(value: str) -> str:
+    text = str(value or "").lower().replace("\u03b2", " beta ").replace("\u03b1", " alpha ")
+    text = re.sub(r"[^a-z0-9]+", " ", text)
+    key = " ".join(text.split())
+    aliases = {
+        "interleukin 2": "il2",
+        "il 2": "il2",
+        "interleukin 6": "il6",
+        "il 6": "il6",
+        "tumor necrosis factor alpha": "tnf alpha",
+    }
+    return aliases.get(key, key)
+
+
+def locate_causal_evidence(
+    evidence_text: str,
+    evidence_spans: list[dict[str, Any]] | None,
+    source_url: str,
+) -> dict[str, Any]:
+    try:
+        from ._pdf_extraction import locate_evidence_span
+    except ImportError:
+        from _pdf_extraction import locate_evidence_span
+    location = locate_evidence_span(evidence_text, evidence_spans)
+    if not location and source_url:
+        location = {"source_url": source_url}
+    return location
+
 
 def merge_paper_structures(base: dict[str, Any], overlay: dict[str, Any]) -> dict[str, Any]:
     merged = dict(base)
@@ -1054,18 +1723,19 @@ def maybe_llm_reextract_structure(payload: dict[str, Any], *, force: bool = Fals
     quality = extraction_quality_report(payload)
     if not force and not quality.get("needs_llm_retry"):
         return payload, {"attempted": False, "succeeded": False, "error": ""}
+    labeled_fields = [
+        ("Title", payload.get("title", "")),
+        ("Venue", payload.get("venue", "")),
+        ("Year", payload.get("year", "")),
+        ("Citation", payload.get("citation", "")),
+        ("Abstract", payload.get("abstract", "")),
+        ("Conclusion", payload.get("conclusion", "")),
+        ("Full text excerpt", payload.get("full_text_excerpt", "")),
+    ]
     text = "\n\n".join(
-        part
-        for part in [
-            f"Title: {payload.get('title', '')}",
-            f"Venue: {payload.get('venue', '')}",
-            f"Year: {payload.get('year', '')}",
-            f"Citation: {payload.get('citation', '')}",
-            f"Abstract: {payload.get('abstract', '')}",
-            f"Conclusion: {payload.get('conclusion', '')}",
-            f"Full text excerpt: {payload.get('full_text_excerpt', '')}",
-        ]
-        if normalize_space(part)
+        f"{label}: {value}"
+        for label, value in labeled_fields
+        if normalize_space(str(value or ""))
     )
     try:
         parsed = extract_paper_structure(text, use_llm=True)
@@ -1245,6 +1915,157 @@ def record_source_text(record: dict[str, Any]) -> str:
         if record.get(key)
     )
 
+_METHOD_MARKERS = (
+    "randomized", "randomised", "clinical trial", "cohort", "case-control", "single-cell",
+    "rna-seq", "sequencing", "microscopy", "spectroscopy", "assay", "regression",
+    "cox proportional", "mixed-effects", "simulation", "mouse model", "in vivo", "in vitro",
+    "meta-analysis", "systematic review", "flow cytometry", "western blot", "crisper",
+)
+_SCENARIO_MARKERS = (
+    "patient", "participant", "cohort", "mouse", "mice", "murine", "human", "cell line",
+    "organoid", "tissue", "plasma", "serum", "population", "dataset", "in vivo", "in vitro",
+)
+_BENCHMARK_MARKERS = (
+    "primary endpoint", "endpoint", "hazard ratio", "confidence interval", "accuracy", "auc",
+    "survival", "toxicity", "response rate", "effect size", "p value", "p-value", "validation",
+    "sensitivity", "specificity", "dose-response", "readout", "yield", "purity", "potency",
+)
+
+
+def extract_methodology_evidence(
+    text: str,
+    evidence_spans: list[dict[str, Any]] | None = None,
+    source_url: str = "",
+    limit: int = 12,
+) -> dict[str, Any]:
+    sections = split_structured_sections(text)
+    evidence: list[dict[str, Any]] = []
+    methods: list[str] = []
+    scenarios: list[str] = []
+    benchmarks: list[str] = []
+    populations: list[str] = []
+    outcomes: list[str] = []
+    for section, section_text in sections:
+        section_lower = section.lower()
+        is_method_section = any(token in section_lower for token in ("method", "material", "experimental", "study design", "statistical"))
+        for sentence in split_heuristic_sentences(section_text):
+            compact = " ".join(sentence.split())
+            if len(compact) < 18:
+                continue
+            lowered = compact.lower()
+            location = locate_causal_evidence(compact, evidence_spans, source_url)
+            if is_method_section or any(marker in lowered for marker in _METHOD_MARKERS):
+                method_terms = matched_method_terms(compact)
+                if method_terms:
+                    methods.extend(method_terms)
+                    evidence.append(methodology_evidence_item("method", compact, section, location))
+            if any(marker in lowered for marker in _SCENARIO_MARKERS):
+                population = extract_population_phrase(compact)
+                if population:
+                    populations.append(population)
+                    scenarios.append(population)
+                    evidence.append(methodology_evidence_item("population", compact, section, location))
+            if any(marker in lowered for marker in _BENCHMARK_MARKERS):
+                benchmark_terms = matched_benchmark_terms(compact)
+                if benchmark_terms:
+                    benchmarks.extend(benchmark_terms)
+                    outcomes.extend(benchmark_terms)
+                    evidence.append(methodology_evidence_item("outcome", compact, section, location))
+            if len(evidence) >= limit:
+                break
+        if len(evidence) >= limit:
+            break
+    return {
+        "method": "; ".join(unique_text_values(methods, 3)),
+        "scenario": "; ".join(unique_text_values(scenarios, 2)),
+        "benchmark": "; ".join(unique_text_values(benchmarks, 3)),
+        "population": unique_text_values(populations, 3),
+        "outcome": unique_text_values(outcomes, 4),
+        "evidence": evidence[:limit],
+        "extractor": "section_dictionary_pattern",
+    }
+
+
+def split_structured_sections(text: str) -> list[tuple[str, str]]:
+    raw = str(text or "")
+    matches = list(
+        re.finditer(
+            r"\[SECTION:\s*(?P<heading>[^|\]]+?)(?:\s*\|\s*pages?[^\]]*)?\]\s*(?P<body>.*?)(?=\n\s*\[SECTION:|\n\s*\[(?:KEYWORD|TABLES|FIGURE)|\Z)",
+            raw,
+            flags=re.IGNORECASE | re.DOTALL,
+        )
+    )
+    if matches:
+        return [(match.group("heading").strip(), match.group("body").strip()) for match in matches if match.group("body").strip()]
+    return [("Document body", raw)] if raw.strip() else []
+
+
+def matched_method_terms(sentence: str) -> list[str]:
+    lowered = sentence.lower()
+    canonical = [
+        ("single-cell rna-seq", ("single-cell rna-seq", "single cell rna-seq", "single-cell sequencing")),
+        ("cox proportional hazards", ("cox proportional", "cox regression")),
+        ("randomized trial", ("randomized", "randomised")),
+        ("mouse model", ("mouse model", "mice", "murine")),
+    ]
+    matches = [label for label, terms in canonical if any(term in lowered for term in terms)]
+    for marker in _METHOD_MARKERS:
+        if marker in lowered and marker not in matches:
+            matches.append(marker)
+    return unique_text_values(matches, 4)
+
+
+def matched_benchmark_terms(sentence: str) -> list[str]:
+    lowered = sentence.lower()
+    matches = [marker for marker in _BENCHMARK_MARKERS if marker in lowered]
+    return unique_text_values(matches, 4)
+
+
+def extract_population_phrase(sentence: str) -> str:
+    match = re.search(
+        r"\b(?:n\s*=\s*\d+\s+)?(?:\d+\s+)?(?:patients?|participants?|subjects?|mice|mouse|murine\s+models?|human\s+cohorts?|cell\s+lines?|organoids?|populations?)\b[^,;.]{0,100}",
+        sentence,
+        flags=re.IGNORECASE,
+    )
+    if match:
+        return " ".join(match.group(0).split()).strip(" ,;:")
+    return ""
+
+
+def methodology_evidence_item(field: str, text: str, section: str, location: dict[str, Any]) -> dict[str, Any]:
+    return {
+        "field": field,
+        "text": text[:500],
+        "section": section,
+        "source_location": location,
+        "evidence_level": "explicit_text",
+        "confidence": 0.82 if section.lower().startswith(("method", "material", "experimental", "study design", "statistical")) else 0.68,
+    }
+
+
+def unique_text_values(values: list[str], limit: int) -> list[str]:
+    selected: list[str] = []
+    seen: set[str] = set()
+    for value in values:
+        clean = " ".join(str(value or "").split()).strip()
+        key = clean.lower()
+        if not clean or key in seen:
+            continue
+        seen.add(key)
+        selected.append(clean)
+        if len(selected) >= limit:
+            break
+    return selected
+
+
+def prefer_structured_field(current: str, suggested: str, field: str) -> str:
+    if not suggested:
+        return current
+    if not current or is_low_information_field(current, field):
+        return suggested
+    return current
+
+
 def parse_paper_text(text: str) -> dict[str, Any]:
     try:
         from ._gap_detection import extract_gap_signals_from_text
@@ -1267,6 +2088,10 @@ def parse_paper_text(text: str) -> dict[str, Any]:
     method = infer_field(clean, ["method", "approach", "model", "framework"], default="")
     scenario = infer_field(clean, ["scenario", "application", "domain", "task"], default="")
     benchmark = infer_field(clean, ["benchmark", "dataset", "data set", "corpus"], default="")
+    methodology = extract_methodology_evidence(clean)
+    method = prefer_structured_field(method, str(methodology.get("method") or ""), "method")
+    scenario = prefer_structured_field(scenario, str(methodology.get("scenario") or ""), "scenario")
+    benchmark = prefer_structured_field(benchmark, str(methodology.get("benchmark") or ""), "benchmark")
     method = repair_unknown_field(method, clean, "method")
     scenario = repair_unknown_field(scenario, clean, "scenario")
     benchmark = repair_unknown_field(benchmark, clean, "benchmark")
@@ -1295,6 +2120,8 @@ def parse_paper_text(text: str) -> dict[str, Any]:
         "contribution": contribution,
         "limitation": limitation,
         "gap_signals": gap_signals,
+        "causal_chains": extract_causal_chains_heuristic(clean),
+        "structured_methodology": methodology,
     }
 
 def extract_labeled_value(text: str, labels: list[str]) -> str:

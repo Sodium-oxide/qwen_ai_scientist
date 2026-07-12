@@ -1,0 +1,573 @@
+{
+  "project_id": "sci_1783839289386379700",
+  "agent": "zhizhi",
+  "strategy": "subhypothesis_directed_retrieval",
+  "reports": [
+    {
+      "query": "genetic variants molecular phenotypes pharmacokinetics toxicity dosing",
+      "source_query": "genetic variants molecular phenotypes pharmacokinetics toxicity dosing",
+      "query_language": {
+        "query": "genetic variants molecular phenotypes pharmacokinetics toxicity dosing",
+        "source_query": "genetic variants molecular phenotypes pharmacokinetics toxicity dosing",
+        "translation_method": "already_english"
+      },
+      "search_id": "search_1783839455749444500",
+      "total_results": 15,
+      "imported_records": 15,
+      "peer_reviewed_imported_records": 15,
+      "layer_quotas": {
+        "L0_review": 1,
+        "L1_milestone": 1,
+        "L2_top_latest": 3,
+        "L3_preprint": 0,
+        "L4_regular": 10
+      },
+      "import_layer_minimums": {
+        "L3_preprint": 0,
+        "L2_top_latest": 1,
+        "L4_regular": 1,
+        "L0_review": 1,
+        "L1_milestone": 1
+      },
+      "p0_preprint_selected": 0,
+      "p0_preprint_imported": 0,
+      "p0_preprint_target": 3,
+      "p0_preprint_required": 1,
+      "preprint_evidence": {
+        "status": "import_failed",
+        "providers": [
+          "arxiv",
+          "medrxiv",
+          "biorxiv"
+        ],
+        "search_id": "search_1783839406191756100",
+        "total_results": 10,
+        "import_target": 3,
+        "imported_records": [],
+        "failed_imports": [
+          {
+            "result_index": 0,
+            "title": "Disaggregating the Genetic Overlap Between Educational Attainment and Substance Use Phenotypes",
+            "error": "Search result rejected before import by domain relevance gate: title=Disaggregating the Genetic Overlap Between Educational Attainment and Substance Use Phenotypes, domain=Personalized Medicine / Precision Medicine / Pharmacogenomics / Cancer Genomics / Clinical Pharmacology / Multi-omics / Patient-derived Models / Cell and Gene Therapy Manufacturing / Biostatistics / Regulatory Science, assessment={\"profile\": \"personalized_medicine_precision_medicine_pharmacogenomics_cancer_genomics_clinic\", \"target_field\": \"biology\", \"result_field\": \"general\", \"score\": 0.1262, \"query_hits\": [\"genetic\", \"variants\", \"phenotypes\"], \"anchor_hits\": [\"models\", \"gene\"], \"topic_hits\": [], \"noise_hits\": [], \"flags\": [\"core_domain_mismatch\", \"weak_preprint_domain_relevance\"], \"is_preprint\": true, \"core_domain_alignment\": {\"enabled\": true, \"passes\": false, \"core_terms\": [\"personalized medicine precision\", \"medicine precision pharmacogenomics\", \"precision pharmacogenomics cancer\", \"pharmacogenomics cancer genomics\", \"cancer genomics clinical\", \"genomics clinical pharmacology\", \"clinical pharmacology multi-omics\", \"pharmacology multi-omics patient-derived\", \"multi-omics patient-derived models\", \"patient-derived models cell\", \"personalized\", \"medicine\", \"precision\", \"pharmacogenomics\", \"cancer\", \"genomics\", \"clinical\", \"pharmacology\"], \"core_hit_count\": 2, \"core_hits\": [\"models\", \"gene\"], \"specific_terms\": [\"personalized medicine precision\", \"medicine precision pharmacogenomics\", \"precision pharmacogenomics cancer\", \"pharmacogenomics cancer genomics\", \"cancer genomics clinical\", \"genomics clinical pharmacology\", \"clinical pharmacology multi-omics\", \"pharmacology multi-omics patient-derived\", \"multi-omics patient-derived models\", \"patient-derived models cell\", \"personalized\", \"medicine\"], \"specific_hit_count\": 0, \"specific_hits\": [], \"min_core_hits\": 3, \"min_specific_hits\": 2, \"is_preprint\": true, \"reason\": \"title/abstract do not cover enough user-specified core topic terms\"}, \"verdict\": \"reject\", \"requires_human_review\": false}"
+          },
+          {
+            "result_index": 1,
+            "title": "A comprehensive framework for the interpretation of TTN missense variants",
+            "error": "Search result rejected before import by domain relevance gate: title=A comprehensive framework for the interpretation of TTN missense variants, domain=Personalized Medicine / Precision Medicine / Pharmacogenomics / Cancer Genomics / Clinical Pharmacology / Multi-omics / Patient-derived Models / Cell and Gene Therapy Manufacturing / Biostatistics / Regulatory Science, assessment={\"profile\": \"personalized_medicine_precision_medicine_pharmacogenomics_cancer_genomics_clinic\", \"target_field\": \"biology\", \"result_field\": \"biomedical\", \"score\": 0.1458, \"query_hits\": [\"genetic\", \"variants\", \"phenotypes\"], \"anchor_hits\": [\"clinical\", \"cell\", \"gene\"], \"topic_hits\": [], \"noise_hits\": [], \"flags\": [\"core_domain_mismatch\", \"weak_preprint_domain_relevance\"], \"is_preprint\": true, \"core_domain_alignment\": {\"enabled\": true, \"passes\": false, \"core_terms\": [\"personalized medicine precision\", \"medicine precision pharmacogenomics\", \"precision pharmacogenomics cancer\", \"pharmacogenomics cancer genomics\", \"cancer genomics clinical\", \"genomics clinical pharmacology\", \"clinical pharmacology multi-omics\", \"pharmacology multi-omics patient-derived\", \"multi-omics patient-derived models\", \"patient-derived models cell\", \"personalized\", \"medicine\", \"precision\", \"pharmacogenomics\", \"cancer\", \"genomics\", \"clinical\", \"pharmacology\"], \"core_hit_count\": 3, \"core_hits\": [\"clinical\", \"cell\", \"gene\"], \"specific_terms\": [\"personalized medicine precision\", \"medicine precision pharmacogenomics\", \"precision pharmacogenomics cancer\", \"pharmacogenomics cancer genomics\", \"cancer genomics clinical\", \"genomics clinical pharmacology\", \"clinical pharmacology multi-omics\", \"pharmacology multi-omics patient-derived\", \"multi-omics patient-derived models\", \"patient-derived models cell\", \"personalized\", \"medicine\"], \"specific_hit_count\": 1, \"specific_hits\": [\"clinical\"], \"min_core_hits\": 3, \"min_specific_hits\": 2, \"is_preprint\": true, \"reason\": \"title/abstract do not cover enough user-specified core topic terms\"}, \"verdict\": \"reject\", \"requires_human_review\": false}"
+          },
+          {
+            "result_index": 2,
+            "title": "Variants in the proteasome regulator PSMF1 cause a phenotypic spectrum from early-onset Parkinson's disease to perinatal",
+            "error": "Search result rejected before import by domain relevance gate: title=Variants in the proteasome regulator PSMF1 cause a phenotypic spectrum from early-onset Parkinson's disease to perinatal...[truncated], domain=Personalized Medicine / Precision Medicine / Pharmacogenomics / Cancer Genomics / Clinical Pharmacology / Multi-omics / Patient-derived Models / Cell and Gene Therapy Manufacturing / Biostatistics / Regulatory Science, assessment={\"profile\": \"personalized_medicine_precision_medicine_pharmacogenomics_cancer_genomics_clinic\", \"target_field\": \"biology\", \"result_field\": \"biomedical\", \"score\": 0.1169, \"query_hits\": [\"variants\", \"phenotypes\"], \"anchor_hits\": [\"patient-derived\", \"models\", \"gene\"], \"topic_hits\": [], \"noise_hits\": [], \"flags\": [\"core_domain_mismatch\", \"weak_preprint_domain_relevance\"], \"is_preprint\": true, \"core_domain_alignment\": {\"enabled\": true, \"passes\": false, \"core_terms\": [\"personalized medicine precision\", \"medicine precision pharmacogenomics\", \"precision pharmacogenomics cancer\", \"pharmacogenomics cancer genomics\", \"cancer genomics clinical\", \"genomics clinical pharmacology\", \"clinical pharmacology multi-omics\", \"pharmacology multi-omics patient-derived\", \"multi-omics patient-derived models\", \"patient-derived models cell\", \"personalized\", \"medicine\", \"precision\", \"pharmacogenomics\", \"cancer\", \"genomics\", \"clinical\", \"pharmacology\"], \"core_hit_count\": 3, \"core_hits\": [\"patient-derived\", \"models\", \"gene\"], \"specific_terms\": [\"personalized medicine precision\", \"medicine precision pharmacogenomics\", \"precision pharmacogenomics cancer\", \"pharmacogenomics cancer genomics\", \"cancer genomics clinical\", \"genomics clinical pharmacology\", \"clinical pharmacology multi-omics\", \"pharmacology multi-omics patient-derived\", \"multi-omics patient-derived models\", \"patient-derived models cell\", \"personalized\", \"medicine\"], \"specific_hit_count\": 1, \"specific_hits\": [\"patient-derived\"], \"min_core_hits\": 3, \"min_specific_hits\": 2, \"is_preprint\": true, \"reason\": \"title/abstract do not cover enough user-specified core topic terms\"}, \"verdict\": \"reject\", \"requires_human_review\": false}"
+          },
+          {
+            "result_index": 3,
+            "title": "Clinical and Cognitive Phenotyping of Copy Number Variants Associated with Neurodevelopmental Disorders From a Multi-Anc",
+            "error": "Search result rejected before import by domain relevance gate: title=Clinical and Cognitive Phenotyping of Copy Number Variants Associated with Neurodevelopmental Disorders From a Multi-Anc...[truncated], domain=Personalized Medicine / Precision Medicine / Pharmacogenomics / Cancer Genomics / Clinical Pharmacology / Multi-omics / Patient-derived Models / Cell and Gene Therapy Manufacturing / Biostatistics / Regulatory Science, assessment={\"profile\": \"personalized_medicine_precision_medicine_pharmacogenomics_cancer_genomics_clinic\", \"target_field\": \"biology\", \"result_field\": \"medicine\", \"score\": 0.0972, \"query_hits\": [\"variants\", \"phenotypes\"], \"anchor_hits\": [\"precision\", \"clinical\"], \"topic_hits\": [], \"noise_hits\": [], \"flags\": [\"core_domain_mismatch\", \"weak_preprint_domain_relevance\"], \"is_preprint\": true, \"core_domain_alignment\": {\"enabled\": true, \"passes\": false, \"core_terms\": [\"personalized medicine precision\", \"medicine precision pharmacogenomics\", \"precision pharmacogenomics cancer\", \"pharmacogenomics cancer genomics\", \"cancer genomics clinical\", \"genomics clinical pharmacology\", \"clinical pharmacology multi-omics\", \"pharmacology multi-omics patient-derived\", \"multi-omics patient-derived models\", \"patient-derived models cell\", \"personalized\", \"medicine\", \"precision\", \"pharmacogenomics\", \"cancer\", \"genomics\", \"clinical\", \"pharmacology\"], \"core_hit_count\": 2, \"core_hits\": [\"precision\", \"clinical\"], \"specific_terms\": [\"personalized medicine precision\", \"medicine precision pharmacogenomics\", \"precision pharmacogenomics cancer\", \"pharmacogenomics cancer genomics\", \"cancer genomics clinical\", \"genomics clinical pharmacology\", \"clinical pharmacology multi-omics\", \"pharmacology multi-omics patient-derived\", \"multi-omics patient-derived models\", \"patient-derived models cell\", \"personalized\", \"medicine\"], \"specific_hit_count\": 2, \"specific_hits\": [\"precision\", \"clinical\"], \"min_core_hits\": 3, \"min_specific_hits\": 2, \"is_preprint\": true, \"reason\": \"title/abstract do not cover enough user-specified core topic terms\"}, \"verdict\": \"reject\", \"requires_human_review\": false}"
+          },
+          {
+            "result_index": 4,
+            "title": "Pathogenic BRCA1 DBD variants exhibit altered DNA binding affinities and susceptibility to menadione",
+            "error": "Search result rejected before import by domain relevance gate: title=Pathogenic BRCA1 DBD variants exhibit altered DNA binding affinities and susceptibility to menadione, domain=Personalized Medicine / Precision Medicine / Pharmacogenomics / Cancer Genomics / Clinical Pharmacology / Multi-omics / Patient-derived Models / Cell and Gene Therapy Manufacturing / Biostatistics / Regulatory Science, assessment={\"profile\": \"personalized_medicine_precision_medicine_pharmacogenomics_cancer_genomics_clinic\", \"target_field\": \"biology\", \"result_field\": \"biomedical\", \"score\": 0.1169, \"query_hits\": [\"variants\", \"phenotypes\"], \"anchor_hits\": [\"cancer\", \"cell\", \"gene\"], \"topic_hits\": [], \"noise_hits\": [], \"flags\": [\"core_domain_mismatch\", \"weak_preprint_domain_relevance\"], \"is_preprint\": true, \"core_domain_alignment\": {\"enabled\": true, \"passes\": false, \"core_terms\": [\"personalized medicine precision\", \"medicine precision pharmacogenomics\", \"precision pharmacogenomics cancer\", \"pharmacogenomics cancer genomics\", \"cancer genomics clinical\", \"genomics clinical pharmacology\", \"clinical pharmacology multi-omics\", \"pharmacology multi-omics patient-derived\", \"multi-omics patient-derived models\", \"patient-derived models cell\", \"personalized\", \"medicine\", \"precision\", \"pharmacogenomics\", \"cancer\", \"genomics\", \"clinical\", \"pharmacology\"], \"core_hit_count\": 3, \"core_hits\": [\"cancer\", \"cell\", \"gene\"], \"specific_terms\": [\"personalized medicine precision\", \"medicine precision pharmacogenomics\", \"precision pharmacogenomics cancer\", \"pharmacogenomics cancer genomics\", \"cancer genomics clinical\", \"genomics clinical pharmacology\", \"clinical pharmacology multi-omics\", \"pharmacology multi-omics patient-derived\", \"multi-omics patient-derived models\", \"patient-derived models cell\", \"personalized\", \"medicine\"], \"specific_hit_count\": 0, \"specific_hits\": [], \"min_core_hits\": 3, \"min_specific_hits\": 2, \"is_preprint\": true, \"reason\": \"title/abstract do not cover enough user-specified core topic terms\"}, \"verdict\": \"reject\", \"requires_human_review\": false}"
+          },
+          {
+            "result_index": 5,
+            "title": "Genomic signatures of innovation and selection in the extremotolerant yeast Kluyveromyces marxianus",
+            "error": "Search result rejected before import by domain relevance gate: title=Genomic signatures of innovation and selection in the extremotolerant yeast Kluyveromyces marxianus, domain=Personalized Medicine / Precision Medicine / Pharmacogenomics / Cancer Genomics / Clinical Pharmacology / Multi-omics / Patient-derived Models / Cell and Gene Therapy Manufacturing / Biostatistics / Regulatory Science, assessment={\"profile\": \"personalized_medicine_precision_medicine_pharmacogenomics_cancer_genomics_clinic\", \"target_field\": \"biology\", \"result_field\": \"biology\", \"score\": 0.1748, \"query_hits\": [\"genetic\", \"variants\", \"molecular\", \"phenotypes\"], \"anchor_hits\": [\"genomics\", \"cell\", \"gene\"], \"topic_hits\": [], \"noise_hits\": [], \"flags\": [\"core_domain_mismatch\"], \"is_preprint\": true, \"core_domain_alignment\": {\"enabled\": true, \"passes\": false, \"core_terms\": [\"personalized medicine precision\", \"medicine precision pharmacogenomics\", \"precision pharmacogenomics cancer\", \"pharmacogenomics cancer genomics\", \"cancer genomics clinical\", \"genomics clinical pharmacology\", \"clinical pharmacology multi-omics\", \"pharmacology multi-omics patient-derived\", \"multi-omics patient-derived models\", \"patient-derived models cell\", \"personalized\", \"medicine\", \"precision\", \"pharmacogenomics\", \"cancer\", \"genomics\", \"clinical\", \"pharmacology\"], \"core_hit_count\": 3, \"core_hits\": [\"genomics\", \"cell\", \"gene\"], \"specific_terms\": [\"personalized medicine precision\", \"medicine precision pharmacogenomics\", \"precision pharmacogenomics cancer\", \"pharmacogenomics cancer genomics\", \"cancer genomics clinical\", \"genomics clinical pharmacology\", \"clinical pharmacology multi-omics\", \"pharmacology multi-omics patient-derived\", \"multi-omics patient-derived models\", \"patient-derived models cell\", \"personalized\", \"medicine\"], \"specific_hit_count\": 1, \"specific_hits\": [\"genomics\"], \"min_core_hits\": 3, \"min_specific_hits\": 2, \"is_preprint\": true, \"reason\": \"title/abstract do not cover enough user-specified core topic terms\"}, \"verdict\": \"reject\", \"requires_human_review\": false}"
+          },
+          {
+            "result_index": 6,
+            "title": "SIRPγ modulates effector differentiation of human CD8 T Cells under suboptimal TCR stimulation: implications for immune ",
+            "error": "Search result rejected before import by domain relevance gate: title=SIRPγ modulates effector differentiation of human CD8 T Cells under suboptimal TCR stimulation: implications for immune...[truncated], domain=Personalized Medicine / Precision Medicine / Pharmacogenomics / Cancer Genomics / Clinical Pharmacology / Multi-omics / Patient-derived Models / Cell and Gene Therapy Manufacturing / Biostatistics / Regulatory Science, assessment={\"profile\": \"personalized_medicine_precision_medicine_pharmacogenomics_cancer_genomics_clinic\", \"target_field\": \"biology\", \"result_field\": \"biomedical\", \"score\": 0.1551, \"query_hits\": [\"genetic\", \"variants\", \"molecular\", \"phenotypes\"], \"anchor_hits\": [\"cell\", \"gene\"], \"topic_hits\": [], \"noise_hits\": [], \"flags\": [\"core_domain_mismatch\", \"weak_preprint_domain_relevance\"], \"is_preprint\": true, \"core_domain_alignment\": {\"enabled\": true, \"passes\": false, \"core_terms\": [\"personalized medicine precision\", \"medicine precision pharmacogenomics\", \"precision pharmacogenomics cancer\", \"pharmacogenomics cancer genomics\", \"cancer genomics clinical\", \"genomics clinical pharmacology\", \"clinical pharmacology multi-omics\", \"pharmacology multi-omics patient-derived\", \"multi-omics patient-derived models\", \"patient-derived models cell\", \"personalized\", \"medicine\", \"precision\", \"pharmacogenomics\", \"cancer\", \"genomics\", \"clinical\", \"pharmacology\"], \"core_hit_count\": 2, \"core_hits\": [\"cell\", \"gene\"], \"specific_terms\": [\"personalized medicine precision\", \"medicine precision pharmacogenomics\", \"precision pharmacogenomics cancer\", \"pharmacogenomics cancer genomics\", \"cancer genomics clinical\", \"genomics clinical pharmacology\", \"clinical pharmacology multi-omics\", \"pharmacology multi-omics patient-derived\", \"multi-omics patient-derived models\", \"patient-derived models cell\", \"personalized\", \"medicine\"], \"specific_hit_count\": 0, \"specific_hits\": [], \"min_core_hits\": 3, \"min_specific_hits\": 2, \"is_preprint\": true, \"reason\": \"title/abstract do not cover enough user-specified core topic terms\"}, \"verdict\": \"reject\", \"requires_human_review\": false}"
+          },
+          {
+            "result_index": 7,
+            "title": "Fetal Gene Regulatory Gene Deletions are Associated with Poor Cognition in Schizophrenia and Community-Based Samples",
+            "error": "Search result rejected before import by domain relevance gate: title=Fetal Gene Regulatory Gene Deletions are Associated with Poor Cognition in Schizophrenia and Community-Based Samples, domain=Personalized Medicine / Precision Medicine / Pharmacogenomics / Cancer Genomics / Clinical Pharmacology / Multi-omics / Patient-derived Models / Cell and Gene Therapy Manufacturing / Biostatistics / Regulatory Science, assessment={\"profile\": \"personalized_medicine_precision_medicine_pharmacogenomics_cancer_genomics_clinic\", \"target_field\": \"biology\", \"result_field\": \"biomedical\", \"score\": 0.1262, \"query_hits\": [\"genetic\", \"variants\", \"phenotypes\"], \"anchor_hits\": [\"clinical\", \"gene\"], \"topic_hits\": [], \"noise_hits\": [], \"flags\": [\"core_domain_mismatch\", \"weak_preprint_domain_relevance\"], \"is_preprint\": true, \"core_domain_alignment\": {\"enabled\": true, \"passes\": false, \"core_terms\": [\"personalized medicine precision\", \"medicine precision pharmacogenomics\", \"precision pharmacogenomics cancer\", \"pharmacogenomics cancer genomics\", \"cancer genomics clinical\", \"genomics clinical pharmacology\", \"clinical pharmacology multi-omics\", \"pharmacology multi-omics patient-derived\", \"multi-omics patient-derived models\", \"patient-derived models cell\", \"personalized\", \"medicine\", \"precision\", \"pharmacogenomics\", \"cancer\", \"genomics\", \"clinical\", \"pharmacology\"], \"core_hit_count\": 2, \"core_hits\": [\"clinical\", \"gene\"], \"specific_terms\": [\"personalized medicine precision\", \"medicine precision pharmacogenomics\", \"precision pharmacogenomics cancer\", \"pharmacogenomics cancer genomics\", \"cancer genomics clinical\", \"genomics clinical pharmacology\", \"clinical pharmacology multi-omics\", \"pharmacology multi-omics patient-derived\", \"multi-omics patient-derived models\", \"patient-derived models cell\", \"personalized\", \"medicine\"], \"specific_hit_count\": 1, \"specific_hits\": [\"clinical\"], \"min_core_hits\": 3, \"min_specific_hits\": 2, \"is_preprint\": true, \"reason\": \"title/abstract do not cover enough user-specified core topic terms\"}, \"verdict\": \"reject\", \"requires_human_review\": false}"
+          },
+          {
+            "result_index": 8,
+            "title": "Borzoi-informed fine mapping improves causal variant prioritization in complex trait GWAS",
+            "error": "Search result rejected before import by domain relevance gate: title=Borzoi-informed fine mapping improves causal variant prioritization in complex trait GWAS, domain=Personalized Medicine / Precision Medicine / Pharmacogenomics / Cancer Genomics / Clinical Pharmacology / Multi-omics / Patient-derived Models / Cell and Gene Therapy Manufacturing / Biostatistics / Regulatory Science, assessment={\"profile\": \"personalized_medicine_precision_medicine_pharmacogenomics_cancer_genomics_clinic\", \"target_field\": \"biology\", \"result_field\": \"biomedical\", \"score\": 0.1458, \"query_hits\": [\"variants\", \"molecular\", \"phenotypes\"], \"anchor_hits\": [\"models\", \"cell\", \"gene\"], \"topic_hits\": [], \"noise_hits\": [], \"flags\": [\"core_domain_mismatch\", \"weak_preprint_domain_relevance\"], \"is_preprint\": true, \"core_domain_alignment\": {\"enabled\": true, \"passes\": false, \"core_terms\": [\"personalized medicine precision\", \"medicine precision pharmacogenomics\", \"precision pharmacogenomics cancer\", \"pharmacogenomics cancer genomics\", \"cancer genomics clinical\", \"genomics clinical pharmacology\", \"clinical pharmacology multi-omics\", \"pharmacology multi-omics patient-derived\", \"multi-omics patient-derived models\", \"patient-derived models cell\", \"personalized\", \"medicine\", \"precision\", \"pharmacogenomics\", \"cancer\", \"genomics\", \"clinical\", \"pharmacology\"], \"core_hit_count\": 3, \"core_hits\": [\"models\", \"cell\", \"gene\"], \"specific_terms\": [\"personalized medicine precision\", \"medicine precision pharmacogenomics\", \"precision pharmacogenomics cancer\", \"pharmacogenomics cancer genomics\", \"cancer genomics clinical\", \"genomics clinical pharmacology\", \"clinical pharmacology multi-omics\", \"pharmacology multi-omics patient-derived\", \"multi-omics patient-derived models\", \"patient-derived models cell\", \"personalized\", \"medicine\"], \"specific_hit_count\": 0, \"specific_hits\": [], \"min_core_hits\": 3, \"min_specific_hits\": 2, \"is_preprint\": true, \"reason\": \"title/abstract do not cover enough user-specified core topic terms\"}, \"verdict\": \"reject\", \"requires_human_review\": false}"
+          },
+          {
+            "result_index": 9,
+            "title": "Telomere-to-telomere assemblies reveal complex adaptive variation of 3-ketoacyl-CoA-synthases in Populus trichocarpa lik",
+            "error": "Search result rejected before import by domain relevance gate: title=Telomere-to-telomere assemblies reveal complex adaptive variation of 3-ketoacyl-CoA-synthases in Populus trichocarpa lik...[truncated], domain=Personalized Medicine / Precision Medicine / Pharmacogenomics / Cancer Genomics / Clinical Pharmacology / Multi-omics / Patient-derived Models / Cell and Gene Therapy Manufacturing / Biostatistics / Regulatory Science, assessment={\"profile\": \"personalized_medicine_precision_medicine_pharmacogenomics_cancer_genomics_clinic\", \"target_field\": \"biology\", \"result_field\": \"ecology\", \"score\": 0.1262, \"query_hits\": [\"genetic\", \"variants\", \"phenotypes\"], \"anchor_hits\": [\"models\", \"gene\"], \"topic_hits\": [], \"noise_hits\": [], \"flags\": [\"field_mismatch\", \"core_domain_mismatch\", \"weak_preprint_domain_relevance\"], \"is_preprint\": true, \"core_domain_alignment\": {\"enabled\": true, \"passes\": false, \"core_terms\": [\"personalized medicine precision\", \"medicine precision pharmacogenomics\", \"precision pharmacogenomics cancer\", \"pharmacogenomics cancer genomics\", \"cancer genomics clinical\", \"genomics clinical pharmacology\", \"clinical pharmacology multi-omics\", \"pharmacology multi-omics patient-derived\", \"multi-omics patient-derived models\", \"patient-derived models cell\", \"personalized\", \"medicine\", \"precision\", \"pharmacogenomics\", \"cancer\", \"genomics\", \"clinical\", \"pharmacology\"], \"core_hit_count\": 2, \"core_hits\": [\"models\", \"gene\"], \"specific_terms\": [\"personalized medicine precision\", \"medicine precision pharmacogenomics\", \"precision pharmacogenomics cancer\", \"pharmacogenomics cancer genomics\", \"cancer genomics clinical\", \"genomics clinical pharmacology\", \"clinical pharmacology multi-omics\", \"pharmacology multi-omics patient-derived\", \"multi-omics patient-derived models\", \"patient-derived models cell\", \"personalized\", \"medicine\"], \"specific_hit_count\": 0, \"specific_hits\": [], \"min_core_hits\": 3, \"min_specific_hits\": 2, \"is_preprint\": true, \"reason\": \"title/abstract do not cover enough user-specified core topic terms\"}, \"verdict\": \"reject\", \"requires_human_review\": false}"
+          }
+        ],
+        "enforced_for_branch_gate": false,
+        "candidate_count": 10,
+        "provider_blocks": [
+          {
+            "provider": "arxiv",
+            "query": "genetic variants molecular phenotypes pharmacokinetics toxicity dosing",
+            "status": "ok",
+            "note": null,
+            "error": null,
+            "result_count": 0
+          },
+          {
+            "provider": "medrxiv",
+            "query": "genetic variants molecular phenotypes pharmacokinetics toxicity dosing",
+            "status": "ok",
+            "note": null,
+            "error": null,
+            "result_count": 5
+          },
+          {
+            "provider": "biorxiv",
+            "query": "genetic variants molecular phenotypes pharmacokinetics toxicity dosing",
+            "status": "ok",
+            "note": null,
+            "error": null,
+            "result_count": 5
+          }
+        ]
+      },
+      "main_import_budget": 15,
+      "main_evidence_providers": [
+        "semantic_scholar",
+        "pubmed"
+      ],
+      "preprint_signal_providers": [
+        "arxiv",
+        "medrxiv",
+        "biorxiv"
+      ],
+      "preprint_gate_enforced": false,
+      "status": "ready_for_causal_gap_detection",
+      "constraint_source": "verbatim_research_brief",
+      "research_brief_chars": 7779,
+      "retrieval_constraints": [
+        "Use semantic_scholar, PubMed, and arXiv. Clinical preprints can supplement medRxiv/bioRxiv but must be marked as unreviewed. Import at least 15 quality-screened papers. Do not fabricate papers, clinical trials, regulatory documents, effect sizes, patient outcomes, or guideline recommendations. Ensure coverage of each selected sub-hypothesis's evidence window. Exclude or de-prioritize content that only reports model AUC without clinical endpoints, only reports disease associations without treatment strategies, is unrelated to precision medicine, or claims direct patient benefits from animal or cell line studies."
+      ],
+      "evidence_window_alerts": [
+        {
+          "priority": "P0",
+          "status": "preprint_signal_not_available",
+          "action": "Record the independent preprint-search gap, but do not block causal-gap exploration or hypothesis generation while this temporary policy is active."
+        }
+      ],
+      "updatedAt": 1783840700.422516,
+      "sub_hypothesis_id": "SH1"
+    },
+    {
+      "query": "molecular profiles immune profiles clinical benefit resistance risk targeted therapies",
+      "source_query": "molecular profiles immune profiles clinical benefit resistance risk targeted therapies",
+      "query_language": {
+        "query": "molecular profiles immune profiles clinical benefit resistance risk targeted therapies",
+        "source_query": "molecular profiles immune profiles clinical benefit resistance risk targeted therapies",
+        "translation_method": "already_english"
+      },
+      "search_id": "search_1783840842941400400",
+      "total_results": 15,
+      "imported_records": 15,
+      "peer_reviewed_imported_records": 12,
+      "layer_quotas": {
+        "L0_review": 1,
+        "L1_milestone": 1,
+        "L2_top_latest": 3,
+        "L3_preprint": 0,
+        "L4_regular": 10
+      },
+      "import_layer_minimums": {
+        "L3_preprint": 0,
+        "L2_top_latest": 1,
+        "L4_regular": 1,
+        "L0_review": 1,
+        "L1_milestone": 1
+      },
+      "p0_preprint_selected": 3,
+      "p0_preprint_imported": 3,
+      "p0_preprint_target": 3,
+      "p0_preprint_required": 1,
+      "preprint_evidence": {
+        "status": "imported",
+        "providers": [
+          "arxiv",
+          "medrxiv",
+          "biorxiv"
+        ],
+        "search_id": "search_1783840700435731000",
+        "total_results": 30,
+        "import_target": 3,
+        "imported_records": [
+          {
+            "result_index": 3,
+            "title": "Combining tumor genomic and transcriptomic analysis with liquid biopsy ctDNA monitoring: analytical validation and clini",
+            "paper_id": "paper_1783840780763596100",
+            "layer": "L3_preprint"
+          },
+          {
+            "result_index": 5,
+            "title": "A systematic review of behavioral interventions to improve maternal outcomes for women in the United States at high risk",
+            "paper_id": "paper_1783840812222265600",
+            "layer": "L3_preprint"
+          },
+          {
+            "result_index": 6,
+            "title": "Phenotypic Age and Neutrophil-to-Lymphocyte Ratio mediate the association between the triglyceride glucose-body mass ind",
+            "paper_id": "paper_1783840842924698200",
+            "layer": "L3_preprint"
+          }
+        ],
+        "failed_imports": [
+          {
+            "result_index": 0,
+            "title": "Pharmacological inhibition of CXCR4 increases the anti-tumor activity of conventional and targeted therapies in B-cell l",
+            "error": "Search result rejected before import by domain relevance gate: title=Pharmacological inhibition of CXCR4 increases the anti-tumor activity of conventional and targeted therapies in B-cell l...[truncated], domain=Personalized Medicine / Precision Medicine / Pharmacogenomics / Cancer Genomics / Clinical Pharmacology / Multi-omics / Patient-derived Models / Cell and Gene Therapy Manufacturing / Biostatistics / Regulatory Science, assessment={\"profile\": \"personalized_medicine_precision_medicine_pharmacogenomics_cancer_genomics_clinic\", \"target_field\": \"biology\", \"result_field\": \"biomedical\", \"score\": 0.1913, \"query_hits\": [\"molecular\", \"clinical\", \"resistance\", \"targeted\", \"therapies\"], \"anchor_hits\": [\"clinical\", \"models\", \"cell\", \"gene\"], \"topic_hits\": [], \"noise_hits\": [], \"flags\": [\"core_domain_mismatch\"], \"is_preprint\": true, \"core_domain_alignment\": {\"enabled\": true, \"passes\": false, \"core_terms\": [\"personalized medicine precision\", \"medicine precision pharmacogenomics\", \"precision pharmacogenomics cancer\", \"pharmacogenomics cancer genomics\", \"cancer genomics clinical\", \"genomics clinical pharmacology\", \"clinical pharmacology multi-omics\", \"pharmacology multi-omics patient-derived\", \"multi-omics patient-derived models\", \"patient-derived models cell\", \"personalized\", \"medicine\", \"precision\", \"pharmacogenomics\", \"cancer\", \"genomics\", \"clinical\", \"pharmacology\"], \"core_hit_count\": 4, \"core_hits\": [\"clinical\", \"models\", \"cell\", \"gene\"], \"specific_terms\": [\"personalized medicine precision\", \"medicine precision pharmacogenomics\", \"precision pharmacogenomics cancer\", \"pharmacogenomics cancer genomics\", \"cancer genomics clinical\", \"genomics clinical pharmacology\", \"clinical pharmacology multi-omics\", \"pharmacology multi-omics patient-derived\", \"multi-omics patient-derived models\", \"patient-derived models cell\", \"personalized\", \"medicine\"], \"specific_hit_count\": 1, \"specific_hits\": [\"clinical\"], \"min_core_hits\": 3, \"min_specific_hits\": 2, \"is_preprint\": true, \"reason\": \"title/abstract do not cover enough user-specified core topic terms\"}, \"verdict\": \"reject\", \"requires_human_review\": false}"
+          },
+          {
+            "result_index": 1,
+            "title": "Two decades of molecular surveillance in Kenya reveal shifting Plasmodium falciparum drug resistance mutations linked to",
+            "error": "Search result rejected before import by domain relevance gate: title=Two decades of molecular surveillance in Kenya reveal shifting Plasmodium falciparum drug resistance mutations linked to...[truncated], domain=Personalized Medicine / Precision Medicine / Pharmacogenomics / Cancer Genomics / Clinical Pharmacology / Multi-omics / Patient-derived Models / Cell and Gene Therapy Manufacturing / Biostatistics / Regulatory Science, assessment={\"profile\": \"personalized_medicine_precision_medicine_pharmacogenomics_cancer_genomics_clinic\", \"target_field\": \"biology\", \"result_field\": \"general\", \"score\": 0.0872, \"query_hits\": [\"molecular\", \"resistance\", \"therapies\"], \"anchor_hits\": [\"gene\"], \"topic_hits\": [], \"noise_hits\": [], \"flags\": [\"core_domain_mismatch\", \"weak_preprint_domain_relevance\"], \"is_preprint\": true, \"core_domain_alignment\": {\"enabled\": true, \"passes\": false, \"core_terms\": [\"personalized medicine precision\", \"medicine precision pharmacogenomics\", \"precision pharmacogenomics cancer\", \"pharmacogenomics cancer genomics\", \"cancer genomics clinical\", \"genomics clinical pharmacology\", \"clinical pharmacology multi-omics\", \"pharmacology multi-omics patient-derived\", \"multi-omics patient-derived models\", \"patient-derived models cell\", \"personalized\", \"medicine\", \"precision\", \"pharmacogenomics\", \"cancer\", \"genomics\", \"clinical\", \"pharmacology\"], \"core_hit_count\": 1, \"core_hits\": [\"gene\"], \"specific_terms\": [\"personalized medicine precision\", \"medicine precision pharmacogenomics\", \"precision pharmacogenomics cancer\", \"pharmacogenomics cancer genomics\", \"cancer genomics clinical\", \"genomics clinical pharmacology\", \"clinical pharmacology multi-omics\", \"pharmacology multi-omics patient-derived\", \"multi-omics patient-derived models\", \"patient-derived models cell\", \"personalized\", \"medicine\"], \"specific_hit_count\": 0, \"specific_hits\": [], \"min_core_hits\": 3, \"min_specific_hits\": 2, \"is_preprint\": true, \"reason\": \"title/abstract do not cover enough user-specified core topic terms\"}, \"verdict\": \"reject\", \"requires_human_review\": false}"
+          },
+          {
+            "result_index": 2,
+            "title": "Strategies for tumor elimination and control under immune evasion and chemotherapy resistance",
+            "error": "Search result rejected before import by domain relevance gate: title=Strategies for tumor elimination and control under immune evasion and chemotherapy resistance, domain=Personalized Medicine / Precision Medicine / Pharmacogenomics / Cancer Genomics / Clinical Pharmacology / Multi-omics / Patient-derived Models / Cell and Gene Therapy Manufacturing / Biostatistics / Regulatory Science, assessment={\"profile\": \"personalized_medicine_precision_medicine_pharmacogenomics_cancer_genomics_clinic\", \"target_field\": \"biology\", \"result_field\": \"biology\", \"score\": 0.1688, \"query_hits\": [\"immune\", \"resistance\", \"targeted\", \"therapies\"], \"anchor_hits\": [\"cancer\", \"models\", \"cell\", \"therapy\"], \"topic_hits\": [], \"noise_hits\": [], \"flags\": [\"core_domain_mismatch\"], \"is_preprint\": true, \"core_domain_alignment\": {\"enabled\": true, \"passes\": false, \"core_terms\": [\"personalized medicine precision\", \"medicine precision pharmacogenomics\", \"precision pharmacogenomics cancer\", \"pharmacogenomics cancer genomics\", \"cancer genomics clinical\", \"genomics clinical pharmacology\", \"clinical pharmacology multi-omics\", \"pharmacology multi-omics patient-derived\", \"multi-omics patient-derived models\", \"patient-derived models cell\", \"personalized\", \"medicine\", \"precision\", \"pharmacogenomics\", \"cancer\", \"genomics\", \"clinical\", \"pharmacology\"], \"core_hit_count\": 4, \"core_hits\": [\"cancer\", \"models\", \"cell\", \"therapy\"], \"specific_terms\": [\"personalized medicine precision\", \"medicine precision pharmacogenomics\", \"precision pharmacogenomics cancer\", \"pharmacogenomics cancer genomics\", \"cancer genomics clinical\", \"genomics clinical pharmacology\", \"clinical pharmacology multi-omics\", \"pharmacology multi-omics patient-derived\", \"multi-omics patient-derived models\", \"patient-derived models cell\", \"personalized\", \"medicine\"], \"specific_hit_count\": 1, \"specific_hits\": [\"therapy\"], \"min_core_hits\": 3, \"min_specific_hits\": 2, \"is_preprint\": true, \"reason\": \"title/abstract do not cover enough user-specified core topic terms\"}, \"verdict\": \"reject\", \"requires_human_review\": false}"
+          },
+          {
+            "result_index": 4,
+            "title": "Extracellular vesicle miRNA signatures in pediatric onset-multiple sclerosis and obesity-driven immune and metabolic dys",
+            "error": "Search result rejected before import by domain relevance gate: title=Extracellular vesicle miRNA signatures in pediatric onset-multiple sclerosis and obesity-driven immune and metabolic dys...[truncated], domain=Personalized Medicine / Precision Medicine / Pharmacogenomics / Cancer Genomics / Clinical Pharmacology / Multi-omics / Patient-derived Models / Cell and Gene Therapy Manufacturing / Biostatistics / Regulatory Science, assessment={\"profile\": \"personalized_medicine_precision_medicine_pharmacogenomics_cancer_genomics_clinic\", \"target_field\": \"biology\", \"result_field\": \"general\", \"score\": 0.1294, \"query_hits\": [\"profiles\", \"immune\", \"resistance\", \"risk\"], \"anchor_hits\": [\"cell\", \"gene\"], \"topic_hits\": [], \"noise_hits\": [], \"flags\": [\"core_domain_mismatch\", \"weak_preprint_domain_relevance\"], \"is_preprint\": true, \"core_domain_alignment\": {\"enabled\": true, \"passes\": false, \"core_terms\": [\"personalized medicine precision\", \"medicine precision pharmacogenomics\", \"precision pharmacogenomics cancer\", \"pharmacogenomics cancer genomics\", \"cancer genomics clinical\", \"genomics clinical pharmacology\", \"clinical pharmacology multi-omics\", \"pharmacology multi-omics patient-derived\", \"multi-omics patient-derived models\", \"patient-derived models cell\", \"personalized\", \"medicine\", \"precision\", \"pharmacogenomics\", \"cancer\", \"genomics\", \"clinical\", \"pharmacology\"], \"core_hit_count\": 2, \"core_hits\": [\"cell\", \"gene\"], \"specific_terms\": [\"personalized medicine precision\", \"medicine precision pharmacogenomics\", \"precision pharmacogenomics cancer\", \"pharmacogenomics cancer genomics\", \"cancer genomics clinical\", \"genomics clinical pharmacology\", \"clinical pharmacology multi-omics\", \"pharmacology multi-omics patient-derived\", \"multi-omics patient-derived models\", \"patient-derived models cell\", \"personalized\", \"medicine\"], \"specific_hit_count\": 0, \"specific_hits\": [], \"min_core_hits\": 3, \"min_specific_hits\": 2, \"is_preprint\": true, \"reason\": \"title/abstract do not cover enough user-specified core topic terms\"}, \"verdict\": \"reject\", \"requires_human_review\": false}"
+          }
+        ],
+        "enforced_for_branch_gate": false,
+        "candidate_count": 30,
+        "provider_blocks": [
+          {
+            "provider": "arxiv",
+            "query": "molecular profiles immune profiles clinical benefit resistance risk targeted therapies",
+            "status": "ok",
+            "note": null,
+            "error": null,
+            "result_count": 6
+          },
+          {
+            "provider": "medrxiv",
+            "query": "molecular profiles immune profiles clinical benefit resistance risk targeted therapies",
+            "status": "ok",
+            "note": null,
+            "error": null,
+            "result_count": 12
+          },
+          {
+            "provider": "biorxiv",
+            "query": "molecular profiles immune profiles clinical benefit resistance risk targeted therapies",
+            "status": "ok",
+            "note": null,
+            "error": null,
+            "result_count": 12
+          }
+        ]
+      },
+      "main_import_budget": 12,
+      "main_evidence_providers": [
+        "semantic_scholar",
+        "pubmed"
+      ],
+      "preprint_signal_providers": [
+        "arxiv",
+        "medrxiv",
+        "biorxiv"
+      ],
+      "preprint_gate_enforced": false,
+      "status": "ready_for_causal_gap_detection",
+      "constraint_source": "verbatim_research_brief",
+      "research_brief_chars": 7779,
+      "retrieval_constraints": [
+        "Use semantic_scholar, PubMed, and arXiv. Clinical preprints can supplement medRxiv/bioRxiv but must be marked as unreviewed. Import at least 15 quality-screened papers. Do not fabricate papers, clinical trials, regulatory documents, effect sizes, patient outcomes, or guideline recommendations. Ensure coverage of each selected sub-hypothesis's evidence window. Exclude or de-prioritize content that only reports model AUC without clinical endpoints, only reports disease associations without treatment strategies, is unrelated to precision medicine, or claims direct patient benefits from animal or cell line studies."
+      ],
+      "evidence_window_alerts": [],
+      "updatedAt": 1783841734.3834138,
+      "sub_hypothesis_id": "SH2"
+    },
+    {
+      "query": "manufacturing parameters cell therapy product quality stability consistency",
+      "source_query": "manufacturing parameters cell therapy product quality stability consistency",
+      "query_language": {
+        "query": "manufacturing parameters cell therapy product quality stability consistency",
+        "source_query": "manufacturing parameters cell therapy product quality stability consistency",
+        "translation_method": "already_english"
+      },
+      "search_id": "search_1783841830611291600",
+      "total_results": 15,
+      "imported_records": 15,
+      "peer_reviewed_imported_records": 12,
+      "layer_quotas": {
+        "L0_review": 1,
+        "L1_milestone": 1,
+        "L2_top_latest": 3,
+        "L3_preprint": 0,
+        "L4_regular": 10
+      },
+      "import_layer_minimums": {
+        "L3_preprint": 0,
+        "L2_top_latest": 1,
+        "L4_regular": 1,
+        "L0_review": 1,
+        "L1_milestone": 1
+      },
+      "p0_preprint_selected": 3,
+      "p0_preprint_imported": 3,
+      "p0_preprint_target": 3,
+      "p0_preprint_required": 1,
+      "preprint_evidence": {
+        "status": "imported",
+        "providers": [
+          "arxiv",
+          "medrxiv",
+          "biorxiv"
+        ],
+        "search_id": "search_1783841734400339200",
+        "total_results": 34,
+        "import_target": 3,
+        "imported_records": [
+          {
+            "result_index": 1,
+            "title": "AI-Driven Personalization of Dual Antiplatelet Therapy Duration Post-PCI: A Novel Approach Balancing Ischemic and Bleedi",
+            "paper_id": "paper_1783841798736930400",
+            "layer": "L3_preprint"
+          },
+          {
+            "result_index": 4,
+            "title": "Using spatial statistics to infer game-theoretic interactions in an agent-based model of cancer cells",
+            "paper_id": "paper_1783841817363873900",
+            "layer": "L3_preprint"
+          },
+          {
+            "result_index": 7,
+            "title": "Assessment of Dosimetric Accuracy and Plan Quality in Prostate SBRT: Retrospective Evaluation of 36.25 Gy in 5 Fractions",
+            "paper_id": "paper_1783841830589977900",
+            "layer": "L3_preprint"
+          }
+        ],
+        "failed_imports": [
+          {
+            "result_index": 0,
+            "title": "Dosimetric Analysis of Fast Forward Breast Radiotherapy Using 3D-CRT with Deep Inspiration Breath Hold(DIBH)",
+            "error": "Search result rejected before import by domain relevance gate: title=Dosimetric Analysis of Fast Forward Breast Radiotherapy Using 3D-CRT with Deep Inspiration Breath Hold(DIBH), domain=Personalized Medicine / Precision Medicine / Pharmacogenomics / Cancer Genomics / Clinical Pharmacology / Multi-omics / Patient-derived Models / Cell and Gene Therapy Manufacturing / Biostatistics / Regulatory Science, assessment={\"profile\": \"personalized_medicine_precision_medicine_pharmacogenomics_cancer_genomics_clinic\", \"target_field\": \"biology\", \"result_field\": \"photonics\", \"score\": 0.135, \"query_hits\": [\"parameters\", \"cell\", \"therapy\"], \"anchor_hits\": [\"cancer\", \"cell\", \"therapy\"], \"topic_hits\": [], \"noise_hits\": [], \"flags\": [\"field_mismatch\", \"core_domain_mismatch\", \"weak_preprint_domain_relevance\"], \"is_preprint\": true, \"core_domain_alignment\": {\"enabled\": true, \"passes\": false, \"core_terms\": [\"personalized medicine precision\", \"medicine precision pharmacogenomics\", \"precision pharmacogenomics cancer\", \"pharmacogenomics cancer genomics\", \"cancer genomics clinical\", \"genomics clinical pharmacology\", \"clinical pharmacology multi-omics\", \"pharmacology multi-omics patient-derived\", \"multi-omics patient-derived models\", \"patient-derived models cell\", \"personalized\", \"medicine\", \"precision\", \"pharmacogenomics\", \"cancer\", \"genomics\", \"clinical\", \"pharmacology\"], \"core_hit_count\": 3, \"core_hits\": [\"cancer\", \"cell\", \"therapy\"], \"specific_terms\": [\"personalized medicine precision\", \"medicine precision pharmacogenomics\", \"precision pharmacogenomics cancer\", \"pharmacogenomics cancer genomics\", \"cancer genomics clinical\", \"genomics clinical pharmacology\", \"clinical pharmacology multi-omics\", \"pharmacology multi-omics patient-derived\", \"multi-omics patient-derived models\", \"patient-derived models cell\", \"personalized\", \"medicine\"], \"specific_hit_count\": 1, \"specific_hits\": [\"therapy\"], \"min_core_hits\": 3, \"min_specific_hits\": 2, \"is_preprint\": true, \"reason\": \"title/abstract do not cover enough user-specified core topic terms\"}, \"verdict\": \"reject\", \"requires_human_review\": false}"
+          },
+          {
+            "result_index": 2,
+            "title": "Choice of lipid supplementation for in vitro erythroid cell culture impacts reticulocyte yield and characteristics",
+            "error": "Search result rejected before import by domain relevance gate: title=Choice of lipid supplementation for in vitro erythroid cell culture impacts reticulocyte yield and characteristics, domain=Personalized Medicine / Precision Medicine / Pharmacogenomics / Cancer Genomics / Clinical Pharmacology / Multi-omics / Patient-derived Models / Cell and Gene Therapy Manufacturing / Biostatistics / Regulatory Science, assessment={\"profile\": \"personalized_medicine_precision_medicine_pharmacogenomics_cancer_genomics_clinic\", \"target_field\": \"biology\", \"result_field\": \"biomedical\", \"score\": 0.1153, \"query_hits\": [\"cell\", \"quality\", \"stability\"], \"anchor_hits\": [\"cell\", \"gene\"], \"topic_hits\": [], \"noise_hits\": [], \"flags\": [\"core_domain_mismatch\", \"weak_preprint_domain_relevance\"], \"is_preprint\": true, \"core_domain_alignment\": {\"enabled\": true, \"passes\": false, \"core_terms\": [\"personalized medicine precision\", \"medicine precision pharmacogenomics\", \"precision pharmacogenomics cancer\", \"pharmacogenomics cancer genomics\", \"cancer genomics clinical\", \"genomics clinical pharmacology\", \"clinical pharmacology multi-omics\", \"pharmacology multi-omics patient-derived\", \"multi-omics patient-derived models\", \"patient-derived models cell\", \"personalized\", \"medicine\", \"precision\", \"pharmacogenomics\", \"cancer\", \"genomics\", \"clinical\", \"pharmacology\"], \"core_hit_count\": 2, \"core_hits\": [\"cell\", \"gene\"], \"specific_terms\": [\"personalized medicine precision\", \"medicine precision pharmacogenomics\", \"precision pharmacogenomics cancer\", \"pharmacogenomics cancer genomics\", \"cancer genomics clinical\", \"genomics clinical pharmacology\", \"clinical pharmacology multi-omics\", \"pharmacology multi-omics patient-derived\", \"multi-omics patient-derived models\", \"patient-derived models cell\", \"personalized\", \"medicine\"], \"specific_hit_count\": 0, \"specific_hits\": [], \"min_core_hits\": 3, \"min_specific_hits\": 2, \"is_preprint\": true, \"reason\": \"title/abstract do not cover enough user-specified core topic terms\"}, \"verdict\": \"reject\", \"requires_human_review\": false}"
+          },
+          {
+            "result_index": 3,
+            "title": "RNA Polymerase II-mediated transcription is required for repair of ribosomal DNA breaks in nucleolar caps, guarding agai",
+            "error": "Search result rejected before import by domain relevance gate: title=RNA Polymerase II-mediated transcription is required for repair of ribosomal DNA breaks in nucleolar caps, guarding agai...[truncated], domain=Personalized Medicine / Precision Medicine / Pharmacogenomics / Cancer Genomics / Clinical Pharmacology / Multi-omics / Patient-derived Models / Cell and Gene Therapy Manufacturing / Biostatistics / Regulatory Science, assessment={\"profile\": \"personalized_medicine_precision_medicine_pharmacogenomics_cancer_genomics_clinic\", \"target_field\": \"biology\", \"result_field\": \"materials\", \"score\": 0.1547, \"query_hits\": [\"cell\", \"therapy\", \"stability\"], \"anchor_hits\": [\"cancer\", \"cell\", \"gene\", \"therapy\"], \"topic_hits\": [], \"noise_hits\": [], \"flags\": [\"field_mismatch\", \"core_domain_mismatch\", \"weak_preprint_domain_relevance\"], \"is_preprint\": true, \"core_domain_alignment\": {\"enabled\": true, \"passes\": false, \"core_terms\": [\"personalized medicine precision\", \"medicine precision pharmacogenomics\", \"precision pharmacogenomics cancer\", \"pharmacogenomics cancer genomics\", \"cancer genomics clinical\", \"genomics clinical pharmacology\", \"clinical pharmacology multi-omics\", \"pharmacology multi-omics patient-derived\", \"multi-omics patient-derived models\", \"patient-derived models cell\", \"personalized\", \"medicine\", \"precision\", \"pharmacogenomics\", \"cancer\", \"genomics\", \"clinical\", \"pharmacology\"], \"core_hit_count\": 4, \"core_hits\": [\"cancer\", \"cell\", \"gene\", \"therapy\"], \"specific_terms\": [\"personalized medicine precision\", \"medicine precision pharmacogenomics\", \"precision pharmacogenomics cancer\", \"pharmacogenomics cancer genomics\", \"cancer genomics clinical\", \"genomics clinical pharmacology\", \"clinical pharmacology multi-omics\", \"pharmacology multi-omics patient-derived\", \"multi-omics patient-derived models\", \"patient-derived models cell\", \"personalized\", \"medicine\"], \"specific_hit_count\": 1, \"specific_hits\": [\"therapy\"], \"min_core_hits\": 3, \"min_specific_hits\": 2, \"is_preprint\": true, \"reason\": \"title/abstract do not cover enough user-specified core topic terms\"}, \"verdict\": \"reject\", \"requires_human_review\": false}"
+          },
+          {
+            "result_index": 5,
+            "title": "Bayesian Risk-averse Model Predictive Control with Consistency and Stability Guarantees",
+            "error": "Search result rejected before import by domain relevance gate: title=Bayesian Risk-averse Model Predictive Control with Consistency and Stability Guarantees, domain=Personalized Medicine / Precision Medicine / Pharmacogenomics / Cancer Genomics / Clinical Pharmacology / Multi-omics / Patient-derived Models / Cell and Gene Therapy Manufacturing / Biostatistics / Regulatory Science, assessment={\"profile\": \"personalized_medicine_precision_medicine_pharmacogenomics_cancer_genomics_clinic\", \"target_field\": \"biology\", \"result_field\": \"mathematics\", \"score\": 0.0703, \"query_hits\": [\"stability\", \"consistency\"], \"anchor_hits\": [\"gene\"], \"topic_hits\": [], \"noise_hits\": [], \"flags\": [\"field_mismatch\", \"low_domain_relevance\", \"core_domain_mismatch\", \"weak_preprint_domain_relevance\"], \"is_preprint\": true, \"core_domain_alignment\": {\"enabled\": true, \"passes\": false, \"core_terms\": [\"personalized medicine precision\", \"medicine precision pharmacogenomics\", \"precision pharmacogenomics cancer\", \"pharmacogenomics cancer genomics\", \"cancer genomics clinical\", \"genomics clinical pharmacology\", \"clinical pharmacology multi-omics\", \"pharmacology multi-omics patient-derived\", \"multi-omics patient-derived models\", \"patient-derived models cell\", \"personalized\", \"medicine\", \"precision\", \"pharmacogenomics\", \"cancer\", \"genomics\", \"clinical\", \"pharmacology\"], \"core_hit_count\": 1, \"core_hits\": [\"gene\"], \"specific_terms\": [\"personalized medicine precision\", \"medicine precision pharmacogenomics\", \"precision pharmacogenomics cancer\", \"pharmacogenomics cancer genomics\", \"cancer genomics clinical\", \"genomics clinical pharmacology\", \"clinical pharmacology multi-omics\", \"pharmacology multi-omics patient-derived\", \"multi-omics patient-derived models\", \"patient-derived models cell\", \"personalized\", \"medicine\"], \"specific_hit_count\": 0, \"specific_hits\": [], \"min_core_hits\": 3, \"min_specific_hits\": 2, \"is_preprint\": true, \"reason\": \"title/abstract do not cover enough user-specified core topic terms\"}, \"verdict\": \"reject\", \"requires_human_review\": false}"
+          },
+          {
+            "result_index": 6,
+            "title": "Consistency and stability of boundary conditions for a two-velocities lattice Boltzmann scheme",
+            "error": "Search result rejected before import by domain relevance gate: title=Consistency and stability of boundary conditions for a two-velocities lattice Boltzmann scheme, domain=Personalized Medicine / Precision Medicine / Pharmacogenomics / Cancer Genomics / Clinical Pharmacology / Multi-omics / Patient-derived Models / Cell and Gene Therapy Manufacturing / Biostatistics / Regulatory Science, assessment={\"profile\": \"personalized_medicine_precision_medicine_pharmacogenomics_cancer_genomics_clinic\", \"target_field\": \"biology\", \"result_field\": \"mathematics\", \"score\": 0.0506, \"query_hits\": [\"stability\", \"consistency\"], \"anchor_hits\": [], \"topic_hits\": [], \"noise_hits\": [], \"flags\": [\"field_mismatch\", \"low_domain_relevance\", \"core_domain_mismatch\", \"weak_preprint_domain_relevance\"], \"is_preprint\": true, \"core_domain_alignment\": {\"enabled\": true, \"passes\": false, \"core_terms\": [\"personalized medicine precision\", \"medicine precision pharmacogenomics\", \"precision pharmacogenomics cancer\", \"pharmacogenomics cancer genomics\", \"cancer genomics clinical\", \"genomics clinical pharmacology\", \"clinical pharmacology multi-omics\", \"pharmacology multi-omics patient-derived\", \"multi-omics patient-derived models\", \"patient-derived models cell\", \"personalized\", \"medicine\", \"precision\", \"pharmacogenomics\", \"cancer\", \"genomics\", \"clinical\", \"pharmacology\"], \"core_hit_count\": 0, \"core_hits\": [], \"specific_terms\": [\"personalized medicine precision\", \"medicine precision pharmacogenomics\", \"precision pharmacogenomics cancer\", \"pharmacogenomics cancer genomics\", \"cancer genomics clinical\", \"genomics clinical pharmacology\", \"clinical pharmacology multi-omics\", \"pharmacology multi-omics patient-derived\", \"multi-omics patient-derived models\", \"patient-derived models cell\", \"personalized\", \"medicine\"], \"specific_hit_count\": 0, \"specific_hits\": [], \"min_core_hits\": 3, \"min_specific_hits\": 2, \"is_preprint\": true, \"reason\": \"title/abstract do not cover enough user-specified core topic terms\"}, \"verdict\": \"reject\", \"requires_human_review\": false}"
+          }
+        ],
+        "enforced_for_branch_gate": false,
+        "candidate_count": 29,
+        "provider_blocks": [
+          {
+            "provider": "arxiv",
+            "query": "manufacturing parameters cell therapy product quality stability consistency",
+            "status": "ok",
+            "note": null,
+            "error": null,
+            "result_count": 10
+          },
+          {
+            "provider": "medrxiv",
+            "query": "manufacturing parameters cell therapy product quality stability consistency",
+            "status": "ok",
+            "note": null,
+            "error": null,
+            "result_count": 12
+          },
+          {
+            "provider": "biorxiv",
+            "query": "manufacturing parameters cell therapy product quality stability consistency",
+            "status": "ok",
+            "note": null,
+            "error": null,
+            "result_count": 12
+          }
+        ]
+      },
+      "main_import_budget": 12,
+      "main_evidence_providers": [
+        "semantic_scholar",
+        "pubmed"
+      ],
+      "preprint_signal_providers": [
+        "arxiv",
+        "medrxiv",
+        "biorxiv"
+      ],
+      "preprint_gate_enforced": false,
+      "status": "ready_for_causal_gap_detection",
+      "constraint_source": "verbatim_research_brief",
+      "research_brief_chars": 7779,
+      "retrieval_constraints": [
+        "Use semantic_scholar, PubMed, and arXiv. Clinical preprints can supplement medRxiv/bioRxiv but must be marked as unreviewed. Import at least 15 quality-screened papers. Do not fabricate papers, clinical trials, regulatory documents, effect sizes, patient outcomes, or guideline recommendations. Ensure coverage of each selected sub-hypothesis's evidence window. Exclude or de-prioritize content that only reports model AUC without clinical endpoints, only reports disease associations without treatment strategies, is unrelated to precision medicine, or claims direct patient benefits from animal or cell line studies."
+      ],
+      "evidence_window_alerts": [],
+      "updatedAt": 1783842701.6935675,
+      "sub_hypothesis_id": "SH3"
+    },
+    {
+      "query": "predictive models PK toxicity clinical benefit population diversity",
+      "source_query": "predictive models PK toxicity clinical benefit population diversity",
+      "query_language": {
+        "query": "predictive models PK toxicity clinical benefit population diversity",
+        "source_query": "predictive models PK toxicity clinical benefit population diversity",
+        "translation_method": "already_english"
+      },
+      "search_id": "search_1783842861856441400",
+      "total_results": 15,
+      "imported_records": 15,
+      "peer_reviewed_imported_records": 12,
+      "layer_quotas": {
+        "L0_review": 1,
+        "L1_milestone": 1,
+        "L2_top_latest": 3,
+        "L3_preprint": 0,
+        "L4_regular": 10
+      },
+      "import_layer_minimums": {
+        "L3_preprint": 0,
+        "L2_top_latest": 1,
+        "L4_regular": 1,
+        "L0_review": 1,
+        "L1_milestone": 1
+      },
+      "p0_preprint_selected": 3,
+      "p0_preprint_imported": 3,
+      "p0_preprint_target": 3,
+      "p0_preprint_required": 1,
+      "preprint_evidence": {
+        "status": "imported",
+        "providers": [
+          "arxiv",
+          "medrxiv",
+          "biorxiv"
+        ],
+        "search_id": "search_1783842701722467700",
+        "total_results": 36,
+        "import_target": 3,
+        "imported_records": [
+          {
+            "result_index": 6,
+            "title": "A Population-Specific Breast Cancer Risk Prediction Model for Indian Women (A Pilot Study): Advancing Beyond Traditional",
+            "paper_id": "paper_1783842834177223500",
+            "layer": "L3_preprint"
+          },
+          {
+            "result_index": 8,
+            "title": "A scoping review of the application of artificial intelligence for the analysis of adverse drug events in clinical resea",
+            "paper_id": "paper_1783842843732398700",
+            "layer": "L3_preprint"
+          },
+          {
+            "result_index": 9,
+            "title": "Identifying Key Predictive Features for Opioid Use Disorder Using Machine Learning",
+            "paper_id": "paper_1783842861829962400",
+            "layer": "L3_preprint"
+          }
+        ],
+        "failed_imports": [
+          {
+            "result_index": 0,
+            "title": "Population-Scale Liver Volume Nomograms: Data-Driven Insights from High-Throughput Imaging and Clinical Data Integration",
+            "error": "Search result rejected before import by domain relevance gate: title=Population-Scale Liver Volume Nomograms: Data-Driven Insights from High-Throughput Imaging and Clinical Data Integration, domain=Personalized Medicine / Precision Medicine / Pharmacogenomics / Cancer Genomics / Clinical Pharmacology / Multi-omics / Patient-derived Models / Cell and Gene Therapy Manufacturing / Biostatistics / Regulatory Science, assessment={\"profile\": \"personalized_medicine_precision_medicine_pharmacogenomics_cancer_genomics_clinic\", \"target_field\": \"biology\", \"result_field\": \"biomedical\", \"score\": 0.1551, \"query_hits\": [\"predictive\", \"models\", \"clinical\", \"population\"], \"anchor_hits\": [\"clinical\", \"models\"], \"topic_hits\": [], \"noise_hits\": [], \"flags\": [\"core_domain_mismatch\", \"weak_preprint_domain_relevance\"], \"is_preprint\": true, \"core_domain_alignment\": {\"enabled\": true, \"passes\": false, \"core_terms\": [\"personalized medicine precision\", \"medicine precision pharmacogenomics\", \"precision pharmacogenomics cancer\", \"pharmacogenomics cancer genomics\", \"cancer genomics clinical\", \"genomics clinical pharmacology\", \"clinical pharmacology multi-omics\", \"pharmacology multi-omics patient-derived\", \"multi-omics patient-derived models\", \"patient-derived models cell\", \"personalized\", \"medicine\", \"precision\", \"pharmacogenomics\", \"cancer\", \"genomics\", \"clinical\", \"pharmacology\"], \"core_hit_count\": 2, \"core_hits\": [\"clinical\", \"models\"], \"specific_terms\": [\"personalized medicine precision\", \"medicine precision pharmacogenomics\", \"precision pharmacogenomics cancer\", \"pharmacogenomics cancer genomics\", \"cancer genomics clinical\", \"genomics clinical pharmacology\", \"clinical pharmacology multi-omics\", \"pharmacology multi-omics patient-derived\", \"multi-omics patient-derived models\", \"patient-derived models cell\", \"personalized\", \"medicine\"], \"specific_hit_count\": 1, \"specific_hits\": [\"clinical\"], \"min_core_hits\": 3, \"min_specific_hits\": 2, \"is_preprint\": true, \"reason\": \"title/abstract do not cover enough user-specified core topic terms\"}, \"verdict\": \"reject\", \"requires_human_review\": false}"
+          },
+          {
+            "result_index": 1,
+            "title": "Racial and Ethnic Diversity in Clinical Studies Reported to ClinicalTrials.gov, 2009-2024",
+            "error": "Search result rejected before import by domain relevance gate: title=Racial and Ethnic Diversity in Clinical Studies Reported to ClinicalTrials.gov, 2009-2024, domain=Personalized Medicine / Precision Medicine / Pharmacogenomics / Cancer Genomics / Clinical Pharmacology / Multi-omics / Patient-derived Models / Cell and Gene Therapy Manufacturing / Biostatistics / Regulatory Science, assessment={\"profile\": \"personalized_medicine_precision_medicine_pharmacogenomics_cancer_genomics_clinic\", \"target_field\": \"biology\", \"result_field\": \"biomedical\", \"score\": 0.1748, \"query_hits\": [\"models\", \"clinical\", \"population\", \"diversity\"], \"anchor_hits\": [\"clinical\", \"models\", \"gene\"], \"topic_hits\": [], \"noise_hits\": [], \"flags\": [\"core_domain_mismatch\"], \"is_preprint\": true, \"core_domain_alignment\": {\"enabled\": true, \"passes\": false, \"core_terms\": [\"personalized medicine precision\", \"medicine precision pharmacogenomics\", \"precision pharmacogenomics cancer\", \"pharmacogenomics cancer genomics\", \"cancer genomics clinical\", \"genomics clinical pharmacology\", \"clinical pharmacology multi-omics\", \"pharmacology multi-omics patient-derived\", \"multi-omics patient-derived models\", \"patient-derived models cell\", \"personalized\", \"medicine\", \"precision\", \"pharmacogenomics\", \"cancer\", \"genomics\", \"clinical\", \"pharmacology\"], \"core_hit_count\": 3, \"core_hits\": [\"clinical\", \"models\", \"gene\"], \"specific_terms\": [\"personalized medicine precision\", \"medicine precision pharmacogenomics\", \"precision pharmacogenomics cancer\", \"pharmacogenomics cancer genomics\", \"cancer genomics clinical\", \"genomics clinical pharmacology\", \"clinical pharmacology multi-omics\", \"pharmacology multi-omics patient-derived\", \"multi-omics patient-derived models\", \"patient-derived models cell\", \"personalized\", \"medicine\"], \"specific_hit_count\": 1, \"specific_hits\": [\"clinical\"], \"min_core_hits\": 3, \"min_specific_hits\": 2, \"is_preprint\": true, \"reason\": \"title/abstract do not cover enough user-specified core topic terms\"}, \"verdict\": \"reject\", \"requires_human_review\": false}"
+          },
+          {
+            "result_index": 2,
+            "title": "Predicting Cognitive Functioning in ADHD Using Population-Based MRI Across Large and Small Samples",
+            "error": "Search result rejected before import by domain relevance gate: title=Predicting Cognitive Functioning in ADHD Using Population-Based MRI Across Large and Small Samples, domain=Personalized Medicine / Precision Medicine / Pharmacogenomics / Cancer Genomics / Clinical Pharmacology / Multi-omics / Patient-derived Models / Cell and Gene Therapy Manufacturing / Biostatistics / Regulatory Science, assessment={\"profile\": \"personalized_medicine_precision_medicine_pharmacogenomics_cancer_genomics_clinic\", \"target_field\": \"biology\", \"result_field\": \"biomedical\", \"score\": 0.1748, \"query_hits\": [\"predictive\", \"models\", \"clinical\", \"population\"], \"anchor_hits\": [\"clinical\", \"models\", \"gene\"], \"topic_hits\": [], \"noise_hits\": [], \"flags\": [\"core_domain_mismatch\"], \"is_preprint\": true, \"core_domain_alignment\": {\"enabled\": true, \"passes\": false, \"core_terms\": [\"personalized medicine precision\", \"medicine precision pharmacogenomics\", \"precision pharmacogenomics cancer\", \"pharmacogenomics cancer genomics\", \"cancer genomics clinical\", \"genomics clinical pharmacology\", \"clinical pharmacology multi-omics\", \"pharmacology multi-omics patient-derived\", \"multi-omics patient-derived models\", \"patient-derived models cell\", \"personalized\", \"medicine\", \"precision\", \"pharmacogenomics\", \"cancer\", \"genomics\", \"clinical\", \"pharmacology\"], \"core_hit_count\": 3, \"core_hits\": [\"clinical\", \"models\", \"gene\"], \"specific_terms\": [\"personalized medicine precision\", \"medicine precision pharmacogenomics\", \"precision pharmacogenomics cancer\", \"pharmacogenomics cancer genomics\", \"cancer genomics clinical\", \"genomics clinical pharmacology\", \"clinical pharmacology multi-omics\", \"pharmacology multi-omics patient-derived\", \"multi-omics patient-derived models\", \"patient-derived models cell\", \"personalized\", \"medicine\"], \"specific_hit_count\": 1, \"specific_hits\": [\"clinical\"], \"min_core_hits\": 3, \"min_specific_hits\": 2, \"is_preprint\": true, \"reason\": \"title/abstract do not cover enough user-specified core topic terms\"}, \"verdict\": \"reject\", \"requires_human_review\": false}"
+          },
+          {
+            "result_index": 3,
+            "title": "Predicting Cognitive Functioning in ADHD Using Population-Based MRI Across Large and Small Samples",
+            "error": "Search result rejected before import by domain relevance gate: title=Predicting Cognitive Functioning in ADHD Using Population-Based MRI Across Large and Small Samples, domain=Personalized Medicine / Precision Medicine / Pharmacogenomics / Cancer Genomics / Clinical Pharmacology / Multi-omics / Patient-derived Models / Cell and Gene Therapy Manufacturing / Biostatistics / Regulatory Science, assessment={\"profile\": \"personalized_medicine_precision_medicine_pharmacogenomics_cancer_genomics_clinic\", \"target_field\": \"biology\", \"result_field\": \"biomedical\", \"score\": 0.1748, \"query_hits\": [\"predictive\", \"models\", \"clinical\", \"population\"], \"anchor_hits\": [\"clinical\", \"models\", \"gene\"], \"topic_hits\": [], \"noise_hits\": [], \"flags\": [\"core_domain_mismatch\"], \"is_preprint\": true, \"core_domain_alignment\": {\"enabled\": true, \"passes\": false, \"core_terms\": [\"personalized medicine precision\", \"medicine precision pharmacogenomics\", \"precision pharmacogenomics cancer\", \"pharmacogenomics cancer genomics\", \"cancer genomics clinical\", \"genomics clinical pharmacology\", \"clinical pharmacology multi-omics\", \"pharmacology multi-omics patient-derived\", \"multi-omics patient-derived models\", \"patient-derived models cell\", \"personalized\", \"medicine\", \"precision\", \"pharmacogenomics\", \"cancer\", \"genomics\", \"clinical\", \"pharmacology\"], \"core_hit_count\": 3, \"core_hits\": [\"clinical\", \"models\", \"gene\"], \"specific_terms\": [\"personalized medicine precision\", \"medicine precision pharmacogenomics\", \"precision pharmacogenomics cancer\", \"pharmacogenomics cancer genomics\", \"cancer genomics clinical\", \"genomics clinical pharmacology\", \"clinical pharmacology multi-omics\", \"pharmacology multi-omics patient-derived\", \"multi-omics patient-derived models\", \"patient-derived models cell\", \"personalized\", \"medicine\"], \"specific_hit_count\": 1, \"specific_hits\": [\"clinical\"], \"min_core_hits\": 3, \"min_specific_hits\": 2, \"is_preprint\": true, \"reason\": \"title/abstract do not cover enough user-specified core topic terms\"}, \"verdict\": \"reject\", \"requires_human_review\": false}"
+          },
+          {
+            "result_index": 4,
+            "title": "High-Fidelity Synthetic Data Replicates Clinical Prediction Performance in a Million-Patient Diabetes Cohort",
+            "error": "Search result rejected before import by domain relevance gate: title=High-Fidelity Synthetic Data Replicates Clinical Prediction Performance in a Million-Patient Diabetes Cohort, domain=Personalized Medicine / Precision Medicine / Pharmacogenomics / Cancer Genomics / Clinical Pharmacology / Multi-omics / Patient-derived Models / Cell and Gene Therapy Manufacturing / Biostatistics / Regulatory Science, assessment={\"profile\": \"personalized_medicine_precision_medicine_pharmacogenomics_cancer_genomics_clinic\", \"target_field\": \"biology\", \"result_field\": \"ecology\", \"score\": 0.1748, \"query_hits\": [\"predictive\", \"models\", \"clinical\", \"population\"], \"anchor_hits\": [\"clinical\", \"models\", \"gene\"], \"topic_hits\": [], \"noise_hits\": [], \"flags\": [\"field_mismatch\", \"core_domain_mismatch\"], \"is_preprint\": true, \"core_domain_alignment\": {\"enabled\": true, \"passes\": false, \"core_terms\": [\"personalized medicine precision\", \"medicine precision pharmacogenomics\", \"precision pharmacogenomics cancer\", \"pharmacogenomics cancer genomics\", \"cancer genomics clinical\", \"genomics clinical pharmacology\", \"clinical pharmacology multi-omics\", \"pharmacology multi-omics patient-derived\", \"multi-omics patient-derived models\", \"patient-derived models cell\", \"personalized\", \"medicine\", \"precision\", \"pharmacogenomics\", \"cancer\", \"genomics\", \"clinical\", \"pharmacology\"], \"core_hit_count\": 3, \"core_hits\": [\"clinical\", \"models\", \"gene\"], \"specific_terms\": [\"personalized medicine precision\", \"medicine precision pharmacogenomics\", \"precision pharmacogenomics cancer\", \"pharmacogenomics cancer genomics\", \"cancer genomics clinical\", \"genomics clinical pharmacology\", \"clinical pharmacology multi-omics\", \"pharmacology multi-omics patient-derived\", \"multi-omics patient-derived models\", \"patient-derived models cell\", \"personalized\", \"medicine\"], \"specific_hit_count\": 1, \"specific_hits\": [\"clinical\"], \"min_core_hits\": 3, \"min_specific_hits\": 2, \"is_preprint\": true, \"reason\": \"title/abstract do not cover enough user-specified core topic terms\"}, \"verdict\": \"reject\", \"requires_human_review\": false}"
+          },
+          {
+            "result_index": 5,
+            "title": "AI-Driven Personalization of Dual Antiplatelet Therapy Duration Post-PCI: A Novel Approach Balancing Ischemic and Bleedi",
+            "status": "duplicate"
+          },
+          {
+            "result_index": 7,
+            "title": "A Data-Driven Approach to Polycystic Ovary Syndrome Diagnosis: Evaluating Machine Learning Models",
+            "error": "Search result rejected before import by domain relevance gate: title=A Data-Driven Approach to Polycystic Ovary Syndrome Diagnosis: Evaluating Machine Learning Models, domain=Personalized Medicine / Precision Medicine / Pharmacogenomics / Cancer Genomics / Clinical Pharmacology / Multi-omics / Patient-derived Models / Cell and Gene Therapy Manufacturing / Biostatistics / Regulatory Science, assessment={\"profile\": \"personalized_medicine_precision_medicine_pharmacogenomics_cancer_genomics_clinic\", \"target_field\": \"biology\", \"result_field\": \"biomedical\", \"score\": 0.1262, \"query_hits\": [\"predictive\", \"models\", \"clinical\"], \"anchor_hits\": [\"clinical\", \"models\"], \"topic_hits\": [], \"noise_hits\": [], \"flags\": [\"core_domain_mismatch\", \"weak_preprint_domain_relevance\"], \"is_preprint\": true, \"core_domain_alignment\": {\"enabled\": true, \"passes\": false, \"core_terms\": [\"personalized medicine precision\", \"medicine precision pharmacogenomics\", \"precision pharmacogenomics cancer\", \"pharmacogenomics cancer genomics\", \"cancer genomics clinical\", \"genomics clinical pharmacology\", \"clinical pharmacology multi-omics\", \"pharmacology multi-omics patient-derived\", \"multi-omics patient-derived models\", \"patient-derived models cell\", \"personalized\", \"medicine\", \"precision\", \"pharmacogenomics\", \"cancer\", \"genomics\", \"clinical\", \"pharmacology\"], \"core_hit_count\": 2, \"core_hits\": [\"clinical\", \"models\"], \"specific_terms\": [\"personalized medicine precision\", \"medicine precision pharmacogenomics\", \"precision pharmacogenomics cancer\", \"pharmacogenomics cancer genomics\", \"cancer genomics clinical\", \"genomics clinical pharmacology\", \"clinical pharmacology multi-omics\", \"pharmacology multi-omics patient-derived\", \"multi-omics patient-derived models\", \"patient-derived models cell\", \"personalized\", \"medicine\"], \"specific_hit_count\": 1, \"specific_hits\": [\"clinical\"], \"min_core_hits\": 3, \"min_specific_hits\": 2, \"is_preprint\": true, \"reason\": \"title/abstract do not cover enough user-specified core topic terms\"}, \"verdict\": \"reject\", \"requires_human_review\": false}"
+          }
+        ],
+        "enforced_for_branch_gate": false,
+        "candidate_count": 34,
+        "provider_blocks": [
+          {
+            "provider": "arxiv",
+            "query": "predictive models PK toxicity clinical benefit population diversity",
+            "status": "ok",
+            "note": null,
+            "error": null,
+            "result_count": 12
+          },
+          {
+            "provider": "medrxiv",
+            "query": "predictive models PK toxicity clinical benefit population diversity",
+            "status": "ok",
+            "note": null,
+            "error": null,
+            "result_count": 12
+          },
+          {
+            "provider": "biorxiv",
+            "query": "predictive models PK toxicity clinical benefit population diversity",
+            "status": "ok",
+            "note": null,
+            "error": null,
+            "result_count": 12
+          }
+        ]
+      },
+      "main_import_budget": 12,
+      "main_evidence_providers": [
+        "semantic_scholar",
+        "pubmed"
+      ],
+      "preprint_signal_providers": [
+        "arxiv",
+        "medrxiv",
+        "biorxiv"
+      ],
+      "preprint_gate_enforced": false,
+      "status": "ready_for_causal_gap_detection",
+      "constraint_source": "verbatim_research_brief",
+      "research_brief_chars": 7779,
+      "retrieval_constraints": [
+        "Use semantic_scholar, PubMed, and arXiv. Clinical preprints can supplement medRxiv/bioRxiv but must be marked as unreviewed. Import at least 15 quality-screened papers. Do not fabricate papers, clinical trials, regulatory documents, effect sizes, patient outcomes, or guideline recommendations. Ensure coverage of each selected sub-hypothesis's evidence window. Exclude or de-prioritize content that only reports model AUC without clinical endpoints, only reports disease associations without treatment strategies, is unrelated to precision medicine, or claims direct patient benefits from animal or cell line studies."
+      ],
+      "evidence_window_alerts": [],
+      "updatedAt": 1783843861.5079212,
+      "sub_hypothesis_id": "SH4"
+    }
+  ],
+  "next_step": "Run TanXi only on branches marked ready_for_causal_gap_detection; evidence-insufficient branches remain excluded from combined claims."
+}

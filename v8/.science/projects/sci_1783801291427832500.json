@@ -1,0 +1,669 @@
+{
+  "project_id": "sci_1783801291427832500",
+  "title": "How is immune homeostasis maintained and regulated?",
+  "domain": "Immunology / Systems Biology / T Cell Biology / Cytokine Signaling / Regulatory T Cells (Tregs) / Immune Checkpoints / Inflammation / Autoimmunity / Tumor Immunology / Single-cell Multi-omics / Functional Assays / Mathematical Modeling / Translational Medicine",
+  "objective": "围绕以下可分解、可证伪的生物学与转化问题开展验证：在定义明确的生理状态、扰动条件（如感染、自身抗原、肿瘤）和干预窗口下，个体的遗传背景、细胞组成、细胞内在状态、局部微环境（如细胞因子、代谢物）以及外部扰动，是否能够以可重复、可量化、因果上可解释的方式预测特定免疫细胞亚群的稳态增殖、分化与凋亡动态；关键细胞因子或代谢信号通路的阈值效应与反馈调节；免疫调节干预是否能够重建而非简单地增强或抑制免疫应答；上述稳态调节规则在不同遗传背景、组织微环境、年龄、炎症状态及跨物种迁移时是否仍成立。",
+  "strategic_need": "",
+  "research_brief": "创建并运行一个 AutoGen 科研闭环验证项目。\n\n项目标题：\nHow is immune homeostasis maintained and regulated?\n从动态平衡、个体异质性到可干预靶点的免疫系统稳态因果验证闭环\n\n领域：\nImmunology / Systems Biology / T Cell Biology / Cytokine Signaling /\nRegulatory T Cells (Tregs) / Immune Checkpoints / Inflammation /\nAutoimmunity / Tumor Immunology / Single-cell Multi-omics /\nFunctional Assays / Mathematical Modeling / Translational Medicine\n\n研究目标：\n不要泛泛讨论 免疫稳态对健康至关重要。围绕以下可分解、可证伪的生物学与转化问题开展验证：\n\n在定义明确的生理状态、扰动条件（如感染、自身抗原、肿瘤）和干预窗口下，个体的遗传背景、细胞组成、细胞内在状态、局部微环境（如细胞因子、代谢物）以及外部扰动，是否能够以可重复、可量化、因果上可解释的方式预测：\n\n1. 特定免疫细胞亚群（如Treg, Th17, CD8+ T）的稳态增殖、分化与凋亡动态；\n2. 关键细胞因子或代谢信号通路（如IL-2, TGF-β, mTOR）的阈值效应与反馈调节；\n3. 免疫调节干预（如低剂量IL-2、检查点激动剂/拮抗剂）是否能够重建而非简单地增强或抑制免疫应答；\n4. 上述稳态调节规则在不同遗传背景、组织微环境（屏障组织vs.循环系统）、年龄、炎症状态及跨物种（小鼠模型vs.人类）迁移时是否仍成立。\n\n禁止将细胞亚群频率、细胞因子浓度或基因表达差异直接解释为稳态调节机制；\n禁止将体外刺激或小鼠模型的结论直接外推为人类体内系统层面的稳态调节规律；\n禁止将系统复杂性误判为不可知论，即不可知论不应阻碍对关键调节节点的假设驱动研究。\n\n执行完整闭环：\nBoxue → Objective Decomposition → ZhiZhi → TanXi → Socrates →\nMingLi → YanZhen → DuZhi → BianLun → MingLi 修订 → YanZhen 复审。\n\n\n## Boxue：Objective Decomposition\n\n在任何宽泛检索前，先运行 decompose_research_objective。\n输出不是一组研究方向，而是独立的、可被推翻的子假设。\n\n\n## ZhiZhi：文献与证据知识库要求\n\n数据源与质量边界\n\n- 主要使用 semantic_scholar、PubMed、bioRxiv/medRxiv；免疫学前沿预印本需明确标注未经同行评审。\n- 分层导入至少 15 篇经质量筛选的文献；数量不是目标，必须覆盖每个已选子假设的证据窗口。\n- 对摘要缺失、unknown 字段、来源可疑或 requires_human_review 的记录，执行提取修复、降权或停留在背景层，不得作为机制合同的唯一证据。\n\n- 不得制造论文、临床试验、效应量、患者结局或指南推荐。\n\nP0–P4 分层\n\nP0 / L3：近期预印本\n  - 系统免疫学、单细胞多组学、免疫调节、自身免疫、肿瘤免疫\n  - 要求标注未经同行评审；检索失败必须显式标记证据不足\n\nP1 / L2：近2年高质量原始研究\n  - 人体免疫监测研究、人类遗传学（如GWAS）、针对患者的干预研究\n  - 功能验证实验（如体外共培养、类器官）\n  - 纵向随访研究（如感染、疫苗接种、自身免疫病）\n\nP2 / L4：机制、实验与理论证据\n  - 细胞信号转导（如TCR、共刺激、细胞因子受体）\n  - 代谢与表观遗传重编程\n  - 经典免疫学实验（如基因敲除小鼠、过继转移、抗体阻断）\n\nP3 / L0：系统综述、临床指南、方法学综述\n  - 免疫学教科书、领域权威综述、调节性T细胞/Th17/检查点综述\n  - 因果推断、生物标志物验证指南\n\nP4 / L1：奠基研究与历史脉络\n  - 免疫耐受、克隆选择、Treg发现等奠基性工作\n  - 仅用于历史和机制脉络，不得替代当前直接证据\n\n必须覆盖的子空间\n\n- 调节性T细胞（Treg）的发育、维持和功能可塑性；\n- 效应T细胞（Teff）与Treg之间的动态平衡（包括关键细胞因子IL-2, TGF-β）；\n- 免疫检查点分子（如PD-1, CTLA-4, LAG-3）在稳态调节中的作用；\n- 代谢通路（如mTOR, AMPK, 糖酵解/氧化磷酸化）对免疫细胞分化的影响；\n- 组织微环境因素（如缺氧、营养、胞外基质）对免疫细胞功能的调节；\n- 人类遗传变异（如SNPs）对免疫稳态相关基因表达和功能的影响；\n- 跨物种（小鼠vs人类）和跨组织（淋巴器官vs屏障组织vs肿瘤）的保守性与差异性。\n\n必须排除或降权的内容\n\n- 只报告差异表达基因、未进行功能验证或机制探索的纯组学描述性文章；\n- 仅使用一种永生化细胞系，且没有原代细胞或体内验证的研究；\n- 与免疫稳态和调节无直接关联的普通微生物学、肿瘤生长曲线或药物化学论文；\n- 没有使用人类样本或人道动物模型验证的纯粹计算模拟论文。\n\nDeepSurvey 风格知识构建\n\n每篇入库论文除 method-scenario-benchmark 外，必须提取：\n\nkeynote:\n  core_problem: 该论文解决的具体免疫学问题（如Treg功能不稳定性、IL-2阈值效应）\n  experimental_system: 体外/体内、小鼠/人类、健康/疾病、组织来源\n  causal_chains:\n    - trigger: 干预（如细胞因子添加、基因敲除、药物处理）或自然实验（如遗传变异）\n      steps:\n        - claim: 中介机制（如信号通路激活、转录因子表达、代谢转变）\n          evidence: 论文中的来源摘录\n          evidence_type: experimental | theoretical | observational | inferred\n      outcome: 细胞功能（增殖、凋亡、细胞因子产生）、亚群频率、疾病表型\n      observables: 流式细胞术、RNA-seq、ATAC-seq、代谢物、细胞因子浓度\n      interventions: 可操纵变量（如抗IL-2抗体、雷帕霉素）\n  experimental_evidence: 样本数、实验条件、对照和主要终点\n  assumptions: 隐含假设（如体外激活状态代表体内）、可迁移条件和未测混杂\n  limitations: 作者明确局限（如体外模型、小样本量、特定品系小鼠）\n  important_claims: 声明与证据的一一对应\n  future_directions: 明确未来工作\n  code_or_implementation: 公开代码、模型版本、分析环境；不得下载或处理患者敏感数据\n\n## TanXi：Gap 探索要求\n\nTanXi 首先做因果断链检测，而不是把方法尚未用于某细胞亚群作为高价值 Gap。\n\n优先发现以下问题：\n\n1. 遗传变异 → 细胞内在状态 → 细胞因子敏感性 → 稳态增殖/凋亡 中，哪一段缺乏可测量中介、干预证据或跨模型验证；\n2. 某个表面标志物或转录因子究竟是稳态维持的驱动者，还是仅仅是旁观者或激活后的附属现象；\n3. 稳态调节在不同组织微环境（如淋巴器官、屏障组织、炎症部位、肿瘤）之间是否存在根本性不同，而非仅是细胞数量差异；\n4. 体外实验中的信号阈值是否在体内复杂的细胞因子网络和细胞-细胞接触中被噪声淹没，导致预测失效；\n5. Treg与Teff之间的动态平衡，在特定扰动（如感染、自身免疫）下，其恢复的稳态点是唯一的还是多稳态的；\n6. 免疫系统的冗余性如何掩盖核心调节节点的作用，使得单个基因敲除无表型，但组合干预或特定背景下才显现；\n7. 从小鼠到人类，哪些调节机制是保守的，哪些是基于特定寿命、环境暴露和免疫经历而特有的；\n8. 衰老、肥胖、性别等个体间差异如何修改稳态调节的基线和响应规则。\n\n每个 ranked gap 必须输出：\n\nmechanism_draft:\n  input: 已定义的扰动（如感染、自身抗原、免疫治疗）或个体差异变量\n  proposed_mediator: 仅可填写文献来源支持的中介；否则保持 unresolved\n  output: 明确的细胞功能、细胞群体动态或系统状态（如炎症消退、自身耐受维持）\n  source_clue: 原文 citation 与 excerpt\n  causal_gap:\n    missing_kind: intermediate_mechanism | observability | intervention |\n                  counterfactual | evidence_window\n    evidence_needed: 下一步需要何种直接证据\n  sub_hypothesis_id: SH1 | SH2 | SH3 | SH4\n  unresolved_fields:\n    - identity\n    - location_or_scope\n    - dynamics\n    - reversibility\n    - observability\n    - intervention\n    - counterfactual\n\n禁止把某组学技术尚未用于某疾病状态某新发现的细胞亚群功能未知直接列为核心 Gap。\n\n## Socrates：机制合同与因果补全\n\n只选择排名第一、且属于机制型或矛盾型的 Gap 建立机制合同。\n\nSocrates evidence contract:\n  identity: 中介实体/过程到底是什么（如IL-2/IL-2R信号强度、TCR亲和力、Treg特异性转录因子Foxp3的表达水平）\n  location_or_scope: 位于哪类细胞（如CD4+ Foxp3+ Treg）、组织（如淋巴结、肠道、肿瘤微环境）或时间窗（如急性期vs恢复期）\n  dynamics: 如何随扰动强度、时间进程或局部细胞因子浓度变化\n  reversibility: 是否可逆，何种条件下可恢复（如撤除刺激、输入外源性细胞因子）\n  observability: 如何直接测量（如流式、单细胞测序、体内成像），而不是只测终末分化标志物\n  intervention: 什么变量可在实验伦理和技术上被操纵（如细胞因子中和、基因编辑、过继转移）\n  counterfactual: 若抑制/增强/移除该中介，预期细胞群体动态和系统稳态发生什么变化\n\n每个字段必须有：\n\nevidence:\n  - citation: 真实论文、综述或实验研究来源\n    excerpt: 支持该字段的原文摘录\n    paper_id: PaperGraph记录\n    evidence_type: experimental | theoretical | observational | inferred\n\nSocrates 必须同时输出：\n\n- 反事实或准实验设计（如使用IL-2突变体只结合特定受体、Foxp3条件性敲除、使用报告小鼠追踪细胞命运）；\n- 第一性原理推导待补项，例如受体占有模型对Treg存活的影响、IL-2消耗速率与Treg扩增动力学的关系；\n- 竞争机制消除计划（如区分Treg内在Foxp3缺失 vs. 通过TGF-β或IL-10的旁观者效应）；\n- 哪些证据来自人类原代细胞、小鼠模型或体外系统，禁止混淆证据层级。\n\n若 verdict != COMPLETE，输出 INSUFFICIENT_EVIDENCE、剩余字段和定向检索建议，停止 MingLi 假设生成；不得用常识、临床直觉或模板补全。\n\n## MingLi：假设生成要求\n\nMingLi 只可消费：\n\n- Socrates COMPLETE 的机制合同；\n- 对应子假设满足 P0–P2 证据窗口；\n- 有明确细胞类型、扰动范围和可观测终点的 Gap。\n\n每条假设必须包含：\n\nhypothesis:\n  sub_hypothesis_id: SHx\n  cell_and_tissue_scope: 细胞亚群、组织部位、生理或病理状态\n  perturbation_scope: 特定的体外刺激、体内扰动或遗传变异\n  causal_chain: X → Z → Y\n  X: 可干预变量或可定义的自然实验（如外源性IL-2浓度、抗原剂量、基因多态性）\n  Z: 直接可测量中介（如pSTAT5水平、Foxp3表达、线粒体膜电位）\n  Y: 细胞功能（增殖、凋亡、细胞因子产生）、群体频率（Treg/Teff比例）或系统状态（炎症评分）\n  operating_conditions:\n    - 特定细胞因子组合、TCR刺激强度\n    - 氧浓度、代谢底物可用性\n    - 细胞-细胞接触（如DC/T细胞共培养）\n  observables:\n    - 细胞频率（流式细胞术）\n    - 信号蛋白磷酸化（磷酸化流式）\n    - 转录组和表观组（scRNA-seq/scATAC-seq）\n    - 代谢物（Seahorse、质谱）\n    - 细胞因子浓度（Luminex/MSD）\n  null_hypothesis: 不存在经中介 Z 传递的调节效应，或该效应在体内被冗余/补偿机制掩盖\n  alternative_explanations:\n    - 细胞外因素的间接影响（如其他细胞类型产生的细胞因子）\n    - 非细胞自主性机制（如Treg通过DC间接影响Teff）\n    - 系统冗余（如多个信号通路同时调节）\n    - 观察到的相关性纯属伴随状态（如激活状态）\n  falsification_condition: 预注册的失败条件（如Z未改变或Y不变、方向相反、阻断X后Y不恢复）\n  source_mapping: 每个因果链步骤对应 Socrates citation/excerpt\n\n合格假设的形式应类似：\n\n> 在定义明确的体外分化体系或体内扰动模型中，若通过 X 改变信号强度，并直接测得中介 Z 的预期变化，而 Y 在匹配对照下按预注册方向改变，则支持该机制；若 Z 未改变、Y 与 Z 脱钩，或竞争机制更能解释数据，则否定或修订假设。\n\n禁止使用免疫组学数据可指导治疗通过研究Treg可理解免疫耐受之类没有机制实体和证伪条件的万能模板。\n\n## YanZhen：两次机制审计\n\n初审\n\n- 内部一致性：变量、细胞范围、扰动范围、时间顺序和中介定义是否一致；\n- 数据一致性：citation/excerpt 是否真正支持所声称的细胞类型、扰动和终点；\n- 因果一致性：是否把相关误当因果关系，是否遗漏关键混杂（如细胞频率依赖的比例效应）；\n- 体外与体内区分：体外实验的发现不能直接外推为体内稳态机制；\n- 输出：unsupported_claims、required_actions、verdict。\n\n至少两个 regime-shift 检验\n\nregime_shift_1:\n  condition: 从健康个体到自身免疫病或肿瘤微环境\n  question: 调节机制（如IL-2依赖性）是否仍然成立，或是否被微环境中的抑制/增强信号覆盖\n\nregime_shift_2:\n  condition: 从体外细胞培养到体内复杂环境（如静脉注射vs.局部组织）\n  question: 信号阈值或反馈控制是否因细胞-细胞接触、基质粘附或药代动力学差异而改变\n\nregime_shift_3:\n  condition: 从小鼠模型到人类原代细胞/人体样本\n  question: 关键中介分子（如Foxp3, IL-2R）的表达和功能是否保守，或是否存在物种特异性差异\n\nregime_shift_4:\n  condition: 从短期急性刺激到长期慢性炎症或衰老\n  question: 调节机制是否存在时间依赖性转变，如从稳态维持到功能衰竭\n\n若初审不是 PASS，YanZhen 必须把具体失败点反馈给 MingLi 和 DuZhi；不得直接输出成功结论。\n\n## DuZhi + BianLun：3–5 轮结构化辩论\n\nDuZhi 每轮必须针对上一轮的具体回应追问，并至少覆盖：\n\n1. 免疫稳态的操作定义是什么：是特定细胞频率、细胞因子浓度、信号强度，还是整个系统的弹性（resilience）？\n2. 观察到的Treg/Teff比值变化，是稳态调节的驱动者，还是响应者（如由抗原负荷或炎症水平驱动）？\n3. 中介变量 Z 如何直接测量，并区分于下游效应？例如pSTAT5是信号转导中介，还是仅仅是激活标记？\n4. 若关键基因敲除（如Foxp3）在不同遗传背景或微生物群条件下表型严重度不同，机制是否仍然普遍成立？\n5. 体外实验中确定的信号阈值（如IL-2浓度），在体内因细胞因子沉没或局部浓度梯度而无法实现时，该机制是否仍有生理意义？\n6. 不同组织（如淋巴结vs.肠道）中，Treg的功能和稳定性是否由同一套调节逻辑控制，还是需独立建模？\n7. 所谓的稳态点是单一吸引子，还是一个动态变化范围；如果是后者，如何定义可操作的重平衡目标？\n\nBianLun 每轮必须输出：\n\nround_summary:\n  resolved_disputes: []\n  unresolved_disputes: []\n  causal_links_requiring_revision: []\n  evidence_missing: []\n  required_mingli_revision: []\n\nMingLi 必须保留修订前后版本、修改理由、引用变化和仍未解决的不确定性。\n\n## 最终交付物与安全边界\n\n最终输出必须包括：\n\n- Objective Decomposition、每个 SH 的状态和组合结论门槛；\n- P0–P4 文献覆盖、子空间覆盖、来源质量和预印本缺口报告；\n- PaperGraph 因果证据图与断链位置；\n- TanXi ranked gaps 与 mechanism_draft；\n- Socrates evidence contract、反事实设计、第一性原理待补项；\n- 初始假设、3–5 轮 DuZhi 质询、BianLun 归纳、MingLi 修订轨迹；\n- YanZhen 初审与复审；\n- 最终状态：ACCEPT_FOR_EXPERIMENT、CONDITIONAL_ACCEPT、REJECTED 或 REQUIRES_HUMAN_REVIEW；\n- 可证伪的验证设计，包括体外/体内实验系统、扰动方案、对照设置、混杂控制、统计功效分析和数据共享要求；\n- 跨物种、跨组织、跨年龄/性别/遗传背景的可迁移性评估；\n- 未解决证据缺口、不能外推的细胞类型/组织/疾病状态，以及后续定向检索建议。\n\n所有涉及人类原代细胞或动物实验的方案，都只能作为研究设计输出；实际执行必须经过相应的机构审查委员会（IRB/IACUC）或伦理审查，并遵守相关生物安全和数据治理规定。",
+  "research_brief_source": "verbatim_user_prompt",
+  "phase": "Gap Discovery",
+  "createdAt": 1783801291.427834,
+  "updatedAt": 1783801375.4326854,
+  "papergraph": [],
+  "evidence": [],
+  "coverage_matrix": {},
+  "knowledge_gaps": [],
+  "hypotheses": [],
+  "keynotes": [],
+  "sub_hypotheses": [
+    {
+      "id": "SH1",
+      "focus": "Genetic background and Treg cell proliferation",
+      "causal_chain": [
+        "genetic background variation",
+        "Treg cell intrinsic state",
+        "Treg cell proliferation"
+      ],
+      "independent_variable": "genetic background variation",
+      "dependent_variables": [
+        "Treg cell proliferation rate"
+      ],
+      "controls": [
+        "matched genetic background without variations"
+      ],
+      "quantifiable_bounds": "",
+      "threshold_to_test": "",
+      "falsification_condition": "No difference in Treg cell proliferation rate between different genetic backgrounds",
+      "retrieval_query": "genetic background Treg proliferation human studies",
+      "query_variants": [
+        "genetic background Treg proliferation human studies",
+        "Immunology / Systems Biology / T Cell Biology / Cytokine Signaling / Regulatory T Cells (Tregs) / Immune Checkpoints / Inflammation / Autoimmunity / Tumor Immunology / Single-cell Multi-omics / Functional Assays / Mathematical Modeling / Translational Medicine Genetic background and Treg cell proliferation causal mechanism experimental evidence",
+        "Genetic background and Treg cell proliferation intervention observable outcome preprint"
+      ],
+      "evidence_window": {
+        "P0_latest_preprint": "recent preprint evidence requirement",
+        "P1_recent_primary": "recent primary-study requirement",
+        "P2_mechanism_or_theory": "mechanistic or theoretical evidence requirement",
+        "minimum_evidence_types": [
+          "observable",
+          "intervention_or_natural_experiment"
+        ]
+      },
+      "alternative_mechanisms": [
+        "Environmental factors dominate over genetic background in Treg proliferation"
+      ],
+      "status": "pending_retrieval",
+      "source_objective": "围绕以下可分解、可证伪的生物学与转化问题开展验证：在定义明确的生理状态、扰动条件（如感染、自身抗原、肿瘤）和干预窗口下，个体的遗传背景、细胞组成、细胞内在状态、局部微环境（如细胞因子、代谢物）以及外部扰动，是否能够以可重复、可量化、因果上可解释的方式预测特定免疫细胞亚群的稳态增殖、分化与凋亡动态；关键细胞因子或代谢信号通路的阈值效应与反馈调节；免疫调节干预是否能够重建而非简单地增强或抑制免疫应答；上述稳态调节规则在不同遗传背景、组织微环境、年龄、炎症状态及跨物种迁移时是否仍成立。"
+    },
+    {
+      "id": "SH2",
+      "focus": "Cytokine signaling and Treg cell apoptosis",
+      "causal_chain": [
+        "cytokine IL-2 concentration",
+        "pSTAT5 phosphorylation",
+        "Treg cell apoptosis"
+      ],
+      "independent_variable": "cytokine IL-2 concentration",
+      "dependent_variables": [
+        "Treg cell apoptosis rate"
+      ],
+      "controls": [
+        "IL-2 neutralizing antibody"
+      ],
+      "quantifiable_bounds": "",
+      "threshold_to_test": "",
+      "falsification_condition": "No change in Treg cell apoptosis rate with varying IL-2 concentrations",
+      "retrieval_query": "IL-2 pSTAT5 Treg apoptosis",
+      "query_variants": [
+        "IL-2 pSTAT5 Treg apoptosis",
+        "Immunology / Systems Biology / T Cell Biology / Cytokine Signaling / Regulatory T Cells (Tregs) / Immune Checkpoints / Inflammation / Autoimmunity / Tumor Immunology / Single-cell Multi-omics / Functional Assays / Mathematical Modeling / Translational Medicine Cytokine signaling and Treg cell apoptosis causal mechanism experimental evidence",
+        "Cytokine signaling and Treg cell apoptosis intervention observable outcome preprint"
+      ],
+      "evidence_window": {
+        "P0_latest_preprint": "recent preprint evidence requirement",
+        "P1_recent_primary": "recent primary-study requirement",
+        "P2_mechanism_or_theory": "mechanistic or theoretical evidence requirement",
+        "minimum_evidence_types": [
+          "observable",
+          "intervention_or_natural_experiment"
+        ]
+      },
+      "alternative_mechanisms": [
+        "Other cytokines or metabolic signals are more critical for Treg apoptosis"
+      ],
+      "status": "pending_retrieval",
+      "source_objective": "围绕以下可分解、可证伪的生物学与转化问题开展验证：在定义明确的生理状态、扰动条件（如感染、自身抗原、肿瘤）和干预窗口下，个体的遗传背景、细胞组成、细胞内在状态、局部微环境（如细胞因子、代谢物）以及外部扰动，是否能够以可重复、可量化、因果上可解释的方式预测特定免疫细胞亚群的稳态增殖、分化与凋亡动态；关键细胞因子或代谢信号通路的阈值效应与反馈调节；免疫调节干预是否能够重建而非简单地增强或抑制免疫应答；上述稳态调节规则在不同遗传背景、组织微环境、年龄、炎症状态及跨物种迁移时是否仍成立。"
+    },
+    {
+      "id": "SH3",
+      "focus": "Immune checkpoint modulation and immune response",
+      "causal_chain": [
+        "immune checkpoint inhibitor",
+        "PD-1 pathway inhibition",
+        "immune response enhancement"
+      ],
+      "independent_variable": "immune checkpoint inhibitor",
+      "dependent_variables": [
+        "immune response enhancement"
+      ],
+      "controls": [
+        "placebo or standard treatment"
+      ],
+      "quantifiable_bounds": "",
+      "threshold_to_test": "",
+      "falsification_condition": "No enhancement of immune response with immune checkpoint inhibition",
+      "retrieval_query": "immune checkpoint inhibitor PD-1 immune response",
+      "query_variants": [
+        "immune checkpoint inhibitor PD-1 immune response",
+        "Immunology / Systems Biology / T Cell Biology / Cytokine Signaling / Regulatory T Cells (Tregs) / Immune Checkpoints / Inflammation / Autoimmunity / Tumor Immunology / Single-cell Multi-omics / Functional Assays / Mathematical Modeling / Translational Medicine Immune checkpoint modulation and immune response causal mechanism experimental evidence",
+        "Immune checkpoint modulation and immune response intervention observable outcome preprint"
+      ],
+      "evidence_window": {
+        "P0_latest_preprint": "recent preprint evidence requirement",
+        "P1_recent_primary": "recent primary-study requirement",
+        "P2_mechanism_or_theory": "mechanistic or theoretical evidence requirement",
+        "minimum_evidence_types": [
+          "observable",
+          "intervention_or_natural_experiment"
+        ]
+      },
+      "alternative_mechanisms": [
+        "Immune checkpoint inhibitors only reduce immune suppression, not enhance response"
+      ],
+      "status": "pending_retrieval",
+      "source_objective": "围绕以下可分解、可证伪的生物学与转化问题开展验证：在定义明确的生理状态、扰动条件（如感染、自身抗原、肿瘤）和干预窗口下，个体的遗传背景、细胞组成、细胞内在状态、局部微环境（如细胞因子、代谢物）以及外部扰动，是否能够以可重复、可量化、因果上可解释的方式预测特定免疫细胞亚群的稳态增殖、分化与凋亡动态；关键细胞因子或代谢信号通路的阈值效应与反馈调节；免疫调节干预是否能够重建而非简单地增强或抑制免疫应答；上述稳态调节规则在不同遗传背景、组织微环境、年龄、炎症状态及跨物种迁移时是否仍成立。"
+    },
+    {
+      "id": "SH4",
+      "focus": "Metabolic pathways and T cell differentiation",
+      "causal_chain": [
+        "mTOR pathway activation",
+        "metabolic reprogramming",
+        "T cell differentiation"
+      ],
+      "independent_variable": "mTOR pathway activation",
+      "dependent_variables": [
+        "T cell differentiation into specific subsets"
+      ],
+      "controls": [
+        "mTOR inhibitor"
+      ],
+      "quantifiable_bounds": "",
+      "threshold_to_test": "",
+      "falsification_condition": "No change in T cell subset differentiation with mTOR pathway activation",
+      "retrieval_query": "mTOR metabolic reprogramming T cell differentiation",
+      "query_variants": [
+        "mTOR metabolic reprogramming T cell differentiation",
+        "Immunology / Systems Biology / T Cell Biology / Cytokine Signaling / Regulatory T Cells (Tregs) / Immune Checkpoints / Inflammation / Autoimmunity / Tumor Immunology / Single-cell Multi-omics / Functional Assays / Mathematical Modeling / Translational Medicine Metabolic pathways and T cell differentiation causal mechanism experimental evidence",
+        "Metabolic pathways and T cell differentiation intervention observable outcome preprint"
+      ],
+      "evidence_window": {
+        "P0_latest_preprint": "recent preprint evidence requirement",
+        "P1_recent_primary": "recent primary-study requirement",
+        "P2_mechanism_or_theory": "mechanistic or theoretical evidence requirement",
+        "minimum_evidence_types": [
+          "observable",
+          "intervention_or_natural_experiment"
+        ]
+      },
+      "alternative_mechanisms": [
+        "Other metabolic pathways are more influential in T cell differentiation"
+      ],
+      "status": "pending_retrieval",
+      "source_objective": "围绕以下可分解、可证伪的生物学与转化问题开展验证：在定义明确的生理状态、扰动条件（如感染、自身抗原、肿瘤）和干预窗口下，个体的遗传背景、细胞组成、细胞内在状态、局部微环境（如细胞因子、代谢物）以及外部扰动，是否能够以可重复、可量化、因果上可解释的方式预测特定免疫细胞亚群的稳态增殖、分化与凋亡动态；关键细胞因子或代谢信号通路的阈值效应与反馈调节；免疫调节干预是否能够重建而非简单地增强或抑制免疫应答；上述稳态调节规则在不同遗传背景、组织微环境、年龄、炎症状态及跨物种迁移时是否仍成立。"
+    },
+    {
+      "id": "SH5",
+      "focus": "Local microenvironment and Treg function",
+      "causal_chain": [
+        "local cytokine milieu",
+        "Treg functional stability",
+        "Treg suppressive activity"
+      ],
+      "independent_variable": "local cytokine milieu",
+      "dependent_variables": [
+        "Treg suppressive activity"
+      ],
+      "controls": [
+        "standard culture conditions"
+      ],
+      "quantifiable_bounds": "",
+      "threshold_to_test": "",
+      "falsification_condition": "No change in Treg suppressive activity with different local cytokine milieus",
+      "retrieval_query": "local cytokine Treg function stability",
+      "query_variants": [
+        "local cytokine Treg function stability",
+        "Immunology / Systems Biology / T Cell Biology / Cytokine Signaling / Regulatory T Cells (Tregs) / Immune Checkpoints / Inflammation / Autoimmunity / Tumor Immunology / Single-cell Multi-omics / Functional Assays / Mathematical Modeling / Translational Medicine Local microenvironment and Treg function causal mechanism experimental evidence",
+        "Local microenvironment and Treg function intervention observable outcome preprint"
+      ],
+      "evidence_window": {
+        "P0_latest_preprint": "recent preprint evidence requirement",
+        "P1_recent_primary": "recent primary-study requirement",
+        "P2_mechanism_or_theory": "mechanistic or theoretical evidence requirement",
+        "minimum_evidence_types": [
+          "observable",
+          "intervention_or_natural_experiment"
+        ]
+      },
+      "alternative_mechanisms": [
+        "Treg function is primarily determined by systemic factors, not local microenvironment"
+      ],
+      "status": "pending_retrieval",
+      "source_objective": "围绕以下可分解、可证伪的生物学与转化问题开展验证：在定义明确的生理状态、扰动条件（如感染、自身抗原、肿瘤）和干预窗口下，个体的遗传背景、细胞组成、细胞内在状态、局部微环境（如细胞因子、代谢物）以及外部扰动，是否能够以可重复、可量化、因果上可解释的方式预测特定免疫细胞亚群的稳态增殖、分化与凋亡动态；关键细胞因子或代谢信号通路的阈值效应与反馈调节；免疫调节干预是否能够重建而非简单地增强或抑制免疫应答；上述稳态调节规则在不同遗传背景、组织微环境、年龄、炎症状态及跨物种迁移时是否仍成立。"
+    },
+    {
+      "id": "SH6",
+      "focus": "Age and Treg cell function",
+      "causal_chain": [
+        "aging",
+        "Treg cell intrinsic changes",
+        "Treg cell function"
+      ],
+      "independent_variable": "aging",
+      "dependent_variables": [
+        "Treg cell function"
+      ],
+      "controls": [
+        "young Treg cells"
+      ],
+      "quantifiable_bounds": "",
+      "threshold_to_test": "",
+      "falsification_condition": "No decline in Treg cell function with aging",
+      "retrieval_query": "aging Treg function intrinsic changes",
+      "query_variants": [
+        "aging Treg function intrinsic changes",
+        "Immunology / Systems Biology / T Cell Biology / Cytokine Signaling / Regulatory T Cells (Tregs) / Immune Checkpoints / Inflammation / Autoimmunity / Tumor Immunology / Single-cell Multi-omics / Functional Assays / Mathematical Modeling / Translational Medicine Age and Treg cell function causal mechanism experimental evidence",
+        "Age and Treg cell function intervention observable outcome preprint"
+      ],
+      "evidence_window": {
+        "P0_latest_preprint": "recent preprint evidence requirement",
+        "P1_recent_primary": "recent primary-study requirement",
+        "P2_mechanism_or_theory": "mechanistic or theoretical evidence requirement",
+        "minimum_evidence_types": [
+          "observable",
+          "intervention_or_natural_experiment"
+        ]
+      },
+      "alternative_mechanisms": [
+        "Systemic factors rather than intrinsic Treg changes are responsible for age-related decline in Treg function"
+      ],
+      "status": "pending_retrieval",
+      "source_objective": "围绕以下可分解、可证伪的生物学与转化问题开展验证：在定义明确的生理状态、扰动条件（如感染、自身抗原、肿瘤）和干预窗口下，个体的遗传背景、细胞组成、细胞内在状态、局部微环境（如细胞因子、代谢物）以及外部扰动，是否能够以可重复、可量化、因果上可解释的方式预测特定免疫细胞亚群的稳态增殖、分化与凋亡动态；关键细胞因子或代谢信号通路的阈值效应与反馈调节；免疫调节干预是否能够重建而非简单地增强或抑制免疫应答；上述稳态调节规则在不同遗传背景、组织微环境、年龄、炎症状态及跨物种迁移时是否仍成立。"
+    }
+  ],
+  "objective_decomposition": {
+    "objective": "围绕以下可分解、可证伪的生物学与转化问题开展验证：在定义明确的生理状态、扰动条件（如感染、自身抗原、肿瘤）和干预窗口下，个体的遗传背景、细胞组成、细胞内在状态、局部微环境（如细胞因子、代谢物）以及外部扰动，是否能够以可重复、可量化、因果上可解释的方式预测特定免疫细胞亚群的稳态增殖、分化与凋亡动态；关键细胞因子或代谢信号通路的阈值效应与反馈调节；免疫调节干预是否能够重建而非简单地增强或抑制免疫应答；上述稳态调节规则在不同遗传背景、组织微环境、年龄、炎症状态及跨物种迁移时是否仍成立。",
+    "domain": "Immunology / Systems Biology / T Cell Biology / Cytokine Signaling / Regulatory T Cells (Tregs) / Immune Checkpoints / Inflammation / Autoimmunity / Tumor Immunology / Single-cell Multi-omics / Functional Assays / Mathematical Modeling / Translational Medicine",
+    "research_brief": "创建并运行一个 AutoGen 科研闭环验证项目。\n\n项目标题：\nHow is immune homeostasis maintained and regulated?\n从动态平衡、个体异质性到可干预靶点的免疫系统稳态因果验证闭环\n\n领域：\nImmunology / Systems Biology / T Cell Biology / Cytokine Signaling /\nRegulatory T Cells (Tregs) / Immune Checkpoints / Inflammation /\nAutoimmunity / Tumor Immunology / Single-cell Multi-omics /\nFunctional Assays / Mathematical Modeling / Translational Medicine\n\n研究目标：\n不要泛泛讨论 免疫稳态对健康至关重要。围绕以下可分解、可证伪的生物学与转化问题开展验证：\n\n在定义明确的生理状态、扰动条件（如感染、自身抗原、肿瘤）和干预窗口下，个体的遗传背景、细胞组成、细胞内在状态、局部微环境（如细胞因子、代谢物）以及外部扰动，是否能够以可重复、可量化、因果上可解释的方式预测：\n\n1. 特定免疫细胞亚群（如Treg, Th17, CD8+ T）的稳态增殖、分化与凋亡动态；\n2. 关键细胞因子或代谢信号通路（如IL-2, TGF-β, mTOR）的阈值效应与反馈调节；\n3. 免疫调节干预（如低剂量IL-2、检查点激动剂/拮抗剂）是否能够重建而非简单地增强或抑制免疫应答；\n4. 上述稳态调节规则在不同遗传背景、组织微环境（屏障组织vs.循环系统）、年龄、炎症状态及跨物种（小鼠模型vs.人类）迁移时是否仍成立。\n\n禁止将细胞亚群频率、细胞因子浓度或基因表达差异直接解释为稳态调节机制；\n禁止将体外刺激或小鼠模型的结论直接外推为人类体内系统层面的稳态调节规律；\n禁止将系统复杂性误判为不可知论，即不可知论不应阻碍对关键调节节点的假设驱动研究。\n\n执行完整闭环：\nBoxue → Objective Decomposition → ZhiZhi → TanXi → Socrates →\nMingLi → YanZhen → DuZhi → BianLun → MingLi 修订 → YanZhen 复审。\n\n\n## Boxue：Objective Decomposition\n\n在任何宽泛检索前，先运行 decompose_research_objective。\n输出不是一组研究方向，而是独立的、可被推翻的子假设。\n\n\n## ZhiZhi：文献与证据知识库要求\n\n数据源与质量边界\n\n- 主要使用 semantic_scholar、PubMed、bioRxiv/medRxiv；免疫学前沿预印本需明确标注未经同行评审。\n- 分层导入至少 15 篇经质量筛选的文献；数量不是目标，必须覆盖每个已选子假设的证据窗口。\n- 对摘要缺失、unknown 字段、来源可疑或 requires_human_review 的记录，执行提取修复、降权或停留在背景层，不得作为机制合同的唯一证据。\n\n- 不得制造论文、临床试验、效应量、患者结局或指南推荐。\n\nP0–P4 分层\n\nP0 / L3：近期预印本\n  - 系统免疫学、单细胞多组学、免疫调节、自身免疫、肿瘤免疫\n  - 要求标注未经同行评审；检索失败必须显式标记证据不足\n\nP1 / L2：近2年高质量原始研究\n  - 人体免疫监测研究、人类遗传学（如GWAS）、针对患者的干预研究\n  - 功能验证实验（如体外共培养、类器官）\n  - 纵向随访研究（如感染、疫苗接种、自身免疫病）\n\nP2 / L4：机制、实验与理论证据\n  - 细胞信号转导（如TCR、共刺激、细胞因子受体）\n  - 代谢与表观遗传重编程\n  - 经典免疫学实验（如基因敲除小鼠、过继转移、抗体阻断）\n\nP3 / L0：系统综述、临床指南、方法学综述\n  - 免疫学教科书、领域权威综述、调节性T细胞/Th17/检查点综述\n  - 因果推断、生物标志物验证指南\n\nP4 / L1：奠基研究与历史脉络\n  - 免疫耐受、克隆选择、Treg发现等奠基性工作\n  - 仅用于历史和机制脉络，不得替代当前直接证据\n\n必须覆盖的子空间\n\n- 调节性T细胞（Treg）的发育、维持和功能可塑性；\n- 效应T细胞（Teff）与Treg之间的动态平衡（包括关键细胞因子IL-2, TGF-β）；\n- 免疫检查点分子（如PD-1, CTLA-4, LAG-3）在稳态调节中的作用；\n- 代谢通路（如mTOR, AMPK, 糖酵解/氧化磷酸化）对免疫细胞分化的影响；\n- 组织微环境因素（如缺氧、营养、胞外基质）对免疫细胞功能的调节；\n- 人类遗传变异（如SNPs）对免疫稳态相关基因表达和功能的影响；\n- 跨物种（小鼠vs人类）和跨组织（淋巴器官vs屏障组织vs肿瘤）的保守性与差异性。\n\n必须排除或降权的内容\n\n- 只报告差异表达基因、未进行功能验证或机制探索的纯组学描述性文章；\n- 仅使用一种永生化细胞系，且没有原代细胞或体内验证的研究；\n- 与免疫稳态和调节无直接关联的普通微生物学、肿瘤生长曲线或药物化学论文；\n- 没有使用人类样本或人道动物模型验证的纯粹计算模拟论文。\n\nDeepSurvey 风格知识构建\n\n每篇入库论文除 method-scenario-benchmark 外，必须提取：\n\nkeynote:\n  core_problem: 该论文解决的具体免疫学问题（如Treg功能不稳定性、IL-2阈值效应）\n  experimental_system: 体外/体内、小鼠/人类、健康/疾病、组织来源\n  causal_chains:\n    - trigger: 干预（如细胞因子添加、基因敲除、药物处理）或自然实验（如遗传变异）\n      steps:\n        - claim: 中介机制（如信号通路激活、转录因子表达、代谢转变）\n          evidence: 论文中的来源摘录\n          evidence_type: experimental | theoretical | observational | inferred\n      outcome: 细胞功能（增殖、凋亡、细胞因子产生）、亚群频率、疾病表型\n      observables: 流式细胞术、RNA-seq、ATAC-seq、代谢物、细胞因子浓度\n      interventions: 可操纵变量（如抗IL-2抗体、雷帕霉素）\n  experimental_evidence: 样本数、实验条件、对照和主要终点\n  assumptions: 隐含假设（如体外激活状态代表体内）、可迁移条件和未测混杂\n  limitations: 作者明确局限（如体外模型、小样本量、特定品系小鼠）\n  important_claims: 声明与证据的一一对应\n  future_directions: 明确未来工作\n  code_or_implementation: 公开代码、模型版本、分析环境；不得下载或处理患者敏感数据\n\n## TanXi：Gap 探索要求\n\nTanXi 首先做因果断链检测，而不是把方法尚未用于某细胞亚群作为高价值 Gap。\n\n优先发现以下问题：\n\n1. 遗传变异 → 细胞内在状态 → 细胞因子敏感性 → 稳态增殖/凋亡 中，哪一段缺乏可测量中介、干预证据或跨模型验证；\n2. 某个表面标志物或转录因子究竟是稳态维持的驱动者，还是仅仅是旁观者或激活后的附属现象；\n3. 稳态调节在不同组织微环境（如淋巴器官、屏障组织、炎症部位、肿瘤）之间是否存在根本性不同，而非仅是细胞数量差异；\n4. 体外实验中的信号阈值是否在体内复杂的细胞因子网络和细胞-细胞接触中被噪声淹没，导致预测失效；\n5. Treg与Teff之间的动态平衡，在特定扰动（如感染、自身免疫）下，其恢复的稳态点是唯一的还是多稳态的；\n6. 免疫系统的冗余性如何掩盖核心调节节点的作用，使得单个基因敲除无表型，但组合干预或特定背景下才显现；\n7. 从小鼠到人类，哪些调节机制是保守的，哪些是基于特定寿命、环境暴露和免疫经历而特有的；\n8. 衰老、肥胖、性别等个体间差异如何修改稳态调节的基线和响应规则。\n\n每个 ranked gap 必须输出：\n\nmechanism_draft:\n  input: 已定义的扰动（如感染、自身抗原、免疫治疗）或个体差异变量\n  proposed_mediator: 仅可填写文献来源支持的中介；否则保持 unresolved\n  output: 明确的细胞功能、细胞群体动态或系统状态（如炎症消退、自身耐受维持）\n  source_clue: 原文 citation 与 excerpt\n  causal_gap:\n    missing_kind: intermediate_mechanism | observability | intervention |\n                  counterfactual | evidence_window\n    evidence_needed: 下一步需要何种直接证据\n  sub_hypothesis_id: SH1 | SH2 | SH3 | SH4\n  unresolved_fields:\n    - identity\n    - location_or_scope\n    - dynamics\n    - reversibility\n    - observability\n    - intervention\n    - counterfactual\n\n禁止把某组学技术尚未用于某疾病状态某新发现的细胞亚群功能未知直接列为核心 Gap。\n\n## Socrates：机制合同与因果补全\n\n只选择排名第一、且属于机制型或矛盾型的 Gap 建立机制合同。\n\nSocrates evidence contract:\n  identity: 中介实体/过程到底是什么（如IL-2/IL-2R信号强度、TCR亲和力、Treg特异性转录因子Foxp3的表达水平）\n  location_or_scope: 位于哪类细胞（如CD4+ Foxp3+ Treg）、组织（如淋巴结、肠道、肿瘤微环境）或时间窗（如急性期vs恢复期）\n  dynamics: 如何随扰动强度、时间进程或局部细胞因子浓度变化\n  reversibility: 是否可逆，何种条件下可恢复（如撤除刺激、输入外源性细胞因子）\n  observability: 如何直接测量（如流式、单细胞测序、体内成像），而不是只测终末分化标志物\n  intervention: 什么变量可在实验伦理和技术上被操纵（如细胞因子中和、基因编辑、过继转移）\n  counterfactual: 若抑制/增强/移除该中介，预期细胞群体动态和系统稳态发生什么变化\n\n每个字段必须有：\n\nevidence:\n  - citation: 真实论文、综述或实验研究来源\n    excerpt: 支持该字段的原文摘录\n    paper_id: PaperGraph记录\n    evidence_type: experimental | theoretical | observational | inferred\n\nSocrates 必须同时输出：\n\n- 反事实或准实验设计（如使用IL-2突变体只结合特定受体、Foxp3条件性敲除、使用报告小鼠追踪细胞命运）；\n- 第一性原理推导待补项，例如受体占有模型对Treg存活的影响、IL-2消耗速率与Treg扩增动力学的关系；\n- 竞争机制消除计划（如区分Treg内在Foxp3缺失 vs. 通过TGF-β或IL-10的旁观者效应）；\n- 哪些证据来自人类原代细胞、小鼠模型或体外系统，禁止混淆证据层级。\n\n若 verdict != COMPLETE，输出 INSUFFICIENT_EVIDENCE、剩余字段和定向检索建议，停止 MingLi 假设生成；不得用常识、临床直觉或模板补全。\n\n## MingLi：假设生成要求\n\nMingLi 只可消费：\n\n- Socrates COMPLETE 的机制合同；\n- 对应子假设满足 P0–P2 证据窗口；\n- 有明确细胞类型、扰动范围和可观测终点的 Gap。\n\n每条假设必须包含：\n\nhypothesis:\n  sub_hypothesis_id: SHx\n  cell_and_tissue_scope: 细胞亚群、组织部位、生理或病理状态\n  perturbation_scope: 特定的体外刺激、体内扰动或遗传变异\n  causal_chain: X → Z → Y\n  X: 可干预变量或可定义的自然实验（如外源性IL-2浓度、抗原剂量、基因多态性）\n  Z: 直接可测量中介（如pSTAT5水平、Foxp3表达、线粒体膜电位）\n  Y: 细胞功能（增殖、凋亡、细胞因子产生）、群体频率（Treg/Teff比例）或系统状态（炎症评分）\n  operating_conditions:\n    - 特定细胞因子组合、TCR刺激强度\n    - 氧浓度、代谢底物可用性\n    - 细胞-细胞接触（如DC/T细胞共培养）\n  observables:\n    - 细胞频率（流式细胞术）\n    - 信号蛋白磷酸化（磷酸化流式）\n    - 转录组和表观组（scRNA-seq/scATAC-seq）\n    - 代谢物（Seahorse、质谱）\n    - 细胞因子浓度（Luminex/MSD）\n  null_hypothesis: 不存在经中介 Z 传递的调节效应，或该效应在体内被冗余/补偿机制掩盖\n  alternative_explanations:\n    - 细胞外因素的间接影响（如其他细胞类型产生的细胞因子）\n    - 非细胞自主性机制（如Treg通过DC间接影响Teff）\n    - 系统冗余（如多个信号通路同时调节）\n    - 观察到的相关性纯属伴随状态（如激活状态）\n  falsification_condition: 预注册的失败条件（如Z未改变或Y不变、方向相反、阻断X后Y不恢复）\n  source_mapping: 每个因果链步骤对应 Socrates citation/excerpt\n\n合格假设的形式应类似：\n\n> 在定义明确的体外分化体系或体内扰动模型中，若通过 X 改变信号强度，并直接测得中介 Z 的预期变化，而 Y 在匹配对照下按预注册方向改变，则支持该机制；若 Z 未改变、Y 与 Z 脱钩，或竞争机制更能解释数据，则否定或修订假设。\n\n禁止使用免疫组学数据可指导治疗通过研究Treg可理解免疫耐受之类没有机制实体和证伪条件的万能模板。\n\n## YanZhen：两次机制审计\n\n初审\n\n- 内部一致性：变量、细胞范围、扰动范围、时间顺序和中介定义是否一致；\n- 数据一致性：citation/excerpt 是否真正支持所声称的细胞类型、扰动和终点；\n- 因果一致性：是否把相关误当因果关系，是否遗漏关键混杂（如细胞频率依赖的比例效应）；\n- 体外与体内区分：体外实验的发现不能直接外推为体内稳态机制；\n- 输出：unsupported_claims、required_actions、verdict。\n\n至少两个 regime-shift 检验\n\nregime_shift_1:\n  condition: 从健康个体到自身免疫病或肿瘤微环境\n  question: 调节机制（如IL-2依赖性）是否仍然成立，或是否被微环境中的抑制/增强信号覆盖\n\nregime_shift_2:\n  condition: 从体外细胞培养到体内复杂环境（如静脉注射vs.局部组织）\n  question: 信号阈值或反馈控制是否因细胞-细胞接触、基质粘附或药代动力学差异而改变\n\nregime_shift_3:\n  condition: 从小鼠模型到人类原代细胞/人体样本\n  question: 关键中介分子（如Foxp3, IL-2R）的表达和功能是否保守，或是否存在物种特异性差异\n\nregime_shift_4:\n  condition: 从短期急性刺激到长期慢性炎症或衰老\n  question: 调节机制是否存在时间依赖性转变，如从稳态维持到功能衰竭\n\n若初审不是 PASS，YanZhen 必须把具体失败点反馈给 MingLi 和 DuZhi；不得直接输出成功结论。\n\n## DuZhi + BianLun：3–5 轮结构化辩论\n\nDuZhi 每轮必须针对上一轮的具体回应追问，并至少覆盖：\n\n1. 免疫稳态的操作定义是什么：是特定细胞频率、细胞因子浓度、信号强度，还是整个系统的弹性（resilience）？\n2. 观察到的Treg/Teff比值变化，是稳态调节的驱动者，还是响应者（如由抗原负荷或炎症水平驱动）？\n3. 中介变量 Z 如何直接测量，并区分于下游效应？例如pSTAT5是信号转导中介，还是仅仅是激活标记？\n4. 若关键基因敲除（如Foxp3）在不同遗传背景或微生物群条件下表型严重度不同，机制是否仍然普遍成立？\n5. 体外实验中确定的信号阈值（如IL-2浓度），在体内因细胞因子沉没或局部浓度梯度而无法实现时，该机制是否仍有生理意义？\n6. 不同组织（如淋巴结vs.肠道）中，Treg的功能和稳定性是否由同一套调节逻辑控制，还是需独立建模？\n7. 所谓的稳态点是单一吸引子，还是一个动态变化范围；如果是后者，如何定义可操作的重平衡目标？\n\nBianLun 每轮必须输出：\n\nround_summary:\n  resolved_disputes: []\n  unresolved_disputes: []\n  causal_links_requiring_revision: []\n  evidence_missing: []\n  required_mingli_revision: []\n\nMingLi 必须保留修订前后版本、修改理由、引用变化和仍未解决的不确定性。\n\n## 最终交付物与安全边界\n\n最终输出必须包括：\n\n- Objective Decomposition、每个 SH 的状态和组合结论门槛；\n- P0–P4 文献覆盖、子空间覆盖、来源质量和预印本缺口报告；\n- PaperGraph 因果证据图与断链位置；\n- TanXi ranked gaps 与 mechanism_draft；\n- Socrates evidence contract、反事实设计、第一性原理待补项；\n- 初始假设、3–5 轮 DuZhi 质询、BianLun 归纳、MingLi 修订轨迹；\n- YanZhen 初审与复审；\n- 最终状态：ACCEPT_FOR_EXPERIMENT、CONDITIONAL_ACCEPT、REJECTED 或 REQUIRES_HUMAN_REVIEW；\n- 可证伪的验证设计，包括体外/体内实验系统、扰动方案、对照设置、混杂控制、统计功效分析和数据共享要求；\n- 跨物种、跨组织、跨年龄/性别/遗传背景的可迁移性评估；\n- 未解决证据缺口、不能外推的细胞类型/组织/疾病状态，以及后续定向检索建议。\n\n所有涉及人类原代细胞或动物实验的方案，都只能作为研究设计输出；实际执行必须经过相应的机构审查委员会（IRB/IACUC）或伦理审查，并遵守相关生物安全和数据治理规定。",
+    "research_brief_source": "verbatim_project_brief",
+    "status": "ready_for_subhypothesis_retrieval",
+    "extractor": "llm",
+    "sub_hypotheses": [
+      {
+        "id": "SH1",
+        "focus": "Genetic background and Treg cell proliferation",
+        "causal_chain": [
+          "genetic background variation",
+          "Treg cell intrinsic state",
+          "Treg cell proliferation"
+        ],
+        "independent_variable": "genetic background variation",
+        "dependent_variables": [
+          "Treg cell proliferation rate"
+        ],
+        "controls": [
+          "matched genetic background without variations"
+        ],
+        "quantifiable_bounds": "",
+        "threshold_to_test": "",
+        "falsification_condition": "No difference in Treg cell proliferation rate between different genetic backgrounds",
+        "retrieval_query": "genetic background Treg proliferation human studies",
+        "query_variants": [
+          "genetic background Treg proliferation human studies",
+          "Immunology / Systems Biology / T Cell Biology / Cytokine Signaling / Regulatory T Cells (Tregs) / Immune Checkpoints / Inflammation / Autoimmunity / Tumor Immunology / Single-cell Multi-omics / Functional Assays / Mathematical Modeling / Translational Medicine Genetic background and Treg cell proliferation causal mechanism experimental evidence",
+          "Genetic background and Treg cell proliferation intervention observable outcome preprint"
+        ],
+        "evidence_window": {
+          "P0_latest_preprint": "recent preprint evidence requirement",
+          "P1_recent_primary": "recent primary-study requirement",
+          "P2_mechanism_or_theory": "mechanistic or theoretical evidence requirement",
+          "minimum_evidence_types": [
+            "observable",
+            "intervention_or_natural_experiment"
+          ]
+        },
+        "alternative_mechanisms": [
+          "Environmental factors dominate over genetic background in Treg proliferation"
+        ],
+        "status": "pending_retrieval",
+        "source_objective": "围绕以下可分解、可证伪的生物学与转化问题开展验证：在定义明确的生理状态、扰动条件（如感染、自身抗原、肿瘤）和干预窗口下，个体的遗传背景、细胞组成、细胞内在状态、局部微环境（如细胞因子、代谢物）以及外部扰动，是否能够以可重复、可量化、因果上可解释的方式预测特定免疫细胞亚群的稳态增殖、分化与凋亡动态；关键细胞因子或代谢信号通路的阈值效应与反馈调节；免疫调节干预是否能够重建而非简单地增强或抑制免疫应答；上述稳态调节规则在不同遗传背景、组织微环境、年龄、炎症状态及跨物种迁移时是否仍成立。"
+      },
+      {
+        "id": "SH2",
+        "focus": "Cytokine signaling and Treg cell apoptosis",
+        "causal_chain": [
+          "cytokine IL-2 concentration",
+          "pSTAT5 phosphorylation",
+          "Treg cell apoptosis"
+        ],
+        "independent_variable": "cytokine IL-2 concentration",
+        "dependent_variables": [
+          "Treg cell apoptosis rate"
+        ],
+        "controls": [
+          "IL-2 neutralizing antibody"
+        ],
+        "quantifiable_bounds": "",
+        "threshold_to_test": "",
+        "falsification_condition": "No change in Treg cell apoptosis rate with varying IL-2 concentrations",
+        "retrieval_query": "IL-2 pSTAT5 Treg apoptosis",
+        "query_variants": [
+          "IL-2 pSTAT5 Treg apoptosis",
+          "Immunology / Systems Biology / T Cell Biology / Cytokine Signaling / Regulatory T Cells (Tregs) / Immune Checkpoints / Inflammation / Autoimmunity / Tumor Immunology / Single-cell Multi-omics / Functional Assays / Mathematical Modeling / Translational Medicine Cytokine signaling and Treg cell apoptosis causal mechanism experimental evidence",
+          "Cytokine signaling and Treg cell apoptosis intervention observable outcome preprint"
+        ],
+        "evidence_window": {
+          "P0_latest_preprint": "recent preprint evidence requirement",
+          "P1_recent_primary": "recent primary-study requirement",
+          "P2_mechanism_or_theory": "mechanistic or theoretical evidence requirement",
+          "minimum_evidence_types": [
+            "observable",
+            "intervention_or_natural_experiment"
+          ]
+        },
+        "alternative_mechanisms": [
+          "Other cytokines or metabolic signals are more critical for Treg apoptosis"
+        ],
+        "status": "pending_retrieval",
+        "source_objective": "围绕以下可分解、可证伪的生物学与转化问题开展验证：在定义明确的生理状态、扰动条件（如感染、自身抗原、肿瘤）和干预窗口下，个体的遗传背景、细胞组成、细胞内在状态、局部微环境（如细胞因子、代谢物）以及外部扰动，是否能够以可重复、可量化、因果上可解释的方式预测特定免疫细胞亚群的稳态增殖、分化与凋亡动态；关键细胞因子或代谢信号通路的阈值效应与反馈调节；免疫调节干预是否能够重建而非简单地增强或抑制免疫应答；上述稳态调节规则在不同遗传背景、组织微环境、年龄、炎症状态及跨物种迁移时是否仍成立。"
+      },
+      {
+        "id": "SH3",
+        "focus": "Immune checkpoint modulation and immune response",
+        "causal_chain": [
+          "immune checkpoint inhibitor",
+          "PD-1 pathway inhibition",
+          "immune response enhancement"
+        ],
+        "independent_variable": "immune checkpoint inhibitor",
+        "dependent_variables": [
+          "immune response enhancement"
+        ],
+        "controls": [
+          "placebo or standard treatment"
+        ],
+        "quantifiable_bounds": "",
+        "threshold_to_test": "",
+        "falsification_condition": "No enhancement of immune response with immune checkpoint inhibition",
+        "retrieval_query": "immune checkpoint inhibitor PD-1 immune response",
+        "query_variants": [
+          "immune checkpoint inhibitor PD-1 immune response",
+          "Immunology / Systems Biology / T Cell Biology / Cytokine Signaling / Regulatory T Cells (Tregs) / Immune Checkpoints / Inflammation / Autoimmunity / Tumor Immunology / Single-cell Multi-omics / Functional Assays / Mathematical Modeling / Translational Medicine Immune checkpoint modulation and immune response causal mechanism experimental evidence",
+          "Immune checkpoint modulation and immune response intervention observable outcome preprint"
+        ],
+        "evidence_window": {
+          "P0_latest_preprint": "recent preprint evidence requirement",
+          "P1_recent_primary": "recent primary-study requirement",
+          "P2_mechanism_or_theory": "mechanistic or theoretical evidence requirement",
+          "minimum_evidence_types": [
+            "observable",
+            "intervention_or_natural_experiment"
+          ]
+        },
+        "alternative_mechanisms": [
+          "Immune checkpoint inhibitors only reduce immune suppression, not enhance response"
+        ],
+        "status": "pending_retrieval",
+        "source_objective": "围绕以下可分解、可证伪的生物学与转化问题开展验证：在定义明确的生理状态、扰动条件（如感染、自身抗原、肿瘤）和干预窗口下，个体的遗传背景、细胞组成、细胞内在状态、局部微环境（如细胞因子、代谢物）以及外部扰动，是否能够以可重复、可量化、因果上可解释的方式预测特定免疫细胞亚群的稳态增殖、分化与凋亡动态；关键细胞因子或代谢信号通路的阈值效应与反馈调节；免疫调节干预是否能够重建而非简单地增强或抑制免疫应答；上述稳态调节规则在不同遗传背景、组织微环境、年龄、炎症状态及跨物种迁移时是否仍成立。"
+      },
+      {
+        "id": "SH4",
+        "focus": "Metabolic pathways and T cell differentiation",
+        "causal_chain": [
+          "mTOR pathway activation",
+          "metabolic reprogramming",
+          "T cell differentiation"
+        ],
+        "independent_variable": "mTOR pathway activation",
+        "dependent_variables": [
+          "T cell differentiation into specific subsets"
+        ],
+        "controls": [
+          "mTOR inhibitor"
+        ],
+        "quantifiable_bounds": "",
+        "threshold_to_test": "",
+        "falsification_condition": "No change in T cell subset differentiation with mTOR pathway activation",
+        "retrieval_query": "mTOR metabolic reprogramming T cell differentiation",
+        "query_variants": [
+          "mTOR metabolic reprogramming T cell differentiation",
+          "Immunology / Systems Biology / T Cell Biology / Cytokine Signaling / Regulatory T Cells (Tregs) / Immune Checkpoints / Inflammation / Autoimmunity / Tumor Immunology / Single-cell Multi-omics / Functional Assays / Mathematical Modeling / Translational Medicine Metabolic pathways and T cell differentiation causal mechanism experimental evidence",
+          "Metabolic pathways and T cell differentiation intervention observable outcome preprint"
+        ],
+        "evidence_window": {
+          "P0_latest_preprint": "recent preprint evidence requirement",
+          "P1_recent_primary": "recent primary-study requirement",
+          "P2_mechanism_or_theory": "mechanistic or theoretical evidence requirement",
+          "minimum_evidence_types": [
+            "observable",
+            "intervention_or_natural_experiment"
+          ]
+        },
+        "alternative_mechanisms": [
+          "Other metabolic pathways are more influential in T cell differentiation"
+        ],
+        "status": "pending_retrieval",
+        "source_objective": "围绕以下可分解、可证伪的生物学与转化问题开展验证：在定义明确的生理状态、扰动条件（如感染、自身抗原、肿瘤）和干预窗口下，个体的遗传背景、细胞组成、细胞内在状态、局部微环境（如细胞因子、代谢物）以及外部扰动，是否能够以可重复、可量化、因果上可解释的方式预测特定免疫细胞亚群的稳态增殖、分化与凋亡动态；关键细胞因子或代谢信号通路的阈值效应与反馈调节；免疫调节干预是否能够重建而非简单地增强或抑制免疫应答；上述稳态调节规则在不同遗传背景、组织微环境、年龄、炎症状态及跨物种迁移时是否仍成立。"
+      },
+      {
+        "id": "SH5",
+        "focus": "Local microenvironment and Treg function",
+        "causal_chain": [
+          "local cytokine milieu",
+          "Treg functional stability",
+          "Treg suppressive activity"
+        ],
+        "independent_variable": "local cytokine milieu",
+        "dependent_variables": [
+          "Treg suppressive activity"
+        ],
+        "controls": [
+          "standard culture conditions"
+        ],
+        "quantifiable_bounds": "",
+        "threshold_to_test": "",
+        "falsification_condition": "No change in Treg suppressive activity with different local cytokine milieus",
+        "retrieval_query": "local cytokine Treg function stability",
+        "query_variants": [
+          "local cytokine Treg function stability",
+          "Immunology / Systems Biology / T Cell Biology / Cytokine Signaling / Regulatory T Cells (Tregs) / Immune Checkpoints / Inflammation / Autoimmunity / Tumor Immunology / Single-cell Multi-omics / Functional Assays / Mathematical Modeling / Translational Medicine Local microenvironment and Treg function causal mechanism experimental evidence",
+          "Local microenvironment and Treg function intervention observable outcome preprint"
+        ],
+        "evidence_window": {
+          "P0_latest_preprint": "recent preprint evidence requirement",
+          "P1_recent_primary": "recent primary-study requirement",
+          "P2_mechanism_or_theory": "mechanistic or theoretical evidence requirement",
+          "minimum_evidence_types": [
+            "observable",
+            "intervention_or_natural_experiment"
+          ]
+        },
+        "alternative_mechanisms": [
+          "Treg function is primarily determined by systemic factors, not local microenvironment"
+        ],
+        "status": "pending_retrieval",
+        "source_objective": "围绕以下可分解、可证伪的生物学与转化问题开展验证：在定义明确的生理状态、扰动条件（如感染、自身抗原、肿瘤）和干预窗口下，个体的遗传背景、细胞组成、细胞内在状态、局部微环境（如细胞因子、代谢物）以及外部扰动，是否能够以可重复、可量化、因果上可解释的方式预测特定免疫细胞亚群的稳态增殖、分化与凋亡动态；关键细胞因子或代谢信号通路的阈值效应与反馈调节；免疫调节干预是否能够重建而非简单地增强或抑制免疫应答；上述稳态调节规则在不同遗传背景、组织微环境、年龄、炎症状态及跨物种迁移时是否仍成立。"
+      },
+      {
+        "id": "SH6",
+        "focus": "Age and Treg cell function",
+        "causal_chain": [
+          "aging",
+          "Treg cell intrinsic changes",
+          "Treg cell function"
+        ],
+        "independent_variable": "aging",
+        "dependent_variables": [
+          "Treg cell function"
+        ],
+        "controls": [
+          "young Treg cells"
+        ],
+        "quantifiable_bounds": "",
+        "threshold_to_test": "",
+        "falsification_condition": "No decline in Treg cell function with aging",
+        "retrieval_query": "aging Treg function intrinsic changes",
+        "query_variants": [
+          "aging Treg function intrinsic changes",
+          "Immunology / Systems Biology / T Cell Biology / Cytokine Signaling / Regulatory T Cells (Tregs) / Immune Checkpoints / Inflammation / Autoimmunity / Tumor Immunology / Single-cell Multi-omics / Functional Assays / Mathematical Modeling / Translational Medicine Age and Treg cell function causal mechanism experimental evidence",
+          "Age and Treg cell function intervention observable outcome preprint"
+        ],
+        "evidence_window": {
+          "P0_latest_preprint": "recent preprint evidence requirement",
+          "P1_recent_primary": "recent primary-study requirement",
+          "P2_mechanism_or_theory": "mechanistic or theoretical evidence requirement",
+          "minimum_evidence_types": [
+            "observable",
+            "intervention_or_natural_experiment"
+          ]
+        },
+        "alternative_mechanisms": [
+          "Systemic factors rather than intrinsic Treg changes are responsible for age-related decline in Treg function"
+        ],
+        "status": "pending_retrieval",
+        "source_objective": "围绕以下可分解、可证伪的生物学与转化问题开展验证：在定义明确的生理状态、扰动条件（如感染、自身抗原、肿瘤）和干预窗口下，个体的遗传背景、细胞组成、细胞内在状态、局部微环境（如细胞因子、代谢物）以及外部扰动，是否能够以可重复、可量化、因果上可解释的方式预测特定免疫细胞亚群的稳态增殖、分化与凋亡动态；关键细胞因子或代谢信号通路的阈值效应与反馈调节；免疫调节干预是否能够重建而非简单地增强或抑制免疫应答；上述稳态调节规则在不同遗传背景、组织微环境、年龄、炎症状态及跨物种迁移时是否仍成立。"
+      }
+    ],
+    "combination_hypothesis": {
+      "statement": "The combination of genetic, environmental, and age-related factors, along with local and systemic cues, can predict the dynamic behavior of Treg cells in a causal and quantifiable manner.",
+      "required_sub_hypothesis_ids": [
+        "SH1",
+        "SH2",
+        "SH3",
+        "SH4",
+        "SH5",
+        "SH6"
+      ],
+      "integration_test": "A comprehensive model that integrates all sub-hypotheses to test the overall predictive power of the combined factors on Treg dynamics.",
+      "status": "blocked_on_component_evidence"
+    },
+    "execution_constraints": {
+      "retrieval": [
+        "Use semantic_scholar, PubMed, and arXiv; prioritize recent preprints and high-quality original research; exclude descriptive omics papers and unverified computational models."
+      ],
+      "gap_detection": [
+        "Identify gaps in the causal chains, particularly where intermediate mechanisms, observability, or intervention evidence is lacking; avoid listing gaps based on the absence of method application to a specific cell type."
+      ],
+      "hypothesis": [
+        "Each hypothesis must be independently falsifiable, with clear manipulable variables, measurable outcomes, and defined falsification conditions; avoid generic templates and ensure hypotheses are supported by existing literature."
+      ],
+      "verification": [
+        "Audit hypotheses for internal, data, and causal consistency; perform regime-shift tests to evaluate the robustness of the hypotheses across different contexts; ensure final decisions are based on rigorous evidence and debate."
+      ]
+    },
+    "decomposition_rules": [
+      "Each sub-hypothesis must expose an intervention, observable outcome, falsification condition, and evidence window.",
+      "A combined conclusion is admissible only after the relevant component hypotheses are independently evaluated.",
+      "Missing quantitative bounds remain explicitly unresolved; they must not be fabricated from the objective."
+    ],
+    "createdAt": 1783801336.931234
+  },
+  "causal_evidence_graph": {
+    "nodes": [],
+    "edges": [],
+    "chains": []
+  },
+  "mechanism_reports": [],
+  "pipeline_tasks": [
+    "task_1783801375133_3327",
+    "task_1783801375268_1365",
+    "task_1783801375301_3360",
+    "task_1783801375333_5247",
+    "task_1783801375366_6461",
+    "task_1783801375399_4618"
+  ],
+  "boxue_delegation_plans": [
+    {
+      "boxue_delegation_plan_id": "boxue_1783801375133503800",
+      "project_id": "sci_1783801291427832500",
+      "goal": "Boxue → Objective Decomposition → ZhiZhi → TanXi → Socrates → MingLi → YanZhen → DuZhi → BianLun → MingLi 修订 → YanZhen 复审。",
+      "createdAt": 1783801375.4325576,
+      "prompt_alignment": {
+        "comparison": {
+          "prompt_assign_task": "implemented as persistent create_task DAG entries with assigned agent, phase, dependency, deliverable, priority, and acceptance criteria",
+          "prompt_review_output": "implemented as reviewer_gate plus boxue_final dependency gates; Boxue can add revision tasks via the task system",
+          "prompt_synthesize": "implemented as bianlun_synthesis, paperwriter_draft, and boxue_final synthesis tasks",
+          "prompt_adjust_plan": "implemented operationally by creating additional tasks or new delegation plans after reviewing outputs",
+          "prompt_finalize": "implemented as boxue_final decision task, not as specialist execution"
+        },
+        "stronger_than_old_pipeline_tasks": [
+          "role-specific tasks instead of generic phase tasks",
+          "explicit acceptance criteria",
+          "risk constraints embedded in every task",
+          "dependencies mirror the research lifecycle",
+          "optional teammate spawning for unblocked specialist work"
+        ],
+        "remaining_manual_gate": "Boxue still needs to review outputs and decide whether to create revision tasks; this preserves human/lead control over shared project state."
+      },
+      "coordination_policy": {
+        "boxue_role": "decompose, assign, review, synthesize, adjust, finalize",
+        "specialist_role": "execute only the assigned scientific subtask",
+        "shared_state": "state-changing PaperGraph/project updates should be gated by lead/synthesis tasks",
+        "step_limit": 20
+      },
+      "tasks": [
+        {
+          "task_id": "task_1783801375133_3327",
+          "agent": "boxue",
+          "phase": "Gap Discovery",
+          "title": "Decompose the objective into falsifiable causal units",
+          "blockedBy": [],
+          "priority": "highest",
+          "acceptance_criteria": [
+            "Every sub-hypothesis has an intervention, measurable outcome, falsification condition, and focused retrieval query",
+            "Numeric thresholds are preserved only when supplied or source-backed",
+            "Combined conclusions are conditional on independently evaluated component hypotheses"
+          ]
+        },
+        {
+          "task_id": "task_1783801375268_1365",
+          "agent": "zhizhi",
+          "phase": "Gap Discovery",
+          "title": "Build grounded PaperGraph evidence substrate",
+          "blockedBy": [
+            "task_1783801375133_3327"
+          ],
+          "priority": "high",
+          "acceptance_criteria": [
+            "At least one verifiable source or an explicit retrieval-failure report",
+            "Causal trigger, intermediate steps, outcome, observables, and intervention are extracted or explicitly marked unresolved",
+            "A missing P0 preprint window is marked evidence-insufficient rather than filled by older literature",
+            "Unsupported claims are marked for human review"
+          ]
+        },
+        {
+          "task_id": "task_1783801375301_3360",
+          "agent": "tanxi",
+          "phase": "Gap Discovery",
+          "title": "Rank high-value knowledge gaps",
+          "blockedBy": [
+            "task_1783801375268_1365"
+          ],
+          "priority": "high",
+          "acceptance_criteria": [
+            "Every reported gap has supporting references or is flagged as ungrounded",
+            "No more than 10 ranked gaps",
+            "Each gap includes novelty/value/feasibility rationale and its owning sub-hypothesis when applicable"
+          ]
+        },
+        {
+          "task_id": "task_1783801375333_5247",
+          "agent": "mingli",
+          "phase": "Hypothesis Generation",
+          "title": "Generate and evolve gap-grounded hypotheses",
+          "blockedBy": [
+            "task_1783801375301_3360"
+          ],
+          "priority": "high",
+          "acceptance_criteria": [
+            "Each hypothesis links to a gap_id",
+            "Each hypothesis contains mechanism and falsification condition",
+            "Overlap/novelty risk is reported"
+          ]
+        },
+        {
+          "task_id": "task_1783801375366_6461",
+          "agent": "duzhi",
+          "phase": "Socratic Debate",
+          "title": "Run Socratic critique",
+          "blockedBy": [
+            "task_1783801375333_5247"
+          ],
+          "priority": "medium",
+          "acceptance_criteria": [
+            "At least one counterexample per hypothesis",
+            "At least one alternative explanation per hypothesis",
+            "Actionable revision or rejection recommendation"
+          ]
+        },
+        {
+          "task_id": "task_1783801375399_4618",
+          "agent": "bianlun",
+          "phase": "Socratic Debate",
+          "title": "Moderate structured debate and synthesize refined hypothesis",
+          "blockedBy": [
+            "task_1783801375366_6461"
+          ],
+          "priority": "medium",
+          "acceptance_criteria": [
+            "Arguments are separated into factual vs conceptual disagreements",
+            "Refined hypothesis lists improvements from critique",
+            "Remaining risks are explicit"
+          ]
+        }
+      ],
+      "spawned_teammates": [],
+      "next_step": "Let unblocked specialist tasks run first. Boxue should review outputs at dependency gates, then adjust or unlock downstream phases."
+    }
+  ]
+}

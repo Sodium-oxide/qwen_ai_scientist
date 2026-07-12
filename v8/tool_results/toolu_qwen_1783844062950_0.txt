@@ -1,0 +1,627 @@
+{
+  "mingli_run_id": "mingli_1783846745501286700",
+  "project_id": "sci_1783839289386379700",
+  "createdAt": 1783846745.5012875,
+  "gap_ids": [
+    "gap_1783843895341353100",
+    "gap_1783843898242451800",
+    "gap_1783843898368202700",
+    "gap_1783843898601193000"
+  ],
+  "population_size": 8,
+  "generations_completed": 2,
+  "lineage_summary": [
+    {
+      "generation": 0,
+      "population_size": 8,
+      "best_score": 0.6145
+    },
+    {
+      "generation": 1,
+      "population_size": 8,
+      "best_score": 0.6163
+    },
+    {
+      "generation": 2,
+      "population_size": 8,
+      "best_score": 0.6163
+    }
+  ],
+  "top_hypotheses": [
+    {
+      "hypothesis_id": "hyp_1783846745501242400",
+      "gap_id": "gap_1783843898242451800",
+      "statement": "If the competing claims about decentralized manufacturing of cell and gene therapy products are evaluated under matched the experimental, observational, or simulation conditions that differ between the claims conditions, then AUC scores, sensitivity, specificity, Dice scores, K-statistic will separate which mechanism holds and identify the boundary condition the condition where the competing explanations diverge. The decisive test is constrained to AUC∞, Cmax, t1/2, adverse drug reaction (ADR) occurrence under an explicit stress regime.",
+      "mechanism": "Concrete mechanism chain: (1) method capability: 16S (V3-V4) rRNA sequencing, Kaplan-Meier and Cox proportional hazard models contributes through testing mechanistic predictions under controlled parameter variations; (2) scenario target: in decentralized manufacturing of cell and gene therapy products, the affected process is a measurable biological or clinical mechanism such as expression, pathway activation, response, adverse effect, or persistence; (3) measurable consequence: the bridge must produce a preregistered change in AUC scores, sensitivity, specificity, Dice scores, K-statistic. The method's input requirements are broad or not clearly specified; the experiment must make them explicit. The required bridge is multi-omics. The decisive prediction is that this concrete bridge, not a generic representation change, will alter AUC scores, sensitivity, specificity, Dice scores, K-statistic; if the bridge data or causal link is absent, the hypothesis should fail rather than be reinterpreted post hoc.",
+      "expected_value": "Contradiction gaps are high-value because resolving them can update mechanism understanding, not merely fill a sparse method-scenario cell.",
+      "test_plan": "Build a minimal benchmark for decentralized manufacturing of cell and gene therapy products; compare 16S (V3-V4) rRNA sequencing, Kaplan-Meier and Cox proportional hazard models against canonical baselines; measure AUC scores, sensitivity, specificity, Dice scores, K-statistic; include negative controls, ablations, and failure-mode analysis. Add a preregistered stress test for AUC∞, Cmax, t1/2, adverse drug reaction (ADR) occurrence.",
+      "status": "draft",
+      "sub_hypothesis_id": "",
+      "createdAt": 1783846745.5012524,
+      "mingli_scores": {
+        "novelty": 0.454,
+        "plausibility": 0.625,
+        "grounding": 0.667,
+        "testability": 0.75,
+        "impact": 0.6,
+        "surprise": 0.665,
+        "strongest_local_overlap": 0.184
+      },
+      "plausibility_check": {
+        "score": 0.6,
+        "issues": [
+          "Method-scenario semantic bridge is under-specified: bridge concepts detected: multi-omics"
+        ],
+        "suggestions": [
+          "Add the missing bridge representation before treating the hypothesis as plausible."
+        ],
+        "semantic_plausibility": {
+          "verdict": "HUMAN_REVIEW",
+          "score": 0.53,
+          "requirements": [],
+          "scenario_affordances": [
+            "graph",
+            "image",
+            "intervention",
+            "molecular",
+            "omics",
+            "sequence"
+          ],
+          "bridge_terms": [
+            "multi-omics"
+          ],
+          "score_breakdown": [
+            {
+              "factor": "base_prior",
+              "delta": 0.45,
+              "reason": "default prior before evidence checks"
+            },
+            {
+              "factor": "bridge_terms",
+              "delta": 0.08,
+              "reason": "1 bridge concept(s) detected"
+            }
+          ],
+          "reason": "bridge concepts detected: multi-omics"
+        },
+        "requires_human_review": true
+      },
+      "score": 0.6163,
+      "lineage": [
+        {
+          "generation": 0,
+          "operation": "seed",
+          "gap_id": "gap_1783843898242451800",
+          "analogy_used": ""
+        },
+        {
+          "generation": 1,
+          "operation": "constraint_insertion",
+          "parent_candidate_id": "hcand_1783846745116730100"
+        }
+      ],
+      "competition_advantage": "Ranks well because it is traceable to a high-value gap, has an explicit mechanism, passes generic disciplinary plausibility checks, and includes falsifiable validation criteria.",
+      "verification_plan": {
+        "primary_metric": "AUC scores, sensitivity, specificity, Dice scores, K-statistic",
+        "baselines": [
+          "nearest dense PaperGraph method",
+          "domain-standard baseline"
+        ],
+        "falsification_condition": "No directional, non-monotonic, or mechanism-separating change in AUC scores, sensitivity, specificity, Dice scores, K-statistic when the experimental, observational, or simulation conditions that differ between the claims crosses the condition where the competing explanations diverge.",
+        "counterfactual_experiments": [
+          {
+            "experiment_id": "cf_gap_178384389824",
+            "question": "Does changing the experimental, observational, or simulation conditions that differ between the claims alter AUC scores, sensitivity, specificity, Dice scores, K-statistic through the proposed mediator, rather than only correlating with it?",
+            "design": "Compare matched control and intervention conditions that vary the experimental, observational, or simulation conditions that differ between the claims while measuring the proposed mediator and AUC scores, sensitivity, specificity, Dice scores, K-statistic; include a negative control that leaves the experimental, observational, or simulation conditions that differ between the claims unchanged.",
+            "predicted_outcome_if_mechanism_true": "The intervention changes the proposed mediator before or together with a reproducible directional change in AUC scores, sensitivity, specificity, Dice scores, K-statistic.",
+            "predicted_outcome_if_mechanism_false": "AUC scores, sensitivity, specificity, Dice scores, K-statistic does not change systematically when the experimental, observational, or simulation conditions that differ between the claims is varied, or it changes without the predicted mediator response.",
+            "observability": "AUC scores, sensitivity, specificity, Dice scores, K-statistic",
+            "intervention": "the experimental, observational, or simulation conditions that differ between the claims",
+            "source_boundary": "Proposal generated for Potential conclusion conflict: decentralized manufacturing of cell and gene therapy products contains opposing claims: This approach aims to streamline cell therapy production at or near point of care, supporting rapid and cost-effective clinical implementation. vs This article examines the challenges of raw material changes across clinical development and commercial manufacturing, the regulatory considerations involved, and best practices fo...[truncated].; concrete instruments and thresholds require source-backed evidence."
+          }
+        ],
+        "mechanism_competition": {
+          "phenomenon": "AUC scores, sensitivity, specificity, Dice scores, K-statistic",
+          "candidates": [
+            {
+              "id": "M1",
+              "mechanism": "Potential conclusion conflict: decentralized manufacturing of cell and gene therapy products contains opposing claims: This approach aims to streamline cell therapy production at or near point of care, supporting rapid and cost-effective clinical implementation. vs This article examines the challenges of raw material changes across clinical development and commercial manufacturing, the regulatory considerations involved, and best practices fo...[truncated].",
+              "prediction": "Varying the experimental, observational, or simulation conditions that differ between the claims changes the named mediator before AUC scores, sensitivity, specificity, Dice scores, K-statistic."
+            }
+          ],
+          "discriminating_experiment": "Use matched interventions and measurements that separately observe the primary mediator and AUC scores, sensitivity, specificity, Dice scores, K-statistic; compare their ordering and effect sizes across controls.",
+          "decision_rule": "Favor the mechanism whose preregistered mediator and outcome pattern is observed; retain multiple mechanisms when effects are non-additive or no discriminator is decisive."
+        }
+      },
+      "source_gap": {
+        "gap_id": "gap_1783843898242451800",
+        "gap_type": "contradiction",
+        "description": "Potential conclusion conflict: decentralized manufacturing of cell and gene therapy products contains opposing claims: This approach aims to streamline cell therapy production at or near point of care, supporting rapid and cost-effective clinical implementation. vs This article examines the challenges of raw material changes across clinical development and commercial manufacturing, the regulatory considerations involved, and best practices fo...[truncated].",
+        "supporting_references": [
+          "H. von der Leyen et al. (2025) Implementation of a quality management system for decentralized manufacturing of cell and gene therapy products - technical and regulatory considerations doi:10.3389/fmed.2025.1591751",
+          "K. Kime et al. (2025) Ensuring compliance through collaboration: managing raw material changes in cell and gene therapy regulatory filings doi:10.18609/cgti.2025.032"
+        ],
+        "novelty_score": 5,
+        "application_value": "medium",
+        "feasibility": "low",
+        "suggested_research_path": "Extract the exact claim sentences, verify citation contexts/full text, then design a discriminating experiment, simulation, benchmark, or theoretical derivation that can separate the competing explanations.",
+        "value_argument": "Contradiction gaps are high-value because resolving them can update mechanism understanding, not merely fill a sparse method-scenario cell.",
+        "status": "candidate",
+        "createdAt": 1783843898.2424557,
+        "hypothesis_ingredients": {
+          "methods": [],
+          "scenarios": [],
+          "benchmarks": [],
+          "numerical_bounds": [],
+          "operating_conditions": [],
+          "measurable_metrics": []
+        },
+        "counterfactual_leaves": [],
+        "assessment_dimensions": [
+          "academic novelty",
+          "application value",
+          "implementation feasibility"
+        ],
+        "overlap_risk": "medium",
+        "strongest_overlap": 0.575,
+        "literature_coverage_factor": 0.9417,
+        "assessment_reason": "refs=2, gap_type=contradiction, strongest_local_overlap=0.575, coverage=0.942, feasibility=low, application_value=medium, semantic_plausibility=not_run",
+        "requires_human_review": false,
+        "reasoning_signal": {
+          "type": "claim_contradiction",
+          "shared_context": "decentralized manufacturing of cell and gene therapy products",
+          "left_polarity": "positive",
+          "right_polarity": "negative"
+        },
+        "dedupe_signature": "and cell conclusion conflict decentralized gene manufacturing of potential therapy"
+      },
+      "gap_ids": [
+        "gap_1783843898242451800"
+      ],
+      "counterfactual_experiments": [
+        {
+          "experiment_id": "cf_gap_178384389824",
+          "question": "Does changing the experimental, observational, or simulation conditions that differ between the claims alter AUC scores, sensitivity, specificity, Dice scores, K-statistic through the proposed mediator, rather than only correlating with it?",
+          "design": "Compare matched control and intervention conditions that vary the experimental, observational, or simulation conditions that differ between the claims while measuring the proposed mediator and AUC scores, sensitivity, specificity, Dice scores, K-statistic; include a negative control that leaves the experimental, observational, or simulation conditions that differ between the claims unchanged.",
+          "predicted_outcome_if_mechanism_true": "The intervention changes the proposed mediator before or together with a reproducible directional change in AUC scores, sensitivity, specificity, Dice scores, K-statistic.",
+          "predicted_outcome_if_mechanism_false": "AUC scores, sensitivity, specificity, Dice scores, K-statistic does not change systematically when the experimental, observational, or simulation conditions that differ between the claims is varied, or it changes without the predicted mediator response.",
+          "observability": "AUC scores, sensitivity, specificity, Dice scores, K-statistic",
+          "intervention": "the experimental, observational, or simulation conditions that differ between the claims",
+          "source_boundary": "Proposal generated for Potential conclusion conflict: decentralized manufacturing of cell and gene therapy products contains opposing claims: This approach aims to streamline cell therapy production at or near point of care, supporting rapid and cost-effective clinical implementation. vs This article examines the challenges of raw material changes across clinical development and commercial manufacturing, the regulatory considerations involved, and best practices fo...[truncated].; concrete instruments and thresholds require source-backed evidence."
+        }
+      ],
+      "mechanism_competition": {
+        "phenomenon": "AUC scores, sensitivity, specificity, Dice scores, K-statistic",
+        "candidates": [
+          {
+            "id": "M1",
+            "mechanism": "Potential conclusion conflict: decentralized manufacturing of cell and gene therapy products contains opposing claims: This approach aims to streamline cell therapy production at or near point of care, supporting rapid and cost-effective clinical implementation. vs This article examines the challenges of raw material changes across clinical development and commercial manufacturing, the regulatory considerations involved, and best practices fo...[truncated].",
+            "prediction": "Varying the experimental, observational, or simulation conditions that differ between the claims changes the named mediator before AUC scores, sensitivity, specificity, Dice scores, K-statistic."
+          }
+        ],
+        "discriminating_experiment": "Use matched interventions and measurements that separately observe the primary mediator and AUC scores, sensitivity, specificity, Dice scores, K-statistic; compare their ordering and effect sizes across controls.",
+        "decision_rule": "Favor the mechanism whose preregistered mediator and outcome pattern is observed; retain multiple mechanisms when effects are non-additive or no discriminator is decisive."
+      },
+      "tournament_generation": 1
+    },
+    {
+      "hypothesis_id": "hyp_1783846745501269800",
+      "gap_id": "gap_1783843895341353100",
+      "statement": "If 16S (V3-V4) rRNA sequencing, Kaplan-Meier and Cox proportional hazard models is used to perturb or stratify genetic variants and molecular phenotypes in Acute lymphoblastic leukaemia (ALL) or Non-Hodgkin lymphoma (NHL) in Egyptian adult patients under explicit failure-mode stress tests, then pharmacokinetic exposure, toxicity levels, optimal dosing will show a directional or non-monotonic boundary at a preregistered stress threshold rather than an open-ended improvement claim.",
+      "mechanism": "Concrete mechanism chain: (1) method capability: 16S (V3-V4) rRNA sequencing, Kaplan-Meier and Cox proportional hazard models contributes through testing mechanistic predictions under controlled parameter variations; (2) scenario target: in Acute lymphoblastic leukaemia (ALL) or Non-Hodgkin lymphoma (NHL) in Egyptian adult patients, the affected process is a measurable biological or clinical mechanism such as expression, pathway activation, response, adverse effect, or persistence; (3) measurable consequence: the bridge must produce a preregistered change in AUC scores, sensitivity, specificity, Dice scores, K-statistic. The method's input requirements are broad or not clearly specified; the experiment must make them explicit. The required bridge is multi-omics. The decisive prediction is that this concrete bridge, not a generic representation change, will alter AUC scores, sensitivity, specificity, Dice scores, K-statistic; if the bridge data or causal link is absent, the hypothesis should fail rather than be reinterpreted post hoc.",
+      "expected_value": "A broken causal link is a direct, falsifiable research opening rather than a sparse method-scenario combination.",
+      "test_plan": "Build a minimal benchmark for Acute lymphoblastic leukaemia (ALL) or Non-Hodgkin lymphoma (NHL) in Egyptian adult patients; compare 16S (V3-V4) rRNA sequencing, Kaplan-Meier and Cox proportional hazard models against canonical baselines; measure AUC scores, sensitivity, specificity, Dice scores, K-statistic; include negative controls, ablations, and failure-mode analysis.",
+      "status": "draft",
+      "sub_hypothesis_id": "SH1",
+      "createdAt": 1783846745.5012722,
+      "mingli_scores": {
+        "novelty": 0.435,
+        "plausibility": 0.625,
+        "grounding": 0.333,
+        "testability": 0.75,
+        "impact": 1.0,
+        "surprise": 0.471,
+        "strongest_local_overlap": 0.26
+      },
+      "plausibility_check": {
+        "score": 0.6,
+        "issues": [
+          "Method-scenario semantic bridge is under-specified: bridge concepts detected: multi-omics"
+        ],
+        "suggestions": [
+          "Add the missing bridge representation before treating the hypothesis as plausible."
+        ],
+        "semantic_plausibility": {
+          "verdict": "HUMAN_REVIEW",
+          "score": 0.53,
+          "requirements": [],
+          "scenario_affordances": [
+            "graph",
+            "image",
+            "intervention",
+            "molecular",
+            "omics",
+            "sequence"
+          ],
+          "bridge_terms": [
+            "multi-omics"
+          ],
+          "score_breakdown": [
+            {
+              "factor": "base_prior",
+              "delta": 0.45,
+              "reason": "default prior before evidence checks"
+            },
+            {
+              "factor": "bridge_terms",
+              "delta": 0.08,
+              "reason": "1 bridge concept(s) detected"
+            }
+          ],
+          "reason": "bridge concepts detected: multi-omics"
+        },
+        "requires_human_review": true
+      },
+      "score": 0.5965,
+      "lineage": [
+        {
+          "generation": 0,
+          "operation": "seed",
+          "gap_id": "gap_1783843895341353100",
+          "analogy_used": ""
+        }
+      ],
+      "competition_advantage": "Ranks well because it is traceable to a high-value gap, has an explicit mechanism, passes generic disciplinary plausibility checks, and includes falsifiable validation criteria.",
+      "verification_plan": {
+        "primary_metric": "AUC scores, sensitivity, specificity, Dice scores, K-statistic",
+        "baselines": [
+          "nearest dense PaperGraph method",
+          "domain-standard baseline"
+        ],
+        "falsification_condition": "No directional, non-monotonic, or mechanism-separating change in AUC scores, sensitivity, specificity, Dice scores, K-statistic when genetic variants and molecular phenotypes crosses a preregistered stress threshold rather than an open-ended improvement claim.",
+        "counterfactual_experiments": [
+          {
+            "experiment_id": "cf_gap_178384389534",
+            "question": "Does changing genetic variants and molecular phenotypes alter pharmacokinetic exposure, toxicity levels, optimal dosing through pharmacokinetic parameters (e.g., Cmax, AUC, half-life), rather than only correlating with it?",
+            "design": "Compare matched control and intervention conditions that vary genetic variants and molecular phenotypes while measuring pharmacokinetic parameters (e.g., Cmax, AUC, half-life) and pharmacokinetic exposure, toxicity levels, optimal dosing; include a negative control that leaves genetic variants and molecular phenotypes unchanged.",
+            "predicted_outcome_if_mechanism_true": "The intervention changes pharmacokinetic parameters (e.g., Cmax, AUC, half-life) before or together with a reproducible directional change in pharmacokinetic exposure, toxicity levels, optimal dosing.",
+            "predicted_outcome_if_mechanism_false": "pharmacokinetic exposure, toxicity levels, optimal dosing does not change systematically when genetic variants and molecular phenotypes is varied, or it changes without the predicted mediator response.",
+            "observability": "pharmacokinetic exposure, toxicity levels, optimal dosing",
+            "intervention": "genetic variants and molecular phenotypes",
+            "source_boundary": "Proposal generated for Genetic variants and molecular phenotypes predict pharmacokinetics (PK) exposure, toxicity, and optimal dosing of a treatment regimen.; concrete instruments and thresholds require source-backed evidence."
+          }
+        ],
+        "mechanism_competition": {
+          "phenomenon": "pharmacokinetic exposure, toxicity levels, optimal dosing",
+          "candidates": [
+            {
+              "id": "M1",
+              "mechanism": "genetic variants and molecular phenotypes → pharmacokinetic parameters (e.g., Cmax, AUC, half-life) → toxicity and optimal dosing",
+              "prediction": "Varying genetic variants and molecular phenotypes changes the named mediator before pharmacokinetic exposure, toxicity levels, optimal dosing."
+            },
+            {
+              "id": "M2",
+              "mechanism": "Variation in PK due to environmental factors rather than genetic or molecular differences.",
+              "prediction": "Produces the outcome without the primary mediator pattern."
+            }
+          ],
+          "discriminating_experiment": "Use matched interventions and measurements that separately observe the primary mediator and pharmacokinetic exposure, toxicity levels, optimal dosing; compare their ordering and effect sizes across controls.",
+          "decision_rule": "Favor the mechanism whose preregistered mediator and outcome pattern is observed; retain multiple mechanisms when effects are non-additive or no discriminator is decisive."
+        }
+      },
+      "source_gap": {
+        "gap_id": "gap_1783843895341353100",
+        "gap_type": "causal_chain_break",
+        "description": "Causal chain 'chain_1' from Khloud Shendy et al. (2024) The effects of genetic polymorphism on toxicity and pharmacokinetics of methotrexate in Egyptian adult patients with leukaemia or lymphoma doi:10.1080/00498254.2024.2320778 has a missing intervention: Genetic variants and molecular phenotypes predict pharmacokinetics (PK) exposure, toxicity, and optimal dosing of a treatment regimen.. The chain cannot support a causal hypothesis until this link is independently evidenced.",
+        "supporting_references": [
+          "Khloud Shendy et al. (2024) The effects of genetic polymorphism on toxicity and pharmacokinetics of methotrexate in Egyptian adult patients with leukaemia or lymphoma doi:10.1080/00498254.2024.2320778"
+        ],
+        "novelty_score": 5,
+        "application_value": "medium",
+        "feasibility": "medium",
+        "suggested_research_path": "Collect a feasible intervention or natural experiment that varies the causal input; then test an intervention and a matched control that can distinguish this chain from competing explanations.",
+        "value_argument": "A broken causal link is a direct, falsifiable research opening rather than a sparse method-scenario combination.",
+        "status": "candidate",
+        "createdAt": 1783843895.3413603,
+        "hypothesis_ingredients": {
+          "methods": [
+            "MTHFR C677T T variants"
+          ],
+          "scenarios": [
+            "Genetic variants and molecular phenotypes predict pharmacokinetics (PK) exposure, toxicity, and optimal dosing of a treatment regimen."
+          ],
+          "benchmarks": [
+            "Leukopenia"
+          ],
+          "numerical_bounds": [],
+          "operating_conditions": [],
+          "measurable_metrics": [
+            "Leukopenia"
+          ]
+        },
+        "counterfactual_leaves": [],
+        "causal_gap": {
+          "chain_id": "chain_1",
+          "paper_id": "paper_1783839979368517300",
+          "missing_kind": "intervention",
+          "evidence_needed": "a feasible intervention or natural experiment that varies the causal input",
+          "trigger": "MTHFR C677T T variants",
+          "outcome": "Increased risk of leukopenia"
+        },
+        "sub_hypothesis_id": "SH1",
+        "priority": "high",
+        "assessment_dimensions": [
+          "academic novelty",
+          "application value",
+          "implementation feasibility"
+        ],
+        "overlap_risk": "low",
+        "strongest_overlap": 0.2927,
+        "literature_coverage_factor": 0.9177,
+        "assessment_reason": "refs=1, gap_type=causal_chain_break, strongest_local_overlap=0.293, coverage=0.918, feasibility=medium, application_value=medium, semantic_plausibility=not_run",
+        "requires_human_review": false,
+        "dedupe_signature": "2024 al causal chain chain_1 et from khloud shendy the",
+        "deduped_from": 2,
+        "tanxi_rank": 2,
+        "exploration_value_score": 10,
+        "ranking_reason": "novelty=5, refs=1, application=medium, feasibility=medium, type=causal_chain_break, strategic_matches=2, density_bonus=2 Gap is grounded in core mechanism evidence.",
+        "strategic_alignment": [
+          {
+            "strategic_domain": "ai for science",
+            "matched_keywords": [
+              "ai"
+            ],
+            "alignment_score": 6
+          },
+          {
+            "strategic_domain": "health",
+            "matched_keywords": [
+              "patient"
+            ],
+            "alignment_score": 6
+          }
+        ],
+        "recommended_approach": "Collect a feasible intervention or natural experiment that varies the causal input; then test an intervention and a matched control that can distinguish this chain from competing explanations.",
+        "mechanism_draft": {
+          "gap_id": "gap_1783843895341353100",
+          "input": "MTHFR C677T T variants Genetic variants and molecular phenotypes predict pharmacokinetics (PK) exposure, toxicity, and optimal dosing of a treatment regimen.",
+          "proposed_mediator": "unresolved",
+          "output": "Leukopenia",
+          "source_clue": "",
+          "unresolved_fields": [
+            "identity",
+            "location_or_scope",
+            "dynamics",
+            "reversibility",
+            "observability",
+            "intervention",
+            "counterfactual"
+          ],
+          "status": "draft_requires_socrates_evidence"
+        }
+      },
+      "gap_ids": [
+        "gap_1783843895341353100"
+      ],
+      "counterfactual_experiments": [
+        {
+          "experiment_id": "cf_gap_178384389534",
+          "question": "Does changing genetic variants and molecular phenotypes alter pharmacokinetic exposure, toxicity levels, optimal dosing through pharmacokinetic parameters (e.g., Cmax, AUC, half-life), rather than only correlating with it?",
+          "design": "Compare matched control and intervention conditions that vary genetic variants and molecular phenotypes while measuring pharmacokinetic parameters (e.g., Cmax, AUC, half-life) and pharmacokinetic exposure, toxicity levels, optimal dosing; include a negative control that leaves genetic variants and molecular phenotypes unchanged.",
+          "predicted_outcome_if_mechanism_true": "The intervention changes pharmacokinetic parameters (e.g., Cmax, AUC, half-life) before or together with a reproducible directional change in pharmacokinetic exposure, toxicity levels, optimal dosing.",
+          "predicted_outcome_if_mechanism_false": "pharmacokinetic exposure, toxicity levels, optimal dosing does not change systematically when genetic variants and molecular phenotypes is varied, or it changes without the predicted mediator response.",
+          "observability": "pharmacokinetic exposure, toxicity levels, optimal dosing",
+          "intervention": "genetic variants and molecular phenotypes",
+          "source_boundary": "Proposal generated for Genetic variants and molecular phenotypes predict pharmacokinetics (PK) exposure, toxicity, and optimal dosing of a treatment regimen.; concrete instruments and thresholds require source-backed evidence."
+        }
+      ],
+      "mechanism_competition": {
+        "phenomenon": "pharmacokinetic exposure, toxicity levels, optimal dosing",
+        "candidates": [
+          {
+            "id": "M1",
+            "mechanism": "genetic variants and molecular phenotypes → pharmacokinetic parameters (e.g., Cmax, AUC, half-life) → toxicity and optimal dosing",
+            "prediction": "Varying genetic variants and molecular phenotypes changes the named mediator before pharmacokinetic exposure, toxicity levels, optimal dosing."
+          },
+          {
+            "id": "M2",
+            "mechanism": "Variation in PK due to environmental factors rather than genetic or molecular differences.",
+            "prediction": "Produces the outcome without the primary mediator pattern."
+          }
+        ],
+        "discriminating_experiment": "Use matched interventions and measurements that separately observe the primary mediator and pharmacokinetic exposure, toxicity levels, optimal dosing; compare their ordering and effect sizes across controls.",
+        "decision_rule": "Favor the mechanism whose preregistered mediator and outcome pattern is observed; retain multiple mechanisms when effects are non-additive or no discriminator is decisive."
+      },
+      "tournament_generation": 0
+    },
+    {
+      "hypothesis_id": "hyp_1783846745501280300",
+      "gap_id": "gap_1783843898368202700",
+      "statement": "If PCR-ARMS and PCR-RFLP genotyping, plasma MTX concentration measurement is used to perturb or stratify concentration in Acute lymphoblastic leukaemia (ALL) or Non-Hodgkin lymphoma (NHL) in Egyptian adult patients while tracking emerging hotspot 'Least Absolute Shrinkage and Selection Operator regression analysis', then MTX toxicity and pharmacokinetics will show a directional or non-monotonic boundary at 401 C. A crossover variant also tests transfer into KRAS-mutant non-small cell lung cancer. A crossover variant also tests transfer into Opioid Use Disorder (OUD) risk assessment.",
+      "mechanism": "Concrete mechanism chain: (1) method capability: PCR-ARMS and PCR-RFLP genotyping, plasma MTX concentration measurement contributes through a specified operation that must be mapped to observable inputs and outputs before validation; (2) scenario target: in Acute lymphoblastic leukaemia (ALL) or Non-Hodgkin lymphoma (NHL) in Egyptian adult patients, the affected process is a measurable biological or clinical mechanism such as expression, pathway activation, response, adverse effect, or persistence; (3) measurable consequence: the bridge must produce a preregistered change in MTX toxicity and pharmacokinetics. The method's input requirements are broad or not clearly specified; the experiment must make them explicit. The required bridge is multi-omics. The decisive prediction is that this concrete bridge, not a generic representation change, will alter MTX toxicity and pharmacokinetics; if the bridge data or causal link is absent, the hypothesis should fail rather than be reinterpreted post hoc. Crossover lineage borrows constraints from hcand_1783846745170577700. Crossover lineage borrows constraints from hcand_1783846745290706500.",
+      "expected_value": "This gap is grounded in a source-level mechanism/limitation/challenge statement, so it should outrank bare method-scenario matrix holes.",
+      "test_plan": "Build a minimal benchmark for Acute lymphoblastic leukaemia (ALL) or Non-Hodgkin lymphoma (NHL) in Egyptian adult patients; compare PCR-ARMS and PCR-RFLP genotyping, plasma MTX concentration measurement against canonical baselines; measure MTX toxicity and pharmacokinetics; include negative controls, ablations, and failure-mode analysis.",
+      "status": "draft",
+      "sub_hypothesis_id": "",
+      "createdAt": 1783846745.5012817,
+      "mingli_scores": {
+        "novelty": 0.406,
+        "plausibility": 0.775,
+        "grounding": 0.333,
+        "testability": 0.75,
+        "impact": 0.6,
+        "surprise": 0.2,
+        "strongest_local_overlap": 0.375
+      },
+      "plausibility_check": {
+        "score": 0.9,
+        "issues": [],
+        "suggestions": [],
+        "semantic_plausibility": {
+          "verdict": "PASS",
+          "score": 0.88,
+          "requirements": [],
+          "scenario_affordances": [
+            "graph",
+            "image",
+            "intervention",
+            "molecular",
+            "omics",
+            "sequence"
+          ],
+          "bridge_terms": [
+            "multi-omics"
+          ],
+          "score_breakdown": [
+            {
+              "factor": "base_prior",
+              "delta": 0.45,
+              "reason": "default prior before evidence checks"
+            },
+            {
+              "factor": "papergraph_cooccurrence",
+              "delta": 0.35,
+              "reason": "method and scenario co-occur in PaperGraph"
+            },
+            {
+              "factor": "bridge_terms",
+              "delta": 0.08,
+              "reason": "1 bridge concept(s) detected"
+            }
+          ],
+          "reason": "method and scenario already co-occur in at least one PaperGraph record; bridge concepts detected: multi-omics"
+        },
+        "requires_human_review": false
+      },
+      "score": 0.5509,
+      "lineage": [
+        {
+          "generation": 0,
+          "operation": "seed",
+          "gap_id": "gap_1783843898368202700",
+          "analogy_used": ""
+        },
+        {
+          "generation": 1,
+          "operation": "scenario_crossover",
+          "parent_candidate_id": "hcand_1783846745154023500"
+        },
+        {
+          "generation": 2,
+          "operation": "scenario_crossover",
+          "parent_candidate_id": "hcand_1783846745290699700"
+        }
+      ],
+      "competition_advantage": "Ranks well because it is traceable to a high-value gap, has an explicit mechanism, passes generic disciplinary plausibility checks, and includes falsifiable validation criteria.",
+      "verification_plan": {
+        "primary_metric": "MTX toxicity and pharmacokinetics",
+        "baselines": [
+          "nearest dense PaperGraph method",
+          "domain-standard baseline"
+        ],
+        "falsification_condition": "No directional, non-monotonic, or mechanism-separating change in MTX toxicity and pharmacokinetics when concentration crosses 401 C.",
+        "counterfactual_experiments": [
+          {
+            "experiment_id": "cf_gap_178384389836",
+            "question": "Does changing concentration alter MTX toxicity and pharmacokinetics through the proposed mediator, rather than only correlating with it?",
+            "design": "Compare matched control and intervention conditions that vary concentration while measuring the proposed mediator and MTX toxicity and pharmacokinetics; include a negative control that leaves concentration unchanged.",
+            "predicted_outcome_if_mechanism_true": "The intervention changes the proposed mediator before or together with a reproducible directional change in MTX toxicity and pharmacokinetics.",
+            "predicted_outcome_if_mechanism_false": "MTX toxicity and pharmacokinetics does not change systematically when concentration is varied, or it changes without the predicted mediator response.",
+            "observability": "MTX toxicity and pharmacokinetics",
+            "intervention": "concentration",
+            "source_boundary": "Proposal generated for Source-grounded mechanism gap (adverse effect or safety) for method=PCR-ARMS and PCR-RFLP genotyping, plasma MTX concentration measurement, scenario=Acute lymphoblastic leukaemia (ALL) or Non-Hodgkin lymphoma (NHL) in Egyptian adult patients, benchmark=MTX toxicity and pharmacokinetics: MTHFR C677T, DHFR19 Ins/del, GGH −401 C > T, and MTR A2756G polymorphisms affect MTX toxicity and pharmacokinetics in Egyptian patients with ALL or NHL MTHFR polymorphism played the main role in MTX toxicities.; concrete instruments and thresholds require source-backed evidence."
+          }
+        ],
+        "mechanism_competition": {
+          "phenomenon": "MTX toxicity and pharmacokinetics",
+          "candidates": [
+            {
+              "id": "M1",
+              "mechanism": "Source-grounded mechanism gap (adverse effect or safety) for method=PCR-ARMS and PCR-RFLP genotyping, plasma MTX concentration measurement, scenario=Acute lymphoblastic leukaemia (ALL) or Non-Hodgkin lymphoma (NHL) in Egyptian adult patients, benchmark=MTX toxicity and pharmacokinetics: MTHFR C677T, DHFR19 Ins/del, GGH −401 C > T, and MTR A2756G polymorphisms affect MTX toxicity and pharmacokinetics in Egyptian patients with ALL or NHL MTHFR polymorphism played the main role in MTX toxicities.",
+              "prediction": "Varying concentration changes the named mediator before MTX toxicity and pharmacokinetics."
+            }
+          ],
+          "discriminating_experiment": "Use matched interventions and measurements that separately observe the primary mediator and MTX toxicity and pharmacokinetics; compare their ordering and effect sizes across controls.",
+          "decision_rule": "Favor the mechanism whose preregistered mediator and outcome pattern is observed; retain multiple mechanisms when effects are non-additive or no discriminator is decisive."
+        }
+      },
+      "source_gap": {
+        "gap_id": "gap_1783843898368202700",
+        "gap_type": "mechanism_problem",
+        "description": "Source-grounded mechanism gap (adverse effect or safety) for method=PCR-ARMS and PCR-RFLP genotyping, plasma MTX concentration measurement, scenario=Acute lymphoblastic leukaemia (ALL) or Non-Hodgkin lymphoma (NHL) in Egyptian adult patients, benchmark=MTX toxicity and pharmacokinetics: MTHFR C677T, DHFR19 Ins/del, GGH −401 C > T, and MTR A2756G polymorphisms affect MTX toxicity and pharmacokinetics in Egyptian patients with ALL or NHL MTHFR polymorphism played the main role in MTX toxicities.",
+        "supporting_references": [
+          "Khloud Shendy et al. (2024) The effects of genetic polymorphism on toxicity and pharmacokinetics of methotrexate in Egyptian adult patients with leukaemia or lymphoma doi:10.1080/00498254.2024.2320778"
+        ],
+        "novelty_score": 5,
+        "application_value": "high",
+        "feasibility": "high",
+        "suggested_research_path": "Map intended effects against adverse effects across relevant contexts, then test whether the proposed intervention improves benefit-risk without hiding failure modes.",
+        "value_argument": "This gap is grounded in a source-level mechanism/limitation/challenge statement, so it should outrank bare method-scenario matrix holes.",
+        "status": "candidate",
+        "createdAt": 1783843898.3682048,
+        "hypothesis_ingredients": {
+          "methods": [],
+          "scenarios": [],
+          "benchmarks": [],
+          "numerical_bounds": [],
+          "operating_conditions": [],
+          "measurable_metrics": []
+        },
+        "counterfactual_leaves": [],
+        "assessment_dimensions": [
+          "academic novelty",
+          "application value",
+          "implementation feasibility"
+        ],
+        "overlap_risk": "high",
+        "strongest_overlap": 0.7955,
+        "literature_coverage_factor": 0.9216,
+        "assessment_reason": "refs=1, gap_type=mechanism_problem, strongest_local_overlap=0.795, coverage=0.922, feasibility=high, application_value=high, semantic_plausibility=not_run",
+        "requires_human_review": true,
+        "mechanism_issue_signal": {
+          "axis": "adverse_effect_or_safety",
+          "source_text": "MTHFR C677T, DHFR19 Ins/del, GGH −401 C > T, and MTR A2756G polymorphisms affect MTX toxicity and pharmacokinetics in Egyptian patients with ALL or NHL MTHFR polymorphism played the main role in MTX toxicities.",
+          "signal_type": "mechanism_issue",
+          "confidence": 0.84
+        },
+        "dedupe_signature": "adverse and effect for gap mechanism or pcr-arms safety source-grounded",
+        "deduped_from": 6
+      },
+      "gap_ids": [
+        "gap_1783843898368202700"
+      ],
+      "counterfactual_experiments": [
+        {
+          "experiment_id": "cf_gap_178384389836",
+          "question": "Does changing concentration alter MTX toxicity and pharmacokinetics through the proposed mediator, rather than only correlating with it?",
+          "design": "Compare matched control and intervention conditions that vary concentration while measuring the proposed mediator and MTX toxicity and pharmacokinetics; include a negative control that leaves concentration unchanged.",
+          "predicted_outcome_if_mechanism_true": "The intervention changes the proposed mediator before or together with a reproducible directional change in MTX toxicity and pharmacokinetics.",
+          "predicted_outcome_if_mechanism_false": "MTX toxicity and pharmacokinetics does not change systematically when concentration is varied, or it changes without the predicted mediator response.",
+          "observability": "MTX toxicity and pharmacokinetics",
+          "intervention": "concentration",
+          "source_boundary": "Proposal generated for Source-grounded mechanism gap (adverse effect or safety) for method=PCR-ARMS and PCR-RFLP genotyping, plasma MTX concentration measurement, scenario=Acute lymphoblastic leukaemia (ALL) or Non-Hodgkin lymphoma (NHL) in Egyptian adult patients, benchmark=MTX toxicity and pharmacokinetics: MTHFR C677T, DHFR19 Ins/del, GGH −401 C > T, and MTR A2756G polymorphisms affect MTX toxicity and pharmacokinetics in Egyptian patients with ALL or NHL MTHFR polymorphism played the main role in MTX toxicities.; concrete instruments and thresholds require source-backed evidence."
+        }
+      ],
+      "mechanism_competition": {
+        "phenomenon": "MTX toxicity and pharmacokinetics",
+        "candidates": [
+          {
+            "id": "M1",
+            "mechanism": "Source-grounded mechanism gap (adverse effect or safety) for method=PCR-ARMS and PCR-RFLP genotyping, plasma MTX concentration measurement, scenario=Acute lymphoblastic leukaemia (ALL) or Non-Hodgkin lymphoma (NHL) in Egyptian adult patients, benchmark=MTX toxicity and pharmacokinetics: MTHFR C677T, DHFR19 Ins/del, GGH −401 C > T, and MTR A2756G polymorphisms affect MTX toxicity and pharmacokinetics in Egyptian patients with ALL or NHL MTHFR polymorphism played the main role in MTX toxicities.",
+            "prediction": "Varying concentration changes the named mediator before MTX toxicity and pharmacokinetics."
+          }
+        ],
+        "discriminating_experiment": "Use matched interventions and measurements that separately observe the primary mediator and MTX toxicity and pharmacokinetics; compare their ordering and effect sizes across controls.",
+        "decision_rule": "Favor the mechanism whose preregistered mediator and outcome pattern is observed; retain multiple mechanisms when effects are non-additive or no discriminator is decisive."
+      },
+      "tournament_generation": 2
+    }
+  ],
+  "method": "template_seed + tournament_selection + mutation/crossover + structural/temporal/analogy scoring",
+  "constraints_checked": {
+    "traceable_to_gap": true,
+    "papergraph_grounded": true,
+    "testability_scored": true,
+    "novelty_overlap_local": true
+  }
+}

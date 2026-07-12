@@ -1,7 +1,7 @@
 ---
 name: research_domain
-description: core technical domain scope
+description: The domain or field of the research project.
 type: project
 ---
 
-High-voltage lithium batteries above 4.5V, cathode/electrolyte/interface stability, AI-assisted battery materials discovery
+Personalized Medicine / Precision Medicine / Pharmacogenomics / Cancer Genomics / Clinical Pharmacology / Multi-omics / Patient-derived Models / Cell and Gene Therapy Manufacturing / Biostatistics / Regulatory Science

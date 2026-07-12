@@ -14,14 +14,26 @@ try:
     from .config import (
         SCIENCE_DIR,
         SCIENCE_ZHIZHI_DEFAULT_IMPORT_TOP_K,
+        SCIENCE_ZHIZHI_IMPORT_LLM_LIMIT,
         SCIENCE_ZHIZHI_MAX_IMPORT_TOP_K,
+        SCIENCE_ZHIZHI_SERIAL_SUBSPACE_SEARCH,
+        SCIENCE_ZHIZHI_SUBSPACE_ROUNDS,
+        SCIENCE_ZHIZHI_BOUNDARY_EXTENSION_ROUNDS,
+        SCIENCE_ZHIZHI_PER_SUBSPACE_RESULTS,
+        SCIENCE_ZHIZHI_PER_SUBSPACE_IMPORTS,
     )
     from .log import log_event
 except ImportError:
     from config import (
         SCIENCE_DIR,
         SCIENCE_ZHIZHI_DEFAULT_IMPORT_TOP_K,
+        SCIENCE_ZHIZHI_IMPORT_LLM_LIMIT,
         SCIENCE_ZHIZHI_MAX_IMPORT_TOP_K,
+        SCIENCE_ZHIZHI_SERIAL_SUBSPACE_SEARCH,
+        SCIENCE_ZHIZHI_SUBSPACE_ROUNDS,
+        SCIENCE_ZHIZHI_BOUNDARY_EXTENSION_ROUNDS,
+        SCIENCE_ZHIZHI_PER_SUBSPACE_RESULTS,
+        SCIENCE_ZHIZHI_PER_SUBSPACE_IMPORTS,
     )
     from log import log_event
 
@@ -30,13 +42,16 @@ except ImportError:
 def create_science_pipeline_tasks(project_id: str) -> str:
     try:
         from ._models import PHASES
-        from ._project import load_project, save_project
+        from ._project import decompose_research_objective, load_project, save_project
         from ._utils import extract_task_id
     except ImportError:
         from _models import PHASES
-        from _project import load_project, save_project
+        from _project import decompose_research_objective, load_project, save_project
         from _utils import extract_task_id
     project = load_project(project_id)
+    if not project.get("sub_hypotheses"):
+        decompose_research_objective(project_id, use_llm=False)
+        project = load_project(project_id)
     try:
         from .task_system import create_task
     except ImportError:
@@ -77,10 +92,10 @@ def create_boxue_delegation_tasks(
     max_parallel_agents: int = 3,
 ) -> str:
     try:
-        from ._project import load_project, save_project
+        from ._project import decompose_research_objective, load_project, save_project
         from ._utils import clamp_int, extract_task_id, new_id, normalize_key, normalize_space, unique_preserve_order
     except ImportError:
-        from _project import load_project, save_project
+        from _project import decompose_research_objective, load_project, save_project
         from _utils import clamp_int, extract_task_id, new_id, normalize_key, normalize_space, unique_preserve_order
     """Create Boxue-style role-bound delegation tasks.
 
@@ -169,17 +184,34 @@ def boxue_default_task_specs() -> list[dict[str, Any]]:
         from _models import Hypothesis
     return [
         {
+            "key": "objective_decomposition",
+            "agent": "boxue",
+            "phase": "Gap Discovery",
+            "title": "Decompose the objective into falsifiable causal units",
+            "priority": "highest",
+            "blocked_by": [],
+            "task": "Run the Decomposer before any broad retrieval. Split the composite objective into independent sub-hypotheses with causal chains, interventions, observables, falsification conditions, and evidence windows.",
+            "deliverable": "Objective decomposition JSON with SH identifiers and a combination hypothesis explicitly blocked on component evidence.",
+            "acceptance": [
+                "Every sub-hypothesis has an intervention, measurable outcome, falsification condition, and focused retrieval query",
+                "Numeric thresholds are preserved only when supplied or source-backed",
+                "Combined conclusions are conditional on independently evaluated component hypotheses",
+            ],
+            "risks": ["composite objective passed directly to retrieval", "invented quantitative thresholds", "unbounded sub-hypothesis count"],
+        },
+        {
             "key": "zhizhi_evidence",
             "agent": "zhizhi",
             "phase": "Gap Discovery",
             "title": "Build grounded PaperGraph evidence substrate",
             "priority": "high",
-            "blocked_by": [],
-            "task": "Retrieve and structure representative literature without inventing sources.",
-            "deliverable": "Compact JSON evidence report plus search/import recommendations.",
+            "blocked_by": ["objective_decomposition"],
+            "task": "Retrieve and structure evidence per decomposed sub-hypothesis without inventing sources. Prefer the P0-P4 evidence order and preserve causal chains.",
+            "deliverable": "Per-sub-hypothesis evidence report with causal-chain notes, evidence-window status, and search/import recommendations.",
             "acceptance": [
                 "At least one verifiable source or an explicit retrieval-failure report",
-                "Method/scenario/benchmark/contribution/limitation fields are populated or flagged unknown",
+                "Causal trigger, intermediate steps, outcome, observables, and intervention are extracted or explicitly marked unresolved",
+                "A missing P0 preprint window is marked evidence-insufficient rather than filled by older literature",
                 "Unsupported claims are marked for human review",
             ],
             "risks": ["retrieval failure", "low-quality venues", "unsupported method labels"],
@@ -191,12 +223,12 @@ def boxue_default_task_specs() -> list[dict[str, Any]]:
             "title": "Rank high-value knowledge gaps",
             "priority": "high",
             "blocked_by": ["zhizhi_evidence"],
-            "task": "Use PaperGraph evidence to detect density holes, suspended problems, contradictions, and migration gaps.",
-            "deliverable": "Ranked gap list with supporting references and pseudo-gap risk checks.",
+            "task": "Use PaperGraph evidence to detect causal-chain breaks, missing mediators, missing observables/interventions, competing mechanisms, and only then secondary coverage holes.",
+            "deliverable": "Ranked gap list with causal-break metadata, supporting references, and pseudo-gap risk checks.",
             "acceptance": [
                 "Every reported gap has supporting references or is flagged as ungrounded",
                 "No more than 10 ranked gaps",
-                "Each gap includes novelty/value/feasibility rationale",
+                "Each gap includes novelty/value/feasibility rationale and its owning sub-hypothesis when applicable",
             ],
             "risks": ["pseudo-gaps", "uncovered subfields mistaken as real gaps"],
         },
@@ -207,8 +239,8 @@ def boxue_default_task_specs() -> list[dict[str, Any]]:
             "title": "Generate and evolve gap-grounded hypotheses",
             "priority": "high",
             "blocked_by": ["tanxi_gaps"],
-            "task": "Generate falsifiable hypotheses from validated gaps and run tournament-style selection.",
-            "deliverable": "Top hypotheses with mechanisms, expected value, lineage, and test plans.",
+            "task": "Generate falsifiable hypotheses from causal gaps only after their sub-hypothesis evidence window is satisfied; include a counterfactual and a competing-mechanism discriminator.",
+            "deliverable": "Top hypotheses with mechanisms, counterfactual experiments, expected value, lineage, and test plans.",
             "acceptance": [
                 "Each hypothesis links to a gap_id",
                 "Each hypothesis contains mechanism and falsification condition",
@@ -594,18 +626,30 @@ def boxue_load_or_create_plan(
     max_parallel_agents: int,
 ) -> dict[str, Any]:
     requested_plan_id = str(plan_id or "").strip()
+    recovery_metadata: dict[str, Any] = {}
     if requested_plan_id:
         for plan in project.get("boxue_delegation_plans", []):
             if str(plan.get("boxue_delegation_plan_id")) == requested_plan_id:
                 payload = dict(plan)
                 payload["reused_existing_plan"] = True
                 return payload
-        raise ValueError(f"Boxue delegation plan not found: {requested_plan_id}")
+        recovery_metadata = {
+            "requested_plan_id": requested_plan_id,
+            "missing_plan_recovered": True,
+            "plan_recovery_reason": "requested_plan_id_not_found",
+        }
+        log_event(
+            "WARN",
+            "boxue_plan_not_found_recovering",
+            project_id=project_id,
+            requested_plan_id=requested_plan_id,
+        )
 
     active = boxue_find_active_plan(project, phases=phases)
     if active:
         payload = dict(active)
         payload["reused_existing_plan"] = True
+        payload.update(recovery_metadata)
         return payload
 
     payload = json.loads(
@@ -618,6 +662,7 @@ def boxue_load_or_create_plan(
         )
     )
     payload["reused_existing_plan"] = False
+    payload.update(recovery_metadata)
     return payload
 
 
@@ -940,7 +985,7 @@ def run_boxue_research_round(
     goal: str = "",
     phases: list[str] | None = None,
     plan_id: str = "",
-    execution_mode: str = "async",
+    execution_mode: str = "pipeline",
     max_steps: int = 20,
     max_parallel_agents: int = 3,
     max_runtime_seconds: int = 45,
@@ -979,6 +1024,8 @@ def run_boxue_research_round(
     )
     plan_id = str(plan_payload.get("boxue_delegation_plan_id", ""))
     reused_plan = bool(plan_payload.get("reused_existing_plan"))
+    requested_plan_id = str(plan_payload.get("requested_plan_id") or "")
+    missing_plan_recovered = bool(plan_payload.get("missing_plan_recovered"))
     plan_tasks = list(plan_payload.get("tasks", []))
     task_ids = [str(item.get("task_id")) for item in plan_tasks if item.get("task_id")]
 
@@ -1049,6 +1096,9 @@ def run_boxue_research_round(
     round_record = {
         "round_id": round_id,
         "plan_id": plan_id,
+        "requested_plan_id": requested_plan_id,
+        "missing_plan_recovered": missing_plan_recovered,
+        "plan_recovery_reason": plan_payload.get("plan_recovery_reason", ""),
         "reused_existing_plan": reused_plan,
         "goal": goal or project.get("objective", ""),
         "createdAt": started_at,
@@ -1386,6 +1436,640 @@ def verify_uniqueness(
     save_project(project)
     return json.dumps(result, ensure_ascii=False, indent=2)
 
+
+def run_zhizhi_serial_subspace_analysis(
+    project_id: str,
+    domain: str,
+    query: str,
+    *,
+    max_results: int = 50,
+    years: str = "last 15 years",
+    providers: list[str] | None = None,
+    graph_depth: int = 1,
+    use_llm: bool = False,
+    focus_branches: list[str] | None = None,
+    subspace_map_id: str = "",
+    selected_subfields: list[str] | None = None,
+    retrieval_brief: str = "",
+    subspace_rounds: int = SCIENCE_ZHIZHI_SUBSPACE_ROUNDS,
+    boundary_extension_rounds: int = SCIENCE_ZHIZHI_BOUNDARY_EXTENSION_ROUNDS,
+    per_subspace_results: int = SCIENCE_ZHIZHI_PER_SUBSPACE_RESULTS,
+    per_subspace_imports: int = SCIENCE_ZHIZHI_PER_SUBSPACE_IMPORTS,
+) -> str:
+    """Run evidence retrieval serially, one scientific subspace at a time.
+
+    A single broad search lets high-volume subfields dominate rankings. This
+    coordinator deliberately gives every branch an independent cached search,
+    layer quota, import budget, and domain review before moving to the next.
+    """
+    try:
+        from ._gap_detection import build_knowledge_map, build_louvain_community_knowledge_maps, detect_knowledge_gaps, knowledge_map_unknown_summary, zhizhi_standard_output
+        from ._project import build_serial_subspace_query_plan, default_literature_providers, load_project, load_subspace_map, save_project
+        from ._utils import clamp_int, unique_preserve_order
+    except ImportError:
+        from _gap_detection import build_knowledge_map, build_louvain_community_knowledge_maps, detect_knowledge_gaps, knowledge_map_unknown_summary, zhizhi_standard_output
+        from _project import build_serial_subspace_query_plan, default_literature_providers, load_project, load_subspace_map, save_project
+        from _utils import clamp_int, unique_preserve_order
+
+    project = load_project(project_id)
+    if not project.get("sub_hypotheses"):
+        decompose_research_objective(project_id, use_llm=False)
+        project = load_project(project_id)
+    if not project.get("sub_hypotheses"):
+        decompose_research_objective(project_id, use_llm=False)
+        project = load_project(project_id)
+    selected_providers = unique_preserve_order(list(providers or default_literature_providers(domain=domain, query=query)))
+    active_map = load_subspace_map(subspace_map_id) if subspace_map_id else None
+    brief = retrieval_brief or "\n".join(
+        part for part in (query, str(project.get("objective") or ""), str(project.get("strategic_need") or "")) if part
+    )
+    plan = build_serial_subspace_query_plan(
+        domain,
+        brief,
+        max_core_rounds=subspace_rounds,
+        boundary_extension_rounds=boundary_extension_rounds,
+        use_llm=use_llm,
+        focus_branches=selected_subfields or focus_branches,
+        subspace_map=active_map,
+    )
+    rounds = list(plan.get("all_branches") or [])
+    if not rounds:
+        return json.dumps(
+            zhizhi_standard_output(
+                thought="ZhiZhi could not derive any substantive subspace queries from the research brief.",
+                action={"agent": "zhizhi", "serial_subspace_search": plan},
+                knowledge_map={},
+                gaps=[],
+                observations=["No retrieval round ran; provide explicit subspaces or a more specific domain brief."],
+            ),
+            ensure_ascii=False,
+            indent=2,
+        )
+
+    per_results = clamp_int(per_subspace_results, 10, 14)
+    per_imports = clamp_int(per_subspace_imports, 5, 7)
+    # Branch searches intentionally omit L0. The first field-map branch below
+    # supplies reviews; substantive branches are balanced as requested.
+    branch_layer_quotas = {"L0_review": 0, "L1_milestone": 2, "L2_top_latest": 4, "L3_preprint": 1, "L4_regular": 5}
+    branch_import_minimums = {"L0_review": 0, "L1_milestone": 1, "L2_top_latest": 2, "L3_preprint": 1, "L4_regular": 2}
+    field_map_layer_quotas = {"L0_review": 2, "L1_milestone": 2, "L2_top_latest": 3, "L3_preprint": 1, "L4_regular": 4}
+    field_map_import_minimums = {"L0_review": 1, "L1_milestone": 1, "L2_top_latest": 2, "L3_preprint": 1, "L4_regular": 1}
+    field_map_round = {
+        "branch": "field_map",
+        "name": "Field map and cross-subspace foundations",
+        "query": query,
+        "phase": "field_map",
+    }
+    run_plan = [field_map_round] + rounds
+    round_reports: list[dict[str, Any]] = []
+    observations: list[str] = []
+
+    for index, branch in enumerate(run_plan, start=1):
+        branch_query = str(branch.get("query") or branch.get("name") or query)
+        is_field_map = branch.get("phase") == "field_map"
+        layer_plan = field_map_layer_quotas if is_field_map else branch_layer_quotas
+        import_plan = field_map_import_minimums if is_field_map else branch_import_minimums
+        log_event(
+            "SCIENCE",
+            "serial_subspace_round_start",
+            project_id=project_id,
+            round=index,
+            phase=branch.get("phase", "core_subspace"),
+            branch=branch.get("branch", ""),
+            query=branch_query[:180],
+        )
+        try:
+            payload = json.loads(
+                run_zhizhi_literature_analysis(
+                    project_id=project_id,
+                    domain=domain,
+                    query=branch_query,
+                    max_results=per_results,
+                    years=years,
+                    providers=selected_providers,
+                    import_top_k=per_imports,
+                    graph_depth=graph_depth,
+                    use_llm=use_llm,
+                    focus_branches=None,
+                    live_coverage_check=False,
+                    serial_subspace_search=False,
+                    query_plan_override=[branch],
+                    layer_quotas=layer_plan,
+                    import_layer_minimums=import_plan,
+                    retrieval_phase=str(branch.get("phase") or "core_subspace"),
+                    retrieval_branch=str(branch.get("branch") or ""),
+                    _deferred_subspace_round=True,
+                )
+            )
+            action = payload.get("action") if isinstance(payload.get("action"), dict) else {}
+            search = action.get("search_papers_stratified") if isinstance(action.get("search_papers_stratified"), dict) else {}
+            report = {
+                "round": index,
+                "phase": branch.get("phase", "core_subspace"),
+                "branch": branch.get("branch"),
+                "name": branch.get("name"),
+                "query": branch_query,
+                "search_id": search.get("search_id"),
+                "retrieved": int(search.get("total_results") or 0),
+                "imported": int(action.get("imported_records") or 0),
+                "domain_review": action.get("domain_review", {}),
+                "stratified_import_plan": action.get("stratified_import_plan", {}),
+                "status": "completed",
+            }
+        except Exception as exc:
+            report = {
+                "round": index,
+                "phase": branch.get("phase", "core_subspace"),
+                "branch": branch.get("branch"),
+                "name": branch.get("name"),
+                "query": branch_query,
+                "status": "error",
+                "error": str(exc),
+            }
+            observations.append(f"Serial subspace round {index} failed for {branch.get('name')}: {exc}")
+        round_reports.append(report)
+        log_event(
+            "SCIENCE",
+            "serial_subspace_round_complete",
+            project_id=project_id,
+            round=index,
+            branch=branch.get("branch", ""),
+            status=report.get("status"),
+            imported=report.get("imported", 0),
+        )
+
+    knowledge_map = json.loads(build_knowledge_map(project_id))
+    unknown_summary = knowledge_map_unknown_summary(knowledge_map)
+    gaps = json.loads(detect_knowledge_gaps(project_id, max_gaps=10))
+    assessed_gaps = []
+    for gap in gaps:
+        assessed = json.loads(assess_novelty(project_id, gap))
+        uniqueness = json.loads(verify_uniqueness(project_id, assessed.get("description", ""), precision="high", live_search=False))
+        assessed["uniqueness_verdict"] = uniqueness.get("verdict")
+        assessed["strongest_overlap"] = uniqueness.get("strongest_local_overlap")
+        assessed_gaps.append(assessed)
+    completed = [item for item in round_reports if item.get("status") == "completed"]
+    action = {
+        "agent": "zhizhi",
+        "query": query,
+        "domain": domain,
+        "serial_subspace_search": {
+            **plan,
+            "per_subspace_results": per_results,
+            "per_subspace_imports": per_imports,
+            "execution": round_reports,
+            "completed_rounds": len(completed),
+            "failed_rounds": len(round_reports) - len(completed),
+            "total_imported": sum(int(item.get("imported") or 0) for item in completed),
+        },
+    }
+    if unknown_summary.get("unknown_triples", 0) > 0:
+        observations.append(
+            f"Knowledge map contains {unknown_summary['unknown_triples']} triples with unknown fields; key records were retained but need extraction repair."
+        )
+    output = zhizhi_standard_output(
+        thought=(
+            "ZhiZhi executed a serial subspace cascade: a field map, independent core subspace searches, "
+            "then boundary extensions. Each round used an independent cache and import budget before global synthesis."
+        ),
+        action=action,
+        knowledge_map=knowledge_map,
+        gaps=assessed_gaps,
+        observations=observations,
+    )
+    project = load_project(project_id)
+    project.setdefault("zhizhi_reports", []).append(output)
+    project.setdefault("serial_subspace_runs", []).append(action["serial_subspace_search"])
+    project["updatedAt"] = time.time()
+    save_project(project)
+    log_event(
+        "SCIENCE",
+        "zhizhi_serial_subspace_complete",
+        project_id=project_id,
+        rounds=len(round_reports),
+        imported=action["serial_subspace_search"]["total_imported"],
+        gaps=len(assessed_gaps),
+    )
+    return json.dumps(output, ensure_ascii=False, indent=2)
+
+def subhypothesis_retrieval_layer_quotas(max_results: int) -> dict[str, int]:
+    total = max(8, int(max_results or 8))
+    quotas = {
+        "L0_review": 1,
+        "L1_milestone": 1,
+        "L2_top_latest": max(2, total // 4),
+        "L3_preprint": 1,
+        "L4_regular": 0,
+    }
+    quotas["L4_regular"] = max(3, total - sum(quotas.values()))
+    while sum(quotas.values()) > total and quotas["L4_regular"] > 3:
+        quotas["L4_regular"] -= 1
+    while sum(quotas.values()) < total:
+        quotas["L4_regular"] += 1
+    return quotas
+
+
+def subhypothesis_import_layer_minimums(import_top_k: int) -> dict[str, int]:
+    available = max(1, int(import_top_k or 1))
+    layers = ["L3_preprint", "L2_top_latest", "L4_regular", "L0_review", "L1_milestone"]
+    minimums = {layer: 0 for layer in layers}
+    for layer in layers[:available]:
+        minimums[layer] = 1
+    return minimums
+
+
+def standard_retrieval_import_limit(
+    requested_imports: int,
+    retrieved_results: int,
+    retrieval_phase: str = "",
+) -> int:
+    """Keep normal 15–20-paper searches from importing an undersized sample."""
+    available = max(0, int(retrieved_results or 0))
+    requested = min(max(0, int(requested_imports or 0)), available)
+    if retrieval_phase or not 15 <= available <= 20:
+        return requested
+    return min(available, max(10, requested))
+
+
+def zhizhi_import_llm_budget(use_llm: bool, candidate_count: int) -> int:
+    if not use_llm:
+        return 0
+    configured = min(3, max(0, int(SCIENCE_ZHIZHI_IMPORT_LLM_LIMIT)))
+    return min(max(0, int(candidate_count or 0)), configured)
+
+
+def zhizhi_search_action_from_output(payload: dict[str, Any]) -> dict[str, Any]:
+    action = payload.get("action") if isinstance(payload.get("action"), dict) else {}
+    search = action.get("search_papers_stratified") if isinstance(action.get("search_papers_stratified"), dict) else {}
+    if search:
+        return search
+    return {
+        "search_id": payload.get("search_id"),
+        "total_results": payload.get("total_results"),
+        "strata": payload.get("strata", []),
+    }
+
+
+def run_zhizhi_subhypothesis_analysis(
+    project_id: str,
+    sub_hypothesis_ids: list[str] | None = None,
+    max_results_per_hypothesis: int = 24,
+    import_top_k_per_hypothesis: int = 10,
+    providers: list[str] | None = None,
+    use_llm: bool = False,
+) -> str:
+    try:
+        from ._gap_detection import build_knowledge_map, detect_knowledge_gaps
+        from ._project import decompose_research_objective, default_literature_providers, load_project, save_project
+        from ._literature_import import import_literature_search_result
+        from ._literature_search import english_provider_query, is_preprint_literature_result, search_literature
+        from ._utils import clamp_int, unique_preserve_order
+    except ImportError:
+        from _gap_detection import build_knowledge_map, detect_knowledge_gaps
+        from _project import decompose_research_objective, default_literature_providers, load_project, save_project
+        from _literature_import import import_literature_search_result
+        from _literature_search import english_provider_query, is_preprint_literature_result, search_literature
+        from _utils import clamp_int, unique_preserve_order
+    project = load_project(project_id)
+    sub_hypotheses = project.get("sub_hypotheses", [])
+    if not isinstance(sub_hypotheses, list) or not sub_hypotheses:
+        decompose_research_objective(project_id, use_llm=use_llm)
+        project = load_project(project_id)
+        sub_hypotheses = project.get("sub_hypotheses", [])
+    wanted = {str(item) for item in (sub_hypothesis_ids or []) if str(item)}
+    selected = [
+        item for item in sub_hypotheses
+        if isinstance(item, dict) and (not wanted or str(item.get("id") or "") in wanted)
+    ]
+    if not selected:
+        raise ValueError("No decomposed sub-hypotheses were selected for ZhiZhi retrieval.")
+    max_results = clamp_int(max_results_per_hypothesis, 8, 80)
+    import_limit = clamp_int(import_top_k_per_hypothesis, 1, 20)
+    layer_quotas = subhypothesis_retrieval_layer_quotas(max_results)
+    import_layer_minimums = subhypothesis_import_layer_minimums(import_limit)
+    layer_quotas["L4_regular"] += layer_quotas["L3_preprint"]
+    layer_quotas["L3_preprint"] = 0
+    import_layer_minimums["L3_preprint"] = 0
+    provider_candidates = unique_preserve_order(
+        list(providers or [])
+        + default_literature_providers(
+            domain=str(project.get("domain") or ""),
+            query=str(project.get("objective") or ""),
+        )
+    )
+    main_providers = [item for item in provider_candidates if item in {"semantic_scholar", "pubmed"}]
+    preprint_providers = [item for item in provider_candidates if item in {"arxiv", "medrxiv", "biorxiv", "chemrxiv"}]
+    if not main_providers:
+        main_providers = ["semantic_scholar"]
+    research_brief = str(project.get("research_brief") or project.get("objective") or "")
+    decomposition = project.get("objective_decomposition", {}) if isinstance(project.get("objective_decomposition"), dict) else {}
+    execution_constraints = decomposition.get("execution_constraints", {}) if isinstance(decomposition.get("execution_constraints"), dict) else {}
+    reports: list[dict[str, Any]] = []
+    for sub_hypothesis in selected:
+        sub_id = str(sub_hypothesis.get("id") or "")
+        source_query = str(sub_hypothesis.get("retrieval_query") or sub_hypothesis.get("focus") or "").strip()
+        if not source_query:
+            reports.append({"sub_hypothesis_id": sub_id, "status": "needs_query", "error": "No focused retrieval query was provided."})
+            continue
+        query_language = english_provider_query(
+            source_query,
+            domain=str(project.get("domain") or ""),
+            allow_llm=use_llm,
+        )
+        query = query_language.get("query", "")
+        if not query:
+            reports.append(
+                {
+                    "sub_hypothesis_id": sub_id,
+                    "query": source_query,
+                    "status": "needs_english_query",
+                    "error": "Could not derive an English-only provider query from this sub-hypothesis.",
+                }
+            )
+            continue
+        branch_plan = [{"branch": sub_id, "name": str(sub_hypothesis.get("focus") or sub_id), "query": query, "phase": "subhypothesis_evidence"}]
+        log_event(
+            "SCIENCE",
+            "subhypothesis_retrieval_start",
+            project_id=project_id,
+            sub_hypothesis_id=sub_id,
+            query=query,
+            max_results=max_results,
+            import_top_k=import_limit,
+        )
+        preprint_probe: dict[str, Any] = {
+            "status": "not_requested",
+            "providers": preprint_providers,
+            "search_id": "",
+            "total_results": 0,
+            "import_target": 0,
+            "imported_records": [],
+            "failed_imports": [],
+            "enforced_for_branch_gate": False,
+        }
+        # Reserve at least one slot for the peer-reviewed phase. With the
+        # normal branch budgets this imports three P0 papers; constrained
+        # budgets still preserve a non-preprint evidence path.
+        preprint_import_target = min(3, max(0, import_limit - 1))
+        if preprint_providers and preprint_import_target:
+            log_event(
+                "SCIENCE",
+                "subhypothesis_preprint_search_start",
+                project_id=project_id,
+                sub_hypothesis_id=sub_id,
+                providers=",".join(preprint_providers),
+                query=query,
+                import_target=preprint_import_target,
+            )
+            try:
+                preprint_payload = json.loads(
+                    search_literature(
+                        query,
+                        providers=preprint_providers,
+                        max_results=min(12, max_results),
+                    )
+                )
+                preprint_total = int(preprint_payload.get("total_results") or 0)
+                preprint_candidates = [
+                    candidate
+                    for candidate in preprint_payload.get("results", [])
+                    if isinstance(candidate, dict) and is_preprint_literature_result(candidate)
+                ]
+                preprint_probe.update(
+                    {
+                        "status": "available" if preprint_candidates else "not_available",
+                        "search_id": preprint_payload.get("search_id") or "",
+                        "total_results": preprint_total,
+                        "candidate_count": len(preprint_candidates),
+                        "import_target": preprint_import_target,
+                        "provider_blocks": preprint_payload.get("provider_blocks", []),
+                    }
+                )
+                log_event(
+                    "SCIENCE",
+                    "subhypothesis_preprint_search_complete",
+                    project_id=project_id,
+                    sub_hypothesis_id=sub_id,
+                    search_id=preprint_probe["search_id"],
+                    results=preprint_total,
+                    candidates=len(preprint_candidates),
+                )
+                if preprint_candidates:
+                    log_event(
+                        "SCIENCE",
+                        "subhypothesis_preprint_import_start",
+                        project_id=project_id,
+                        sub_hypothesis_id=sub_id,
+                        search_id=preprint_probe["search_id"],
+                        target=preprint_import_target,
+                        candidates=len(preprint_candidates),
+                    )
+                    for candidate in preprint_candidates:
+                        if len(preprint_probe["imported_records"]) >= preprint_import_target:
+                            break
+                        result_index = int(candidate.get("result_index") or 0)
+                        title = str(candidate.get("title") or "untitled")[:120]
+                        try:
+                            imported = json.loads(
+                                import_literature_search_result(
+                                    project_id,
+                                    str(preprint_probe["search_id"]),
+                                    result_index,
+                                    use_llm=False,
+                                    stratified_layer_override="L3_preprint",
+                                    query_branch_override=sub_id,
+                                )
+                            )
+                            import_status = str(imported.get("status") or "imported")
+                            if import_status != "imported":
+                                preprint_probe["failed_imports"].append(
+                                    {
+                                        "result_index": result_index,
+                                        "title": title,
+                                        "status": import_status,
+                                    }
+                                )
+                                continue
+                            record = imported.get("record") if isinstance(imported.get("record"), dict) else {}
+                            imported_record = {
+                                "result_index": result_index,
+                                "title": title,
+                                "paper_id": str(record.get("paper_id") or ""),
+                                "layer": "L3_preprint",
+                            }
+                            preprint_probe["imported_records"].append(imported_record)
+                            log_event(
+                                "SCIENCE",
+                                "subhypothesis_preprint_imported",
+                                project_id=project_id,
+                                sub_hypothesis_id=sub_id,
+                                search_id=preprint_probe["search_id"],
+                                result_index=result_index,
+                                paper_id=imported_record["paper_id"],
+                                title=title,
+                                layer="L3_preprint",
+                            )
+                        except Exception as exc:
+                            preprint_probe["failed_imports"].append(
+                                {
+                                    "result_index": result_index,
+                                    "title": title,
+                                    "error": str(exc),
+                                }
+                            )
+                            log_event(
+                                "SCIENCE",
+                                "subhypothesis_preprint_import_failed",
+                                project_id=project_id,
+                                sub_hypothesis_id=sub_id,
+                                search_id=preprint_probe["search_id"],
+                                result_index=result_index,
+                                title=title,
+                                error=str(exc)[:200],
+                            )
+                    if preprint_probe["imported_records"]:
+                        preprint_probe["status"] = "imported"
+                    elif preprint_probe["failed_imports"]:
+                        preprint_probe["status"] = "import_failed"
+                    log_event(
+                        "SCIENCE",
+                        "subhypothesis_preprint_import_complete",
+                        project_id=project_id,
+                        sub_hypothesis_id=sub_id,
+                        search_id=preprint_probe["search_id"],
+                        imported=len(preprint_probe["imported_records"]),
+                        target=preprint_import_target,
+                        failed=len(preprint_probe["failed_imports"]),
+                    )
+            except Exception as exc:
+                preprint_probe.update({"status": "error", "error": str(exc)})
+                log_event(
+                    "SCIENCE",
+                    "subhypothesis_preprint_search_failed",
+                    project_id=project_id,
+                    sub_hypothesis_id=sub_id,
+                    error=str(exc)[:200],
+                )
+        elif preprint_providers:
+            preprint_probe.update(
+                {
+                    "status": "not_requested_budget_reserved_for_primary",
+                    "import_target": 0,
+                }
+            )
+
+        preprint_imported = len(preprint_probe["imported_records"])
+        main_import_limit = import_limit - preprint_imported
+        main_import_layer_minimums = subhypothesis_import_layer_minimums(main_import_limit)
+        main_import_layer_minimums["L3_preprint"] = 0
+        try:
+            payload = json.loads(
+                run_zhizhi_literature_analysis(
+                    project_id=project_id,
+                    domain=str(project.get("domain") or ""),
+                    query=query,
+                    max_results=max_results,
+                    providers=main_providers,
+                    import_top_k=main_import_limit,
+                    use_llm=use_llm,
+                    focus_branches=None,
+                    live_coverage_check=False,
+                    serial_subspace_search=False,
+                    retrieval_brief=research_brief,
+                    retrieval_phase="subhypothesis_evidence",
+                    retrieval_branch=sub_id,
+                    query_plan_override=branch_plan,
+                    layer_quotas=layer_quotas,
+                    import_layer_minimums=main_import_layer_minimums,
+                    _deferred_subspace_round=True,
+                )
+            )
+        except Exception as exc:
+            reports.append({"sub_hypothesis_id": sub_id, "query": query, "status": "retrieval_failed", "error": str(exc)})
+            continue
+        search_action = zhizhi_search_action_from_output(payload)
+        strata = search_action.get("strata", []) if isinstance(search_action.get("strata"), list) else []
+        p0_selected = preprint_imported
+        evidence_window = sub_hypothesis.get("evidence_window", {}) if isinstance(sub_hypothesis.get("evidence_window"), dict) else {}
+        p0_rule = evidence_window.get("P0_latest_preprint", {}) if isinstance(evidence_window, dict) else {}
+        p0_minimum = int(p0_rule.get("minimum", 1) if isinstance(p0_rule, dict) else 1)
+        primary_results = int(search_action.get("total_results") or 0)
+        status = "ready_for_causal_gap_detection" if primary_results > 0 else "evidence_insufficient_primary_evidence"
+        retrieval_summary = {
+            "query": query,
+            "source_query": source_query,
+            "query_language": query_language,
+            "search_id": search_action.get("search_id"),
+            "total_results": int(search_action.get("total_results") or 0),
+            "imported_records": preprint_imported + (int((payload.get("action") or {}).get("imported_records") or 0) if isinstance(payload.get("action"), dict) else 0),
+            "peer_reviewed_imported_records": int((payload.get("action") or {}).get("imported_records") or 0) if isinstance(payload.get("action"), dict) else 0,
+            "layer_quotas": layer_quotas,
+            "import_layer_minimums": main_import_layer_minimums,
+            "p0_preprint_selected": p0_selected,
+            "p0_preprint_imported": preprint_imported,
+            "p0_preprint_target": preprint_import_target,
+            "p0_preprint_required": p0_minimum,
+            "preprint_evidence": preprint_probe,
+            "main_import_budget": main_import_limit,
+            "main_evidence_providers": main_providers,
+            "preprint_signal_providers": preprint_providers,
+            "preprint_gate_enforced": False,
+            "status": status,
+            "constraint_source": "verbatim_research_brief",
+            "research_brief_chars": len(research_brief),
+            "retrieval_constraints": execution_constraints.get("retrieval", []),
+            "evidence_window_alerts": payload.get("evidence_window_alerts", []) + (
+                [
+                    {
+                        "priority": "P0",
+                        "status": "preprint_signal_not_available",
+                        "action": "Record the independent preprint-search gap, but do not block causal-gap exploration or hypothesis generation while this temporary policy is active.",
+                    }
+                ]
+                if preprint_probe.get("status") in {"not_available", "import_failed", "not_requested_budget_reserved_for_primary"}
+                else []
+            ),
+            "updatedAt": time.time(),
+        }
+        project = load_project(project_id)
+        for current in project.get("sub_hypotheses", []):
+            if isinstance(current, dict) and str(current.get("id") or "") == sub_id:
+                current["retrieval_query"] = query
+                if source_query != query:
+                    current["source_retrieval_query"] = source_query
+                    current["query_language"] = query_language
+                current["retrieval"] = retrieval_summary
+                current["status"] = status
+                break
+        project.setdefault("sub_hypothesis_retrieval_runs", []).append(retrieval_summary | {"sub_hypothesis_id": sub_id})
+        save_project(project)
+        reports.append(retrieval_summary | {"sub_hypothesis_id": sub_id})
+        log_event(
+            "SCIENCE",
+            "subhypothesis_retrieval_complete",
+            project_id=project_id,
+            sub_hypothesis_id=sub_id,
+            search_id=retrieval_summary["search_id"],
+            retrieved=retrieval_summary["total_results"],
+            imported=retrieval_summary["imported_records"],
+            p0_selected=p0_selected,
+            status=status,
+        )
+    build_knowledge_map(project_id)
+    detect_knowledge_gaps(project_id, max_gaps=max(10, len(selected) * 3))
+    return json.dumps(
+        {
+            "project_id": project_id,
+            "agent": "zhizhi",
+            "strategy": "subhypothesis_directed_retrieval",
+            "reports": reports,
+            "next_step": "Run TanXi only on branches marked ready_for_causal_gap_detection; evidence-insufficient branches remain excluded from combined claims.",
+        },
+        ensure_ascii=False,
+        indent=2,
+    )
+
+
 def run_zhizhi_literature_analysis(
     project_id: str,
     domain: str,
@@ -1401,11 +2085,43 @@ def run_zhizhi_literature_analysis(
     subspace_map_id: str = "",
     selected_subfields: list[str] | None = None,
     interactive_mode: bool = False,
+    serial_subspace_search: bool | None = None,
+    retrieval_brief: str = "",
+    subspace_rounds: int = SCIENCE_ZHIZHI_SUBSPACE_ROUNDS,
+    boundary_extension_rounds: int = SCIENCE_ZHIZHI_BOUNDARY_EXTENSION_ROUNDS,
+    per_subspace_results: int = SCIENCE_ZHIZHI_PER_SUBSPACE_RESULTS,
+    per_subspace_imports: int = SCIENCE_ZHIZHI_PER_SUBSPACE_IMPORTS,
+    query_plan_override: list[dict[str, Any]] | None = None,
+    layer_quotas: dict[str, int] | None = None,
+    import_layer_minimums: dict[str, int] | None = None,
+    retrieval_phase: str = "",
+    retrieval_branch: str = "",
+    _deferred_subspace_round: bool = False,
 ) -> str:
+    serial_enabled = SCIENCE_ZHIZHI_SERIAL_SUBSPACE_SEARCH if serial_subspace_search is None else bool(serial_subspace_search)
+    if serial_enabled and not _deferred_subspace_round and not interactive_mode:
+        return run_zhizhi_serial_subspace_analysis(
+            project_id=project_id,
+            domain=domain,
+            query=query,
+            max_results=max_results,
+            years=years,
+            providers=providers,
+            graph_depth=graph_depth,
+            use_llm=use_llm,
+            focus_branches=focus_branches,
+            subspace_map_id=subspace_map_id,
+            selected_subfields=selected_subfields,
+            retrieval_brief=retrieval_brief,
+            subspace_rounds=subspace_rounds,
+            boundary_extension_rounds=boundary_extension_rounds,
+            per_subspace_results=per_subspace_results,
+            per_subspace_imports=per_subspace_imports,
+        )
     try:
         from ._gap_detection import build_knowledge_map, detect_knowledge_gaps, knowledge_map_unknown_summary, zhizhi_standard_output
         from ._literature_graph import build_literature_relation_graph, expand_literature_graph
-        from ._literature_import import extract_paper_keynote, import_literature_search_result, select_zhizhi_import_results
+        from ._literature_import import extract_paper_keynote, import_literature_search_result, review_imported_papers_for_domain, select_zhizhi_import_results
         from ._literature_scoring import literature_domain_coverage_diagnostic
         from ._literature_search import build_branch_user_interaction, database_to_provider, search_papers_stratified, select_literature_result
         from ._project import default_literature_providers, explore_domain_subspaces, live_literature_provider_names, load_project, load_subspace_map, post_retrieval_subspace_coverage, query_plan_from_subspace_map, save_project
@@ -1414,17 +2130,34 @@ def run_zhizhi_literature_analysis(
     except ImportError:
         from _gap_detection import build_knowledge_map, detect_knowledge_gaps, knowledge_map_unknown_summary, zhizhi_standard_output
         from _literature_graph import build_literature_relation_graph, expand_literature_graph
-        from _literature_import import extract_paper_keynote, import_literature_search_result, select_zhizhi_import_results
+        from _literature_import import extract_paper_keynote, import_literature_search_result, review_imported_papers_for_domain, select_zhizhi_import_results
         from _literature_scoring import literature_domain_coverage_diagnostic
         from _literature_search import build_branch_user_interaction, database_to_provider, search_papers_stratified, select_literature_result
         from _project import default_literature_providers, explore_domain_subspaces, live_literature_provider_names, load_project, load_subspace_map, post_retrieval_subspace_coverage, query_plan_from_subspace_map, save_project
         from _supplement import zhizhi_auto_supplement_blind_spots
         from _utils import clamp_int, unique_preserve_order
     project = load_project(project_id)
-    action: dict[str, Any] = {"agent": "zhizhi", "query": query, "domain": domain, "years": years}
+    effective_research_brief = retrieval_brief or str(project.get("research_brief") or project.get("objective") or "")
+    action: dict[str, Any] = {
+        "agent": "zhizhi",
+        "query": query,
+        "domain": domain,
+        "years": years,
+        "research_brief": {
+            "source": "explicit_argument" if retrieval_brief else str(project.get("research_brief_source") or "objective_fallback"),
+            "chars": len(effective_research_brief),
+            "verbatim_constraints_preserved": bool(effective_research_brief),
+        },
+    }
     observations: list[str] = []
     import_limit = clamp_int(import_top_k, 1, SCIENCE_ZHIZHI_MAX_IMPORT_TOP_K)
-    search_budget = max(clamp_int(max_results, 50, 200), import_limit, 50)
+    if isinstance(layer_quotas, dict) and sum(max(0, int(value or 0)) for value in layer_quotas.values()) > 0:
+        # A serial subspace round has an intentionally bounded candidate
+        # budget. Do not silently inflate its 10-14 paper plan to the legacy
+        # 50-result broad-search floor.
+        search_budget = max(import_limit, sum(max(0, int(value or 0)) for value in layer_quotas.values()))
+    else:
+        search_budget = max(clamp_int(max_results, 50, 200), import_limit, 50)
     selected_providers = [database_to_provider(item) for item in (providers or default_literature_providers(domain=domain, query=query))]
     selected_providers = unique_preserve_order([item for item in selected_providers if item in live_literature_provider_names()])
     if not selected_providers:
@@ -1489,6 +2222,8 @@ def run_zhizhi_literature_analysis(
             domain=domain,
             focus_branches=focus_branches,
             use_llm=use_llm,
+            explicit_query_plan=query_plan_override,
+            layer_quotas=layer_quotas,
         )
     )
     action["search_papers_stratified"] = {
@@ -1519,7 +2254,8 @@ def run_zhizhi_literature_analysis(
 
     search_id = str(search_payload.get("search_id"))
     log_event("SCIENCE", "search_phase_complete", search_id=search_id, total_results=search_payload.get("total_results", 0),
-              providers=selected_providers, strata={s.get("layer"): s.get("selected", 0) for s in (search_payload.get("strata") or [])})
+              providers=search_payload.get("providers", []), requested_providers=search_payload.get("requested_providers", []),
+              strata={s.get("layer"): s.get("selected", 0) for s in (search_payload.get("strata") or [])})
     coverage_diagnostic = literature_domain_coverage_diagnostic(
         search_id,
         domain=domain,
@@ -1544,7 +2280,35 @@ def run_zhizhi_literature_analysis(
     selected = selected_payload.get("selected") or {}
     action["select_literature_result"] = selected
 
-    import_candidates, import_plan = select_zhizhi_import_results(search_payload.get("results", []), import_limit)
+    requested_import_limit = import_limit
+    import_limit = standard_retrieval_import_limit(
+        import_limit,
+        int(search_payload.get("total_results") or 0),
+        retrieval_phase=retrieval_phase,
+    )
+    action["import_budget"] = {
+        "requested": requested_import_limit,
+        "effective": import_limit,
+        "retrieved_results": int(search_payload.get("total_results") or 0),
+        "policy": "minimum_10_for_standard_15_to_20_result_search" if import_limit > requested_import_limit else "requested_budget",
+    }
+    if import_limit > requested_import_limit:
+        log_event(
+            "SCIENCE",
+            "import_budget_floor_enforced",
+            search_id=search_id,
+            retrieved=int(search_payload.get("total_results") or 0),
+            requested=requested_import_limit,
+            effective=import_limit,
+        )
+        observations.append(
+            f"Raised the import budget from {requested_import_limit} to {import_limit}: standard 15–20-result searches require at least 10 imported candidates before duplicate/domain filtering."
+        )
+    import_candidates, import_plan = select_zhizhi_import_results(
+        search_payload.get("results", []),
+        import_limit,
+        layer_minimums=import_layer_minimums,
+    )
     action["stratified_import_plan"] = import_plan
     for missing in import_plan.get("missing_layers", []):
         observations.append(
@@ -1567,6 +2331,19 @@ def run_zhizhi_literature_analysis(
 
     log_event("SCIENCE", "import_phase_start", search_id=search_id, total_candidates=len(import_candidates),
               layers={layer: len(items) for layer, items in by_layer.items() if items})
+    llm_imports_remaining = zhizhi_import_llm_budget(use_llm, len(import_candidates))
+    action["import_enrichment_policy"] = {
+        "llm_structure_import_budget": llm_imports_remaining,
+        "per_paper_keynote_llm": False,
+        "semantic_scholar_detail_for_existing_search_result": False,
+    }
+    log_event(
+        "SCIENCE",
+        "import_enrichment_budget",
+        search_id=search_id,
+        llm_structure_import_budget=llm_imports_remaining,
+        per_paper_keynote_llm=False,
+    )
 
     # Build pre-filter set from existing papergraph to avoid duplicate imports
     project = load_project(project_id)
@@ -1616,7 +2393,17 @@ def run_zhizhi_literature_analysis(
                 continue
             log_event("SCIENCE", "import_paper_attempt", layer=layer_name, title=result_title, result_index=result_index)
             try:
-                imported = json.loads(import_literature_search_result(project_id, search_id, result_index, use_llm=use_llm))
+                use_llm_for_import = llm_imports_remaining > 0
+                imported = json.loads(
+                    import_literature_search_result(
+                        project_id,
+                        search_id,
+                        result_index,
+                        use_llm=use_llm_for_import,
+                    )
+                )
+                if use_llm_for_import:
+                    llm_imports_remaining -= 1
                 import_status = str(imported.get("status") or "imported")
                 if import_status == "duplicate":
                     log_event("SCIENCE", "paper_skipped_duplicate", layer=layer_name, title=result_title, result_index=result_index,
@@ -1626,10 +2413,10 @@ def run_zhizhi_literature_analysis(
                 layer_imported += 1
                 record = imported.get("record") or {}
                 paper_id = record.get("paper_id")
-                log_event("SCIENCE", "paper_imported", layer=layer_name, title=result_title, paper_id=paper_id, result_index=result_index)
+                log_event("SCIENCE", "stratified_import_completed", layer=layer_name, title=result_title, paper_id=paper_id, result_index=result_index)
                 if paper_id:
                     try:
-                        extract_paper_keynote(project_id, paper_id=str(paper_id), use_llm=use_llm)
+                        extract_paper_keynote(project_id, paper_id=str(paper_id), use_llm=False)
                     except Exception as exc:
                         observations.append(f"keynote extraction failed for {paper_id}: {exc}")
             except Exception as exc:
@@ -1638,8 +2425,77 @@ def run_zhizhi_literature_analysis(
                 observations.append(f"import failed for {layer_name} result {result_index} ({result_title}): {exc}")
         log_event("SCIENCE", "import_layer_complete", layer=layer_name, imported=layer_imported, failed=layer_failed, total=len(layer_candidates))
 
-    log_event("SCIENCE", "import_phase_complete", search_id=search_id, total_imported=len(imported_records), total_candidates=len(import_candidates))
+    imported_paper_ids = [
+        str((item.get("record") or {}).get("paper_id") or "")
+        for item in imported_records
+        if isinstance(item, dict)
+    ]
+    domain_reviews = review_imported_papers_for_domain(
+        project_id=project_id,
+        paper_ids=imported_paper_ids,
+        target_domain_profile=domain,
+        min_confidence=0.6,
+    )
+    # Preserve retrieval provenance on the durable PaperGraph record.  Boundary
+    # extensions remain useful for landscape reports, but downstream mechanism
+    # reasoning must be able to distinguish them from the core evidence corpus.
+    if retrieval_phase or retrieval_branch:
+        project = load_project(project_id)
+        imported_ids = set(imported_paper_ids)
+        for record in project.get("papergraph", []):
+            if not isinstance(record, dict) or str(record.get("paper_id") or "") not in imported_ids:
+                continue
+            if retrieval_phase:
+                record["retrieval_phase"] = retrieval_phase
+            if retrieval_branch:
+                record["retrieval_branch"] = retrieval_branch
+        for evidence in project.get("evidence", []):
+            if not isinstance(evidence, dict) or str(evidence.get("paper_id") or "") not in imported_ids:
+                continue
+            if retrieval_phase:
+                evidence["retrieval_phase"] = retrieval_phase
+            if retrieval_branch:
+                evidence["retrieval_branch"] = retrieval_branch
+        save_project(project)
+    review_counts = {
+        verdict: sum(1 for review in domain_reviews if review.get("verdict") == verdict)
+        for verdict in ("keep", "review", "reject")
+    }
+    action["domain_review"] = {
+        "total_reviewed": len(domain_reviews),
+        **review_counts,
+        "details": domain_reviews[:12],
+    }
+    for review in domain_reviews:
+        if review.get("verdict") == "reject":
+            observations.append(
+                "Domain reviewer deactivated an imported mismatch: "
+                f"{review.get('title')}; reason={review.get('reason')}"
+            )
+    log_event(
+        "SCIENCE",
+        "import_phase_complete",
+        search_id=search_id,
+        total_imported=len(imported_records),
+        total_candidates=len(import_candidates),
+        domain_rejected=review_counts["reject"],
+    )
     action["imported_records"] = len(imported_records)
+
+    if _deferred_subspace_round:
+        action["deferred_synthesis"] = True
+        output = zhizhi_standard_output(
+            thought=(
+                "ZhiZhi completed one serial subspace round: retrieval, stratified selection, "
+                "import, keynote extraction, and domain review. Global synthesis is deferred until "
+                "all subspaces and boundary extensions finish."
+            ),
+            action=action,
+            knowledge_map={},
+            gaps=[],
+            observations=observations,
+        )
+        return json.dumps(output, ensure_ascii=False, indent=2)
 
     # === BLIND SPOT SUPPLEMENT (runs after main import to avoid exhausting SS quota first) ===
     supplemental_imports: list[dict[str, Any]] = []
@@ -1660,7 +2516,12 @@ def run_zhizhi_literature_analysis(
             f"branches={supplemental_report.get('branches_attempted', 0)}, imports={len(supplemental_imports)}."
         )
     if active_subspace_map is not None:
-        subspace_coverage = post_retrieval_subspace_coverage(active_subspace_map, selected_subfields or focus_branches, imported_records)
+        active_imported_records = [
+            item for item in imported_records
+            if str((item.get("record") or {}).get("paper_id") or "")
+            not in {str(review.get("paper_id") or "") for review in domain_reviews if review.get("verdict") == "reject"}
+        ]
+        subspace_coverage = post_retrieval_subspace_coverage(active_subspace_map, selected_subfields or focus_branches, active_imported_records)
         action["post_retrieval_subspace_coverage"] = subspace_coverage
         if subspace_coverage.get("needs_second_alignment"):
             action["post_retrieval_user_interaction"] = subspace_coverage.get("user_interaction")
@@ -1707,6 +2568,25 @@ def run_zhizhi_literature_analysis(
                 "edge_summary": relation_payload.get("edge_summary"),
                 "analysis_confidence": relation_payload.get("analysis_confidence"),
             }
+            relation_graph_id = str(relation_payload.get("relation_graph_id") or "")
+            if relation_graph_id:
+                community_payload = json.loads(
+                    build_louvain_community_knowledge_maps(project_id, relation_graph_id)
+                )
+                action["louvain_community_knowledge_maps"] = {
+                    "status": community_payload.get("status"),
+                    "relation_graph_id": relation_graph_id,
+                    "community_count": community_payload.get("community_count", 0),
+                    "eligible_community_count": community_payload.get("eligible_community_count", 0),
+                    "unassigned_imported_record_count": community_payload.get("unassigned_imported_record_count", 0),
+                    "unmapped_relation_node_count": community_payload.get("unmapped_relation_node_count", 0),
+                    "representative_import_candidates": community_payload.get("representative_import_candidates", []),
+                    "outlier_communities": community_payload.get("outlier_communities", []),
+                }
+                if int(community_payload.get("eligible_community_count") or 0) <= 0:
+                    observations.append(
+                        "Louvain communities were identified, but none has enough already imported PaperGraph evidence for community-level gap analysis."
+                    )
         except Exception as exc:
             observations.append(f"relation graph failed: {exc}")
 
@@ -1766,10 +2646,10 @@ def supporting_references_for_method_or_scenario(project: dict[str, Any], method
 def project_records_for_mapping(project: dict[str, Any]) -> list[dict[str, Any]]:
     records: list[dict[str, Any]] = []
     for record in project.get("papergraph", []):
-        if isinstance(record, dict):
+        if isinstance(record, dict) and record.get("active", True) is not False:
             records.append(record)
     for evidence in project.get("evidence", []):
-        if isinstance(evidence, dict):
+        if isinstance(evidence, dict) and evidence.get("active", True) is not False:
             records.append(evidence)
     deduped: dict[str, dict[str, Any]] = {}
     for record in records:

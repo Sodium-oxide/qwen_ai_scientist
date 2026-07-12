@@ -80,9 +80,12 @@
 - [project_custom_subfields.md](project_custom_subfields.md) - project: User-defined high-priority extension subfields
 - [project_custom_subspaces.md](project_custom_subspaces.md) - project: user-specified subspaces for focused analysis
 - [project_dark_matter_observation_validation_project.md](project_dark_matter_observation_validation_project.md) - project: Research project validating ZhiZhi's literature analysis capabilities for dark matter detection and astrophysical observation.
+- [project_data_sources.md](project_data_sources.md) - project: Main data sources for literature and evidence
+- [project_data_sources_and_quality_requirements.md](project_data_sources_and_quality_requirements.md) - project: 文献与证据知识库的数据源与质量边界要求，包括使用的主要数据源、文献筛选标准等。
 - [project_debate_id.md](project_debate_id.md) - project: Socratic debate instance initiated for hypothesis validation, paused at Round 1 pending human review
 - [project_debate_stall_point.md](project_debate_stall_point.md) - project: step where闭环 failed
 - [project_debate_state.md](project_debate_state.md) - project: Status of Socratic debate loop
+- [project_decomposition_rules.md](project_decomposition_rules.md) - project: Rules for decomposing the research objective into sub-hypotheses.
 - [project_domain.md](project_domain.md) - project: core research domain
 - [project_domain_coverage_diagnostic_findings.md](project_domain_coverage_diagnostic_findings.md) - project: Key underrepresented subfields identified by live probe reports.
 - [project_domain_subspaces_explored.md](project_domain_subspaces_explored.md) - project: 子空间探测配置与关键输出
@@ -92,9 +95,12 @@
 - [project_elnino_closed_loop_project.md](project_elnino_closed_loop_project.md) - project: 厄尔尼诺现象研究与预测闭环验证项目初始化完成
 - [project_elnino_pipeline_validation_failure.md](project_elnino_pipeline_validation_failure.md) - project: Pipeline executed but failed domain validation due to irrelevant literature retrieval
 - [project_enso_climate_knowledge_pyramid_validation.md](project_enso_climate_knowledge_pyramid_validation.md) - project: Research project validating review-rooted knowledge graph construction for ENSO/climate teleconnection; failed due to L0 review root policy violation.
+- [project_evidence_quality_requirements.md](project_evidence_quality_requirements.md) - project: Requirements for the quality and coverage of the literature and evidence.
+- [project_evidence_tiers.md](project_evidence_tiers.md) - project: P0–P4 分层的文献证据层级划分，用于构建DeepSurvey风格的知识库。
 - [project_example_knowledge_gap.md](project_example_knowledge_gap.md) - project: 一个典型的知识缺口示例
 - [project_execution_mode.md](project_execution_mode.md) - project: Boxue pipeline execution mode
 - [project_failure_point.md](project_failure_point.md) - project: Step where闭环 broke
+- [project_final_deliverables_requirements.md](project_final_deliverables_requirements.md) - project: 最终交付物要求
 - [project_final_hypothesis_id.md](project_final_hypothesis_id.md) - project: Accepted or pending hypothesis identifier
 - [project_final_hypothesis_title.md](project_final_hypothesis_title.md) - project: MingLi's highest-ranked hypothesis title
 - [project_finalized_hypothesis_id.md](project_finalized_hypothesis_id.md) - project: ID of the hypothesis generated and uniqueness-verified
@@ -103,6 +109,10 @@
 - [project_gap_analysis_result.md](project_gap_analysis_result.md) - project: Primary knowledge gap identified and assessed
 - [project_gap_assessment_summary.md](project_gap_assessment_summary.md) - project: Key properties of the primary identified knowledge gap.
 - [project_gap_criteria.md](project_gap_criteria.md) - project: non-pseudo gap requirements
+- [project_gap_detection_priorities.md](project_gap_detection_priorities.md) - project: Priorities for gap detection in the causal chains
+- [project_gap_discovery_phase.md](project_gap_discovery_phase.md) - project: Gap发现阶段的内容
+- [project_gap_discovery_priorities.md](project_gap_discovery_priorities.md) - project: 优先发现的问题列表，涉及遗传变异至治疗效应之间的因果链断点、生物标志物的预测价值评估、多组学预测与实际疗效间的差异等方面。
+- [project_gap_exploration_requirements.md](project_gap_exploration_requirements.md) - project: Gap 探索要求
 - [project_gap_id.md](project_gap_id.md) - project: Anomaly gap identified in Ni-rich cathode literature: unexplained high-valence ion segregation at grain boundaries inconsistent with thermodynamic expectations
 - [project_gap_ranking_and_top_gap_analysis.md](project_gap_ranking_and_top_gap_analysis.md) - project: Top-ranked gap and its justification
 - [project_gap_source_distribution.md](project_gap_source_distribution.md) - project: Origin distribution of top-ranked gaps
@@ -116,6 +126,9 @@
 - [project_hcc_mechanism_validation_project.md](project_hcc_mechanism_validation_project.md) - project: Research project validating ZhiZhi's literature retrieval, knowledge graph construction, and gap detection capabilities in hepatocellular carcinoma formation and cell variation mechanisms.
 - [project_high_energy_physics_dse_zhizhi_tanxi_project_id.md](project_high_energy_physics_dse_zhizhi_tanxi_project_id.md) - project: Project ID for the closed-loop validation study in high energy physics
 - [project_hook_events.md](project_hook_events.md) - project: Configured hook events available in v4/v8
+- [project_hypothesis_generation_criteria.md](project_hypothesis_generation_criteria.md) - project: Criteria for generating and evaluating hypotheses in the research project.
+- [project_hypothesis_generation_guidelines.md](project_hypothesis_generation_guidelines.md) - project: Guidelines for generating hypotheses based on Socrates COMPLETE mechanism contracts
+- [project_hypothesis_generation_requirements.md](project_hypothesis_generation_requirements.md) - project: 假设生成要求
 - [project_hypothesis_id.md](project_hypothesis_id.md) - project: Draft hypothesis linking kinetic trapping (not equilibrium) to calcination dynamics and proposing CTAB + ramp-rate control to suppress segregation
 - [project_hypothesis_requirements.md](project_hypothesis_requirements.md) - project: minimal structure for falsifiability
 - [project_hypothesis_title.md](project_hypothesis_title.md) - project: Core scientific claim under validation
@@ -136,21 +149,26 @@
 - [project_literature_import_stats.md](project_literature_import_stats.md) - project: Imported papers count and sources
 - [project_literature_import_summary.md](project_literature_import_summary.md) - project: final imported paper count and layer distribution
 - [project_literature_layers.md](project_literature_layers.md) - project: stratified retrieval hierarchy
+- [project_literature_quality_requirements.md](project_literature_quality_requirements.md) - project: Quality requirements for the literature used in the project
 - [project_literature_search_providers.md](project_literature_search_providers.md) - project: Providers used for initial literature retrieval
+- [project_literature_search_requirements.md](project_literature_search_requirements.md) - project: 文献检索要求
 - [project_low_density_subspaces_for_gap_analysis.md](project_low_density_subspaces_for_gap_analysis.md) - project: DSE 识别出的低密度子空间，适合作为 TanXi gap 发现重点目标。
 - [project_manual_literature_import.md](project_manual_literature_import.md) - project: Fallback import of 'AI Feynman' paper via abstract text, used to bootstrap pipeline when API search failed.
 - [project_max_parallel_agents.md](project_max_parallel_agents.md) - project: 最大并行代理数
 - [project_max_steps.md](project_max_steps.md) - project: 最大步骤数
 - [project_mcp_docs_server.md](project_mcp_docs_server.md) - project: User has access to a 'docs' MCP server with search and fetch capabilities
+- [project_mechanism_audit_requirements.md](project_mechanism_audit_requirements.md) - project: 机制审计要求
 - [project_mechanism_chain.md](project_mechanism_chain.md) - project: Causal, testable mechanism chain
 - [project_mechanism_cluster_count.md](project_mechanism_cluster_count.md) - project: Number of distinct mechanism-based clusters identified in the relation graph
 - [project_mechanism_clusters.md](project_mechanism_clusters.md) - project: Eight mechanism-based clusters identified at min_quality ≥ 0.55
+- [project_mechanism_completion_requirements.md](project_mechanism_completion_requirements.md) - project: 机制补全要求
 - [project_mechanism_problem_gap_count.md](project_mechanism_problem_gap_count.md) - project: Count of gaps classified as mechanism_problem, problem, contradiction, or anomaly
 - [project_mechanism_verified_hypothesis.md](project_mechanism_verified_hypothesis.md) - project: hypothesis confirmed via full CAWM-style mechanism check
 - [project_migration_gap_characteristics.md](project_migration_gap_characteristics.md) - project: Key attributes of detected knowledge gaps
 - [project_min_quality_threshold.md](project_min_quality_threshold.md) - project: filter applied to literature graph construction
 - [project_min_quality_threshold_used.md](project_min_quality_threshold_used.md) - project: quality filter applied during relation graph construction
 - [project_mock_teammates_behavior.md](project_mock_teammates_behavior.md) - project: Spawned teammates are chat-only
+- [project_multi_round_debate_requirements.md](project_multi_round_debate_requirements.md) - project: 多轮辩论要求
 - [project_next_step.md](project_next_step.md) - project: 下一步行动建议，需要检查AutoGen GroupChat消息并重新生成或修订假设。
 - [project_next_step_required.md](project_next_step_required.md) - project: Immediate remediation action
 - [project_next_step_uhv_bootstrap.md](project_next_step_uhv_bootstrap.md) - project: Actionable recovery step
@@ -166,20 +184,24 @@
 - [project_project_creation.md](project_project_creation.md) - project: A research project was created to identify key bottlenecks in determining the 'end' of the periodic table, including nuclear stability limits, technological boundaries in synthesis methods, the evolution of IUPAC discovery criteria, and gaps between theoretical predictions and experimental validations. The goal is to generate verifiable and revisable research hypotheses from high-quality literature.
 - [project_project_creation_details.md](project_project_creation_details.md) - project: 项目创建细节
 - [project_project_dielectrics_high_temp_capacitive_storage.md](project_project_dielectrics_high_temp_capacitive_storage.md) - project: Research project on dielectric materials for capacitive energy storage above 150°C
-- [project_project_domain.md](project_project_domain.md) - project: 项目领域
+- [project_project_domain.md](project_project_domain.md) - project: Personalized Medicine / Precision Medicine / Pharmacogenomics / Cancer Genomics / Clinical Pharmacology / Multi-omics / Patient-derived Models / Cell and Gene Therapy Manufacturing / Biostatistics / Regulatory Science
 - [project_project_dse_pre_scan_validation.md](project_project_dse_pre_scan_validation.md) - project: 科学研究项目：DSE 前置扫描验证，聚焦 Autonomous Grid Control 领域，目标为验证子空间遍历器、用户选择机制与 ZhiZhi 检索衔接
 - [project_project_electric_field_deformation.md](project_project_electric_field_deformation.md) - project: Research project on electric-field-driven deformation dynamics in metal nanostructures, scoped to nanomaterials physics with strategic relevance to NEMS and tunable plasmonics.
 - [project_project_electric_field_deformation_nanostructures.md](project_project_electric_field_deformation_nanostructures.md) - project: 科学研究项目：Electric-Field-Driven Deformation Dynamics in Metal Nanostructures
 - [project_project_id.md](project_project_id.md) - project: 科学研究项目的ID
 - [project_project_objective.md](project_project_objective.md) - project: 项目目标
-- [project_project_title.md](project_project_title.md) - project: 项目标题
+- [project_project_title.md](project_project_title.md) - project: The title of the research project on personalized medicine.
+- [project_project_title_and_goal.md](project_project_title_and_goal.md) - project: 项目标题和目标
 - [project_provider_failure_summary.md](project_provider_failure_summary.md) - project: Stable record of failed providers and reasons
 - [project_python_interpreter_path.md](project_python_interpreter_path.md) - project: Python interpreter to use for running tests/scripts
 - [project_relation_graph_id.md](project_relation_graph_id.md) - project: ID of the filtered literature relation graph (min_quality=0.55)
 - [project_repo_structure_claude_code_versions.md](project_repo_structure_claude_code_versions.md) - project: Repo layout: v1-v8 iterative Python versions
-- [project_research_domain.md](project_research_domain.md) - project: core technical domain scope
+- [project_research_domain.md](project_research_domain.md) - project: The domain or field of the research project.
+- [project_research_domains.md](project_research_domains.md) - project: Domains related to the research project
 - [project_research_flow_run_details.md](project_research_flow_run_details.md) - project: 科研流程运行细节
+- [project_research_objective.md](project_research_objective.md) - project: The main objective of the research project, focusing on the predictability of treatment outcomes and manufacturing feasibility in personalized medicine.
 - [project_research_phases.md](project_research_phases.md) - project: The research project is designed to follow a specific sequence of phases for collaboration: Boxue -> ZhiZhi -> TanXi -> GRADE -> Socrates -> MingLi -> YanZhen -> DuZhi -> BianLun. Each phase has distinct responsibilities and must be completed before moving to the next, with specific conditions for progressing or revisiting earlier stages based on evidence thresholds and mechanism checks.
+- [project_research_process_steps.md](project_research_process_steps.md) - project: 执行完整闭环的步骤：Boxue → Objective Decomposition → ZhiZhi → TanXi → Socrates → MingLi → YanZhen → DuZhi → BianLun → MingLi 修订 → YanZhen 复审。
 - [project_research_project_id.md](project_research_project_id.md) - project: ID of the created scientific research project on repeating fast radio bursts
 - [project_research_project_title.md](project_research_project_title.md) - project: 研究项目的标题
 - [project_research_topic_hv_li_battery_conductors.md](project_research_topic_hv_li_battery_conductors.md) - project: Active research project on high-voltage Li battery conductors
@@ -217,6 +239,7 @@
 - [project_validated_knowledge_map_dimensions.md](project_validated_knowledge_map_dimensions.md) - project: Extracted structure of the PaperGraph knowledge map
 - [project_validation_metrics.md](project_validation_metrics.md) - project: Key evaluation metrics extracted from the analysis run
 - [project_validation_success_criteria.md](project_validation_success_criteria.md) - project: Stable criteria for assessing ZhiZhi Agent 1 performance.
+- [project_verification_requirements.md](project_verification_requirements.md) - project: Requirements for auditing the hypothesis
 - [project_wide_domain_retrieval_interaction_validation_project.md](project_wide_domain_retrieval_interaction_validation_project.md) - project: Research project validating Qwen's sub-branch generation, live coverage self-check, user interaction, and L1/L2 recovery in Autonomous Grid Control.
 - [project_windows_shell_environment.md](project_windows_shell_environment.md) - project: Shell environment for commands
 - [project_workspace_path.md](project_workspace_path.md) - project: Local filesystem path for project artifacts and tool outputs
@@ -247,6 +270,7 @@
 - [reference_custom_subspaces.md](reference_custom_subspaces.md) - reference: user-specified focus subspaces for literature analysis
 - [reference_debate_requirements.md](reference_debate_requirements.md) - reference: 多轮辩论要求
 - [reference_docs_mcp_server.md](reference_docs_mcp_server.md) - reference: Docs MCP server tools available in workspace
+- [reference_evidence_hierarchy.md](reference_evidence_hierarchy.md) - reference: P0–P4 分层文献质量标准，包括预印本、原始研究、机制与理论证据、系统综述等。
 - [reference_gap_exploration_requirements.md](reference_gap_exploration_requirements.md) - reference: Gap 探索要求
 - [reference_gap_types_monitored.md](reference_gap_types_monitored.md) - reference: knowledge gap types explicitly tracked
 - [reference_garnet_electrolyte_stability_evidence.md](reference_garnet_electrolyte_stability_evidence.md) - reference: First imported literature evidence
@@ -255,6 +279,7 @@
 - [reference_knowledge_gap_summary.md](reference_knowledge_gap_summary.md) - reference: Structured summary of two validated knowledge gaps from ZhiZhi analysis
 - [reference_known_infrastructure_issues.md](reference_known_infrastructure_issues.md) - reference: Recurring backend degradations to watch for
 - [reference_literature_search_requirements.md](reference_literature_search_requirements.md) - reference: 文献检索要求
+- [reference_literature_sources.md](reference_literature_sources.md) - reference: Primary sources for literature and evidence gathering.
 - [reference_mechanism_audit_requirements.md](reference_mechanism_audit_requirements.md) - reference: 机制审计要求
 - [reference_mechanism_enrichment_requirements.md](reference_mechanism_enrichment_requirements.md) - reference: 机制补全要求
 - [reference_normalize_words_pattern.md](reference_normalize_words_pattern.md) - reference: Preferred implementation for whitespace normalization
@@ -267,6 +292,7 @@
 - [reference_seed_paper_arxiv_id.md](reference_seed_paper_arxiv_id.md) - reference: primary literature seed
 - [reference_seed_paper_doi.md](reference_seed_paper_doi.md) - reference: DOI of the highest-quality seed paper selected
 - [reference_seed_paper_title.md](reference_seed_paper_title.md) - reference: title of the central paper
+- [reference_socratic_evidence_contract.md](reference_socratic_evidence_contract.md) - reference: Socrates阶段对选定Gap建立机制合同的要求，包含中介实体/过程的身份、位置或范围、动态变化、可逆性、可观测性、干预可能性及反事实假设等内容。
 - [reference_string_utils_contract_multiagent_demo.md](reference_string_utils_contract_multiagent_demo.md) - reference: Reference implementation contract for v8_multiagent_demo/string_utils.py
 - [reference_string_utils_task_ids.md](reference_string_utils_task_ids.md) - reference: Persistent task IDs for string_utils work
 - [reference_subspace_map_id.md](reference_subspace_map_id.md) - reference: identifier for the domain subspace map generated during exploration

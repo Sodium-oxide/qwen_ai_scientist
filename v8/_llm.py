@@ -69,6 +69,31 @@ def call_llm_json(
         raise ValueError("LLM did not return a JSON object")
     return parsed
 
+
+def translate_scientific_query_to_english(query: str, domain: str = "") -> str:
+    source = str(query or "").strip()
+    if not source:
+        return ""
+    payload = call_llm_json(
+        system=(
+            "You translate scientific literature search queries. Return only JSON and never add scientific claims, "
+            "papers, measurements, or constraints that are absent from the source."
+        ),
+        prompt=(
+            "Convert this query into 4-12 concise English academic retrieval keywords or phrases. "
+            "The value must contain English letters only for concepts; keep standard chemical, gene, and protein symbols when present. "
+            "Do not output Chinese, explanations, Boolean syntax, or a sentence.\n\n"
+            f"Domain context: {str(domain or '')[:400]}\n"
+            f"Source query: {source[:800]}\n\n"
+            'Return exactly: {"query":"english retrieval keywords"}'
+        ),
+        max_tokens=260,
+    )
+    candidate = str(payload.get("query") or "").strip()
+    if not candidate or re.search(r"[\u3400-\u9fff\uf900-\ufaff]", candidate):
+        return ""
+    return re.sub(r"\s+", " ", candidate)
+
 def get_science_llm_client() -> Any:
     extractor = SCIENCE_LLM_EXTRACTOR.strip().lower()
     if extractor in {"qwen", "dashscope"}:
@@ -118,18 +143,27 @@ def parse_json_object_from_text(text: str, fallback_list_key: str = "") -> dict[
     for candidate in candidates:
         if not candidate:
             continue
-        try:
-            parsed = json.loads(candidate)
-        except json.JSONDecodeError:
-            try:
-                parsed = ast.literal_eval(candidate)
-            except (ValueError, SyntaxError):
-                continue
+        parsed = parse_json_candidate(candidate)
+        if parsed is None:
+            continue
         if isinstance(parsed, dict):
             return parsed
         if fallback_list_key and isinstance(parsed, list):
             return {fallback_list_key: parsed}
     return {}
+
+
+def parse_json_candidate(candidate: str) -> Any | None:
+    try:
+        return json.loads(candidate)
+    except json.JSONDecodeError:
+        try:
+            return json.loads(candidate, strict=False)
+        except json.JSONDecodeError:
+            try:
+                return ast.literal_eval(candidate)
+            except (ValueError, SyntaxError):
+                return None
 
 def fenced_json_blocks(text: str) -> list[str]:
     blocks: list[str] = []
@@ -194,9 +228,8 @@ def extract_complete_json_objects_from_array(text: str) -> list[str]:
             depth -= 1
             if depth == 0 and start >= 0:
                 candidate = text[start : index + 1]
-                try:
-                    parsed = json.loads(json_repair_candidates(candidate))
-                except json.JSONDecodeError:
+                parsed = parse_json_candidate(json_repair_candidates(candidate))
+                if parsed is None:
                     start = -1
                     continue
                 if isinstance(parsed, dict):
@@ -287,6 +320,7 @@ def normalize_llm_paper_structure(payload: dict[str, Any]) -> dict[str, Any]:
         "benchmark": scalar(payload.get("benchmark")),
         "contribution": scalar(payload.get("contribution")),
         "limitation": scalar(payload.get("limitation")),
+        "causal_chains": normalize_causal_chains(payload.get("causal_chains")),
         "gap_signals": normalize_gap_signals(
             [
                 item if isinstance(item, dict) else {"signal_type": "gap_signal", "text": scalar(item)}
@@ -298,4 +332,83 @@ def normalize_llm_paper_structure(payload: dict[str, Any]) -> dict[str, Any]:
             ]
         ),
     }
+
+
+def normalize_causal_chains(value: Any) -> list[dict[str, Any]]:
+    try:
+        from ._utils import scalar, string_list
+    except ImportError:
+        from _utils import scalar, string_list
+    if not isinstance(value, list):
+        return []
+    chains: list[dict[str, Any]] = []
+    for raw_chain in value:
+        if not isinstance(raw_chain, dict):
+            continue
+        trigger = scalar(raw_chain.get("trigger") or raw_chain.get("condition") or raw_chain.get("input"))
+        outcome = scalar(raw_chain.get("outcome") or raw_chain.get("result") or raw_chain.get("effect"))
+        raw_steps = raw_chain.get("steps") or raw_chain.get("intermediate_steps") or []
+        if isinstance(raw_steps, (str, int, float)):
+            raw_steps = [raw_steps]
+        steps: list[dict[str, Any]] = []
+        if isinstance(raw_steps, list):
+            for raw_step in raw_steps:
+                if isinstance(raw_step, dict):
+                    claim = scalar(raw_step.get("claim") or raw_step.get("step") or raw_step.get("text"))
+                    evidence = scalar(raw_step.get("evidence") or raw_step.get("evidence_excerpt"))
+                    evidence_type = scalar(raw_step.get("evidence_type")) or "reported_unclassified"
+                else:
+                    claim = scalar(raw_step)
+                    evidence = ""
+                    evidence_type = "reported_unclassified"
+                if claim:
+                    step = {"claim": claim, "evidence": evidence, "evidence_type": evidence_type}
+                    for key in ("relation", "polarity", "modality", "source_location"):
+                        value = raw_step.get(key) if isinstance(raw_step, dict) else None
+                        if isinstance(value, dict):
+                            step[key] = dict(value)
+                        elif scalar(value):
+                            step[key] = scalar(value)
+                    steps.append(step)
+        observables = string_list(raw_chain.get("observables") or raw_chain.get("observable_signals"))
+        interventions = string_list(raw_chain.get("interventions") or raw_chain.get("manipulations"))
+        if not trigger and not steps and not outcome:
+            continue
+        chain = {
+            "chain_id": scalar(raw_chain.get("chain_id")) or f"chain_{len(chains) + 1}",
+            "trigger": trigger,
+            "trigger_evidence": scalar(raw_chain.get("trigger_evidence")),
+            "steps": steps,
+            "outcome": outcome,
+            "outcome_evidence": scalar(raw_chain.get("outcome_evidence")),
+            "observables": observables,
+            "interventions": interventions,
+            "confidence": raw_chain.get("confidence") if isinstance(raw_chain.get("confidence"), (int, float)) else None,
+        }
+        for key in (
+            "relation",
+            "outcome_relation",
+            "polarity",
+            "modality",
+            "extraction_method",
+            "direct_relation",
+            "causal_claim",
+            "trigger_location",
+            "outcome_location",
+        ):
+            value = raw_chain.get(key)
+            if isinstance(value, dict):
+                chain[key] = dict(value)
+            elif isinstance(value, bool):
+                chain[key] = value
+            elif scalar(value):
+                chain[key] = scalar(value)
+        entities = raw_chain.get("entities")
+        if isinstance(entities, list):
+            chain["entities"] = [item for item in entities if isinstance(item, dict) or scalar(item)]
+        evidence_edges = raw_chain.get("evidence_edges")
+        if isinstance(evidence_edges, list):
+            chain["evidence_edges"] = [dict(item) for item in evidence_edges if isinstance(item, dict)]
+        chains.append(chain)
+    return chains
 

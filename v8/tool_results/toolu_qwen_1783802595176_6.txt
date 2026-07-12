@@ -1,0 +1,514 @@
+{
+  "project_id": "sci_1783802556317054500",
+  "agent": "zhizhi",
+  "strategy": "subhypothesis_directed_retrieval",
+  "reports": [
+    {
+      "query": "IL-2 signaling Treg proliferation pSTAT5",
+      "source_query": "IL-2 signaling Treg proliferation pSTAT5",
+      "query_language": {
+        "query": "IL-2 signaling Treg proliferation pSTAT5",
+        "source_query": "IL-2 signaling Treg proliferation pSTAT5",
+        "translation_method": "already_english"
+      },
+      "search_id": "search_1783802742444928200",
+      "total_results": 15,
+      "imported_records": 5,
+      "peer_reviewed_imported_records": 5,
+      "layer_quotas": {
+        "L0_review": 1,
+        "L1_milestone": 1,
+        "L2_top_latest": 3,
+        "L3_preprint": 0,
+        "L4_regular": 10
+      },
+      "import_layer_minimums": {
+        "L3_preprint": 0,
+        "L2_top_latest": 1,
+        "L4_regular": 1,
+        "L0_review": 1,
+        "L1_milestone": 1
+      },
+      "p0_preprint_selected": 0,
+      "p0_preprint_imported": 0,
+      "p0_preprint_target": 3,
+      "p0_preprint_required": 1,
+      "preprint_evidence": {
+        "status": "not_available",
+        "providers": [
+          "biorxiv",
+          "medrxiv"
+        ],
+        "search_id": "search_1783802696888867100",
+        "total_results": 0,
+        "import_target": 3,
+        "imported_records": [],
+        "failed_imports": [],
+        "enforced_for_branch_gate": false,
+        "candidate_count": 0,
+        "provider_blocks": [
+          {
+            "provider": "biorxiv",
+            "query": "IL-2 signaling Treg proliferation pSTAT5",
+            "status": "ok",
+            "note": null,
+            "error": null,
+            "result_count": 0
+          },
+          {
+            "provider": "medrxiv",
+            "query": "IL-2 signaling Treg proliferation pSTAT5",
+            "status": "ok",
+            "note": null,
+            "error": null,
+            "result_count": 0
+          }
+        ]
+      },
+      "main_import_budget": 5,
+      "main_evidence_providers": [
+        "semantic_scholar"
+      ],
+      "preprint_signal_providers": [
+        "biorxiv",
+        "medrxiv"
+      ],
+      "preprint_gate_enforced": false,
+      "status": "ready_for_causal_gap_detection",
+      "constraint_source": "verbatim_research_brief",
+      "research_brief_chars": 8152,
+      "retrieval_constraints": [
+        "Use semantic_scholar, PubMed, bioRxiv/medRxiv; clearly label preprints as not peer-reviewed. Import at least 15 quality-screened papers covering each sub-hypothesis. Exclude descriptive omics papers without functional validation, single immortalized cell line studies, and purely computational papers without human or animal model validation."
+      ],
+      "evidence_window_alerts": [
+        {
+          "priority": "P0",
+          "status": "preprint_signal_not_available",
+          "action": "Record the independent preprint-search gap, but do not block causal-gap exploration or hypothesis generation while this temporary policy is active."
+        }
+      ],
+      "updatedAt": 1783803306.8989806,
+      "sub_hypothesis_id": "SH1"
+    },
+    {
+      "query": "mTOR pathway Foxp3 Treg differentiation",
+      "source_query": "mTOR pathway Foxp3 Treg differentiation",
+      "query_language": {
+        "query": "mTOR pathway Foxp3 Treg differentiation",
+        "source_query": "mTOR pathway Foxp3 Treg differentiation",
+        "translation_method": "already_english"
+      },
+      "search_id": "search_1783803362588727600",
+      "total_results": 15,
+      "imported_records": 5,
+      "peer_reviewed_imported_records": 5,
+      "layer_quotas": {
+        "L0_review": 1,
+        "L1_milestone": 1,
+        "L2_top_latest": 3,
+        "L3_preprint": 0,
+        "L4_regular": 10
+      },
+      "import_layer_minimums": {
+        "L3_preprint": 0,
+        "L2_top_latest": 1,
+        "L4_regular": 1,
+        "L0_review": 1,
+        "L1_milestone": 1
+      },
+      "p0_preprint_selected": 0,
+      "p0_preprint_imported": 0,
+      "p0_preprint_target": 3,
+      "p0_preprint_required": 1,
+      "preprint_evidence": {
+        "status": "import_failed",
+        "providers": [
+          "biorxiv",
+          "medrxiv"
+        ],
+        "search_id": "search_1783803306904015900",
+        "total_results": 2,
+        "import_target": 3,
+        "imported_records": [],
+        "failed_imports": [
+          {
+            "result_index": 0,
+            "title": "Closing the loop: Teaching single-cell foundation models to learn from perturbations",
+            "error": "Search result rejected before import by domain relevance gate: title=Closing the loop: Teaching single-cell foundation models to learn from perturbations, domain=Immunology / Systems Biology / T Cell Biology / Cytokine Signaling / Regulatory T Cells (Tregs) / Immune Checkpoints / Inflammation / Autoimmunity / Tumor Immunology / Single-cell Multi-omics / Functional Assays / Mathematical Modeling / Translational Medicine, assessment={\"profile\": \"immunology_systems_biology_t_cell_biology_cytokine_signaling_regulatory_t_cells_\", \"target_field\": \"biology\", \"result_field\": \"biomedical\", \"score\": 0.1204, \"query_hits\": [\"mtor\", \"pathway\"], \"anchor_hits\": [\"cell\", \"signaling\"], \"topic_hits\": [], \"noise_hits\": [], \"flags\": [\"core_domain_mismatch\", \"weak_preprint_domain_relevance\"], \"is_preprint\": true, \"core_domain_alignment\": {\"enabled\": true, \"passes\": false, \"core_terms\": [\"immunology systems biology\", \"systems biology cell\", \"biology cell cytokine\", \"cell cytokine signaling\", \"cytokine signaling regulatory\", \"signaling regulatory cells\", \"regulatory cells tregs\", \"tregs immune checkpoints\", \"immune checkpoints inflammation\", \"checkpoints inflammation autoimmunity\", \"immunology\", \"systems\", \"biology\", \"cell\", \"cytokine\", \"signaling\", \"regulatory\", \"cells\"], \"core_hit_count\": 2, \"core_hits\": [\"cell\", \"signaling\"], \"specific_terms\": [\"immunology systems biology\", \"systems biology cell\", \"biology cell cytokine\", \"cell cytokine signaling\", \"cytokine signaling regulatory\", \"signaling regulatory cells\", \"regulatory cells tregs\", \"tregs immune checkpoints\", \"immune checkpoints inflammation\", \"checkpoints inflammation autoimmunity\", \"immunology\", \"systems\"], \"specific_hit_count\": 1, \"specific_hits\": [\"signaling\"], \"min_core_hits\": 3, \"min_specific_hits\": 2, \"is_preprint\": true, \"reason\": \"title/abstract do not cover enough user-specified core topic terms\"}, \"verdict\": \"reject\", \"requires_human_review\": false}"
+          },
+          {
+            "result_index": 1,
+            "title": "RICTOR regulates an interspecies crosstalk that influences longevity through a novel methionine cycle-mitophagy axis",
+            "error": "Search result rejected before import by domain relevance gate: title=RICTOR regulates an interspecies crosstalk that influences longevity through a novel methionine cycle-mitophagy axis, domain=Immunology / Systems Biology / T Cell Biology / Cytokine Signaling / Regulatory T Cells (Tregs) / Immune Checkpoints / Inflammation / Autoimmunity / Tumor Immunology / Single-cell Multi-omics / Functional Assays / Mathematical Modeling / Translational Medicine, assessment={\"profile\": \"immunology_systems_biology_t_cell_biology_cytokine_signaling_regulatory_t_cells_\", \"target_field\": \"biology\", \"result_field\": \"general\", \"score\": 0.081, \"query_hits\": [\"mtor\", \"pathway\"], \"anchor_hits\": [], \"topic_hits\": [], \"noise_hits\": [], \"flags\": [\"core_domain_mismatch\", \"weak_preprint_domain_relevance\"], \"is_preprint\": true, \"core_domain_alignment\": {\"enabled\": true, \"passes\": false, \"core_terms\": [\"immunology systems biology\", \"systems biology cell\", \"biology cell cytokine\", \"cell cytokine signaling\", \"cytokine signaling regulatory\", \"signaling regulatory cells\", \"regulatory cells tregs\", \"tregs immune checkpoints\", \"immune checkpoints inflammation\", \"checkpoints inflammation autoimmunity\", \"immunology\", \"systems\", \"biology\", \"cell\", \"cytokine\", \"signaling\", \"regulatory\", \"cells\"], \"core_hit_count\": 0, \"core_hits\": [], \"specific_terms\": [\"immunology systems biology\", \"systems biology cell\", \"biology cell cytokine\", \"cell cytokine signaling\", \"cytokine signaling regulatory\", \"signaling regulatory cells\", \"regulatory cells tregs\", \"tregs immune checkpoints\", \"immune checkpoints inflammation\", \"checkpoints inflammation autoimmunity\", \"immunology\", \"systems\"], \"specific_hit_count\": 0, \"specific_hits\": [], \"min_core_hits\": 3, \"min_specific_hits\": 2, \"is_preprint\": true, \"reason\": \"title/abstract do not cover enough user-specified core topic terms\"}, \"verdict\": \"reject\", \"requires_human_review\": false}"
+          }
+        ],
+        "enforced_for_branch_gate": false,
+        "candidate_count": 2,
+        "provider_blocks": [
+          {
+            "provider": "biorxiv",
+            "query": "mTOR pathway Foxp3 Treg differentiation",
+            "status": "ok",
+            "note": null,
+            "error": null,
+            "result_count": 2
+          },
+          {
+            "provider": "medrxiv",
+            "query": "mTOR pathway Foxp3 Treg differentiation",
+            "status": "ok",
+            "note": null,
+            "error": null,
+            "result_count": 0
+          }
+        ]
+      },
+      "main_import_budget": 5,
+      "main_evidence_providers": [
+        "semantic_scholar"
+      ],
+      "preprint_signal_providers": [
+        "biorxiv",
+        "medrxiv"
+      ],
+      "preprint_gate_enforced": false,
+      "status": "ready_for_causal_gap_detection",
+      "constraint_source": "verbatim_research_brief",
+      "research_brief_chars": 8152,
+      "retrieval_constraints": [
+        "Use semantic_scholar, PubMed, bioRxiv/medRxiv; clearly label preprints as not peer-reviewed. Import at least 15 quality-screened papers covering each sub-hypothesis. Exclude descriptive omics papers without functional validation, single immortalized cell line studies, and purely computational papers without human or animal model validation."
+      ],
+      "evidence_window_alerts": [
+        {
+          "priority": "P0",
+          "status": "preprint_signal_not_available",
+          "action": "Record the independent preprint-search gap, but do not block causal-gap exploration or hypothesis generation while this temporary policy is active."
+        }
+      ],
+      "updatedAt": 1783803977.8227277,
+      "sub_hypothesis_id": "SH2"
+    },
+    {
+      "query": "low dose IL-2 Treg expansion immune homeostasis",
+      "source_query": "low dose IL-2 Treg expansion immune homeostasis",
+      "query_language": {
+        "query": "low dose IL-2 Treg expansion immune homeostasis",
+        "source_query": "low dose IL-2 Treg expansion immune homeostasis",
+        "translation_method": "already_english"
+      },
+      "search_id": "search_1783804026012517600",
+      "total_results": 15,
+      "imported_records": 5,
+      "peer_reviewed_imported_records": 5,
+      "layer_quotas": {
+        "L0_review": 1,
+        "L1_milestone": 1,
+        "L2_top_latest": 3,
+        "L3_preprint": 0,
+        "L4_regular": 10
+      },
+      "import_layer_minimums": {
+        "L3_preprint": 0,
+        "L2_top_latest": 1,
+        "L4_regular": 1,
+        "L0_review": 1,
+        "L1_milestone": 1
+      },
+      "p0_preprint_selected": 0,
+      "p0_preprint_imported": 0,
+      "p0_preprint_target": 3,
+      "p0_preprint_required": 1,
+      "preprint_evidence": {
+        "status": "import_failed",
+        "providers": [
+          "biorxiv",
+          "medrxiv"
+        ],
+        "search_id": "search_1783803977828561400",
+        "total_results": 22,
+        "import_target": 3,
+        "imported_records": [],
+        "failed_imports": [
+          {
+            "result_index": 0,
+            "title": "Tranexamic acid in reducing expected blood loss in moderate to low risk surgeries: systematic review, meta-analysis and ",
+            "error": "Search result rejected before import by domain relevance gate: title=Tranexamic acid in reducing expected blood loss in moderate to low risk surgeries: systematic review, meta-analysis and...[truncated], domain=Immunology / Systems Biology / T Cell Biology / Cytokine Signaling / Regulatory T Cells (Tregs) / Immune Checkpoints / Inflammation / Autoimmunity / Tumor Immunology / Single-cell Multi-omics / Functional Assays / Mathematical Modeling / Translational Medicine, assessment={\"profile\": \"immunology_systems_biology_t_cell_biology_cytokine_signaling_regulatory_t_cells_\", \"target_field\": \"biology\", \"result_field\": \"biomedical\", \"score\": 0.0579, \"query_hits\": [\"low\", \"dose\"], \"anchor_hits\": [], \"topic_hits\": [], \"noise_hits\": [], \"flags\": [\"low_domain_relevance\", \"core_domain_mismatch\", \"weak_preprint_domain_relevance\"], \"is_preprint\": true, \"core_domain_alignment\": {\"enabled\": true, \"passes\": false, \"core_terms\": [\"immunology systems biology\", \"systems biology cell\", \"biology cell cytokine\", \"cell cytokine signaling\", \"cytokine signaling regulatory\", \"signaling regulatory cells\", \"regulatory cells tregs\", \"tregs immune checkpoints\", \"immune checkpoints inflammation\", \"checkpoints inflammation autoimmunity\", \"immunology\", \"systems\", \"biology\", \"cell\", \"cytokine\", \"signaling\", \"regulatory\", \"cells\"], \"core_hit_count\": 0, \"core_hits\": [], \"specific_terms\": [\"immunology systems biology\", \"systems biology cell\", \"biology cell cytokine\", \"cell cytokine signaling\", \"cytokine signaling regulatory\", \"signaling regulatory cells\", \"regulatory cells tregs\", \"tregs immune checkpoints\", \"immune checkpoints inflammation\", \"checkpoints inflammation autoimmunity\", \"immunology\", \"systems\"], \"specific_hit_count\": 0, \"specific_hits\": [], \"min_core_hits\": 3, \"min_specific_hits\": 2, \"is_preprint\": true, \"reason\": \"title/abstract do not cover enough user-specified core topic terms\"}, \"verdict\": \"reject\", \"requires_human_review\": false}"
+          },
+          {
+            "result_index": 1,
+            "title": "Beyond Microcephaly: Quantitative Assessment of Congenital Outcomes Following Zika Virus Infection During Pregnancy - An",
+            "error": "Search result rejected before import by domain relevance gate: title=Beyond Microcephaly: Quantitative Assessment of Congenital Outcomes Following Zika Virus Infection During Pregnancy - An...[truncated], domain=Immunology / Systems Biology / T Cell Biology / Cytokine Signaling / Regulatory T Cells (Tregs) / Immune Checkpoints / Inflammation / Autoimmunity / Tumor Immunology / Single-cell Multi-omics / Functional Assays / Mathematical Modeling / Translational Medicine, assessment={\"profile\": \"immunology_systems_biology_t_cell_biology_cytokine_signaling_regulatory_t_cells_\", \"target_field\": \"biology\", \"result_field\": \"biomedical\", \"score\": 0.0289, \"query_hits\": [\"low\"], \"anchor_hits\": [], \"topic_hits\": [], \"noise_hits\": [], \"flags\": [\"low_domain_relevance\", \"core_domain_mismatch\", \"weak_preprint_domain_relevance\"], \"is_preprint\": true, \"core_domain_alignment\": {\"enabled\": true, \"passes\": false, \"core_terms\": [\"immunology systems biology\", \"systems biology cell\", \"biology cell cytokine\", \"cell cytokine signaling\", \"cytokine signaling regulatory\", \"signaling regulatory cells\", \"regulatory cells tregs\", \"tregs immune checkpoints\", \"immune checkpoints inflammation\", \"checkpoints inflammation autoimmunity\", \"immunology\", \"systems\", \"biology\", \"cell\", \"cytokine\", \"signaling\", \"regulatory\", \"cells\"], \"core_hit_count\": 0, \"core_hits\": [], \"specific_terms\": [\"immunology systems biology\", \"systems biology cell\", \"biology cell cytokine\", \"cell cytokine signaling\", \"cytokine signaling regulatory\", \"signaling regulatory cells\", \"regulatory cells tregs\", \"tregs immune checkpoints\", \"immune checkpoints inflammation\", \"checkpoints inflammation autoimmunity\", \"immunology\", \"systems\"], \"specific_hit_count\": 0, \"specific_hits\": [], \"min_core_hits\": 3, \"min_specific_hits\": 2, \"is_preprint\": true, \"reason\": \"title/abstract do not cover enough user-specified core topic terms\"}, \"verdict\": \"reject\", \"requires_human_review\": false}"
+          },
+          {
+            "result_index": 2,
+            "title": "Non-lytic replicating viral delivery of an IL15 superagonist enhances antitumor immunity and extends survival in gliobla",
+            "error": "Search result rejected before import by domain relevance gate: title=Non-lytic replicating viral delivery of an IL15 superagonist enhances antitumor immunity and extends survival in gliobla...[truncated], domain=Immunology / Systems Biology / T Cell Biology / Cytokine Signaling / Regulatory T Cells (Tregs) / Immune Checkpoints / Inflammation / Autoimmunity / Tumor Immunology / Single-cell Multi-omics / Functional Assays / Mathematical Modeling / Translational Medicine, assessment={\"profile\": \"immunology_systems_biology_t_cell_biology_cytokine_signaling_regulatory_t_cells_\", \"target_field\": \"biology\", \"result_field\": \"biomedical\", \"score\": 0.1656, \"query_hits\": [\"low\", \"expansion\", \"immune\"], \"anchor_hits\": [\"cell\", \"cells\", \"immune\", \"tumor\"], \"topic_hits\": [], \"noise_hits\": [], \"flags\": [\"core_domain_mismatch\"], \"is_preprint\": true, \"core_domain_alignment\": {\"enabled\": true, \"passes\": false, \"core_terms\": [\"immunology systems biology\", \"systems biology cell\", \"biology cell cytokine\", \"cell cytokine signaling\", \"cytokine signaling regulatory\", \"signaling regulatory cells\", \"regulatory cells tregs\", \"tregs immune checkpoints\", \"immune checkpoints inflammation\", \"checkpoints inflammation autoimmunity\", \"immunology\", \"systems\", \"biology\", \"cell\", \"cytokine\", \"signaling\", \"regulatory\", \"cells\"], \"core_hit_count\": 4, \"core_hits\": [\"cell\", \"cells\", \"immune\", \"tumor\"], \"specific_terms\": [\"immunology systems biology\", \"systems biology cell\", \"biology cell cytokine\", \"cell cytokine signaling\", \"cytokine signaling regulatory\", \"signaling regulatory cells\", \"regulatory cells tregs\", \"tregs immune checkpoints\", \"immune checkpoints inflammation\", \"checkpoints inflammation autoimmunity\", \"immunology\", \"systems\"], \"specific_hit_count\": 0, \"specific_hits\": [], \"min_core_hits\": 3, \"min_specific_hits\": 2, \"is_preprint\": true, \"reason\": \"title/abstract do not cover enough user-specified core topic terms\"}, \"verdict\": \"reject\", \"requires_human_review\": false}"
+          },
+          {
+            "result_index": 3,
+            "title": "Paralemmin-3 sustains the integrity of the lateral plasma membrane and subsurface cisternae of auditory hair cells",
+            "error": "Search result rejected before import by domain relevance gate: title=Paralemmin-3 sustains the integrity of the lateral plasma membrane and subsurface cisternae of auditory hair cells, domain=Immunology / Systems Biology / T Cell Biology / Cytokine Signaling / Regulatory T Cells (Tregs) / Immune Checkpoints / Inflammation / Autoimmunity / Tumor Immunology / Single-cell Multi-omics / Functional Assays / Mathematical Modeling / Translational Medicine, assessment={\"profile\": \"immunology_systems_biology_t_cell_biology_cytokine_signaling_regulatory_t_cells_\", \"target_field\": \"biology\", \"result_field\": \"biology\", \"score\": 0.1169, \"query_hits\": [\"low\", \"expansion\"], \"anchor_hits\": [\"biology\", \"cell\", \"cells\"], \"topic_hits\": [], \"noise_hits\": [], \"flags\": [\"core_domain_mismatch\", \"weak_preprint_domain_relevance\"], \"is_preprint\": true, \"core_domain_alignment\": {\"enabled\": true, \"passes\": false, \"core_terms\": [\"immunology systems biology\", \"systems biology cell\", \"biology cell cytokine\", \"cell cytokine signaling\", \"cytokine signaling regulatory\", \"signaling regulatory cells\", \"regulatory cells tregs\", \"tregs immune checkpoints\", \"immune checkpoints inflammation\", \"checkpoints inflammation autoimmunity\", \"immunology\", \"systems\", \"biology\", \"cell\", \"cytokine\", \"signaling\", \"regulatory\", \"cells\"], \"core_hit_count\": 3, \"core_hits\": [\"biology\", \"cell\", \"cells\"], \"specific_terms\": [\"immunology systems biology\", \"systems biology cell\", \"biology cell cytokine\", \"cell cytokine signaling\", \"cytokine signaling regulatory\", \"signaling regulatory cells\", \"regulatory cells tregs\", \"tregs immune checkpoints\", \"immune checkpoints inflammation\", \"checkpoints inflammation autoimmunity\", \"immunology\", \"systems\"], \"specific_hit_count\": 1, \"specific_hits\": [\"biology\"], \"min_core_hits\": 3, \"min_specific_hits\": 2, \"is_preprint\": true, \"reason\": \"title/abstract do not cover enough user-specified core topic terms\"}, \"verdict\": \"reject\", \"requires_human_review\": false}"
+          },
+          {
+            "result_index": 4,
+            "title": "Conditional Success of Adaptive Therapy: The Role of Treatment-Holiday Thresholds and Non-Existence of Optimal Strategie",
+            "error": "Search result rejected before import by domain relevance gate: title=Conditional Success of Adaptive Therapy: The Role of Treatment-Holiday Thresholds and Non-Existence of Optimal Strategie...[truncated], domain=Immunology / Systems Biology / T Cell Biology / Cytokine Signaling / Regulatory T Cells (Tregs) / Immune Checkpoints / Inflammation / Autoimmunity / Tumor Immunology / Single-cell Multi-omics / Functional Assays / Mathematical Modeling / Translational Medicine, assessment={\"profile\": \"immunology_systems_biology_t_cell_biology_cytokine_signaling_regulatory_t_cells_\", \"target_field\": \"biology\", \"result_field\": \"biomedical\", \"score\": 0.1169, \"query_hits\": [\"low\", \"dose\"], \"anchor_hits\": [\"cell\", \"cells\", \"tumor\"], \"topic_hits\": [], \"noise_hits\": [], \"flags\": [\"core_domain_mismatch\", \"weak_preprint_domain_relevance\"], \"is_preprint\": true, \"core_domain_alignment\": {\"enabled\": true, \"passes\": false, \"core_terms\": [\"immunology systems biology\", \"systems biology cell\", \"biology cell cytokine\", \"cell cytokine signaling\", \"cytokine signaling regulatory\", \"signaling regulatory cells\", \"regulatory cells tregs\", \"tregs immune checkpoints\", \"immune checkpoints inflammation\", \"checkpoints inflammation autoimmunity\", \"immunology\", \"systems\", \"biology\", \"cell\", \"cytokine\", \"signaling\", \"regulatory\", \"cells\"], \"core_hit_count\": 3, \"core_hits\": [\"cell\", \"cells\", \"tumor\"], \"specific_terms\": [\"immunology systems biology\", \"systems biology cell\", \"biology cell cytokine\", \"cell cytokine signaling\", \"cytokine signaling regulatory\", \"signaling regulatory cells\", \"regulatory cells tregs\", \"tregs immune checkpoints\", \"immune checkpoints inflammation\", \"checkpoints inflammation autoimmunity\", \"immunology\", \"systems\"], \"specific_hit_count\": 0, \"specific_hits\": [], \"min_core_hits\": 3, \"min_specific_hits\": 2, \"is_preprint\": true, \"reason\": \"title/abstract do not cover enough user-specified core topic terms\"}, \"verdict\": \"reject\", \"requires_human_review\": false}"
+          },
+          {
+            "result_index": 5,
+            "title": "PARP1 promotes replication-independent DNA double-strand break formation after acute DNA-methylation damage",
+            "error": "Search result rejected before import by domain relevance gate: title=PARP1 promotes replication-independent DNA double-strand break formation after acute DNA-methylation damage, domain=Immunology / Systems Biology / T Cell Biology / Cytokine Signaling / Regulatory T Cells (Tregs) / Immune Checkpoints / Inflammation / Autoimmunity / Tumor Immunology / Single-cell Multi-omics / Functional Assays / Mathematical Modeling / Translational Medicine, assessment={\"profile\": \"immunology_systems_biology_t_cell_biology_cytokine_signaling_regulatory_t_cells_\", \"target_field\": \"biology\", \"result_field\": \"materials\", \"score\": 0.3836, \"query_hits\": [\"low\", \"dose\"], \"anchor_hits\": [\"cell\", \"signaling\", \"regulatory\", \"cells\"], \"topic_hits\": [], \"noise_hits\": [], \"flags\": [\"field_mismatch\", \"core_domain_hit\"], \"is_preprint\": true, \"core_domain_alignment\": {\"enabled\": true, \"passes\": true, \"core_terms\": [\"immunology systems biology\", \"systems biology cell\", \"biology cell cytokine\", \"cell cytokine signaling\", \"cytokine signaling regulatory\", \"signaling regulatory cells\", \"regulatory cells tregs\", \"tregs immune checkpoints\", \"immune checkpoints inflammation\", \"checkpoints inflammation autoimmunity\", \"immunology\", \"systems\", \"biology\", \"cell\", \"cytokine\", \"signaling\", \"regulatory\", \"cells\"], \"core_hit_count\": 4, \"core_hits\": [\"cell\", \"signaling\", \"regulatory\", \"cells\"], \"specific_terms\": [\"immunology systems biology\", \"systems biology cell\", \"biology cell cytokine\", \"cell cytokine signaling\", \"cytokine signaling regulatory\", \"signaling regulatory cells\", \"regulatory cells tregs\", \"tregs immune checkpoints\", \"immune checkpoints inflammation\", \"checkpoints inflammation autoimmunity\", \"immunology\", \"systems\"], \"specific_hit_count\": 2, \"specific_hits\": [\"signaling\", \"regulatory\"], \"min_core_hits\": 3, \"min_specific_hits\": 2, \"is_preprint\": true, \"reason\": \"core topic terms sufficiently covered\"}, \"verdict\": \"keep\", \"requires_human_review\": true}"
+          },
+          {
+            "result_index": 6,
+            "title": "Hydrogel microdroplet based glioblastoma drug screening platform",
+            "error": "Search result rejected before import by domain relevance gate: title=Hydrogel microdroplet based glioblastoma drug screening platform, domain=Immunology / Systems Biology / T Cell Biology / Cytokine Signaling / Regulatory T Cells (Tregs) / Immune Checkpoints / Inflammation / Autoimmunity / Tumor Immunology / Single-cell Multi-omics / Functional Assays / Mathematical Modeling / Translational Medicine, assessment={\"profile\": \"immunology_systems_biology_t_cell_biology_cytokine_signaling_regulatory_t_cells_\", \"target_field\": \"biology\", \"result_field\": \"medicine\", \"score\": 0.1169, \"query_hits\": [\"low\", \"dose\"], \"anchor_hits\": [\"cell\", \"cells\", \"tumor\"], \"topic_hits\": [], \"noise_hits\": [], \"flags\": [\"core_domain_mismatch\", \"weak_preprint_domain_relevance\"], \"is_preprint\": true, \"core_domain_alignment\": {\"enabled\": true, \"passes\": false, \"core_terms\": [\"immunology systems biology\", \"systems biology cell\", \"biology cell cytokine\", \"cell cytokine signaling\", \"cytokine signaling regulatory\", \"signaling regulatory cells\", \"regulatory cells tregs\", \"tregs immune checkpoints\", \"immune checkpoints inflammation\", \"checkpoints inflammation autoimmunity\", \"immunology\", \"systems\", \"biology\", \"cell\", \"cytokine\", \"signaling\", \"regulatory\", \"cells\"], \"core_hit_count\": 3, \"core_hits\": [\"cell\", \"cells\", \"tumor\"], \"specific_terms\": [\"immunology systems biology\", \"systems biology cell\", \"biology cell cytokine\", \"cell cytokine signaling\", \"cytokine signaling regulatory\", \"signaling regulatory cells\", \"regulatory cells tregs\", \"tregs immune checkpoints\", \"immune checkpoints inflammation\", \"checkpoints inflammation autoimmunity\", \"immunology\", \"systems\"], \"specific_hit_count\": 0, \"specific_hits\": [], \"min_core_hits\": 3, \"min_specific_hits\": 2, \"is_preprint\": true, \"reason\": \"title/abstract do not cover enough user-specified core topic terms\"}, \"verdict\": \"reject\", \"requires_human_review\": false}"
+          },
+          {
+            "result_index": 7,
+            "title": "Effector Innovation in Genome-Reduced Phytoplasmas and Other Host-Dependent Mollicutes",
+            "error": "Search result rejected before import by domain relevance gate: title=Effector Innovation in Genome-Reduced Phytoplasmas and Other Host-Dependent Mollicutes, domain=Immunology / Systems Biology / T Cell Biology / Cytokine Signaling / Regulatory T Cells (Tregs) / Immune Checkpoints / Inflammation / Autoimmunity / Tumor Immunology / Single-cell Multi-omics / Functional Assays / Mathematical Modeling / Translational Medicine, assessment={\"profile\": \"immunology_systems_biology_t_cell_biology_cytokine_signaling_regulatory_t_cells_\", \"target_field\": \"biology\", \"result_field\": \"ecology\", \"score\": 0.0775, \"query_hits\": [\"low\", \"expansion\"], \"anchor_hits\": [\"biology\"], \"topic_hits\": [], \"noise_hits\": [], \"flags\": [\"field_mismatch\", \"core_domain_mismatch\", \"weak_preprint_domain_relevance\"], \"is_preprint\": true, \"core_domain_alignment\": {\"enabled\": true, \"passes\": false, \"core_terms\": [\"immunology systems biology\", \"systems biology cell\", \"biology cell cytokine\", \"cell cytokine signaling\", \"cytokine signaling regulatory\", \"signaling regulatory cells\", \"regulatory cells tregs\", \"tregs immune checkpoints\", \"immune checkpoints inflammation\", \"checkpoints inflammation autoimmunity\", \"immunology\", \"systems\", \"biology\", \"cell\", \"cytokine\", \"signaling\", \"regulatory\", \"cells\"], \"core_hit_count\": 1, \"core_hits\": [\"biology\"], \"specific_terms\": [\"immunology systems biology\", \"systems biology cell\", \"biology cell cytokine\", \"cell cytokine signaling\", \"cytokine signaling regulatory\", \"signaling regulatory cells\", \"regulatory cells tregs\", \"tregs immune checkpoints\", \"immune checkpoints inflammation\", \"checkpoints inflammation autoimmunity\", \"immunology\", \"systems\"], \"specific_hit_count\": 1, \"specific_hits\": [\"biology\"], \"min_core_hits\": 3, \"min_specific_hits\": 2, \"is_preprint\": true, \"reason\": \"title/abstract do not cover enough user-specified core topic terms\"}, \"verdict\": \"reject\", \"requires_human_review\": false}"
+          },
+          {
+            "result_index": 8,
+            "title": "Paralemmin-3 sustains the integrity of the lateral plasma membrane and subsurface cisternae of auditory hair cells",
+            "error": "Search result rejected before import by domain relevance gate: title=Paralemmin-3 sustains the integrity of the lateral plasma membrane and subsurface cisternae of auditory hair cells, domain=Immunology / Systems Biology / T Cell Biology / Cytokine Signaling / Regulatory T Cells (Tregs) / Immune Checkpoints / Inflammation / Autoimmunity / Tumor Immunology / Single-cell Multi-omics / Functional Assays / Mathematical Modeling / Translational Medicine, assessment={\"profile\": \"immunology_systems_biology_t_cell_biology_cytokine_signaling_regulatory_t_cells_\", \"target_field\": \"biology\", \"result_field\": \"biology\", \"score\": 0.1169, \"query_hits\": [\"low\", \"expansion\"], \"anchor_hits\": [\"biology\", \"cell\", \"cells\"], \"topic_hits\": [], \"noise_hits\": [], \"flags\": [\"core_domain_mismatch\", \"weak_preprint_domain_relevance\"], \"is_preprint\": true, \"core_domain_alignment\": {\"enabled\": true, \"passes\": false, \"core_terms\": [\"immunology systems biology\", \"systems biology cell\", \"biology cell cytokine\", \"cell cytokine signaling\", \"cytokine signaling regulatory\", \"signaling regulatory cells\", \"regulatory cells tregs\", \"tregs immune checkpoints\", \"immune checkpoints inflammation\", \"checkpoints inflammation autoimmunity\", \"immunology\", \"systems\", \"biology\", \"cell\", \"cytokine\", \"signaling\", \"regulatory\", \"cells\"], \"core_hit_count\": 3, \"core_hits\": [\"biology\", \"cell\", \"cells\"], \"specific_terms\": [\"immunology systems biology\", \"systems biology cell\", \"biology cell cytokine\", \"cell cytokine signaling\", \"cytokine signaling regulatory\", \"signaling regulatory cells\", \"regulatory cells tregs\", \"tregs immune checkpoints\", \"immune checkpoints inflammation\", \"checkpoints inflammation autoimmunity\", \"immunology\", \"systems\"], \"specific_hit_count\": 1, \"specific_hits\": [\"biology\"], \"min_core_hits\": 3, \"min_specific_hits\": 2, \"is_preprint\": true, \"reason\": \"title/abstract do not cover enough user-specified core topic terms\"}, \"verdict\": \"reject\", \"requires_human_review\": false}"
+          },
+          {
+            "result_index": 9,
+            "title": "Hair cell population integrity necessary to preserve vestibular function",
+            "error": "Search result rejected before import by domain relevance gate: title=Hair cell population integrity necessary to preserve vestibular function, domain=Immunology / Systems Biology / T Cell Biology / Cytokine Signaling / Regulatory T Cells (Tregs) / Immune Checkpoints / Inflammation / Autoimmunity / Tumor Immunology / Single-cell Multi-omics / Functional Assays / Mathematical Modeling / Translational Medicine, assessment={\"profile\": \"immunology_systems_biology_t_cell_biology_cytokine_signaling_regulatory_t_cells_\", \"target_field\": \"biology\", \"result_field\": \"general\", \"score\": 0.0972, \"query_hits\": [\"low\", \"dose\"], \"anchor_hits\": [\"cell\", \"cells\"], \"topic_hits\": [], \"noise_hits\": [], \"flags\": [\"core_domain_mismatch\", \"weak_preprint_domain_relevance\"], \"is_preprint\": true, \"core_domain_alignment\": {\"enabled\": true, \"passes\": false, \"core_terms\": [\"immunology systems biology\", \"systems biology cell\", \"biology cell cytokine\", \"cell cytokine signaling\", \"cytokine signaling regulatory\", \"signaling regulatory cells\", \"regulatory cells tregs\", \"tregs immune checkpoints\", \"immune checkpoints inflammation\", \"checkpoints inflammation autoimmunity\", \"immunology\", \"systems\", \"biology\", \"cell\", \"cytokine\", \"signaling\", \"regulatory\", \"cells\"], \"core_hit_count\": 2, \"core_hits\": [\"cell\", \"cells\"], \"specific_terms\": [\"immunology systems biology\", \"systems biology cell\", \"biology cell cytokine\", \"cell cytokine signaling\", \"cytokine signaling regulatory\", \"signaling regulatory cells\", \"regulatory cells tregs\", \"tregs immune checkpoints\", \"immune checkpoints inflammation\", \"checkpoints inflammation autoimmunity\", \"immunology\", \"systems\"], \"specific_hit_count\": 0, \"specific_hits\": [], \"min_core_hits\": 3, \"min_specific_hits\": 2, \"is_preprint\": true, \"reason\": \"title/abstract do not cover enough user-specified core topic terms\"}, \"verdict\": \"reject\", \"requires_human_review\": false}"
+          },
+          {
+            "result_index": 10,
+            "title": "Metabolomic profiling of glyphosate resistance evolution in green alga Chlamydomonas reinhardtii",
+            "error": "Search result rejected before import by domain relevance gate: title=Metabolomic profiling of glyphosate resistance evolution in green alga Chlamydomonas reinhardtii, domain=Immunology / Systems Biology / T Cell Biology / Cytokine Signaling / Regulatory T Cells (Tregs) / Immune Checkpoints / Inflammation / Autoimmunity / Tumor Immunology / Single-cell Multi-omics / Functional Assays / Mathematical Modeling / Translational Medicine, assessment={\"profile\": \"immunology_systems_biology_t_cell_biology_cytokine_signaling_regulatory_t_cells_\", \"target_field\": \"biology\", \"result_field\": \"ecology\", \"score\": 0.0972, \"query_hits\": [\"low\", \"dose\"], \"anchor_hits\": [\"systems\", \"cell\"], \"topic_hits\": [], \"noise_hits\": [], \"flags\": [\"field_mismatch\", \"core_domain_mismatch\", \"weak_preprint_domain_relevance\"], \"is_preprint\": true, \"core_domain_alignment\": {\"enabled\": true, \"passes\": false, \"core_terms\": [\"immunology systems biology\", \"systems biology cell\", \"biology cell cytokine\", \"cell cytokine signaling\", \"cytokine signaling regulatory\", \"signaling regulatory cells\", \"regulatory cells tregs\", \"tregs immune checkpoints\", \"immune checkpoints inflammation\", \"checkpoints inflammation autoimmunity\", \"immunology\", \"systems\", \"biology\", \"cell\", \"cytokine\", \"signaling\", \"regulatory\", \"cells\"], \"core_hit_count\": 2, \"core_hits\": [\"systems\", \"cell\"], \"specific_terms\": [\"immunology systems biology\", \"systems biology cell\", \"biology cell cytokine\", \"cell cytokine signaling\", \"cytokine signaling regulatory\", \"signaling regulatory cells\", \"regulatory cells tregs\", \"tregs immune checkpoints\", \"immune checkpoints inflammation\", \"checkpoints inflammation autoimmunity\", \"immunology\", \"systems\"], \"specific_hit_count\": 1, \"specific_hits\": [\"systems\"], \"min_core_hits\": 3, \"min_specific_hits\": 2, \"is_preprint\": true, \"reason\": \"title/abstract do not cover enough user-specified core topic terms\"}, \"verdict\": \"reject\", \"requires_human_review\": false}"
+          },
+          {
+            "result_index": 11,
+            "title": "Coiling in gastropods: a lead to synthesis",
+            "error": "Search result rejected before import by domain relevance gate: title=Coiling in gastropods: a lead to synthesis, domain=Immunology / Systems Biology / T Cell Biology / Cytokine Signaling / Regulatory T Cells (Tregs) / Immune Checkpoints / Inflammation / Autoimmunity / Tumor Immunology / Single-cell Multi-omics / Functional Assays / Mathematical Modeling / Translational Medicine, assessment={\"profile\": \"immunology_systems_biology_t_cell_biology_cytokine_signaling_regulatory_t_cells_\", \"target_field\": \"biology\", \"result_field\": \"computer_science\", \"score\": 0.0579, \"query_hits\": [\"low\", \"expansion\"], \"anchor_hits\": [], \"topic_hits\": [], \"noise_hits\": [], \"flags\": [\"field_mismatch\", \"low_domain_relevance\", \"core_domain_mismatch\", \"weak_preprint_domain_relevance\"], \"is_preprint\": true, \"core_domain_alignment\": {\"enabled\": true, \"passes\": false, \"core_terms\": [\"immunology systems biology\", \"systems biology cell\", \"biology cell cytokine\", \"cell cytokine signaling\", \"cytokine signaling regulatory\", \"signaling regulatory cells\", \"regulatory cells tregs\", \"tregs immune checkpoints\", \"immune checkpoints inflammation\", \"checkpoints inflammation autoimmunity\", \"immunology\", \"systems\", \"biology\", \"cell\", \"cytokine\", \"signaling\", \"regulatory\", \"cells\"], \"core_hit_count\": 0, \"core_hits\": [], \"specific_terms\": [\"immunology systems biology\", \"systems biology cell\", \"biology cell cytokine\", \"cell cytokine signaling\", \"cytokine signaling regulatory\", \"signaling regulatory cells\", \"regulatory cells tregs\", \"tregs immune checkpoints\", \"immune checkpoints inflammation\", \"checkpoints inflammation autoimmunity\", \"immunology\", \"systems\"], \"specific_hit_count\": 0, \"specific_hits\": [], \"min_core_hits\": 3, \"min_specific_hits\": 2, \"is_preprint\": true, \"reason\": \"title/abstract do not cover enough user-specified core topic terms\"}, \"verdict\": \"reject\", \"requires_human_review\": false}"
+          },
+          {
+            "result_index": 12,
+            "title": "Morbidity, Mortality and Immunization in Severe COVID-19 Among the Elderly in Brazil: A Five-Year Perspective",
+            "error": "Search result rejected before import by domain relevance gate: title=Morbidity, Mortality and Immunization in Severe COVID-19 Among the Elderly in Brazil: A Five-Year Perspective, domain=Immunology / Systems Biology / T Cell Biology / Cytokine Signaling / Regulatory T Cells (Tregs) / Immune Checkpoints / Inflammation / Autoimmunity / Tumor Immunology / Single-cell Multi-omics / Functional Assays / Mathematical Modeling / Translational Medicine, assessment={\"profile\": \"immunology_systems_biology_t_cell_biology_cytokine_signaling_regulatory_t_cells_\", \"target_field\": \"biology\", \"result_field\": \"general\", \"score\": 0.0579, \"query_hits\": [\"low\", \"dose\"], \"anchor_hits\": [], \"topic_hits\": [], \"noise_hits\": [], \"flags\": [\"low_domain_relevance\", \"core_domain_mismatch\", \"weak_preprint_domain_relevance\"], \"is_preprint\": true, \"core_domain_alignment\": {\"enabled\": true, \"passes\": false, \"core_terms\": [\"immunology systems biology\", \"systems biology cell\", \"biology cell cytokine\", \"cell cytokine signaling\", \"cytokine signaling regulatory\", \"signaling regulatory cells\", \"regulatory cells tregs\", \"tregs immune checkpoints\", \"immune checkpoints inflammation\", \"checkpoints inflammation autoimmunity\", \"immunology\", \"systems\", \"biology\", \"cell\", \"cytokine\", \"signaling\", \"regulatory\", \"cells\"], \"core_hit_count\": 0, \"core_hits\": [], \"specific_terms\": [\"immunology systems biology\", \"systems biology cell\", \"biology cell cytokine\", \"cell cytokine signaling\", \"cytokine signaling regulatory\", \"signaling regulatory cells\", \"regulatory cells tregs\", \"tregs immune checkpoints\", \"immune checkpoints inflammation\", \"checkpoints inflammation autoimmunity\", \"immunology\", \"systems\"], \"specific_hit_count\": 0, \"specific_hits\": [], \"min_core_hits\": 3, \"min_specific_hits\": 2, \"is_preprint\": true, \"reason\": \"title/abstract do not cover enough user-specified core topic terms\"}, \"verdict\": \"reject\", \"requires_human_review\": false}"
+          },
+          {
+            "result_index": 13,
+            "title": "Two decades of molecular surveillance in Kenya reveal shifting Plasmodium falciparum drug resistance mutations linked to",
+            "error": "Search result rejected before import by domain relevance gate: title=Two decades of molecular surveillance in Kenya reveal shifting Plasmodium falciparum drug resistance mutations linked to...[truncated], domain=Immunology / Systems Biology / T Cell Biology / Cytokine Signaling / Regulatory T Cells (Tregs) / Immune Checkpoints / Inflammation / Autoimmunity / Tumor Immunology / Single-cell Multi-omics / Functional Assays / Mathematical Modeling / Translational Medicine, assessment={\"profile\": \"immunology_systems_biology_t_cell_biology_cytokine_signaling_regulatory_t_cells_\", \"target_field\": \"biology\", \"result_field\": \"general\", \"score\": 0.0579, \"query_hits\": [\"low\", \"expansion\"], \"anchor_hits\": [], \"topic_hits\": [], \"noise_hits\": [], \"flags\": [\"low_domain_relevance\", \"core_domain_mismatch\", \"weak_preprint_domain_relevance\"], \"is_preprint\": true, \"core_domain_alignment\": {\"enabled\": true, \"passes\": false, \"core_terms\": [\"immunology systems biology\", \"systems biology cell\", \"biology cell cytokine\", \"cell cytokine signaling\", \"cytokine signaling regulatory\", \"signaling regulatory cells\", \"regulatory cells tregs\", \"tregs immune checkpoints\", \"immune checkpoints inflammation\", \"checkpoints inflammation autoimmunity\", \"immunology\", \"systems\", \"biology\", \"cell\", \"cytokine\", \"signaling\", \"regulatory\", \"cells\"], \"core_hit_count\": 0, \"core_hits\": [], \"specific_terms\": [\"immunology systems biology\", \"systems biology cell\", \"biology cell cytokine\", \"cell cytokine signaling\", \"cytokine signaling regulatory\", \"signaling regulatory cells\", \"regulatory cells tregs\", \"tregs immune checkpoints\", \"immune checkpoints inflammation\", \"checkpoints inflammation autoimmunity\", \"immunology\", \"systems\"], \"specific_hit_count\": 0, \"specific_hits\": [], \"min_core_hits\": 3, \"min_specific_hits\": 2, \"is_preprint\": true, \"reason\": \"title/abstract do not cover enough user-specified core topic terms\"}, \"verdict\": \"reject\", \"requires_human_review\": false}"
+          },
+          {
+            "result_index": 14,
+            "title": "Associations of plasma ergothioneine levels with cognitive function change in non-demented older Chinese adults: A commu",
+            "error": "Search result rejected before import by domain relevance gate: title=Associations of plasma ergothioneine levels with cognitive function change in non-demented older Chinese adults: A commu...[truncated], domain=Immunology / Systems Biology / T Cell Biology / Cytokine Signaling / Regulatory T Cells (Tregs) / Immune Checkpoints / Inflammation / Autoimmunity / Tumor Immunology / Single-cell Multi-omics / Functional Assays / Mathematical Modeling / Translational Medicine, assessment={\"profile\": \"immunology_systems_biology_t_cell_biology_cytokine_signaling_regulatory_t_cells_\", \"target_field\": \"biology\", \"result_field\": \"medicine\", \"score\": 0.0579, \"query_hits\": [\"low\", \"dose\"], \"anchor_hits\": [], \"topic_hits\": [], \"noise_hits\": [], \"flags\": [\"low_domain_relevance\", \"core_domain_mismatch\", \"weak_preprint_domain_relevance\"], \"is_preprint\": true, \"core_domain_alignment\": {\"enabled\": true, \"passes\": false, \"core_terms\": [\"immunology systems biology\", \"systems biology cell\", \"biology cell cytokine\", \"cell cytokine signaling\", \"cytokine signaling regulatory\", \"signaling regulatory cells\", \"regulatory cells tregs\", \"tregs immune checkpoints\", \"immune checkpoints inflammation\", \"checkpoints inflammation autoimmunity\", \"immunology\", \"systems\", \"biology\", \"cell\", \"cytokine\", \"signaling\", \"regulatory\", \"cells\"], \"core_hit_count\": 0, \"core_hits\": [], \"specific_terms\": [\"immunology systems biology\", \"systems biology cell\", \"biology cell cytokine\", \"cell cytokine signaling\", \"cytokine signaling regulatory\", \"signaling regulatory cells\", \"regulatory cells tregs\", \"tregs immune checkpoints\", \"immune checkpoints inflammation\", \"checkpoints inflammation autoimmunity\", \"immunology\", \"systems\"], \"specific_hit_count\": 0, \"specific_hits\": [], \"min_core_hits\": 3, \"min_specific_hits\": 2, \"is_preprint\": true, \"reason\": \"title/abstract do not cover enough user-specified core topic terms\"}, \"verdict\": \"reject\", \"requires_human_review\": false}"
+          },
+          {
+            "result_index": 15,
+            "title": "Prevention is better than cure - A Mixed Methods Study of Communities and Healthcare Workers Perspectives on New Adult a",
+            "error": "Search result rejected before import by domain relevance gate: title=Prevention is better than cure - A Mixed Methods Study of Communities and Healthcare Workers Perspectives on New Adult a...[truncated], domain=Immunology / Systems Biology / T Cell Biology / Cytokine Signaling / Regulatory T Cells (Tregs) / Immune Checkpoints / Inflammation / Autoimmunity / Tumor Immunology / Single-cell Multi-omics / Functional Assays / Mathematical Modeling / Translational Medicine, assessment={\"profile\": \"immunology_systems_biology_t_cell_biology_cytokine_signaling_regulatory_t_cells_\", \"target_field\": \"biology\", \"result_field\": \"medicine\", \"score\": 0.0579, \"query_hits\": [\"low\", \"dose\"], \"anchor_hits\": [], \"topic_hits\": [], \"noise_hits\": [], \"flags\": [\"low_domain_relevance\", \"core_domain_mismatch\", \"weak_preprint_domain_relevance\"], \"is_preprint\": true, \"core_domain_alignment\": {\"enabled\": true, \"passes\": false, \"core_terms\": [\"immunology systems biology\", \"systems biology cell\", \"biology cell cytokine\", \"cell cytokine signaling\", \"cytokine signaling regulatory\", \"signaling regulatory cells\", \"regulatory cells tregs\", \"tregs immune checkpoints\", \"immune checkpoints inflammation\", \"checkpoints inflammation autoimmunity\", \"immunology\", \"systems\", \"biology\", \"cell\", \"cytokine\", \"signaling\", \"regulatory\", \"cells\"], \"core_hit_count\": 0, \"core_hits\": [], \"specific_terms\": [\"immunology systems biology\", \"systems biology cell\", \"biology cell cytokine\", \"cell cytokine signaling\", \"cytokine signaling regulatory\", \"signaling regulatory cells\", \"regulatory cells tregs\", \"tregs immune checkpoints\", \"immune checkpoints inflammation\", \"checkpoints inflammation autoimmunity\", \"immunology\", \"systems\"], \"specific_hit_count\": 0, \"specific_hits\": [], \"min_core_hits\": 3, \"min_specific_hits\": 2, \"is_preprint\": true, \"reason\": \"title/abstract do not cover enough user-specified core topic terms\"}, \"verdict\": \"reject\", \"requires_human_review\": false}"
+          },
+          {
+            "result_index": 16,
+            "title": "AI-based Hepatic Steatosis Detection and Integrated Hepatic Assessment from Cardiac CT Attenuation Scans Enhances All-ca",
+            "error": "Search result rejected before import by domain relevance gate: title=AI-based Hepatic Steatosis Detection and Integrated Hepatic Assessment from Cardiac CT Attenuation Scans Enhances All-ca...[truncated], domain=Immunology / Systems Biology / T Cell Biology / Cytokine Signaling / Regulatory T Cells (Tregs) / Immune Checkpoints / Inflammation / Autoimmunity / Tumor Immunology / Single-cell Multi-omics / Functional Assays / Mathematical Modeling / Translational Medicine, assessment={\"profile\": \"immunology_systems_biology_t_cell_biology_cytokine_signaling_regulatory_t_cells_\", \"target_field\": \"biology\", \"result_field\": \"medicine\", \"score\": 0.0579, \"query_hits\": [\"low\", \"dose\"], \"anchor_hits\": [], \"topic_hits\": [], \"noise_hits\": [], \"flags\": [\"low_domain_relevance\", \"core_domain_mismatch\", \"weak_preprint_domain_relevance\"], \"is_preprint\": true, \"core_domain_alignment\": {\"enabled\": true, \"passes\": false, \"core_terms\": [\"immunology systems biology\", \"systems biology cell\", \"biology cell cytokine\", \"cell cytokine signaling\", \"cytokine signaling regulatory\", \"signaling regulatory cells\", \"regulatory cells tregs\", \"tregs immune checkpoints\", \"immune checkpoints inflammation\", \"checkpoints inflammation autoimmunity\", \"immunology\", \"systems\", \"biology\", \"cell\", \"cytokine\", \"signaling\", \"regulatory\", \"cells\"], \"core_hit_count\": 0, \"core_hits\": [], \"specific_terms\": [\"immunology systems biology\", \"systems biology cell\", \"biology cell cytokine\", \"cell cytokine signaling\", \"cytokine signaling regulatory\", \"signaling regulatory cells\", \"regulatory cells tregs\", \"tregs immune checkpoints\", \"immune checkpoints inflammation\", \"checkpoints inflammation autoimmunity\", \"immunology\", \"systems\"], \"specific_hit_count\": 0, \"specific_hits\": [], \"min_core_hits\": 3, \"min_specific_hits\": 2, \"is_preprint\": true, \"reason\": \"title/abstract do not cover enough user-specified core topic terms\"}, \"verdict\": \"reject\", \"requires_human_review\": false}"
+          },
+          {
+            "result_index": 17,
+            "title": "A conversational artificial intelligence based web application for medical conversations: a prototype for a chatbot",
+            "error": "Search result rejected before import by domain relevance gate: title=A conversational artificial intelligence based web application for medical conversations: a prototype for a chatbot, domain=Immunology / Systems Biology / T Cell Biology / Cytokine Signaling / Regulatory T Cells (Tregs) / Immune Checkpoints / Inflammation / Autoimmunity / Tumor Immunology / Single-cell Multi-omics / Functional Assays / Mathematical Modeling / Translational Medicine, assessment={\"profile\": \"immunology_systems_biology_t_cell_biology_cytokine_signaling_regulatory_t_cells_\", \"target_field\": \"biology\", \"result_field\": \"computer_science\", \"score\": 0.0775, \"query_hits\": [\"low\", \"expansion\"], \"anchor_hits\": [\"systems\"], \"topic_hits\": [], \"noise_hits\": [], \"flags\": [\"field_mismatch\", \"core_domain_mismatch\", \"weak_preprint_domain_relevance\"], \"is_preprint\": true, \"core_domain_alignment\": {\"enabled\": true, \"passes\": false, \"core_terms\": [\"immunology systems biology\", \"systems biology cell\", \"biology cell cytokine\", \"cell cytokine signaling\", \"cytokine signaling regulatory\", \"signaling regulatory cells\", \"regulatory cells tregs\", \"tregs immune checkpoints\", \"immune checkpoints inflammation\", \"checkpoints inflammation autoimmunity\", \"immunology\", \"systems\", \"biology\", \"cell\", \"cytokine\", \"signaling\", \"regulatory\", \"cells\"], \"core_hit_count\": 1, \"core_hits\": [\"systems\"], \"specific_terms\": [\"immunology systems biology\", \"systems biology cell\", \"biology cell cytokine\", \"cell cytokine signaling\", \"cytokine signaling regulatory\", \"signaling regulatory cells\", \"regulatory cells tregs\", \"tregs immune checkpoints\", \"immune checkpoints inflammation\", \"checkpoints inflammation autoimmunity\", \"immunology\", \"systems\"], \"specific_hit_count\": 1, \"specific_hits\": [\"systems\"], \"min_core_hits\": 3, \"min_specific_hits\": 2, \"is_preprint\": true, \"reason\": \"title/abstract do not cover enough user-specified core topic terms\"}, \"verdict\": \"reject\", \"requires_human_review\": false}"
+          },
+          {
+            "result_index": 18,
+            "title": "Genomic evolution of Bordetella pertussis and post-COVID-19 resurgence of pertussis: insights from a global multi-countr",
+            "error": "Search result rejected before import by domain relevance gate: title=Genomic evolution of Bordetella pertussis and post-COVID-19 resurgence of pertussis: insights from a global multi-countr...[truncated], domain=Immunology / Systems Biology / T Cell Biology / Cytokine Signaling / Regulatory T Cells (Tregs) / Immune Checkpoints / Inflammation / Autoimmunity / Tumor Immunology / Single-cell Multi-omics / Functional Assays / Mathematical Modeling / Translational Medicine, assessment={\"profile\": \"immunology_systems_biology_t_cell_biology_cytokine_signaling_regulatory_t_cells_\", \"target_field\": \"biology\", \"result_field\": \"biomedical\", \"score\": 0.0579, \"query_hits\": [\"low\", \"expansion\"], \"anchor_hits\": [], \"topic_hits\": [], \"noise_hits\": [], \"flags\": [\"low_domain_relevance\", \"core_domain_mismatch\", \"weak_preprint_domain_relevance\"], \"is_preprint\": true, \"core_domain_alignment\": {\"enabled\": true, \"passes\": false, \"core_terms\": [\"immunology systems biology\", \"systems biology cell\", \"biology cell cytokine\", \"cell cytokine signaling\", \"cytokine signaling regulatory\", \"signaling regulatory cells\", \"regulatory cells tregs\", \"tregs immune checkpoints\", \"immune checkpoints inflammation\", \"checkpoints inflammation autoimmunity\", \"immunology\", \"systems\", \"biology\", \"cell\", \"cytokine\", \"signaling\", \"regulatory\", \"cells\"], \"core_hit_count\": 0, \"core_hits\": [], \"specific_terms\": [\"immunology systems biology\", \"systems biology cell\", \"biology cell cytokine\", \"cell cytokine signaling\", \"cytokine signaling regulatory\", \"signaling regulatory cells\", \"regulatory cells tregs\", \"tregs immune checkpoints\", \"immune checkpoints inflammation\", \"checkpoints inflammation autoimmunity\", \"immunology\", \"systems\"], \"specific_hit_count\": 0, \"specific_hits\": [], \"min_core_hits\": 3, \"min_specific_hits\": 2, \"is_preprint\": true, \"reason\": \"title/abstract do not cover enough user-specified core topic terms\"}, \"verdict\": \"reject\", \"requires_human_review\": false}"
+          },
+          {
+            "result_index": 19,
+            "title": "A Clinical Study to Assess the Safety and Pharmacokinetics of Orally Administered Strontium L-lactate in Healthy Adults",
+            "error": "Search result rejected before import by domain relevance gate: title=A Clinical Study to Assess the Safety and Pharmacokinetics of Orally Administered Strontium L-lactate in Healthy Adults, domain=Immunology / Systems Biology / T Cell Biology / Cytokine Signaling / Regulatory T Cells (Tregs) / Immune Checkpoints / Inflammation / Autoimmunity / Tumor Immunology / Single-cell Multi-omics / Functional Assays / Mathematical Modeling / Translational Medicine, assessment={\"profile\": \"immunology_systems_biology_t_cell_biology_cytokine_signaling_regulatory_t_cells_\", \"target_field\": \"biology\", \"result_field\": \"biomedical\", \"score\": 0.0579, \"query_hits\": [\"low\", \"dose\"], \"anchor_hits\": [], \"topic_hits\": [], \"noise_hits\": [], \"flags\": [\"low_domain_relevance\", \"core_domain_mismatch\", \"weak_preprint_domain_relevance\"], \"is_preprint\": true, \"core_domain_alignment\": {\"enabled\": true, \"passes\": false, \"core_terms\": [\"immunology systems biology\", \"systems biology cell\", \"biology cell cytokine\", \"cell cytokine signaling\", \"cytokine signaling regulatory\", \"signaling regulatory cells\", \"regulatory cells tregs\", \"tregs immune checkpoints\", \"immune checkpoints inflammation\", \"checkpoints inflammation autoimmunity\", \"immunology\", \"systems\", \"biology\", \"cell\", \"cytokine\", \"signaling\", \"regulatory\", \"cells\"], \"core_hit_count\": 0, \"core_hits\": [], \"specific_terms\": [\"immunology systems biology\", \"systems biology cell\", \"biology cell cytokine\", \"cell cytokine signaling\", \"cytokine signaling regulatory\", \"signaling regulatory cells\", \"regulatory cells tregs\", \"tregs immune checkpoints\", \"immune checkpoints inflammation\", \"checkpoints inflammation autoimmunity\", \"immunology\", \"systems\"], \"specific_hit_count\": 0, \"specific_hits\": [], \"min_core_hits\": 3, \"min_specific_hits\": 2, \"is_preprint\": true, \"reason\": \"title/abstract do not cover enough user-specified core topic terms\"}, \"verdict\": \"reject\", \"requires_human_review\": false}"
+          },
+          {
+            "result_index": 20,
+            "title": "Assessment of Dosimetric Accuracy and Plan Quality in Prostate SBRT: Retrospective Evaluation of 36.25 Gy in 5 Fractions",
+            "error": "Search result rejected before import by domain relevance gate: title=Assessment of Dosimetric Accuracy and Plan Quality in Prostate SBRT: Retrospective Evaluation of 36.25 Gy in 5 Fractions...[truncated], domain=Immunology / Systems Biology / T Cell Biology / Cytokine Signaling / Regulatory T Cells (Tregs) / Immune Checkpoints / Inflammation / Autoimmunity / Tumor Immunology / Single-cell Multi-omics / Functional Assays / Mathematical Modeling / Translational Medicine, assessment={\"profile\": \"immunology_systems_biology_t_cell_biology_cytokine_signaling_regulatory_t_cells_\", \"target_field\": \"biology\", \"result_field\": \"biomedical\", \"score\": 0.0775, \"query_hits\": [\"low\", \"dose\"], \"anchor_hits\": [\"tumor\"], \"topic_hits\": [], \"noise_hits\": [], \"flags\": [\"core_domain_mismatch\", \"weak_preprint_domain_relevance\"], \"is_preprint\": true, \"core_domain_alignment\": {\"enabled\": true, \"passes\": false, \"core_terms\": [\"immunology systems biology\", \"systems biology cell\", \"biology cell cytokine\", \"cell cytokine signaling\", \"cytokine signaling regulatory\", \"signaling regulatory cells\", \"regulatory cells tregs\", \"tregs immune checkpoints\", \"immune checkpoints inflammation\", \"checkpoints inflammation autoimmunity\", \"immunology\", \"systems\", \"biology\", \"cell\", \"cytokine\", \"signaling\", \"regulatory\", \"cells\"], \"core_hit_count\": 1, \"core_hits\": [\"tumor\"], \"specific_terms\": [\"immunology systems biology\", \"systems biology cell\", \"biology cell cytokine\", \"cell cytokine signaling\", \"cytokine signaling regulatory\", \"signaling regulatory cells\", \"regulatory cells tregs\", \"tregs immune checkpoints\", \"immune checkpoints inflammation\", \"checkpoints inflammation autoimmunity\", \"immunology\", \"systems\"], \"specific_hit_count\": 0, \"specific_hits\": [], \"min_core_hits\": 3, \"min_specific_hits\": 2, \"is_preprint\": true, \"reason\": \"title/abstract do not cover enough user-specified core topic terms\"}, \"verdict\": \"reject\", \"requires_human_review\": false}"
+          },
+          {
+            "result_index": 21,
+            "title": "Associations of plasma ergothioneine levels with cognitive function change in non-demented older Chinese adults: A commu",
+            "error": "Search result rejected before import by domain relevance gate: title=Associations of plasma ergothioneine levels with cognitive function change in non-demented older Chinese adults: A commu...[truncated], domain=Immunology / Systems Biology / T Cell Biology / Cytokine Signaling / Regulatory T Cells (Tregs) / Immune Checkpoints / Inflammation / Autoimmunity / Tumor Immunology / Single-cell Multi-omics / Functional Assays / Mathematical Modeling / Translational Medicine, assessment={\"profile\": \"immunology_systems_biology_t_cell_biology_cytokine_signaling_regulatory_t_cells_\", \"target_field\": \"biology\", \"result_field\": \"medicine\", \"score\": 0.0579, \"query_hits\": [\"low\", \"dose\"], \"anchor_hits\": [], \"topic_hits\": [], \"noise_hits\": [], \"flags\": [\"low_domain_relevance\", \"core_domain_mismatch\", \"weak_preprint_domain_relevance\"], \"is_preprint\": true, \"core_domain_alignment\": {\"enabled\": true, \"passes\": false, \"core_terms\": [\"immunology systems biology\", \"systems biology cell\", \"biology cell cytokine\", \"cell cytokine signaling\", \"cytokine signaling regulatory\", \"signaling regulatory cells\", \"regulatory cells tregs\", \"tregs immune checkpoints\", \"immune checkpoints inflammation\", \"checkpoints inflammation autoimmunity\", \"immunology\", \"systems\", \"biology\", \"cell\", \"cytokine\", \"signaling\", \"regulatory\", \"cells\"], \"core_hit_count\": 0, \"core_hits\": [], \"specific_terms\": [\"immunology systems biology\", \"systems biology cell\", \"biology cell cytokine\", \"cell cytokine signaling\", \"cytokine signaling regulatory\", \"signaling regulatory cells\", \"regulatory cells tregs\", \"tregs immune checkpoints\", \"immune checkpoints inflammation\", \"checkpoints inflammation autoimmunity\", \"immunology\", \"systems\"], \"specific_hit_count\": 0, \"specific_hits\": [], \"min_core_hits\": 3, \"min_specific_hits\": 2, \"is_preprint\": true, \"reason\": \"title/abstract do not cover enough user-specified core topic terms\"}, \"verdict\": \"reject\", \"requires_human_review\": false}"
+          }
+        ],
+        "enforced_for_branch_gate": false,
+        "candidate_count": 22,
+        "provider_blocks": [
+          {
+            "provider": "biorxiv",
+            "query": "low dose IL-2 Treg expansion immune homeostasis",
+            "status": "ok",
+            "note": null,
+            "error": null,
+            "result_count": 10
+          },
+          {
+            "provider": "medrxiv",
+            "query": "low dose IL-2 Treg expansion immune homeostasis",
+            "status": "ok",
+            "note": null,
+            "error": null,
+            "result_count": 12
+          }
+        ]
+      },
+      "main_import_budget": 5,
+      "main_evidence_providers": [
+        "semantic_scholar"
+      ],
+      "preprint_signal_providers": [
+        "biorxiv",
+        "medrxiv"
+      ],
+      "preprint_gate_enforced": false,
+      "status": "ready_for_causal_gap_detection",
+      "constraint_source": "verbatim_research_brief",
+      "research_brief_chars": 8152,
+      "retrieval_constraints": [
+        "Use semantic_scholar, PubMed, bioRxiv/medRxiv; clearly label preprints as not peer-reviewed. Import at least 15 quality-screened papers covering each sub-hypothesis. Exclude descriptive omics papers without functional validation, single immortalized cell line studies, and purely computational papers without human or animal model validation."
+      ],
+      "evidence_window_alerts": [
+        {
+          "priority": "P0",
+          "status": "preprint_signal_not_available",
+          "action": "Record the independent preprint-search gap, but do not block causal-gap exploration or hypothesis generation while this temporary policy is active."
+        }
+      ],
+      "updatedAt": 1783804597.8265433,
+      "sub_hypothesis_id": "SH3"
+    },
+    {
+      "query": "Treg function species conservation immune homeostasis",
+      "source_query": "Treg function species conservation immune homeostasis",
+      "query_language": {
+        "query": "Treg function species conservation immune homeostasis",
+        "source_query": "Treg function species conservation immune homeostasis",
+        "translation_method": "already_english"
+      },
+      "search_id": "search_1783804640389981700",
+      "total_results": 15,
+      "imported_records": 4,
+      "peer_reviewed_imported_records": 4,
+      "layer_quotas": {
+        "L0_review": 1,
+        "L1_milestone": 1,
+        "L2_top_latest": 3,
+        "L3_preprint": 0,
+        "L4_regular": 10
+      },
+      "import_layer_minimums": {
+        "L3_preprint": 0,
+        "L2_top_latest": 1,
+        "L4_regular": 1,
+        "L0_review": 1,
+        "L1_milestone": 1
+      },
+      "p0_preprint_selected": 0,
+      "p0_preprint_imported": 0,
+      "p0_preprint_target": 3,
+      "p0_preprint_required": 1,
+      "preprint_evidence": {
+        "status": "import_failed",
+        "providers": [
+          "biorxiv",
+          "medrxiv"
+        ],
+        "search_id": "search_1783804597836559200",
+        "total_results": 7,
+        "import_target": 3,
+        "imported_records": [],
+        "failed_imports": [
+          {
+            "result_index": 0,
+            "title": "Sounds of silence: electric mobility promises a quieter soundscape for wildlife, but may challenge ultrasonically sensit",
+            "error": "Search result rejected before import by domain relevance gate: title=Sounds of silence: electric mobility promises a quieter soundscape for wildlife, but may challenge ultrasonically sensit...[truncated], domain=Immunology / Systems Biology / T Cell Biology / Cytokine Signaling / Regulatory T Cells (Tregs) / Immune Checkpoints / Inflammation / Autoimmunity / Tumor Immunology / Single-cell Multi-omics / Functional Assays / Mathematical Modeling / Translational Medicine, assessment={\"profile\": \"immunology_systems_biology_t_cell_biology_cytokine_signaling_regulatory_t_cells_\", \"target_field\": \"biology\", \"result_field\": \"ecology\", \"score\": 0.0872, \"query_hits\": [\"species\", \"conservation\"], \"anchor_hits\": [\"systems\"], \"topic_hits\": [], \"noise_hits\": [], \"flags\": [\"field_mismatch\", \"core_domain_mismatch\", \"weak_preprint_domain_relevance\"], \"is_preprint\": true, \"core_domain_alignment\": {\"enabled\": true, \"passes\": false, \"core_terms\": [\"immunology systems biology\", \"systems biology cell\", \"biology cell cytokine\", \"cell cytokine signaling\", \"cytokine signaling regulatory\", \"signaling regulatory cells\", \"regulatory cells tregs\", \"tregs immune checkpoints\", \"immune checkpoints inflammation\", \"checkpoints inflammation autoimmunity\", \"immunology\", \"systems\", \"biology\", \"cell\", \"cytokine\", \"signaling\", \"regulatory\", \"cells\"], \"core_hit_count\": 1, \"core_hits\": [\"systems\"], \"specific_terms\": [\"immunology systems biology\", \"systems biology cell\", \"biology cell cytokine\", \"cell cytokine signaling\", \"cytokine signaling regulatory\", \"signaling regulatory cells\", \"regulatory cells tregs\", \"tregs immune checkpoints\", \"immune checkpoints inflammation\", \"checkpoints inflammation autoimmunity\", \"immunology\", \"systems\"], \"specific_hit_count\": 1, \"specific_hits\": [\"systems\"], \"min_core_hits\": 3, \"min_specific_hits\": 2, \"is_preprint\": true, \"reason\": \"title/abstract do not cover enough user-specified core topic terms\"}, \"verdict\": \"reject\", \"requires_human_review\": false}"
+          },
+          {
+            "result_index": 1,
+            "title": "Spatial overlap of sea ice-associated predators and prey in western Hudson Bay",
+            "error": "Search result rejected before import by domain relevance gate: title=Spatial overlap of sea ice-associated predators and prey in western Hudson Bay, domain=Immunology / Systems Biology / T Cell Biology / Cytokine Signaling / Regulatory T Cells (Tregs) / Immune Checkpoints / Inflammation / Autoimmunity / Tumor Immunology / Single-cell Multi-omics / Functional Assays / Mathematical Modeling / Translational Medicine, assessment={\"profile\": \"immunology_systems_biology_t_cell_biology_cytokine_signaling_regulatory_t_cells_\", \"target_field\": \"biology\", \"result_field\": \"ecology\", \"score\": 0.1013, \"query_hits\": [\"function\", \"species\", \"conservation\"], \"anchor_hits\": [], \"topic_hits\": [], \"noise_hits\": [], \"flags\": [\"field_mismatch\", \"core_domain_mismatch\", \"weak_preprint_domain_relevance\"], \"is_preprint\": true, \"core_domain_alignment\": {\"enabled\": true, \"passes\": false, \"core_terms\": [\"immunology systems biology\", \"systems biology cell\", \"biology cell cytokine\", \"cell cytokine signaling\", \"cytokine signaling regulatory\", \"signaling regulatory cells\", \"regulatory cells tregs\", \"tregs immune checkpoints\", \"immune checkpoints inflammation\", \"checkpoints inflammation autoimmunity\", \"immunology\", \"systems\", \"biology\", \"cell\", \"cytokine\", \"signaling\", \"regulatory\", \"cells\"], \"core_hit_count\": 0, \"core_hits\": [], \"specific_terms\": [\"immunology systems biology\", \"systems biology cell\", \"biology cell cytokine\", \"cell cytokine signaling\", \"cytokine signaling regulatory\", \"signaling regulatory cells\", \"regulatory cells tregs\", \"tregs immune checkpoints\", \"immune checkpoints inflammation\", \"checkpoints inflammation autoimmunity\", \"immunology\", \"systems\"], \"specific_hit_count\": 0, \"specific_hits\": [], \"min_core_hits\": 3, \"min_specific_hits\": 2, \"is_preprint\": true, \"reason\": \"title/abstract do not cover enough user-specified core topic terms\"}, \"verdict\": \"reject\", \"requires_human_review\": false}"
+          },
+          {
+            "result_index": 2,
+            "title": "Exploring the genetic landscape of ciprofloxacin-induced DNA supercompaction in Escherichia coli",
+            "error": "Search result rejected before import by domain relevance gate: title=Exploring the genetic landscape of ciprofloxacin-induced DNA supercompaction in Escherichia coli, domain=Immunology / Systems Biology / T Cell Biology / Cytokine Signaling / Regulatory T Cells (Tregs) / Immune Checkpoints / Inflammation / Autoimmunity / Tumor Immunology / Single-cell Multi-omics / Functional Assays / Mathematical Modeling / Translational Medicine, assessment={\"profile\": \"immunology_systems_biology_t_cell_biology_cytokine_signaling_regulatory_t_cells_\", \"target_field\": \"biology\", \"result_field\": \"biomedical\", \"score\": 0.0872, \"query_hits\": [\"species\", \"conservation\"], \"anchor_hits\": [\"cell\"], \"topic_hits\": [], \"noise_hits\": [], \"flags\": [\"core_domain_mismatch\", \"weak_preprint_domain_relevance\"], \"is_preprint\": true, \"core_domain_alignment\": {\"enabled\": true, \"passes\": false, \"core_terms\": [\"immunology systems biology\", \"systems biology cell\", \"biology cell cytokine\", \"cell cytokine signaling\", \"cytokine signaling regulatory\", \"signaling regulatory cells\", \"regulatory cells tregs\", \"tregs immune checkpoints\", \"immune checkpoints inflammation\", \"checkpoints inflammation autoimmunity\", \"immunology\", \"systems\", \"biology\", \"cell\", \"cytokine\", \"signaling\", \"regulatory\", \"cells\"], \"core_hit_count\": 1, \"core_hits\": [\"cell\"], \"specific_terms\": [\"immunology systems biology\", \"systems biology cell\", \"biology cell cytokine\", \"cell cytokine signaling\", \"cytokine signaling regulatory\", \"signaling regulatory cells\", \"regulatory cells tregs\", \"tregs immune checkpoints\", \"immune checkpoints inflammation\", \"checkpoints inflammation autoimmunity\", \"immunology\", \"systems\"], \"specific_hit_count\": 0, \"specific_hits\": [], \"min_core_hits\": 3, \"min_specific_hits\": 2, \"is_preprint\": true, \"reason\": \"title/abstract do not cover enough user-specified core topic terms\"}, \"verdict\": \"reject\", \"requires_human_review\": false}"
+          },
+          {
+            "result_index": 3,
+            "title": "Scientifically Uninformed Legislation System Undermines Ecological Sustainability of the Yangtze River",
+            "error": "Search result rejected before import by domain relevance gate: title=Scientifically Uninformed Legislation System Undermines Ecological Sustainability of the Yangtze River, domain=Immunology / Systems Biology / T Cell Biology / Cytokine Signaling / Regulatory T Cells (Tregs) / Immune Checkpoints / Inflammation / Autoimmunity / Tumor Immunology / Single-cell Multi-omics / Functional Assays / Mathematical Modeling / Translational Medicine, assessment={\"profile\": \"immunology_systems_biology_t_cell_biology_cytokine_signaling_regulatory_t_cells_\", \"target_field\": \"biology\", \"result_field\": \"ecology\", \"score\": 0.0872, \"query_hits\": [\"species\", \"conservation\"], \"anchor_hits\": [\"systems\"], \"topic_hits\": [], \"noise_hits\": [], \"flags\": [\"field_mismatch\", \"core_domain_mismatch\", \"weak_preprint_domain_relevance\"], \"is_preprint\": true, \"core_domain_alignment\": {\"enabled\": true, \"passes\": false, \"core_terms\": [\"immunology systems biology\", \"systems biology cell\", \"biology cell cytokine\", \"cell cytokine signaling\", \"cytokine signaling regulatory\", \"signaling regulatory cells\", \"regulatory cells tregs\", \"tregs immune checkpoints\", \"immune checkpoints inflammation\", \"checkpoints inflammation autoimmunity\", \"immunology\", \"systems\", \"biology\", \"cell\", \"cytokine\", \"signaling\", \"regulatory\", \"cells\"], \"core_hit_count\": 1, \"core_hits\": [\"systems\"], \"specific_terms\": [\"immunology systems biology\", \"systems biology cell\", \"biology cell cytokine\", \"cell cytokine signaling\", \"cytokine signaling regulatory\", \"signaling regulatory cells\", \"regulatory cells tregs\", \"tregs immune checkpoints\", \"immune checkpoints inflammation\", \"checkpoints inflammation autoimmunity\", \"immunology\", \"systems\"], \"specific_hit_count\": 1, \"specific_hits\": [\"systems\"], \"min_core_hits\": 3, \"min_specific_hits\": 2, \"is_preprint\": true, \"reason\": \"title/abstract do not cover enough user-specified core topic terms\"}, \"verdict\": \"reject\", \"requires_human_review\": false}"
+          },
+          {
+            "result_index": 4,
+            "title": "Comparing analytical protocols for identifying causes of population changes",
+            "error": "Search result rejected before import by domain relevance gate: title=Comparing analytical protocols for identifying causes of population changes, domain=Immunology / Systems Biology / T Cell Biology / Cytokine Signaling / Regulatory T Cells (Tregs) / Immune Checkpoints / Inflammation / Autoimmunity / Tumor Immunology / Single-cell Multi-omics / Functional Assays / Mathematical Modeling / Translational Medicine, assessment={\"profile\": \"immunology_systems_biology_t_cell_biology_cytokine_signaling_regulatory_t_cells_\", \"target_field\": \"biology\", \"result_field\": \"ecology\", \"score\": 0.0675, \"query_hits\": [\"species\", \"conservation\"], \"anchor_hits\": [], \"topic_hits\": [], \"noise_hits\": [], \"flags\": [\"field_mismatch\", \"low_domain_relevance\", \"core_domain_mismatch\", \"weak_preprint_domain_relevance\"], \"is_preprint\": true, \"core_domain_alignment\": {\"enabled\": true, \"passes\": false, \"core_terms\": [\"immunology systems biology\", \"systems biology cell\", \"biology cell cytokine\", \"cell cytokine signaling\", \"cytokine signaling regulatory\", \"signaling regulatory cells\", \"regulatory cells tregs\", \"tregs immune checkpoints\", \"immune checkpoints inflammation\", \"checkpoints inflammation autoimmunity\", \"immunology\", \"systems\", \"biology\", \"cell\", \"cytokine\", \"signaling\", \"regulatory\", \"cells\"], \"core_hit_count\": 0, \"core_hits\": [], \"specific_terms\": [\"immunology systems biology\", \"systems biology cell\", \"biology cell cytokine\", \"cell cytokine signaling\", \"cytokine signaling regulatory\", \"signaling regulatory cells\", \"regulatory cells tregs\", \"tregs immune checkpoints\", \"immune checkpoints inflammation\", \"checkpoints inflammation autoimmunity\", \"immunology\", \"systems\"], \"specific_hit_count\": 0, \"specific_hits\": [], \"min_core_hits\": 3, \"min_specific_hits\": 2, \"is_preprint\": true, \"reason\": \"title/abstract do not cover enough user-specified core topic terms\"}, \"verdict\": \"reject\", \"requires_human_review\": false}"
+          },
+          {
+            "result_index": 5,
+            "title": "Change-resistance distinguishes the representational geometries of human spatial memory and mouse CA1 in deformed enviro",
+            "error": "Search result rejected before import by domain relevance gate: title=Change-resistance distinguishes the representational geometries of human spatial memory and mouse CA1 in deformed enviro...[truncated], domain=Immunology / Systems Biology / T Cell Biology / Cytokine Signaling / Regulatory T Cells (Tregs) / Immune Checkpoints / Inflammation / Autoimmunity / Tumor Immunology / Single-cell Multi-omics / Functional Assays / Mathematical Modeling / Translational Medicine, assessment={\"profile\": \"immunology_systems_biology_t_cell_biology_cytokine_signaling_regulatory_t_cells_\", \"target_field\": \"biology\", \"result_field\": \"computer_science\", \"score\": 0.0675, \"query_hits\": [\"species\", \"conservation\"], \"anchor_hits\": [], \"topic_hits\": [], \"noise_hits\": [], \"flags\": [\"field_mismatch\", \"low_domain_relevance\", \"core_domain_mismatch\", \"weak_preprint_domain_relevance\"], \"is_preprint\": true, \"core_domain_alignment\": {\"enabled\": true, \"passes\": false, \"core_terms\": [\"immunology systems biology\", \"systems biology cell\", \"biology cell cytokine\", \"cell cytokine signaling\", \"cytokine signaling regulatory\", \"signaling regulatory cells\", \"regulatory cells tregs\", \"tregs immune checkpoints\", \"immune checkpoints inflammation\", \"checkpoints inflammation autoimmunity\", \"immunology\", \"systems\", \"biology\", \"cell\", \"cytokine\", \"signaling\", \"regulatory\", \"cells\"], \"core_hit_count\": 0, \"core_hits\": [], \"specific_terms\": [\"immunology systems biology\", \"systems biology cell\", \"biology cell cytokine\", \"cell cytokine signaling\", \"cytokine signaling regulatory\", \"signaling regulatory cells\", \"regulatory cells tregs\", \"tregs immune checkpoints\", \"immune checkpoints inflammation\", \"checkpoints inflammation autoimmunity\", \"immunology\", \"systems\"], \"specific_hit_count\": 0, \"specific_hits\": [], \"min_core_hits\": 3, \"min_specific_hits\": 2, \"is_preprint\": true, \"reason\": \"title/abstract do not cover enough user-specified core topic terms\"}, \"verdict\": \"reject\", \"requires_human_review\": false}"
+          },
+          {
+            "result_index": 6,
+            "title": "Spatial Ecology of Jaguars in a Coastal Amazon Island Ecosystem",
+            "error": "Search result rejected before import by domain relevance gate: title=Spatial Ecology of Jaguars in a Coastal Amazon Island Ecosystem, domain=Immunology / Systems Biology / T Cell Biology / Cytokine Signaling / Regulatory T Cells (Tregs) / Immune Checkpoints / Inflammation / Autoimmunity / Tumor Immunology / Single-cell Multi-omics / Functional Assays / Mathematical Modeling / Translational Medicine, assessment={\"profile\": \"immunology_systems_biology_t_cell_biology_cytokine_signaling_regulatory_t_cells_\", \"target_field\": \"biology\", \"result_field\": \"ecology\", \"score\": 0.0872, \"query_hits\": [\"species\", \"conservation\"], \"anchor_hits\": [\"systems\"], \"topic_hits\": [], \"noise_hits\": [], \"flags\": [\"field_mismatch\", \"core_domain_mismatch\", \"weak_preprint_domain_relevance\"], \"is_preprint\": true, \"core_domain_alignment\": {\"enabled\": true, \"passes\": false, \"core_terms\": [\"immunology systems biology\", \"systems biology cell\", \"biology cell cytokine\", \"cell cytokine signaling\", \"cytokine signaling regulatory\", \"signaling regulatory cells\", \"regulatory cells tregs\", \"tregs immune checkpoints\", \"immune checkpoints inflammation\", \"checkpoints inflammation autoimmunity\", \"immunology\", \"systems\", \"biology\", \"cell\", \"cytokine\", \"signaling\", \"regulatory\", \"cells\"], \"core_hit_count\": 1, \"core_hits\": [\"systems\"], \"specific_terms\": [\"immunology systems biology\", \"systems biology cell\", \"biology cell cytokine\", \"cell cytokine signaling\", \"cytokine signaling regulatory\", \"signaling regulatory cells\", \"regulatory cells tregs\", \"tregs immune checkpoints\", \"immune checkpoints inflammation\", \"checkpoints inflammation autoimmunity\", \"immunology\", \"systems\"], \"specific_hit_count\": 1, \"specific_hits\": [\"systems\"], \"min_core_hits\": 3, \"min_specific_hits\": 2, \"is_preprint\": true, \"reason\": \"title/abstract do not cover enough user-specified core topic terms\"}, \"verdict\": \"reject\", \"requires_human_review\": false}"
+          }
+        ],
+        "enforced_for_branch_gate": false,
+        "candidate_count": 7,
+        "provider_blocks": [
+          {
+            "provider": "biorxiv",
+            "query": "Treg function species conservation immune homeostasis",
+            "status": "ok",
+            "note": null,
+            "error": null,
+            "result_count": 7
+          },
+          {
+            "provider": "medrxiv",
+            "query": "Treg function species conservation immune homeostasis",
+            "status": "ok",
+            "note": null,
+            "error": null,
+            "result_count": 0
+          }
+        ]
+      },
+      "main_import_budget": 5,
+      "main_evidence_providers": [
+        "semantic_scholar"
+      ],
+      "preprint_signal_providers": [
+        "biorxiv",
+        "medrxiv"
+      ],
+      "preprint_gate_enforced": false,
+      "status": "ready_for_causal_gap_detection",
+      "constraint_source": "verbatim_research_brief",
+      "research_brief_chars": 8152,
+      "retrieval_constraints": [
+        "Use semantic_scholar, PubMed, bioRxiv/medRxiv; clearly label preprints as not peer-reviewed. Import at least 15 quality-screened papers covering each sub-hypothesis. Exclude descriptive omics papers without functional validation, single immortalized cell line studies, and purely computational papers without human or animal model validation."
+      ],
+      "evidence_window_alerts": [
+        {
+          "priority": "P0",
+          "status": "preprint_signal_not_available",
+          "action": "Record the independent preprint-search gap, but do not block causal-gap exploration or hypothesis generation while this temporary policy is active."
+        }
+      ],
+      "updatedAt": 1783805115.513559,
+      "sub_hypothesis_id": "SH4"
+    }
+  ],
+  "next_step": "Run TanXi only on branches marked ready_for_causal_gap_detection; evidence-insufficient branches remain excluded from combined claims."
+}

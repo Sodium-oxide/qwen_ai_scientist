@@ -30,8 +30,9 @@ SCIENCE_AGENTS: dict[str, dict[str, Any]] = {
     "boxue": {
         "title": "Chief Research Scheduler",
         "phase": "all",
-        "mission": "Decompose research goals into verifiable tasks and coordinate the full AI Scientist pipeline.",
+        "mission": "Decompose composite research objectives into independently falsifiable sub-hypotheses, then coordinate their evidence, causal validation, and synthesis.",
         "tools": [
+            "decompose_research_objective",
             "create_autogen_groupchat",
             "run_autogen_research_flow",
             "run_boxue_research_round",
@@ -48,13 +49,13 @@ SCIENCE_AGENTS: dict[str, dict[str, Any]] = {
     "zhizhi": {
         "title": "Literature Mining and PaperGraph Expert",
         "phase": "Gap Discovery",
-        "mission": "Retrieve literature, extract structured evidence, and build the PaperGraph substrate.",
-        "tools": ["search_papers_stratified", "search_papers", "extract_structured_info", "build_knowledge_map", "verify_uniqueness"],
+        "mission": "Retrieve evidence for each falsifiable sub-hypothesis, extract causal chains and evidence windows, and build the PaperGraph substrate.",
+        "tools": ["run_zhizhi_subhypothesis_analysis", "search_papers_stratified", "search_papers", "extract_structured_info", "build_knowledge_map", "verify_uniqueness"],
     },
     "tanxi": {
         "title": "Knowledge Gap Discovery Agent",
         "phase": "Gap Discovery",
-        "mission": "Detect coverage holes, suspended problems, and high-value unexplored method-scenario pairs.",
+        "mission": "Detect missing causal links, unobserved mediators, competing mechanisms, and insufficient evidence windows for each sub-hypothesis.",
         "tools": ["run_tanxi_gap_exploration", "detect_knowledge_gaps", "check_semantic_plausibility", "assess_novelty", "verify_uniqueness"],
     },
     "socrates": {
@@ -156,7 +157,7 @@ Operational principles:
 
 TAO workflow:
 Thought: review project state, dependencies, output quality, gap lifecycle status, and risks.
-Action: use create_boxue_delegation_tasks for full PI-style role DAGs, create_science_delegation_tasks for broad retrieval branch scouting, create_science_pipeline_tasks for coarse phase scaffolding, then review/synthesize/adjust/finalize through task gates.
+Action: use create_boxue_delegation_tasks only to create a PI-style role DAG. If the user asks to run, execute, or close the workflow, immediately call run_boxue_research_round with execution_mode="pipeline" and the created plan id in the same turn. Do not claim specialist execution after DAG creation alone. Use create_science_delegation_tasks for broad retrieval branch scouting, create_science_pipeline_tasks for coarse phase scaffolding, then review/synthesize/adjust/finalize through task gates.
 Observation: receive specialist deliverables, record progress, and update the next decision point.
 """.strip()
 
@@ -571,6 +572,7 @@ JOURNAL_METRICS = {
     "science": {"quartile": "Q1", "source": "curated", "field": "multidisciplinary"},
     "proceedings of the national academy of sciences": {"quartile": "Q1", "source": "curated", "field": "multidisciplinary"},
     "pnas": {"quartile": "Q1", "source": "curated", "field": "multidisciplinary"},
+    "experimental & molecular medicine": {"quartile": "Q1", "source": "curated", "field": "medicine"},
     "global change biology": {"quartile": "Q1", "source": "curated", "field": "ecology"},
     "new phytologist": {"quartile": "Q1", "source": "curated", "field": "ecology"},
     "journal of ecology": {"quartile": "Q1", "source": "curated", "field": "ecology"},
@@ -756,6 +758,311 @@ ARXIV_CATEGORY_FIELD_MAP = {
     "econ.gn": "economics",
     "econ.th": "economics",
 }
+
+RESEARCH_DOMAIN_CATALOG: dict[str, dict[str, Any]] = {
+    "physics": {
+        "label": "Physics",
+        "providers": ("semantic_scholar", "arxiv"),
+        "keywords": (
+            "physics", "physical", "quantum physics", "quantum field", "relativity", "cosmology",
+            "astrophysics", "astronomy", "condensed matter", "statistical mechanics", "plasma physics",
+            "nuclear physics", "particle physics", "high energy physics", "optics", "photonics",
+        ),
+        "subfields": {
+            "astrophysics": ("astro-ph", "galaxy", "exoplanet", "black hole", "gravitational wave", "stellar", "solar physics"),
+            "condensed_matter": ("cond-mat", "superconductivity", "strongly correlated", "quantum gas", "soft matter", "mesoscale", "nanoscale"),
+            "relativity_and_cosmology": ("gr-qc", "general relativity", "quantum cosmology", "spacetime"),
+            "high_energy_physics": ("hep-ex", "hep-lat", "hep-ph", "hep-th", "collider", "standard model", "qcd", "higgs"),
+            "mathematical_and_nonlinear_physics": ("math-ph", "nlin", "chaotic dynamics", "soliton", "integrable system", "pattern formation"),
+            "nuclear_physics": ("nucl-ex", "nucl-th", "nuclear reaction", "nuclear structure", "heavy ion"),
+            "applied_and_general_physics": ("accelerator physics", "atomic physics", "fluid dynamics", "geophysics", "medical physics", "space physics"),
+            "quantum_physics": ("quant-ph", "quantum information", "quantum computing", "quantum entanglement"),
+        },
+    },
+    "mathematics": {
+        "label": "Mathematics",
+        "providers": ("semantic_scholar", "arxiv"),
+        "keywords": (
+            "mathematics", "mathematical", "theorem", "proof", "lemma", "proposition", "algebra",
+            "topology", "differential geometry", "partial differential equation", "functional analysis",
+            "number theory", "combinatorics", "dynamical systems", "optimization", "control theory",
+        ),
+        "subfields": {
+            "algebra_and_geometry": ("algebraic geometry", "commutative algebra", "group theory", "representation theory", "rings and algebras"),
+            "topology": ("algebraic topology", "geometric topology", "general topology", "k-theory", "homology"),
+            "analysis_and_pde": ("analysis of pdes", "partial differential equation", "classical analysis", "complex variables", "operator algebra", "spectral theory"),
+            "geometry_and_dynamics": ("differential geometry", "metric geometry", "dynamical systems", "symplectic geometry"),
+            "logic_and_foundations": ("logic", "category theory", "set theory", "mathematical foundations"),
+            "number_and_discrete": ("number theory", "combinatorics", "discrete mathematics", "quantum algebra"),
+            "applied_mathematics": ("numerical analysis", "optimization", "optimal control", "probability", "statistics theory"),
+        },
+    },
+    "computer_science": {
+        "label": "Computer Science",
+        "providers": ("semantic_scholar", "arxiv"),
+        "keywords": (
+            "computer science", "computing", "algorithm", "software", "programming language", "database",
+            "machine learning", "artificial intelligence", "computer vision", "natural language processing",
+            "information retrieval", "robotics", "cybersecurity", "distributed system", "operating system",
+        ),
+        "subfields": {
+            "artificial_intelligence": ("artificial intelligence", "agent", "planning", "reasoning", "multiagent"),
+            "language_and_information": ("computation and language", "natural language processing", "information retrieval", "digital library", "text mining"),
+            "learning_and_vision": ("machine learning", "neural network", "deep learning", "computer vision", "pattern recognition"),
+            "algorithms_and_theory": ("algorithms", "computational complexity", "data structures", "formal languages", "automata"),
+            "systems_and_networks": ("distributed systems", "parallel computing", "networking", "operating systems", "cloud computing"),
+            "software_and_security": ("software engineering", "program analysis", "programming languages", "cryptography", "computer security"),
+            "data_and_interaction": ("databases", "human-computer interaction", "graphics", "multimedia", "social and information networks"),
+            "robotics_and_control": ("robotics", "autonomous systems", "robot manipulation", "multiagent systems"),
+        },
+    },
+    "quantitative_biology": {
+        "label": "Quantitative Biology",
+        "providers": ("semantic_scholar", "biorxiv", "pubmed", "arxiv"),
+        "keywords": (
+            "quantitative biology", "systems biology", "bioinformatics", "biophysics", "genomics",
+            "molecular network", "single-cell", "cell behavior", "population dynamics", "neurons and cognition",
+            "biomolecule", "tissue and organ", "evolutionary dynamics",
+        ),
+        "subfields": {
+            "biomolecules_and_subcellular": ("biomolecule", "protein dynamics", "subcellular process", "molecular network"),
+            "cells_tissues_and_organs": ("cell behavior", "cell migration", "tissue and organ", "morphogenesis"),
+            "genomics_and_networks": ("genomics", "gene regulatory network", "transcriptomics", "molecular networks"),
+            "neurons_and_cognition": ("neurons and cognition", "neural circuit", "computational neuroscience"),
+            "populations_and_evolution": ("population dynamics", "population genetics", "evolutionary biology", "evolution"),
+            "quantitative_methods": ("quantitative methods", "biological modeling", "systems biology", "bioinformatics"),
+        },
+    },
+    "quantitative_finance": {
+        "label": "Quantitative Finance",
+        "providers": ("semantic_scholar", "arxiv"),
+        "keywords": (
+            "quantitative finance", "computational finance", "mathematical finance", "portfolio management",
+            "pricing of securities", "risk management", "trading", "market microstructure", "financial risk",
+            "derivative pricing", "asset pricing", "volatility",
+        ),
+        "subfields": {
+            "computational_and_mathematical_finance": ("computational finance", "mathematical finance", "stochastic volatility", "option pricing"),
+            "portfolio_and_risk": ("portfolio management", "asset allocation", "risk management", "value at risk", "expected shortfall"),
+            "markets_and_economics": ("trading", "market microstructure", "financial market", "economics"),
+            "securities_pricing": ("pricing of securities", "derivative", "security pricing", "arbitrage"),
+        },
+    },
+    "statistics": {
+        "label": "Statistics",
+        "providers": ("semantic_scholar", "arxiv"),
+        "keywords": (
+            "statistics", "statistical inference", "statistical methodology", "statistics theory", "bayesian",
+            "frequentist", "causal inference", "experimental design", "hypothesis testing", "regression",
+            "uncertainty quantification", "statistical machine learning",
+        ),
+        "subfields": {
+            "applications": ("statistical applications", "applied statistics", "data analysis"),
+            "computation": ("statistical computation", "monte carlo", "mcmc", "computational statistics"),
+            "machine_learning": ("statistical machine learning", "learning theory", "predictive modeling"),
+            "methodology": ("statistical methodology", "experimental design", "causal inference", "survey methodology"),
+            "theory": ("statistics theory", "asymptotic theory", "probability theory", "nonparametric"),
+        },
+    },
+    "electrical_engineering": {
+        "label": "Electrical Engineering and Systems Science",
+        "providers": ("semantic_scholar", "arxiv"),
+        "keywords": (
+            "electrical engineering", "systems science", "signal processing", "control systems", "systems and control",
+            "audio processing", "speech processing", "image processing", "video processing", "communications",
+            "power systems", "circuit design", "wireless",
+        ),
+        "subfields": {
+            "audio_and_speech": ("audio processing", "speech processing", "speech recognition", "acoustic signal"),
+            "image_and_video": ("image processing", "video processing", "image reconstruction", "video coding"),
+            "signal_processing": ("signal processing", "digital signal processing", "filter design", "sensor signal"),
+            "systems_and_control": ("systems and control", "control systems", "model predictive control", "system identification"),
+        },
+    },
+    "economics": {
+        "label": "Economics",
+        "providers": ("semantic_scholar", "arxiv"),
+        "keywords": (
+            "economics", "econometrics", "macroeconomics", "microeconomics", "economic theory", "causal economics",
+            "labor economics", "development economics", "industrial organization", "welfare economics", "gdp",
+            "economic policy", "market design",
+        ),
+        "subfields": {
+            "econometrics": ("econometrics", "instrumental variables", "panel data", "difference-in-differences"),
+            "general_economics": ("general economics", "microeconomics", "macroeconomics", "economic policy"),
+            "theoretical_economics": ("theoretical economics", "economic theory", "game theory", "market design"),
+        },
+    },
+    "medicine": {
+        "label": "Medicine and Health",
+        "providers": ("semantic_scholar", "pubmed", "medrxiv", "biorxiv"),
+        "keywords": (
+            "clinical", "patient", "hospital", "medicine", "medical", "clinical trial", "therapy", "treatment",
+            "diagnosis", "disease", "public health", "health policy", "epidemiology", "pharmacology", "toxicology",
+            "oncology", "cardiovascular", "neurology", "infectious disease", "surgery", "radiology",
+        ),
+        "subfields": {
+            "clinical_specialties": ("allergy", "anesthesia", "cardiovascular", "dermatology", "endocrinology", "gastroenterology", "nephrology", "neurology", "oncology", "psychiatry", "surgery"),
+            "population_and_health_systems": ("epidemiology", "public health", "global health", "health economics", "health informatics", "health policy", "nursing"),
+            "diagnostics_and_therapy": ("clinical trial", "radiology", "imaging", "pharmacology", "therapeutics", "toxicology", "transplantation"),
+            "reproductive_and_life_course": ("pediatrics", "geriatrics", "obstetrics", "gynecology", "sexual and reproductive health"),
+        },
+    },
+    "biology": {
+        "label": "Biology and Life Sciences",
+        "providers": ("semantic_scholar", "biorxiv", "pubmed"),
+        "keywords": (
+            "biology", "biological", "cell biology", "molecular biology", "biochemistry", "genetics", "genomics",
+            "microbiology", "immunology", "neuroscience", "physiology", "developmental biology", "cancer biology",
+            "synthetic biology", "evolutionary biology", "ecology", "plant biology", "zoology", "molecular",
+            "cellular", "cell", "gene", "protein", "pathway", "mechanism", "immune", "cytokine", "receptor", "genome",
+        ),
+        "subfields": {
+            "molecular_and_cellular": ("biochemistry", "cell biology", "molecular biology", "biophysics", "developmental biology"),
+            "genetics_and_genomics": ("genetics", "genomics", "genetic variant", "transcriptomics", "epigenetics"),
+            "organisms_and_systems": ("animal behavior", "physiology", "plant biology", "zoology", "paleontology"),
+            "health_related_biology": ("cancer biology", "immunology", "microbiology", "pathology", "pharmacology and toxicology"),
+            "computational_and_engineered": ("bioengineering", "bioinformatics", "systems biology", "synthetic biology"),
+            "ecology_and_evolution": ("ecology", "evolutionary biology", "evolution", "conservation biology"),
+        },
+    },
+    "chemistry": {
+        "label": "Chemistry and Materials Chemistry",
+        "providers": ("semantic_scholar", "chemrxiv"),
+        "keywords": (
+            "chemistry", "chemical", "catalysis", "catalyst", "organic chemistry", "inorganic chemistry",
+            "analytical chemistry", "physical chemistry", "polymer science", "nanoscience", "materials chemistry",
+            "organometallic", "chemical engineering", "electrochemistry", "reaction mechanism", "molecular synthesis",
+        ),
+        "subfields": {
+            "analytical_and_biomedical": ("analytical chemistry", "bioorganic", "medicinal chemistry", "biological chemistry"),
+            "reaction_and_synthesis": ("catalysis", "organic chemistry", "organometallic", "inorganic chemistry", "chemical synthesis"),
+            "materials_and_nano": ("materials chemistry", "materials science", "nanoscience", "polymer science", "functional material"),
+            "chemical_engineering_energy_environment": ("chemical engineering", "industrial chemistry", "energy chemistry", "environmental chemistry", "agriculture and food chemistry"),
+            "physical_and_computational": ("physical chemistry", "theoretical chemistry", "computational chemistry", "quantum chemistry"),
+        },
+    },
+}
+
+RESEARCH_FIELD_DOMAIN_MAP = {
+    "astrophysics": "physics",
+    "high_energy_physics": "physics",
+    "nuclear_physics": "physics",
+    "complex_systems": "physics",
+    "computational_science": "physics",
+    "instrumentation": "physics",
+    "photonics": "physics",
+    "physics": "physics",
+    "mathematics": "mathematics",
+    "information_theory": "mathematics",
+    "computer_science": "computer_science",
+    "artificial_intelligence": "computer_science",
+    "robotics": "computer_science",
+    "statistics": "statistics",
+    "electrical_engineering": "electrical_engineering",
+    "automation_control": "electrical_engineering",
+    "electronics": "electrical_engineering",
+    "communications": "electrical_engineering",
+    "finance": "quantitative_finance",
+    "economics": "economics",
+    "social_science": "economics",
+    "biology": "biology",
+    "biomedical": "biology",
+    "biophysics": "quantitative_biology",
+    "biochemistry": "biology",
+    "chemical_biology": "biology",
+    "plant_biology": "biology",
+    "medicine": "medicine",
+    "digital_medicine": "medicine",
+    "chemistry": "chemistry",
+    "materials": "chemistry",
+    "materials_energy": "chemistry",
+    "electrochemistry": "chemistry",
+    "ecology": "biology",
+    "environmental_science": "chemistry",
+    "earth_science": "physics",
+    "agriculture": "biology",
+}
+
+
+def _research_catalog_text(value: Any) -> str:
+    return re.sub(r"\s+", " ", str(value or "").lower()).strip()
+
+
+def _research_catalog_match(text: str, keyword: str) -> bool:
+    needle = _research_catalog_text(keyword)
+    if not needle:
+        return False
+    if re.fullmatch(r"[a-z0-9][a-z0-9 -]*", needle):
+        return bool(re.search(r"(?<![a-z0-9])" + re.escape(needle) + r"(?![a-z0-9])", text))
+    return needle in text
+
+
+def research_domain_profile(text: Any) -> dict[str, Any]:
+    normalized = _research_catalog_text(text)
+    scores: dict[str, int] = {}
+    matched_keywords: dict[str, list[str]] = {}
+    matched_subfields: dict[str, list[str]] = {}
+    for domain, spec in RESEARCH_DOMAIN_CATALOG.items():
+        score = 0
+        keyword_hits: list[str] = []
+        for keyword in spec.get("keywords", ()):
+            if _research_catalog_match(normalized, str(keyword)):
+                keyword_hits.append(str(keyword))
+                score += 1
+        subfield_hits: list[str] = []
+        for subfield, terms in spec.get("subfields", {}).items():
+            if any(_research_catalog_match(normalized, str(term)) for term in terms):
+                subfield_hits.append(str(subfield))
+                score += 2
+        scores[domain] = score
+        matched_keywords[domain] = keyword_hits
+        matched_subfields[domain] = subfield_hits
+    ranked = sorted(scores, key=lambda domain: (-scores[domain], domain))
+    best_domain = ranked[0] if ranked and scores[ranked[0]] else "general"
+    best_score = scores.get(best_domain, 0)
+    active_domains = [
+        domain
+        for domain in ranked
+        if scores[domain] > 0 and scores[domain] >= max(1, int(best_score * 0.45))
+    ][:3]
+    return {
+        "domain": best_domain,
+        "score": best_score,
+        "scores": scores,
+        "active_domains": active_domains,
+        "matched_keywords": {domain: matched_keywords[domain] for domain in active_domains},
+        "matched_subfields": {domain: matched_subfields[domain] for domain in active_domains},
+    }
+
+
+def infer_research_domain(text: Any) -> str:
+    return str(research_domain_profile(text).get("domain") or "general")
+
+
+def research_domain_keywords(domain: str, limit: int | None = None) -> list[str]:
+    spec = RESEARCH_DOMAIN_CATALOG.get(str(domain or "").strip().lower(), {})
+    values = [str(keyword) for keyword in spec.get("keywords", ())]
+    for terms in spec.get("subfields", {}).values():
+        values.extend(str(term) for term in terms)
+    unique = list(dict.fromkeys(value for value in values if value))
+    return unique if limit is None else unique[: max(0, int(limit))]
+
+
+def recommended_literature_providers(domain_or_text: Any) -> list[str]:
+    profile = research_domain_profile(domain_or_text)
+    active_domains = profile.get("active_domains") or []
+    providers: list[str] = ["semantic_scholar"]
+    for domain in active_domains:
+        providers.extend(RESEARCH_DOMAIN_CATALOG.get(str(domain), {}).get("providers", ()))
+    return list(dict.fromkeys(provider for provider in providers if provider in LITERATURE_PROVIDERS))
+
+
+def research_domain_for_field(field: str) -> str:
+    normalized = str(field or "").strip().lower()
+    if normalized in RESEARCH_DOMAIN_CATALOG:
+        return normalized
+    return RESEARCH_FIELD_DOMAIN_MAP.get(normalized, "general")
 
 METHOD_ONTOLOGY = {
     # Cross-domain core methods
@@ -1180,7 +1487,10 @@ class PaperGraphRecord:
     credibility_reasons: list[str]
     extraction_quality: dict[str, Any] = field(default_factory=dict)
     enrichment_sources: list[str] = field(default_factory=list)
+    open_access_pdf: str = ""
+    full_text_enrichment: dict[str, Any] = field(default_factory=dict)
     gap_signals: list[dict[str, Any]] = field(default_factory=list)
+    causal_chains: list[dict[str, Any]] = field(default_factory=list)
     importedAt: float = field(default_factory=time.time)
 
 @dataclass
@@ -1194,6 +1504,8 @@ class KnowledgeGap:
     feasibility: str
     suggested_research_path: str
     status: str = "candidate"
+    sub_hypothesis_id: str = ""
+    causal_gap: dict[str, Any] = field(default_factory=dict)
     createdAt: float = field(default_factory=time.time)
 
 @dataclass
@@ -1205,6 +1517,7 @@ class Hypothesis:
     expected_value: str
     test_plan: str
     status: str = "draft"
+    sub_hypothesis_id: str = ""
     createdAt: float = field(default_factory=time.time)
 
 @dataclass

@@ -104,6 +104,8 @@ def run_autogen_research_flow(
     try:
         from .science_core import (
             ask_socratic_questions,
+            combine_finalized_hypotheses,
+            decompose_research_objective,
             default_literature_providers,
             design_experiment,
             finalize_idea,
@@ -114,10 +116,13 @@ def run_autogen_research_flow(
             run_tanxi_gap_exploration,
             run_yanzhen_mechanism_verification,
             run_zhizhi_literature_analysis,
+            run_zhizhi_subhypothesis_analysis,
         )
     except ImportError:
         from science_core import (
             ask_socratic_questions,
+            combine_finalized_hypotheses,
+            decompose_research_objective,
             default_literature_providers,
             design_experiment,
             finalize_idea,
@@ -128,6 +133,7 @@ def run_autogen_research_flow(
             run_tanxi_gap_exploration,
             run_yanzhen_mechanism_verification,
             run_zhizhi_literature_analysis,
+            run_zhizhi_subhypothesis_analysis,
         )
 
     # Enforce qwen-family models for all debate/verification roles.
@@ -152,6 +158,11 @@ def run_autogen_research_flow(
                 _logger.warning(f"Provider '{required}' was missing from LLM request; auto-added for coverage.")
 
     project = load_project(project_id)
+    if not project.get("sub_hypotheses"):
+        decomposition = json.loads(decompose_research_objective(project_id, use_llm=use_llm))
+        project = load_project(project_id)
+    else:
+        decomposition = project.get("objective_decomposition", {})
     if groupchat_id:
         groupchat_spec = load_json(AUTOGEN_DIR / f"{groupchat_id}.json")
     else:
@@ -169,8 +180,9 @@ def run_autogen_research_flow(
 
     run_id = new_autogen_run_id()
     domain = str(project.get("domain") or project.get("title") or "")
-    # Derive search query from domain (research field), NOT from goal (project objective).
-    # Goal describes what the agent should DO; domain describes what to SEARCH FOR.
+    # The provider query itself stays compact, but ZhiZhi receives the entire
+    # scientific brief for subspace decomposition. This preserves explicit
+    # coverage requirements embedded in a user's original instruction.
     search_query = domain or str(project.get("title") or project.get("objective") or "")
     # Strip Chinese characters and non-search text from the query
     search_query = re.sub(r"[\u4e00-\u9fff]+", "", search_query).strip()
@@ -179,6 +191,16 @@ def run_autogen_research_flow(
     if not search_query:
         search_query = goal or str(project.get("objective") or "")
     query = search_query
+    retrieval_brief = "\n".join(
+        part
+        for part in (
+            domain,
+            str(project.get("objective") or ""),
+            str(project.get("strategic_need") or ""),
+            goal,
+        )
+        if str(part or "").strip()
+    )
     selected_providers = providers or default_literature_providers(domain=domain, query=query)
     turns: list[dict[str, Any]] = []
     state: dict[str, Any] = {
@@ -191,6 +213,10 @@ def run_autogen_research_flow(
         "final_decision": "not_started",
         "socrates_verdict": "NOT_RUN",
         "mingli_blocked_reason": "",
+        "objective_decomposition": {
+            "status": decomposition.get("status") if isinstance(decomposition, dict) else "unknown",
+            "sub_hypothesis_count": len(decomposition.get("sub_hypotheses", [])) if isinstance(decomposition, dict) else 0,
+        },
     }
 
     def record_turn(round_name: str, speaker: str, content: Any, status: str = "completed", error: str = "") -> None:
@@ -216,15 +242,12 @@ def run_autogen_research_flow(
     try:
         if "zhizhi" in autogen_agent_keys(groupchat_spec):
             output = json.loads(
-                run_zhizhi_literature_analysis(
+                run_zhizhi_subhypothesis_analysis(
                     project_id=project_id,
-                    domain=domain,
-                    query=query,
-                    max_results=max_results,
+                    max_results_per_hypothesis=max(8, max_results // max(1, len(project.get("sub_hypotheses", [])))),
+                    import_top_k_per_hypothesis=max(2, import_top_k // max(1, len(project.get("sub_hypotheses", [])))),
                     providers=selected_providers,
-                    import_top_k=import_top_k,
                     use_llm=use_llm,
-                    live_coverage_check=True,
                 )
             )
             record_turn("round_0_literature_reading", "ZhiZhi_ToolAgent", summarize_output(output))
@@ -245,14 +268,22 @@ def run_autogen_research_flow(
             explicit_gaps = autogen_extract_ranked_gaps(output)
             state["tanxi_gap_count"] = len(explicit_gaps)
 
-            # Multi-gap selector: pick best combination by ingredient richness + type diversity
+            # Select a *pool* of core-grounded gaps. A migration novelty from a
+            # boundary extension is useful in the landscape, but cannot consume
+            # the scientific hypothesis slot merely because it is surprising.
             try:
-                from ._gap_detection import select_gap_combination_for_hypothesis, prefilter_gap_combination
+                from ._gap_detection import prefilter_gap_combination, select_mechanism_hypothesis_gaps
             except ImportError:
-                from _gap_detection import select_gap_combination_for_hypothesis, prefilter_gap_combination
-            selected_gaps = select_gap_combination_for_hypothesis(project, explicit_gaps, strategy="auto")
+                from _gap_detection import prefilter_gap_combination, select_mechanism_hypothesis_gaps
+            selected_gaps = select_mechanism_hypothesis_gaps(project, explicit_gaps, limit=3)
             state["selected_gap_count"] = len(selected_gaps)
-            state["best_gap_context"] = autogen_gap_context(selected_gaps if selected_gaps else explicit_gaps[:5])
+            state["best_gap_context"] = autogen_gap_context(selected_gaps)
+            state["mechanism_gap_pool"] = [str(item.get("gap_id") or "") for item in selected_gaps]
+            state.setdefault("human_review_checkpoints", {})["tanxi_core_gap_selection"] = {
+                "mode": "optional_audit_gate",
+                "message": "Review the core-grounded gap pool before experimental commitment; boundary-only gaps were excluded from mechanism generation.",
+                "gap_ids": state["mechanism_gap_pool"],
+            }
 
             # GRADE pre-screening: check literature coverage before hypothesis generation
             if selected_gaps:
@@ -265,140 +296,69 @@ def run_autogen_research_flow(
                 log_event("AUTOGEN", "grade_gap_prefilter", sufficient=grade_ok, coverage=round(grade_coverage, 3), reason=grade_reason)
 
         if "socrates" in autogen_agent_keys(groupchat_spec):
-            socrates_gap = (state.get("best_gap_context") or [None])[0]
-            if isinstance(socrates_gap, dict) and socrates_gap.get("gap_id"):
-                socrates_output = json.loads(
-                    run_socrates_mechanism_enrichment(
-                        project_id=project_id,
-                        gap_id=str(socrates_gap["gap_id"]),
-                        domain=domain,
-                        providers=selected_providers,
-                        # A completed mechanism contract is a hard gate for
-                        # MingLi. Keep retrieval bounded, but allow enough
-                        # rounds to cover every required mechanism field.
-                        max_iterations=4,
-                        max_fields_per_iteration=2,
-                        max_results_per_query=8,
-                        imports_per_query=1,
-                        use_llm=use_llm,
-                    )
-                )
-                record_turn("round_0_mechanism_evidence_enrichment", "Socrates_ToolAgent", summarize_output(socrates_output), str(socrates_output.get("verdict") or "completed"))
-                state["socrates_verdict"] = str(socrates_output.get("verdict") or "")
-                state["socrates_remaining_unresolved"] = socrates_output.get("remaining_unresolved", [])
-                # MingLi must see the evidence contract persisted by Socrates.
-                project = autogen_reload_project_state(project_id, load_project)
-            else:
-                state["socrates_verdict"] = "NO_GAP_AVAILABLE"
-
-        # A mechanism hypothesis may only be proposed once Socrates has
-        # resolved every contract field with cited evidence. This prevents an
-        # appealing but ungrounded distant-collision term from reaching MingLi.
-        if "mingli" in autogen_agent_keys(groupchat_spec) and not autogen_socrates_allows_mingli(state.get("socrates_verdict")):
-            state["mingli_blocked_reason"] = "socrates_mechanism_contract_incomplete"
-            state["socrates_next_step"] = {
-                "action": "continue_socrates_literature_enrichment",
-                "verdict": state.get("socrates_verdict"),
-                "remaining_unresolved": state.get("socrates_remaining_unresolved", []),
-                "requirement": "Resolve every mechanism-contract field with source-cited evidence before MingLi generation.",
-            }
-            state["final_decision"] = "mechanism_evidence_incomplete"
-            record_turn(
-                "round_0_mechanism_gate",
-                "Boxue_UserProxy",
-                state["socrates_next_step"],
-                "blocked",
-            )
-
-        if "mingli" in autogen_agent_keys(groupchat_spec) and not state.get("mingli_blocked_reason"):
-            # Collect all valid gaps for multi-gap aggregation with rotation on retry
-            all_valid_gaps = [
-                g for g in (state.get("best_gap_context") or [])
-                if isinstance(g, dict) and g.get("description")
-            ]
-            gap_context = autogen_select_gap_for_mingli(state)
-            mingli_max_attempts = 3
-            previous_rejection: dict[str, Any] = {}
-            for mingli_attempt in range(1, mingli_max_attempts + 1):
-                # On retry, rotate gap order so different gaps get primary emphasis
-                if mingli_attempt > 1 and len(all_valid_gaps) > 1:
-                    shift = mingli_attempt - 1
-                    rotated = all_valid_gaps[shift:] + all_valid_gaps[:shift]
-                    gap_context = autogen_aggregate_gaps_for_mingli(rotated)
-                    retry_guidance = {
-                        "mingli_acceptance_requirements": (
-                            "Provide only: a testable causal mechanism, an explicit falsification condition, "
-                            "a PaperGraph-grounded gap reference, and setup/metrics/baselines. Detailed mediator "
-                            "operationalization belongs to YanZhen and must not block this draft."
-                        ),
-                        "previous_rejection": previous_rejection,
-                        "attempt_number": mingli_attempt,
-                    }
-                    if isinstance(gap_context, dict):
-                        gap_context.update(retry_guidance)
-                    else:
-                        gap_context = retry_guidance
-
-                try:
-                    draft = json.loads(generate_idea(project_id=project_id, gap=gap_context, style="innovative", use_llm=use_llm))
-                    state["draft_idea_id"] = str(draft.get("draft_idea_id") or "")
-                    record_turn(f"round_1_proponent_position_attempt_{mingli_attempt}", "MingLi_AssistantAgent", summarize_output(draft))
-
-                    experiment = json.loads(
-                        design_experiment(
-                            project_id=project_id,
-                            idea_id=state["draft_idea_id"],
-                            constraints="academic lab scale; evidence-traceable; include baselines, ablations, regime shifts, and falsification criteria",
-                        )
-                    )
-                    record_turn(f"round_3_methodology_attempt_{mingli_attempt}", "MingLi_AssistantAgent", summarize_output(experiment))
-
-                    final = json.loads(
-                        finalize_idea(
-                            project_id=project_id,
-                            idea_id=state["draft_idea_id"],
-                            live_search=live_search,
-                            providers=selected_providers,
-                        )
-                    )
-                    final_status = str(final.get("status") or "completed")
-                    record_turn(f"round_1_hypothesis_finalization_attempt_{mingli_attempt}", "MingLi_AssistantAgent", summarize_output(final), final_status)
-
-                    # Check if finalized successfully
-                    if final_status == "finalized":
-                        state["hypothesis_id"] = str(final.get("hypothesis_id") or final.get("stored_hypothesis", {}).get("hypothesis_id") or "")
-                        state["finalize_status"] = final_status
-                        state["mingli_attempts"] = mingli_attempt
-                        break
-                    elif final_status in ("rejected_template", "rejected_specificity", "rejected_mingli_acceptance"):
-                        # Retry with guidance
-                        log_event("AUTOGEN", "mingli_retry", attempt=mingli_attempt, reason=final_status)
-                        previous_rejection = {
-                            "status": final_status,
-                            "reason": final.get("reason", ""),
-                            "missing": (
-                                final.get("mingli_acceptance", {}).get("missing", [])
-                                if isinstance(final.get("mingli_acceptance"), dict)
-                                else final.get("specificity_check", {}).get("missing_dimensions", [])
-                            ),
-                        }
-                        if mingli_attempt == mingli_max_attempts:
-                            state["finalize_status"] = final_status
-                            state["mingli_attempts"] = mingli_attempt
-                            state["hypothesis_id"] = ""
-                        continue
-                    else:
-                        # Other rejection (overlap, semantic plausibility, etc.) - don't retry
-                        state["hypothesis_id"] = str(final.get("hypothesis_id") or "")
-                        state["finalize_status"] = final_status
-                        state["mingli_attempts"] = mingli_attempt
-                        break
-                except Exception as mingli_exc:
-                    record_turn(f"mingli_error_attempt_{mingli_attempt}", "MingLi_AssistantAgent", {}, "error", str(mingli_exc))
-                    if mingli_attempt == mingli_max_attempts:
-                        state["finalize_status"] = "error"
-                        state["mingli_attempts"] = mingli_attempt
+            contracts: dict[str, dict[str, Any]] = {}
+            for gap in state.get("best_gap_context") or []:
+                if not isinstance(gap, dict) or not gap.get("gap_id"):
                     continue
+                result = json.loads(run_socrates_mechanism_enrichment(
+                    project_id=project_id, gap_id=str(gap["gap_id"]), domain=domain, providers=selected_providers,
+                    max_iterations=4, max_fields_per_iteration=2, max_results_per_query=8, imports_per_query=1, use_llm=use_llm,
+                ))
+                contracts[str(gap["gap_id"])] = result
+                record_turn("round_0_mechanism_evidence_enrichment_" + str(gap["gap_id"]), "Socrates_ToolAgent", summarize_output(result), str(result.get("verdict") or "completed"))
+            state["socrates_contracts"] = {key: value.get("verdict") for key, value in contracts.items()}
+            state["socrates_complete_gap_ids"] = [key for key, value in contracts.items() if autogen_socrates_allows_mingli(value.get("verdict"))]
+            state.setdefault("human_review_checkpoints", {})["socrates_evidence_contracts"] = {
+                "mode": "optional_audit_gate",
+                "message": "Inspect rejected evidence and unresolved fields before accepting a mechanism claim.",
+                "contracts": state["socrates_contracts"],
+            }
+            project = autogen_reload_project_state(project_id, load_project)
+
+        if "mingli" in autogen_agent_keys(groupchat_spec):
+            eligible_gaps = [
+                gap for gap in (state.get("best_gap_context") or [])
+                if isinstance(gap, dict) and str(gap.get("gap_id") or "") in set(state.get("socrates_complete_gap_ids") or [])
+            ]
+            if not eligible_gaps:
+                state["mingli_blocked_reason"] = "no_complete_socrates_contract_for_core_gap"
+                state["final_decision"] = "mechanism_evidence_incomplete"
+                record_turn("round_0_mechanism_gate", "Boxue_UserProxy", {"action": "targeted_evidence_retrieval", "contracts": state.get("socrates_contracts", {})}, "blocked")
+            else:
+                finalized_ids: list[str] = []
+                outcomes: list[dict[str, Any]] = []
+                # One rejected gap advances to the next eligible gap; it never
+                # retries the same generic template three times.
+                for position, gap_context in enumerate(eligible_gaps[:3], start=1):
+                    try:
+                        draft = json.loads(generate_idea(project_id=project_id, gap=gap_context, style="innovative", use_llm=use_llm))
+                        idea_id = str(draft.get("draft_idea_id") or "")
+                        record_turn(f"round_1_independent_hypothesis_{position}", "MingLi_AssistantAgent", summarize_output(draft))
+                        experiment = json.loads(design_experiment(project_id=project_id, idea_id=idea_id, constraints="academic lab scale; evidence-traceable; include controls, regime shifts, and falsification criteria"))
+                        record_turn(f"round_3_independent_methodology_{position}", "MingLi_AssistantAgent", summarize_output(experiment))
+                        final = json.loads(finalize_idea(project_id=project_id, idea_id=idea_id, live_search=live_search, providers=selected_providers))
+                        status = str(final.get("status") or "completed")
+                        hypothesis_id = str(final.get("hypothesis_id") or final.get("stored_hypothesis", {}).get("hypothesis_id") or "")
+                        outcomes.append({"gap_id": gap_context.get("gap_id"), "status": status, "hypothesis_id": hypothesis_id})
+                        record_turn(f"round_1_independent_finalization_{position}", "MingLi_AssistantAgent", summarize_output(final), status)
+                        if status == "finalized" and hypothesis_id:
+                            finalized_ids.append(hypothesis_id)
+                        else:
+                            log_event("AUTOGEN", "mingli_gap_skipped", gap_id=gap_context.get("gap_id"), reason=status)
+                    except Exception as mingli_exc:
+                        outcomes.append({"gap_id": gap_context.get("gap_id"), "status": "error", "error": str(mingli_exc)})
+                        record_turn(f"mingli_error_for_gap_{position}", "MingLi_AssistantAgent", {}, "error", str(mingli_exc))
+                state["mingli_independent_outcomes"] = outcomes
+                state["independent_hypothesis_ids"] = finalized_ids
+                state["hypothesis_id"] = finalized_ids[0] if finalized_ids else ""
+                state["finalize_status"] = "finalized" if finalized_ids else "revision_required"
+                if len(finalized_ids) >= 2:
+                    combined = json.loads(combine_finalized_hypotheses(project_id, finalized_ids))
+                    state["combined_hypothesis"] = combined
+                    combined_id = str((combined.get("hypothesis") or {}).get("hypothesis_id") or "")
+                    if combined_id:
+                        state["hypothesis_id"] = combined_id
+                        record_turn("round_1_combined_hypothesis", "MingLi_AssistantAgent", summarize_output(combined), "combined")
 
         # GRADE knowledge sufficiency check: verify PaperGraph has enough evidence before YanZhen
         if "yanzhen" in autogen_agent_keys(groupchat_spec) and state.get("hypothesis_id"):
@@ -638,6 +598,8 @@ def autogen_llm_config_ref(agent_key: str) -> str:
 
 def build_autogen_tool_registry() -> list[dict[str, str]]:
     return [
+        {"name": "decompose_research_objective", "owner": "Boxue_UserProxy"},
+        {"name": "run_zhizhi_subhypothesis_analysis", "owner": "ZhiZhi_ToolAgent"},
         {"name": "run_zhizhi_literature_analysis", "owner": "ZhiZhi_ToolAgent"},
         {"name": "run_tanxi_gap_exploration", "owner": "TanXi_ToolAgent"},
         {"name": "run_socrates_mechanism_enrichment", "owner": "Socrates_ToolAgent"},
@@ -652,8 +614,9 @@ def build_autogen_tool_registry() -> list[dict[str, str]]:
 
 def build_socratic_groupchat_protocol() -> list[dict[str, Any]]:
     return [
-        {"round": 0, "speaker": "ZhiZhi_ToolAgent", "objective": "Read literature and build PaperGraph evidence."},
-        {"round": 0, "speaker": "TanXi_ToolAgent", "objective": "Mine source-grounded gaps from PaperGraph."},
+        {"round": -1, "speaker": "Boxue_UserProxy", "objective": "Decompose the objective into independently falsifiable causal sub-hypotheses before retrieval."},
+        {"round": 0, "speaker": "ZhiZhi_ToolAgent", "objective": "Retrieve evidence per sub-hypothesis and build a causal-evidence PaperGraph."},
+        {"round": 0, "speaker": "TanXi_ToolAgent", "objective": "Mine source-grounded causal-chain breaks and evidence-window failures from PaperGraph."},
         {"round": 0, "speaker": "Socrates_ToolAgent", "objective": "Resolve mechanism evidence gaps through bounded ZhiZhi retrieval before hypothesis generation."},
         {"round": 1, "speaker": "MingLi_Proponent", "objective": "State and defend a gap-traceable hypothesis."},
         {"round": 2, "speaker": "DuZhi_Opponent", "objective": "Ask Socratic clarification, causal, constraint, and counterexample questions."},
