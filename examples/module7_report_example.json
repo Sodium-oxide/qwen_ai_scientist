@@ -1,0 +1,46 @@
+{
+  "schema_version": "1.0",
+  "module": "module7_code_engineer",
+  "module_version": "0.1.0",
+  "experiment_id": "demo_general_001",
+  "hypothesis_id": "hyp_general_001",
+  "branch": "general",
+  "simulation_type": "general",
+  "engine": "python-scientific",
+  "status": "success",
+  "generation_mode": "deterministic_template",
+  "qwen_model": "qwen-plus",
+  "code_file": "results/module7/demo_general_001/workspace/experiment.py",
+  "workspace": "results/module7/demo_general_001/workspace",
+  "result_path": "results/exp_general_result.json",
+  "repair_rounds_used": 0,
+  "max_repair_rounds": 5,
+  "attempts": [
+    {
+      "attempt": 0,
+      "kind": "initial",
+      "code_file": "results/module7/demo_general_001/workspace/experiment.py",
+      "static_validation": [],
+      "sandbox_report": "results/module7/demo_general_001/sandbox_runs/demo_general_001_attempt_0/execution_report.json",
+      "status": "success",
+      "error_summary": ""
+    }
+  ],
+  "downstream_contract": {
+    "consumer": "module8_mingbian",
+    "result_schema": "1.0",
+    "expected_result_file": "exp_general_result.json",
+    "required_fields": [
+      "schema_version",
+      "experiment_id",
+      "hypothesis_id",
+      "branch",
+      "simulation_type",
+      "engine",
+      "status",
+      "observations",
+      "artifacts"
+    ]
+  },
+  "failure_reason": null
+}

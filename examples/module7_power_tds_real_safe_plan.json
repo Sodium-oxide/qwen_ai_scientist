@@ -1,0 +1,63 @@
+{
+  "schema_version": "1.0",
+  "experiment_id": "demo_power_tds_real_safe_001",
+  "hypothesis": {
+    "id": "hyp_power_tds_real_safe_001",
+    "statement": "A short ANDES 5-bus transient test can produce controlled CCT and voltage-nadir evidence under Module 7 sandbox limits."
+  },
+  "domain": "power_system",
+  "objective": "Run a minimal real ANDES TDS case with strict local timeout and short simulation horizon.",
+  "task": {
+    "type": "transient_tds"
+  },
+  "dataset": {
+    "path": "D:/python/Lib/site-packages/andes/cases/5bus/pjm5bus.json",
+    "fallback": "ieee9_reduced_dynamic"
+  },
+  "parameters": {
+    "fault_bus": 3,
+    "fault_time_seconds": 0.05,
+    "simulation_end_seconds": 0.3,
+    "max_tds_simulation_seconds": 0.3,
+    "proposed_damping": 0.12,
+    "clearing_duration_grid": [0.01]
+  },
+  "baselines": [
+    {
+      "name": "base_damping",
+      "description": "Base damping setting."
+    }
+  ],
+  "metrics": [
+    {
+      "name": "cct_seconds",
+      "direction": "maximize",
+      "primary": true
+    },
+    {
+      "name": "max_rotor_angle_deg",
+      "direction": "minimize"
+    },
+    {
+      "name": "voltage_nadir_pu",
+      "direction": "maximize"
+    }
+  ],
+  "execution": {
+    "backend": "local",
+    "cpu_limit": 2,
+    "memory_limit_mb": 4096,
+    "timeout_seconds": 90,
+    "network_enabled": false,
+    "allow_real_tds": true,
+    "allow_long_tds": false,
+    "max_tds_simulation_seconds": 0.3,
+    "max_repair_rounds": 0
+  },
+  "generation": {
+    "mode": "template"
+  },
+  "output": {
+    "result_file": "exp_power_tds_real_safe_result.json"
+  }
+}

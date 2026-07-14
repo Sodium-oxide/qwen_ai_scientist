@@ -1,0 +1,36 @@
+{
+  "schema_version": "1.0",
+  "experiment_id": "analysis_power_tds_001",
+  "hypothesis_id": "hyp_power_tds_001",
+  "hypothesis": "提高等效阻尼可以提高临界清除时间、减小最大功角分离并改善电压最低点。",
+  "branch": "power",
+  "simulation_type": "tds",
+  "engine": "andes",
+  "status": "success",
+  "primary_metric": "cct_seconds",
+  "metadata": {"case_source": "synthetic_dynamic_analysis_fixture", "repeats": 6},
+  "metric_directions": {
+    "cct_seconds": "maximize",
+    "max_rotor_angle_deg": "minimize",
+    "voltage_nadir_pu": "maximize",
+    "stable": "maximize"
+  },
+  "success_criteria": {
+    "cct_seconds": {"minimum_absolute_improvement": 0.03}
+  },
+  "observations": [
+    {"condition": "baseline", "repeat": 0, "metrics": {"cct_seconds": 0.13, "max_rotor_angle_deg": 164, "voltage_nadir_pu": 0.73, "stable": true}},
+    {"condition": "proposed", "repeat": 0, "metrics": {"cct_seconds": 0.21, "max_rotor_angle_deg": 121, "voltage_nadir_pu": 0.83, "stable": true}},
+    {"condition": "baseline", "repeat": 1, "metrics": {"cct_seconds": 0.12, "max_rotor_angle_deg": 171, "voltage_nadir_pu": 0.71, "stable": false}},
+    {"condition": "proposed", "repeat": 1, "metrics": {"cct_seconds": 0.20, "max_rotor_angle_deg": 126, "voltage_nadir_pu": 0.82, "stable": true}},
+    {"condition": "baseline", "repeat": 2, "metrics": {"cct_seconds": 0.14, "max_rotor_angle_deg": 158, "voltage_nadir_pu": 0.75, "stable": true}},
+    {"condition": "proposed", "repeat": 2, "metrics": {"cct_seconds": 0.23, "max_rotor_angle_deg": 115, "voltage_nadir_pu": 0.85, "stable": true}},
+    {"condition": "baseline", "repeat": 3, "metrics": {"cct_seconds": 0.13, "max_rotor_angle_deg": 167, "voltage_nadir_pu": 0.72, "stable": true}},
+    {"condition": "proposed", "repeat": 3, "metrics": {"cct_seconds": 0.22, "max_rotor_angle_deg": 119, "voltage_nadir_pu": 0.84, "stable": true}},
+    {"condition": "baseline", "repeat": 4, "metrics": {"cct_seconds": 0.15, "max_rotor_angle_deg": 153, "voltage_nadir_pu": 0.76, "stable": true}},
+    {"condition": "proposed", "repeat": 4, "metrics": {"cct_seconds": 0.24, "max_rotor_angle_deg": 111, "voltage_nadir_pu": 0.86, "stable": true}},
+    {"condition": "baseline", "repeat": 5, "metrics": {"cct_seconds": 0.12, "max_rotor_angle_deg": 174, "voltage_nadir_pu": 0.70, "stable": false}},
+    {"condition": "proposed", "repeat": 5, "metrics": {"cct_seconds": 0.20, "max_rotor_angle_deg": 128, "voltage_nadir_pu": 0.81, "stable": true}}
+  ],
+  "artifacts": []
+}

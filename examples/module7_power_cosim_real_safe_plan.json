@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.0",
+  "experiment_id": "demo_power_cosim_real_safe_001",
+  "hypothesis": {
+    "id": "hyp_power_cosim_real_safe_001",
+    "statement": "A short AMS scheduling plus ANDES dynamic handoff can be executed under Module 7 sandbox limits."
+  },
+  "domain": "power_system",
+  "objective": "Run a minimal real AMS+ANDES co-simulation case with strict local timeout and short dynamic horizon.",
+  "task": {
+    "type": "dispatch_dynamic_cosim"
+  },
+  "dataset": {
+    "path": "D:/python/Lib/site-packages/ams/cases/5bus/pjm5bus_demo.json",
+    "dynamic_path": "D:/python/Lib/site-packages/andes/cases/5bus/pjm5bus.json",
+    "fallback": "ieee9_cosim"
+  },
+  "parameters": {
+    "repeats": 1,
+    "simulation_end_seconds": 0.3,
+    "max_tds_simulation_seconds": 0.3,
+    "proposed_damping": 0.16
+  },
+  "baselines": [
+    {
+      "name": "economic_dispatch_only",
+      "description": "Economic dispatch without dynamic feedback."
+    }
+  ],
+  "metrics": [
+    {
+      "name": "dispatch_cost",
+      "direction": "minimize",
+      "primary": true
+    },
+    {
+      "name": "voltage_nadir_pu",
+      "direction": "maximize"
+    }
+  ],
+  "execution": {
+    "backend": "local",
+    "cpu_limit": 2,
+    "memory_limit_mb": 4096,
+    "timeout_seconds": 120,
+    "network_enabled": false,
+    "allow_real_cosim": true,
+    "allow_long_tds": false,
+    "max_tds_simulation_seconds": 0.3,
+    "max_repair_rounds": 0
+  },
+  "generation": {
+    "mode": "template"
+  },
+  "output": {
+    "result_file": "exp_power_cosim_real_safe_result.json"
+  }
+}
