@@ -1,0 +1,43 @@
+{
+  "scores": {
+    "novelty": 7,
+    "quality": 5,
+    "clarity": 8,
+    "significance": 7,
+    "ethics": "pass"
+  },
+  "total_score": 27,
+  "strengths": [
+    "Clear and mathematically well-defined layer-wise importance scoring function combining attention variance and activation magnitude.",
+    "Pragmatic handling of KV-cache and RoPE compatibility via sparse masking avoids costly index remapping.",
+    "Adoption of Two-One-Sided Tests (TOST) for equivalence demonstrates a statistically mature approach compared to naive accuracy difference reporting.",
+    "Transparent reporting of hardware, software stack, decoding parameters, and profiling setup."
+  ],
+  "weaknesses": [
+    "Hardware-Software Mismatch: Claimed FLOP reduction and 1.65x speedup rely on `torch.nn.functional.scaled_dot_product_attention` boolean masks. Standard PyTorch SDPA does not implement structural sparsity; QK^T matmuls still execute fully, meaning wall-clock speedup will not align with analytical O(n_eff^2) claims without custom sparse kernels (e.g., FlashAttention with sparse layout or Triton).",
+    "Invalid Statistical Pooling: TOST results (p_lower=0.003, p_upper=0.012) are aggregated across MMLU, GSM8K, and HumanEval. Pooling heterogeneous benchmarks violates statistical independence and masks task-specific failure modes, particularly on GSM8K/HumanEval where reasoning is highly sensitive to token pruning.",
+    "Baseline Mismatch: LLMLingua performs prompt-level compression before model input, while H2O/SnapKV evict KV-cache entries. Comparing FLOP savings and accuracy directly to these paradigms lacks methodological parity.",
+    "Missing Bibliography & Calibration Details: The manuscript uses numbered citations [1]-[5] but provides no reference list. The '1,000 representative sequences' used for omega calibration are unspecified, raising reproducibility concerns regarding domain shift."
+  ],
+  "citation_check": {
+    "total_citations": 5,
+    "verified": 3,
+    "flagged_as_potentially_hallucinated": [
+      "[3] Static token pruning techniques",
+      "[4] Mixture-of-Experts (MoE) architectures"
+    ]
+  },
+  "reproducibility_assessment": "medium",
+  "claims_vs_results_alignment": "partially_aligned",
+  "questions_for_authors": [
+    "How do you reconcile the claimed 1.65x wall-clock speedup with the use of PyTorch's standard boolean-masked SDPA, which does not reduce actual GPU matrix multiplication FLOPs? Please provide Nsight Compute or CUPTI kernel-level profiling showing actual compute and memory-bound metrics.",
+    "The TOST equivalence test aggregates results across MMLU, GSM8K, and HumanEval into single p-values. Can you report per-benchmark confidence intervals and equivalence margins, and justify the statistical validity of pooling tasks with fundamentally different difficulty distributions and metrics?",
+    "What specific dataset constitutes the 1,000 calibration sequences, and how sensitive are the head-weighting coefficients omega_h^(l) to out-of-distribution inputs (e.g., switching from general knowledge to code)?",
+    "Since pruned tokens are masked rather than physically removed, how does AdaPrune handle the cumulative memory bandwidth cost of reading/writing unmasked KV-cache entries for discarded tokens across 32+ layers?"
+  ],
+  "recommended_action": "Weak Reject",
+  "confidence_in_recommendation": "medium",
+  "detailed_review": "AdaPrune addresses a timely and important problem in efficient LLM inference by proposing a layer-adaptive, training-free token pruning strategy. The mathematical formulation of the importance score is principled, combining attention variance (capturing token uniqueness) with activation norms (capturing feature strength), and the feedback-driven retention ratio is a thoughtful mechanism to stabilize pruning across depths. The use of binary masking to preserve RoPE indices and KV-cache layout demonstrates practical engineering awareness.\n\nHowever, the manuscript contains several critical methodological and reporting flaws that prevent acceptance in its current form. First, the claimed computational gains (42.7% FLOP reduction, 1.65x latency speedup) are not substantiated by the described implementation. PyTorch's `scaled_dot_product_attention` with a boolean `attn_mask` applies masking after the full QK^T computation; it does not exploit structural sparsity or reduce hardware-level FLOPs. Without a custom sparse attention kernel (e.g., Triton-based or modified FlashAttention), the measured wall-clock speedup will be dominated by memory bandwidth of the full KV-cache and will not scale with the analytical O(n_eff^2) formula. The authors must provide low-level GPU profiler traces (Nsight Systems/Compute) to validate actual compute savings.\n\nSecond, the statistical validation is flawed. Reporting a single TOST result pooled across MMLU, GSM8K, and HumanEval violates the assumption of identically distributed performance deltas. Reasoning tasks (GSM8K/HumanEval) typically exhibit higher variance and lower tolerance to context loss than factual recall (MMLU). Equivalence should be tested and reported per benchmark, with appropriate margins for each metric's scale. Additionally, Cohen's d=0.14 across pooled tasks is not interpretable without per-task breakdowns.\n\nThird, the baseline selection lacks parity. LLMLingua operates at the prompt-compression stage, fundamentally differing from intra-layer activation pruning. H2O and SnapKV focus on historical KV-cache eviction during autoregressive generation, whereas AdaPrune prunes input/intermediate tokens. A fair comparison requires matching the pruning granularity (e.g., comparing to PyramidKV, TOVA, or FastGen) and reporting identical metrics under identical hardware conditions.\n\nFinally, the reference list is entirely omitted, and citations [3] and [4] are generic placeholders. The calibration protocol (1,000 sequences for omega_h^(l)) lacks dataset specification, domain coverage, and sensitivity analysis. If the calibration data is biased toward specific domains, the learned head weights may degrade out-of-distribution performance.\n\nIn summary, while AdaPrune's core idea is sound and well-motivated, the disconnect between analytical FLOP claims and standard PyTorch implementation, coupled with improper statistical pooling and missing references, significantly undermines the experimental validity. The manuscript requires hardware-level speedup verification, disaggregated statistical reporting, baseline alignment, and complete citation formatting before reconsideration.",
+  "reviewed_at": "2026-07-12T20:58:27",
+  "pass_threshold_30": false
+}
