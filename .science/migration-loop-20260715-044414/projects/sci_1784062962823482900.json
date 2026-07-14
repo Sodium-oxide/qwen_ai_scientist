@@ -1,0 +1,706 @@
+{
+  "project_id": "sci_1784062962823482900",
+  "title": "Why can only some cells become other cells? Mechanisms of cellular potency, lineage restriction, and reprogramming",
+  "domain": "Cell Biology",
+  "declared_domain": "Stem Cell Biology; Developmental Biology; Cell Fate Determination; Epigenetics; Chromatin Biology; Cell Reprogramming; Regenerative Medicine",
+  "research_domains": [
+    {
+      "domain": "biology",
+      "domain_label": "Biology and Life Sciences",
+      "subfield": "cell_biology",
+      "label": "Cell Biology",
+      "matched_terms": [
+        "cell biology"
+      ],
+      "score": 1.45,
+      "source": "catalog_match",
+      "evidence_status": "DIRECT",
+      "family": "",
+      "family_canonical": "",
+      "disambiguation": {
+        "eligible": true,
+        "positive_context_hits": [],
+        "negative_context_hits": []
+      }
+    },
+    {
+      "domain": "biology",
+      "domain_label": "Biology and Life Sciences",
+      "subfield": "developmental_biology",
+      "label": "Developmental Biology",
+      "matched_terms": [
+        "developmental biology"
+      ],
+      "score": 1.45,
+      "source": "catalog_match",
+      "evidence_status": "DIRECT",
+      "family": "",
+      "family_canonical": "",
+      "disambiguation": {
+        "eligible": true,
+        "positive_context_hits": [],
+        "negative_context_hits": []
+      }
+    }
+  ],
+  "domain_resolution": {
+    "declared_domain": "Stem Cell Biology; Developmental Biology; Cell Fate Determination; Epigenetics; Chromatin Biology; Cell Reprogramming; Regenerative Medicine",
+    "primary_domain": "biology",
+    "primary_subfield": "cell_biology",
+    "primary_label": "Cell Biology",
+    "research_domains": [
+      {
+        "domain": "biology",
+        "domain_label": "Biology and Life Sciences",
+        "subfield": "cell_biology",
+        "label": "Cell Biology",
+        "matched_terms": [
+          "cell biology"
+        ],
+        "score": 1.45,
+        "source": "catalog_match",
+        "evidence_status": "DIRECT",
+        "family": "",
+        "family_canonical": "",
+        "disambiguation": {
+          "eligible": true,
+          "positive_context_hits": [],
+          "negative_context_hits": []
+        }
+      },
+      {
+        "domain": "biology",
+        "domain_label": "Biology and Life Sciences",
+        "subfield": "developmental_biology",
+        "label": "Developmental Biology",
+        "matched_terms": [
+          "developmental biology"
+        ],
+        "score": 1.45,
+        "source": "catalog_match",
+        "evidence_status": "DIRECT",
+        "family": "",
+        "family_canonical": "",
+        "disambiguation": {
+          "eligible": true,
+          "positive_context_hits": [],
+          "negative_context_hits": []
+        }
+      }
+    ],
+    "direct_match_count": 2,
+    "requested_domain_is_generic": false,
+    "requires_human_confirmation": true,
+    "resolution_source": "catalog_objective_and_brief",
+    "catalog_version": "natural_sciences_v2",
+    "context": "Cell Biology | Developmental Biology",
+    "interdisciplinary_profile": {
+      "active_domains": [
+        "biology"
+      ],
+      "is_interdisciplinary": false
+    }
+  },
+  "objective": "为什么只有部分细胞能够分化、转分化或被重编程为其他细胞类型，而多数已分化细胞的命运受到限制？请检验转录因子调控网络、染色质可及性、表观遗传记忆、DNA methylation、细胞谱系历史、干细胞生态位信号、细胞外基质、代谢状态和炎症微环境如何共同决定细胞可塑性，并解释胚胎干细胞、成人干细胞和诱导多能干细胞之间潜能差异。",
+  "strategic_need": "",
+  "research_brief": "创建并实际运行一个 AutoGen 科研闭环验证项目，不要只给计划或示例代码。项目标题：Why can only some cells become other cells? Mechanisms of cellular potency,\\n  lineage restriction, and reprogramming。研究领域：Stem Cell Biology；Developmental Biology；Cell Fate Determination；Epigenetics；Chromatin Biology；Cell Reprogramming；\\n  Regenerative Medicine。核心研究问题：为什么只有部分细胞能够分化、转分化或被重编程为其他细胞类型，而多数已分化细胞的命运受到限制？请检验转录因子调控网络、染色质可及性、表观遗传记\\n  忆、DNA methylation、细胞谱系历史、干细胞生态位信号、细胞外基质、代谢状态和炎症微环境如何共同决定细胞可塑性，并解释胚胎干细胞、成人干细胞和诱导多能干细胞之间潜能差异。\\n\\n  必须按以下闭环执行并保存真实项目状态：\\n  1. 先调用 create_research_project 创建项目，再调用 decompose_research_objective。将目标分解为不超过 6 个可检索、可证伪的子假设/子空间，至少覆盖：多能性转录因子网络；染色质可及性\\n  与表观遗传记忆；谱系承诺与发育限制；干细胞生态位和细胞外信号；iPSC 重编程屏障与 pioneer factors；细胞可塑性的安全性、肿瘤风险与再生医学限制。\\n  2. 创建 AutoGen groupchat，参与角色至少包括 Boxue、ZhiZhi、TanXi、Socrates、MingLi、YanZhen、DuZhi 和 BianLun；然后实际调用 run_autogen_research_flow，而不是只创建配置。使用\\n  Semantic Scholar、PubMed、bioRxiv、medRxiv 作为优先文献来源；允许系统加入 arXiv。每个子假设独立检索和导入，避免把所有主题混成一个宽泛查询。使用 max_results=72、import_top_k=30、\\n  max_round=12、run_debate=true；若已配置 Qwen/DashScope API，则 use_llm=true，否则 use_llm=false，但无论哪种情况都必须继续执行基于工具的证据闭环。\\n  3. ZhiZhi 必须为每个子假设保留检索式、search_id、导入数量、来源层级和证据不足状态。不得把缺少文献支持解释成科学结论；检索失败、限流或导入失败必须原样报告。\\n  4. 对每个有足够真实引用边的检索结果构建文献关系图，启用 run_louvain=true 和 louvain_resolution=1.0。Louvain 仅以真实引用/被引边作为默认结构依据，不得把 keyword_fallback 或\\n  search_result 人工边伪装为引用证据。识别结构社区、桥接论文、主题漂移/弱连接社区；弱连接社区只能标记低优先级或待复核，不能静默删除。\\n  5. 调用 build_louvain_community_knowledge_maps，将已导入论文映射到 Louvain 社区；分别建立社区内 method-scenario-benchmark-evidence 知识地图。若一个社区导入证据不足，输出\\n  representative_import_candidates 作为受控补证建议，不要自动批量导入。\\n  6. TanXi 基于全局知识地图和社区局部知识地图运行 gap 探索。只保留有 PaperGraph 证据、可解释机制和明确适用范围的 gap；明确区分真实机制缺口、证据不足、检索盲区和主题漂移。\\n  7. Socrates 对排名最高且证据最充分的机制 gap 补全因果链证据合同；MingLi 仅基于通过证据门控的 gap 生成可证伪假设，给出变量、预测、反例、实验对照、读出指标和失败判据；YanZhen 必须\\n  验证该假设的机制链、一致性、反例和所需补证。YanZhen 返回 FAIL 也属于有效验证结果，必须保留 required_actions，而不是改写为成功。\\n  8. 最终输出一个简明但完整的 JSON 摘要：project_id、groupchat_id、autogen_run_id、每个子空间的 search_id 与导入数、PaperGraph 论文数、Louvain 社区数、模块度、桥接论文、证据不足社\\n  区及其候选补证论文、TanXi ranked_gaps、Socrates verdict、hypothesis_id、MingLi 假设、YanZhen verdict、未解决证据缺口、下一步最小补证行动。所有科学结论必须可追溯到实际导入文献；\\n  没有证据时明确写 unsupported 或 insufficient_evidence。",
+  "research_brief_source": "verbatim_user_prompt",
+  "phase": "Gap Discovery",
+  "createdAt": 1784062962.8234868,
+  "updatedAt": 1784064401.7635193,
+  "papergraph": [],
+  "evidence": [],
+  "coverage_matrix": {},
+  "knowledge_gaps": [],
+  "hypotheses": [],
+  "keynotes": [],
+  "sub_hypotheses": [
+    {
+      "id": "SH1",
+      "focus": "多能性转录因子网络",
+      "causal_chain": [
+        "转录因子的激活或抑制",
+        "基因表达模式的变化",
+        "细胞分化潜能的改变"
+      ],
+      "independent_variable": "特定转录因子的表达水平",
+      "dependent_variables": [
+        "目标基因的表达水平"
+      ],
+      "controls": [
+        "未处理的对照细胞系"
+      ],
+      "quantifiable_bounds": "",
+      "threshold_to_test": "",
+      "falsification_condition": "转录因子表达水平变化但细胞分化潜能无显著改变",
+      "retrieval_query": "transcription factor network cell differentiation potency",
+      "query_variants": [
+        "transcription factor network cell differentiation potency",
+        "Research domains: Cell Biology | Developmental Biology Objective: 为什么只有部分细胞能够分化、转分化或被重编程为其他细胞类型，而多数已分化细胞的命运受到限制？请检验转录因子调控网络、染色质可及性、表观遗传记忆、DNA methylation、细胞谱系历史、干细胞生态位信号、细胞外基质、代谢状态和炎症微环境如何共同决定细胞可塑性，并解释胚胎干细胞、成人干细胞和诱导多能干细胞之间潜能差异。 多能性转录因子网络 causal mechanism experimental evidence",
+        "多能性转录因子网络 intervention observable outcome preprint"
+      ],
+      "evidence_window": {
+        "P0_latest_preprint": "recent preprint evidence requirement",
+        "P1_recent_primary": "recent primary-study requirement",
+        "P2_mechanism_or_theory": "mechanistic or theoretical evidence requirement",
+        "minimum_evidence_types": [
+          "observable",
+          "intervention_or_natural_experiment"
+        ]
+      },
+      "alternative_mechanisms": [
+        "其他信号通路影响细胞分化潜能"
+      ],
+      "status": "pending_retrieval",
+      "source_objective": "为什么只有部分细胞能够分化、转分化或被重编程为其他细胞类型，而多数已分化细胞的命运受到限制？请检验转录因子调控网络、染色质可及性、表观遗传记忆、DNA methylation、细胞谱系历史、干细胞生态位信号、细胞外基质、代谢状态和炎症微环境如何共同决定细胞可塑性，并解释胚胎干细胞、成人干细胞和诱导多能干细胞之间潜能差异。"
+    },
+    {
+      "id": "SH2",
+      "focus": "染色质可及性与表观遗传记忆",
+      "causal_chain": [
+        "染色质状态的改变",
+        "基因表达调控的变化",
+        "细胞重编程效率的提高或降低"
+      ],
+      "independent_variable": "染色质修饰酶的活性",
+      "dependent_variables": [
+        "染色质开放区域的数量"
+      ],
+      "controls": [
+        "未经处理的对照细胞"
+      ],
+      "quantifiable_bounds": "",
+      "threshold_to_test": "",
+      "falsification_condition": "染色质修饰酶活性变化但细胞重编程效率无显著改变",
+      "retrieval_query": "chromatin accessibility epigenetic memory reprogramming efficiency",
+      "query_variants": [
+        "chromatin accessibility epigenetic memory reprogramming efficiency",
+        "Research domains: Cell Biology | Developmental Biology Objective: 为什么只有部分细胞能够分化、转分化或被重编程为其他细胞类型，而多数已分化细胞的命运受到限制？请检验转录因子调控网络、染色质可及性、表观遗传记忆、DNA methylation、细胞谱系历史、干细胞生态位信号、细胞外基质、代谢状态和炎症微环境如何共同决定细胞可塑性，并解释胚胎干细胞、成人干细胞和诱导多能干细胞之间潜能差异。 染色质可及性与表观遗传记忆 causal mechanism experimental evidence",
+        "染色质可及性与表观遗传记忆 intervention observable outcome preprint"
+      ],
+      "evidence_window": {
+        "P0_latest_preprint": "recent preprint evidence requirement",
+        "P1_recent_primary": "recent primary-study requirement",
+        "P2_mechanism_or_theory": "mechanistic or theoretical evidence requirement",
+        "minimum_evidence_types": [
+          "observable",
+          "intervention_or_natural_experiment"
+        ]
+      },
+      "alternative_mechanisms": [
+        "DNA甲基化模式对细胞重编程的影响"
+      ],
+      "status": "pending_retrieval",
+      "source_objective": "为什么只有部分细胞能够分化、转分化或被重编程为其他细胞类型，而多数已分化细胞的命运受到限制？请检验转录因子调控网络、染色质可及性、表观遗传记忆、DNA methylation、细胞谱系历史、干细胞生态位信号、细胞外基质、代谢状态和炎症微环境如何共同决定细胞可塑性，并解释胚胎干细胞、成人干细胞和诱导多能干细胞之间潜能差异。"
+    },
+    {
+      "id": "SH3",
+      "focus": "谱系承诺与发育限制",
+      "causal_chain": [
+        "早期细胞命运决定",
+        "细胞谱系特异性标记的表达",
+        "细胞类型的不可逆性"
+      ],
+      "independent_variable": "细胞谱系特异性标记的初始表达",
+      "dependent_variables": [
+        "细胞谱系特异性标记的持续表达"
+      ],
+      "controls": [
+        "非谱系特异性的对照细胞"
+      ],
+      "quantifiable_bounds": "",
+      "threshold_to_test": "",
+      "falsification_condition": "谱系特异性标记在细胞分化后消失或变得不稳定",
+      "retrieval_query": "lineage commitment developmental restriction cell fate",
+      "query_variants": [
+        "lineage commitment developmental restriction cell fate",
+        "Research domains: Cell Biology | Developmental Biology Objective: 为什么只有部分细胞能够分化、转分化或被重编程为其他细胞类型，而多数已分化细胞的命运受到限制？请检验转录因子调控网络、染色质可及性、表观遗传记忆、DNA methylation、细胞谱系历史、干细胞生态位信号、细胞外基质、代谢状态和炎症微环境如何共同决定细胞可塑性，并解释胚胎干细胞、成人干细胞和诱导多能干细胞之间潜能差异。 谱系承诺与发育限制 causal mechanism experimental evidence",
+        "谱系承诺与发育限制 intervention observable outcome preprint"
+      ],
+      "evidence_window": {
+        "P0_latest_preprint": "recent preprint evidence requirement",
+        "P1_recent_primary": "recent primary-study requirement",
+        "P2_mechanism_or_theory": "mechanistic or theoretical evidence requirement",
+        "minimum_evidence_types": [
+          "observable",
+          "intervention_or_natural_experiment"
+        ]
+      },
+      "alternative_mechanisms": [
+        "外部信号对细胞谱系决定的影响"
+      ],
+      "status": "pending_retrieval",
+      "source_objective": "为什么只有部分细胞能够分化、转分化或被重编程为其他细胞类型，而多数已分化细胞的命运受到限制？请检验转录因子调控网络、染色质可及性、表观遗传记忆、DNA methylation、细胞谱系历史、干细胞生态位信号、细胞外基质、代谢状态和炎症微环境如何共同决定细胞可塑性，并解释胚胎干细胞、成人干细胞和诱导多能干细胞之间潜能差异。"
+    },
+    {
+      "id": "SH4",
+      "focus": "干细胞生态位和细胞外信号",
+      "causal_chain": [
+        "干细胞微环境的组成",
+        "细胞外信号分子的浓度",
+        "干细胞自我更新和分化的平衡"
+      ],
+      "independent_variable": "细胞外基质成分",
+      "dependent_variables": [
+        "干细胞自我更新率"
+      ],
+      "controls": [
+        "标准培养条件下的干细胞"
+      ],
+      "quantifiable_bounds": "",
+      "threshold_to_test": "",
+      "falsification_condition": "细胞外基质成分变化但干细胞行为无显著改变",
+      "retrieval_query": "stem cell niche extracellular matrix cell signaling",
+      "query_variants": [
+        "stem cell niche extracellular matrix cell signaling",
+        "Research domains: Cell Biology | Developmental Biology Objective: 为什么只有部分细胞能够分化、转分化或被重编程为其他细胞类型，而多数已分化细胞的命运受到限制？请检验转录因子调控网络、染色质可及性、表观遗传记忆、DNA methylation、细胞谱系历史、干细胞生态位信号、细胞外基质、代谢状态和炎症微环境如何共同决定细胞可塑性，并解释胚胎干细胞、成人干细胞和诱导多能干细胞之间潜能差异。 干细胞生态位和细胞外信号 causal mechanism experimental evidence",
+        "干细胞生态位和细胞外信号 intervention observable outcome preprint"
+      ],
+      "evidence_window": {
+        "P0_latest_preprint": "recent preprint evidence requirement",
+        "P1_recent_primary": "recent primary-study requirement",
+        "P2_mechanism_or_theory": "mechanistic or theoretical evidence requirement",
+        "minimum_evidence_types": [
+          "observable",
+          "intervention_or_natural_experiment"
+        ]
+      },
+      "alternative_mechanisms": [
+        "代谢状态对干细胞功能的影响"
+      ],
+      "status": "pending_retrieval",
+      "source_objective": "为什么只有部分细胞能够分化、转分化或被重编程为其他细胞类型，而多数已分化细胞的命运受到限制？请检验转录因子调控网络、染色质可及性、表观遗传记忆、DNA methylation、细胞谱系历史、干细胞生态位信号、细胞外基质、代谢状态和炎症微环境如何共同决定细胞可塑性，并解释胚胎干细胞、成人干细胞和诱导多能干细胞之间潜能差异。"
+    },
+    {
+      "id": "SH5",
+      "focus": "iPSC重编程屏障与pioneer factors",
+      "causal_chain": [
+        "先锋因子的引入",
+        "染色质结构的重塑",
+        "诱导多能干细胞的成功生成"
+      ],
+      "independent_variable": "先锋因子的表达",
+      "dependent_variables": [
+        "诱导多能干细胞的形成率"
+      ],
+      "controls": [
+        "缺乏先锋因子的对照细胞"
+      ],
+      "quantifiable_bounds": "",
+      "threshold_to_test": "",
+      "falsification_condition": "先锋因子存在但诱导多能干细胞形成率无显著提高",
+      "retrieval_query": "pioneer factors iPSC reprogramming barriers",
+      "query_variants": [
+        "pioneer factors iPSC reprogramming barriers",
+        "Research domains: Cell Biology | Developmental Biology Objective: 为什么只有部分细胞能够分化、转分化或被重编程为其他细胞类型，而多数已分化细胞的命运受到限制？请检验转录因子调控网络、染色质可及性、表观遗传记忆、DNA methylation、细胞谱系历史、干细胞生态位信号、细胞外基质、代谢状态和炎症微环境如何共同决定细胞可塑性，并解释胚胎干细胞、成人干细胞和诱导多能干细胞之间潜能差异。 iPSC重编程屏障与pioneer factors causal mechanism experimental evidence",
+        "iPSC重编程屏障与pioneer factors intervention observable outcome preprint"
+      ],
+      "evidence_window": {
+        "P0_latest_preprint": "recent preprint evidence requirement",
+        "P1_recent_primary": "recent primary-study requirement",
+        "P2_mechanism_or_theory": "mechanistic or theoretical evidence requirement",
+        "minimum_evidence_types": [
+          "observable",
+          "intervention_or_natural_experiment"
+        ]
+      },
+      "alternative_mechanisms": [
+        "其他转录因子对iPSC重编程的影响"
+      ],
+      "status": "pending_retrieval",
+      "source_objective": "为什么只有部分细胞能够分化、转分化或被重编程为其他细胞类型，而多数已分化细胞的命运受到限制？请检验转录因子调控网络、染色质可及性、表观遗传记忆、DNA methylation、细胞谱系历史、干细胞生态位信号、细胞外基质、代谢状态和炎症微环境如何共同决定细胞可塑性，并解释胚胎干细胞、成人干细胞和诱导多能干细胞之间潜能差异。"
+    },
+    {
+      "id": "SH6",
+      "focus": "细胞可塑性的安全性、肿瘤风险与再生医学限制",
+      "causal_chain": [
+        "细胞重编程技术的应用",
+        "潜在的致癌突变积累",
+        "再生医学中的安全性和有效性"
+      ],
+      "independent_variable": "重编程方法的选择",
+      "dependent_variables": [
+        "致癌突变的频率"
+      ],
+      "controls": [
+        "使用不同重编程方法的对照组"
+      ],
+      "quantifiable_bounds": "",
+      "threshold_to_test": "",
+      "falsification_condition": "重编程方法不同但致癌突变频率无显著差异",
+      "retrieval_query": "cell plasticity safety tumorigenic risk regenerative medicine",
+      "query_variants": [
+        "cell plasticity safety tumorigenic risk regenerative medicine",
+        "Research domains: Cell Biology | Developmental Biology Objective: 为什么只有部分细胞能够分化、转分化或被重编程为其他细胞类型，而多数已分化细胞的命运受到限制？请检验转录因子调控网络、染色质可及性、表观遗传记忆、DNA methylation、细胞谱系历史、干细胞生态位信号、细胞外基质、代谢状态和炎症微环境如何共同决定细胞可塑性，并解释胚胎干细胞、成人干细胞和诱导多能干细胞之间潜能差异。 细胞可塑性的安全性、肿瘤风险与再生医学限制 causal mechanism experimental evidence",
+        "细胞可塑性的安全性、肿瘤风险与再生医学限制 intervention observable outcome preprint"
+      ],
+      "evidence_window": {
+        "P0_latest_preprint": "recent preprint evidence requirement",
+        "P1_recent_primary": "recent primary-study requirement",
+        "P2_mechanism_or_theory": "mechanistic or theoretical evidence requirement",
+        "minimum_evidence_types": [
+          "observable",
+          "intervention_or_natural_experiment"
+        ]
+      },
+      "alternative_mechanisms": [
+        "炎症微环境对细胞可塑性的影响"
+      ],
+      "status": "pending_retrieval",
+      "source_objective": "为什么只有部分细胞能够分化、转分化或被重编程为其他细胞类型，而多数已分化细胞的命运受到限制？请检验转录因子调控网络、染色质可及性、表观遗传记忆、DNA methylation、细胞谱系历史、干细胞生态位信号、细胞外基质、代谢状态和炎症微环境如何共同决定细胞可塑性，并解释胚胎干细胞、成人干细胞和诱导多能干细胞之间潜能差异。"
+    }
+  ],
+  "objective_decomposition": {
+    "objective": "为什么只有部分细胞能够分化、转分化或被重编程为其他细胞类型，而多数已分化细胞的命运受到限制？请检验转录因子调控网络、染色质可及性、表观遗传记忆、DNA methylation、细胞谱系历史、干细胞生态位信号、细胞外基质、代谢状态和炎症微环境如何共同决定细胞可塑性，并解释胚胎干细胞、成人干细胞和诱导多能干细胞之间潜能差异。",
+    "domain": "Research domains: Cell Biology | Developmental Biology Objective: 为什么只有部分细胞能够分化、转分化或被重编程为其他细胞类型，而多数已分化细胞的命运受到限制？请检验转录因子调控网络、染色质可及性、表观遗传记忆、DNA methylation、细胞谱系历史、干细胞生态位信号、细胞外基质、代谢状态和炎症微环境如何共同决定细胞可塑性，并解释胚胎干细胞、成人干细胞和诱导多能干细胞之间潜能差异。",
+    "research_brief": "创建并实际运行一个 AutoGen 科研闭环验证项目，不要只给计划或示例代码。项目标题：Why can only some cells become other cells? Mechanisms of cellular potency,\\n  lineage restriction, and reprogramming。研究领域：Stem Cell Biology；Developmental Biology；Cell Fate Determination；Epigenetics；Chromatin Biology；Cell Reprogramming；\\n  Regenerative Medicine。核心研究问题：为什么只有部分细胞能够分化、转分化或被重编程为其他细胞类型，而多数已分化细胞的命运受到限制？请检验转录因子调控网络、染色质可及性、表观遗传记\\n  忆、DNA methylation、细胞谱系历史、干细胞生态位信号、细胞外基质、代谢状态和炎症微环境如何共同决定细胞可塑性，并解释胚胎干细胞、成人干细胞和诱导多能干细胞之间潜能差异。\\n\\n  必须按以下闭环执行并保存真实项目状态：\\n  1. 先调用 create_research_project 创建项目，再调用 decompose_research_objective。将目标分解为不超过 6 个可检索、可证伪的子假设/子空间，至少覆盖：多能性转录因子网络；染色质可及性\\n  与表观遗传记忆；谱系承诺与发育限制；干细胞生态位和细胞外信号；iPSC 重编程屏障与 pioneer factors；细胞可塑性的安全性、肿瘤风险与再生医学限制。\\n  2. 创建 AutoGen groupchat，参与角色至少包括 Boxue、ZhiZhi、TanXi、Socrates、MingLi、YanZhen、DuZhi 和 BianLun；然后实际调用 run_autogen_research_flow，而不是只创建配置。使用\\n  Semantic Scholar、PubMed、bioRxiv、medRxiv 作为优先文献来源；允许系统加入 arXiv。每个子假设独立检索和导入，避免把所有主题混成一个宽泛查询。使用 max_results=72、import_top_k=30、\\n  max_round=12、run_debate=true；若已配置 Qwen/DashScope API，则 use_llm=true，否则 use_llm=false，但无论哪种情况都必须继续执行基于工具的证据闭环。\\n  3. ZhiZhi 必须为每个子假设保留检索式、search_id、导入数量、来源层级和证据不足状态。不得把缺少文献支持解释成科学结论；检索失败、限流或导入失败必须原样报告。\\n  4. 对每个有足够真实引用边的检索结果构建文献关系图，启用 run_louvain=true 和 louvain_resolution=1.0。Louvain 仅以真实引用/被引边作为默认结构依据，不得把 keyword_fallback 或\\n  search_result 人工边伪装为引用证据。识别结构社区、桥接论文、主题漂移/弱连接社区；弱连接社区只能标记低优先级或待复核，不能静默删除。\\n  5. 调用 build_louvain_community_knowledge_maps，将已导入论文映射到 Louvain 社区；分别建立社区内 method-scenario-benchmark-evidence 知识地图。若一个社区导入证据不足，输出\\n  representative_import_candidates 作为受控补证建议，不要自动批量导入。\\n  6. TanXi 基于全局知识地图和社区局部知识地图运行 gap 探索。只保留有 PaperGraph 证据、可解释机制和明确适用范围的 gap；明确区分真实机制缺口、证据不足、检索盲区和主题漂移。\\n  7. Socrates 对排名最高且证据最充分的机制 gap 补全因果链证据合同；MingLi 仅基于通过证据门控的 gap 生成可证伪假设，给出变量、预测、反例、实验对照、读出指标和失败判据；YanZhen 必须\\n  验证该假设的机制链、一致性、反例和所需补证。YanZhen 返回 FAIL 也属于有效验证结果，必须保留 required_actions，而不是改写为成功。\\n  8. 最终输出一个简明但完整的 JSON 摘要：project_id、groupchat_id、autogen_run_id、每个子空间的 search_id 与导入数、PaperGraph 论文数、Louvain 社区数、模块度、桥接论文、证据不足社\\n  区及其候选补证论文、TanXi ranked_gaps、Socrates verdict、hypothesis_id、MingLi 假设、YanZhen verdict、未解决证据缺口、下一步最小补证行动。所有科学结论必须可追溯到实际导入文献；\\n  没有证据时明确写 unsupported 或 insufficient_evidence。",
+    "research_brief_source": "verbatim_project_brief",
+    "status": "ready_for_subhypothesis_retrieval",
+    "extractor": "llm",
+    "sub_hypotheses": [
+      {
+        "id": "SH1",
+        "focus": "多能性转录因子网络",
+        "causal_chain": [
+          "转录因子的激活或抑制",
+          "基因表达模式的变化",
+          "细胞分化潜能的改变"
+        ],
+        "independent_variable": "特定转录因子的表达水平",
+        "dependent_variables": [
+          "目标基因的表达水平"
+        ],
+        "controls": [
+          "未处理的对照细胞系"
+        ],
+        "quantifiable_bounds": "",
+        "threshold_to_test": "",
+        "falsification_condition": "转录因子表达水平变化但细胞分化潜能无显著改变",
+        "retrieval_query": "transcription factor network cell differentiation potency",
+        "query_variants": [
+          "transcription factor network cell differentiation potency",
+          "Research domains: Cell Biology | Developmental Biology Objective: 为什么只有部分细胞能够分化、转分化或被重编程为其他细胞类型，而多数已分化细胞的命运受到限制？请检验转录因子调控网络、染色质可及性、表观遗传记忆、DNA methylation、细胞谱系历史、干细胞生态位信号、细胞外基质、代谢状态和炎症微环境如何共同决定细胞可塑性，并解释胚胎干细胞、成人干细胞和诱导多能干细胞之间潜能差异。 多能性转录因子网络 causal mechanism experimental evidence",
+          "多能性转录因子网络 intervention observable outcome preprint"
+        ],
+        "evidence_window": {
+          "P0_latest_preprint": "recent preprint evidence requirement",
+          "P1_recent_primary": "recent primary-study requirement",
+          "P2_mechanism_or_theory": "mechanistic or theoretical evidence requirement",
+          "minimum_evidence_types": [
+            "observable",
+            "intervention_or_natural_experiment"
+          ]
+        },
+        "alternative_mechanisms": [
+          "其他信号通路影响细胞分化潜能"
+        ],
+        "status": "pending_retrieval",
+        "source_objective": "为什么只有部分细胞能够分化、转分化或被重编程为其他细胞类型，而多数已分化细胞的命运受到限制？请检验转录因子调控网络、染色质可及性、表观遗传记忆、DNA methylation、细胞谱系历史、干细胞生态位信号、细胞外基质、代谢状态和炎症微环境如何共同决定细胞可塑性，并解释胚胎干细胞、成人干细胞和诱导多能干细胞之间潜能差异。"
+      },
+      {
+        "id": "SH2",
+        "focus": "染色质可及性与表观遗传记忆",
+        "causal_chain": [
+          "染色质状态的改变",
+          "基因表达调控的变化",
+          "细胞重编程效率的提高或降低"
+        ],
+        "independent_variable": "染色质修饰酶的活性",
+        "dependent_variables": [
+          "染色质开放区域的数量"
+        ],
+        "controls": [
+          "未经处理的对照细胞"
+        ],
+        "quantifiable_bounds": "",
+        "threshold_to_test": "",
+        "falsification_condition": "染色质修饰酶活性变化但细胞重编程效率无显著改变",
+        "retrieval_query": "chromatin accessibility epigenetic memory reprogramming efficiency",
+        "query_variants": [
+          "chromatin accessibility epigenetic memory reprogramming efficiency",
+          "Research domains: Cell Biology | Developmental Biology Objective: 为什么只有部分细胞能够分化、转分化或被重编程为其他细胞类型，而多数已分化细胞的命运受到限制？请检验转录因子调控网络、染色质可及性、表观遗传记忆、DNA methylation、细胞谱系历史、干细胞生态位信号、细胞外基质、代谢状态和炎症微环境如何共同决定细胞可塑性，并解释胚胎干细胞、成人干细胞和诱导多能干细胞之间潜能差异。 染色质可及性与表观遗传记忆 causal mechanism experimental evidence",
+          "染色质可及性与表观遗传记忆 intervention observable outcome preprint"
+        ],
+        "evidence_window": {
+          "P0_latest_preprint": "recent preprint evidence requirement",
+          "P1_recent_primary": "recent primary-study requirement",
+          "P2_mechanism_or_theory": "mechanistic or theoretical evidence requirement",
+          "minimum_evidence_types": [
+            "observable",
+            "intervention_or_natural_experiment"
+          ]
+        },
+        "alternative_mechanisms": [
+          "DNA甲基化模式对细胞重编程的影响"
+        ],
+        "status": "pending_retrieval",
+        "source_objective": "为什么只有部分细胞能够分化、转分化或被重编程为其他细胞类型，而多数已分化细胞的命运受到限制？请检验转录因子调控网络、染色质可及性、表观遗传记忆、DNA methylation、细胞谱系历史、干细胞生态位信号、细胞外基质、代谢状态和炎症微环境如何共同决定细胞可塑性，并解释胚胎干细胞、成人干细胞和诱导多能干细胞之间潜能差异。"
+      },
+      {
+        "id": "SH3",
+        "focus": "谱系承诺与发育限制",
+        "causal_chain": [
+          "早期细胞命运决定",
+          "细胞谱系特异性标记的表达",
+          "细胞类型的不可逆性"
+        ],
+        "independent_variable": "细胞谱系特异性标记的初始表达",
+        "dependent_variables": [
+          "细胞谱系特异性标记的持续表达"
+        ],
+        "controls": [
+          "非谱系特异性的对照细胞"
+        ],
+        "quantifiable_bounds": "",
+        "threshold_to_test": "",
+        "falsification_condition": "谱系特异性标记在细胞分化后消失或变得不稳定",
+        "retrieval_query": "lineage commitment developmental restriction cell fate",
+        "query_variants": [
+          "lineage commitment developmental restriction cell fate",
+          "Research domains: Cell Biology | Developmental Biology Objective: 为什么只有部分细胞能够分化、转分化或被重编程为其他细胞类型，而多数已分化细胞的命运受到限制？请检验转录因子调控网络、染色质可及性、表观遗传记忆、DNA methylation、细胞谱系历史、干细胞生态位信号、细胞外基质、代谢状态和炎症微环境如何共同决定细胞可塑性，并解释胚胎干细胞、成人干细胞和诱导多能干细胞之间潜能差异。 谱系承诺与发育限制 causal mechanism experimental evidence",
+          "谱系承诺与发育限制 intervention observable outcome preprint"
+        ],
+        "evidence_window": {
+          "P0_latest_preprint": "recent preprint evidence requirement",
+          "P1_recent_primary": "recent primary-study requirement",
+          "P2_mechanism_or_theory": "mechanistic or theoretical evidence requirement",
+          "minimum_evidence_types": [
+            "observable",
+            "intervention_or_natural_experiment"
+          ]
+        },
+        "alternative_mechanisms": [
+          "外部信号对细胞谱系决定的影响"
+        ],
+        "status": "pending_retrieval",
+        "source_objective": "为什么只有部分细胞能够分化、转分化或被重编程为其他细胞类型，而多数已分化细胞的命运受到限制？请检验转录因子调控网络、染色质可及性、表观遗传记忆、DNA methylation、细胞谱系历史、干细胞生态位信号、细胞外基质、代谢状态和炎症微环境如何共同决定细胞可塑性，并解释胚胎干细胞、成人干细胞和诱导多能干细胞之间潜能差异。"
+      },
+      {
+        "id": "SH4",
+        "focus": "干细胞生态位和细胞外信号",
+        "causal_chain": [
+          "干细胞微环境的组成",
+          "细胞外信号分子的浓度",
+          "干细胞自我更新和分化的平衡"
+        ],
+        "independent_variable": "细胞外基质成分",
+        "dependent_variables": [
+          "干细胞自我更新率"
+        ],
+        "controls": [
+          "标准培养条件下的干细胞"
+        ],
+        "quantifiable_bounds": "",
+        "threshold_to_test": "",
+        "falsification_condition": "细胞外基质成分变化但干细胞行为无显著改变",
+        "retrieval_query": "stem cell niche extracellular matrix cell signaling",
+        "query_variants": [
+          "stem cell niche extracellular matrix cell signaling",
+          "Research domains: Cell Biology | Developmental Biology Objective: 为什么只有部分细胞能够分化、转分化或被重编程为其他细胞类型，而多数已分化细胞的命运受到限制？请检验转录因子调控网络、染色质可及性、表观遗传记忆、DNA methylation、细胞谱系历史、干细胞生态位信号、细胞外基质、代谢状态和炎症微环境如何共同决定细胞可塑性，并解释胚胎干细胞、成人干细胞和诱导多能干细胞之间潜能差异。 干细胞生态位和细胞外信号 causal mechanism experimental evidence",
+          "干细胞生态位和细胞外信号 intervention observable outcome preprint"
+        ],
+        "evidence_window": {
+          "P0_latest_preprint": "recent preprint evidence requirement",
+          "P1_recent_primary": "recent primary-study requirement",
+          "P2_mechanism_or_theory": "mechanistic or theoretical evidence requirement",
+          "minimum_evidence_types": [
+            "observable",
+            "intervention_or_natural_experiment"
+          ]
+        },
+        "alternative_mechanisms": [
+          "代谢状态对干细胞功能的影响"
+        ],
+        "status": "pending_retrieval",
+        "source_objective": "为什么只有部分细胞能够分化、转分化或被重编程为其他细胞类型，而多数已分化细胞的命运受到限制？请检验转录因子调控网络、染色质可及性、表观遗传记忆、DNA methylation、细胞谱系历史、干细胞生态位信号、细胞外基质、代谢状态和炎症微环境如何共同决定细胞可塑性，并解释胚胎干细胞、成人干细胞和诱导多能干细胞之间潜能差异。"
+      },
+      {
+        "id": "SH5",
+        "focus": "iPSC重编程屏障与pioneer factors",
+        "causal_chain": [
+          "先锋因子的引入",
+          "染色质结构的重塑",
+          "诱导多能干细胞的成功生成"
+        ],
+        "independent_variable": "先锋因子的表达",
+        "dependent_variables": [
+          "诱导多能干细胞的形成率"
+        ],
+        "controls": [
+          "缺乏先锋因子的对照细胞"
+        ],
+        "quantifiable_bounds": "",
+        "threshold_to_test": "",
+        "falsification_condition": "先锋因子存在但诱导多能干细胞形成率无显著提高",
+        "retrieval_query": "pioneer factors iPSC reprogramming barriers",
+        "query_variants": [
+          "pioneer factors iPSC reprogramming barriers",
+          "Research domains: Cell Biology | Developmental Biology Objective: 为什么只有部分细胞能够分化、转分化或被重编程为其他细胞类型，而多数已分化细胞的命运受到限制？请检验转录因子调控网络、染色质可及性、表观遗传记忆、DNA methylation、细胞谱系历史、干细胞生态位信号、细胞外基质、代谢状态和炎症微环境如何共同决定细胞可塑性，并解释胚胎干细胞、成人干细胞和诱导多能干细胞之间潜能差异。 iPSC重编程屏障与pioneer factors causal mechanism experimental evidence",
+          "iPSC重编程屏障与pioneer factors intervention observable outcome preprint"
+        ],
+        "evidence_window": {
+          "P0_latest_preprint": "recent preprint evidence requirement",
+          "P1_recent_primary": "recent primary-study requirement",
+          "P2_mechanism_or_theory": "mechanistic or theoretical evidence requirement",
+          "minimum_evidence_types": [
+            "observable",
+            "intervention_or_natural_experiment"
+          ]
+        },
+        "alternative_mechanisms": [
+          "其他转录因子对iPSC重编程的影响"
+        ],
+        "status": "pending_retrieval",
+        "source_objective": "为什么只有部分细胞能够分化、转分化或被重编程为其他细胞类型，而多数已分化细胞的命运受到限制？请检验转录因子调控网络、染色质可及性、表观遗传记忆、DNA methylation、细胞谱系历史、干细胞生态位信号、细胞外基质、代谢状态和炎症微环境如何共同决定细胞可塑性，并解释胚胎干细胞、成人干细胞和诱导多能干细胞之间潜能差异。"
+      },
+      {
+        "id": "SH6",
+        "focus": "细胞可塑性的安全性、肿瘤风险与再生医学限制",
+        "causal_chain": [
+          "细胞重编程技术的应用",
+          "潜在的致癌突变积累",
+          "再生医学中的安全性和有效性"
+        ],
+        "independent_variable": "重编程方法的选择",
+        "dependent_variables": [
+          "致癌突变的频率"
+        ],
+        "controls": [
+          "使用不同重编程方法的对照组"
+        ],
+        "quantifiable_bounds": "",
+        "threshold_to_test": "",
+        "falsification_condition": "重编程方法不同但致癌突变频率无显著差异",
+        "retrieval_query": "cell plasticity safety tumorigenic risk regenerative medicine",
+        "query_variants": [
+          "cell plasticity safety tumorigenic risk regenerative medicine",
+          "Research domains: Cell Biology | Developmental Biology Objective: 为什么只有部分细胞能够分化、转分化或被重编程为其他细胞类型，而多数已分化细胞的命运受到限制？请检验转录因子调控网络、染色质可及性、表观遗传记忆、DNA methylation、细胞谱系历史、干细胞生态位信号、细胞外基质、代谢状态和炎症微环境如何共同决定细胞可塑性，并解释胚胎干细胞、成人干细胞和诱导多能干细胞之间潜能差异。 细胞可塑性的安全性、肿瘤风险与再生医学限制 causal mechanism experimental evidence",
+          "细胞可塑性的安全性、肿瘤风险与再生医学限制 intervention observable outcome preprint"
+        ],
+        "evidence_window": {
+          "P0_latest_preprint": "recent preprint evidence requirement",
+          "P1_recent_primary": "recent primary-study requirement",
+          "P2_mechanism_or_theory": "mechanistic or theoretical evidence requirement",
+          "minimum_evidence_types": [
+            "observable",
+            "intervention_or_natural_experiment"
+          ]
+        },
+        "alternative_mechanisms": [
+          "炎症微环境对细胞可塑性的影响"
+        ],
+        "status": "pending_retrieval",
+        "source_objective": "为什么只有部分细胞能够分化、转分化或被重编程为其他细胞类型，而多数已分化细胞的命运受到限制？请检验转录因子调控网络、染色质可及性、表观遗传记忆、DNA methylation、细胞谱系历史、干细胞生态位信号、细胞外基质、代谢状态和炎症微环境如何共同决定细胞可塑性，并解释胚胎干细胞、成人干细胞和诱导多能干细胞之间潜能差异。"
+      }
+    ],
+    "combination_hypothesis": {
+      "statement": "这些独立机制共同作用，决定了细胞分化、转分化和重编程的能力，并解释了不同类型干细胞之间的潜能差异。",
+      "required_sub_hypothesis_ids": [
+        "SH1",
+        "SH2",
+        "SH3",
+        "SH4",
+        "SH5",
+        "SH6"
+      ],
+      "integration_test": "通过实验验证每个子假设的效果是否累加或相互依赖，以确定它们如何共同影响细胞可塑性。",
+      "status": "blocked_on_component_evidence"
+    },
+    "execution_constraints": {
+      "retrieval": [
+        "必须按以下闭环执行并保存真实项目状态：\n 1. 先调用 create_research_project 创建项目，再调用 decompose_research_objective。将目标分解为不超过 6 个可检索、可证伪的子假设/子空间，至少覆盖：多能性转录因子网络；染色质可及性\n 与表观遗传记忆；谱系承诺与发育限制；干细胞生态位和细胞外信号；iPSC 重编程屏障与 pioneer factors；细胞可塑性的安全性、肿瘤风险与再生医学限制。\n 2. 创建 AutoGen groupchat，参与角色至少包括 Boxue、ZhiZhi、TanXi、Socrates、MingLi、YanZhen、DuZhi 和 BianLun；然后实际调用 run_autogen_research_flow，而不是只创建配置。使用\n Semantic Scholar、PubMed、bioRxiv、medRxiv 作为优先文献来源；允许系统加入 arXiv。每个子假设独立检索和导入，避免把所有主题混成一个宽泛查询。使用 max_results=72、import_top_k=30、\n max_round=12、run_debate=true；若已配置 Qwen/DashScope API，则 use_llm=true，否则 use_llm=false，但无论哪种情况都必须继续执行基于工具的证据闭环。\n 3. ZhiZhi 必须为每个子假设保留检索式、search_id、导入数量、来源层级和证据不足状态。不得把缺少文献支持解释成科学结论；检索失败、限流或导入失败必须原样报告。\n 4. 对每个有足够真实引用边的检索结果构建文献关系图，启用 run_louvain=true 和 louvain_resolution=1.0。Louvain 仅以真实引用/被引边作为默认结构依据，不得把 keyword_fallback 或\n search_result 人工边伪装为引用证据。识别结构社区、桥接论文、主题漂移/弱连接社区；弱连接社区只能标记低优先级或待复核，不能静默删除。\n 5. 调用 build_louvain_community_knowledge_maps，将已导入论文映射到 Louvain 社区；分别建立社区内 method-scenario-benchmark-evidence 知识地图。若一个社区导入证据不足，输出\n representative_import_candidates 作为受控补证建议，不要自动批量导入。\n 6. TanXi 基于全局知识地图和社区局部知识地图运行 gap 探索。只保留有 PaperGraph 证据、可解释机制和明确适用范围的 gap；明确区分真实机制缺口、证据不足、检索盲区和主题漂移。\n 7. Socrates 对排名最高且证据最充分的机制 gap 补全因果链证据合同；MingLi 仅基于通过证据门控的 gap 生成可证伪假设，给出变量、预测、反例、实验对照、读出指标和失败判据；YanZhen 必须\n 验证该假设的机制链、一致性、反例和所需补证。YanZhen 返回 FAIL 也属于有效验证结果，必须保留 required_actions，而不是改写为成功。\n 8. 最终输出一个简明但完整的 JSON 摘要：project_id、groupchat_id、autogen_run_id、每个子空间的 search_id 与导入数、PaperGraph 论文数、Louvain 社区数、模块度、桥接论文、证据不足社\n 区及其候选补证论文、TanXi ranked_gaps、Socrates verdict、hypothesis_id、MingLi 假设、YanZhen verdict、未解决证据缺口、下一步最小补证行动。所有科学结论必须可追溯到实际导入文献；\n 没有证据时明确写 unsupported 或 insufficient_evidence。"
+      ],
+      "gap_detection": [
+        "只保留有 PaperGraph 证据、可解释机制和明确适用范围的 gap；明确区分真实机制缺口、证据不足、检索盲区和主题漂移。"
+      ],
+      "hypothesis": [
+        "MingLi 仅基于通过证据门控的 gap 生成可证伪假设，给出变量、预测、反例、实验对照、读出指标和失败判据。"
+      ],
+      "verification": [
+        "YanZhen 必须验证该假设的机制链、一致性、反例和所需补证。YanZhen 返回 FAIL 也属于有效验证结果，必须保留 required_actions，而不是改写为成功。"
+      ]
+    },
+    "decomposition_rules": [
+      "Each sub-hypothesis must expose an intervention, observable outcome, falsification condition, and evidence window.",
+      "A combined conclusion is admissible only after the relevant component hypotheses are independently evaluated.",
+      "Missing quantitative bounds remain explicitly unresolved; they must not be fabricated from the objective."
+    ],
+    "createdAt": 1784063024.995082
+  },
+  "causal_evidence_graph": {
+    "nodes": [],
+    "edges": [],
+    "chains": []
+  },
+  "mechanism_reports": [],
+  "pipeline_tasks": [],
+  "research_question_card": {
+    "version": "retrieval_strategy_v1",
+    "research_question": "干细胞生态位和细胞外信号 干细胞微环境的组成 -> 细胞外信号分子的浓度 -> 干细胞自我更新和分化的平衡 细胞外基质成分变化但干细胞行为无显著改变",
+    "domain": "Research domains: Cell Biology | Developmental Biology Objective: 为什么只有部分细胞能够分化、转分化或被重编程为其他细胞类型，而多数已分化细胞的命运受到限制？请检验转录因子调控网络、染色质可及性、表观遗传记忆、DNA methylation、细胞谱系历史、干细胞生态位信号、细胞外基质、代谢状态和炎症微环境如何共同决定细胞可塑性，并解释胚胎干细胞、成人干细胞和诱导多能干细胞之间潜能差异。",
+    "core_terms": [
+      "stem",
+      "niche",
+      "extracellular",
+      "matrix",
+      "signaling",
+      "domains",
+      "biology",
+      "developmental",
+      "objective",
+      "dna",
+      "methylation"
+    ],
+    "catalog_subfields": [
+      {
+        "domain": "biology",
+        "subfield": "molecular_and_cellular",
+        "terms": [
+          "biochemistry",
+          "cell biology",
+          "molecular biology",
+          "biophysics",
+          "developmental biology"
+        ]
+      },
+      {
+        "domain": "biology",
+        "subfield": "cell_biology",
+        "terms": [
+          "cell biology"
+        ]
+      },
+      {
+        "domain": "biology",
+        "subfield": "developmental_biology",
+        "terms": [
+          "developmental biology"
+        ]
+      }
+    ],
+    "causal_questions": [
+      "What is necessary or sufficient for the proposed effect?",
+      "What mediates the relationship, and what alternative paths remain plausible?",
+      "Under which model, stage, time, or boundary condition does the relationship fail?"
+    ],
+    "accepted_evidence": [
+      "genetic_or_pharmacological_perturbation",
+      "rescue_or_epistasis",
+      "time_resolved_measurement",
+      "lineage_or_context_matched_validation",
+      "orthogonal_multi_modal_readout"
+    ],
+    "boundary_policy": {
+      "normal_cell_fate_scope": false,
+      "bridge_terms": [],
+      "explicit_exclusion_terms": [],
+      "requires_human_confirmation": false,
+      "instruction": "Use the stated project boundary when assigning a paper role."
+    },
+    "paper_role_policy": {
+      "CORE": "Directly supports the bounded research question or supplies context-matched mechanism evidence.",
+      "BRIDGE": "Supplies transferable mechanism, terminology, or background but cannot alone support the core causal claim.",
+      "EXCLUDE": "Conflicts with an explicit project boundary or final domain gate and must not enter core reasoning."
+    }
+  }
+}

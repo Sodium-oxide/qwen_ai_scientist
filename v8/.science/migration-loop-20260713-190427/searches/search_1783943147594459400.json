@@ -1,0 +1,749 @@
+{
+  "search_id": "search_1783943147594459400",
+  "query": "migratory animals visual landmarks navigation",
+  "source_query": "migratory animals visual landmarks navigation",
+  "query_language": {
+    "query": "migratory animals visual landmarks navigation",
+    "source_query": "migratory animals visual landmarks navigation",
+    "translation_method": "already_english"
+  },
+  "synonym_expansion_used": false,
+  "domain": "Natural Science",
+  "research_question_card": {
+    "version": "retrieval_strategy_v1",
+    "research_question": "Investigate the mechanisms by which migratory animals navigate, including visual landmarks, solar and stellar compasses, magnetic-particle or biogenic-mineral mechanisms, electromagnetic induction, and radical-pair or cryptochrome magnetoreception. Focus on cross-taxon and cross-environment causal-mechanism questions, treating evidence as context-compatible only when appropriate.",
+    "domain": "Natural Science",
+    "core_terms": [
+      "migratory",
+      "animals",
+      "visual",
+      "landmarks",
+      "navigation",
+      "natural",
+      "investigate",
+      "mechanisms",
+      "which",
+      "navigate",
+      "including",
+      "solar",
+      "and",
+      "stellar",
+      "compasses",
+      "magnetic-particle",
+      "biogenic-mineral",
+      "electromagnetic"
+    ],
+    "catalog_subfields": [
+      {
+        "domain": "biology",
+        "subfield": "ecology_and_evolution",
+        "terms": [
+          "ecology",
+          "evolutionary biology",
+          "evolution",
+          "conservation biology",
+          "population biology"
+        ]
+      },
+      {
+        "domain": "physics",
+        "subfield": "astrophysics",
+        "terms": [
+          "astro-ph",
+          "astrophysics of galaxies",
+          "cosmology and nongalactic astrophysics",
+          "earth and planetary astrophysics",
+          "high energy astrophysical phenomena"
+        ]
+      }
+    ],
+    "causal_questions": [
+      "What is necessary or sufficient for the proposed effect?",
+      "What mediates the relationship, and what alternative paths remain plausible?",
+      "Under which model, stage, time, or boundary condition does the relationship fail?"
+    ],
+    "accepted_evidence": [
+      "genetic_or_pharmacological_perturbation",
+      "rescue_or_epistasis",
+      "time_resolved_measurement",
+      "lineage_or_context_matched_validation",
+      "orthogonal_multi_modal_readout"
+    ],
+    "boundary_policy": {
+      "normal_cell_fate_scope": false,
+      "bridge_terms": [],
+      "explicit_exclusion_terms": [],
+      "requires_human_confirmation": false,
+      "instruction": "Use the stated project boundary when assigning a paper role."
+    },
+    "paper_role_policy": {
+      "CORE": "Directly supports the bounded research question or supplies context-matched mechanism evidence.",
+      "BRIDGE": "Supplies transferable mechanism, terminology, or background but cannot alone support the core causal claim.",
+      "EXCLUDE": "Conflicts with an explicit project boundary or final domain gate and must not enter core reasoning."
+    },
+    "retrieval_query": "migratory animals visual landmarks navigation"
+  },
+  "focus_branches": [],
+  "providers": [
+    "semantic_scholar"
+  ],
+  "requested_providers": [
+    "semantic_scholar",
+    "pubmed"
+  ],
+  "pubmed_excluded_by_domain": true,
+  "preprint_layers": [
+    "L0_review",
+    "L3_preprint",
+    "L4_regular"
+  ],
+  "preprint_scan_limit": null,
+  "preprint_provider_result_target": 0,
+  "createdAt": 1783943148.566756,
+  "strategy": "stratified_cascade",
+  "query_plan": [
+    {
+      "branch": "landscape",
+      "query": "(migratory animals visual landmarks navigation) AND (review OR survey OR overview)",
+      "purpose": "domain map, terminology, and established mechanisms",
+      "query_family": "landscape"
+    },
+    {
+      "branch": "direct_mechanism",
+      "query": "(migratory animals visual landmarks navigation) AND (mechanism OR causal OR perturbation OR mediation OR necessary OR sufficient)",
+      "purpose": "direct causal and mechanistic evidence",
+      "query_family": "direct_mechanism"
+    },
+    {
+      "branch": "barrier_failure",
+      "query": "(migratory animals visual landmarks navigation) AND (barrier OR limitation OR inefficiency OR resistance OR incomplete OR failure)",
+      "purpose": "barriers, limitations, inefficiency, and anomalous observations",
+      "query_family": "barrier_failure"
+    },
+    {
+      "branch": "counter_evidence",
+      "query": "(migratory animals visual landmarks navigation) AND (context dependent OR contradictory OR alternative mechanism OR boundary condition)",
+      "purpose": "boundary conditions, alternative mechanisms, and contradictory evidence",
+      "query_family": "counter_evidence"
+    },
+    {
+      "branch": "frontier",
+      "query": "(migratory animals visual landmarks navigation) AND (recent OR latest OR preprint)",
+      "purpose": "recent frontier work and preprints",
+      "query_family": "frontier"
+    },
+    {
+      "branch": "catalog_biology_ecology_and_evolution",
+      "query": "(migratory animals visual landmarks navigation) AND (ecology OR evolutionary biology OR evolution OR conservation biology)",
+      "purpose": "cover a catalog-matched subfield without broadening the core question to unrelated disciplines",
+      "query_family": "catalog_subfield"
+    },
+    {
+      "branch": "catalog_physics_astrophysics",
+      "query": "(migratory animals visual landmarks navigation) AND (astro-ph OR astrophysics of galaxies OR cosmology and nongalactic astrophysics OR earth and planetary astrophysics)",
+      "purpose": "cover a catalog-matched subfield without broadening the core question to unrelated disciplines",
+      "query_family": "catalog_subfield"
+    }
+  ],
+  "strata": [
+    {
+      "layer": "L3_preprint",
+      "priority": "P0",
+      "label": "P0 latest preprint / frontier signal",
+      "quota": 0,
+      "query_suffix": "",
+      "year_policy": {
+        "min_year": null,
+        "max_year": 2026,
+        "purpose": "upper-bound guard; recency rules provide the lower bound"
+      },
+      "target": 0,
+      "selected": 0,
+      "carried_to_next": 0
+    },
+    {
+      "layer": "L2_top_latest",
+      "priority": "P1",
+      "label": "P1 recent top-venue primary evidence",
+      "quota": 2,
+      "query_suffix": "latest recent top journal high impact breakthrough advance frontier",
+      "year_policy": {
+        "min_year": null,
+        "max_year": 2026,
+        "purpose": "upper-bound guard; recency rules provide the lower bound"
+      },
+      "target": 2,
+      "candidate_count": 0,
+      "raw_candidate_count": 0,
+      "selected": 0,
+      "domain_rejected": 0,
+      "recovery_used": "",
+      "preprint_recovery": {},
+      "carried_to_next": 0,
+      "unfilled_reserved_quota": 2
+    },
+    {
+      "layer": "L0_review",
+      "priority": "P3",
+      "label": "P3 review / field map",
+      "quota": 1,
+      "query_suffix": "review survey progress perspective tutorial systematic review meta-analysis",
+      "year_policy": {
+        "min_year": 2010,
+        "max_year": 2026,
+        "purpose": "modern review and regular evidence window"
+      },
+      "target": 1,
+      "candidate_count": 0,
+      "raw_candidate_count": 0,
+      "selected": 0,
+      "domain_rejected": 0,
+      "recovery_used": "",
+      "preprint_recovery": {},
+      "carried_to_next": 0,
+      "unfilled_reserved_quota": 1
+    },
+    {
+      "layer": "L1_milestone",
+      "priority": "P4",
+      "label": "P4 milestone / historical foundation",
+      "quota": 1,
+      "query_suffix": "seminal foundational highly cited landmark classic influential",
+      "year_policy": {
+        "min_year": 1900,
+        "max_year": 2026,
+        "purpose": "historical and conceptual foundations"
+      },
+      "target": 1,
+      "candidate_count": 0,
+      "raw_candidate_count": 0,
+      "selected": 0,
+      "domain_rejected": 0,
+      "recovery_used": "",
+      "preprint_recovery": {},
+      "carried_to_next": 0,
+      "unfilled_reserved_quota": 1
+    },
+    {
+      "layer": "L4_regular",
+      "priority": "P2",
+      "label": "P2 primary experimental or theoretical evidence",
+      "quota": 4,
+      "query_suffix": "experimental theoretical mechanism measurement validation",
+      "year_policy": {
+        "min_year": 2010,
+        "max_year": 2026,
+        "purpose": "modern review and regular evidence window"
+      },
+      "target": 4,
+      "candidate_count": 0,
+      "raw_candidate_count": 0,
+      "selected": 0,
+      "domain_rejected": 0,
+      "recovery_used": "",
+      "preprint_recovery": {},
+      "carried_to_next": 0,
+      "unfilled_reserved_quota": 4
+    },
+    {
+      "layer": "L4_regular_backfill",
+      "label": "regular journal / quota backfill",
+      "year_policy": {
+        "min_year": 2010,
+        "max_year": 2026,
+        "purpose": "modern review and regular evidence window"
+      },
+      "quota": 4,
+      "target": 4,
+      "candidate_count": 0,
+      "selected": 0,
+      "domain_rejected": 0,
+      "carried_to_next": 0,
+      "unfilled_reserved_quota": 4
+    },
+    {
+      "layer": "L4_controlled_backfill",
+      "label": "capped regular-evidence replacement for unfilled special layers",
+      "year_policy": {
+        "min_year": 2010,
+        "max_year": 2026,
+        "purpose": "modern review and regular evidence window"
+      },
+      "quota": 3,
+      "target": 3,
+      "candidate_count": 0,
+      "selected": 0,
+      "domain_rejected": 0,
+      "source_layers": [
+        "L2_top_latest",
+        "L0_review",
+        "L1_milestone"
+      ],
+      "carried_to_next": 0,
+      "unfilled_reserved_quota": 3
+    }
+  ],
+  "knowledge_pyramid": {
+    "query": "migratory animals visual landmarks navigation",
+    "root_result_index": null,
+    "root_node": null,
+    "root_policy": "Prefer a high-impact review as the knowledge-map root. Only a clearly superior Nature/Science/Cell/PNAS-level paper should override it as the seed.",
+    "layers": {
+      "L0_review": [],
+      "L1A_milestone": [],
+      "L1B_top_latest": [],
+      "L1C_preprint": [],
+      "L2_regular": []
+    },
+    "edges": [],
+    "strata": [
+      {
+        "layer": "L3_preprint",
+        "priority": "P0",
+        "label": "P0 latest preprint / frontier signal",
+        "quota": 0,
+        "query_suffix": "",
+        "year_policy": {
+          "min_year": null,
+          "max_year": 2026,
+          "purpose": "upper-bound guard; recency rules provide the lower bound"
+        },
+        "target": 0,
+        "selected": 0,
+        "carried_to_next": 0
+      },
+      {
+        "layer": "L2_top_latest",
+        "priority": "P1",
+        "label": "P1 recent top-venue primary evidence",
+        "quota": 2,
+        "query_suffix": "latest recent top journal high impact breakthrough advance frontier",
+        "year_policy": {
+          "min_year": null,
+          "max_year": 2026,
+          "purpose": "upper-bound guard; recency rules provide the lower bound"
+        },
+        "target": 2,
+        "candidate_count": 0,
+        "raw_candidate_count": 0,
+        "selected": 0,
+        "domain_rejected": 0,
+        "recovery_used": "",
+        "preprint_recovery": {},
+        "carried_to_next": 0,
+        "unfilled_reserved_quota": 2
+      },
+      {
+        "layer": "L0_review",
+        "priority": "P3",
+        "label": "P3 review / field map",
+        "quota": 1,
+        "query_suffix": "review survey progress perspective tutorial systematic review meta-analysis",
+        "year_policy": {
+          "min_year": 2010,
+          "max_year": 2026,
+          "purpose": "modern review and regular evidence window"
+        },
+        "target": 1,
+        "candidate_count": 0,
+        "raw_candidate_count": 0,
+        "selected": 0,
+        "domain_rejected": 0,
+        "recovery_used": "",
+        "preprint_recovery": {},
+        "carried_to_next": 0,
+        "unfilled_reserved_quota": 1
+      },
+      {
+        "layer": "L1_milestone",
+        "priority": "P4",
+        "label": "P4 milestone / historical foundation",
+        "quota": 1,
+        "query_suffix": "seminal foundational highly cited landmark classic influential",
+        "year_policy": {
+          "min_year": 1900,
+          "max_year": 2026,
+          "purpose": "historical and conceptual foundations"
+        },
+        "target": 1,
+        "candidate_count": 0,
+        "raw_candidate_count": 0,
+        "selected": 0,
+        "domain_rejected": 0,
+        "recovery_used": "",
+        "preprint_recovery": {},
+        "carried_to_next": 0,
+        "unfilled_reserved_quota": 1
+      },
+      {
+        "layer": "L4_regular",
+        "priority": "P2",
+        "label": "P2 primary experimental or theoretical evidence",
+        "quota": 4,
+        "query_suffix": "experimental theoretical mechanism measurement validation",
+        "year_policy": {
+          "min_year": 2010,
+          "max_year": 2026,
+          "purpose": "modern review and regular evidence window"
+        },
+        "target": 4,
+        "candidate_count": 0,
+        "raw_candidate_count": 0,
+        "selected": 0,
+        "domain_rejected": 0,
+        "recovery_used": "",
+        "preprint_recovery": {},
+        "carried_to_next": 0,
+        "unfilled_reserved_quota": 4
+      },
+      {
+        "layer": "L4_regular_backfill",
+        "label": "regular journal / quota backfill",
+        "year_policy": {
+          "min_year": 2010,
+          "max_year": 2026,
+          "purpose": "modern review and regular evidence window"
+        },
+        "quota": 4,
+        "target": 4,
+        "candidate_count": 0,
+        "selected": 0,
+        "domain_rejected": 0,
+        "carried_to_next": 0,
+        "unfilled_reserved_quota": 4
+      },
+      {
+        "layer": "L4_controlled_backfill",
+        "label": "capped regular-evidence replacement for unfilled special layers",
+        "year_policy": {
+          "min_year": 2010,
+          "max_year": 2026,
+          "purpose": "modern review and regular evidence window"
+        },
+        "quota": 3,
+        "target": 3,
+        "candidate_count": 0,
+        "selected": 0,
+        "domain_rejected": 0,
+        "source_layers": [
+          "L2_top_latest",
+          "L0_review",
+          "L1_milestone"
+        ],
+        "carried_to_next": 0,
+        "unfilled_reserved_quota": 3
+      }
+    ]
+  },
+  "evidence_window_alerts": [
+    {
+      "priority": "P0",
+      "status": "insufficient_preprint_evidence",
+      "action": "Do not fill this frontier-evidence requirement with older literature; narrow or defer the affected sub-hypothesis."
+    }
+  ],
+  "total_results": 0,
+  "results": [],
+  "provider_blocks": [
+    {
+      "provider": "semantic_scholar",
+      "query": "(migratory animals visual landmarks navigation) AND (review OR survey OR overview)",
+      "status": "error",
+      "error": "Semantic Scholar rate limited after 1 attempts; circuit_retry_after_seconds=30.0: HTTP 429: {\"message\": \"Too Many Requests. Please wait and try again or apply for a key for higher rate limits. https://www.semanticscholar.org/product/api#api-key-form\", \"code\": \"429\"}",
+      "results": [],
+      "next_step": "Network/API failed. Retry later, configure API keys, or use manual import_literature_text.",
+      "query_branch": "landscape",
+      "retrieval_strategy": "broad_recall_then_recent_top_venue_rerank"
+    },
+    {
+      "provider": "semantic_scholar",
+      "query": "(migratory animals visual landmarks navigation) AND (mechanism OR causal OR perturbation OR mediation OR necessary OR sufficient)",
+      "status": "error",
+      "error": "Semantic Scholar circuit open; retry_after_seconds=30.0",
+      "results": [],
+      "next_step": "Network/API failed. Retry later, configure API keys, or use manual import_literature_text.",
+      "query_branch": "direct_mechanism",
+      "retrieval_strategy": "broad_recall_then_recent_top_venue_rerank"
+    },
+    {
+      "provider": "semantic_scholar",
+      "query": "(migratory animals visual landmarks navigation) AND (barrier OR limitation OR inefficiency OR resistance OR incomplete OR failure)",
+      "status": "error",
+      "error": "Semantic Scholar circuit open; retry_after_seconds=30.0",
+      "results": [],
+      "next_step": "Network/API failed. Retry later, configure API keys, or use manual import_literature_text.",
+      "query_branch": "barrier_failure",
+      "retrieval_strategy": "broad_recall_then_recent_top_venue_rerank"
+    },
+    {
+      "provider": "semantic_scholar",
+      "query": "(migratory animals visual landmarks navigation) AND (context dependent OR contradictory OR alternative mechanism OR boundary condition)",
+      "status": "error",
+      "error": "Semantic Scholar circuit open; retry_after_seconds=30.0",
+      "results": [],
+      "next_step": "Network/API failed. Retry later, configure API keys, or use manual import_literature_text.",
+      "query_branch": "counter_evidence",
+      "retrieval_strategy": "broad_recall_then_recent_top_venue_rerank"
+    },
+    {
+      "provider": "semantic_scholar",
+      "query": "(migratory animals visual landmarks navigation) AND (recent OR latest OR preprint)",
+      "status": "error",
+      "error": "Semantic Scholar circuit open; retry_after_seconds=30.0",
+      "results": [],
+      "next_step": "Network/API failed. Retry later, configure API keys, or use manual import_literature_text.",
+      "query_branch": "frontier",
+      "retrieval_strategy": "broad_recall_then_recent_top_venue_rerank"
+    },
+    {
+      "provider": "semantic_scholar",
+      "query": "(migratory animals visual landmarks navigation) AND (review OR survey OR overview) review survey progress perspective tutorial systematic review meta-analysis",
+      "status": "error",
+      "error": "Semantic Scholar circuit open; retry_after_seconds=30.0",
+      "results": [],
+      "next_step": "Network/API failed. Retry later, configure API keys, or use manual import_literature_text.",
+      "query_branch": "landscape",
+      "retrieval_strategy": "review_query"
+    },
+    {
+      "provider": "semantic_scholar",
+      "query": "(migratory animals visual landmarks navigation) AND (mechanism OR causal OR perturbation OR mediation OR necessary OR sufficient) review survey progress perspective tutorial systematic review meta-analysis",
+      "status": "error",
+      "error": "Semantic Scholar circuit open; retry_after_seconds=30.0",
+      "results": [],
+      "next_step": "Network/API failed. Retry later, configure API keys, or use manual import_literature_text.",
+      "query_branch": "direct_mechanism",
+      "retrieval_strategy": "review_query"
+    },
+    {
+      "provider": "semantic_scholar",
+      "query": "(migratory animals visual landmarks navigation) AND (barrier OR limitation OR inefficiency OR resistance OR incomplete OR failure) review survey progress perspective tutorial systematic review meta-analysis",
+      "status": "error",
+      "error": "Semantic Scholar circuit open; retry_after_seconds=30.0",
+      "results": [],
+      "next_step": "Network/API failed. Retry later, configure API keys, or use manual import_literature_text.",
+      "query_branch": "barrier_failure",
+      "retrieval_strategy": "review_query"
+    },
+    {
+      "provider": "semantic_scholar",
+      "query": "(migratory animals visual landmarks navigation) AND (context dependent OR contradictory OR alternative mechanism OR boundary condition) review survey progress perspective tutorial systematic review meta-analysis",
+      "status": "error",
+      "error": "Semantic Scholar circuit open; retry_after_seconds=30.0",
+      "results": [],
+      "next_step": "Network/API failed. Retry later, configure API keys, or use manual import_literature_text.",
+      "query_branch": "counter_evidence",
+      "retrieval_strategy": "review_query"
+    },
+    {
+      "provider": "semantic_scholar",
+      "query": "(migratory animals visual landmarks navigation) AND (recent OR latest OR preprint) review survey progress perspective tutorial systematic review meta-analysis",
+      "status": "error",
+      "error": "Semantic Scholar circuit open; retry_after_seconds=30.0",
+      "results": [],
+      "next_step": "Network/API failed. Retry later, configure API keys, or use manual import_literature_text.",
+      "query_branch": "frontier",
+      "retrieval_strategy": "review_query"
+    },
+    {
+      "provider": "semantic_scholar",
+      "query": "(migratory animals visual landmarks navigation) AND (review OR survey OR overview)",
+      "status": "error",
+      "error": "Semantic Scholar circuit open; retry_after_seconds=30.0",
+      "results": [],
+      "next_step": "Network/API failed. Retry later, configure API keys, or use manual import_literature_text.",
+      "query_branch": "landscape",
+      "retrieval_strategy": "broad_recall_then_citation_rerank"
+    },
+    {
+      "provider": "semantic_scholar",
+      "query": "(migratory animals visual landmarks navigation) AND (mechanism OR causal OR perturbation OR mediation OR necessary OR sufficient)",
+      "status": "error",
+      "error": "Semantic Scholar circuit open; retry_after_seconds=30.0",
+      "results": [],
+      "next_step": "Network/API failed. Retry later, configure API keys, or use manual import_literature_text.",
+      "query_branch": "direct_mechanism",
+      "retrieval_strategy": "broad_recall_then_citation_rerank"
+    },
+    {
+      "provider": "semantic_scholar",
+      "query": "(migratory animals visual landmarks navigation) AND (barrier OR limitation OR inefficiency OR resistance OR incomplete OR failure)",
+      "status": "error",
+      "error": "Semantic Scholar circuit open; retry_after_seconds=30.0",
+      "results": [],
+      "next_step": "Network/API failed. Retry later, configure API keys, or use manual import_literature_text.",
+      "query_branch": "barrier_failure",
+      "retrieval_strategy": "broad_recall_then_citation_rerank"
+    },
+    {
+      "provider": "semantic_scholar",
+      "query": "(migratory animals visual landmarks navigation) AND (context dependent OR contradictory OR alternative mechanism OR boundary condition)",
+      "status": "error",
+      "error": "Semantic Scholar circuit open; retry_after_seconds=30.0",
+      "results": [],
+      "next_step": "Network/API failed. Retry later, configure API keys, or use manual import_literature_text.",
+      "query_branch": "counter_evidence",
+      "retrieval_strategy": "broad_recall_then_citation_rerank"
+    },
+    {
+      "provider": "semantic_scholar",
+      "query": "(migratory animals visual landmarks navigation) AND (recent OR latest OR preprint)",
+      "status": "error",
+      "error": "Semantic Scholar circuit open; retry_after_seconds=30.0",
+      "results": [],
+      "next_step": "Network/API failed. Retry later, configure API keys, or use manual import_literature_text.",
+      "query_branch": "frontier",
+      "retrieval_strategy": "broad_recall_then_citation_rerank"
+    },
+    {
+      "provider": "semantic_scholar",
+      "query": "(migratory animals visual landmarks navigation) AND (review OR survey OR overview) experimental theoretical mechanism measurement validation",
+      "status": "error",
+      "error": "Semantic Scholar circuit open; retry_after_seconds=30.0",
+      "results": [],
+      "next_step": "Network/API failed. Retry later, configure API keys, or use manual import_literature_text.",
+      "query_branch": "landscape",
+      "retrieval_strategy": "regular_backfill_query"
+    },
+    {
+      "provider": "semantic_scholar",
+      "query": "(migratory animals visual landmarks navigation) AND (mechanism OR causal OR perturbation OR mediation OR necessary OR sufficient) experimental theoretical mechanism measurement validation",
+      "status": "error",
+      "error": "Semantic Scholar circuit open; retry_after_seconds=30.0",
+      "results": [],
+      "next_step": "Network/API failed. Retry later, configure API keys, or use manual import_literature_text.",
+      "query_branch": "direct_mechanism",
+      "retrieval_strategy": "regular_backfill_query"
+    },
+    {
+      "provider": "semantic_scholar",
+      "query": "(migratory animals visual landmarks navigation) AND (barrier OR limitation OR inefficiency OR resistance OR incomplete OR failure) experimental theoretical mechanism measurement validation",
+      "status": "error",
+      "error": "Semantic Scholar circuit open; retry_after_seconds=30.0",
+      "results": [],
+      "next_step": "Network/API failed. Retry later, configure API keys, or use manual import_literature_text.",
+      "query_branch": "barrier_failure",
+      "retrieval_strategy": "regular_backfill_query"
+    },
+    {
+      "provider": "semantic_scholar",
+      "query": "(migratory animals visual landmarks navigation) AND (context dependent OR contradictory OR alternative mechanism OR boundary condition) experimental theoretical mechanism measurement validation",
+      "status": "error",
+      "error": "Semantic Scholar circuit open; retry_after_seconds=30.0",
+      "results": [],
+      "next_step": "Network/API failed. Retry later, configure API keys, or use manual import_literature_text.",
+      "query_branch": "counter_evidence",
+      "retrieval_strategy": "regular_backfill_query"
+    },
+    {
+      "provider": "semantic_scholar",
+      "query": "(migratory animals visual landmarks navigation) AND (recent OR latest OR preprint) experimental theoretical mechanism measurement validation",
+      "status": "error",
+      "error": "Semantic Scholar circuit open; retry_after_seconds=30.0",
+      "results": [],
+      "next_step": "Network/API failed. Retry later, configure API keys, or use manual import_literature_text.",
+      "query_branch": "frontier",
+      "retrieval_strategy": "regular_backfill_query"
+    },
+    {
+      "provider": "semantic_scholar",
+      "query": "(migratory animals visual landmarks navigation) AND (review OR survey OR overview)",
+      "status": "error",
+      "error": "Semantic Scholar circuit open; retry_after_seconds=30.0",
+      "results": [],
+      "next_step": "Network/API failed. Retry later, configure API keys, or use manual import_literature_text.",
+      "query_branch": "landscape",
+      "retrieval_strategy": "regular_backfill_query"
+    },
+    {
+      "provider": "semantic_scholar",
+      "query": "(migratory animals visual landmarks navigation) AND (mechanism OR causal OR perturbation OR mediation OR necessary OR sufficient)",
+      "status": "error",
+      "error": "Semantic Scholar circuit open; retry_after_seconds=30.0",
+      "results": [],
+      "next_step": "Network/API failed. Retry later, configure API keys, or use manual import_literature_text.",
+      "query_branch": "direct_mechanism",
+      "retrieval_strategy": "regular_backfill_query"
+    },
+    {
+      "provider": "semantic_scholar",
+      "query": "(migratory animals visual landmarks navigation) AND (barrier OR limitation OR inefficiency OR resistance OR incomplete OR failure)",
+      "status": "error",
+      "error": "Semantic Scholar circuit open; retry_after_seconds=30.0",
+      "results": [],
+      "next_step": "Network/API failed. Retry later, configure API keys, or use manual import_literature_text.",
+      "query_branch": "barrier_failure",
+      "retrieval_strategy": "regular_backfill_query"
+    },
+    {
+      "provider": "semantic_scholar",
+      "query": "(migratory animals visual landmarks navigation) AND (context dependent OR contradictory OR alternative mechanism OR boundary condition)",
+      "status": "error",
+      "error": "Semantic Scholar circuit open; retry_after_seconds=30.0",
+      "results": [],
+      "next_step": "Network/API failed. Retry later, configure API keys, or use manual import_literature_text.",
+      "query_branch": "counter_evidence",
+      "retrieval_strategy": "regular_backfill_query"
+    },
+    {
+      "provider": "semantic_scholar",
+      "query": "(migratory animals visual landmarks navigation) AND (recent OR latest OR preprint)",
+      "status": "error",
+      "error": "Semantic Scholar circuit open; retry_after_seconds=30.0",
+      "results": [],
+      "next_step": "Network/API failed. Retry later, configure API keys, or use manual import_literature_text.",
+      "query_branch": "frontier",
+      "retrieval_strategy": "regular_backfill_query"
+    },
+    {
+      "provider": "semantic_scholar",
+      "query": "(migratory animals visual landmarks navigation) AND (review OR survey OR overview)",
+      "status": "error",
+      "error": "Semantic Scholar circuit open; retry_after_seconds=30.0",
+      "results": [],
+      "next_step": "Network/API failed. Retry later, configure API keys, or use manual import_literature_text.",
+      "query_branch": "landscape",
+      "retrieval_strategy": "regular_backfill_query"
+    },
+    {
+      "provider": "semantic_scholar",
+      "query": "(migratory animals visual landmarks navigation) AND (mechanism OR causal OR perturbation OR mediation OR necessary OR sufficient)",
+      "status": "error",
+      "error": "Semantic Scholar circuit open; retry_after_seconds=30.0",
+      "results": [],
+      "next_step": "Network/API failed. Retry later, configure API keys, or use manual import_literature_text.",
+      "query_branch": "direct_mechanism",
+      "retrieval_strategy": "regular_backfill_query"
+    },
+    {
+      "provider": "semantic_scholar",
+      "query": "(migratory animals visual landmarks navigation) AND (barrier OR limitation OR inefficiency OR resistance OR incomplete OR failure)",
+      "status": "error",
+      "error": "Semantic Scholar circuit open; retry_after_seconds=30.0",
+      "results": [],
+      "next_step": "Network/API failed. Retry later, configure API keys, or use manual import_literature_text.",
+      "query_branch": "barrier_failure",
+      "retrieval_strategy": "regular_backfill_query"
+    },
+    {
+      "provider": "semantic_scholar",
+      "query": "(migratory animals visual landmarks navigation) AND (context dependent OR contradictory OR alternative mechanism OR boundary condition)",
+      "status": "error",
+      "error": "Semantic Scholar circuit open; retry_after_seconds=30.0",
+      "results": [],
+      "next_step": "Network/API failed. Retry later, configure API keys, or use manual import_literature_text.",
+      "query_branch": "counter_evidence",
+      "retrieval_strategy": "regular_backfill_query"
+    },
+    {
+      "provider": "semantic_scholar",
+      "query": "(migratory animals visual landmarks navigation) AND (recent OR latest OR preprint)",
+      "status": "error",
+      "error": "Semantic Scholar circuit open; retry_after_seconds=30.0",
+      "results": [],
+      "next_step": "Network/API failed. Retry later, configure API keys, or use manual import_literature_text.",
+      "query_branch": "frontier",
+      "retrieval_strategy": "regular_backfill_query"
+    }
+  ]
+}

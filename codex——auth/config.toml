@@ -1,0 +1,23 @@
+disable_response_storage = true
+model = "gpt-5.6-terra"
+model_provider = "packycode"
+model_reasoning_effort = "xhigh"
+model_verbosity = "high"
+
+[features]
+web_search_request = true
+
+[model_providers.packycode]
+base_url = "https://www.packyapi.com/v1"
+name = "packycode"
+requires_openai_auth = true
+wire_api = "responses"
+
+[windows]
+sandbox = "elevated"
+
+[projects.'c:\users\31390\desktop\2026挑战杯\claude-code\v8']
+trust_level = "trusted"
+
+[tui.model_availability_nux]
+"gpt-5.6-sol" = 1
