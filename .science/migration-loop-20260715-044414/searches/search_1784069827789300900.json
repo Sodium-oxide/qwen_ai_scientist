@@ -1,0 +1,1567 @@
+{
+  "search_id": "search_1784069827789300900",
+  "query": "stem cell niche signaling cell differentiation potential",
+  "source_query": "stem cell niche signaling cell differentiation potential",
+  "query_language": {
+    "query": "stem cell niche signaling cell differentiation potential",
+    "source_query": "stem cell niche signaling cell differentiation potential",
+    "translation_method": "already_english"
+  },
+  "synonym_expansion_used": false,
+  "domain": "Research domains: Cell Biology | Developmental Biology Objective: 为什么只有部分细胞能够分化、转分化或被重编程为其他细胞类型，而多数已分化细胞的命运受到限制？请检验转录因子调控网络、染色质可及性、表观遗传记忆、DNA methylation、细胞谱系历史、干细胞生态位信号、细胞外基质、代谢状态和炎症微环境如何共同决定细胞可塑性，并解释胚胎干细胞、成人干细胞和诱导多能干细胞之间潜能差异。",
+  "research_question_card": {
+    "version": "retrieval_strategy_v1",
+    "research_question": "干细胞生态位信号对细胞分化潜能的影响 干细胞生态位中信号分子的变化 -> 细胞内信号传导途径的激活或抑制 -> 细胞分化潜能的变化 即便在干细胞生态位信号分子变化的情况下，细胞分化潜能没有显著变化",
+    "domain": "Research domains: Cell Biology | Developmental Biology Objective: 为什么只有部分细胞能够分化、转分化或被重编程为其他细胞类型，而多数已分化细胞的命运受到限制？请检验转录因子调控网络、染色质可及性、表观遗传记忆、DNA methylation、细胞谱系历史、干细胞生态位信号、细胞外基质、代谢状态和炎症微环境如何共同决定细胞可塑性，并解释胚胎干细胞、成人干细胞和诱导多能干细胞之间潜能差异。",
+    "core_terms": [
+      "stem",
+      "niche",
+      "signaling",
+      "differentiation",
+      "potential",
+      "domains",
+      "biology",
+      "developmental",
+      "objective",
+      "dna",
+      "methylation"
+    ],
+    "catalog_subfields": [
+      {
+        "domain": "biology",
+        "subfield": "molecular_and_cellular",
+        "terms": [
+          "biochemistry",
+          "cell biology",
+          "molecular biology",
+          "biophysics",
+          "developmental biology"
+        ]
+      },
+      {
+        "domain": "biology",
+        "subfield": "cell_biology",
+        "terms": [
+          "cell biology"
+        ]
+      },
+      {
+        "domain": "biology",
+        "subfield": "developmental_biology",
+        "terms": [
+          "developmental biology"
+        ]
+      }
+    ],
+    "causal_questions": [
+      "What is necessary or sufficient for the proposed effect?",
+      "What mediates the relationship, and what alternative paths remain plausible?",
+      "Under which model, stage, time, or boundary condition does the relationship fail?"
+    ],
+    "accepted_evidence": [
+      "genetic_or_pharmacological_perturbation",
+      "rescue_or_epistasis",
+      "time_resolved_measurement",
+      "lineage_or_context_matched_validation",
+      "orthogonal_multi_modal_readout"
+    ],
+    "boundary_policy": {
+      "normal_cell_fate_scope": false,
+      "bridge_terms": [],
+      "explicit_exclusion_terms": [],
+      "requires_human_confirmation": false,
+      "instruction": "Use the stated project boundary when assigning a paper role."
+    },
+    "paper_role_policy": {
+      "CORE": "Directly supports the bounded research question or supplies context-matched mechanism evidence.",
+      "BRIDGE": "Supplies transferable mechanism, terminology, or background but cannot alone support the core causal claim.",
+      "EXCLUDE": "Conflicts with an explicit project boundary or final domain gate and must not enter core reasoning."
+    },
+    "retrieval_query": "stem cell niche signaling cell differentiation potential"
+  },
+  "focus_branches": [],
+  "providers": [
+    "biorxiv",
+    "medrxiv",
+    "arxiv",
+    "semantic_scholar",
+    "pubmed"
+  ],
+  "requested_providers": [
+    "biorxiv",
+    "medrxiv",
+    "arxiv"
+  ],
+  "pubmed_excluded_by_domain": false,
+  "preprint_layers": [
+    "L0_review",
+    "L3_preprint",
+    "L4_regular"
+  ],
+  "preprint_scan_limit": null,
+  "preprint_provider_result_target": 0,
+  "createdAt": 1784069888.5492992,
+  "strategy": "stratified_cascade",
+  "single_paper_serial": true,
+  "query_plan": [
+    {
+      "branch": "SH4",
+      "query": "stem cell niche signaling cell differentiation potential"
+    }
+  ],
+  "strata": [
+    {
+      "layer": "L3_preprint",
+      "priority": "P0",
+      "label": "P0 latest preprint / frontier signal",
+      "quota": 3,
+      "query_suffix": "",
+      "year_policy": {
+        "min_year": null,
+        "max_year": 2026,
+        "purpose": "upper-bound guard; recency rules provide the lower bound"
+      },
+      "target": 3,
+      "candidate_count": 2,
+      "raw_candidate_count": 2,
+      "selected": 2,
+      "domain_rejected": 0,
+      "recovery_used": "",
+      "preprint_recovery": {},
+      "carried_to_next": 0,
+      "unfilled_reserved_quota": 1
+    },
+    {
+      "layer": "L2_top_latest",
+      "priority": "P1",
+      "label": "P1 recent top-venue primary evidence",
+      "quota": 0,
+      "query_suffix": "latest recent top journal high impact breakthrough advance frontier",
+      "year_policy": {
+        "min_year": 2016,
+        "max_year": 2026,
+        "purpose": "top-venue primary evidence from the latest ten-year window"
+      },
+      "target": 0,
+      "candidate_count": 0,
+      "selected": 0,
+      "carried_to_next": 0
+    },
+    {
+      "layer": "L0_review",
+      "priority": "P3",
+      "label": "P3 review / field map",
+      "quota": 0,
+      "query_suffix": "review survey progress perspective tutorial systematic review meta-analysis",
+      "year_policy": {
+        "min_year": 2010,
+        "max_year": 2026,
+        "purpose": "modern review and regular evidence window"
+      },
+      "target": 0,
+      "candidate_count": 0,
+      "selected": 0,
+      "carried_to_next": 0
+    },
+    {
+      "layer": "L1_milestone",
+      "priority": "P4",
+      "label": "P4 milestone / historical foundation",
+      "quota": 0,
+      "query_suffix": "seminal foundational highly cited landmark classic influential",
+      "year_policy": {
+        "min_year": 1900,
+        "max_year": 2026,
+        "purpose": "historical and conceptual foundations"
+      },
+      "target": 0,
+      "candidate_count": 0,
+      "selected": 0,
+      "carried_to_next": 0
+    },
+    {
+      "layer": "L4_regular",
+      "priority": "P2",
+      "label": "P2 primary experimental or theoretical evidence",
+      "quota": 0,
+      "query_suffix": "experimental theoretical mechanism measurement validation",
+      "year_policy": {
+        "min_year": 2010,
+        "max_year": 2026,
+        "purpose": "modern review and regular evidence window"
+      },
+      "target": 0,
+      "candidate_count": 0,
+      "selected": 0,
+      "carried_to_next": 0
+    }
+  ],
+  "knowledge_pyramid": {
+    "query": "stem cell niche signaling cell differentiation potential",
+    "root_result_index": 1,
+    "root_node": {
+      "result_index": 1,
+      "stratified_layer": "L3_preprint",
+      "stratified_label": "P0 latest preprint / frontier signal",
+      "query_branch": "SH4",
+      "retrieval_query": "stem cell niche signaling cell differentiation potential",
+      "_why_selected": "Selected as latest preprint/frontier signal: Health Impacts of Micro- and Nanoplastics in Humans: Systematic Review of In Vivo Evidence; year=2025; provider=medrxiv; relevance=0.2082.",
+      "research_role": "CORE",
+      "research_role_assessment": {
+        "role": "CORE",
+        "score": 0.73,
+        "reason": "Candidate matches the research boundary and contains core entities or mechanism evidence.",
+        "allowed_use": "landscape_or_vocabulary_only",
+        "core_hits": [
+          "stem",
+          "potential"
+        ],
+        "causal_hits": [
+          "causal"
+        ]
+      },
+      "domain_relevance": {
+        "profile": "research_domains_cell_biology_developmental_biology_objective_dna_methylation",
+        "target_field": "biology",
+        "result_field": "environmental_science",
+        "score": 0.3125,
+        "query_hits": [
+          "stem",
+          "cell",
+          "potential"
+        ],
+        "anchor_hits": [
+          "research",
+          "cell"
+        ],
+        "topic_hits": [],
+        "noise_hits": [],
+        "flags": [],
+        "is_preprint": true,
+        "core_domain_alignment": {
+          "enabled": true,
+          "passes": true,
+          "core_terms": [
+            "research domains cell",
+            "domains cell biology",
+            "cell biology developmental",
+            "biology developmental objective",
+            "developmental objective dna",
+            "objective dna methylation",
+            "dna methylation stem",
+            "methylation stem niche",
+            "stem niche signaling",
+            "niche signaling differentiation",
+            "domains",
+            "cell",
+            "biology",
+            "developmental",
+            "objective",
+            "dna",
+            "methylation",
+            "stem"
+          ],
+          "core_hit_count": 3,
+          "core_hits": [
+            "cell",
+            "stem",
+            "potential"
+          ],
+          "specific_terms": [
+            "research domains cell",
+            "domains cell biology",
+            "cell biology developmental",
+            "biology developmental objective",
+            "developmental objective dna",
+            "objective dna methylation",
+            "dna methylation stem",
+            "methylation stem niche",
+            "stem niche signaling",
+            "niche signaling differentiation",
+            "domains",
+            "biology"
+          ],
+          "specific_hit_count": 1,
+          "specific_hits": [
+            "potential"
+          ],
+          "min_core_hits": 3,
+          "min_specific_hits": 2,
+          "is_preprint": true,
+          "reason": "core topic terms sufficiently covered"
+        },
+        "biological_mechanism_evidence": {
+          "qualified": false,
+          "mechanism_hits": [],
+          "context_hits": []
+        },
+        "verdict": "keep",
+        "requires_human_review": false
+      },
+      "relevance_score": 0.2082,
+      "relevance_components": {
+        "text_score": 0.1415,
+        "recency_score": 1.0,
+        "impact_score": 0.35,
+        "citation_field": "environmental_science",
+        "citation_baseline": 450.0,
+        "venue_score": 0.6,
+        "publication_quality_score": 0.67,
+        "base_score": 0.3108,
+        "text_weight": 0.62,
+        "recency_weight": 0.1,
+        "impact_weight": 0.18,
+        "venue_weight": 0.1
+      },
+      "publication_quality_score": 0.67,
+      "venue_quality": "preprint",
+      "journal_quartile": "",
+      "journal_metric_source": "",
+      "inferred_field": "environmental_science",
+      "quality_flags": [
+        "preprint_not_peer_reviewed",
+        "new_paper_protection"
+      ],
+      "quality_criteria": [
+        "venue is a preprint server, not final peer-reviewed venue",
+        "paper is within 2-year protection window; low citations are not treated as low quality"
+      ],
+      "suspicion_type": "",
+      "is_review_like": true,
+      "pyramid_root_score": 0.7447,
+      "matched_query_terms": [
+        "stem",
+        "cell",
+        "potential",
+        "research"
+      ],
+      "title": "Health Impacts of Micro- and Nanoplastics in Humans: Systematic Review of In Vivo Evidence",
+      "citation": "Tran et al. (2025) Health Impacts of Micro- and Nanoplastics in Humans: Systematic Review of In Vivo Evidence doi:10.1101/2025.07.10.25331209",
+      "provider": "medrxiv",
+      "year": "2025",
+      "venue": "medrxiv",
+      "publication_types": [],
+      "citation_count": null,
+      "influential_citation_count": null,
+      "doi": "10.1101/2025.07.10.25331209",
+      "arxiv_id": null,
+      "url": "https://www.medrxiv.org/content/10.1101/2025.07.10.25331209",
+      "semantic_scholar_local_layer": "",
+      "semantic_scholar_local_stratification": {},
+      "relevance_reason": "title=1/13, abstract=4/13, citation=1/13, phrase_bonus=0.0, recency=1.0, impact=0.35, venue=0.6, quality=0.67",
+      "quality_reason": "venue is a preprint server, not final peer-reviewed venue; paper is within 2-year protection window; low citations are not treated as low quality"
+    },
+    "root_policy": "Prefer a high-impact review as the knowledge-map root. Only a clearly superior Nature/Science/Cell/PNAS-level paper should override it as the seed.",
+    "layers": {
+      "L0_review": [],
+      "L1A_milestone": [],
+      "L1B_top_latest": [],
+      "L1C_preprint": [
+        {
+          "result_index": 0,
+          "stratified_layer": "L3_preprint",
+          "stratified_label": "P0 latest preprint / frontier signal",
+          "query_branch": "SH4",
+          "retrieval_query": "stem cell niche signaling cell differentiation potential",
+          "_why_selected": "Selected as latest preprint/frontier signal: SH2scan: Mapping SH2 domain-ligand binding selectivity for inhibitors and degraders; year=2025; provider=biorxiv; relevance=0.1852.",
+          "research_role": "CORE",
+          "research_role_assessment": {
+            "role": "CORE",
+            "score": 0.78,
+            "reason": "Candidate matches the research boundary and contains core entities or mechanism evidence.",
+            "allowed_use": "core_mechanism_evidence_candidate",
+            "core_hits": [
+              "stem",
+              "potential",
+              "domains"
+            ],
+            "causal_hits": [
+              "inhibit"
+            ]
+          },
+          "domain_relevance": {
+            "profile": "research_domains_cell_biology_developmental_biology_objective_dna_methylation",
+            "target_field": "biology",
+            "result_field": "biology",
+            "score": 0.3925,
+            "query_hits": [
+              "stem",
+              "cell",
+              "potential"
+            ],
+            "anchor_hits": [
+              "domains",
+              "cell"
+            ],
+            "topic_hits": [],
+            "noise_hits": [],
+            "flags": [
+              "core_domain_hit"
+            ],
+            "is_preprint": true,
+            "core_domain_alignment": {
+              "enabled": true,
+              "passes": true,
+              "core_terms": [
+                "research domains cell",
+                "domains cell biology",
+                "cell biology developmental",
+                "biology developmental objective",
+                "developmental objective dna",
+                "objective dna methylation",
+                "dna methylation stem",
+                "methylation stem niche",
+                "stem niche signaling",
+                "niche signaling differentiation",
+                "domains",
+                "cell",
+                "biology",
+                "developmental",
+                "objective",
+                "dna",
+                "methylation",
+                "stem"
+              ],
+              "core_hit_count": 4,
+              "core_hits": [
+                "domains",
+                "cell",
+                "stem",
+                "potential"
+              ],
+              "specific_terms": [
+                "research domains cell",
+                "domains cell biology",
+                "cell biology developmental",
+                "biology developmental objective",
+                "developmental objective dna",
+                "objective dna methylation",
+                "dna methylation stem",
+                "methylation stem niche",
+                "stem niche signaling",
+                "niche signaling differentiation",
+                "domains",
+                "biology"
+              ],
+              "specific_hit_count": 2,
+              "specific_hits": [
+                "domains",
+                "potential"
+              ],
+              "min_core_hits": 3,
+              "min_specific_hits": 2,
+              "is_preprint": true,
+              "reason": "core topic terms sufficiently covered"
+            },
+            "biological_mechanism_evidence": {
+              "qualified": false,
+              "mechanism_hits": [],
+              "context_hits": []
+            },
+            "verdict": "keep",
+            "requires_human_review": false
+          },
+          "relevance_score": 0.1852,
+          "relevance_components": {
+            "text_score": 0.0862,
+            "recency_score": 1.0,
+            "impact_score": 0.35,
+            "citation_field": "biology",
+            "citation_baseline": 600.0,
+            "venue_score": 0.6,
+            "publication_quality_score": 0.67,
+            "base_score": 0.2764,
+            "text_weight": 0.62,
+            "recency_weight": 0.1,
+            "impact_weight": 0.18,
+            "venue_weight": 0.1
+          },
+          "publication_quality_score": 0.67,
+          "venue_quality": "preprint",
+          "journal_quartile": "",
+          "journal_metric_source": "",
+          "inferred_field": "biology",
+          "quality_flags": [
+            "preprint_not_peer_reviewed",
+            "new_paper_protection"
+          ],
+          "quality_criteria": [
+            "venue is a preprint server, not final peer-reviewed venue",
+            "paper is within 2-year protection window; low citations are not treated as low quality"
+          ],
+          "suspicion_type": "",
+          "is_review_like": false,
+          "pyramid_root_score": 0.3717,
+          "matched_query_terms": [
+            "stem",
+            "cell",
+            "potential",
+            "domains"
+          ],
+          "title": "SH2scan: Mapping SH2 domain-ligand binding selectivity for inhibitors and degraders",
+          "citation": "Lira et al. (2025) SH2scan: Mapping SH2 domain-ligand binding selectivity for inhibitors and degraders doi:10.1101/2025.07.09.663991",
+          "provider": "biorxiv",
+          "year": "2025",
+          "venue": "biorxiv",
+          "publication_types": [],
+          "citation_count": null,
+          "influential_citation_count": null,
+          "doi": "10.1101/2025.07.09.663991",
+          "arxiv_id": null,
+          "url": "https://www.biorxiv.org/content/10.1101/2025.07.09.663991",
+          "semantic_scholar_local_layer": "",
+          "semantic_scholar_local_stratification": {},
+          "relevance_reason": "title=0/13, abstract=4/13, citation=0/13, phrase_bonus=0.0, recency=1.0, impact=0.35, venue=0.6, quality=0.67",
+          "quality_reason": "venue is a preprint server, not final peer-reviewed venue; paper is within 2-year protection window; low citations are not treated as low quality"
+        },
+        {
+          "result_index": 1,
+          "stratified_layer": "L3_preprint",
+          "stratified_label": "P0 latest preprint / frontier signal",
+          "query_branch": "SH4",
+          "retrieval_query": "stem cell niche signaling cell differentiation potential",
+          "_why_selected": "Selected as latest preprint/frontier signal: Health Impacts of Micro- and Nanoplastics in Humans: Systematic Review of In Vivo Evidence; year=2025; provider=medrxiv; relevance=0.2082.",
+          "research_role": "CORE",
+          "research_role_assessment": {
+            "role": "CORE",
+            "score": 0.73,
+            "reason": "Candidate matches the research boundary and contains core entities or mechanism evidence.",
+            "allowed_use": "landscape_or_vocabulary_only",
+            "core_hits": [
+              "stem",
+              "potential"
+            ],
+            "causal_hits": [
+              "causal"
+            ]
+          },
+          "domain_relevance": {
+            "profile": "research_domains_cell_biology_developmental_biology_objective_dna_methylation",
+            "target_field": "biology",
+            "result_field": "environmental_science",
+            "score": 0.3125,
+            "query_hits": [
+              "stem",
+              "cell",
+              "potential"
+            ],
+            "anchor_hits": [
+              "research",
+              "cell"
+            ],
+            "topic_hits": [],
+            "noise_hits": [],
+            "flags": [],
+            "is_preprint": true,
+            "core_domain_alignment": {
+              "enabled": true,
+              "passes": true,
+              "core_terms": [
+                "research domains cell",
+                "domains cell biology",
+                "cell biology developmental",
+                "biology developmental objective",
+                "developmental objective dna",
+                "objective dna methylation",
+                "dna methylation stem",
+                "methylation stem niche",
+                "stem niche signaling",
+                "niche signaling differentiation",
+                "domains",
+                "cell",
+                "biology",
+                "developmental",
+                "objective",
+                "dna",
+                "methylation",
+                "stem"
+              ],
+              "core_hit_count": 3,
+              "core_hits": [
+                "cell",
+                "stem",
+                "potential"
+              ],
+              "specific_terms": [
+                "research domains cell",
+                "domains cell biology",
+                "cell biology developmental",
+                "biology developmental objective",
+                "developmental objective dna",
+                "objective dna methylation",
+                "dna methylation stem",
+                "methylation stem niche",
+                "stem niche signaling",
+                "niche signaling differentiation",
+                "domains",
+                "biology"
+              ],
+              "specific_hit_count": 1,
+              "specific_hits": [
+                "potential"
+              ],
+              "min_core_hits": 3,
+              "min_specific_hits": 2,
+              "is_preprint": true,
+              "reason": "core topic terms sufficiently covered"
+            },
+            "biological_mechanism_evidence": {
+              "qualified": false,
+              "mechanism_hits": [],
+              "context_hits": []
+            },
+            "verdict": "keep",
+            "requires_human_review": false
+          },
+          "relevance_score": 0.2082,
+          "relevance_components": {
+            "text_score": 0.1415,
+            "recency_score": 1.0,
+            "impact_score": 0.35,
+            "citation_field": "environmental_science",
+            "citation_baseline": 450.0,
+            "venue_score": 0.6,
+            "publication_quality_score": 0.67,
+            "base_score": 0.3108,
+            "text_weight": 0.62,
+            "recency_weight": 0.1,
+            "impact_weight": 0.18,
+            "venue_weight": 0.1
+          },
+          "publication_quality_score": 0.67,
+          "venue_quality": "preprint",
+          "journal_quartile": "",
+          "journal_metric_source": "",
+          "inferred_field": "environmental_science",
+          "quality_flags": [
+            "preprint_not_peer_reviewed",
+            "new_paper_protection"
+          ],
+          "quality_criteria": [
+            "venue is a preprint server, not final peer-reviewed venue",
+            "paper is within 2-year protection window; low citations are not treated as low quality"
+          ],
+          "suspicion_type": "",
+          "is_review_like": true,
+          "pyramid_root_score": 0.7447,
+          "matched_query_terms": [
+            "stem",
+            "cell",
+            "potential",
+            "research"
+          ],
+          "title": "Health Impacts of Micro- and Nanoplastics in Humans: Systematic Review of In Vivo Evidence",
+          "citation": "Tran et al. (2025) Health Impacts of Micro- and Nanoplastics in Humans: Systematic Review of In Vivo Evidence doi:10.1101/2025.07.10.25331209",
+          "provider": "medrxiv",
+          "year": "2025",
+          "venue": "medrxiv",
+          "publication_types": [],
+          "citation_count": null,
+          "influential_citation_count": null,
+          "doi": "10.1101/2025.07.10.25331209",
+          "arxiv_id": null,
+          "url": "https://www.medrxiv.org/content/10.1101/2025.07.10.25331209",
+          "semantic_scholar_local_layer": "",
+          "semantic_scholar_local_stratification": {},
+          "relevance_reason": "title=1/13, abstract=4/13, citation=1/13, phrase_bonus=0.0, recency=1.0, impact=0.35, venue=0.6, quality=0.67",
+          "quality_reason": "venue is a preprint server, not final peer-reviewed venue; paper is within 2-year protection window; low citations are not treated as low quality"
+        }
+      ],
+      "L2_regular": []
+    },
+    "edges": [
+      {
+        "source": 1,
+        "target": 0,
+        "relation": "emerging preprint signal",
+        "evidence": "stratified retrieval layer",
+        "confidence": 0.65
+      }
+    ],
+    "strata": [
+      {
+        "layer": "L3_preprint",
+        "priority": "P0",
+        "label": "P0 latest preprint / frontier signal",
+        "quota": 3,
+        "query_suffix": "",
+        "year_policy": {
+          "min_year": null,
+          "max_year": 2026,
+          "purpose": "upper-bound guard; recency rules provide the lower bound"
+        },
+        "target": 3,
+        "candidate_count": 2,
+        "raw_candidate_count": 2,
+        "selected": 2,
+        "domain_rejected": 0,
+        "recovery_used": "",
+        "preprint_recovery": {},
+        "carried_to_next": 0,
+        "unfilled_reserved_quota": 1
+      },
+      {
+        "layer": "L2_top_latest",
+        "priority": "P1",
+        "label": "P1 recent top-venue primary evidence",
+        "quota": 0,
+        "query_suffix": "latest recent top journal high impact breakthrough advance frontier",
+        "year_policy": {
+          "min_year": 2016,
+          "max_year": 2026,
+          "purpose": "top-venue primary evidence from the latest ten-year window"
+        },
+        "target": 0,
+        "candidate_count": 0,
+        "selected": 0,
+        "carried_to_next": 0
+      },
+      {
+        "layer": "L0_review",
+        "priority": "P3",
+        "label": "P3 review / field map",
+        "quota": 0,
+        "query_suffix": "review survey progress perspective tutorial systematic review meta-analysis",
+        "year_policy": {
+          "min_year": 2010,
+          "max_year": 2026,
+          "purpose": "modern review and regular evidence window"
+        },
+        "target": 0,
+        "candidate_count": 0,
+        "selected": 0,
+        "carried_to_next": 0
+      },
+      {
+        "layer": "L1_milestone",
+        "priority": "P4",
+        "label": "P4 milestone / historical foundation",
+        "quota": 0,
+        "query_suffix": "seminal foundational highly cited landmark classic influential",
+        "year_policy": {
+          "min_year": 1900,
+          "max_year": 2026,
+          "purpose": "historical and conceptual foundations"
+        },
+        "target": 0,
+        "candidate_count": 0,
+        "selected": 0,
+        "carried_to_next": 0
+      },
+      {
+        "layer": "L4_regular",
+        "priority": "P2",
+        "label": "P2 primary experimental or theoretical evidence",
+        "quota": 0,
+        "query_suffix": "experimental theoretical mechanism measurement validation",
+        "year_policy": {
+          "min_year": 2010,
+          "max_year": 2026,
+          "purpose": "modern review and regular evidence window"
+        },
+        "target": 0,
+        "candidate_count": 0,
+        "selected": 0,
+        "carried_to_next": 0
+      }
+    ]
+  },
+  "evidence_window_alerts": [],
+  "total_results": 2,
+  "results": [
+    {
+      "title": "SH2scan: Mapping SH2 domain-ligand binding selectivity for inhibitors and degraders",
+      "citation": "Lira et al. (2025) SH2scan: Mapping SH2 domain-ligand binding selectivity for inhibitors and degraders doi:10.1101/2025.07.09.663991",
+      "authors": [
+        "Lira",
+        "L. M. G.",
+        "Wolfe-Demarco",
+        "J. K.",
+        "Clifford",
+        "A. M.",
+        "Le",
+        "T. D.",
+        "Khasawneh",
+        "G. M.",
+        "Kidane, M.",
+        "Nguyen, M.",
+        "Najera",
+        "J. A.",
+        "Pallares, G.",
+        "Servant",
+        "N. B.",
+        "Bernatchez",
+        "J. A."
+      ],
+      "year": "2025",
+      "venue": "biorxiv",
+      "doi": "10.1101/2025.07.09.663991",
+      "url": "https://www.biorxiv.org/content/10.1101/2025.07.09.663991",
+      "abstract": "Drug discovery targeting SH2 domains (key protein-protein interaction modules) has been hampered by a lack of assay systems evaluating synthetic ligand binding selectivity toward SH2 domains, to reduce potential off-target effects. In addition, the molecular determinants for synthetic ligand engagement to SH2 domains across the target class have yet to be defined. Here, we developed SH2scan, a high-throughput competition binding assay platform to quantify ligand-SH2 domain interactions, covering >80% of the target class. We uncovered unique binding selectivity profiles and quantified a broad range of dissociation constants (KDs) for 9 synthetic ligands of SH2 domains from the scientific literature with a range of reported primary targets. These results demonstrate that SH2scan can be used to design more selective compounds targeting SH2 domains. The platform can be further leveraged for the discovery of new molecular probes for the dissection of cellular protein-protein interaction networks.",
+      "category": "pharmacology and toxicology",
+      "papergraph_input": {
+        "title": "SH2scan: Mapping SH2 domain-ligand binding selectivity for inhibitors and degraders",
+        "citation": "Lira et al. (2025) SH2scan: Mapping SH2 domain-ligand binding selectivity for inhibitors and degraders doi:10.1101/2025.07.09.663991",
+        "authors": [
+          "Lira",
+          "L. M. G.",
+          "Wolfe-Demarco",
+          "J. K.",
+          "Clifford",
+          "A. M.",
+          "Le",
+          "T. D.",
+          "Khasawneh",
+          "G. M.",
+          "Kidane, M.",
+          "Nguyen, M.",
+          "Najera",
+          "J. A.",
+          "Pallares, G.",
+          "Servant",
+          "N. B.",
+          "Bernatchez",
+          "J. A."
+        ],
+        "year": "2025",
+        "venue": "biorxiv",
+        "provider": "biorxiv",
+        "source_type": "api",
+        "doi": "10.1101/2025.07.09.663991",
+        "url": "https://www.biorxiv.org/content/10.1101/2025.07.09.663991",
+        "open_access_pdf": "https://www.biorxiv.org/content/10.1101/2025.07.09.663991v1.full.pdf",
+        "abstract": "Drug discovery targeting SH2 domains (key protein-protein interaction modules) has been hampered by a lack of assay systems evaluating synthetic ligand binding selectivity toward SH2 domains, to reduce potential off-target effects. In addition, the molecular determinants for synthetic ligand engagement to SH2 domains across the target class have yet to be defined. Here, we developed SH2scan, a high-throughput competition binding assay platform to quantify ligand-SH2 domain interactions, covering >80% of the target class. We uncovered unique binding selectivity profiles and quantified a broad range of dissociation constants (KDs) for 9 synthetic ligands of SH2 domains from the scientific literature with a range of reported primary targets. These results demonstrate that SH2scan can be used to design more selective compounds targeting SH2 domains. The platform can be further leveraged for the discovery of new molecular probes for the dissection of cellular protein-protein interaction networks.",
+        "conclusion": ""
+      },
+      "relevance_score": 0.1852,
+      "relevance_components": {
+        "text_score": 0.0862,
+        "recency_score": 1.0,
+        "impact_score": 0.35,
+        "citation_field": "biology",
+        "citation_baseline": 600.0,
+        "venue_score": 0.6,
+        "publication_quality_score": 0.67,
+        "base_score": 0.2764,
+        "text_weight": 0.62,
+        "recency_weight": 0.1,
+        "impact_weight": 0.18,
+        "venue_weight": 0.1
+      },
+      "publication_quality_score": 0.67,
+      "venue_quality": "preprint",
+      "journal_quartile": "",
+      "journal_metric_source": "",
+      "inferred_field": "biology",
+      "quality_flags": [
+        "preprint_not_peer_reviewed",
+        "new_paper_protection"
+      ],
+      "quality_criteria": [
+        "venue is a preprint server, not final peer-reviewed venue",
+        "paper is within 2-year protection window; low citations are not treated as low quality"
+      ],
+      "suspicion_type": "",
+      "quality_reason": "venue is a preprint server, not final peer-reviewed venue; paper is within 2-year protection window; low citations are not treated as low quality",
+      "matched_query_terms": [
+        "stem",
+        "cell",
+        "potential",
+        "domains"
+      ],
+      "relevance_reason": "title=0/13, abstract=4/13, citation=0/13, phrase_bonus=0.0, recency=1.0, impact=0.35, venue=0.6, quality=0.67",
+      "provider": "biorxiv",
+      "query_branch": "SH4",
+      "retrieval_query": "stem cell niche signaling cell differentiation potential",
+      "research_role": "CORE",
+      "research_role_assessment": {
+        "role": "CORE",
+        "score": 0.78,
+        "reason": "Candidate matches the research boundary and contains core entities or mechanism evidence.",
+        "allowed_use": "core_mechanism_evidence_candidate",
+        "core_hits": [
+          "stem",
+          "potential",
+          "domains"
+        ],
+        "causal_hits": [
+          "inhibit"
+        ]
+      },
+      "research_role_priority": 2,
+      "domain_relevance": {
+        "profile": "research_domains_cell_biology_developmental_biology_objective_dna_methylation",
+        "target_field": "biology",
+        "result_field": "biology",
+        "score": 0.3925,
+        "query_hits": [
+          "stem",
+          "cell",
+          "potential"
+        ],
+        "anchor_hits": [
+          "domains",
+          "cell"
+        ],
+        "topic_hits": [],
+        "noise_hits": [],
+        "flags": [
+          "core_domain_hit"
+        ],
+        "is_preprint": true,
+        "core_domain_alignment": {
+          "enabled": true,
+          "passes": true,
+          "core_terms": [
+            "research domains cell",
+            "domains cell biology",
+            "cell biology developmental",
+            "biology developmental objective",
+            "developmental objective dna",
+            "objective dna methylation",
+            "dna methylation stem",
+            "methylation stem niche",
+            "stem niche signaling",
+            "niche signaling differentiation",
+            "domains",
+            "cell",
+            "biology",
+            "developmental",
+            "objective",
+            "dna",
+            "methylation",
+            "stem"
+          ],
+          "core_hit_count": 4,
+          "core_hits": [
+            "domains",
+            "cell",
+            "stem",
+            "potential"
+          ],
+          "specific_terms": [
+            "research domains cell",
+            "domains cell biology",
+            "cell biology developmental",
+            "biology developmental objective",
+            "developmental objective dna",
+            "objective dna methylation",
+            "dna methylation stem",
+            "methylation stem niche",
+            "stem niche signaling",
+            "niche signaling differentiation",
+            "domains",
+            "biology"
+          ],
+          "specific_hit_count": 2,
+          "specific_hits": [
+            "domains",
+            "potential"
+          ],
+          "min_core_hits": 3,
+          "min_specific_hits": 2,
+          "is_preprint": true,
+          "reason": "core topic terms sufficiently covered"
+        },
+        "biological_mechanism_evidence": {
+          "qualified": false,
+          "mechanism_hits": [],
+          "context_hits": []
+        },
+        "verdict": "keep",
+        "requires_human_review": false
+      },
+      "domain_review": {
+        "verdict": "review",
+        "score": 0.3333,
+        "target_field": "biology",
+        "result_field": "biology",
+        "foreign_field": false,
+        "target_terms": [
+          "stem",
+          "cell",
+          "niche",
+          "signaling",
+          "differentiation",
+          "potential",
+          "domains",
+          "biology",
+          "developmental",
+          "objective",
+          "dna",
+          "methylation"
+        ],
+        "target_hits": [
+          "stem",
+          "cell",
+          "potential",
+          "domains"
+        ],
+        "retrieval_assessment_preserved": true,
+        "biological_mechanism_evidence": {
+          "qualified": false,
+          "mechanism_hits": [],
+          "context_hits": []
+        },
+        "probability_alignment": {
+          "target_profile": {
+            "biology": 1.0
+          },
+          "paper_profile": {
+            "biology": 0.7009,
+            "chemistry": 0.1675,
+            "medicine": 0.1316
+          },
+          "overlap": 0.7009,
+          "target_domain": "biology",
+          "result_domain": "biology"
+        },
+        "semantic_similarity": 0.4246,
+        "semantic_similarity_source": "structured_catalog_overlap",
+        "cross_field_tolerated": true,
+        "distinct_physics_conflict": false,
+        "reason": "Preprint has nontrivial semantic or interdisciplinary evidence and is retained for review.",
+        "rescue_applied": true
+      },
+      "domain_gate": {
+        "verdict": "review",
+        "decision_stage": "preprint_protection",
+        "rejecting_stage": "",
+        "reason": "Preprint passed hard domain gates; citation count is not used as an exclusion criterion.",
+        "primary_relevance_verdict": "keep",
+        "primary_relevance_score": 0.3925,
+        "review_verdict": "review",
+        "review_score": 0.3333,
+        "matched_exclusion_markers": [],
+        "requires_human_review": true
+      },
+      "stratified_layer": "L3_preprint",
+      "stratified_label": "P0 latest preprint / frontier signal",
+      "year_policy": {
+        "min_year": null,
+        "max_year": 2026,
+        "purpose": "upper-bound guard; recency rules provide the lower bound"
+      },
+      "_why_selected": "Selected as latest preprint/frontier signal: SH2scan: Mapping SH2 domain-ligand binding selectivity for inhibitors and degraders; year=2025; provider=biorxiv; relevance=0.1852.",
+      "result_index": 0,
+      "search_id": "search_1784069827789300900"
+    },
+    {
+      "title": "Health Impacts of Micro- and Nanoplastics in Humans: Systematic Review of In Vivo Evidence",
+      "citation": "Tran et al. (2025) Health Impacts of Micro- and Nanoplastics in Humans: Systematic Review of In Vivo Evidence doi:10.1101/2025.07.10.25331209",
+      "authors": [
+        "Tran",
+        "H. A. A.",
+        "Ng",
+        "J. J.",
+        "Tang",
+        "D. H.",
+        "Yong",
+        "C. T.",
+        "Ho",
+        "A. F. W."
+      ],
+      "year": "2025",
+      "venue": "medrxiv",
+      "doi": "10.1101/2025.07.10.25331209",
+      "url": "https://www.medrxiv.org/content/10.1101/2025.07.10.25331209",
+      "abstract": "BackgroundMicroplastics and nanoplastics (MNPs; <5 mm) are pervasive environmental contaminants with potential human health implications. Although laboratory models implicate MNPs in oxidative stress, inflammation, and endocrine disruption, a comprehensive synthesis of direct in vivo human evidence is lacking. We aimed to systematically review studies measuring MNPs in living human subjects and summarize associated health findings.\n\nMethodsWe systematically searched PubMed, Web of Science, Scopus, Cochrane and Embase through 26 December 2024. Two investigators independently screened and selected original research articles that quantified MNPs in biological samples from living humans (blood, tissues, or fluids). We excluded animal, in vitro, cell-line, and injection-based studies, as well as reports on non-plastic micro- and nanoparticles. Data extraction, performed in duplicate, included study design, participant characteristics, detection methods, polymer types, and reported health outcomes. Methodological quality was appraised using Risk Of Bias in Non-Randomized Studies - of Exposures (ROBINS-E). The primary outcome was the presence and burden of MNPs; secondary outcomes were clinical or biomarker associations. We did not perform meta-analysis due to heterogeneity.\n\nFindingsFrom 5 522 records, 25 studies (n=1498 participants) met inclusion. Studies employed pyrolysis-gas chromatography/mass spectrometry (n=9), Raman (n=8), infrared spectroscopy (n=7), and Fourier-transform infrared spectroscopy (n=3), often combined with microscopy. Predominant polymers were polyethylene, polypropylene, polyvinyl chloride, polyethylene terephthalate, and polystyrene. In cardiovascular research (five studies; n=454), higher thrombus and plasma MNP burdens correlated with inflammatory markers and adverse cardiac events. Reproductive research (seven studies; n=327) linked semen and tissue MNP levels to reduced sperm quality and higher burdens in tumor and placental samples. Gastrointestinal research (nine studies; n=537) associated fecal MNPs with liver enzyme elevations and gut dysbiosis. Respiratory (three studies; n=171) and ocular (one study; n=49) research detected MNPs in airway fluids and vitreous humor, with suggestive links to inflammation and increased intraocular pressure. ROBINS-E assessments indicated moderate to high risk of confounding and exposure-measurement bias; consistency across detection modalities was limited.\n\nInterpretationHuman in vivo evidence confirms that MNPs accumulate in multiple organ systems and are associated with inflammation and functional impairment. Methodological heterogeneity and bias constrain causal inference. Standardized, prospective cohort studies with rigorous exposure assessment and confounder control are needed to advance understanding and guide policy.\n\nFundingThis study was funded by the SingHealth Duke-NUS Academic Medical Centre under the Nurturing Clinician Scientist Award scheme (15/FY2025/P1/17-A45) and the Clinician Investigator Advancement Programme (15/FY2022/CIVA/03-A03).",
+      "category": "public and global health",
+      "papergraph_input": {
+        "title": "Health Impacts of Micro- and Nanoplastics in Humans: Systematic Review of In Vivo Evidence",
+        "citation": "Tran et al. (2025) Health Impacts of Micro- and Nanoplastics in Humans: Systematic Review of In Vivo Evidence doi:10.1101/2025.07.10.25331209",
+        "authors": [
+          "Tran",
+          "H. A. A.",
+          "Ng",
+          "J. J.",
+          "Tang",
+          "D. H.",
+          "Yong",
+          "C. T.",
+          "Ho",
+          "A. F. W."
+        ],
+        "year": "2025",
+        "venue": "medrxiv",
+        "provider": "medrxiv",
+        "source_type": "api",
+        "doi": "10.1101/2025.07.10.25331209",
+        "url": "https://www.medrxiv.org/content/10.1101/2025.07.10.25331209",
+        "open_access_pdf": "https://www.medrxiv.org/content/10.1101/2025.07.10.25331209v1.full.pdf",
+        "abstract": "BackgroundMicroplastics and nanoplastics (MNPs; <5 mm) are pervasive environmental contaminants with potential human health implications. Although laboratory models implicate MNPs in oxidative stress, inflammation, and endocrine disruption, a comprehensive synthesis of direct in vivo human evidence is lacking. We aimed to systematically review studies measuring MNPs in living human subjects and summarize associated health findings.\n\nMethodsWe systematically searched PubMed, Web of Science, Scopus, Cochrane and Embase through 26 December 2024. Two investigators independently screened and selected original research articles that quantified MNPs in biological samples from living humans (blood, tissues, or fluids). We excluded animal, in vitro, cell-line, and injection-based studies, as well as reports on non-plastic micro- and nanoparticles. Data extraction, performed in duplicate, included study design, participant characteristics, detection methods, polymer types, and reported health outcomes. Methodological quality was appraised using Risk Of Bias in Non-Randomized Studies - of Exposures (ROBINS-E). The primary outcome was the presence and burden of MNPs; secondary outcomes were clinical or biomarker associations. We did not perform meta-analysis due to heterogeneity.\n\nFindingsFrom 5 522 records, 25 studies (n=1498 participants) met inclusion. Studies employed pyrolysis-gas chromatography/mass spectrometry (n=9), Raman (n=8), infrared spectroscopy (n=7), and Fourier-transform infrared spectroscopy (n=3), often combined with microscopy. Predominant polymers were polyethylene, polypropylene, polyvinyl chloride, polyethylene terephthalate, and polystyrene. In cardiovascular research (five studies; n=454), higher thrombus and plasma MNP burdens correlated with inflammatory markers and adverse cardiac events. Reproductive research (seven studies; n=327) linked semen and tissue MNP levels to reduced sperm quality and higher burdens in tumor and placental samples. Gastrointestinal research (nine studies; n=537) associated fecal MNPs with liver enzyme elevations and gut dysbiosis. Respiratory (three studies; n=171) and ocular (one study; n=49) research detected MNPs in airway fluids and vitreous humor, with suggestive links to inflammation and increased intraocular pressure. ROBINS-E assessments indicated moderate to high risk of confounding and exposure-measurement bias; consistency across detection modalities was limited.\n\nInterpretationHuman in vivo evidence confirms that MNPs accumulate in multiple organ systems and are associated with inflammation and functional impairment. Methodological heterogeneity and bias constrain causal inference. Standardized, prospective cohort studies with rigorous exposure assessment and confounder control are needed to advance understanding and guide policy.\n\nFundingThis study was funded by the SingHealth Duke-NUS Academic Medical Centre under the Nurturing Clinician Scientist Award scheme (15/FY2025/P1/17-A45) and the Clinician Investigator Advancement Programme (15/FY2022/CIVA/03-A03).",
+        "conclusion": ""
+      },
+      "relevance_score": 0.2082,
+      "relevance_components": {
+        "text_score": 0.1415,
+        "recency_score": 1.0,
+        "impact_score": 0.35,
+        "citation_field": "environmental_science",
+        "citation_baseline": 450.0,
+        "venue_score": 0.6,
+        "publication_quality_score": 0.67,
+        "base_score": 0.3108,
+        "text_weight": 0.62,
+        "recency_weight": 0.1,
+        "impact_weight": 0.18,
+        "venue_weight": 0.1
+      },
+      "publication_quality_score": 0.67,
+      "venue_quality": "preprint",
+      "journal_quartile": "",
+      "journal_metric_source": "",
+      "inferred_field": "environmental_science",
+      "quality_flags": [
+        "preprint_not_peer_reviewed",
+        "new_paper_protection"
+      ],
+      "quality_criteria": [
+        "venue is a preprint server, not final peer-reviewed venue",
+        "paper is within 2-year protection window; low citations are not treated as low quality"
+      ],
+      "suspicion_type": "",
+      "quality_reason": "venue is a preprint server, not final peer-reviewed venue; paper is within 2-year protection window; low citations are not treated as low quality",
+      "matched_query_terms": [
+        "stem",
+        "cell",
+        "potential",
+        "research"
+      ],
+      "relevance_reason": "title=1/13, abstract=4/13, citation=1/13, phrase_bonus=0.0, recency=1.0, impact=0.35, venue=0.6, quality=0.67",
+      "provider": "medrxiv",
+      "query_branch": "SH4",
+      "retrieval_query": "stem cell niche signaling cell differentiation potential",
+      "research_role": "CORE",
+      "research_role_assessment": {
+        "role": "CORE",
+        "score": 0.73,
+        "reason": "Candidate matches the research boundary and contains core entities or mechanism evidence.",
+        "allowed_use": "landscape_or_vocabulary_only",
+        "core_hits": [
+          "stem",
+          "potential"
+        ],
+        "causal_hits": [
+          "causal"
+        ]
+      },
+      "research_role_priority": 2,
+      "domain_relevance": {
+        "profile": "research_domains_cell_biology_developmental_biology_objective_dna_methylation",
+        "target_field": "biology",
+        "result_field": "environmental_science",
+        "score": 0.3125,
+        "query_hits": [
+          "stem",
+          "cell",
+          "potential"
+        ],
+        "anchor_hits": [
+          "research",
+          "cell"
+        ],
+        "topic_hits": [],
+        "noise_hits": [],
+        "flags": [],
+        "is_preprint": true,
+        "core_domain_alignment": {
+          "enabled": true,
+          "passes": true,
+          "core_terms": [
+            "research domains cell",
+            "domains cell biology",
+            "cell biology developmental",
+            "biology developmental objective",
+            "developmental objective dna",
+            "objective dna methylation",
+            "dna methylation stem",
+            "methylation stem niche",
+            "stem niche signaling",
+            "niche signaling differentiation",
+            "domains",
+            "cell",
+            "biology",
+            "developmental",
+            "objective",
+            "dna",
+            "methylation",
+            "stem"
+          ],
+          "core_hit_count": 3,
+          "core_hits": [
+            "cell",
+            "stem",
+            "potential"
+          ],
+          "specific_terms": [
+            "research domains cell",
+            "domains cell biology",
+            "cell biology developmental",
+            "biology developmental objective",
+            "developmental objective dna",
+            "objective dna methylation",
+            "dna methylation stem",
+            "methylation stem niche",
+            "stem niche signaling",
+            "niche signaling differentiation",
+            "domains",
+            "biology"
+          ],
+          "specific_hit_count": 1,
+          "specific_hits": [
+            "potential"
+          ],
+          "min_core_hits": 3,
+          "min_specific_hits": 2,
+          "is_preprint": true,
+          "reason": "core topic terms sufficiently covered"
+        },
+        "biological_mechanism_evidence": {
+          "qualified": false,
+          "mechanism_hits": [],
+          "context_hits": []
+        },
+        "verdict": "keep",
+        "requires_human_review": false
+      },
+      "domain_review": {
+        "verdict": "review",
+        "score": 0.25,
+        "target_field": "biology",
+        "result_field": "environmental_science",
+        "foreign_field": false,
+        "target_terms": [
+          "stem",
+          "cell",
+          "niche",
+          "signaling",
+          "differentiation",
+          "potential",
+          "domains",
+          "biology",
+          "developmental",
+          "objective",
+          "dna",
+          "methylation"
+        ],
+        "target_hits": [
+          "stem",
+          "cell",
+          "potential"
+        ],
+        "retrieval_assessment_preserved": true,
+        "biological_mechanism_evidence": {
+          "qualified": false,
+          "mechanism_hits": [],
+          "context_hits": []
+        },
+        "probability_alignment": {
+          "target_profile": {
+            "biology": 1.0
+          },
+          "paper_profile": {
+            "chemistry": 0.1553,
+            "physics": 0.0604,
+            "biology": 0.1122,
+            "medicine": 0.1639,
+            "statistics": 0.0345,
+            "earth_environmental_science": 0.4737
+          },
+          "overlap": 0.1122,
+          "target_domain": "biology",
+          "result_domain": "earth_environmental_science"
+        },
+        "semantic_similarity": 0.2412,
+        "semantic_similarity_source": "structured_catalog_overlap",
+        "cross_field_tolerated": true,
+        "distinct_physics_conflict": false,
+        "reason": "Preprint has nontrivial semantic or interdisciplinary evidence and is retained for review.",
+        "rescue_applied": true
+      },
+      "domain_gate": {
+        "verdict": "review",
+        "decision_stage": "preprint_protection",
+        "rejecting_stage": "",
+        "reason": "Preprint passed hard domain gates; citation count is not used as an exclusion criterion.",
+        "primary_relevance_verdict": "keep",
+        "primary_relevance_score": 0.3125,
+        "review_verdict": "review",
+        "review_score": 0.25,
+        "matched_exclusion_markers": [],
+        "requires_human_review": true
+      },
+      "stratified_layer": "L3_preprint",
+      "stratified_label": "P0 latest preprint / frontier signal",
+      "year_policy": {
+        "min_year": null,
+        "max_year": 2026,
+        "purpose": "upper-bound guard; recency rules provide the lower bound"
+      },
+      "_why_selected": "Selected as latest preprint/frontier signal: Health Impacts of Micro- and Nanoplastics in Humans: Systematic Review of In Vivo Evidence; year=2025; provider=medrxiv; relevance=0.2082.",
+      "result_index": 1,
+      "search_id": "search_1784069827789300900"
+    }
+  ],
+  "provider_blocks": [
+    {
+      "provider": "biorxiv",
+      "query": "stem cell niche signaling cell differentiation potential",
+      "status": "ok",
+      "api": "api.biorxiv.org/details/biorxiv",
+      "date_window": {
+        "from": "2025-07-15",
+        "to": "2026-07-15"
+      },
+      "pages_scanned": 2,
+      "scanned_result_count": 60,
+      "matched_result_count": 6,
+      "result_offset": 0,
+      "total_available": 71372,
+      "scan_budget": 40,
+      "zero_result_cache_hit": false,
+      "results": [
+        {
+          "title": "SH2scan: Mapping SH2 domain-ligand binding selectivity for inhibitors and degraders",
+          "citation": "Lira et al. (2025) SH2scan: Mapping SH2 domain-ligand binding selectivity for inhibitors and degraders doi:10.1101/2025.07.09.663991",
+          "authors": [
+            "Lira",
+            "L. M. G.",
+            "Wolfe-Demarco",
+            "J. K.",
+            "Clifford",
+            "A. M.",
+            "Le",
+            "T. D.",
+            "Khasawneh",
+            "G. M.",
+            "Kidane, M.",
+            "Nguyen, M.",
+            "Najera",
+            "J. A.",
+            "Pallares, G.",
+            "Servant",
+            "N. B.",
+            "Bernatchez",
+            "J. A."
+          ],
+          "year": "2025",
+          "venue": "biorxiv",
+          "doi": "10.1101/2025.07.09.663991",
+          "url": "https://www.biorxiv.org/content/10.1101/2025.07.09.663991",
+          "abstract": "Drug discovery targeting SH2 domains (key protein-protein interaction modules) has been hampered by a lack of assay systems evaluating synthetic ligand binding selectivity toward SH2 domains, to reduce potential off-target effects. In addition, the molecular determinants for synthetic ligand engagement to SH2 domains across the target class have yet to be defined. Here, we developed SH2scan, a high-throughput competition binding assay platform to quantify ligand-SH2 domain interactions, covering >80% of the target class. We uncovered unique binding selectivity profiles and quantified a broad range of dissociation constants (KDs) for 9 synthetic ligands of SH2 domains from the scientific literature with a range of reported primary targets. These results demonstrate that SH2scan can be used to design more selective compounds targeting SH2 domains. The platform can be further leveraged for the discovery of new molecular probes for the dissection of cellular protein-protein interaction networks.",
+          "category": "pharmacology and toxicology",
+          "papergraph_input": {
+            "title": "SH2scan: Mapping SH2 domain-ligand binding selectivity for inhibitors and degraders",
+            "citation": "Lira et al. (2025) SH2scan: Mapping SH2 domain-ligand binding selectivity for inhibitors and degraders doi:10.1101/2025.07.09.663991",
+            "authors": [
+              "Lira",
+              "L. M. G.",
+              "Wolfe-Demarco",
+              "J. K.",
+              "Clifford",
+              "A. M.",
+              "Le",
+              "T. D.",
+              "Khasawneh",
+              "G. M.",
+              "Kidane, M.",
+              "Nguyen, M.",
+              "Najera",
+              "J. A.",
+              "Pallares, G.",
+              "Servant",
+              "N. B.",
+              "Bernatchez",
+              "J. A."
+            ],
+            "year": "2025",
+            "venue": "biorxiv",
+            "provider": "biorxiv",
+            "source_type": "api",
+            "doi": "10.1101/2025.07.09.663991",
+            "url": "https://www.biorxiv.org/content/10.1101/2025.07.09.663991",
+            "open_access_pdf": "https://www.biorxiv.org/content/10.1101/2025.07.09.663991v1.full.pdf",
+            "abstract": "Drug discovery targeting SH2 domains (key protein-protein interaction modules) has been hampered by a lack of assay systems evaluating synthetic ligand binding selectivity toward SH2 domains, to reduce potential off-target effects. In addition, the molecular determinants for synthetic ligand engagement to SH2 domains across the target class have yet to be defined. Here, we developed SH2scan, a high-throughput competition binding assay platform to quantify ligand-SH2 domain interactions, covering >80% of the target class. We uncovered unique binding selectivity profiles and quantified a broad range of dissociation constants (KDs) for 9 synthetic ligands of SH2 domains from the scientific literature with a range of reported primary targets. These results demonstrate that SH2scan can be used to design more selective compounds targeting SH2 domains. The platform can be further leveraged for the discovery of new molecular probes for the dissection of cellular protein-protein interaction networks.",
+            "conclusion": ""
+          },
+          "relevance_score": 0.2076,
+          "relevance_components": {
+            "text_score": 0.14,
+            "recency_score": 1.0,
+            "impact_score": 0.35,
+            "citation_field": "biology",
+            "citation_baseline": 600.0,
+            "venue_score": 0.6,
+            "publication_quality_score": 0.67,
+            "base_score": 0.3098,
+            "text_weight": 0.62,
+            "recency_weight": 0.1,
+            "impact_weight": 0.18,
+            "venue_weight": 0.1
+          },
+          "publication_quality_score": 0.67,
+          "venue_quality": "preprint",
+          "journal_quartile": "",
+          "journal_metric_source": "",
+          "inferred_field": "biology",
+          "quality_flags": [
+            "preprint_not_peer_reviewed",
+            "new_paper_protection"
+          ],
+          "quality_criteria": [
+            "venue is a preprint server, not final peer-reviewed venue",
+            "paper is within 2-year protection window; low citations are not treated as low quality"
+          ],
+          "suspicion_type": "",
+          "quality_reason": "venue is a preprint server, not final peer-reviewed venue; paper is within 2-year protection window; low citations are not treated as low quality",
+          "matched_query_terms": [
+            "stem",
+            "cell",
+            "potential"
+          ],
+          "relevance_reason": "title=0/6, abstract=3/6, citation=0/6, phrase_bonus=0.0, recency=1.0, impact=0.35, venue=0.6, quality=0.67"
+        }
+      ],
+      "next_step": "Import a result with import_literature_search_result; these are preprint metadata records filtered locally by query.",
+      "single_paper_serial": true,
+      "provider_request_batched": true,
+      "provider_batch_size": 1,
+      "provider_batch_index": 0,
+      "single_paper_ordinal": 1,
+      "single_paper_offset": 0,
+      "query_branch": "SH4",
+      "retrieval_strategy": "layer_query"
+    },
+    {
+      "provider": "medrxiv",
+      "query": "stem cell niche signaling cell differentiation potential",
+      "status": "ok",
+      "api": "api.biorxiv.org/details/medrxiv",
+      "date_window": {
+        "from": "2025-07-15",
+        "to": "2026-07-15"
+      },
+      "pages_scanned": 2,
+      "scanned_result_count": 60,
+      "matched_result_count": 7,
+      "result_offset": 0,
+      "total_available": 19659,
+      "scan_budget": 40,
+      "zero_result_cache_hit": false,
+      "results": [
+        {
+          "title": "Health Impacts of Micro- and Nanoplastics in Humans: Systematic Review of In Vivo Evidence",
+          "citation": "Tran et al. (2025) Health Impacts of Micro- and Nanoplastics in Humans: Systematic Review of In Vivo Evidence doi:10.1101/2025.07.10.25331209",
+          "authors": [
+            "Tran",
+            "H. A. A.",
+            "Ng",
+            "J. J.",
+            "Tang",
+            "D. H.",
+            "Yong",
+            "C. T.",
+            "Ho",
+            "A. F. W."
+          ],
+          "year": "2025",
+          "venue": "medrxiv",
+          "doi": "10.1101/2025.07.10.25331209",
+          "url": "https://www.medrxiv.org/content/10.1101/2025.07.10.25331209",
+          "abstract": "BackgroundMicroplastics and nanoplastics (MNPs; <5 mm) are pervasive environmental contaminants with potential human health implications. Although laboratory models implicate MNPs in oxidative stress, inflammation, and endocrine disruption, a comprehensive synthesis of direct in vivo human evidence is lacking. We aimed to systematically review studies measuring MNPs in living human subjects and summarize associated health findings.\n\nMethodsWe systematically searched PubMed, Web of Science, Scopus, Cochrane and Embase through 26 December 2024. Two investigators independently screened and selected original research articles that quantified MNPs in biological samples from living humans (blood, tissues, or fluids). We excluded animal, in vitro, cell-line, and injection-based studies, as well as reports on non-plastic micro- and nanoparticles. Data extraction, performed in duplicate, included study design, participant characteristics, detection methods, polymer types, and reported health outcomes. Methodological quality was appraised using Risk Of Bias in Non-Randomized Studies - of Exposures (ROBINS-E). The primary outcome was the presence and burden of MNPs; secondary outcomes were clinical or biomarker associations. We did not perform meta-analysis due to heterogeneity.\n\nFindingsFrom 5 522 records, 25 studies (n=1498 participants) met inclusion. Studies employed pyrolysis-gas chromatography/mass spectrometry (n=9), Raman (n=8), infrared spectroscopy (n=7), and Fourier-transform infrared spectroscopy (n=3), often combined with microscopy. Predominant polymers were polyethylene, polypropylene, polyvinyl chloride, polyethylene terephthalate, and polystyrene. In cardiovascular research (five studies; n=454), higher thrombus and plasma MNP burdens correlated with inflammatory markers and adverse cardiac events. Reproductive research (seven studies; n=327) linked semen and tissue MNP levels to reduced sperm quality and higher burdens in tumor and placental samples. Gastrointestinal research (nine studies; n=537) associated fecal MNPs with liver enzyme elevations and gut dysbiosis. Respiratory (three studies; n=171) and ocular (one study; n=49) research detected MNPs in airway fluids and vitreous humor, with suggestive links to inflammation and increased intraocular pressure. ROBINS-E assessments indicated moderate to high risk of confounding and exposure-measurement bias; consistency across detection modalities was limited.\n\nInterpretationHuman in vivo evidence confirms that MNPs accumulate in multiple organ systems and are associated with inflammation and functional impairment. Methodological heterogeneity and bias constrain causal inference. Standardized, prospective cohort studies with rigorous exposure assessment and confounder control are needed to advance understanding and guide policy.\n\nFundingThis study was funded by the SingHealth Duke-NUS Academic Medical Centre under the Nurturing Clinician Scientist Award scheme (15/FY2025/P1/17-A45) and the Clinician Investigator Advancement Programme (15/FY2022/CIVA/03-A03).",
+          "category": "public and global health",
+          "papergraph_input": {
+            "title": "Health Impacts of Micro- and Nanoplastics in Humans: Systematic Review of In Vivo Evidence",
+            "citation": "Tran et al. (2025) Health Impacts of Micro- and Nanoplastics in Humans: Systematic Review of In Vivo Evidence doi:10.1101/2025.07.10.25331209",
+            "authors": [
+              "Tran",
+              "H. A. A.",
+              "Ng",
+              "J. J.",
+              "Tang",
+              "D. H.",
+              "Yong",
+              "C. T.",
+              "Ho",
+              "A. F. W."
+            ],
+            "year": "2025",
+            "venue": "medrxiv",
+            "provider": "medrxiv",
+            "source_type": "api",
+            "doi": "10.1101/2025.07.10.25331209",
+            "url": "https://www.medrxiv.org/content/10.1101/2025.07.10.25331209",
+            "open_access_pdf": "https://www.medrxiv.org/content/10.1101/2025.07.10.25331209v1.full.pdf",
+            "abstract": "BackgroundMicroplastics and nanoplastics (MNPs; <5 mm) are pervasive environmental contaminants with potential human health implications. Although laboratory models implicate MNPs in oxidative stress, inflammation, and endocrine disruption, a comprehensive synthesis of direct in vivo human evidence is lacking. We aimed to systematically review studies measuring MNPs in living human subjects and summarize associated health findings.\n\nMethodsWe systematically searched PubMed, Web of Science, Scopus, Cochrane and Embase through 26 December 2024. Two investigators independently screened and selected original research articles that quantified MNPs in biological samples from living humans (blood, tissues, or fluids). We excluded animal, in vitro, cell-line, and injection-based studies, as well as reports on non-plastic micro- and nanoparticles. Data extraction, performed in duplicate, included study design, participant characteristics, detection methods, polymer types, and reported health outcomes. Methodological quality was appraised using Risk Of Bias in Non-Randomized Studies - of Exposures (ROBINS-E). The primary outcome was the presence and burden of MNPs; secondary outcomes were clinical or biomarker associations. We did not perform meta-analysis due to heterogeneity.\n\nFindingsFrom 5 522 records, 25 studies (n=1498 participants) met inclusion. Studies employed pyrolysis-gas chromatography/mass spectrometry (n=9), Raman (n=8), infrared spectroscopy (n=7), and Fourier-transform infrared spectroscopy (n=3), often combined with microscopy. Predominant polymers were polyethylene, polypropylene, polyvinyl chloride, polyethylene terephthalate, and polystyrene. In cardiovascular research (five studies; n=454), higher thrombus and plasma MNP burdens correlated with inflammatory markers and adverse cardiac events. Reproductive research (seven studies; n=327) linked semen and tissue MNP levels to reduced sperm quality and higher burdens in tumor and placental samples. Gastrointestinal research (nine studies; n=537) associated fecal MNPs with liver enzyme elevations and gut dysbiosis. Respiratory (three studies; n=171) and ocular (one study; n=49) research detected MNPs in airway fluids and vitreous humor, with suggestive links to inflammation and increased intraocular pressure. ROBINS-E assessments indicated moderate to high risk of confounding and exposure-measurement bias; consistency across detection modalities was limited.\n\nInterpretationHuman in vivo evidence confirms that MNPs accumulate in multiple organ systems and are associated with inflammation and functional impairment. Methodological heterogeneity and bias constrain causal inference. Standardized, prospective cohort studies with rigorous exposure assessment and confounder control are needed to advance understanding and guide policy.\n\nFundingThis study was funded by the SingHealth Duke-NUS Academic Medical Centre under the Nurturing Clinician Scientist Award scheme (15/FY2025/P1/17-A45) and the Clinician Investigator Advancement Programme (15/FY2022/CIVA/03-A03).",
+            "conclusion": ""
+          },
+          "relevance_score": 0.2574,
+          "relevance_components": {
+            "text_score": 0.26,
+            "recency_score": 1.0,
+            "impact_score": 0.35,
+            "citation_field": "environmental_science",
+            "citation_baseline": 450.0,
+            "venue_score": 0.6,
+            "publication_quality_score": 0.67,
+            "base_score": 0.3842,
+            "text_weight": 0.62,
+            "recency_weight": 0.1,
+            "impact_weight": 0.18,
+            "venue_weight": 0.1
+          },
+          "publication_quality_score": 0.67,
+          "venue_quality": "preprint",
+          "journal_quartile": "",
+          "journal_metric_source": "",
+          "inferred_field": "environmental_science",
+          "quality_flags": [
+            "preprint_not_peer_reviewed",
+            "new_paper_protection"
+          ],
+          "quality_criteria": [
+            "venue is a preprint server, not final peer-reviewed venue",
+            "paper is within 2-year protection window; low citations are not treated as low quality"
+          ],
+          "suspicion_type": "",
+          "quality_reason": "venue is a preprint server, not final peer-reviewed venue; paper is within 2-year protection window; low citations are not treated as low quality",
+          "matched_query_terms": [
+            "stem",
+            "cell",
+            "potential"
+          ],
+          "relevance_reason": "title=1/6, abstract=3/6, citation=1/6, phrase_bonus=0.0, recency=1.0, impact=0.35, venue=0.6, quality=0.67"
+        }
+      ],
+      "next_step": "Import a result with import_literature_search_result; these are preprint metadata records filtered locally by query.",
+      "single_paper_serial": true,
+      "provider_request_batched": true,
+      "provider_batch_size": 1,
+      "provider_batch_index": 0,
+      "single_paper_ordinal": 2,
+      "single_paper_offset": 0,
+      "query_branch": "SH4",
+      "retrieval_strategy": "layer_query"
+    },
+    {
+      "provider": "arxiv",
+      "query": "stem cell niche signaling cell differentiation potential",
+      "compact_query": "differentiation potential signaling niche",
+      "api_query": "all:differentiation AND all:potential",
+      "status": "ok",
+      "results": [],
+      "raw_result_count": 1,
+      "local_rejected_count": 1,
+      "next_step": "Pass a result's papergraph_input fields into import_papergraph_record, or paste abstract into import_literature_text.",
+      "single_paper_serial": true,
+      "provider_request_batched": true,
+      "provider_batch_size": 1,
+      "provider_batch_index": 0,
+      "single_paper_ordinal": 3,
+      "single_paper_offset": 0,
+      "query_branch": "SH4",
+      "retrieval_strategy": "layer_query"
+    }
+  ]
+}

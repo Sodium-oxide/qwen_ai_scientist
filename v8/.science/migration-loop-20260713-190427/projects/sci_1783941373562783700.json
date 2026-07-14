@@ -1,0 +1,1844 @@
+{
+  "project_id": "sci_1783941373562783700",
+  "title": "Migratory Animal Navigation Mechanisms",
+  "domain": "Natural Science",
+  "objective": "Investigate the mechanisms by which migratory animals navigate, including visual, celestial, magnetic, and other cues. Compare these mechanisms across different taxa and environments, and identify primary causal gaps, contradictions, and cross-hypothesis couplings.",
+  "strategic_need": "Understanding the navigation mechanisms of migratory animals is crucial for conservation, ecological studies, and the broader understanding of animal behavior.",
+  "research_brief": "Create a new natural-science research project and run the complete AutoGen closed-loop validation workflow: ZhiZhi literature retrieval and PaperGraph   expansion, TanXi primary-mechanism gap detection, Socrates evidence-bounded causal contracts and mediator discovery, MingLi competing falsifiable hypothesis generation with a   structured experimental protocol, YanZhen adversarial counterevidence retrieval and controversy matrix, DuZhi Socratic challenge, and BianLun evidence-weighted minimum-   commitment synthesis. Use semantic_scholar, arxiv, biorxiv, and pubmed where available; retrieve at least 50 results and import at least 20 eligible papers; run debate iteration   with up to 5 rounds. Topic: How do migratory animals know where they are and where they are going? Animal migration is regular seasonal movement among habitats and spans north-   south, east-west, ocean-land, altitudinal, and water-column movement. Treat this as a cross-taxon and cross-environment causal-mechanism question covering birds, insects,   mammals, fish, marine animals, and other organisms only when evidence is context-compatible. Compare visual landmarks and geographic cues; solar and stellar compass mechanisms;   magnetic-particle or biogenic-mineral mechanisms; electromagnetic induction in electrically sensitive aquatic animals; and radical-pair or cryptochrome magnetoreception. Do not   treat evidence from one species, sensory ecology, developmental stage, or migration environment as automatically transferable to another. For every candidate causal edge   preserve taxon, species, model system, migratory stage, environment, perturbation, readout, time scale, supporting sources, challenge sources, alternative pathways, applicable   boundary, and uncertainty state. Prioritize direct mechanism gaps, causal mediation gaps, contradictions, anomalies, and cross-hypothesis coupling over method-scenario-benchmark   coverage holes. YanZhen must actively search for counterevidence and ask whether magnetic mechanisms are necessary, sufficient, context dependent, or bypassed by visual,   celestial, olfactory, inertial, and learned-route cues. If a mediator remains unknown, return MECHANISM_DISCOVERY_REQUIRED with candidate mediators rather than inventing a   complete mechanism. Generate competing and falsifiable hypotheses; experimental protocols must remain execution-blocked unless domain experts explicitly supply model system,   intervention, controls, timepoints, primary and orthogonal readouts, replication, bias control, analysis plan, meaningful effect threshold, interval requirement, power   assumptions, rescue criteria, regime-shift tests, and reproducibility details. At the end, output project_id, PaperGraph paper count, primary scientific gaps, Socrates contract   states, generated hypothesis ids, YanZhen verdict, BianLun final decision, structured experiment protocol status, execution authorization status, remaining uncertainty, and the   next discriminating experiment.",
+  "research_brief_source": "verbatim_user_prompt",
+  "phase": "Gap Discovery",
+  "createdAt": 1783941373.5627859,
+  "updatedAt": 1783942581.6037943,
+  "papergraph": [
+    {
+      "paper_id": "paper_1783942019133865200",
+      "unique_key": "arxiv:2408_15765v1",
+      "title": "Conceptual Design on the Field of View of Celestial Navigation Systems for Maritime Autonomous Surface Ships",
+      "citation": "Kouki Wakita et al. (2024) Conceptual Design on the Field of View of Celestial Navigation Systems for Maritime Autonomous Surface Ships arXiv:2408.15765v1",
+      "authors": [
+        "Kouki Wakita",
+        "Fuyuki Hane",
+        "Takeshi Sekiguchi",
+        "Shigehito Shimizu",
+        "Shinji Mitani",
+        "Youhei Akimoto",
+        "Atsuo Maki"
+      ],
+      "year": "2024",
+      "venue": "arXiv",
+      "provider": "arxiv",
+      "source_type": "api",
+      "doi": "",
+      "arxiv_id": "2408.15765v1",
+      "semantic_scholar_id": "",
+      "url": "http://arxiv.org/abs/2408.15765v1",
+      "abstract": "In order to understand the appropriate field of view (FOV) size of celestial automatic navigation systems for surface ships, we investigate the variations of measurement accuracy of star position and probability of successful star identification with respect to FOV, focusing on the decreasing number of observable star magnitudes and the presence of physically covered stars in marine environments. The results revealed that, although a larger FOV reduces the measurement accuracy of star positions, it increases the number of observable objects and thus improves the probability of star identification using subgraph isomorphism-based methods. It was also found that, although at least four objects need to be observed for accurate identification, four objects may not be sufficient for wider FOVs. On the other hand, from the point of view of celestial navigation systems, a decrease in the measurement accuracy leads to a decrease in positioning accuracy. Therefore, it was found that maximizing the FOV is required for celestial automatic navigation systems as long as the desired positioning accuracy can be ensured. Furthermore, it was found that algorithms incorporating more than four observed celestial objects are required to achieve highly accurate star identification over a wider FOV.",
+      "full_text_excerpt": "",
+      "conclusion": "On the other hand, from the point of view of celestial navigation systems, a decrease in the measurement accuracy leads to a decrease in positioning accuracy. Therefore, it was found that maximizing the FOV is required for celestial automatic navigation systems as long as the desired positioning accuracy can be ensured. Furthermore, it was found that algorithms incorporating more than four observed celestial objects are required to achieve highly accurate star identification over a wider FOV.",
+      "strengths": [
+        "In order to understand the appropriate field of view (FOV) size of celestial automatic navigation systems for surface ships, we investigate the variations of measurement accuracy of star position and probability of successful star identification with respect to FOV, focusing on the decreasing number...[truncated]"
+      ],
+      "improvements": [],
+      "method": "respect to fov",
+      "scenario": "unknown scenario",
+      "benchmark": "accuracy",
+      "contribution": "In order to understand the appropriate field of view (FOV) size of celestial automatic navigation systems for surface ships, we investigate the variations of measurement accuracy of star position and probability of successful star identification with respect to FOV, focusing on the decreasing number...[truncated]",
+      "limitation": "In order to understand the appropriate field of view (FOV) size of celestial automatic navigation systems for surface ships, we investigate the variations of measurement accuracy of star position and probability of successful star identification with respect to FOV, focusing on the decreasing number of observable star magnitudes and the presence of physicall...[truncated]",
+      "credibility_score": 0.77,
+      "credibility_reasons": [
+        "base record",
+        "has title and citation",
+        "has scholarly identifier",
+        "has URL",
+        "has substantial abstract",
+        "has conclusion/discussion",
+        "provider recorded",
+        "preprint venue",
+        "has publication year"
+      ],
+      "extraction_quality": {
+        "score": 0.28,
+        "unknown_ratio": 1.0,
+        "unknown_fields": [
+          "method",
+          "scenario",
+          "benchmark"
+        ],
+        "abstract_chars": 1298,
+        "flags": [
+          "missing_conclusion",
+          "unknown_fields",
+          "unknown_fields_high",
+          "missing_benchmark"
+        ],
+        "needs_enrichment": false,
+        "needs_llm_retry": true,
+        "requires_human_review": true,
+        "initial": {
+          "score": 0.28,
+          "unknown_ratio": 1.0,
+          "unknown_fields": [
+            "method",
+            "scenario",
+            "benchmark"
+          ],
+          "abstract_chars": 1298,
+          "flags": [
+            "missing_conclusion",
+            "unknown_fields",
+            "unknown_fields_high",
+            "missing_benchmark"
+          ],
+          "needs_enrichment": false,
+          "needs_llm_retry": true,
+          "requires_human_review": true
+        },
+        "llm_retry": {
+          "attempted": false,
+          "succeeded": false,
+          "error": ""
+        },
+        "full_text": {
+          "status": "fetch_failed",
+          "attempted": true,
+          "attempted_at": 1783942018.9741037,
+          "retry_after_seconds": 900,
+          "source_url": "https://arxiv.org/pdf/2408.15765v1",
+          "error": "URL error: [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1032)"
+        },
+        "enrichment_errors": [
+          "open_access_pdf: URL error: [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1032)"
+        ],
+        "rule_extraction": {
+          "methodology_evidence_count": 6,
+          "causal_chain_count": 2,
+          "speculative_causal_signal_count": 0,
+          "association_signal_count": 0,
+          "gap_signal_count": 2,
+          "evidence_span_count": 0
+        }
+      },
+      "enrichment_sources": [
+        "open_access_pdf_available"
+      ],
+      "open_access_pdf": "https://arxiv.org/pdf/2408.15765v1",
+      "full_text_enrichment": {
+        "status": "fetch_failed",
+        "attempted": true,
+        "attempted_at": 1783942018.9741037,
+        "retry_after_seconds": 900,
+        "source_url": "https://arxiv.org/pdf/2408.15765v1",
+        "error": "URL error: [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1032)",
+        "structured_methodology": {
+          "method": "",
+          "scenario": "",
+          "benchmark": "accuracy",
+          "population": [],
+          "outcome": [
+            "accuracy"
+          ],
+          "evidence": [
+            {
+              "field": "outcome",
+              "text": "In order to understand the appropriate field of view (FOV) size of celestial automatic navigation systems for surface ships, we investigate the variations of measurement accuracy of star position and probability of successful star identification with respect to FOV, focusing on the decreasing number of observable star magnitudes and the presence of physically covered stars in marine environments.",
+              "section": "Document body",
+              "source_location": {
+                "source_url": "https://arxiv.org/pdf/2408.15765v1"
+              },
+              "evidence_level": "explicit_text",
+              "confidence": 0.68
+            },
+            {
+              "field": "outcome",
+              "text": "The results revealed that, although a larger FOV reduces the measurement accuracy of star positions, it increases the number of observable objects and thus improves the probability of star identification using subgraph isomorphism-based methods.",
+              "section": "Document body",
+              "source_location": {
+                "source_url": "https://arxiv.org/pdf/2408.15765v1"
+              },
+              "evidence_level": "explicit_text",
+              "confidence": 0.68
+            },
+            {
+              "field": "outcome",
+              "text": "On the other hand, from the point of view of celestial navigation systems, a decrease in the measurement accuracy leads to a decrease in positioning accuracy.",
+              "section": "Document body",
+              "source_location": {
+                "source_url": "https://arxiv.org/pdf/2408.15765v1"
+              },
+              "evidence_level": "explicit_text",
+              "confidence": 0.68
+            },
+            {
+              "field": "outcome",
+              "text": "Therefore, it was found that maximizing the FOV is required for celestial automatic navigation systems as long as the desired positioning accuracy can be ensured.",
+              "section": "Document body",
+              "source_location": {
+                "source_url": "https://arxiv.org/pdf/2408.15765v1"
+              },
+              "evidence_level": "explicit_text",
+              "confidence": 0.68
+            },
+            {
+              "field": "outcome",
+              "text": "In order to understand the appropriate field of view (FOV) size of celestial automatic navigation systems for surface ships, we investigate the variations of measurement accuracy of star position and probability of successful star identification with respect to FOV, focusing on the decreasing number...[truncated]",
+              "section": "Document body",
+              "source_location": {
+                "source_url": "https://arxiv.org/pdf/2408.15765v1"
+              },
+              "evidence_level": "explicit_text",
+              "confidence": 0.68
+            },
+            {
+              "field": "outcome",
+              "text": "In order to understand the appropriate field of view (FOV) size of celestial automatic navigation systems for surface ships, we investigate the variations of measurement accuracy of star position and probability of successful star identification with respect to FOV, focusing on the decreasing number of observable star magnitudes and the presence of physicall...[truncated]",
+              "section": "Document body",
+              "source_location": {
+                "source_url": "https://arxiv.org/pdf/2408.15765v1"
+              },
+              "evidence_level": "explicit_text",
+              "confidence": 0.68
+            }
+          ],
+          "extractor": "section_dictionary_pattern"
+        },
+        "association_signals": [],
+        "speculative_causal_signals": []
+      },
+      "gap_signals": [
+        {
+          "signal_id": "sig_1783942019031470900",
+          "signal_type": "mechanism_issue",
+          "text": "Conceptual Design on the Field of View of Celestial Navigation Systems for Maritime Autonomous Surface Ships In order to understand the appropriate field of view (FOV) size of celestial automatic navigation systems for surface ships, we investigate the variations of measurement accuracy of star position and probability of successful star identification with....[truncated]",
+          "evidence_type": "problem_statement",
+          "supporting_reference": "Kouki Wakita et al. (2024) Conceptual Design on the Field of View of Celestial Navigation Systems for Maritime Autonomous Surface Ships arXiv:2408.15765v1",
+          "confidence": 0.89,
+          "source_location": {
+            "source_url": "https://arxiv.org/pdf/2408.15765v1"
+          }
+        },
+        {
+          "signal_id": "sig_1783942019031797600",
+          "signal_type": "mechanism_issue",
+          "text": "In order to understand the appropriate field of view (FOV) size of celestial automatic navigation systems for surface ships, we investigate the variations of measurement accuracy of star position and probability of successful star identification with respect to FOV, focusing on the decreasing number...[truncated] In order to understand the appropriate field....[truncated]",
+          "evidence_type": "problem_statement",
+          "supporting_reference": "Kouki Wakita et al. (2024) Conceptual Design on the Field of View of Celestial Navigation Systems for Maritime Autonomous Surface Ships arXiv:2408.15765v1",
+          "confidence": 0.89,
+          "source_location": {
+            "source_url": "https://arxiv.org/pdf/2408.15765v1"
+          }
+        }
+      ],
+      "causal_chains": [
+        {
+          "chain_id": "heuristic_1",
+          "trigger": "although a larger FOV",
+          "trigger_evidence": "The results revealed that, although a larger FOV reduces the measurement accuracy of star positions, it increases the number of observable objects and thus improves the probability of star identification using subgraph isomorphism-based methods.",
+          "trigger_location": {
+            "source_url": "https://arxiv.org/pdf/2408.15765v1"
+          },
+          "steps": [],
+          "outcome": "measurement accuracy of star positions",
+          "outcome_evidence": "The results revealed that, although a larger FOV reduces the measurement accuracy of star positions, it increases the number of observable objects and thus improves the probability of star identification using subgraph isomorphism-based methods.",
+          "outcome_location": {
+            "source_url": "https://arxiv.org/pdf/2408.15765v1"
+          },
+          "relation": "inhibits",
+          "polarity": "negative",
+          "modality": "asserted",
+          "direct_relation": true,
+          "causal_claim": true,
+          "entities": [
+            {
+              "text": "although a larger FOV",
+              "canonical": "although a larger fov",
+              "role": "cause"
+            },
+            {
+              "text": "measurement accuracy of star positions",
+              "canonical": "measurement accuracy of star positions",
+              "role": "effect"
+            }
+          ],
+          "observables": [],
+          "interventions": [],
+          "extraction_method": "explicit_causal_trigger_rule",
+          "confidence": 0.76
+        },
+        {
+          "chain_id": "heuristic_2",
+          "trigger": "a",
+          "trigger_evidence": "On the other hand, from the point of view of celestial navigation systems, a decrease in the measurement accuracy leads to a decrease in positioning accuracy.",
+          "trigger_location": {
+            "source_url": "https://arxiv.org/pdf/2408.15765v1"
+          },
+          "steps": [],
+          "outcome": "in the measurement accuracy leads to a decrease in positioning accuracy",
+          "outcome_evidence": "On the other hand, from the point of view of celestial navigation systems, a decrease in the measurement accuracy leads to a decrease in positioning accuracy.",
+          "outcome_location": {
+            "source_url": "https://arxiv.org/pdf/2408.15765v1"
+          },
+          "relation": "inhibits",
+          "polarity": "negative",
+          "modality": "asserted",
+          "direct_relation": true,
+          "causal_claim": true,
+          "entities": [
+            {
+              "text": "a",
+              "canonical": "a",
+              "role": "cause"
+            },
+            {
+              "text": "in the measurement accuracy leads to a decrease in positioning accuracy",
+              "canonical": "in the measurement accuracy leads to a decrease in positioning accuracy",
+              "role": "effect"
+            }
+          ],
+          "observables": [],
+          "interventions": [],
+          "extraction_method": "explicit_causal_trigger_rule",
+          "confidence": 0.76
+        }
+      ],
+      "importedAt": 1783942019.1339266,
+      "active": true,
+      "retrieval_query": "migratory birds celestial navigation",
+      "domain_relevance": {
+        "profile": "natural_science",
+        "target_field": "earth_environmental_science",
+        "result_field": "robotics",
+        "score": 0.305,
+        "query_hits": [
+          "celestial",
+          "navigation"
+        ],
+        "anchor_hits": [],
+        "topic_hits": [],
+        "noise_hits": [],
+        "flags": [
+          "field_mismatch",
+          "core_domain_hit"
+        ],
+        "is_preprint": true,
+        "core_domain_alignment": {
+          "enabled": true,
+          "passes": true,
+          "core_terms": [
+            "natural science migratory",
+            "science migratory birds",
+            "migratory birds celestial",
+            "birds celestial navigation",
+            "natural science",
+            "science migratory",
+            "migratory birds",
+            "birds celestial",
+            "celestial navigation",
+            "natural",
+            "migratory",
+            "birds",
+            "celestial",
+            "navigation"
+          ],
+          "core_hit_count": 3,
+          "core_hits": [
+            "celestial navigation",
+            "celestial",
+            "navigation"
+          ],
+          "specific_terms": [
+            "natural science migratory",
+            "science migratory birds",
+            "migratory birds celestial",
+            "birds celestial navigation",
+            "natural science",
+            "science migratory",
+            "migratory birds",
+            "birds celestial",
+            "celestial navigation",
+            "natural",
+            "migratory",
+            "celestial"
+          ],
+          "specific_hit_count": 3,
+          "specific_hits": [
+            "celestial navigation",
+            "celestial",
+            "navigation"
+          ],
+          "min_core_hits": 3,
+          "min_specific_hits": 2,
+          "is_preprint": true,
+          "reason": "core topic terms sufficiently covered"
+        },
+        "biological_mechanism_evidence": {
+          "qualified": false,
+          "mechanism_hits": [],
+          "context_hits": []
+        },
+        "verdict": "keep",
+        "requires_human_review": true
+      },
+      "domain_review": {
+        "verdict": "review",
+        "score": 0.4,
+        "target_field": "earth_environmental_science",
+        "result_field": "robotics",
+        "foreign_field": true,
+        "target_terms": [
+          "migratory",
+          "birds",
+          "celestial",
+          "navigation",
+          "natural"
+        ],
+        "target_hits": [
+          "celestial",
+          "navigation"
+        ],
+        "retrieval_assessment_preserved": true,
+        "biological_mechanism_evidence": {
+          "qualified": false,
+          "mechanism_hits": [],
+          "context_hits": []
+        },
+        "probability_alignment": {
+          "target_profile": {
+            "earth_environmental_science": 1.0
+          },
+          "paper_profile": {
+            "computer_science": 0.7237,
+            "mathematics": 0.1842,
+            "statistics": 0.0921
+          },
+          "overlap": 0.0,
+          "target_domain": "earth_environmental_science",
+          "result_domain": "computer_science"
+        },
+        "semantic_similarity": 0.7152,
+        "semantic_similarity_source": "local_embedding",
+        "cross_field_tolerated": false,
+        "distinct_physics_conflict": false,
+        "reason": "Preprint has nontrivial semantic or interdisciplinary evidence and is retained for review.",
+        "rescue_applied": true
+      },
+      "domain_gate": {
+        "verdict": "review",
+        "decision_stage": "preprint_protection",
+        "rejecting_stage": "",
+        "reason": "Preprint passed hard domain gates; citation count is not used as an exclusion criterion.",
+        "primary_relevance_verdict": "keep",
+        "primary_relevance_score": 0.305,
+        "review_verdict": "review",
+        "review_score": 0.4,
+        "matched_exclusion_markers": [],
+        "requires_human_review": true
+      },
+      "requires_human_review": true,
+      "import_context": {
+        "search_id": "search_1783941516402594600",
+        "result_index": 0,
+        "stratified_layer": "L3_preprint",
+        "query_branch": "SH1"
+      },
+      "retrieval_branch": "SH1"
+    },
+    {
+      "paper_id": "paper_1783942024398209900",
+      "unique_key": "arxiv:2410_02013v2",
+      "title": "Optimal Sensing Precision for Celestial Navigation Systems in Cislunar Space using LPV Framework",
+      "citation": "Eliot Nychka et al. (2024) Optimal Sensing Precision for Celestial Navigation Systems in Cislunar Space using LPV Framework arXiv:2410.02013v2",
+      "authors": [
+        "Eliot Nychka",
+        "Raktim Bhattacharya"
+      ],
+      "year": "2024",
+      "venue": "arXiv",
+      "provider": "arxiv",
+      "source_type": "api",
+      "doi": "",
+      "arxiv_id": "2410.02013v2",
+      "semantic_scholar_id": "",
+      "url": "http://arxiv.org/abs/2410.02013v2",
+      "abstract": "This paper introduces two innovative convex optimization formulations to simultaneously optimize the H2/Hinf observer gain and sensing precision, and guarantee a specified estimation error bound for nonlinear systems in LPV form. Applied to the design of an onboard celestial navigation system for cislunar operations, these formulations demonstrate the ability to maintain accurate spacecraft positioning with minimal measurements and theoretical performance guarantees by design.",
+      "full_text_excerpt": "",
+      "conclusion": "This paper introduces two innovative convex optimization formulations to simultaneously optimize the H2/Hinf observer gain and sensing precision, and guarantee a specified estimation error bound for nonlinear systems in LPV form. Applied to the design of an onboard celestial navigation system for cislunar operations, these formulations demonstrate the ability to maintain accurate spacecraft positioning with minimal measurements and theoretical performance guarantees by design.",
+      "strengths": [],
+      "improvements": [],
+      "method": "this paper introduces two innovative convex optimization",
+      "scenario": "unknown scenario",
+      "benchmark": "classification performance",
+      "contribution": "This paper introduces two innovative convex optimization formulations to simultaneously optimize the H2/Hinf observer gain and sensing precision, and guarantee a specified estimation error bound for nonlinear systems in LPV form.",
+      "limitation": "No explicit limitation extracted.",
+      "credibility_score": 0.77,
+      "credibility_reasons": [
+        "base record",
+        "has title and citation",
+        "has scholarly identifier",
+        "has URL",
+        "has substantial abstract",
+        "has conclusion/discussion",
+        "provider recorded",
+        "preprint venue",
+        "has publication year"
+      ],
+      "extraction_quality": {
+        "score": 0.28,
+        "unknown_ratio": 1.0,
+        "unknown_fields": [
+          "method",
+          "scenario",
+          "benchmark"
+        ],
+        "abstract_chars": 481,
+        "flags": [
+          "missing_conclusion",
+          "unknown_fields",
+          "unknown_fields_high",
+          "missing_benchmark"
+        ],
+        "needs_enrichment": false,
+        "needs_llm_retry": true,
+        "requires_human_review": true,
+        "initial": {
+          "score": 0.28,
+          "unknown_ratio": 1.0,
+          "unknown_fields": [
+            "method",
+            "scenario",
+            "benchmark"
+          ],
+          "abstract_chars": 481,
+          "flags": [
+            "missing_conclusion",
+            "unknown_fields",
+            "unknown_fields_high",
+            "missing_benchmark"
+          ],
+          "needs_enrichment": false,
+          "needs_llm_retry": true,
+          "requires_human_review": true
+        },
+        "llm_retry": {
+          "attempted": false,
+          "succeeded": false,
+          "error": ""
+        },
+        "full_text": {
+          "status": "fetch_failed",
+          "attempted": true,
+          "attempted_at": 1783942024.3305402,
+          "retry_after_seconds": 900,
+          "source_url": "https://arxiv.org/pdf/2410.02013v2",
+          "error": "URL error: [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1032)"
+        },
+        "enrichment_errors": [
+          "open_access_pdf: URL error: [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1032)"
+        ],
+        "rule_extraction": {
+          "methodology_evidence_count": 0,
+          "causal_chain_count": 1,
+          "speculative_causal_signal_count": 0,
+          "association_signal_count": 0,
+          "gap_signal_count": 1,
+          "evidence_span_count": 0
+        }
+      },
+      "enrichment_sources": [
+        "open_access_pdf_available"
+      ],
+      "open_access_pdf": "https://arxiv.org/pdf/2410.02013v2",
+      "full_text_enrichment": {
+        "status": "fetch_failed",
+        "attempted": true,
+        "attempted_at": 1783942024.3305402,
+        "retry_after_seconds": 900,
+        "source_url": "https://arxiv.org/pdf/2410.02013v2",
+        "error": "URL error: [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1032)",
+        "structured_methodology": {
+          "method": "",
+          "scenario": "",
+          "benchmark": "",
+          "population": [],
+          "outcome": [],
+          "evidence": [],
+          "extractor": "section_dictionary_pattern"
+        },
+        "association_signals": [],
+        "speculative_causal_signals": []
+      },
+      "gap_signals": [
+        {
+          "signal_id": "sig_1783942024357059500",
+          "signal_type": "limitation",
+          "text": "No explicit limitation extracted.",
+          "evidence_type": "author_opinion",
+          "supporting_reference": "Eliot Nychka et al. (2024) Optimal Sensing Precision for Celestial Navigation Systems in Cislunar Space using LPV Framework arXiv:2410.02013v2",
+          "confidence": 0.82,
+          "source_location": {
+            "source_url": "https://arxiv.org/pdf/2410.02013v2"
+          }
+        }
+      ],
+      "causal_chains": [
+        {
+          "chain_id": "heuristic_1",
+          "trigger": "these formulations demonstrate the ability to",
+          "trigger_evidence": "Applied to the design of an onboard celestial navigation system for cislunar operations, these formulations demonstrate the ability to maintain accurate spacecraft positioning with minimal measurements and theoretical performance guarantees by design.",
+          "trigger_location": {
+            "source_url": "https://arxiv.org/pdf/2410.02013v2"
+          },
+          "steps": [],
+          "outcome": "accurate spacecraft positioning with minimal measurements and theoretical performance guarantees by design",
+          "outcome_evidence": "Applied to the design of an onboard celestial navigation system for cislunar operations, these formulations demonstrate the ability to maintain accurate spacecraft positioning with minimal measurements and theoretical performance guarantees by design.",
+          "outcome_location": {
+            "source_url": "https://arxiv.org/pdf/2410.02013v2"
+          },
+          "relation": "promotes",
+          "polarity": "positive",
+          "modality": "asserted",
+          "direct_relation": true,
+          "causal_claim": true,
+          "entities": [
+            {
+              "text": "these formulations demonstrate the ability to",
+              "canonical": "these formulations demonstrate the ability to",
+              "role": "cause"
+            },
+            {
+              "text": "accurate spacecraft positioning with minimal measurements and theoretical performance guarantees by design",
+              "canonical": "accurate spacecraft positioning with minimal measurements and theoretical performance guarantees by design",
+              "role": "effect"
+            }
+          ],
+          "observables": [],
+          "interventions": [],
+          "extraction_method": "explicit_causal_trigger_rule",
+          "confidence": 0.76
+        }
+      ],
+      "importedAt": 1783942024.3982248,
+      "active": true,
+      "retrieval_query": "migratory birds celestial navigation",
+      "domain_relevance": {
+        "profile": "natural_science",
+        "target_field": "earth_environmental_science",
+        "result_field": "mathematics",
+        "score": 0.305,
+        "query_hits": [
+          "celestial",
+          "navigation"
+        ],
+        "anchor_hits": [],
+        "topic_hits": [],
+        "noise_hits": [],
+        "flags": [
+          "field_mismatch",
+          "core_domain_hit"
+        ],
+        "is_preprint": true,
+        "core_domain_alignment": {
+          "enabled": true,
+          "passes": true,
+          "core_terms": [
+            "natural science migratory",
+            "science migratory birds",
+            "migratory birds celestial",
+            "birds celestial navigation",
+            "natural science",
+            "science migratory",
+            "migratory birds",
+            "birds celestial",
+            "celestial navigation",
+            "natural",
+            "migratory",
+            "birds",
+            "celestial",
+            "navigation"
+          ],
+          "core_hit_count": 3,
+          "core_hits": [
+            "celestial navigation",
+            "celestial",
+            "navigation"
+          ],
+          "specific_terms": [
+            "natural science migratory",
+            "science migratory birds",
+            "migratory birds celestial",
+            "birds celestial navigation",
+            "natural science",
+            "science migratory",
+            "migratory birds",
+            "birds celestial",
+            "celestial navigation",
+            "natural",
+            "migratory",
+            "celestial"
+          ],
+          "specific_hit_count": 3,
+          "specific_hits": [
+            "celestial navigation",
+            "celestial",
+            "navigation"
+          ],
+          "min_core_hits": 3,
+          "min_specific_hits": 2,
+          "is_preprint": true,
+          "reason": "core topic terms sufficiently covered"
+        },
+        "biological_mechanism_evidence": {
+          "qualified": false,
+          "mechanism_hits": [],
+          "context_hits": []
+        },
+        "verdict": "keep",
+        "requires_human_review": true
+      },
+      "domain_review": {
+        "verdict": "review",
+        "score": 0.4,
+        "target_field": "earth_environmental_science",
+        "result_field": "mathematics",
+        "foreign_field": true,
+        "target_terms": [
+          "migratory",
+          "birds",
+          "celestial",
+          "navigation",
+          "natural"
+        ],
+        "target_hits": [
+          "celestial",
+          "navigation"
+        ],
+        "retrieval_assessment_preserved": true,
+        "biological_mechanism_evidence": {
+          "qualified": false,
+          "mechanism_hits": [],
+          "context_hits": []
+        },
+        "probability_alignment": {
+          "target_profile": {
+            "earth_environmental_science": 1.0
+          },
+          "paper_profile": {
+            "mathematics": 1.0
+          },
+          "overlap": 0.0,
+          "target_domain": "earth_environmental_science",
+          "result_domain": "mathematics"
+        },
+        "semantic_similarity": 0.7045,
+        "semantic_similarity_source": "local_embedding",
+        "cross_field_tolerated": false,
+        "distinct_physics_conflict": false,
+        "reason": "Preprint has nontrivial semantic or interdisciplinary evidence and is retained for review.",
+        "rescue_applied": true
+      },
+      "domain_gate": {
+        "verdict": "review",
+        "decision_stage": "preprint_protection",
+        "rejecting_stage": "",
+        "reason": "Preprint passed hard domain gates; citation count is not used as an exclusion criterion.",
+        "primary_relevance_verdict": "keep",
+        "primary_relevance_score": 0.305,
+        "review_verdict": "review",
+        "review_score": 0.4,
+        "matched_exclusion_markers": [],
+        "requires_human_review": true
+      },
+      "requires_human_review": true,
+      "import_context": {
+        "search_id": "search_1783941516402594600",
+        "result_index": 1,
+        "stratified_layer": "L3_preprint",
+        "query_branch": "SH1"
+      },
+      "retrieval_branch": "SH1"
+    },
+    {
+      "paper_id": "paper_1783942029667220700",
+      "unique_key": "arxiv:2604_26582v1",
+      "title": "Star-Fusion: A Multi-modal Transformer Architecture for Discrete Celestial Orientation via Spherical Topology",
+      "citation": "May Hammad et al. (2026) Star-Fusion: A Multi-modal Transformer Architecture for Discrete Celestial Orientation via Spherical Topology arXiv:2604.26582v1",
+      "authors": [
+        "May Hammad",
+        "Menatallh Hammad"
+      ],
+      "year": "2026",
+      "venue": "arXiv",
+      "provider": "arxiv",
+      "source_type": "api",
+      "doi": "",
+      "arxiv_id": "2604.26582v1",
+      "semantic_scholar_id": "",
+      "url": "http://arxiv.org/abs/2604.26582v1",
+      "abstract": "Reliable celestial attitude determination is a critical requirement for autonomous spacecraft navigation, yet traditional \"Lost-in-Space\" (LIS) algorithms often suffer from high computational overhead and sensitivity to sensor-induced noise. While deep learning has emerged as a promising alternative, standard regression models are often confounded by the non-Euclidean topology of the celestial sphere and by the periodic boundary conditions of Right Ascension (RA) and Declination (Dec). In this paper, we present Star-Fusion, a multi-modal architecture that reformulates orientation estimation as a discrete topological classification task. Our approach leverages spherical K-Means clustering to partition the celestial sphere into K topologically consistent regions, effectively mitigating coordinate wrapping artifacts. The proposed architecture employs a tripartite fusion strategy: a SwinV2-Tiny transformer backbone for photometric feature extraction, a convolutional heatmap branch for spatial grounding, and a coordinate-based MLP for geometric anchoring. Experimental evaluations on a synthetic Hipparcos-derived dataset demonstrate that Star-Fusion achieves a Top-1 accuracy of 93.4% and a Top-3 accuracy of 97.8%. Furthermore, the model exhibits high computational efficiency, maintaining an inference latency of 18.4 ms on resource-constrained COTS hardware, making it a viable candidate for real-time onboard deployment in next-generation satellite constellations.",
+      "full_text_excerpt": "",
+      "conclusion": "The proposed architecture employs a tripartite fusion strategy: a SwinV2-Tiny transformer backbone for photometric feature extraction, a convolutional heatmap branch for spatial grounding, and a coordinate-based MLP for geometric anchoring. Experimental evaluations on a synthetic Hipparcos-derived dataset demonstrate that Star-Fusion achieves a Top-1 accuracy of 93.4% and a Top-3 accuracy of 97.8%. Furthermore, the model exhibits high computational efficiency, maintaining an inference latency of 18.4 ms on resource-constrained COTS hardware, making it a viable candidate for real-time onboard deployment in next-generation satellite constellations.",
+      "strengths": [],
+      "improvements": [],
+      "method": "regression",
+      "scenario": "orientation estimation as a discrete topological classification task",
+      "benchmark": "sensitivity; accuracy",
+      "contribution": "Reliable celestial attitude determination is a critical requirement for autonomous spacecraft navigation, yet traditional \"Lost-in-Space\" (LIS) algorithms often suffer from high computational overhead and sensitivity to sensor-induced noise.",
+      "limitation": "While deep learning has emerged as a promising alternative, standard regression models are often confounded by the non-Euclidean topology of the celestial sphere and by the periodic boundary conditions of Right Ascension (RA) and Declination (Dec).",
+      "credibility_score": 0.77,
+      "credibility_reasons": [
+        "base record",
+        "has title and citation",
+        "has scholarly identifier",
+        "has URL",
+        "has substantial abstract",
+        "has conclusion/discussion",
+        "provider recorded",
+        "preprint venue",
+        "has publication year"
+      ],
+      "extraction_quality": {
+        "score": 0.28,
+        "unknown_ratio": 1.0,
+        "unknown_fields": [
+          "method",
+          "scenario",
+          "benchmark"
+        ],
+        "abstract_chars": 1480,
+        "flags": [
+          "missing_conclusion",
+          "unknown_fields",
+          "unknown_fields_high",
+          "missing_benchmark"
+        ],
+        "needs_enrichment": false,
+        "needs_llm_retry": true,
+        "requires_human_review": true,
+        "initial": {
+          "score": 0.28,
+          "unknown_ratio": 1.0,
+          "unknown_fields": [
+            "method",
+            "scenario",
+            "benchmark"
+          ],
+          "abstract_chars": 1480,
+          "flags": [
+            "missing_conclusion",
+            "unknown_fields",
+            "unknown_fields_high",
+            "missing_benchmark"
+          ],
+          "needs_enrichment": false,
+          "needs_llm_retry": true,
+          "requires_human_review": true
+        },
+        "llm_retry": {
+          "attempted": false,
+          "succeeded": false,
+          "error": ""
+        },
+        "full_text": {
+          "status": "fetch_failed",
+          "attempted": true,
+          "attempted_at": 1783942029.5490558,
+          "retry_after_seconds": 900,
+          "source_url": "https://arxiv.org/pdf/2604.26582v1",
+          "error": "URL error: [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1032)"
+        },
+        "enrichment_errors": [
+          "open_access_pdf: URL error: [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1032)"
+        ],
+        "rule_extraction": {
+          "methodology_evidence_count": 5,
+          "causal_chain_count": 0,
+          "speculative_causal_signal_count": 0,
+          "association_signal_count": 0,
+          "gap_signal_count": 1,
+          "evidence_span_count": 0
+        }
+      },
+      "enrichment_sources": [
+        "open_access_pdf_available"
+      ],
+      "open_access_pdf": "https://arxiv.org/pdf/2604.26582v1",
+      "full_text_enrichment": {
+        "status": "fetch_failed",
+        "attempted": true,
+        "attempted_at": 1783942029.5490558,
+        "retry_after_seconds": 900,
+        "source_url": "https://arxiv.org/pdf/2604.26582v1",
+        "error": "URL error: [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1032)",
+        "structured_methodology": {
+          "method": "regression",
+          "scenario": "",
+          "benchmark": "sensitivity; accuracy",
+          "population": [],
+          "outcome": [
+            "sensitivity",
+            "accuracy"
+          ],
+          "evidence": [
+            {
+              "field": "outcome",
+              "text": "Reliable celestial attitude determination is a critical requirement for autonomous spacecraft navigation, yet traditional \"Lost-in-Space\" (LIS) algorithms often suffer from high computational overhead and sensitivity to sensor-induced noise.",
+              "section": "Document body",
+              "source_location": {
+                "source_url": "https://arxiv.org/pdf/2604.26582v1"
+              },
+              "evidence_level": "explicit_text",
+              "confidence": 0.68
+            },
+            {
+              "field": "method",
+              "text": "While deep learning has emerged as a promising alternative, standard regression models are often confounded by the non-Euclidean topology of the celestial sphere and by the periodic boundary conditions of Right Ascension (RA) and Declination (Dec).",
+              "section": "Document body",
+              "source_location": {
+                "source_url": "https://arxiv.org/pdf/2604.26582v1"
+              },
+              "evidence_level": "explicit_text",
+              "confidence": 0.68
+            },
+            {
+              "field": "outcome",
+              "text": "Experimental evaluations on a synthetic Hipparcos-derived dataset demonstrate that Star-Fusion achieves a Top-1 accuracy of 93.4% and a Top-3 accuracy of 97.8%.",
+              "section": "Document body",
+              "source_location": {
+                "source_url": "https://arxiv.org/pdf/2604.26582v1"
+              },
+              "evidence_level": "explicit_text",
+              "confidence": 0.68
+            },
+            {
+              "field": "outcome",
+              "text": "Reliable celestial attitude determination is a critical requirement for autonomous spacecraft navigation, yet traditional \"Lost-in-Space\" (LIS) algorithms often suffer from high computational overhead and sensitivity to sensor-induced noise.",
+              "section": "Document body",
+              "source_location": {
+                "source_url": "https://arxiv.org/pdf/2604.26582v1"
+              },
+              "evidence_level": "explicit_text",
+              "confidence": 0.68
+            },
+            {
+              "field": "method",
+              "text": "While deep learning has emerged as a promising alternative, standard regression models are often confounded by the non-Euclidean topology of the celestial sphere and by the periodic boundary conditions of Right Ascension (RA) and Declination (Dec).",
+              "section": "Document body",
+              "source_location": {
+                "source_url": "https://arxiv.org/pdf/2604.26582v1"
+              },
+              "evidence_level": "explicit_text",
+              "confidence": 0.68
+            }
+          ],
+          "extractor": "section_dictionary_pattern"
+        },
+        "association_signals": [],
+        "speculative_causal_signals": []
+      },
+      "gap_signals": [
+        {
+          "signal_id": "sig_1783942029593751000",
+          "signal_type": "mechanism_issue",
+          "text": "While deep learning has emerged as a promising alternative, standard regression models are often confounded by the non-Euclidean topology of the celestial sphere and by the periodic boundary conditions of Right Ascension (RA) and Declination (Dec).",
+          "evidence_type": "problem_statement",
+          "supporting_reference": "May Hammad et al. (2026) Star-Fusion: A Multi-modal Transformer Architecture for Discrete Celestial Orientation via Spherical Topology arXiv:2604.26582v1",
+          "confidence": 0.84,
+          "source_location": {
+            "source_url": "https://arxiv.org/pdf/2604.26582v1"
+          }
+        }
+      ],
+      "causal_chains": [],
+      "importedAt": 1783942029.6672444,
+      "active": true,
+      "retrieval_query": "migratory birds celestial navigation",
+      "domain_relevance": {
+        "profile": "natural_science",
+        "target_field": "earth_environmental_science",
+        "result_field": "artificial_intelligence",
+        "score": 0.1013,
+        "query_hits": [
+          "celestial",
+          "navigation"
+        ],
+        "anchor_hits": [],
+        "topic_hits": [],
+        "noise_hits": [],
+        "flags": [
+          "field_mismatch",
+          "core_domain_mismatch",
+          "weak_preprint_domain_relevance"
+        ],
+        "is_preprint": true,
+        "core_domain_alignment": {
+          "enabled": true,
+          "passes": false,
+          "core_terms": [
+            "natural science migratory",
+            "science migratory birds",
+            "migratory birds celestial",
+            "birds celestial navigation",
+            "natural science",
+            "science migratory",
+            "migratory birds",
+            "birds celestial",
+            "celestial navigation",
+            "natural",
+            "migratory",
+            "birds",
+            "celestial",
+            "navigation"
+          ],
+          "core_hit_count": 2,
+          "core_hits": [
+            "celestial",
+            "navigation"
+          ],
+          "specific_terms": [
+            "natural science migratory",
+            "science migratory birds",
+            "migratory birds celestial",
+            "birds celestial navigation",
+            "natural science",
+            "science migratory",
+            "migratory birds",
+            "birds celestial",
+            "celestial navigation",
+            "natural",
+            "migratory",
+            "celestial"
+          ],
+          "specific_hit_count": 2,
+          "specific_hits": [
+            "celestial",
+            "navigation"
+          ],
+          "min_core_hits": 3,
+          "min_specific_hits": 2,
+          "is_preprint": true,
+          "reason": "title/abstract do not cover enough user-specified core topic terms"
+        },
+        "biological_mechanism_evidence": {
+          "qualified": false,
+          "mechanism_hits": [],
+          "context_hits": []
+        },
+        "verdict": "reject",
+        "requires_human_review": false
+      },
+      "domain_review": {
+        "verdict": "review",
+        "score": 0.4,
+        "target_field": "earth_environmental_science",
+        "result_field": "artificial_intelligence",
+        "foreign_field": true,
+        "target_terms": [
+          "migratory",
+          "birds",
+          "celestial",
+          "navigation",
+          "natural"
+        ],
+        "target_hits": [
+          "celestial",
+          "navigation"
+        ],
+        "retrieval_assessment_preserved": true,
+        "biological_mechanism_evidence": {
+          "qualified": false,
+          "mechanism_hits": [],
+          "context_hits": []
+        },
+        "probability_alignment": {
+          "target_profile": {
+            "earth_environmental_science": 1.0
+          },
+          "paper_profile": {
+            "computer_science": 0.6516,
+            "mathematics": 0.2002,
+            "statistics": 0.0519,
+            "physics": 0.0964
+          },
+          "overlap": 0.0,
+          "target_domain": "earth_environmental_science",
+          "result_domain": "computer_science"
+        },
+        "semantic_similarity": 0.6893,
+        "semantic_similarity_source": "local_embedding",
+        "cross_field_tolerated": false,
+        "distinct_physics_conflict": false,
+        "reason": "Preprint has nontrivial semantic or interdisciplinary evidence and is retained for review.",
+        "rescue_applied": true
+      },
+      "domain_gate": {
+        "verdict": "review",
+        "decision_stage": "preprint_protection",
+        "rejecting_stage": "",
+        "reason": "Preprint passed hard domain gates; citation count is not used as an exclusion criterion.",
+        "primary_relevance_verdict": "reject",
+        "primary_relevance_score": 0.1013,
+        "review_verdict": "review",
+        "review_score": 0.4,
+        "matched_exclusion_markers": [],
+        "requires_human_review": true
+      },
+      "requires_human_review": true,
+      "import_context": {
+        "search_id": "search_1783941516402594600",
+        "result_index": 2,
+        "stratified_layer": "L3_preprint",
+        "query_branch": "SH1"
+      },
+      "retrieval_branch": "SH1"
+    }
+  ],
+  "evidence": [
+    {
+      "evidence_id": "ev_1783942019134229300",
+      "title": "Conceptual Design on the Field of View of Celestial Navigation Systems for Maritime Autonomous Surface Ships",
+      "citation": "Kouki Wakita et al. (2024) Conceptual Design on the Field of View of Celestial Navigation Systems for Maritime Autonomous Surface Ships arXiv:2408.15765v1",
+      "method": "respect to fov",
+      "scenario": "unknown scenario",
+      "benchmark": "accuracy",
+      "contribution": "In order to understand the appropriate field of view (FOV) size of celestial automatic navigation systems for surface ships, we investigate the variations of measurement accuracy of star position and probability of successful star identification with respect to FOV, focusing on the decreasing number...[truncated]",
+      "limitation": "In order to understand the appropriate field of view (FOV) size of celestial automatic navigation systems for surface ships, we investigate the variations of measurement accuracy of star position and probability of successful star identification with respect to FOV, focusing on the decreasing number of observable star magnitudes and the presence of physicall...[truncated]",
+      "url": "http://arxiv.org/abs/2408.15765v1",
+      "createdAt": 1783942019.1342432,
+      "paper_id": "paper_1783942019133865200",
+      "active": true,
+      "causal_chains": [
+        {
+          "chain_id": "heuristic_1",
+          "trigger": "although a larger FOV",
+          "trigger_evidence": "The results revealed that, although a larger FOV reduces the measurement accuracy of star positions, it increases the number of observable objects and thus improves the probability of star identification using subgraph isomorphism-based methods.",
+          "trigger_location": {
+            "source_url": "https://arxiv.org/pdf/2408.15765v1"
+          },
+          "steps": [],
+          "outcome": "measurement accuracy of star positions",
+          "outcome_evidence": "The results revealed that, although a larger FOV reduces the measurement accuracy of star positions, it increases the number of observable objects and thus improves the probability of star identification using subgraph isomorphism-based methods.",
+          "outcome_location": {
+            "source_url": "https://arxiv.org/pdf/2408.15765v1"
+          },
+          "relation": "inhibits",
+          "polarity": "negative",
+          "modality": "asserted",
+          "direct_relation": true,
+          "causal_claim": true,
+          "entities": [
+            {
+              "text": "although a larger FOV",
+              "canonical": "although a larger fov",
+              "role": "cause"
+            },
+            {
+              "text": "measurement accuracy of star positions",
+              "canonical": "measurement accuracy of star positions",
+              "role": "effect"
+            }
+          ],
+          "observables": [],
+          "interventions": [],
+          "extraction_method": "explicit_causal_trigger_rule",
+          "confidence": 0.76
+        },
+        {
+          "chain_id": "heuristic_2",
+          "trigger": "a",
+          "trigger_evidence": "On the other hand, from the point of view of celestial navigation systems, a decrease in the measurement accuracy leads to a decrease in positioning accuracy.",
+          "trigger_location": {
+            "source_url": "https://arxiv.org/pdf/2408.15765v1"
+          },
+          "steps": [],
+          "outcome": "in the measurement accuracy leads to a decrease in positioning accuracy",
+          "outcome_evidence": "On the other hand, from the point of view of celestial navigation systems, a decrease in the measurement accuracy leads to a decrease in positioning accuracy.",
+          "outcome_location": {
+            "source_url": "https://arxiv.org/pdf/2408.15765v1"
+          },
+          "relation": "inhibits",
+          "polarity": "negative",
+          "modality": "asserted",
+          "direct_relation": true,
+          "causal_claim": true,
+          "entities": [
+            {
+              "text": "a",
+              "canonical": "a",
+              "role": "cause"
+            },
+            {
+              "text": "in the measurement accuracy leads to a decrease in positioning accuracy",
+              "canonical": "in the measurement accuracy leads to a decrease in positioning accuracy",
+              "role": "effect"
+            }
+          ],
+          "observables": [],
+          "interventions": [],
+          "extraction_method": "explicit_causal_trigger_rule",
+          "confidence": 0.76
+        }
+      ],
+      "retrieval_branch": "SH1"
+    },
+    {
+      "evidence_id": "ev_1783942024398300900",
+      "title": "Optimal Sensing Precision for Celestial Navigation Systems in Cislunar Space using LPV Framework",
+      "citation": "Eliot Nychka et al. (2024) Optimal Sensing Precision for Celestial Navigation Systems in Cislunar Space using LPV Framework arXiv:2410.02013v2",
+      "method": "this paper introduces two innovative convex optimization",
+      "scenario": "unknown scenario",
+      "benchmark": "classification performance",
+      "contribution": "This paper introduces two innovative convex optimization formulations to simultaneously optimize the H2/Hinf observer gain and sensing precision, and guarantee a specified estimation error bound for nonlinear systems in LPV form.",
+      "limitation": "No explicit limitation extracted.",
+      "url": "http://arxiv.org/abs/2410.02013v2",
+      "createdAt": 1783942024.398305,
+      "paper_id": "paper_1783942024398209900",
+      "active": true,
+      "causal_chains": [
+        {
+          "chain_id": "heuristic_1",
+          "trigger": "these formulations demonstrate the ability to",
+          "trigger_evidence": "Applied to the design of an onboard celestial navigation system for cislunar operations, these formulations demonstrate the ability to maintain accurate spacecraft positioning with minimal measurements and theoretical performance guarantees by design.",
+          "trigger_location": {
+            "source_url": "https://arxiv.org/pdf/2410.02013v2"
+          },
+          "steps": [],
+          "outcome": "accurate spacecraft positioning with minimal measurements and theoretical performance guarantees by design",
+          "outcome_evidence": "Applied to the design of an onboard celestial navigation system for cislunar operations, these formulations demonstrate the ability to maintain accurate spacecraft positioning with minimal measurements and theoretical performance guarantees by design.",
+          "outcome_location": {
+            "source_url": "https://arxiv.org/pdf/2410.02013v2"
+          },
+          "relation": "promotes",
+          "polarity": "positive",
+          "modality": "asserted",
+          "direct_relation": true,
+          "causal_claim": true,
+          "entities": [
+            {
+              "text": "these formulations demonstrate the ability to",
+              "canonical": "these formulations demonstrate the ability to",
+              "role": "cause"
+            },
+            {
+              "text": "accurate spacecraft positioning with minimal measurements and theoretical performance guarantees by design",
+              "canonical": "accurate spacecraft positioning with minimal measurements and theoretical performance guarantees by design",
+              "role": "effect"
+            }
+          ],
+          "observables": [],
+          "interventions": [],
+          "extraction_method": "explicit_causal_trigger_rule",
+          "confidence": 0.76
+        }
+      ],
+      "retrieval_branch": "SH1"
+    },
+    {
+      "evidence_id": "ev_1783942029667369700",
+      "title": "Star-Fusion: A Multi-modal Transformer Architecture for Discrete Celestial Orientation via Spherical Topology",
+      "citation": "May Hammad et al. (2026) Star-Fusion: A Multi-modal Transformer Architecture for Discrete Celestial Orientation via Spherical Topology arXiv:2604.26582v1",
+      "method": "regression",
+      "scenario": "orientation estimation as a discrete topological classification task",
+      "benchmark": "sensitivity; accuracy",
+      "contribution": "Reliable celestial attitude determination is a critical requirement for autonomous spacecraft navigation, yet traditional \"Lost-in-Space\" (LIS) algorithms often suffer from high computational overhead and sensitivity to sensor-induced noise.",
+      "limitation": "While deep learning has emerged as a promising alternative, standard regression models are often confounded by the non-Euclidean topology of the celestial sphere and by the periodic boundary conditions of Right Ascension (RA) and Declination (Dec).",
+      "url": "http://arxiv.org/abs/2604.26582v1",
+      "createdAt": 1783942029.6673741,
+      "paper_id": "paper_1783942029667220700",
+      "active": true,
+      "causal_chains": [],
+      "retrieval_branch": "SH1"
+    }
+  ],
+  "coverage_matrix": {},
+  "knowledge_gaps": [],
+  "hypotheses": [],
+  "keynotes": [],
+  "sub_hypotheses": [
+    {
+      "id": "SH1",
+      "focus": "Celestial navigation in migratory birds",
+      "causal_chain": [
+        "availability of celestial cues (e.g., stars, sun)",
+        "orientation and navigation behavior",
+        "successful migration to the destination"
+      ],
+      "independent_variable": "availability of celestial cues",
+      "dependent_variables": [
+        "migration success rate"
+      ],
+      "controls": [
+        "birds with obstructed view of the sky"
+      ],
+      "quantifiable_bounds": "",
+      "threshold_to_test": "",
+      "falsification_condition": "Birds with obstructed view of the sky show no significant difference in migration success compared to those with unobstructed view.",
+      "retrieval_query": "migratory birds celestial navigation",
+      "query_variants": [
+        "migratory birds celestial navigation",
+        "Natural Science Celestial navigation in migratory birds causal mechanism experimental evidence",
+        "Celestial navigation in migratory birds intervention observable outcome preprint"
+      ],
+      "evidence_window": {
+        "P0_latest_preprint": "recent preprint evidence requirement",
+        "P1_recent_primary": "recent primary-study requirement",
+        "P2_mechanism_or_theory": "mechanistic or theoretical evidence requirement",
+        "minimum_evidence_types": [
+          "observable",
+          "intervention_or_natural_experiment"
+        ]
+      },
+      "alternative_mechanisms": [
+        "Magnetic field sensing",
+        "Visual landmarks",
+        "Olfactory cues"
+      ],
+      "status": "evidence_insufficient_primary_evidence",
+      "source_objective": "Investigate the mechanisms by which migratory animals navigate, including visual, celestial, magnetic, and other cues. Compare these mechanisms across different taxa and environments, and identify primary causal gaps, contradictions, and cross-hypothesis couplings.",
+      "retrieval": {
+        "query": "migratory birds celestial navigation",
+        "source_query": "migratory birds celestial navigation",
+        "query_language": {
+          "query": "migratory birds celestial navigation",
+          "source_query": "migratory birds celestial navigation",
+          "translation_method": "already_english"
+        },
+        "search_id": "search_1783942029814386800",
+        "total_results": 0,
+        "imported_records": 3,
+        "peer_reviewed_imported_records": 0,
+        "layer_quotas": {
+          "L0_review": 1,
+          "L1_milestone": 1,
+          "L2_top_latest": 4,
+          "L3_preprint": 0,
+          "L4_regular": 10
+        },
+        "import_layer_minimums": {
+          "L3_preprint": 0,
+          "L2_top_latest": 1,
+          "L4_regular": 1,
+          "L0_review": 0,
+          "L1_milestone": 0
+        },
+        "p0_preprint_selected": 3,
+        "p0_preprint_imported": 3,
+        "p0_preprint_target": 3,
+        "p0_preprint_required": 1,
+        "preprint_evidence": {
+          "status": "imported",
+          "providers": [
+            "arxiv",
+            "biorxiv"
+          ],
+          "search_id": "search_1783941516402594600",
+          "total_results": 12,
+          "import_target": 3,
+          "imported_records": [
+            {
+              "result_index": 0,
+              "title": "Conceptual Design on the Field of View of Celestial Navigation Systems for Maritime Autonomous Surface Ships",
+              "paper_id": "paper_1783942019133865200",
+              "layer": "L3_preprint"
+            },
+            {
+              "result_index": 1,
+              "title": "Optimal Sensing Precision for Celestial Navigation Systems in Cislunar Space using LPV Framework",
+              "paper_id": "paper_1783942024398209900",
+              "layer": "L3_preprint"
+            },
+            {
+              "result_index": 2,
+              "title": "Star-Fusion: A Multi-modal Transformer Architecture for Discrete Celestial Orientation via Spherical Topology",
+              "paper_id": "paper_1783942029667220700",
+              "layer": "L3_preprint"
+            }
+          ],
+          "failed_imports": [],
+          "enforced_for_branch_gate": false,
+          "candidate_count": 9,
+          "provider_blocks": [
+            {
+              "provider": "arxiv",
+              "query": "migratory birds celestial navigation",
+              "status": "ok",
+              "note": null,
+              "error": null,
+              "result_count": 12,
+              "scanned_result_count": null,
+              "scan_budget": null,
+              "zero_result_cache_hit": false,
+              "query_variant_reason": "",
+              "skipped_provider_reason": ""
+            },
+            {
+              "provider": "biorxiv",
+              "query": "migratory birds celestial navigation",
+              "status": "ok",
+              "note": null,
+              "error": null,
+              "result_count": 0,
+              "scanned_result_count": 480,
+              "scan_budget": 480,
+              "zero_result_cache_hit": false,
+              "query_variant_reason": "",
+              "skipped_provider_reason": ""
+            }
+          ]
+        },
+        "main_import_budget": 3,
+        "main_evidence_providers": [
+          "semantic_scholar"
+        ],
+        "preprint_signal_providers": [
+          "arxiv",
+          "biorxiv"
+        ],
+        "preprint_gate_enforced": false,
+        "status": "evidence_insufficient_primary_evidence",
+        "constraint_source": "verbatim_research_brief",
+        "research_brief_chars": 3002,
+        "retrieval_constraints": [
+          "Use semantic_scholar, arxiv, biorxiv, and pubmed where available; retrieve at least 50 results and import at least 20 eligible papers."
+        ],
+        "evidence_window_alerts": [],
+        "updatedAt": 1783942581.6029549
+      }
+    },
+    {
+      "id": "SH2",
+      "focus": "Magnetic field sensing in migratory fish",
+      "causal_chain": [
+        "presence of magnetic field anomalies",
+        "orientation and navigation behavior",
+        "successful migration to the destination"
+      ],
+      "independent_variable": "presence of magnetic field anomalies",
+      "dependent_variables": [
+        "migration success rate"
+      ],
+      "controls": [
+        "fish in a controlled magnetic environment"
+      ],
+      "quantifiable_bounds": "",
+      "threshold_to_test": "",
+      "falsification_condition": "Fish in a controlled magnetic environment show no significant difference in migration success compared to those in natural magnetic fields.",
+      "retrieval_query": "migratory fish magnetic field sensing",
+      "query_variants": [
+        "migratory fish magnetic field sensing",
+        "Natural Science Magnetic field sensing in migratory fish causal mechanism experimental evidence",
+        "Magnetic field sensing in migratory fish intervention observable outcome preprint"
+      ],
+      "evidence_window": {
+        "P0_latest_preprint": "recent preprint evidence requirement",
+        "P1_recent_primary": "recent primary-study requirement",
+        "P2_mechanism_or_theory": "mechanistic or theoretical evidence requirement",
+        "minimum_evidence_types": [
+          "observable",
+          "intervention_or_natural_experiment"
+        ]
+      },
+      "alternative_mechanisms": [
+        "Celestial navigation",
+        "Visual landmarks",
+        "Olfactory cues"
+      ],
+      "status": "pending_retrieval",
+      "source_objective": "Investigate the mechanisms by which migratory animals navigate, including visual, celestial, magnetic, and other cues. Compare these mechanisms across different taxa and environments, and identify primary causal gaps, contradictions, and cross-hypothesis couplings."
+    },
+    {
+      "id": "SH3",
+      "focus": "Visual landmark use in migratory insects",
+      "causal_chain": [
+        "availability of visual landmarks",
+        "orientation and navigation behavior",
+        "successful migration to the destination"
+      ],
+      "independent_variable": "availability of visual landmarks",
+      "dependent_variables": [
+        "migration success rate"
+      ],
+      "controls": [
+        "insects in an environment with altered or absent visual landmarks"
+      ],
+      "quantifiable_bounds": "",
+      "threshold_to_test": "",
+      "falsification_condition": "Insects in an environment with altered or absent visual landmarks show no significant difference in migration success compared to those with normal visual landmarks.",
+      "retrieval_query": "migratory insects visual landmarks",
+      "query_variants": [
+        "migratory insects visual landmarks",
+        "Natural Science Visual landmark use in migratory insects causal mechanism experimental evidence",
+        "Visual landmark use in migratory insects intervention observable outcome preprint"
+      ],
+      "evidence_window": {
+        "P0_latest_preprint": "recent preprint evidence requirement",
+        "P1_recent_primary": "recent primary-study requirement",
+        "P2_mechanism_or_theory": "mechanistic or theoretical evidence requirement",
+        "minimum_evidence_types": [
+          "observable",
+          "intervention_or_natural_experiment"
+        ]
+      },
+      "alternative_mechanisms": [
+        "Celestial navigation",
+        "Magnetic field sensing",
+        "Olfactory cues"
+      ],
+      "status": "pending_retrieval",
+      "source_objective": "Investigate the mechanisms by which migratory animals navigate, including visual, celestial, magnetic, and other cues. Compare these mechanisms across different taxa and environments, and identify primary causal gaps, contradictions, and cross-hypothesis couplings."
+    }
+  ],
+  "objective_decomposition": {
+    "objective": "Investigate the mechanisms by which migratory animals navigate, including visual, celestial, magnetic, and other cues. Compare these mechanisms across different taxa and environments, and identify primary causal gaps, contradictions, and cross-hypothesis couplings.",
+    "domain": "Natural Science",
+    "research_brief": "Create a new natural-science research project and run the complete AutoGen closed-loop validation workflow: ZhiZhi literature retrieval and PaperGraph   expansion, TanXi primary-mechanism gap detection, Socrates evidence-bounded causal contracts and mediator discovery, MingLi competing falsifiable hypothesis generation with a   structured experimental protocol, YanZhen adversarial counterevidence retrieval and controversy matrix, DuZhi Socratic challenge, and BianLun evidence-weighted minimum-   commitment synthesis. Use semantic_scholar, arxiv, biorxiv, and pubmed where available; retrieve at least 50 results and import at least 20 eligible papers; run debate iteration   with up to 5 rounds. Topic: How do migratory animals know where they are and where they are going? Animal migration is regular seasonal movement among habitats and spans north-   south, east-west, ocean-land, altitudinal, and water-column movement. Treat this as a cross-taxon and cross-environment causal-mechanism question covering birds, insects,   mammals, fish, marine animals, and other organisms only when evidence is context-compatible. Compare visual landmarks and geographic cues; solar and stellar compass mechanisms;   magnetic-particle or biogenic-mineral mechanisms; electromagnetic induction in electrically sensitive aquatic animals; and radical-pair or cryptochrome magnetoreception. Do not   treat evidence from one species, sensory ecology, developmental stage, or migration environment as automatically transferable to another. For every candidate causal edge   preserve taxon, species, model system, migratory stage, environment, perturbation, readout, time scale, supporting sources, challenge sources, alternative pathways, applicable   boundary, and uncertainty state. Prioritize direct mechanism gaps, causal mediation gaps, contradictions, anomalies, and cross-hypothesis coupling over method-scenario-benchmark   coverage holes. YanZhen must actively search for counterevidence and ask whether magnetic mechanisms are necessary, sufficient, context dependent, or bypassed by visual,   celestial, olfactory, inertial, and learned-route cues. If a mediator remains unknown, return MECHANISM_DISCOVERY_REQUIRED with candidate mediators rather than inventing a   complete mechanism. Generate competing and falsifiable hypotheses; experimental protocols must remain execution-blocked unless domain experts explicitly supply model system,   intervention, controls, timepoints, primary and orthogonal readouts, replication, bias control, analysis plan, meaningful effect threshold, interval requirement, power   assumptions, rescue criteria, regime-shift tests, and reproducibility details. At the end, output project_id, PaperGraph paper count, primary scientific gaps, Socrates contract   states, generated hypothesis ids, YanZhen verdict, BianLun final decision, structured experiment protocol status, execution authorization status, remaining uncertainty, and the   next discriminating experiment.",
+    "research_brief_source": "verbatim_project_brief",
+    "status": "ready_for_subhypothesis_retrieval",
+    "extractor": "llm",
+    "sub_hypotheses": [
+      {
+        "id": "SH1",
+        "focus": "Celestial navigation in migratory birds",
+        "causal_chain": [
+          "availability of celestial cues (e.g., stars, sun)",
+          "orientation and navigation behavior",
+          "successful migration to the destination"
+        ],
+        "independent_variable": "availability of celestial cues",
+        "dependent_variables": [
+          "migration success rate"
+        ],
+        "controls": [
+          "birds with obstructed view of the sky"
+        ],
+        "quantifiable_bounds": "",
+        "threshold_to_test": "",
+        "falsification_condition": "Birds with obstructed view of the sky show no significant difference in migration success compared to those with unobstructed view.",
+        "retrieval_query": "migratory birds celestial navigation",
+        "query_variants": [
+          "migratory birds celestial navigation",
+          "Natural Science Celestial navigation in migratory birds causal mechanism experimental evidence",
+          "Celestial navigation in migratory birds intervention observable outcome preprint"
+        ],
+        "evidence_window": {
+          "P0_latest_preprint": "recent preprint evidence requirement",
+          "P1_recent_primary": "recent primary-study requirement",
+          "P2_mechanism_or_theory": "mechanistic or theoretical evidence requirement",
+          "minimum_evidence_types": [
+            "observable",
+            "intervention_or_natural_experiment"
+          ]
+        },
+        "alternative_mechanisms": [
+          "Magnetic field sensing",
+          "Visual landmarks",
+          "Olfactory cues"
+        ],
+        "status": "pending_retrieval",
+        "source_objective": "Investigate the mechanisms by which migratory animals navigate, including visual, celestial, magnetic, and other cues. Compare these mechanisms across different taxa and environments, and identify primary causal gaps, contradictions, and cross-hypothesis couplings."
+      },
+      {
+        "id": "SH2",
+        "focus": "Magnetic field sensing in migratory fish",
+        "causal_chain": [
+          "presence of magnetic field anomalies",
+          "orientation and navigation behavior",
+          "successful migration to the destination"
+        ],
+        "independent_variable": "presence of magnetic field anomalies",
+        "dependent_variables": [
+          "migration success rate"
+        ],
+        "controls": [
+          "fish in a controlled magnetic environment"
+        ],
+        "quantifiable_bounds": "",
+        "threshold_to_test": "",
+        "falsification_condition": "Fish in a controlled magnetic environment show no significant difference in migration success compared to those in natural magnetic fields.",
+        "retrieval_query": "migratory fish magnetic field sensing",
+        "query_variants": [
+          "migratory fish magnetic field sensing",
+          "Natural Science Magnetic field sensing in migratory fish causal mechanism experimental evidence",
+          "Magnetic field sensing in migratory fish intervention observable outcome preprint"
+        ],
+        "evidence_window": {
+          "P0_latest_preprint": "recent preprint evidence requirement",
+          "P1_recent_primary": "recent primary-study requirement",
+          "P2_mechanism_or_theory": "mechanistic or theoretical evidence requirement",
+          "minimum_evidence_types": [
+            "observable",
+            "intervention_or_natural_experiment"
+          ]
+        },
+        "alternative_mechanisms": [
+          "Celestial navigation",
+          "Visual landmarks",
+          "Olfactory cues"
+        ],
+        "status": "pending_retrieval",
+        "source_objective": "Investigate the mechanisms by which migratory animals navigate, including visual, celestial, magnetic, and other cues. Compare these mechanisms across different taxa and environments, and identify primary causal gaps, contradictions, and cross-hypothesis couplings."
+      },
+      {
+        "id": "SH3",
+        "focus": "Visual landmark use in migratory insects",
+        "causal_chain": [
+          "availability of visual landmarks",
+          "orientation and navigation behavior",
+          "successful migration to the destination"
+        ],
+        "independent_variable": "availability of visual landmarks",
+        "dependent_variables": [
+          "migration success rate"
+        ],
+        "controls": [
+          "insects in an environment with altered or absent visual landmarks"
+        ],
+        "quantifiable_bounds": "",
+        "threshold_to_test": "",
+        "falsification_condition": "Insects in an environment with altered or absent visual landmarks show no significant difference in migration success compared to those with normal visual landmarks.",
+        "retrieval_query": "migratory insects visual landmarks",
+        "query_variants": [
+          "migratory insects visual landmarks",
+          "Natural Science Visual landmark use in migratory insects causal mechanism experimental evidence",
+          "Visual landmark use in migratory insects intervention observable outcome preprint"
+        ],
+        "evidence_window": {
+          "P0_latest_preprint": "recent preprint evidence requirement",
+          "P1_recent_primary": "recent primary-study requirement",
+          "P2_mechanism_or_theory": "mechanistic or theoretical evidence requirement",
+          "minimum_evidence_types": [
+            "observable",
+            "intervention_or_natural_experiment"
+          ]
+        },
+        "alternative_mechanisms": [
+          "Celestial navigation",
+          "Magnetic field sensing",
+          "Olfactory cues"
+        ],
+        "status": "pending_retrieval",
+        "source_objective": "Investigate the mechanisms by which migratory animals navigate, including visual, celestial, magnetic, and other cues. Compare these mechanisms across different taxa and environments, and identify primary causal gaps, contradictions, and cross-hypothesis couplings."
+      }
+    ],
+    "combination_hypothesis": {
+      "statement": "The combined use of celestial, magnetic, and visual cues is necessary for successful migration in different taxa.",
+      "required_sub_hypothesis_ids": [
+        "SH1",
+        "SH2",
+        "SH3"
+      ],
+      "integration_test": "A study that manipulates multiple cues simultaneously and measures the impact on migration success.",
+      "status": "blocked_on_component_evidence"
+    },
+    "execution_constraints": {
+      "retrieval": [
+        "Use semantic_scholar, arxiv, biorxiv, and pubmed where available; retrieve at least 50 results and import at least 20 eligible papers."
+      ],
+      "gap_detection": [
+        "Prioritize direct mechanism gaps, causal mediation gaps, contradictions, anomalies, and cross-hypothesis coupling over method-scenario-benchmark coverage holes."
+      ],
+      "hypothesis": [
+        "Generate competing and falsifiable hypotheses; experimental protocols must remain execution-blocked unless domain experts explicitly supply model system, intervention, controls, timepoints, primary and orthogonal readouts, replication, bias control, analysis plan, meaningful effect threshold, interval requirement, power assumptions, rescue criteria, regime-shift tests, and reproducibility details."
+      ],
+      "verification": [
+        "YanZhen must actively search for counterevidence and ask whether magnetic mechanisms are necessary, sufficient, context dependent, or bypassed by visual, celestial, olfactory, inertial, and learned-route cues. If a mediator remains unknown, return MECHANISM_DISCOVERY_REQUIRED with candidate mediators rather than inventing a complete mechanism."
+      ]
+    },
+    "decomposition_rules": [
+      "Each sub-hypothesis must expose an intervention, observable outcome, falsification condition, and evidence window.",
+      "A combined conclusion is admissible only after the relevant component hypotheses are independently evaluated.",
+      "Missing quantitative bounds remain explicitly unresolved; they must not be fabricated from the objective."
+    ],
+    "createdAt": 1783941516.3125777
+  },
+  "causal_evidence_graph": {
+    "nodes": [],
+    "edges": [],
+    "chains": []
+  },
+  "mechanism_reports": [],
+  "pipeline_tasks": [],
+  "research_question_card": {
+    "version": "retrieval_strategy_v1",
+    "research_question": "Investigate the mechanisms by which migratory animals navigate, including visual, celestial, magnetic, and other cues. Compare these mechanisms across different taxa and environments, and identify primary causal gaps, contradictions, and cross-hypothesis couplings.",
+    "domain": "Natural Science",
+    "core_terms": [
+      "migratory",
+      "birds",
+      "celestial",
+      "navigation",
+      "natural",
+      "investigate",
+      "mechanisms",
+      "which",
+      "animals",
+      "navigate",
+      "including",
+      "visual",
+      "magnetic",
+      "and",
+      "other",
+      "cues",
+      "compare",
+      "these"
+    ],
+    "catalog_subfields": [
+      {
+        "domain": "biology",
+        "subfield": "ecology_and_evolution",
+        "terms": [
+          "ecology",
+          "evolutionary biology",
+          "evolution",
+          "conservation biology",
+          "population biology"
+        ]
+      },
+      {
+        "domain": "physics",
+        "subfield": "astrophysics",
+        "terms": [
+          "astro-ph",
+          "astrophysics of galaxies",
+          "cosmology and nongalactic astrophysics",
+          "earth and planetary astrophysics",
+          "high energy astrophysical phenomena"
+        ]
+      }
+    ],
+    "causal_questions": [
+      "What is necessary or sufficient for the proposed effect?",
+      "What mediates the relationship, and what alternative paths remain plausible?",
+      "Under which model, stage, time, or boundary condition does the relationship fail?"
+    ],
+    "accepted_evidence": [
+      "genetic_or_pharmacological_perturbation",
+      "rescue_or_epistasis",
+      "time_resolved_measurement",
+      "lineage_or_context_matched_validation",
+      "orthogonal_multi_modal_readout"
+    ],
+    "boundary_policy": {
+      "normal_cell_fate_scope": false,
+      "bridge_terms": [],
+      "explicit_exclusion_terms": [],
+      "requires_human_confirmation": false,
+      "instruction": "Use the stated project boundary when assigning a paper role."
+    },
+    "paper_role_policy": {
+      "CORE": "Directly supports the bounded research question or supplies context-matched mechanism evidence.",
+      "BRIDGE": "Supplies transferable mechanism, terminology, or background but cannot alone support the core causal claim.",
+      "EXCLUDE": "Conflicts with an explicit project boundary or final domain gate and must not enter core reasoning."
+    }
+  },
+  "sub_hypothesis_retrieval_runs": [
+    {
+      "query": "migratory birds celestial navigation",
+      "source_query": "migratory birds celestial navigation",
+      "query_language": {
+        "query": "migratory birds celestial navigation",
+        "source_query": "migratory birds celestial navigation",
+        "translation_method": "already_english"
+      },
+      "search_id": "search_1783942029814386800",
+      "total_results": 0,
+      "imported_records": 3,
+      "peer_reviewed_imported_records": 0,
+      "layer_quotas": {
+        "L0_review": 1,
+        "L1_milestone": 1,
+        "L2_top_latest": 4,
+        "L3_preprint": 0,
+        "L4_regular": 10
+      },
+      "import_layer_minimums": {
+        "L3_preprint": 0,
+        "L2_top_latest": 1,
+        "L4_regular": 1,
+        "L0_review": 0,
+        "L1_milestone": 0
+      },
+      "p0_preprint_selected": 3,
+      "p0_preprint_imported": 3,
+      "p0_preprint_target": 3,
+      "p0_preprint_required": 1,
+      "preprint_evidence": {
+        "status": "imported",
+        "providers": [
+          "arxiv",
+          "biorxiv"
+        ],
+        "search_id": "search_1783941516402594600",
+        "total_results": 12,
+        "import_target": 3,
+        "imported_records": [
+          {
+            "result_index": 0,
+            "title": "Conceptual Design on the Field of View of Celestial Navigation Systems for Maritime Autonomous Surface Ships",
+            "paper_id": "paper_1783942019133865200",
+            "layer": "L3_preprint"
+          },
+          {
+            "result_index": 1,
+            "title": "Optimal Sensing Precision for Celestial Navigation Systems in Cislunar Space using LPV Framework",
+            "paper_id": "paper_1783942024398209900",
+            "layer": "L3_preprint"
+          },
+          {
+            "result_index": 2,
+            "title": "Star-Fusion: A Multi-modal Transformer Architecture for Discrete Celestial Orientation via Spherical Topology",
+            "paper_id": "paper_1783942029667220700",
+            "layer": "L3_preprint"
+          }
+        ],
+        "failed_imports": [],
+        "enforced_for_branch_gate": false,
+        "candidate_count": 9,
+        "provider_blocks": [
+          {
+            "provider": "arxiv",
+            "query": "migratory birds celestial navigation",
+            "status": "ok",
+            "note": null,
+            "error": null,
+            "result_count": 12,
+            "scanned_result_count": null,
+            "scan_budget": null,
+            "zero_result_cache_hit": false,
+            "query_variant_reason": "",
+            "skipped_provider_reason": ""
+          },
+          {
+            "provider": "biorxiv",
+            "query": "migratory birds celestial navigation",
+            "status": "ok",
+            "note": null,
+            "error": null,
+            "result_count": 0,
+            "scanned_result_count": 480,
+            "scan_budget": 480,
+            "zero_result_cache_hit": false,
+            "query_variant_reason": "",
+            "skipped_provider_reason": ""
+          }
+        ]
+      },
+      "main_import_budget": 3,
+      "main_evidence_providers": [
+        "semantic_scholar"
+      ],
+      "preprint_signal_providers": [
+        "arxiv",
+        "biorxiv"
+      ],
+      "preprint_gate_enforced": false,
+      "status": "evidence_insufficient_primary_evidence",
+      "constraint_source": "verbatim_research_brief",
+      "research_brief_chars": 3002,
+      "retrieval_constraints": [
+        "Use semantic_scholar, arxiv, biorxiv, and pubmed where available; retrieve at least 50 results and import at least 20 eligible papers."
+      ],
+      "evidence_window_alerts": [],
+      "updatedAt": 1783942581.6029549,
+      "sub_hypothesis_id": "SH1"
+    }
+  ]
+}

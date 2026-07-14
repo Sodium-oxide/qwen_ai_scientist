@@ -1,0 +1,1265 @@
+{
+  "search_id": "search_1784061709169954600",
+  "query": "lineage commitment developmental restriction cell fate",
+  "source_query": "lineage commitment developmental restriction cell fate",
+  "query_language": {
+    "query": "lineage commitment developmental restriction cell fate",
+    "source_query": "lineage commitment developmental restriction cell fate",
+    "translation_method": "already_english"
+  },
+  "synonym_expansion_used": false,
+  "domain": "Research domains: Cell Biology | Developmental Biology Objective: 为什么只有部分细胞能够分化、转分化或被重编程为其他细胞类型，而多数已分化细胞的命运受到限制？请检验转录因子调控网络、染色质可及性、表观遗传记忆、DNA methylation、细胞谱系历史、干细胞生态位信号、细胞外基质、代谢状态和炎症微环境如何共同决定细胞可塑性，并解释胚胎干细胞、成人干细胞和诱导多能干细胞之间潜能差异。",
+  "research_question_card": {
+    "version": "retrieval_strategy_v1",
+    "research_question": "谱系承诺与发育限制 改变细胞谱系历史 -> 细胞命运决定相关基因的表达模式变化 -> 细胞分化潜能的变化 细胞谱系历史变化后，细胞分化潜能没有显著变化",
+    "domain": "Research domains: Cell Biology | Developmental Biology Objective: 为什么只有部分细胞能够分化、转分化或被重编程为其他细胞类型，而多数已分化细胞的命运受到限制？请检验转录因子调控网络、染色质可及性、表观遗传记忆、DNA methylation、细胞谱系历史、干细胞生态位信号、细胞外基质、代谢状态和炎症微环境如何共同决定细胞可塑性，并解释胚胎干细胞、成人干细胞和诱导多能干细胞之间潜能差异。",
+    "core_terms": [
+      "lineage",
+      "commitment",
+      "developmental",
+      "restriction",
+      "fate",
+      "domains",
+      "biology",
+      "objective",
+      "dna",
+      "methylation"
+    ],
+    "catalog_subfields": [
+      {
+        "domain": "biology",
+        "subfield": "molecular_and_cellular",
+        "terms": [
+          "biochemistry",
+          "cell biology",
+          "molecular biology",
+          "biophysics",
+          "developmental biology"
+        ]
+      },
+      {
+        "domain": "biology",
+        "subfield": "cell_biology",
+        "terms": [
+          "cell biology"
+        ]
+      },
+      {
+        "domain": "biology",
+        "subfield": "developmental_biology",
+        "terms": [
+          "developmental biology"
+        ]
+      }
+    ],
+    "causal_questions": [
+      "What is necessary or sufficient for the proposed effect?",
+      "What mediates the relationship, and what alternative paths remain plausible?",
+      "Under which model, stage, time, or boundary condition does the relationship fail?"
+    ],
+    "accepted_evidence": [
+      "genetic_or_pharmacological_perturbation",
+      "rescue_or_epistasis",
+      "time_resolved_measurement",
+      "lineage_or_context_matched_validation",
+      "orthogonal_multi_modal_readout"
+    ],
+    "boundary_policy": {
+      "normal_cell_fate_scope": false,
+      "bridge_terms": [],
+      "explicit_exclusion_terms": [],
+      "requires_human_confirmation": false,
+      "instruction": "Use the stated project boundary when assigning a paper role."
+    },
+    "paper_role_policy": {
+      "CORE": "Directly supports the bounded research question or supplies context-matched mechanism evidence.",
+      "BRIDGE": "Supplies transferable mechanism, terminology, or background but cannot alone support the core causal claim.",
+      "EXCLUDE": "Conflicts with an explicit project boundary or final domain gate and must not enter core reasoning."
+    },
+    "retrieval_query": "lineage commitment developmental restriction cell fate"
+  },
+  "focus_branches": [],
+  "providers": [
+    "biorxiv",
+    "medrxiv",
+    "arxiv",
+    "semantic_scholar",
+    "pubmed"
+  ],
+  "requested_providers": [
+    "biorxiv",
+    "medrxiv",
+    "arxiv"
+  ],
+  "pubmed_excluded_by_domain": false,
+  "preprint_layers": [
+    "L0_review",
+    "L3_preprint",
+    "L4_regular"
+  ],
+  "preprint_scan_limit": null,
+  "preprint_provider_result_target": 0,
+  "createdAt": 1784061955.7810562,
+  "strategy": "stratified_cascade",
+  "single_paper_serial": true,
+  "query_plan": [
+    {
+      "branch": "SH3",
+      "query": "lineage commitment developmental restriction cell fate"
+    }
+  ],
+  "strata": [
+    {
+      "layer": "L3_preprint",
+      "priority": "P0",
+      "label": "P0 latest preprint / frontier signal",
+      "quota": 3,
+      "query_suffix": "",
+      "year_policy": {
+        "min_year": null,
+        "max_year": 2026,
+        "purpose": "upper-bound guard; recency rules provide the lower bound"
+      },
+      "target": 3,
+      "candidate_count": 1,
+      "raw_candidate_count": 0,
+      "selected": 1,
+      "domain_rejected": 0,
+      "recovery_used": "preprint_query_and_provider_retry",
+      "preprint_recovery": {
+        "attempted": true,
+        "attempts": [
+          {
+            "query": "developmental restriction methylation objective",
+            "window_months": 6,
+            "provider": "medrxiv",
+            "results": 0
+          },
+          {
+            "query": "developmental restriction methylation objective",
+            "window_months": 6,
+            "provider": "biorxiv",
+            "results": 2
+          }
+        ],
+        "outcome": "recovered"
+      },
+      "carried_to_next": 0,
+      "unfilled_reserved_quota": 2
+    },
+    {
+      "layer": "L2_top_latest",
+      "priority": "P1",
+      "label": "P1 recent top-venue primary evidence",
+      "quota": 0,
+      "query_suffix": "latest recent top journal high impact breakthrough advance frontier",
+      "year_policy": {
+        "min_year": 2016,
+        "max_year": 2026,
+        "purpose": "top-venue primary evidence from the latest ten-year window"
+      },
+      "target": 0,
+      "selected": 0,
+      "carried_to_next": 0
+    },
+    {
+      "layer": "L0_review",
+      "priority": "P3",
+      "label": "P3 review / field map",
+      "quota": 0,
+      "query_suffix": "review survey progress perspective tutorial systematic review meta-analysis",
+      "year_policy": {
+        "min_year": 2010,
+        "max_year": 2026,
+        "purpose": "modern review and regular evidence window"
+      },
+      "target": 0,
+      "selected": 0,
+      "carried_to_next": 0
+    },
+    {
+      "layer": "L1_milestone",
+      "priority": "P4",
+      "label": "P4 milestone / historical foundation",
+      "quota": 0,
+      "query_suffix": "seminal foundational highly cited landmark classic influential",
+      "year_policy": {
+        "min_year": 1900,
+        "max_year": 2026,
+        "purpose": "historical and conceptual foundations"
+      },
+      "target": 0,
+      "selected": 0,
+      "carried_to_next": 0
+    },
+    {
+      "layer": "L4_regular",
+      "priority": "P2",
+      "label": "P2 primary experimental or theoretical evidence",
+      "quota": 0,
+      "query_suffix": "experimental theoretical mechanism measurement validation",
+      "year_policy": {
+        "min_year": 2010,
+        "max_year": 2026,
+        "purpose": "modern review and regular evidence window"
+      },
+      "target": 0,
+      "selected": 0,
+      "carried_to_next": 0
+    }
+  ],
+  "knowledge_pyramid": {
+    "query": "lineage commitment developmental restriction cell fate",
+    "root_result_index": 0,
+    "root_node": {
+      "result_index": 0,
+      "stratified_layer": "L3_preprint",
+      "stratified_label": "P0 latest preprint / frontier signal",
+      "query_branch": "",
+      "retrieval_query": "developmental restriction methylation objective",
+      "_why_selected": "Selected as latest preprint/frontier signal: Autism-like phenotypes and increased NMDAR2D expression in mice with KDM5B histone lysine demethylase deficiency; year=2026; provider=biorxiv; relevance=0.1688.",
+      "research_role": "CORE",
+      "research_role_assessment": {
+        "role": "CORE",
+        "score": 0.76,
+        "reason": "Candidate matches the research boundary and contains core entities or mechanism evidence.",
+        "allowed_use": "core_mechanism_evidence_candidate",
+        "core_hits": [
+          "developmental",
+          "methylation"
+        ],
+        "causal_hits": [
+          "inhibit",
+          "rescue"
+        ]
+      },
+      "domain_relevance": {
+        "profile": "research_domains_cell_biology_developmental_biology_objective_dna_methylation",
+        "target_field": "biology",
+        "result_field": "biology",
+        "score": 0.3,
+        "query_hits": [
+          "developmental"
+        ],
+        "anchor_hits": [
+          "developmental",
+          "methylation"
+        ],
+        "topic_hits": [],
+        "noise_hits": [],
+        "flags": [
+          "biological_mechanism_exception"
+        ],
+        "is_preprint": true,
+        "core_domain_alignment": {
+          "enabled": true,
+          "passes": false,
+          "core_terms": [
+            "research domains cell",
+            "domains cell biology",
+            "cell biology developmental",
+            "biology developmental objective",
+            "developmental objective dna",
+            "objective dna methylation",
+            "dna methylation lineage",
+            "methylation lineage commitment",
+            "lineage commitment restriction",
+            "commitment restriction fate",
+            "domains",
+            "cell",
+            "biology",
+            "developmental",
+            "objective",
+            "dna",
+            "methylation",
+            "lineage"
+          ],
+          "core_hit_count": 2,
+          "core_hits": [
+            "developmental",
+            "methylation"
+          ],
+          "specific_terms": [
+            "research domains cell",
+            "domains cell biology",
+            "cell biology developmental",
+            "biology developmental objective",
+            "developmental objective dna",
+            "objective dna methylation",
+            "dna methylation lineage",
+            "methylation lineage commitment",
+            "lineage commitment restriction",
+            "commitment restriction fate",
+            "domains",
+            "biology"
+          ],
+          "specific_hit_count": 2,
+          "specific_hits": [
+            "developmental",
+            "methylation"
+          ],
+          "min_core_hits": 3,
+          "min_specific_hits": 2,
+          "is_preprint": true,
+          "reason": "title/abstract do not cover enough user-specified core topic terms"
+        },
+        "biological_mechanism_evidence": {
+          "qualified": true,
+          "mechanism_hits": [
+            "histone"
+          ],
+          "context_hits": [
+            "development",
+            "developmental"
+          ]
+        },
+        "verdict": "keep",
+        "requires_human_review": true
+      },
+      "relevance_score": 0.1688,
+      "relevance_components": {
+        "text_score": 0.0467,
+        "recency_score": 1.0,
+        "impact_score": 0.35,
+        "citation_field": "biology",
+        "citation_baseline": 600.0,
+        "venue_score": 0.6,
+        "publication_quality_score": 0.67,
+        "base_score": 0.2519,
+        "text_weight": 0.62,
+        "recency_weight": 0.1,
+        "impact_weight": 0.18,
+        "venue_weight": 0.1
+      },
+      "publication_quality_score": 0.67,
+      "venue_quality": "preprint",
+      "journal_quartile": "",
+      "journal_metric_source": "",
+      "inferred_field": "biology",
+      "quality_flags": [
+        "preprint_not_peer_reviewed",
+        "new_paper_protection"
+      ],
+      "quality_criteria": [
+        "venue is a preprint server, not final peer-reviewed venue",
+        "paper is within 2-year protection window; low citations are not treated as low quality"
+      ],
+      "suspicion_type": "",
+      "is_review_like": false,
+      "pyramid_root_score": 0.3553,
+      "matched_query_terms": [
+        "developmental",
+        "methylation"
+      ],
+      "title": "Autism-like phenotypes and increased NMDAR2D expression in mice with KDM5B histone lysine demethylase deficiency",
+      "citation": "Perez-Sisques, L. et al. (2026) Autism-like phenotypes and increased NMDAR2D expression in mice with KDM5B histone lysine demethylase deficiency doi:10.1101/2024.05.28.596232",
+      "provider": "biorxiv",
+      "year": "2026",
+      "citation_count": null,
+      "influential_citation_count": null,
+      "doi": "10.1101/2024.05.28.596232",
+      "arxiv_id": null,
+      "url": "https://www.biorxiv.org/content/10.1101/2024.05.28.596232",
+      "relevance_reason": "title=0/12, abstract=2/12, citation=0/12, phrase_bonus=0.0, recency=1.0, impact=0.35, venue=0.6, quality=0.67",
+      "quality_reason": "venue is a preprint server, not final peer-reviewed venue; paper is within 2-year protection window; low citations are not treated as low quality"
+    },
+    "root_policy": "Prefer a high-impact review as the knowledge-map root. Only a clearly superior Nature/Science/Cell/PNAS-level paper should override it as the seed.",
+    "layers": {
+      "L0_review": [],
+      "L1A_milestone": [],
+      "L1B_top_latest": [],
+      "L1C_preprint": [
+        {
+          "result_index": 0,
+          "stratified_layer": "L3_preprint",
+          "stratified_label": "P0 latest preprint / frontier signal",
+          "query_branch": "",
+          "retrieval_query": "developmental restriction methylation objective",
+          "_why_selected": "Selected as latest preprint/frontier signal: Autism-like phenotypes and increased NMDAR2D expression in mice with KDM5B histone lysine demethylase deficiency; year=2026; provider=biorxiv; relevance=0.1688.",
+          "research_role": "CORE",
+          "research_role_assessment": {
+            "role": "CORE",
+            "score": 0.76,
+            "reason": "Candidate matches the research boundary and contains core entities or mechanism evidence.",
+            "allowed_use": "core_mechanism_evidence_candidate",
+            "core_hits": [
+              "developmental",
+              "methylation"
+            ],
+            "causal_hits": [
+              "inhibit",
+              "rescue"
+            ]
+          },
+          "domain_relevance": {
+            "profile": "research_domains_cell_biology_developmental_biology_objective_dna_methylation",
+            "target_field": "biology",
+            "result_field": "biology",
+            "score": 0.3,
+            "query_hits": [
+              "developmental"
+            ],
+            "anchor_hits": [
+              "developmental",
+              "methylation"
+            ],
+            "topic_hits": [],
+            "noise_hits": [],
+            "flags": [
+              "biological_mechanism_exception"
+            ],
+            "is_preprint": true,
+            "core_domain_alignment": {
+              "enabled": true,
+              "passes": false,
+              "core_terms": [
+                "research domains cell",
+                "domains cell biology",
+                "cell biology developmental",
+                "biology developmental objective",
+                "developmental objective dna",
+                "objective dna methylation",
+                "dna methylation lineage",
+                "methylation lineage commitment",
+                "lineage commitment restriction",
+                "commitment restriction fate",
+                "domains",
+                "cell",
+                "biology",
+                "developmental",
+                "objective",
+                "dna",
+                "methylation",
+                "lineage"
+              ],
+              "core_hit_count": 2,
+              "core_hits": [
+                "developmental",
+                "methylation"
+              ],
+              "specific_terms": [
+                "research domains cell",
+                "domains cell biology",
+                "cell biology developmental",
+                "biology developmental objective",
+                "developmental objective dna",
+                "objective dna methylation",
+                "dna methylation lineage",
+                "methylation lineage commitment",
+                "lineage commitment restriction",
+                "commitment restriction fate",
+                "domains",
+                "biology"
+              ],
+              "specific_hit_count": 2,
+              "specific_hits": [
+                "developmental",
+                "methylation"
+              ],
+              "min_core_hits": 3,
+              "min_specific_hits": 2,
+              "is_preprint": true,
+              "reason": "title/abstract do not cover enough user-specified core topic terms"
+            },
+            "biological_mechanism_evidence": {
+              "qualified": true,
+              "mechanism_hits": [
+                "histone"
+              ],
+              "context_hits": [
+                "development",
+                "developmental"
+              ]
+            },
+            "verdict": "keep",
+            "requires_human_review": true
+          },
+          "relevance_score": 0.1688,
+          "relevance_components": {
+            "text_score": 0.0467,
+            "recency_score": 1.0,
+            "impact_score": 0.35,
+            "citation_field": "biology",
+            "citation_baseline": 600.0,
+            "venue_score": 0.6,
+            "publication_quality_score": 0.67,
+            "base_score": 0.2519,
+            "text_weight": 0.62,
+            "recency_weight": 0.1,
+            "impact_weight": 0.18,
+            "venue_weight": 0.1
+          },
+          "publication_quality_score": 0.67,
+          "venue_quality": "preprint",
+          "journal_quartile": "",
+          "journal_metric_source": "",
+          "inferred_field": "biology",
+          "quality_flags": [
+            "preprint_not_peer_reviewed",
+            "new_paper_protection"
+          ],
+          "quality_criteria": [
+            "venue is a preprint server, not final peer-reviewed venue",
+            "paper is within 2-year protection window; low citations are not treated as low quality"
+          ],
+          "suspicion_type": "",
+          "is_review_like": false,
+          "pyramid_root_score": 0.3553,
+          "matched_query_terms": [
+            "developmental",
+            "methylation"
+          ],
+          "title": "Autism-like phenotypes and increased NMDAR2D expression in mice with KDM5B histone lysine demethylase deficiency",
+          "citation": "Perez-Sisques, L. et al. (2026) Autism-like phenotypes and increased NMDAR2D expression in mice with KDM5B histone lysine demethylase deficiency doi:10.1101/2024.05.28.596232",
+          "provider": "biorxiv",
+          "year": "2026",
+          "citation_count": null,
+          "influential_citation_count": null,
+          "doi": "10.1101/2024.05.28.596232",
+          "arxiv_id": null,
+          "url": "https://www.biorxiv.org/content/10.1101/2024.05.28.596232",
+          "relevance_reason": "title=0/12, abstract=2/12, citation=0/12, phrase_bonus=0.0, recency=1.0, impact=0.35, venue=0.6, quality=0.67",
+          "quality_reason": "venue is a preprint server, not final peer-reviewed venue; paper is within 2-year protection window; low citations are not treated as low quality"
+        }
+      ],
+      "L2_regular": []
+    },
+    "edges": [],
+    "strata": [
+      {
+        "layer": "L3_preprint",
+        "priority": "P0",
+        "label": "P0 latest preprint / frontier signal",
+        "quota": 3,
+        "query_suffix": "",
+        "year_policy": {
+          "min_year": null,
+          "max_year": 2026,
+          "purpose": "upper-bound guard; recency rules provide the lower bound"
+        },
+        "target": 3,
+        "candidate_count": 1,
+        "raw_candidate_count": 0,
+        "selected": 1,
+        "domain_rejected": 0,
+        "recovery_used": "preprint_query_and_provider_retry",
+        "preprint_recovery": {
+          "attempted": true,
+          "attempts": [
+            {
+              "query": "developmental restriction methylation objective",
+              "window_months": 6,
+              "provider": "medrxiv",
+              "results": 0
+            },
+            {
+              "query": "developmental restriction methylation objective",
+              "window_months": 6,
+              "provider": "biorxiv",
+              "results": 2
+            }
+          ],
+          "outcome": "recovered"
+        },
+        "carried_to_next": 0,
+        "unfilled_reserved_quota": 2
+      },
+      {
+        "layer": "L2_top_latest",
+        "priority": "P1",
+        "label": "P1 recent top-venue primary evidence",
+        "quota": 0,
+        "query_suffix": "latest recent top journal high impact breakthrough advance frontier",
+        "year_policy": {
+          "min_year": 2016,
+          "max_year": 2026,
+          "purpose": "top-venue primary evidence from the latest ten-year window"
+        },
+        "target": 0,
+        "selected": 0,
+        "carried_to_next": 0
+      },
+      {
+        "layer": "L0_review",
+        "priority": "P3",
+        "label": "P3 review / field map",
+        "quota": 0,
+        "query_suffix": "review survey progress perspective tutorial systematic review meta-analysis",
+        "year_policy": {
+          "min_year": 2010,
+          "max_year": 2026,
+          "purpose": "modern review and regular evidence window"
+        },
+        "target": 0,
+        "selected": 0,
+        "carried_to_next": 0
+      },
+      {
+        "layer": "L1_milestone",
+        "priority": "P4",
+        "label": "P4 milestone / historical foundation",
+        "quota": 0,
+        "query_suffix": "seminal foundational highly cited landmark classic influential",
+        "year_policy": {
+          "min_year": 1900,
+          "max_year": 2026,
+          "purpose": "historical and conceptual foundations"
+        },
+        "target": 0,
+        "selected": 0,
+        "carried_to_next": 0
+      },
+      {
+        "layer": "L4_regular",
+        "priority": "P2",
+        "label": "P2 primary experimental or theoretical evidence",
+        "quota": 0,
+        "query_suffix": "experimental theoretical mechanism measurement validation",
+        "year_policy": {
+          "min_year": 2010,
+          "max_year": 2026,
+          "purpose": "modern review and regular evidence window"
+        },
+        "target": 0,
+        "selected": 0,
+        "carried_to_next": 0
+      }
+    ]
+  },
+  "evidence_window_alerts": [],
+  "total_results": 1,
+  "results": [
+    {
+      "title": "Autism-like phenotypes and increased NMDAR2D expression in mice with KDM5B histone lysine demethylase deficiency",
+      "citation": "Perez-Sisques, L. et al. (2026) Autism-like phenotypes and increased NMDAR2D expression in mice with KDM5B histone lysine demethylase deficiency doi:10.1101/2024.05.28.596232",
+      "authors": [
+        "Perez-Sisques, L.",
+        "Bhatt",
+        "S. U.",
+        "Caruso, A.",
+        "Robb",
+        "J. L.",
+        "Donovan",
+        "A. P. A.",
+        "Bamford, R.",
+        "Torres-Cano, A.",
+        "Spring, S.",
+        "Hendy, E.",
+        "Gileadi",
+        "T. E.",
+        "Panasiuk, M.",
+        "Ahmed",
+        "M. U.",
+        "Taylor-Papadimitriou, J.",
+        "Cash, D.",
+        "Clifton, N.",
+        "Ellegood, J.",
+        "Andreae",
+        "L. C.",
+        "Lerch",
+        "J. P.",
+        "Scattoni",
+        "M. L.",
+        "Giese",
+        "K. P.",
+        "Fernandes, C."
+      ],
+      "year": "2026",
+      "venue": "biorxiv",
+      "doi": "10.1101/2024.05.28.596232",
+      "url": "https://www.biorxiv.org/content/10.1101/2024.05.28.596232",
+      "abstract": "Loss-of-function mutations in genes encoding lysine methyltransferases (KMTs) and demethylases (KDMs) responsible for regulating the trimethylation of histone 3 on lysine 4 (H3K4me3) are associated with neurodevelopmental conditions, including autism spectrum disorder and intellectual disability. To study the specific role of H3K4me3 demethylation, we investigated neurodevelopmental phenotypes in mice without KDM5B demethylase activity. These mice exhibited autism-like behaviours and increased brain size. H3K4me3 levels and the expression of neurodevelopmental genes were increased in the developing Kdm5b mutant neocortex. These included elevated expression of Grin2d. The Grin2d gene product NMDAR2D was increased in synaptosomes isolated from the Kdm5b-deficient neocortex and treating mice with the NMDAR antagonist memantine rescued deficits in ultrasonic vocalisations and reduced repetitive digging behaviours. These findings suggest that increased H3K4me3 levels and associated Grin2d gene upregulation disrupt brain development and function, leading to socio-communication deficits and repetitive behaviours, and identify a potential therapeutic target for neurodevelopmental disorders associated with KDM5B deficiency.\n\nTeaserInhibitors targeting NMDA receptors may represent viable therapies for KDM5B neurodevelopmental disorders",
+      "category": "neuroscience",
+      "papergraph_input": {
+        "title": "Autism-like phenotypes and increased NMDAR2D expression in mice with KDM5B histone lysine demethylase deficiency",
+        "citation": "Perez-Sisques, L. et al. (2026) Autism-like phenotypes and increased NMDAR2D expression in mice with KDM5B histone lysine demethylase deficiency doi:10.1101/2024.05.28.596232",
+        "authors": [
+          "Perez-Sisques, L.",
+          "Bhatt",
+          "S. U.",
+          "Caruso, A.",
+          "Robb",
+          "J. L.",
+          "Donovan",
+          "A. P. A.",
+          "Bamford, R.",
+          "Torres-Cano, A.",
+          "Spring, S.",
+          "Hendy, E.",
+          "Gileadi",
+          "T. E.",
+          "Panasiuk, M.",
+          "Ahmed",
+          "M. U.",
+          "Taylor-Papadimitriou, J.",
+          "Cash, D.",
+          "Clifton, N.",
+          "Ellegood, J.",
+          "Andreae",
+          "L. C.",
+          "Lerch",
+          "J. P.",
+          "Scattoni",
+          "M. L.",
+          "Giese",
+          "K. P.",
+          "Fernandes, C."
+        ],
+        "year": "2026",
+        "venue": "biorxiv",
+        "provider": "biorxiv",
+        "source_type": "api",
+        "doi": "10.1101/2024.05.28.596232",
+        "url": "https://www.biorxiv.org/content/10.1101/2024.05.28.596232",
+        "open_access_pdf": "https://www.biorxiv.org/content/10.1101/2024.05.28.596232v2.full.pdf",
+        "abstract": "Loss-of-function mutations in genes encoding lysine methyltransferases (KMTs) and demethylases (KDMs) responsible for regulating the trimethylation of histone 3 on lysine 4 (H3K4me3) are associated with neurodevelopmental conditions, including autism spectrum disorder and intellectual disability. To study the specific role of H3K4me3 demethylation, we investigated neurodevelopmental phenotypes in mice without KDM5B demethylase activity. These mice exhibited autism-like behaviours and increased brain size. H3K4me3 levels and the expression of neurodevelopmental genes were increased in the developing Kdm5b mutant neocortex. These included elevated expression of Grin2d. The Grin2d gene product NMDAR2D was increased in synaptosomes isolated from the Kdm5b-deficient neocortex and treating mice with the NMDAR antagonist memantine rescued deficits in ultrasonic vocalisations and reduced repetitive digging behaviours. These findings suggest that increased H3K4me3 levels and associated Grin2d gene upregulation disrupt brain development and function, leading to socio-communication deficits and repetitive behaviours, and identify a potential therapeutic target for neurodevelopmental disorders associated with KDM5B deficiency.\n\nTeaserInhibitors targeting NMDA receptors may represent viable therapies for KDM5B neurodevelopmental disorders",
+        "conclusion": ""
+      },
+      "relevance_score": 0.1688,
+      "relevance_components": {
+        "text_score": 0.0467,
+        "recency_score": 1.0,
+        "impact_score": 0.35,
+        "citation_field": "biology",
+        "citation_baseline": 600.0,
+        "venue_score": 0.6,
+        "publication_quality_score": 0.67,
+        "base_score": 0.2519,
+        "text_weight": 0.62,
+        "recency_weight": 0.1,
+        "impact_weight": 0.18,
+        "venue_weight": 0.1
+      },
+      "publication_quality_score": 0.67,
+      "venue_quality": "preprint",
+      "journal_quartile": "",
+      "journal_metric_source": "",
+      "inferred_field": "biology",
+      "quality_flags": [
+        "preprint_not_peer_reviewed",
+        "new_paper_protection"
+      ],
+      "quality_criteria": [
+        "venue is a preprint server, not final peer-reviewed venue",
+        "paper is within 2-year protection window; low citations are not treated as low quality"
+      ],
+      "suspicion_type": "",
+      "quality_reason": "venue is a preprint server, not final peer-reviewed venue; paper is within 2-year protection window; low citations are not treated as low quality",
+      "matched_query_terms": [
+        "developmental",
+        "methylation"
+      ],
+      "relevance_reason": "title=0/12, abstract=2/12, citation=0/12, phrase_bonus=0.0, recency=1.0, impact=0.35, venue=0.6, quality=0.67",
+      "provider": "biorxiv",
+      "retrieval_query": "developmental restriction methylation objective",
+      "research_role": "CORE",
+      "research_role_assessment": {
+        "role": "CORE",
+        "score": 0.76,
+        "reason": "Candidate matches the research boundary and contains core entities or mechanism evidence.",
+        "allowed_use": "core_mechanism_evidence_candidate",
+        "core_hits": [
+          "developmental",
+          "methylation"
+        ],
+        "causal_hits": [
+          "inhibit",
+          "rescue"
+        ]
+      },
+      "research_role_priority": 2,
+      "domain_relevance": {
+        "profile": "research_domains_cell_biology_developmental_biology_objective_dna_methylation",
+        "target_field": "biology",
+        "result_field": "biology",
+        "score": 0.3,
+        "query_hits": [
+          "developmental"
+        ],
+        "anchor_hits": [
+          "developmental",
+          "methylation"
+        ],
+        "topic_hits": [],
+        "noise_hits": [],
+        "flags": [
+          "biological_mechanism_exception"
+        ],
+        "is_preprint": true,
+        "core_domain_alignment": {
+          "enabled": true,
+          "passes": false,
+          "core_terms": [
+            "research domains cell",
+            "domains cell biology",
+            "cell biology developmental",
+            "biology developmental objective",
+            "developmental objective dna",
+            "objective dna methylation",
+            "dna methylation lineage",
+            "methylation lineage commitment",
+            "lineage commitment restriction",
+            "commitment restriction fate",
+            "domains",
+            "cell",
+            "biology",
+            "developmental",
+            "objective",
+            "dna",
+            "methylation",
+            "lineage"
+          ],
+          "core_hit_count": 2,
+          "core_hits": [
+            "developmental",
+            "methylation"
+          ],
+          "specific_terms": [
+            "research domains cell",
+            "domains cell biology",
+            "cell biology developmental",
+            "biology developmental objective",
+            "developmental objective dna",
+            "objective dna methylation",
+            "dna methylation lineage",
+            "methylation lineage commitment",
+            "lineage commitment restriction",
+            "commitment restriction fate",
+            "domains",
+            "biology"
+          ],
+          "specific_hit_count": 2,
+          "specific_hits": [
+            "developmental",
+            "methylation"
+          ],
+          "min_core_hits": 3,
+          "min_specific_hits": 2,
+          "is_preprint": true,
+          "reason": "title/abstract do not cover enough user-specified core topic terms"
+        },
+        "biological_mechanism_evidence": {
+          "qualified": true,
+          "mechanism_hits": [
+            "histone"
+          ],
+          "context_hits": [
+            "development",
+            "developmental"
+          ]
+        },
+        "verdict": "keep",
+        "requires_human_review": true
+      },
+      "domain_review": {
+        "verdict": "review",
+        "score": 0.1818,
+        "target_field": "biology",
+        "result_field": "biology",
+        "foreign_field": false,
+        "target_terms": [
+          "lineage",
+          "commitment",
+          "developmental",
+          "restriction",
+          "cell",
+          "fate",
+          "domains",
+          "biology",
+          "objective",
+          "dna",
+          "methylation"
+        ],
+        "target_hits": [
+          "developmental",
+          "methylation"
+        ],
+        "retrieval_assessment_preserved": true,
+        "biological_mechanism_evidence": {
+          "qualified": true,
+          "mechanism_hits": [
+            "histone"
+          ],
+          "context_hits": [
+            "development",
+            "developmental"
+          ]
+        },
+        "probability_alignment": {
+          "target_profile": {
+            "biology": 1.0
+          },
+          "paper_profile": {
+            "biology": 1.0
+          },
+          "overlap": 1.0,
+          "target_domain": "biology",
+          "result_domain": "biology"
+        },
+        "semantic_similarity": 0.3809,
+        "semantic_similarity_source": "structured_catalog_overlap",
+        "cross_field_tolerated": true,
+        "distinct_physics_conflict": false,
+        "reason": "Preprint has nontrivial semantic or interdisciplinary evidence and is retained for review.",
+        "rescue_applied": true
+      },
+      "domain_gate": {
+        "verdict": "review",
+        "decision_stage": "preprint_protection",
+        "rejecting_stage": "",
+        "reason": "Preprint passed hard domain gates; citation count is not used as an exclusion criterion.",
+        "primary_relevance_verdict": "keep",
+        "primary_relevance_score": 0.3,
+        "review_verdict": "review",
+        "review_score": 0.1818,
+        "matched_exclusion_markers": [],
+        "requires_human_review": true
+      },
+      "stratified_layer": "L3_preprint",
+      "stratified_label": "P0 latest preprint / frontier signal",
+      "year_policy": {
+        "min_year": null,
+        "max_year": 2026,
+        "purpose": "upper-bound guard; recency rules provide the lower bound"
+      },
+      "stratified_recovery": "preprint_query_and_provider_retry",
+      "_why_selected": "Selected as latest preprint/frontier signal: Autism-like phenotypes and increased NMDAR2D expression in mice with KDM5B histone lysine demethylase deficiency; year=2026; provider=biorxiv; relevance=0.1688.",
+      "result_index": 0,
+      "search_id": "search_1784061709169954600"
+    }
+  ],
+  "provider_blocks": [
+    {
+      "provider": "biorxiv",
+      "query": "lineage commitment developmental restriction cell fate",
+      "status": "ok",
+      "api": "api.biorxiv.org/details/biorxiv",
+      "date_window": {
+        "from": "2025-07-15",
+        "to": "2026-07-15"
+      },
+      "pages_scanned": 2,
+      "scanned_result_count": 60,
+      "matched_result_count": 0,
+      "result_offset": 0,
+      "total_available": 71342,
+      "scan_budget": 40,
+      "zero_result_cache_hit": false,
+      "results": [],
+      "next_step": "Import a result with import_literature_search_result; these are preprint metadata records filtered locally by query.",
+      "single_paper_serial": true,
+      "provider_request_batched": true,
+      "provider_batch_size": 1,
+      "provider_batch_index": 0,
+      "single_paper_ordinal": 1,
+      "single_paper_offset": 0,
+      "query_branch": "SH3",
+      "retrieval_strategy": "layer_query"
+    },
+    {
+      "provider": "medrxiv",
+      "query": "lineage commitment developmental restriction cell fate",
+      "status": "ok",
+      "api": "api.biorxiv.org/details/medrxiv",
+      "date_window": {
+        "from": "2025-07-15",
+        "to": "2026-07-15"
+      },
+      "pages_scanned": 2,
+      "scanned_result_count": 60,
+      "matched_result_count": 0,
+      "result_offset": 0,
+      "total_available": 19634,
+      "scan_budget": 40,
+      "zero_result_cache_hit": false,
+      "results": [],
+      "next_step": "Import a result with import_literature_search_result; these are preprint metadata records filtered locally by query.",
+      "single_paper_serial": true,
+      "provider_request_batched": true,
+      "provider_batch_size": 1,
+      "provider_batch_index": 0,
+      "single_paper_ordinal": 2,
+      "single_paper_offset": 0,
+      "query_branch": "SH3",
+      "retrieval_strategy": "layer_query"
+    },
+    {
+      "provider": "arxiv",
+      "query": "lineage commitment developmental restriction cell fate",
+      "compact_query": "developmental restriction commitment fate",
+      "api_query": "all:developmental AND all:restriction",
+      "status": "ok",
+      "results": [],
+      "raw_result_count": 1,
+      "local_rejected_count": 1,
+      "next_step": "Pass a result's papergraph_input fields into import_papergraph_record, or paste abstract into import_literature_text.",
+      "single_paper_serial": true,
+      "provider_request_batched": true,
+      "provider_batch_size": 1,
+      "provider_batch_index": 0,
+      "single_paper_ordinal": 3,
+      "single_paper_offset": 0,
+      "query_branch": "SH3",
+      "retrieval_strategy": "layer_query"
+    },
+    {
+      "provider": "medrxiv",
+      "query": "developmental restriction methylation objective",
+      "status": "ok",
+      "api": "api.biorxiv.org/details/medrxiv",
+      "date_window": {
+        "from": "2026-01-10",
+        "to": "2026-07-15"
+      },
+      "pages_scanned": 6,
+      "scanned_result_count": 180,
+      "matched_result_count": 0,
+      "result_offset": 0,
+      "total_available": 10349,
+      "scan_budget": 160,
+      "zero_result_cache_hit": false,
+      "results": [],
+      "next_step": "Import a result with import_literature_search_result; these are preprint metadata records filtered locally by query.",
+      "retrieval_strategy": "preprint_recovery",
+      "preprint_recovery_window_months": 6,
+      "preprint_recovery_query": "developmental restriction methylation objective"
+    },
+    {
+      "provider": "biorxiv",
+      "query": "developmental restriction methylation objective",
+      "status": "ok",
+      "api": "api.biorxiv.org/details/biorxiv",
+      "date_window": {
+        "from": "2026-01-10",
+        "to": "2026-07-15"
+      },
+      "pages_scanned": 6,
+      "scanned_result_count": 180,
+      "matched_result_count": 2,
+      "result_offset": 0,
+      "total_available": 37353,
+      "scan_budget": 160,
+      "zero_result_cache_hit": false,
+      "results": [
+        {
+          "title": "A PIWI protein-dependent DNA N6-adenine methylation pathway in Oxytricha protects genomic sequences from deletion",
+          "citation": "Angelova et al. (2026) A PIWI protein-dependent DNA N6-adenine methylation pathway in Oxytricha protects genomic sequences from deletion doi:10.64898/2026.01.06.698049",
+          "authors": [
+            "Angelova",
+            "M. T.",
+            "Feng, Y.",
+            "Villano",
+            "D. J.",
+            "Aslan, E.",
+            "Lu",
+            "M. W.",
+            "Esteve, P.-O.",
+            "Sen, S.",
+            "Jack",
+            "W. E.",
+            "Pradhan, S.",
+            "Landweber",
+            "L. F."
+          ],
+          "year": "2026",
+          "venue": "biorxiv",
+          "doi": "10.64898/2026.01.06.698049",
+          "url": "https://www.biorxiv.org/content/10.64898/2026.01.06.698049",
+          "abstract": "The ciliate Oxytricha undergoes massive genome rearrangements during development to produce a functional nucleus from an encrypted zygotic genome. PIWI-interacting small RNAs protect DNA regions against deletion, but how that protective mark is established has been a mystery. Recently our lab discovered MTA1, a methyltransferase that catalyzes DNA N6-adenine (6mA) methylation. Both MTA1 and the Oxytricha Piwi protein, Otiwi1, are required for development, and Otiwi1 mutation eliminates 6mA signal. To examine the role of 6mA, we analyzed its genome-wide distribution across development in wild-type and MTA1 mutant backcrossed cells. We find specific and abundant enrichment on retained sequences, suggesting a protective role for this epigenetic mark. Furthermore, programmed retention of a DNA region that is normally deleted leads to accumulation of new 6mA marks on the ectopically retained DNA sequence. Together, these results suggest that piRNA-guided 6mA DNA methylation leads to protection of DNA sequences against deletion during nuclear differentiation.\n\nHighlightsO_LIDNA N6-methyladenine accumulates on retained DNA regions during Oxytricha development.\nC_LIO_LImta1 mutant backcrosses have disrupted DNA methylation and a developmental delay.\nC_LIO_LIDNA N6-adenine methylation during genome rearrangement requires the presence of Otiwi1.\nC_LIO_LIProgrammed retention of a germline-limited region leads to developmental methylation.\nC_LI",
+          "category": "molecular biology",
+          "papergraph_input": {
+            "title": "A PIWI protein-dependent DNA N6-adenine methylation pathway in Oxytricha protects genomic sequences from deletion",
+            "citation": "Angelova et al. (2026) A PIWI protein-dependent DNA N6-adenine methylation pathway in Oxytricha protects genomic sequences from deletion doi:10.64898/2026.01.06.698049",
+            "authors": [
+              "Angelova",
+              "M. T.",
+              "Feng, Y.",
+              "Villano",
+              "D. J.",
+              "Aslan, E.",
+              "Lu",
+              "M. W.",
+              "Esteve, P.-O.",
+              "Sen, S.",
+              "Jack",
+              "W. E.",
+              "Pradhan, S.",
+              "Landweber",
+              "L. F."
+            ],
+            "year": "2026",
+            "venue": "biorxiv",
+            "provider": "biorxiv",
+            "source_type": "api",
+            "doi": "10.64898/2026.01.06.698049",
+            "url": "https://www.biorxiv.org/content/10.64898/2026.01.06.698049",
+            "open_access_pdf": "https://www.biorxiv.org/content/10.64898/2026.01.06.698049v2.full.pdf",
+            "abstract": "The ciliate Oxytricha undergoes massive genome rearrangements during development to produce a functional nucleus from an encrypted zygotic genome. PIWI-interacting small RNAs protect DNA regions against deletion, but how that protective mark is established has been a mystery. Recently our lab discovered MTA1, a methyltransferase that catalyzes DNA N6-adenine (6mA) methylation. Both MTA1 and the Oxytricha Piwi protein, Otiwi1, are required for development, and Otiwi1 mutation eliminates 6mA signal. To examine the role of 6mA, we analyzed its genome-wide distribution across development in wild-type and MTA1 mutant backcrossed cells. We find specific and abundant enrichment on retained sequences, suggesting a protective role for this epigenetic mark. Furthermore, programmed retention of a DNA region that is normally deleted leads to accumulation of new 6mA marks on the ectopically retained DNA sequence. Together, these results suggest that piRNA-guided 6mA DNA methylation leads to protection of DNA sequences against deletion during nuclear differentiation.\n\nHighlightsO_LIDNA N6-methyladenine accumulates on retained DNA regions during Oxytricha development.\nC_LIO_LImta1 mutant backcrosses have disrupted DNA methylation and a developmental delay.\nC_LIO_LIDNA N6-adenine methylation during genome rearrangement requires the presence of Otiwi1.\nC_LIO_LIProgrammed retention of a germline-limited region leads to developmental methylation.\nC_LI",
+            "conclusion": ""
+          },
+          "relevance_score": 0.2823,
+          "relevance_components": {
+            "text_score": 0.32,
+            "recency_score": 1.0,
+            "impact_score": 0.35,
+            "citation_field": "biology",
+            "citation_baseline": 600.0,
+            "venue_score": 0.6,
+            "publication_quality_score": 0.67,
+            "base_score": 0.4214,
+            "text_weight": 0.62,
+            "recency_weight": 0.1,
+            "impact_weight": 0.18,
+            "venue_weight": 0.1
+          },
+          "publication_quality_score": 0.67,
+          "venue_quality": "preprint",
+          "journal_quartile": "",
+          "journal_metric_source": "",
+          "inferred_field": "biology",
+          "quality_flags": [
+            "preprint_not_peer_reviewed",
+            "new_paper_protection"
+          ],
+          "quality_criteria": [
+            "venue is a preprint server, not final peer-reviewed venue",
+            "paper is within 2-year protection window; low citations are not treated as low quality"
+          ],
+          "suspicion_type": "",
+          "quality_reason": "venue is a preprint server, not final peer-reviewed venue; paper is within 2-year protection window; low citations are not treated as low quality",
+          "matched_query_terms": [
+            "methylation",
+            "developmental"
+          ],
+          "relevance_reason": "title=1/4, abstract=2/4, citation=1/4, phrase_bonus=0.0, recency=1.0, impact=0.35, venue=0.6, quality=0.67"
+        },
+        {
+          "title": "Autism-like phenotypes and increased NMDAR2D expression in mice with KDM5B histone lysine demethylase deficiency",
+          "citation": "Perez-Sisques, L. et al. (2026) Autism-like phenotypes and increased NMDAR2D expression in mice with KDM5B histone lysine demethylase deficiency doi:10.1101/2024.05.28.596232",
+          "authors": [
+            "Perez-Sisques, L.",
+            "Bhatt",
+            "S. U.",
+            "Caruso, A.",
+            "Robb",
+            "J. L.",
+            "Donovan",
+            "A. P. A.",
+            "Bamford, R.",
+            "Torres-Cano, A.",
+            "Spring, S.",
+            "Hendy, E.",
+            "Gileadi",
+            "T. E.",
+            "Panasiuk, M.",
+            "Ahmed",
+            "M. U.",
+            "Taylor-Papadimitriou, J.",
+            "Cash, D.",
+            "Clifton, N.",
+            "Ellegood, J.",
+            "Andreae",
+            "L. C.",
+            "Lerch",
+            "J. P.",
+            "Scattoni",
+            "M. L.",
+            "Giese",
+            "K. P.",
+            "Fernandes, C."
+          ],
+          "year": "2026",
+          "venue": "biorxiv",
+          "doi": "10.1101/2024.05.28.596232",
+          "url": "https://www.biorxiv.org/content/10.1101/2024.05.28.596232",
+          "abstract": "Loss-of-function mutations in genes encoding lysine methyltransferases (KMTs) and demethylases (KDMs) responsible for regulating the trimethylation of histone 3 on lysine 4 (H3K4me3) are associated with neurodevelopmental conditions, including autism spectrum disorder and intellectual disability. To study the specific role of H3K4me3 demethylation, we investigated neurodevelopmental phenotypes in mice without KDM5B demethylase activity. These mice exhibited autism-like behaviours and increased brain size. H3K4me3 levels and the expression of neurodevelopmental genes were increased in the developing Kdm5b mutant neocortex. These included elevated expression of Grin2d. The Grin2d gene product NMDAR2D was increased in synaptosomes isolated from the Kdm5b-deficient neocortex and treating mice with the NMDAR antagonist memantine rescued deficits in ultrasonic vocalisations and reduced repetitive digging behaviours. These findings suggest that increased H3K4me3 levels and associated Grin2d gene upregulation disrupt brain development and function, leading to socio-communication deficits and repetitive behaviours, and identify a potential therapeutic target for neurodevelopmental disorders associated with KDM5B deficiency.\n\nTeaserInhibitors targeting NMDA receptors may represent viable therapies for KDM5B neurodevelopmental disorders",
+          "category": "neuroscience",
+          "papergraph_input": {
+            "title": "Autism-like phenotypes and increased NMDAR2D expression in mice with KDM5B histone lysine demethylase deficiency",
+            "citation": "Perez-Sisques, L. et al. (2026) Autism-like phenotypes and increased NMDAR2D expression in mice with KDM5B histone lysine demethylase deficiency doi:10.1101/2024.05.28.596232",
+            "authors": [
+              "Perez-Sisques, L.",
+              "Bhatt",
+              "S. U.",
+              "Caruso, A.",
+              "Robb",
+              "J. L.",
+              "Donovan",
+              "A. P. A.",
+              "Bamford, R.",
+              "Torres-Cano, A.",
+              "Spring, S.",
+              "Hendy, E.",
+              "Gileadi",
+              "T. E.",
+              "Panasiuk, M.",
+              "Ahmed",
+              "M. U.",
+              "Taylor-Papadimitriou, J.",
+              "Cash, D.",
+              "Clifton, N.",
+              "Ellegood, J.",
+              "Andreae",
+              "L. C.",
+              "Lerch",
+              "J. P.",
+              "Scattoni",
+              "M. L.",
+              "Giese",
+              "K. P.",
+              "Fernandes, C."
+            ],
+            "year": "2026",
+            "venue": "biorxiv",
+            "provider": "biorxiv",
+            "source_type": "api",
+            "doi": "10.1101/2024.05.28.596232",
+            "url": "https://www.biorxiv.org/content/10.1101/2024.05.28.596232",
+            "open_access_pdf": "https://www.biorxiv.org/content/10.1101/2024.05.28.596232v2.full.pdf",
+            "abstract": "Loss-of-function mutations in genes encoding lysine methyltransferases (KMTs) and demethylases (KDMs) responsible for regulating the trimethylation of histone 3 on lysine 4 (H3K4me3) are associated with neurodevelopmental conditions, including autism spectrum disorder and intellectual disability. To study the specific role of H3K4me3 demethylation, we investigated neurodevelopmental phenotypes in mice without KDM5B demethylase activity. These mice exhibited autism-like behaviours and increased brain size. H3K4me3 levels and the expression of neurodevelopmental genes were increased in the developing Kdm5b mutant neocortex. These included elevated expression of Grin2d. The Grin2d gene product NMDAR2D was increased in synaptosomes isolated from the Kdm5b-deficient neocortex and treating mice with the NMDAR antagonist memantine rescued deficits in ultrasonic vocalisations and reduced repetitive digging behaviours. These findings suggest that increased H3K4me3 levels and associated Grin2d gene upregulation disrupt brain development and function, leading to socio-communication deficits and repetitive behaviours, and identify a potential therapeutic target for neurodevelopmental disorders associated with KDM5B deficiency.\n\nTeaserInhibitors targeting NMDA receptors may represent viable therapies for KDM5B neurodevelopmental disorders",
+            "conclusion": ""
+          },
+          "relevance_score": 0.2076,
+          "relevance_components": {
+            "text_score": 0.14,
+            "recency_score": 1.0,
+            "impact_score": 0.35,
+            "citation_field": "biology",
+            "citation_baseline": 600.0,
+            "venue_score": 0.6,
+            "publication_quality_score": 0.67,
+            "base_score": 0.3098,
+            "text_weight": 0.62,
+            "recency_weight": 0.1,
+            "impact_weight": 0.18,
+            "venue_weight": 0.1
+          },
+          "publication_quality_score": 0.67,
+          "venue_quality": "preprint",
+          "journal_quartile": "",
+          "journal_metric_source": "",
+          "inferred_field": "biology",
+          "quality_flags": [
+            "preprint_not_peer_reviewed",
+            "new_paper_protection"
+          ],
+          "quality_criteria": [
+            "venue is a preprint server, not final peer-reviewed venue",
+            "paper is within 2-year protection window; low citations are not treated as low quality"
+          ],
+          "suspicion_type": "",
+          "quality_reason": "venue is a preprint server, not final peer-reviewed venue; paper is within 2-year protection window; low citations are not treated as low quality",
+          "matched_query_terms": [
+            "developmental",
+            "methylation"
+          ],
+          "relevance_reason": "title=0/4, abstract=2/4, citation=0/4, phrase_bonus=0.0, recency=1.0, impact=0.35, venue=0.6, quality=0.67"
+        }
+      ],
+      "next_step": "Import a result with import_literature_search_result; these are preprint metadata records filtered locally by query.",
+      "retrieval_strategy": "preprint_recovery",
+      "preprint_recovery_window_months": 6,
+      "preprint_recovery_query": "developmental restriction methylation objective"
+    }
+  ]
+}
