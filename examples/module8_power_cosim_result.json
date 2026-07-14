@@ -1,0 +1,33 @@
+{
+  "schema_version": "1.0",
+  "experiment_id": "analysis_power_cosim_001",
+  "hypothesis_id": "hyp_power_cosim_001",
+  "hypothesis": "调度与动态安全协同优化可以降低调度成本和网损，同时提高故障后电压最低点与稳定率。",
+  "branch": "power",
+  "simulation_type": "cosim",
+  "engine": "ltbams",
+  "status": "success",
+  "primary_metric": "dispatch_cost",
+  "metadata": {"case_source": "synthetic_cosim_analysis_fixture", "repeats": 6},
+  "metric_directions": {
+    "dispatch_cost": "minimize",
+    "network_loss_mw": "minimize",
+    "voltage_nadir_pu": "maximize",
+    "stable": "maximize"
+  },
+  "observations": [
+    {"condition": "baseline", "repeat": 0, "metrics": {"dispatch_cost": 5320, "network_loss_mw": 5.3, "voltage_nadir_pu": 0.72, "stable": true}},
+    {"condition": "proposed", "repeat": 0, "metrics": {"dispatch_cost": 5160, "network_loss_mw": 4.5, "voltage_nadir_pu": 0.82, "stable": true}},
+    {"condition": "baseline", "repeat": 1, "metrics": {"dispatch_cost": 5285, "network_loss_mw": 5.1, "voltage_nadir_pu": 0.74, "stable": true}},
+    {"condition": "proposed", "repeat": 1, "metrics": {"dispatch_cost": 5125, "network_loss_mw": 4.3, "voltage_nadir_pu": 0.84, "stable": true}},
+    {"condition": "baseline", "repeat": 2, "metrics": {"dispatch_cost": 5380, "network_loss_mw": 5.6, "voltage_nadir_pu": 0.69, "stable": false}},
+    {"condition": "proposed", "repeat": 2, "metrics": {"dispatch_cost": 5205, "network_loss_mw": 4.7, "voltage_nadir_pu": 0.80, "stable": true}},
+    {"condition": "baseline", "repeat": 3, "metrics": {"dispatch_cost": 5250, "network_loss_mw": 5.0, "voltage_nadir_pu": 0.75, "stable": true}},
+    {"condition": "proposed", "repeat": 3, "metrics": {"dispatch_cost": 5090, "network_loss_mw": 4.2, "voltage_nadir_pu": 0.85, "stable": true}},
+    {"condition": "baseline", "repeat": 4, "metrics": {"dispatch_cost": 5410, "network_loss_mw": 5.8, "voltage_nadir_pu": 0.68, "stable": false}},
+    {"condition": "proposed", "repeat": 4, "metrics": {"dispatch_cost": 5230, "network_loss_mw": 4.8, "voltage_nadir_pu": 0.79, "stable": true}},
+    {"condition": "baseline", "repeat": 5, "metrics": {"dispatch_cost": 5300, "network_loss_mw": 5.2, "voltage_nadir_pu": 0.73, "stable": true}},
+    {"condition": "proposed", "repeat": 5, "metrics": {"dispatch_cost": 5145, "network_loss_mw": 4.4, "voltage_nadir_pu": 0.83, "stable": true}}
+  ],
+  "artifacts": []
+}

@@ -1,0 +1,63 @@
+{
+  "schema_version": "1.0",
+  "experiment_id": "demo_power_tds_5s_stable_001",
+  "hypothesis": {
+    "id": "hyp_power_tds_5s_stable_001",
+    "statement": "A five-second ANDES TDS integration can be executed through Module 7 under local sandbox limits."
+  },
+  "domain": "power_system",
+  "objective": "Run a five-second real ANDES TDS integration as a controlled long-duration validation.",
+  "task": {
+    "type": "transient_tds"
+  },
+  "dataset": {
+    "path": "D:/python/Lib/site-packages/andes/cases/5bus/pjm5bus.json",
+    "fallback": "ieee9_reduced_dynamic"
+  },
+  "parameters": {
+    "fault_bus": 3,
+    "fault_time_seconds": 10.0,
+    "simulation_end_seconds": 5.0,
+    "max_tds_simulation_seconds": 5.0,
+    "proposed_damping": 0.12,
+    "clearing_duration_grid": [0.01]
+  },
+  "baselines": [
+    {
+      "name": "base_damping",
+      "description": "Base damping setting."
+    }
+  ],
+  "metrics": [
+    {
+      "name": "cct_seconds",
+      "direction": "maximize",
+      "primary": true
+    },
+    {
+      "name": "max_rotor_angle_deg",
+      "direction": "minimize"
+    },
+    {
+      "name": "voltage_nadir_pu",
+      "direction": "maximize"
+    }
+  ],
+  "execution": {
+    "backend": "local",
+    "cpu_limit": 2,
+    "memory_limit_mb": 4096,
+    "timeout_seconds": 300,
+    "network_enabled": false,
+    "allow_real_tds": true,
+    "allow_long_tds": false,
+    "max_tds_simulation_seconds": 5.0,
+    "max_repair_rounds": 0
+  },
+  "generation": {
+    "mode": "template"
+  },
+  "output": {
+    "result_file": "exp_power_tds_5s_stable_result.json"
+  }
+}

@@ -1,0 +1,53 @@
+{
+  "schema_version": "1.0",
+  "experiment_id": "demo_power_cosim_001",
+  "hypothesis": {
+    "id": "hyp_power_cosim_001",
+    "statement": "将动态安全约束反馈至调度可在控制成本增幅的同时改善故障后电压稳定性。"
+  },
+  "domain": "power_system",
+  "objective": "执行AMS调度与ANDES暂态的协同联合仿真。",
+  "task": {
+    "type": "dispatch_dynamic_cosim"
+  },
+  "dataset": {
+    "path": "",
+    "dynamic_path": "",
+    "fallback": "ieee9_cosim"
+  },
+  "parameters": {
+    "repeats": 5,
+    "simulation_end_seconds": 8.0,
+    "proposed_damping": 0.16
+  },
+  "baselines": [
+    {
+      "name": "economic_dispatch_only",
+      "description": "仅考虑经济性的调度结果"
+    }
+  ],
+  "metrics": [
+    {
+      "name": "dispatch_cost",
+      "direction": "minimize",
+      "primary": true
+    },
+    {
+      "name": "voltage_nadir_pu",
+      "direction": "maximize"
+    }
+  ],
+  "execution": {
+    "backend": "auto",
+    "cpu_limit": 4,
+    "memory_limit_mb": 8192,
+    "timeout_seconds": 3600,
+    "network_enabled": false
+  },
+  "generation": {
+    "mode": "template"
+  },
+  "output": {
+    "result_file": "exp_power_result.json"
+  }
+}

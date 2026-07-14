@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.0",
+  "experiment_id": "demo_power_opf_001",
+  "hypothesis": {
+    "id": "hyp_power_opf_001",
+    "statement": "考虑电压约束的最优潮流相较常规潮流可降低IEEE9节点系统网损与发电成本。"
+  },
+  "domain": "power_system",
+  "objective": "在多组负荷扰动下比较常规潮流与最优潮流。",
+  "task": {
+    "type": "steady_state_opf"
+  },
+  "dataset": {
+    "path": "",
+    "fallback": "ieee9"
+  },
+  "parameters": {
+    "seed": 2026,
+    "repeats": 6,
+    "voltage_min_pu": 0.95,
+    "voltage_max_pu": 1.05
+  },
+  "baselines": [
+    {
+      "name": "pandapower_pf",
+      "description": "不优化发电分配的常规交流潮流"
+    }
+  ],
+  "metrics": [
+    {
+      "name": "network_loss_mw",
+      "direction": "minimize",
+      "primary": true
+    },
+    {
+      "name": "generation_cost",
+      "direction": "minimize"
+    },
+    {
+      "name": "voltage_violation_count",
+      "direction": "minimize"
+    }
+  ],
+  "execution": {
+    "backend": "auto",
+    "cpu_limit": 2,
+    "memory_limit_mb": 4096,
+    "timeout_seconds": 900,
+    "network_enabled": false,
+    "docker_image": "qwen-ai-scientist/power-experiment:latest"
+  },
+  "generation": {
+    "mode": "template"
+  },
+  "output": {
+    "result_file": "exp_power_result.json"
+  }
+}

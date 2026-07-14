@@ -1,0 +1,55 @@
+{
+  "schema_version": "1.0",
+  "experiment_id": "demo_general_001",
+  "hypothesis_id": "hyp_general_001",
+  "branch": "general",
+  "simulation_type": "general",
+  "engine": "python-scientific",
+  "status": "success",
+  "metadata": {
+    "dataset_source": "synthetic_controlled_fallback",
+    "seed": 2026,
+    "repeats": 3,
+    "runtime_seconds": 0.82
+  },
+  "metric_directions": {
+    "primary_metric": "maximize"
+  },
+  "observations": [
+    {
+      "condition": "baseline",
+      "repeat": 0,
+      "metrics": {"primary_metric": 0.0736}
+    },
+    {
+      "condition": "proposed",
+      "repeat": 0,
+      "metrics": {"primary_metric": 0.4221}
+    },
+    {
+      "condition": "baseline",
+      "repeat": 1,
+      "metrics": {"primary_metric": 0.0264}
+    },
+    {
+      "condition": "proposed",
+      "repeat": 1,
+      "metrics": {"primary_metric": 0.3732}
+    },
+    {
+      "condition": "baseline",
+      "repeat": 2,
+      "metrics": {"primary_metric": -0.1005}
+    },
+    {
+      "condition": "proposed",
+      "repeat": 2,
+      "metrics": {"primary_metric": 0.2452}
+    }
+  ],
+  "summary": {
+    "baseline": {"n": 3, "mean": -0.0002, "std": 0.0884},
+    "proposed": {"n": 3, "mean": 0.3468, "std": 0.0912}
+  },
+  "artifacts": ["figures/general_comparison.png"]
+}

@@ -1,0 +1,50 @@
+{
+  "schema_version": "1.0",
+  "experiment_id": "demo_general_001",
+  "hypothesis": {
+    "id": "hyp_general_001",
+    "statement": "在受控噪声条件下，所提干预相较基线能显著提高主要响应指标。"
+  },
+  "domain": "physics",
+  "objective": "使用重复实验比较基线组与干预组的主要指标。",
+  "task": {
+    "type": "controlled_experiment"
+  },
+  "dataset": {
+    "path": "",
+    "fallback": "synthetic_controlled"
+  },
+  "parameters": {
+    "seed": 2026,
+    "repeats": 8,
+    "sample_size": 200,
+    "expected_effect": 0.35
+  },
+  "baselines": [
+    {
+      "name": "no_intervention",
+      "description": "不施加干预的对照组"
+    }
+  ],
+  "metrics": [
+    {
+      "name": "primary_metric",
+      "direction": "maximize",
+      "primary": true,
+      "success_threshold": 0.2
+    }
+  ],
+  "execution": {
+    "backend": "local",
+    "cpu_limit": 2,
+    "memory_limit_mb": 1024,
+    "timeout_seconds": 120,
+    "network_enabled": false
+  },
+  "generation": {
+    "mode": "template"
+  },
+  "output": {
+    "result_file": "exp_general_result.json"
+  }
+}

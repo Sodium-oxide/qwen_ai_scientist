@@ -1,0 +1,46 @@
+{
+  "schema_version": "1.0",
+  "experiment_id": "analysis_power_opf_001",
+  "hypothesis_id": "hyp_power_opf_001",
+  "hypothesis": "带电压约束的OPF相较常规PF能够降低IEEE9节点系统网损和发电成本，并消除电压越限。",
+  "branch": "power",
+  "simulation_type": "opf",
+  "engine": "pandapower",
+  "status": "success",
+  "primary_metric": "network_loss_mw",
+  "metadata": {
+    "case_source": "synthetic_ieee9_analysis_fixture",
+    "seed": 2026,
+    "repeats": 6
+  },
+  "metric_directions": {
+    "network_loss_mw": "minimize",
+    "generation_cost": "minimize",
+    "voltage_violation_count": "minimize",
+    "voltage_min_pu": "target_1.0",
+    "voltage_max_pu": "target_1.0"
+  },
+  "success_criteria": {
+    "network_loss_mw": {
+      "minimum_relative_improvement_percent": 5.0
+    },
+    "generation_cost": {
+      "minimum_relative_improvement_percent": 2.0
+    }
+  },
+  "observations": [
+    {"condition": "baseline", "repeat": 0, "metrics": {"network_loss_mw": 5.20, "generation_cost": 5410, "voltage_violation_count": 2, "voltage_min_pu": 0.941, "voltage_max_pu": 1.061}},
+    {"condition": "proposed", "repeat": 0, "metrics": {"network_loss_mw": 4.18, "generation_cost": 5190, "voltage_violation_count": 0, "voltage_min_pu": 0.974, "voltage_max_pu": 1.038}},
+    {"condition": "baseline", "repeat": 1, "metrics": {"network_loss_mw": 5.05, "generation_cost": 5360, "voltage_violation_count": 1, "voltage_min_pu": 0.946, "voltage_max_pu": 1.057}},
+    {"condition": "proposed", "repeat": 1, "metrics": {"network_loss_mw": 4.10, "generation_cost": 5155, "voltage_violation_count": 0, "voltage_min_pu": 0.978, "voltage_max_pu": 1.035}},
+    {"condition": "baseline", "repeat": 2, "metrics": {"network_loss_mw": 5.31, "generation_cost": 5480, "voltage_violation_count": 2, "voltage_min_pu": 0.938, "voltage_max_pu": 1.064}},
+    {"condition": "proposed", "repeat": 2, "metrics": {"network_loss_mw": 4.25, "generation_cost": 5240, "voltage_violation_count": 0, "voltage_min_pu": 0.971, "voltage_max_pu": 1.041}},
+    {"condition": "baseline", "repeat": 3, "metrics": {"network_loss_mw": 4.98, "generation_cost": 5325, "voltage_violation_count": 1, "voltage_min_pu": 0.948, "voltage_max_pu": 1.054}},
+    {"condition": "proposed", "repeat": 3, "metrics": {"network_loss_mw": 4.02, "generation_cost": 5120, "voltage_violation_count": 0, "voltage_min_pu": 0.981, "voltage_max_pu": 1.033}},
+    {"condition": "baseline", "repeat": 4, "metrics": {"network_loss_mw": 5.42, "generation_cost": 5525, "voltage_violation_count": 2, "voltage_min_pu": 0.936, "voltage_max_pu": 1.066}},
+    {"condition": "proposed", "repeat": 4, "metrics": {"network_loss_mw": 4.31, "generation_cost": 5275, "voltage_violation_count": 0, "voltage_min_pu": 0.969, "voltage_max_pu": 1.043}},
+    {"condition": "baseline", "repeat": 5, "metrics": {"network_loss_mw": 5.17, "generation_cost": 5395, "voltage_violation_count": 1, "voltage_min_pu": 0.943, "voltage_max_pu": 1.059}},
+    {"condition": "proposed", "repeat": 5, "metrics": {"network_loss_mw": 4.15, "generation_cost": 5175, "voltage_violation_count": 0, "voltage_min_pu": 0.976, "voltage_max_pu": 1.037}}
+  ],
+  "artifacts": []
+}
