@@ -743,11 +743,70 @@ def write_paper(
     }
 
 
+def _auto_load_teammate_results(ctx: dict[str, Any]) -> dict[str, Any]:
+    """自动检测队友模块7/8的结果文件并注入 context。"""
+    from pathlib import Path as _P
+
+    # 如果 context 中已有真实数据（非空且非 simulated），不做覆盖
+    has_real_results = (
+        ctx.get("experiment_results")
+        and not _is_empty_or_simulated(ctx["experiment_results"])
+    )
+    has_real_analysis = (
+        ctx.get("analysis_report")
+        and not _is_empty_or_simulated(ctx["analysis_report"])
+    )
+
+    if has_real_results and has_real_analysis:
+        return ctx
+
+    # 尝试找到队友的结果文件
+    result_candidates = sorted(_P("results").glob("exp_power_*.json")) if _P("results").exists() else []
+    analysis_candidates = (
+        sorted(_P("results").glob("mingbian_*/analysis_report.json"))
+        if _P("results").exists() else []
+    )
+
+    if result_candidates and not has_real_results:
+        try:
+            from code_engineer import execute_code as _load_results
+            loaded = _load_results("", result_path=str(result_candidates[-1]))
+            if not _is_empty_or_simulated(loaded):
+                ctx["experiment_results"] = loaded
+        except Exception:
+            pass
+
+    if analysis_candidates and not has_real_analysis:
+        try:
+            from mingbian import analyze_results as _load_analysis
+            loaded = _load_analysis("", analysis_path=str(analysis_candidates[-1]))
+            if not _is_empty_or_simulated(loaded):
+                ctx["analysis_report"] = loaded
+        except Exception:
+            pass
+
+    return ctx
+
+
+def _is_empty_or_simulated(data: Any) -> bool:
+    """检查数据是空 dict、simulated 标记、或无效数据。"""
+    if not data:
+        return True
+    if isinstance(data, dict):
+        if data.get("simulated") or data.get("evidence_type") == "fallback_simulated":
+            return True
+        if data.get("evidence_grade") == "unavailable":
+            return True
+        if not data.get("primary_results") and not data.get("key_findings"):
+            return data.get("status") == "unavailable"
+    return False
+
+
 def _build_write_prompt(ctx: dict[str, Any], override_title: str = "") -> str:
     """组装给 PaperWriter LLM 的完整上下文 prompt。"""
     parts: list[str] = []
+    ctx = _auto_load_teammate_results(ctx)
 
-    # 标题覆盖
     if override_title:
         parts.append(f"## REQUIRED TITLE\n{override_title}\n")
 

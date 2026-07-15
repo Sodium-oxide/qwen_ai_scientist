@@ -1,198 +1,185 @@
 """
-CodeEngineer — 实验代码生成与执行（模块7）
-==========================================
-在角色三未交付前，提供最小可用实现以闭合管道。
+CodeEngineer 适配器 — 对接角色三 modules 7 真实仿真结果
+=======================================================
+本模块是 PaperWriter 与角色三 agents/code_engineer.py 之间的薄适配层。
+不启动仿真、不生成代码、不调用 LLM —— 只读取队友产出的标准化 result.json
+并转换为 PaperWriter 可消费的 project_context 格式。
 
-⚠ 当前为 LLM 模拟模式，生成的结果标记 [SIMULATED]。
-   队友完成真实执行环境后替换此文件即可。
+队友模块: agents/code_engineer.py  CodeEngineer().run_plan(...)
+结果路径: results/exp_power_*.json
+真实引擎: ANDES (TDS), pandapower (OPF), LTBAMS (Co-sim)
 """
 
 from __future__ import annotations
 
 import json
-import os
-import sys
-import time
+import statistics
 from pathlib import Path
 from typing import Any
 
 
-CODEENGINEER_SYSTEM_PROMPT = """\
-You are CodeEngineer, the Experiment Implementation Specialist of the Qwen-Zhikan AI Scientist system.
-You translate experimental protocols into executable Python code and produce plausible results.
+# ── 公开 API ──
 
-## CORE TASK
-Given a hypothesis and experimental protocol, write Python code that would test the hypothesis,
-then simulate realistic experimental results consistent with the hypothesis and baselines.
+def load_result(result_path: str | Path) -> dict[str, Any]:
+    """读取队友模块7产出的标准化 result.json"""
+    with open(result_path, encoding="utf-8") as f:
+        return json.load(f)
 
-## RULES
-1. Generate syntactically correct Python code with proper imports.
-2. The code should be complete and runnable (with mock data if needed).
-3. Results must include: accuracy/performance numbers, baseline comparison, statistical tests.
-4. Be realistic — do not claim 100% accuracy or impossible speedups.
-5. Include standard ML imports: numpy, sklearn, scipy, matplotlib.
-
-## OUTPUT FORMAT
-Return JSON:
-{
-  "code": "complete Python code as string",
-  "expected_output": "what this code should output",
-  "dependencies": ["numpy", "scikit-learn", ...]
-}\
-"""
-
-
-def _call_llm(system: str, prompt: str, max_tokens: int = 2000) -> dict[str, Any]:
-    try:
-        from .llm import get_client
-    except ImportError:
-        from llm import get_client
-    client = get_client()
-
-    response = client.messages.create(
-        model=None, max_tokens=max_tokens, system=system,
-        messages=[{"role": "user", "content": prompt}], tools=[],
-    )
-    content = getattr(response, "content", response)
-    text = _render_text(content)
-    parsed = _parse_json(text)
-    if not parsed:
-        raise ValueError(f"CodeEngineer LLM returned invalid JSON: {text[:500]}")
-    return parsed
-
-
-def _render_text(content: Any) -> str:
-    if isinstance(content, str):
-        return content
-    if isinstance(content, list):
-        return "\n".join(str(b.get("text", b.get("content", ""))) for b in content if isinstance(b, dict))
-    return str(content)
-
-
-def _parse_json(text: str) -> dict[str, Any]:
-    import json as _json, re as _re
-    s = text.strip()
-    if s.startswith("```"): s = "\n".join(s.splitlines()[1:-1]).strip()
-    # fix LaTeX escapes
-    valid = {'"', '\\', '/', 'b', 'f', 'n', 'r', 't', 'u'}
-    chars, i, in_s = [], 0, False
-    while i < len(s):
-        c = s[i]
-        if c == '"' and (i == 0 or s[i-1] != '\\'): in_s = not in_s
-        elif c == '\\' and in_s and i+1 < len(s) and s[i+1] not in valid: chars.append('\\\\'); i += 1; continue
-        chars.append(c); i += 1
-    s = ''.join(chars)
-    s = _re.sub(r",\s*}", "}", s)
-    start, end = s.find("{"), s.rfind("}")
-    if start != -1 and end > start:
-        try: return _json.loads(s[start:end+1])
-        except _json.JSONDecodeError: pass
-    return {}
-
-
-def _make_simulated_results(project_id: str, hypothesis: dict, protocol: dict,
-                            analysis: dict | None = None) -> dict[str, Any]:
-    """基于假设和协议生成合理的模拟实验结果。"""
-    hyp_text = json.dumps(hypothesis, ensure_ascii=False)[:2000] if hypothesis else "No hypothesis"
-    prot_text = json.dumps(protocol, ensure_ascii=False)[:2000] if protocol else "No protocol"
-
-    prompt = f"""## HYPOTHESIS
-{hyp_text}
-
-## EXPERIMENTAL PROTOCOL
-{prot_text}
-
-## TASK
-Simulate realistic experimental results that would plausibly confirm the hypothesis.
-Include specific numbers, baseline comparisons, and statistical tests.
-Be realistic — typical ML improvements are 3-15%, not 1000%.
-
-Return JSON with this EXACT structure:
-{{
-  "status": "success",
-  "simulated": true,
-  "execution_time_seconds": 30,
-  "auto_fix_iterations": 0,
-  "primary_results": {{
-    "accuracy": 0.95,
-    "inference_time_ms": 5.0,
-    "roc_auc": 0.94
-  }},
-  "baseline_comparison": {{
-    "Baseline A": {{"accuracy": 0.90, "time_ms": 100}},
-    "Baseline B": {{"accuracy": 0.85, "time_ms": 50}},
-    "Our Method": {{"accuracy": 0.95, "time_ms": 5}}
-  }},
-  "statistical_tests": {{
-    "test_used": "paired t-test, Bonferroni corrected",
-    "p_value": 0.001,
-    "effect_size": "Cohen's d = 0.8",
-    "confidence_interval_95": "[0.92, 0.98]"
-  }}
-}}"""
-
-    try:
-        return _call_llm(CODEENGINEER_SYSTEM_PROMPT, prompt, max_tokens=2000)
-    except Exception:
-        # 硬编码 fallback
-        return {
-            "status": "success", "simulated": True,
-            "execution_time_seconds": 30, "auto_fix_iterations": 0,
-            "primary_results": {"accuracy": 0.95, "f1": 0.93, "roc_auc": 0.94},
-            "baseline_comparison": {
-                "Standard Baseline": {"accuracy": 0.88},
-                "Our Method": {"accuracy": 0.95}
-            },
-            "statistical_tests": {
-                "test_used": "paired t-test", "p_value": 0.005,
-                "effect_size": "Cohen's d = 0.80", "confidence_interval_95": "[0.91, 0.97]"
-            },
-            "raw_output_path": f"tool_results/experiment_{project_id}.txt",
-            "note": "[SIMULATED] — generated by LLM, not from real code execution"
-        }
-
-
-# ── 公开 API（对应 agent 定义中的 tools） ──
 
 def write_code(project_id: str, experiment_protocol: dict | None = None,
                hypothesis: dict | None = None) -> str:
-    """根据实验方案生成 Python 代码。"""
-    prot = experiment_protocol or {}
-    hyp = hypothesis or {}
-    prompt = f"Write Python experiment code.\nProtocol: {json.dumps(prot, ensure_ascii=False)[:2000]}\nHypothesis: {json.dumps(hyp, ensure_ascii=False)[:1000]}"
-    result = _call_llm(CODEENGINEER_SYSTEM_PROMPT, prompt, max_tokens=2000)
-    return result.get("code", "# CodeEngineer: no code generated")
+    """适配器桩：返回队友模块7的调用说明。实际代码由队友的 CodeEngineer 生成。"""
+    return (
+        "# 此函数由队友 agents/code_engineer.py 提供真实实现。\n"
+        "# 调用方式: CodeEngineer().run_plan('examples/module7_*_plan.json')\n"
+        "# 结果写入 results/exp_power_*.json"
+    )
 
 
-def execute_code(project_id: str, code: str = "", experiment_protocol: dict | None = None,
-                 hypothesis: dict | None = None, analysis_report: dict | None = None) -> dict:
-    """执行实验代码（当前为模拟模式）。返回结构化结果。"""
-    prot = experiment_protocol or {}
-    hyp = hypothesis or {}
-    ana = analysis_report or {}
+def execute_code(project_id: str, code: str = "",
+                 experiment_protocol: dict | None = None,
+                 hypothesis: dict | None = None,
+                 *,
+                 result_path: str = "results/exp_power_tds_5s_stable_result.json",
+                 ) -> dict[str, Any]:
+    """
+    读取队友模块7的真实仿真结果并转为 PaperWriter 兼容格式。
 
-    # 尝试从项目加载上下文
+    队友产出字段:
+        schema_version, experiment_id, branch, simulation_type, engine,
+        status, primary_metric, metadata, metric_directions,
+        success_criteria, observations, artifacts
+
+    本适配器负责:
+        1. 加载真实结果 JSON
+        2. 对 observations 做描述统计（均值/标准差/CI）
+        3. 输出 PaperWriter 可消费的标准 dict
+
+    如果结果文件不存在，回退到调用队友的 CodeEngineer。
+    """
     try:
-        from ._project import load_project
-        proj = load_project(project_id)
-        hyp = hyp or proj.get("hypothesis") or proj.get("refined_hypothesis", {})
-        prot = prot or proj.get("experiment_protocol", {})
-        ana = ana or proj.get("analysis_report", {})
-    except Exception:
-        pass
+        raw = load_result(result_path)
+    except FileNotFoundError:
+        # 尝试调队友代码
+        try:
+            from agents.code_engineer import CodeEngineer
+            plan = _find_plan_file(project_id)
+            engine = CodeEngineer()
+            report = engine.run_plan(plan, backend_override="local", qwen_override=False)
+            raw = _load_from_report(report)
+        except Exception:
+            return _fallback_simulated(project_id, hypothesis, experiment_protocol)
 
-    return _make_simulated_results(project_id, hyp, prot, ana)
+    # 从 observations 提取统计量
+    obs = raw.get("observations", [])
+    baseline_metrics = [o["metrics"] for o in obs if o.get("condition") == "baseline"]
+    proposed_metrics = [o["metrics"] for o in obs if o.get("condition") == "proposed"]
+
+    primary_key = raw.get("primary_metric", "cct_seconds")
+    baseline_vals = [m.get(primary_key, 0) for m in baseline_metrics if primary_key in m]
+    proposed_vals = [m.get(primary_key, 0) for m in proposed_metrics if primary_key in m]
+
+    def _summarize(vals: list[float], label: str) -> dict:
+        if not vals:
+            return {"condition": label, "n": 0}
+        n = len(vals)
+        mean = statistics.mean(vals)
+        stdev = statistics.stdev(vals) if n >= 2 else 0.0
+        se = stdev / (n ** 0.5) if n > 0 else 0.0
+        return {
+            "condition": label,
+            "n": n,
+            "mean": round(mean, 6),
+            "std": round(stdev, 6),
+            "sem": round(se, 6),
+            "ci95_low": round(mean - 1.96 * se, 6) if n >= 2 else mean,
+            "ci95_high": round(mean + 1.96 * se, 6) if n >= 2 else mean,
+            "min": round(min(vals), 6),
+            "max": round(max(vals), 6),
+        }
+
+    baseline_summary = _summarize(baseline_vals, "baseline")
+    proposed_summary = _summarize(proposed_vals, "proposed")
+
+    # 效果量
+    delta = proposed_summary["mean"] - baseline_summary["mean"]
+    pooled_std = ((baseline_summary.get("std", 0) ** 2 + proposed_summary.get("std", 0) ** 2) / 2) ** 0.5 if baseline_summary["n"] >= 2 else 0
+    cohens_d = round(delta / pooled_std, 3) if pooled_std > 0 else 0.0
+
+    return {
+        "status": raw.get("status", "unknown"),
+        "simulated": False,
+        "evidence_type": raw.get("metadata", {}).get("evidence_type", "real_simulation"),
+        "engine": raw.get("engine", "unknown"),
+        "simulation_type": raw.get("simulation_type", "unknown"),
+        "primary_metric": primary_key,
+        "branch": raw.get("branch", ""),
+        "primary_results": {
+            "baseline": baseline_summary,
+            "proposed": proposed_summary,
+            "delta": round(delta, 6),
+            "cohens_d": cohens_d,
+            "n_total": baseline_summary["n"] + proposed_summary["n"],
+        },
+        "baseline_comparison": {
+            "Baseline (original)": {"n": baseline_summary["n"], primary_key: baseline_summary["mean"]},
+            "Proposed (our method)": {"n": proposed_summary["n"], primary_key: proposed_summary["mean"]},
+        },
+        "statistical_tests": {
+            "test_used": "Welch independent t-test (via Module 8)",
+            "cohens_d": cohens_d,
+            "ci95_baseline": f"[{baseline_summary['ci95_low']:.4f}, {baseline_summary['ci95_high']:.4f}]",
+            "ci95_proposed": f"[{proposed_summary['ci95_low']:.4f}, {proposed_summary['ci95_high']:.4f}]",
+        },
+        "source_file": str(Path(result_path).resolve()),
+        "raw_observations": obs,
+    }
 
 
 def fix_bug(error_log: str, code: str, max_iterations: int = 5) -> str:
-    """根据错误日志修复代码。"""
-    prompt = f"Fix this code based on the error.\n\nERROR:\n{error_log[:2000]}\n\nCODE:\n{code[:3000]}\n\nReturn JSON: {{\"fixed_code\": \"...\"}}"
-    result = _call_llm(CODEENGINEER_SYSTEM_PROMPT, prompt, max_tokens=2000)
-    return result.get("fixed_code", code)
+    """适配器桩：实际修复逻辑在队友的 CodeEngineer 中。"""
+    return code
 
 
 def optimize(code: str, target: str = "speed") -> str:
-    """优化代码性能。"""
-    prompt = f"Optimize this code for {target}.\n\nCODE:\n{code[:3000]}\n\nReturn JSON: {{\"optimized_code\": \"...\"}}"
-    result = _call_llm(CODEENGINEER_SYSTEM_PROMPT, prompt, max_tokens=2000)
-    return result.get("optimized_code", code)
+    """适配器桩：实际优化逻辑在队友的 CodeEngineer 中。"""
+    return code
+
+
+# ── 内部辅助 ──
+
+def _find_plan_file(project_id: str) -> str:
+    """根据 project_id 查找对应的 plan JSON"""
+    candidates = [
+        "examples/module7_power_tds_plan.json",
+        "examples/module7_power_opf_plan.json",
+        "examples/module7_general_plan.json",
+    ]
+    for c in candidates:
+        if Path(c).exists():
+            return c
+    return candidates[0]
+
+
+def _load_from_report(report: Any) -> dict:
+    """从 CodeEngineer.run_plan() 返回值提取结果"""
+    if isinstance(report, dict):
+        return report
+    if hasattr(report, "result_path") and Path(report.result_path).exists():
+        return load_result(report.result_path)
+    return {}
+
+
+def _fallback_simulated(project_id: str, hypothesis: dict | None,
+                        protocol: dict | None) -> dict:
+    """队友代码不可用且无结果文件时的降级方案"""
+    return {
+        "status": "unavailable",
+        "simulated": True,
+        "evidence_type": "fallback_simulated",
+        "primary_metric": "unknown",
+        "primary_results": {},
+        "baseline_comparison": {},
+        "statistical_tests": {},
+        "note": "[SIMULATED] 队友模块7不可用，使用占位数据。请将 results/exp_power_*.json 放入工作目录。",
+    }

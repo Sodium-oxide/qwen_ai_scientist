@@ -1,0 +1,185 @@
+我这边模块7 CodeEngineer 和模块8 MingBian 已经完成，并已推送到 3_zy 分支。
+
+一、我负责的接口对应关系
+
+你文档里提到的：
+
+1. CodeEngineer.write_code / execute_code
+对应我这边：
+agents/code_engineer.py
+CodeEngineer().run_plan(...)
+
+2. MingBian.analyze_results
+对应我这边：
+agents/mingbian.py
+MingBian().analyze_file(...)
+
+当前我没有直接暴露 write_code、execute_code、analyze_results 这几个函数名，而是采用类方法封装。如果你 PaperWriter 强依赖这些函数名，我后续可以再加 wrapper 兼容层。
+
+二、模块7 CodeEngineer 调用方式
+
+from agents.code_engineer import CodeEngineer
+
+report = CodeEngineer().run_plan(
+    "examples/module7_power_tds_5s_stable_plan.json",
+    backend_override="local",
+    qwen_override=False
+)
+
+模块7会自动生成实验代码、沙箱执行，并输出标准 result.json。
+
+三、模块7 当前可提供的真实仿真结果
+
+1. pandapower OPF 真实仿真结果：
+results/exp_power_result.json
+
+2. ANDES TDS 5秒真实仿真结果：
+results/exp_power_tds_5s_stable_result.json
+
+3. AMS+ANDES 协同仿真 smoke test 结果：
+results/exp_power_cosim_real_safe_result.json
+
+推荐 PaperWriter 当前优先使用：
+results/exp_power_tds_5s_stable_result.json
+
+原因：该结果是 ANDES 真实 TDS 5秒积分，stable=True，tds_converged=True，适合证明真实仿真链路。
+
+四、模块7 result.json 关键字段
+
+以 results/exp_power_tds_5s_stable_result.json 为例：
+
+{
+  "branch": "power",
+  "simulation_type": "tds",
+  "engine": "andes",
+  "status": "success",
+  "primary_metric": "cct_seconds",
+  "metadata": {
+    "case_source": "provided_andes_case",
+    "evidence_type": "real_andes_tds",
+    "real_execution_enabled": true
+  },
+  "observations": [
+    {
+      "condition": "baseline",
+      "metrics": {
+        "stable": true,
+        "tds_converged": true,
+        "voltage_nadir_pu": 0.984863995504754,
+        "cct_seconds": 0.01
+      }
+    },
+    {
+      "condition": "proposed",
+      "metrics": {
+        "stable": true,
+        "tds_converged": true,
+        "voltage_nadir_pu": 0.984863995504754,
+        "cct_seconds": 0.01
+      }
+    }
+  ]
+}
+
+五、模块8 MingBian 调用方式
+
+from agents.mingbian import MingBian
+
+report = MingBian().analyze_file(
+    "results/exp_power_tds_5s_stable_result.json",
+    output_dir="results/mingbian_tds_5s_stable_check"
+)
+
+模块8会读取模块7 result.json，生成统计分析和电力专属验证报告。
+
+六、模块8 当前可提供的分析报告
+
+推荐 PaperWriter 使用：
+
+results/mingbian_tds_5s_stable_check/analysis_report.json
+
+该报告中关键字段包括：
+
+{
+  "module": "module8_mingbian",
+  "module_version": "0.2.0",
+  "branch": "power",
+  "simulation_type": "tds",
+  "engine": "andes",
+  "status": "success",
+  "primary_metric": "cct_seconds",
+  "hypothesis_verdict": "inconclusive",
+  "data_quality": {
+    "evidence_grade": "real_smoke_test",
+    "real_execution": true,
+    "evidence_type": "real_andes_tds",
+    "case_source": "provided_andes_case"
+  },
+  "validation_analysis": {
+    "real_execution_enabled": true,
+    "engineering_validation_passed": true,
+    "validation_verdict": "engineering_validated_statistically_insufficient"
+  },
+  "power_analysis": {
+    "simulation_type": "tds",
+    "proposed_stability_rate": 1.0,
+    "proposed_voltage_nadir_min_pu": 0.984863995504754,
+    "safety_gate": {
+      "passed": true,
+      "reason": "All transient safety gates passed."
+    }
+  }
+}
+
+七、给 PaperWriter 的项目 JSON 填充建议
+
+PaperWriter 可以把我的输出放到项目 JSON 这两个字段：
+
+{
+  "experiment_results": {
+    "source_file": "results/exp_power_tds_5s_stable_result.json",
+    "branch": "power",
+    "simulation_type": "tds",
+    "engine": "andes",
+    "status": "success",
+    "evidence_type": "real_andes_tds",
+    "summary": "Module 7 executed a real ANDES TDS five-second integration and produced a valid standardized result JSON."
+  },
+  "analysis_report": {
+    "source_file": "results/mingbian_tds_5s_stable_check/analysis_report.json",
+    "hypothesis_verdict": "inconclusive",
+    "evidence_grade": "real_smoke_test",
+    "validation_verdict": "engineering_validated_statistically_insufficient",
+    "summary": "Module 8 confirms the real simulation chain is engineering-validated, but the current smoke test has insufficient repetitions for statistical support."
+  }
+}
+
+八、当前结论应该如何写进论文/报告
+
+建议 PaperWriter 不要写“假设已被统计显著支持”，而应该写：
+
+模块7完成了真实 ANDES TDS 仿真链路验证，并生成标准化实验结果。模块8分析表明，该实验属于 real_smoke_test，工程链路验证通过，安全门通过，但由于每组样本数不足 3 次，当前统计结论为 inconclusive。后续需要扩展到 3-5 个故障清除时间、负荷水平或运行场景后，再进行正式统计检验。
+
+九、我这边已经验证通过的命令
+
+模块7/8整体测试：
+
+python -B -m unittest tests.test_module7 tests.test_module8 -v
+
+结果：
+22 tests OK
+
+模块7安全验证：
+
+python -B demo_module7_power_real_safe.py
+
+模块8分析真实 ANDES 结果：
+
+python -B agents/mingbian.py results/exp_power_tds_5s_stable_result.json --output-dir results/mingbian_tds_5s_stable_check
+
+十、注意事项
+
+1. 当前真实 ANDES 结果是 smoke test，不是完整科研统计结论。
+2. 当前 hypothesis_verdict 为 inconclusive 是正常的，因为每组只有 1 条观测。
+3. 如果需要 supported/refuted 结论，需要 GeWu 或后续实验方案提供至少每组 3-5 个真实仿真场景。
+4. Docker 长时仿真版本已预留 docker/ 和 scripts/，但当前本地未启用 Docker。

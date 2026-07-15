@@ -1,0 +1,26 @@
+{
+  "module": "module8_mingbian",
+  "module_version": "0.2.0",
+  "branch": "power",
+  "simulation_type": "tds",
+  "engine": "andes",
+  "status": "success",
+  "primary_metric": "cct_seconds",
+  "hypothesis_verdict": "inconclusive",
+  "data_quality": {
+    "evidence_grade": "real_smoke_test",
+    "real_execution": true
+  },
+  "validation_analysis": {
+    "engineering_validation_passed": true,
+    "validation_verdict": "engineering_validated_statistically_insufficient"
+  },
+  "power_analysis": {
+    "proposed_stability_rate": 1.0,
+    "proposed_voltage_nadir_min_pu": 0.985,
+    "safety_gate": {
+      "passed": true,
+      "reason": "All transient safety gates passed."
+    }
+  }
+}
