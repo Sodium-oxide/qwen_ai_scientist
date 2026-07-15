@@ -104,6 +104,246 @@ Return a JSON object with this structure:
 
 
 # ---------------------------------------------------------------------------
+# 多阶段流水线 Prompt（PaperOrchestrator 风格）
+# 4 阶段替代单次 LLM 调用：Outline → Write → Polish → References
+# ---------------------------------------------------------------------------
+
+STAGE1_OUTLINE_PROMPT = """\
+You are an experienced scientific editor planning a paper outline.
+Given the research context, produce a structured outline.
+
+## TASK
+Create a paper outline with:
+1. A precise, informative title (capture the core contribution)
+2. For EACH of the 7 sections, write 2-3 bullet points listing the specific claims, evidence, and content that section MUST contain.
+
+Sections: Abstract, Introduction, Related Work, Methodology, Experiments, Conclusion, References
+
+## CONSTRAINTS
+- Every claim must be backed by evidence from the provided context.
+- Mark any claim without supporting evidence as [NEEDS DATA].
+- Citations must reference specific papers from the provided PaperGraph records.
+- Be specific: not "present results" but "report 98.5% accuracy with p<0.001, compare to CNN baseline (94.2%)".
+
+## OUTPUT FORMAT
+Return JSON:
+{
+  "title": "precise paper title",
+  "outline": {
+    "abstract": ["point 1", "point 2", "point 3"],
+    "introduction": ["point 1", "point 2", "point 3"],
+    "related_work": ["point 1", "point 2", "point 3"],
+    "methodology": ["point 1", "point 2", "point 3"],
+    "experiments": ["point 1", "point 2", "point 3"],
+    "conclusion": ["point 1", "point 2"],
+    "references": ["ref 1", "ref 2", "ref 3"]
+  }
+}\
+"""
+
+STAGE2_WRITE_PROMPT = """\
+You are an academic paper writer. Write the COMPLETE paper body based on the approved outline.
+Follow the outline exactly — every bullet point must be addressed in the corresponding section.
+
+## WRITING RULES
+- Use concrete numbers, not vague descriptions.
+- Every factual claim needs a citation from the provided references or explicit evidence from the experimental results.
+- Introduction must state the knowledge gap clearly.
+- Methodology must be detailed enough for reproducibility.
+- Experiments section must include: setup, datasets, baselines, metrics, results (with numbers), statistical tests.
+- Use formal academic English. No colloquialisms.
+
+## OUTPUT FORMAT
+Return JSON with ALL 7 sections as complete text:
+{
+  "paper": {
+    "title": "from outline",
+    "abstract": "full abstract 150-250 words",
+    "introduction": "full introduction",
+    "related_work": "full related work",
+    "methodology": "full methodology",
+    "experiments": "full experiments with results",
+    "conclusion": "full conclusion",
+    "references": [{"index": 1, "citation": "Author (Year). Title. Venue."}]
+  }
+}\
+"""
+
+STAGE3_POLISH_PROMPT = """\
+You are a senior scientific editor polishing a manuscript for submission to a top-tier venue.
+Review the complete draft and fix ALL issues.
+
+## CHECKLIST (address every item)
+1. **Cross-section consistency**: Do abstract claims match experiments? Does introduction's gap match conclusion's summary?
+2. **Narrative flow**: Do sections transition logically? Is the core contribution clear throughout?
+3. **Number accuracy**: Are all reported numbers consistent across sections? (e.g., abstract says 98.5%, experiments also says 98.5%)
+4. **Citation completeness**: Is every factual claim backed by a citation?
+5. **Clarity**: Are there any vague phrases ("significant improvement", "better performance") without specific numbers?
+6. **Completeness**: Does every required section have substantive content (not placeholder text)?
+
+## CONSTRAINTS
+- Fix errors but do NOT change the core scientific claims or add fabricated data.
+- If data is missing, add [NEEDS DATA: specific description] rather than inventing numbers.
+
+## OUTPUT FORMAT
+Return the COMPLETE polished paper as JSON (same schema as input).\
+"""
+
+STAGE4_REFERENCES_PROMPT = """\
+You are a citation quality auditor. Clean and verify the reference list.
+
+## TASK
+1. Remove any obviously fabricated or unverifiable citations.
+2. For each remaining citation, ensure the format is: "Author, A. et al. (Year). Title. Venue."
+3. Verify that every citation in the reference list is actually cited in the paper text.
+4. Verify that every in-text citation has a corresponding entry in the reference list.
+5. If the provided PaperGraph records contain better-verified alternatives for a claim, replace the weak citation.
+
+## OUTPUT FORMAT
+Return JSON:
+{
+  "references": [
+    {"index": 1, "citation": "formatted citation", "verified": true/false, "source": "papergraph"|"llm_generated"}
+  ],
+  "removed_count": 0,
+  "added_count": 0,
+  "notes": "summary of changes"
+}\
+"""
+
+
+# ---------------------------------------------------------------------------
+# 多阶段论文生成（主函数）
+# ---------------------------------------------------------------------------
+
+def write_paper_staged(
+    project_context: dict[str, Any] | None = None,
+    *,
+    max_tokens_per_stage: int = 3000,
+    save: bool = True,
+    verbose: bool = True,
+) -> dict[str, Any]:
+    """
+    PaperOrchestrator 风格的多阶段论文生成。
+
+    4 个阶段，每个阶段有独立的 System Prompt 和任务聚焦：
+    Stage 1: OUTLINE — 生成标题+7节大纲
+    Stage 2: WRITE  — 基于大纲逐节写作
+    Stage 3: POLISH — 跨节一致性检查和润色
+    Stage 4: REFERENCES — 引用验证和格式化
+
+    相比单次 LLM 调用，多阶段流水线显著提升：
+    - 章节完整性（每个大纲点必须覆盖）
+    - 跨节一致性（独立润色阶段检查矛盾）
+    - 引用准确性（独立引用审计阶段）
+
+    返回格式同 write_paper()。
+    """
+    ctx = project_context or {}
+    context_text = _build_write_prompt(ctx, "")
+    stages_log: list[dict] = []
+
+    # ── Stage 1: Outline ──
+    if verbose:
+        print("[Stage 1/4] Generating outline...")
+    outline = _call_llm(
+        STAGE1_OUTLINE_PROMPT,
+        f"{context_text}\n\nGenerate the paper outline.",
+        max_tokens=1000,
+    )
+    stages_log.append({"stage": 1, "title": "Outline", "outline": outline})
+
+    if verbose:
+        title_preview = outline.get("title", "?")[:80]
+        outline_sections = len(outline.get("outline", {}))
+        print(f"  Title: {title_preview}")
+        print(f"  Sections planned: {outline_sections}")
+
+    # ── Stage 2: Write ──
+    if verbose:
+        print("[Stage 2/4] Writing sections from outline...")
+    outline_json = json.dumps(outline, ensure_ascii=False, indent=2)
+    draft = _call_llm(
+        STAGE2_WRITE_PROMPT,
+        f"## RESEARCH CONTEXT\n{context_text[:4000]}\n\n## APPROVED OUTLINE\n{outline_json}\n\nWrite the complete paper following this outline exactly.",
+        max_tokens=max_tokens_per_stage,
+    )
+    paper = draft.get("paper", draft)
+    paper = _ensure_all_sections(paper)
+    stages_log.append({"stage": 2, "title": "Write", "word_count": _count_words(paper)})
+
+    if verbose:
+        print(f"  Words written: {_count_words(paper)}")
+        print(f"  Sections: {[k for k in paper if k not in ('references',) and paper.get(k, '').strip()]}")
+
+    # ── Stage 3: Polish ──
+    if verbose:
+        print("[Stage 3/4] Polishing cross-section consistency...")
+    paper_json = json.dumps({"paper": paper}, ensure_ascii=False, indent=2)
+    polished = _call_llm(
+        STAGE3_POLISH_PROMPT,
+        f"## DRAFT TO POLISH\n{paper_json[:8000]}\n\n## CONTEXT FOR VERIFICATION\n{context_text[:3000]}\n\nPolish the draft. Fix inconsistencies, improve flow, ensure all numbers match across sections.",
+        max_tokens=max_tokens_per_stage,
+    )
+    paper = polished.get("paper", polished)
+    paper = _ensure_all_sections(paper)
+    paper = _fill_missing_sections(paper, ctx)
+    stages_log.append({"stage": 3, "title": "Polish", "word_count": _count_words(paper)})
+
+    if verbose:
+        print(f"  Words after polish: {_count_words(paper)}")
+
+    # ── Stage 4: References ──
+    if verbose:
+        print("[Stage 4/4] Verifying references...")
+    refs_before = len(paper.get("references", []))
+    ref_result = _call_llm(
+        STAGE4_REFERENCES_PROMPT,
+        f"## PAPER\nTitle: {paper.get('title', '')}\n\nAbstract: {paper.get('abstract', '')[:500]}\n\n## CURRENT REFERENCES\n{json.dumps(paper.get('references', []), ensure_ascii=False, indent=2)}\n\n## PAPERGRAPH RECORDS (verified sources)\n{_format_references(ctx.get('papergraph_records', []))}\n\nClean and verify the reference list.",
+        max_tokens=1500,
+    )
+    verified_refs = ref_result.get("references", paper.get("references", []))
+    paper["references"] = verified_refs
+    refs_after = len(verified_refs)
+    stages_log.append({
+        "stage": 4, "title": "References",
+        "before": refs_before, "after": refs_after,
+        "notes": ref_result.get("notes", ""),
+    })
+
+    if verbose:
+        print(f"  References: {refs_before} → {refs_after} (verified)")
+
+    # ── LaTeX + Save ──
+    latex = format_latex(paper)
+    saved_paths: list[str] = []
+    if save:
+        saved_paths = _save_paper(paper, latex, ctx)
+
+    quality = review_draft(paper)
+
+    if verbose:
+        print(f"\n  FINAL: {_count_words(paper)} words, {refs_after} citations")
+        print(f"  Quality: {quality.get('overall', '?')}")
+        for issue in quality.get("issues", []):
+            print(f"    [!] {issue}")
+
+    return {
+        "thought": f"Multi-stage pipeline: Outline → Write → Polish → References. {len(stages_log)} stages completed.",
+        "paper": paper,
+        "latex": latex,
+        "saved_paths": saved_paths,
+        "paper_status": {
+            "completed_sections": [k for k in paper if k not in ("references",) and paper.get(k, "").strip()],
+            "total_words": _count_words(paper),
+            "citation_count": refs_after,
+        },
+        "quality_check": quality,
+        "stages_log": stages_log,
+    }
+
+
+# ---------------------------------------------------------------------------
 # LaTeX 模板
 # ---------------------------------------------------------------------------
 
@@ -884,7 +1124,7 @@ def write_paper_from_project(project_id: str) -> dict[str, Any]:
         "papergraph_records": project.get("papergraph_records") or project.get("imported_records", []),
     }
 
-    return write_paper(ctx)
+    return write_paper_staged(ctx)
 
 
 # ---------------------------------------------------------------------------
@@ -1041,9 +1281,9 @@ def _interactive():
     print("Generating paper... (calling LLM)\n")
 
     try:
-        result = write_paper(ctx)
+        result = write_paper_staged(ctx)
 
-        print("=" * 60)
+        print("\n" + "=" * 60)
         print("  GENERATED PAPER")
         print("=" * 60)
         print(f"\nTITLE: {result['paper'].get('title', 'N/A')}\n")

@@ -1,0 +1,232 @@
+以下是16篇前沿论文的详细总结，按“论文写作”和“论文评议”两大类别组织，每篇均包含核心研究目的与核心方法。
+
+---
+
+# 一、论文写作（PaperWriter）相关论文
+
+## 1. The AI Scientist
+
+**论文信息**：Yamada, Y. et al. “Towards End-to-End Automation of AI Research.” *Nature* 651, 914–919 (2026).
+
+**核心研究目的**：
+实现科学研究的端到端自动化——从研究构思到论文发表的全流程自主导航。系统产生的论文通过了机器学习会议研讨会的第一轮同行评审（录用率70%），标志着AI在科学贡献方面能力的显著增长。
+
+**核心方法**：
+系统包含四个核心阶段：**自动想法生成**、**基于树的实验**、**手稿撰写**和**自动评审**。评估在两个设置下进行：**聚焦模式**（使用人工提供的代码模板作为初始脚手架，在特定主题上进行研究）和**无模板开放式模式**（利用Agent搜索进行更广泛的科学探索）。系统利用现代基础模型构建复杂Agent系统，两种设置都能产生多样化的想法并自动测试、报告和评估它们。论文质量随着底层模型的迭代而持续提升。
+
+**与你的工作的对应**：PaperWriter和Reviewer的原始参考——论文撰写的完整流程和自动评审的评分标准均可借鉴。
+
+
+## 2. PaperClaw
+
+**论文信息**：Ye, W. et al. “PaperClaw: Harnessing Agents for Autonomous Research and Human-in-the-Loop Refinement.” arXiv:2606.22610 (2026).
+
+**核心研究目的**：
+构建一个从**研究领域到成稿论文**的全自治多Agent系统，并支持**人在回路精炼**——将初步自治草稿通过人工干预转化为更强的论文。评估发现PaperClaw在完全自治和人在回路精炼两种模式下都能产出高质量论文。
+
+**核心方法**：
+系统将自主研究建模为一条干净的流水线：**领域策展**→从领域活文献、数据集和代码中策展内容；**头脑风暴**→形成带有预注册主结果契约的想法；**可停止假设图谱**→通过“提出-测试-反思”迭代循环驱动，仅从已测量的判断中生长，证据支持想法时停止；**论文撰写**→生成符合会议格式的论文。**全生命周期记忆**将每个阶段保存在单一活动记录中，支持长时间运行被暂停、检查和恢复。全程只引用经过开放学术索引验证的参考文献，报告真正运行过的结果。
+
+**与你的工作的对应**：“人在回路精炼”机制对应你模块中的用户质疑和参与功能；全生命周期记忆对应多轮评审迭代中的状态保持。
+
+
+## 3. PaperOrchestra
+
+**论文信息**：Song, Y. et al. “PaperOrchestra: A Multi-Agent Framework for Automated AI Research Paper Writing.” Google Cloud AI Research, arXiv:2604.05018 (2026).
+
+**核心研究目的**：
+弥合**原始研究材料**（想法和实验日志）与**可投稿论文**之间的差距，将无约束的前期写作材料灵活转化为可直接投稿的LaTeX手稿。
+
+**核心方法**：
+采用**五个专业化Agent并行工作**的编排架构：**大纲Agent**、**文献综述Agent**、**章节写作Agent**、**内容精炼Agent**和**绘图Agent**。系统自动搜索、优先级排序并整合相关文献到手稿中；生成数据图表并支持概念示意图的包含；输出符合目标会议模板的LaTeX手稿。文献综述质量较现有AI基线提升99%。
+
+**与你的工作的对应**：五个Agent的分工模式可直接映射到PaperWriter的子任务拆分；从实验日志到LaTeX的转换流程是你们LaTeX模板生成的直接参考。
+
+
+## 4. LiRA (Literature Review Agents)
+
+**论文信息**：Go, G. H. T. et al. “LiRA: A Multi-Agent Framework for Reliable and Readable Literature Review Generation.” *AAAI 2026*, 40(47), 40456–40464.
+
+**核心研究目的**：
+应对科学出版物爆炸性增长带来的文献综述难以保持全面和及时更新的挑战——先前工作聚焦于自动化检索和筛选，但**综述的写作阶段**（尤其是可读性和事实准确性）仍未被充分探索。
+
+**核心方法**：
+采用**模拟人类文献综述过程**的多Agent协作工作流。使用专业化Agent分别负责：**内容大纲规划**、**子章节写作**、**编辑**和**评审**，产出连贯全面的综述文章。在**SciReviewGen**和专有**ScienceDirect数据集**上评估，在写作质量和引用质量上超越AutoSurvey和MASS-Survey等基线，同时保持与人类撰写综述的竞争力。
+
+**与你的工作的对应**：直接对应PaperWriter的Related Work章节生成和引用自动生成；“大纲→写作→编辑→评审”流程可嵌入论文写作流水线。
+
+
+## 5. AIssistant
+
+**论文信息**：Gaddipati, S. K. et al. “AIssistant: Human-AI Collaborative Review and Perspective Research Workflows in Data Science.” *PAKDD 2026*.
+
+**核心研究目的**：
+解决现有AI Scientist框架主要聚焦于**自治工作流、人类干预非常有限**的问题，提出首个**开源的人-AI协作**生成科学综述和展望研究的Agentic框架。
+
+**核心方法**：
+框架包含两个主要的**多Agent系统**：**研究工作流（7个Agent）**和**论文写作工作流（8个Agent）**。采用专门的LLM驱动Agent，增强外部学术工具，允许人类在整个工作流中干预。评估采用**人类专家评审**和**LLM评估**（遵循NeurIPS标准）双轨制。人-AI交互调查显示**65.7%的时间节省**。结果表明Agent增强的流水线在通过战略性人类监督维护研究完整性的同时大幅减少工作量。
+
+**与你的工作的对应**：8个Agent的论文写作工作流直接对标PaperWriter；人类监督机制对应你模块中的“人在回路交互层”。
+
+
+## 6. OpenDraft
+
+**论文信息**：“OpenDraft: Open-Source AI Research Draft Generator.”
+
+**核心研究目的**：
+为需要**长篇文档（10,000–20,000+字）** 的学术研究人员提供**带有可验证引用**的源基础研究草稿生成引擎。
+
+**核心方法**：
+使用**19个专业化AI Agent**像研究团队一样协作。引用来源包括**CrossRef、OpenAlex、Semantic Scholar（2亿+论文）和arXiv**。支持**57+种语言**输出，导出格式包括**PDF、Microsoft Word (.docx)和LaTeX**。典型输出为**5–80+页、10k–20k+字、30–50+条可验证引用**，生成时间约**10–20分钟**。每次草稿的API成本约**$0.35（Gemini Flash）到$3.00（Claude Opus）**。
+
+**与你的工作的对应**：19个Agent的分工模式可作为PaperWriter内部子任务拆分的参考；“验证引用”功能对应你的引用自动生成+验证子任务。
+
+
+## 7. LECTOR
+
+**论文信息**：“LECTOR: Joint Optimization of Scientific Reasoning Graphs and Introduction Generation.” *ICML 2026*.
+
+**核心研究目的**：
+指出现有AI辅助论文写作方法的核心问题——**将引言写作视为直接文本生成任务**，导致逻辑不一致和幻觉。提出将任务重新定义为**内容条件引言生成（CCIG）**，先提取可验证的逻辑蓝图来指导逻辑感知的写作。
+
+**核心方法**：
+框架在单次rollout中运行两个协同阶段：**推理逻辑图提取**→给定科学论文的主体（方法、结果、讨论，不包括引言），提取显式的**推理逻辑图**，节点通过**演绎、溯因和归纳**连接以推导论文核心思想；**逻辑感知引言写作**→以提取的图和引用列表为输入，遵循**CARS（创建研究空间）** 移动结构生成结构化引言。两个阶段**共享权重**，通过**逻辑表达式协同奖励**机制联合优化，评估**图质量、图-写作对齐、写作质量和引用质量**。LECTOR-4B显著超越Qwen3-4B基线，整体表现优于商业闭源模型GPT-o3。
+
+**与你的工作的对应**：直接警示PaperWriter不要只做文本生成，要做推理和结构化；科学推理图方法可为Methodology章节生成提供思路。
+
+
+## 8. Paper Debugger
+
+**论文信息**：“Paper Debugger: An Editor-Native Multi-Agent Framework for Agentic Academic Writing in Overleaf.” (2026).
+
+**核心研究目的**：
+解决现有AI学术写作工具作为**外部应用运行**、通过重复复制粘贴破坏认知流的问题——这种碎片化使AI系统无法理解文档结构、引用依赖和LaTeX特定上下文。
+
+**核心方法**：
+通过**Chrome扩展**直接集成到**Overleaf**的编辑器原生多Agent框架。利用**Kubernetes编排**和**模型上下文协议（MCP）**，部署专业化Agent负责**语法精炼、结构化批评、引用验证和文献检索**，通过**确定性基于diff的补丁**保持完整的修订透明度。在25名研究者的试点研究中，系统减少手动格式化时间**34%（p < 0.05）**，系统可用性量表（SUS）得分**78.4**。
+
+**与你的工作的对应**：为LaTeX模板和论文预览功能提供UI/UX参考；编辑器原生集成模式可启发UI/交互界面设计。
+
+
+# 二、论文评议（Reviewer）相关论文
+
+## 9. OpenReviewer
+
+**论文信息**：Idahl, M. & Ahmadi, Z. “OpenReviewer: A Specialized Large Language Model for Generating Critical Scientific Paper Reviews.” *NAACL 2025* (System Demonstrations).
+
+**核心研究目的**：
+生成**高质量、人性化的同行评审**，解决通用LLM（如GPT-4和Claude-3.5）倾向于给出**过于正面评估**的问题。
+
+**核心方法**：
+核心是**Llama-OpenReviewer-8B**——一个**8B参数的语言模型**，在**79,000条来自ICLR和NeurIPS等顶级会议的专家评审**上专门微调。在**400篇测试论文**上评估，OpenReviewer产生比通用LLM**明显更批判性和更真实**的评审。系统开源，提供演示和模型下载。
+
+**与你的工作的对应**：Reviewer Agent最直接的对标——专门化评审模型的SOTA；其评审格式可参考你们的五维评分系统。
+
+
+## 10. Beyond “Not Novel Enough”
+
+**论文信息**：“Beyond ‘Not Novel Enough’: Enriching Scholarly Critique with LLM-Assisted Feedback.” *EACL 2026* (Volume 1: Long Papers).
+
+**核心研究目的**：
+专门针对**新颖性评估**的结构化方法——评审中最关键但最难以量化的维度。
+
+**核心方法**：
+三阶段方法模拟专家评审行为：**内容提取**→从投稿中提取核心内容；**相关工作检索与综合**→检索并综合相关工作；**结构化比较**→进行基于证据的评估。在**182篇ICLR 2025投稿**上评估，达到**86.5%的人类推理一致性**和**75.3%的新颖性结论一致性**，大幅超越现有LLM基线。建立了**首个用于大规模评估研究想法新颖性判断的综合基准**。
+
+**与你的工作的对应**：直接支撑五维评分中的“Novelty”维度；三阶段方法可作为Reviewer新颖性评分的实现参考。
+
+
+## 11. DeepReviewer 2.0
+
+**论文信息**：“DeepReviewer 2.0: A Traceable Agentic System for Auditable Scientific Peer Review.” arXiv:2604.09590 (2026).
+
+**核心研究目的**：
+构建**可审计的科学同行评审**系统——不仅是生成评审，而是生成**可追踪的评审包**，包含锚定注释、本地化证据和可执行后续行动。
+
+**核心方法**：
+系统围绕**输出契约**构建——只有在满足**最低可追踪性和覆盖预算**后才导出评审。定位为**辅助工具而非决策代理**，在公共同行评审数据集上的实验表明其在作者评估池中**在自动系统中排名第一**。提供从**PDF提交到全面可追踪评审报告**的端到端工作流。
+
+**与你的工作的对应**：“可审计性”对应评审过程透明、可追溯的要求；“输出契约”可参考用于你们Reviewer的输出格式规范。
+
+
+## 12. Agent Reviewers
+
+**论文信息**：“Agent Reviewers: Domain-specific Multimodal Agents with Shared Memory for Paper Review.” *ICML 2025*.
+
+**核心研究目的**：
+构建了**迄今为止最大的论文评审数据集**，通过收集历史开放获取论文及其评审意见并用LLM标准化。引入**多模态评审者**，对论文的**视觉元素（图表）** 提供反馈。
+
+**核心方法**：
+系统包含**领域特定的多模态Agent**，配备**共享记忆**。同时利用**论文文本和缩略图**进行评估，从共享记忆池中检索领域特定记忆以提供**决策、分数和有见地的评论**。设计了**共享记忆**来为评审者初始化不同背景，并引入**评审者交流阶段**来修订评审意见。
+
+**与你的工作的对应**：多模态评审对应你们Reviewer需要评估的图表质量；共享记忆架构可参考用于跨评审轮次的状态保持。
+
+
+## 13. Generative Reviewer Agents (GAR)
+
+**论文信息**：“Generative Reviewer Agents: Scalable Simulacra of Peer Review.” *EMNLP 2025* (Industry Track).
+
+**核心研究目的**：
+利用LLM赋能的Agent**模拟真实的同行评审员**，作为**可扩展的评审模拟体**。
+
+**核心方法**：
+设计**扩展LLM记忆能力**的架构，并为Agent配备**从历史数据中提取的评审员角色**。在**2025 ACL Rolling Review的论文**上进行实证实验，从**作者和评审者两个视角**评估LLM评审，发现LLM与人类评审的**对齐有限**，且**LLM-人类对齐在不同prompt和模型间差异显著**。
+
+**与你的工作的对应**：“评审员角色”概念可丰富Reviewer——不同Agent扮演不同“评审员人格”（严格型、建设型、细节型）；记忆能力对应多轮评审中“记住上一轮反馈”的需求。
+
+
+## 14. Co-Reviewer
+
+**论文信息**：Bharti, P. K. et al. “Co-Reviewer: Can AI Review Like a Human? An Agentic Framework for LLM-Human Alignment in Peer Review.” *Scientometrics* 2026.
+
+**核心研究目的**：
+检验AI能否像人类一样进行评审，特别是在**批判深度、推理准确性和与人类决策的对齐**方面。
+
+**核心方法**：
+由**四个专业化Agent**组成的Agentic AI框架，协同工作以**生成、评估、批判和精炼**同行评审。提供**校准反馈**和**LLM输出与人类监督结合的混合流水线**。
+
+**与你的工作的对应**：四Agent架构（生成→评估→批判→精炼）可直接映射到你们的多轮迭代循环；“LLM-人类对齐”对应模块中的“人在回路”机制。
+
+
+## 15. Auto-PRE
+
+**论文信息**：“Auto-PRE: An Automatic and Cost-Efficient Peer-Review Framework for Language Generation Evaluation.” *AAAI 2026*, 40(36), 30235–30242.
+
+**核心研究目的**：
+解决传统评估方法面临的**高成本、有限任务格式、依赖人类参考和系统性偏差**等挑战。
+
+**核心方法**：
+受同行评审过程启发的**自动LLM评估框架**，自动基于三个核心特质选择评估LLM：**一致性、相关性和自信度**。不依赖人类标注，实现**最先进性能同时显著降低评估成本**。
+
+**与你的工作的对应**：其“评估器选择”机制可启发Reviewer如何根据论文领域动态选择最合适的评审标准；成本效率对应计算资源评估。
+
+
+## 16. Breaking the Reviewer
+
+**论文信息**：“Breaking the Reviewer: Assessing the Vulnerability of Large Language Models in Automated Peer Review Under Textual Adversarial Attacks.” *EMNLP 2025* (Findings).
+
+**核心研究目的**：
+随着投稿量激增，LLM被用于辅助评审，但其对**文本对抗性攻击的脆弱性**引发可靠性担忧。研究聚焦三个关键问题来评估LLM作为自动评审者的鲁棒性。
+
+**核心方法**：
+对LLM在自动化同行评审中的表现进行全面评估，分析其对**文本对抗性攻击的鲁棒性**。使用**越狱策略**作为严格基线——如果越狱能操纵模型将**科学上空白的模板**“接受”，证明攻击能**在不存在的地方幻觉出优点**。评估揭示**文本操作能扭曲LLM评估**的重大脆弱性。强调解决对抗风险以确保**AI加强而非损害学术交流完整性**。
+
+**与你的工作的对应**：提醒Reviewer Agent可能面临**提示注入攻击**的风险——“引用验证”和“伦理检查”需要对此有所防范。
+
+
+# 三、总结：与你负责模块的对应关系
+
+| 你的子任务 | 推荐参考论文 | 核心借鉴点 |
+|-----------|------------|-----------|
+| **PaperWriter Agent实现** | The AI Scientist、PaperClaw、PaperOrchestra | 端到端论文生成架构、多Agent协作、人在回路精炼 |
+| **LaTeX模板** | PaperOrchestra、OpenDraft | 从实验日志到LaTeX的转换、会议模板适配 |
+| **引用自动生成** | LECTOR、OpenDraft、LiRA | 防幻觉引用的结构化方法、5亿+论文库检索、CARS结构 |
+| **Reviewer Agent实现** | OpenReviewer、DeepReviewer 2.0 | 专门化评审模型、可审计Agentic系统、输出契约 |
+| **5维评分系统** | Beyond “Not Novel Enough”、Co-Reviewer | 新颖性三阶段评估、四Agent校准、LLM-人类对齐 |
+| **修改迭代循环** | ARISE、PaperClaw、The AI Scientist | 评审指导迭代、人在回路精炼、评审-修改闭环 |
+
+### 最优先阅读的三篇
+
+1. **The AI Scientist** (*Nature* 2026)——整个项目的奠基性论文，PaperWriter和Reviewer的原始参考
+2. **OpenReviewer** (NAACL 2025)——Reviewer Agent最直接的对标，专门化评审模型的SOTA
+3. **PaperClaw** (arXiv 2026)——论文写作模块的完整参考实现，尤其是“人在回路”和“引用验证”机制
