@@ -297,22 +297,37 @@ def write_paper_staged(
     if verbose:
         print("[Stage 4/4] Verifying references...")
     refs_before = len(paper.get("references", []))
+
+    # 4a. LLM 清洗引用格式
     ref_result = _call_llm(
         STAGE4_REFERENCES_PROMPT,
         f"## PAPER\nTitle: {paper.get('title', '')}\n\nAbstract: {paper.get('abstract', '')[:500]}\n\n## CURRENT REFERENCES\n{json.dumps(paper.get('references', []), ensure_ascii=False, indent=2)}\n\n## PAPERGRAPH RECORDS (verified sources)\n{_format_references(ctx.get('papergraph_records', []))}\n\nClean and verify the reference list.",
         max_tokens=1500,
     )
-    verified_refs = ref_result.get("references", paper.get("references", []))
+    cleaned_refs = ref_result.get("references", paper.get("references", []))
+
+    # 4b. 外部 API 验证（Semantic Scholar）
+    if verbose:
+        print(f"  Checking {len(cleaned_refs)} citations against Semantic Scholar...")
+    verified_refs, verify_summary = verify_references_external(
+        cleaned_refs, timeout=8.0, verbose=verbose
+    )
     paper["references"] = verified_refs
     refs_after = len(verified_refs)
+
     stages_log.append({
         "stage": 4, "title": "References",
         "before": refs_before, "after": refs_after,
         "notes": ref_result.get("notes", ""),
+        "verification": verify_summary,
     })
 
     if verbose:
-        print(f"  References: {refs_before} → {refs_after} (verified)")
+        print(f"  References: {refs_before} → {refs_after}")
+        print(f"  Verified: {verify_summary['verified_count']}/{verify_summary['total']} "
+              f"({verify_summary['verification_rate']:.0%})")
+        if verify_summary["fake_flagged"]:
+            print(f"  Flagged as [UNVERIFIED]: {len(verify_summary['fake_flagged'])}")
 
     # ── LaTeX + Save ──
     latex = format_latex(paper)
@@ -978,9 +993,218 @@ def search_citations(
     scored.sort(key=lambda x: x[0], reverse=True)
     return [
         {"index": i + 1, "citation": _format_single_ref(r), "relevance_score": s,
-         "papergraph_id": r.get("paper_id", r.get("id", ""))}
+         "papergraph_id": r.get("paper_id", r.get("id", "")), "verified": True}
         for i, (s, r) in enumerate(scored[:top_k])
     ]
+
+
+# ---------------------------------------------------------------------------
+# 外部引用验证（Semantic Scholar / CrossRef — OpenDraft + sciwrite-lint 风格）
+# ---------------------------------------------------------------------------
+
+def verify_citation_external(
+    citation: str,
+    *,
+    timeout: float = 10.0,
+) -> dict[str, Any]:
+    """
+    通过 Semantic Scholar API 验证一条引用是否存在。
+
+    参数:
+        citation: 引用字符串，如 "Kundur, P. et al. (2004). Definition and Classification..."
+        timeout: API 超时秒数
+
+    返回:
+        {
+            "verified": True/False,
+            "matched_title": "真实论文标题" | None,
+            "matched_doi": "10.xxx" | None,
+            "confidence": 0.0-1.0,   # 匹配置信度
+            "source": "semantic_scholar" | "failed",
+            "suggestion": "最接近的真实引用" | None
+        }
+    """
+    # 从引用字符串中提取标题
+    import re as _re
+
+    # 策略: 找到 "(Year)." 之后的部分作为标题开始
+    # 例如 "Author et al. (2004). Definition and Classification of Power System Stability. IEEE Trans."
+    # → query = "Definition and Classification of Power System Stability"
+    year_match = _re.search(r"\((\d{4})\)\.?\s*", citation)
+    if year_match:
+        after_year = citation[year_match.end():].strip()
+        # 标题到下一个句号或结尾（但要跳过 "et al." 之类的缩写）
+        title_end = _re.search(r"\.\s+(?:[A-Z][a-z]|IEEE|ACM|Nature|Science|arXiv)", after_year)
+        if title_end:
+            query = after_year[:title_end.start()].strip()
+        else:
+            # 取第一句
+            dot_pos = after_year.find(".")
+            query = after_year[:dot_pos].strip() if dot_pos > 10 else after_year[:150].strip()
+    else:
+        query = citation[:150]
+
+    # 去掉噪音
+    query = _re.sub(r"\[.*?\]", "", query)
+    query = _re.sub(r"[^a-zA-Z0-9\s\-:,()+\-=%]+", "", query).strip()[:200]
+
+    if len(query) < 8:
+        return {"verified": False, "matched_title": None, "matched_doi": None,
+                "confidence": 0.0, "source": "failed", "suggestion": None,
+                "error": f"Query too short: '{query}'"}
+
+    # 调用 Semantic Scholar 搜索
+    try:
+        result = _search_semantic_scholar_api(query, max_results=3, timeout=timeout)
+    except Exception as e:
+        return {"verified": False, "matched_title": None, "matched_doi": None,
+                "confidence": 0.0, "source": "failed", "suggestion": None,
+                "error": str(e)[:200]}
+
+    papers = result.get("data", [])
+    if not papers:
+        return {"verified": False, "matched_title": None, "matched_doi": None,
+                "confidence": 0.0, "source": "semantic_scholar", "suggestion": None,
+                "note": "No results found"}
+
+    # 计算最佳匹配
+    best = papers[0]
+    best_title = best.get("title", "")
+    best_doi = best.get("externalIds", {}).get("DOI", "")
+    # 简单的标题相似度
+    query_lower = query.lower()
+    title_lower = best_title.lower() if best_title else ""
+    overlap = sum(1 for w in query_lower.split() if w in title_lower)
+    confidence = min(overlap / max(len(query_lower.split()), 1), 1.0)
+
+    return {
+        "verified": confidence > 0.3,
+        "matched_title": best_title,
+        "matched_doi": best_doi,
+        "confidence": round(confidence, 2),
+        "source": "semantic_scholar",
+        "suggestion": _format_semantic_scholar_result(best) if confidence > 0.3 else None,
+    }
+
+
+def verify_references_external(
+    references: list[dict[str, Any]],
+    *,
+    timeout: float = 10.0,
+    verbose: bool = False,
+) -> tuple[list[dict[str, Any]], dict[str, Any]]:
+    """
+    批量验证引用列表，通过 Semantic Scholar API 逐一检查。
+
+    参数:
+        references: 引用列表 [{index, citation, ...}, ...]
+        timeout: 单条 API 超时
+        verbose: 是否打印进度
+
+    返回:
+        (verified_references, summary)
+        - verified_references: 每条标注 verified=True/False
+        - summary: {total, verified_count, unverified_count, fake_flagged}
+    """
+    verified_refs: list[dict] = []
+    verified_count = 0
+    unverified_count = 0
+    fake_flagged: list[str] = []
+
+    for i, ref in enumerate(references):
+        if isinstance(ref, str):
+            citation = ref
+            ref = {"index": i + 1, "citation": citation}
+
+        citation_text = ref.get("citation", str(ref))
+
+        # 限流保护：Semantic Scholar 免费 API 约 1 req/s
+        if i > 0:
+            time.sleep(1.0)
+
+        result = verify_citation_external(citation_text, timeout=timeout)
+
+        ref["verified"] = result["verified"]
+        ref["verification_source"] = result["source"]
+
+        if result["verified"]:
+            verified_count += 1
+            if result.get("matched_title"):
+                ref["matched_title"] = result["matched_title"]
+            if result.get("matched_doi"):
+                ref["doi"] = result["matched_doi"]
+            if result.get("suggestion") and result.get("confidence", 0) < 0.7:
+                ref["suggestion"] = result["suggestion"]
+        else:
+            unverified_count += 1
+            if not result.get("note"):  # no results at all → likely fake
+                ref["citation"] = f"[UNVERIFIED] {citation_text}"
+                fake_flagged.append(citation_text[:100])
+
+        if verbose and result["verified"]:
+            print(f"  [OK] {citation_text[:80]}...")
+        elif verbose:
+            print(f"  [??] {citation_text[:80]}... — {result.get('error', result.get('note', 'not found'))}")
+
+        verified_refs.append(ref)
+
+    summary = {
+        "total": len(references),
+        "verified_count": verified_count,
+        "unverified_count": unverified_count,
+        "fake_flagged": fake_flagged,
+        "verification_rate": round(verified_count / max(len(references), 1), 2),
+    }
+    return verified_refs, summary
+
+
+def _search_semantic_scholar_api(
+    query: str,
+    max_results: int = 3,
+    timeout: float = 10.0,
+) -> dict[str, Any]:
+    """调用 Semantic Scholar 搜索 API，复用项目已有的速率限制。"""
+    try:
+        from ._literature_search import search_semantic_scholar as _ss_search
+    except ImportError:
+        try:
+            from _literature_search import search_semantic_scholar as _ss_search
+        except ImportError:
+            # fallback: 独立实现
+            return _search_semantic_scholar_fallback(query, max_results, timeout)
+
+    try:
+        result = _ss_search(query, max_results=max_results)
+        papers = result.get("results", result.get("data", []))
+        return {"data": papers}
+    except Exception:
+        return {"data": []}
+
+
+def _search_semantic_scholar_fallback(
+    query: str, max_results: int = 3, timeout: float = 10.0
+) -> dict[str, Any]:
+    """独立 Semantic Scholar API 调用（不带速率限制，慎用）。"""
+    import urllib.request as _ur
+    import urllib.parse as _up
+
+    params = _up.urlencode({"query": query, "limit": max_results, "fields": "title,externalIds,year,authors"})
+    url = f"https://api.semanticscholar.org/graph/v1/paper/search?{params}"
+    req = _ur.Request(url, headers={"User-Agent": "Qwen-Zhikan/1.0"})
+    try:
+        with _ur.urlopen(req, timeout=timeout) as resp:  # type: ignore[arg-type]
+            return json.loads(_ur.read().decode("utf-8"))
+    except Exception:
+        return {"data": []}
+
+
+def _format_semantic_scholar_result(paper: dict) -> str:
+    """Semantic Scholar 结果 → 格式化引用。"""
+    title = paper.get("title", "Unknown")
+    year = paper.get("year", "")
+    authors = paper.get("authors", [])
+    first_author = authors[0].get("name", "Unknown") if authors else "Unknown"
+    return f"{first_author} et al. ({year}). {title}."
 
 
 def format_latex(paper: dict[str, Any], template: str = "default") -> str:
