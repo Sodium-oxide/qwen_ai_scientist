@@ -96,6 +96,237 @@ Return ONLY a valid JSON object, no markdown, no extra text:
 
 
 # ---------------------------------------------------------------------------
+# 多 Reviewer 人格（ARISE + GAR 方法）
+# 3 种评审人格独立评分后取中位数，模拟顶会多评审员机制
+# ---------------------------------------------------------------------------
+
+REVIEWER_STRICT_PROMPT = REVIEWER_SYSTEM_PROMPT + """
+
+## YOUR PERSONA: THE STRICT REVIEWER
+
+You are known as the toughest reviewer in your field. Your standards:
+- Score 2-3 points LOWER than what a typical reviewer would give.
+- Actively search for fundamental flaws: logical gaps, missing baselines, overclaimed results.
+- Your default assumption is "reject until proven otherwise."
+- You believe most papers overstate their contributions.
+- If there is ANY ambiguity in the methodology, assume the worst and flag it.
+- You have seen too many papers with the same "novel" idea — prove it's truly new.
+"""
+
+REVIEWER_CONSTRUCTIVE_PROMPT = REVIEWER_SYSTEM_PROMPT + """
+
+## YOUR PERSONA: THE CONSTRUCTIVE REVIEWER
+
+You are the reviewer authors hope to get. Your approach:
+- Score fairly and balanced — your scores most closely align with human expert consensus.
+- For every weakness, provide a concrete, actionable suggestion for improvement.
+- Acknowledge genuine contributions even in flawed papers.
+- Your goal is to make the paper BETTER, not just to judge it.
+- Distinguish between fatal flaws (must fix) and minor issues (nice to fix).
+- If the paper has potential, give the authors a clear roadmap to acceptance.
+"""
+
+REVIEWER_DETAIL_PROMPT = REVIEWER_SYSTEM_PROMPT + """
+
+## YOUR PERSONA: THE DETAIL-ORIENTED REVIEWER
+
+You are obsessive about technical precision. Your focus:
+- Scrutinize EVERY number: are decimal places consistent? Do percentages sum to 100%?
+- Verify statistical tests: is the test appropriate for the data? Are assumptions checked?
+- Check mathematical notation: are variables defined before use? Are equations dimensionally consistent?
+- Audit reproducibility: could a PhD student replicate this from the text alone?
+- Hunt for missing details: hyperparameters, random seeds, hardware specs, software versions.
+- Score based on TECHNICAL RIGOR, not narrative polish. Beautiful writing with sloppy methods gets a low score from you.
+"""
+
+
+# ---------------------------------------------------------------------------
+# 多 Reviewer 投票评审（主函数）
+# ---------------------------------------------------------------------------
+
+def review_paper_panel(
+    paper_content: str,
+    project_context: dict[str, Any] | None = None,
+    *,
+    max_tokens: int = 3000,
+    save: bool = True,
+    verbose: bool = True,
+) -> dict[str, Any]:
+    """
+    ARISE 风格的多 Reviewer 独立评审 + 投票共识。
+
+    3 种评审人格独立评分后取中位数：
+    1. Strict Reviewer  — 严格型，评分偏低，专注于找缺陷
+    2. Constructive Reviewer — 建设型，评分最接近人类共识
+    3. Detail Reviewer  — 细节型，专注于方法论和数字准确性
+
+    参数:
+        paper_content: 论文全文
+        project_context: 项目上下文
+        max_tokens: 每位 Reviewer 的 LLM 最大输出
+        save: 是否保存报告
+        verbose: 是否打印进度
+
+    返回:
+        {
+            "agent": "reviewer_panel",
+            "review": consensus_review,     # 综合评审报告
+            "individual_reviews": [...],     # 3 位独立评审的原始报告
+            "scores_summary": {              # 分数对比
+                "strict": 22, "constructive": 28, "detail": 25,
+                "median": 25, "mean": 25.0, "range": 6
+            },
+            "consensus_strengths": [...],    # 至少2人共同认可的优点
+            "consensus_weaknesses": [...],    # 至少2人共同认可的缺点
+        }
+    """
+    ctx = project_context or {}
+    personas = [
+        ("strict", "Strict Reviewer", REVIEWER_STRICT_PROMPT),
+        ("constructive", "Constructive Reviewer", REVIEWER_CONSTRUCTIVE_PROMPT),
+        ("detail", "Detail Reviewer", REVIEWER_DETAIL_PROMPT),
+    ]
+
+    individual_reviews: list[dict] = []
+
+    # ── 独立评审 ──
+    for i, (pid, pname, psystem) in enumerate(personas):
+        if verbose:
+            print(f"  [Reviewer {i+1}/3] {pname}...")
+
+        user_prompt = _build_review_prompt(paper_content, ctx)
+        try:
+            result = _call_llm(psystem, user_prompt, max_tokens=max_tokens)
+        except Exception as e:
+            result = {"review": {"scores": {}, "strengths": [], "weaknesses": [],
+                      "error": str(e)[:200]}}
+
+        review = result.get("review", result)
+        review["persona_id"] = pid
+        review["persona_name"] = pname
+        individual_reviews.append(review)
+
+        if verbose:
+            scores = review.get("scores", {})
+            total = sum(v for k, v in scores.items()
+                       if k in {"novelty", "quality", "clarity", "significance"}
+                       and isinstance(v, (int, float)))
+            print(f"    Score: {total}/40 ({scores.get('novelty','?')},{scores.get('quality','?')},{scores.get('clarity','?')},{scores.get('significance','?')})")
+
+    # ── 计算中位数分数 ──
+    def _total(r: dict) -> float:
+        s = r.get("scores", {})
+        return float(sum(v for k, v in s.items()
+                    if k in {"novelty", "quality", "clarity", "significance"}
+                    and isinstance(v, (int, float))))
+
+    totals = sorted([_total(r) for r in individual_reviews])
+    median_total = totals[1]  # 3个人的中位数 = 排序后第2个
+    mean_total = sum(totals) / 3
+    score_range = totals[2] - totals[0]
+
+    # 取最接近中位数的评审作为"锚点"
+    anchor_idx = min(range(3), key=lambda i: abs(_total(individual_reviews[i]) - median_total))
+    anchor = individual_reviews[anchor_idx]
+
+    # ── 提取共识（至少2人认可的优点/缺点） ──
+    consensus_strong, consensus_weak = _extract_consensus(individual_reviews)
+
+    # ── 综合评审报告 ──
+    consensus_review = {
+        "scores": {
+            "novelty": round(sum(r.get("scores", {}).get("novelty", 0) for r in individual_reviews) / 3),
+            "quality": round(sum(r.get("scores", {}).get("quality", 0) for r in individual_reviews) / 3),
+            "clarity": round(sum(r.get("scores", {}).get("clarity", 0) for r in individual_reviews) / 3),
+            "significance": round(sum(r.get("scores", {}).get("significance", 0) for r in individual_reviews) / 3),
+            "ethics": anchor.get("scores", {}).get("ethics", "pass"),
+        },
+        "total_score": int(median_total),
+        "mean_score": round(mean_total, 1),
+        "pass_threshold_30": median_total >= 30,
+        "strengths": consensus_strong[:5],
+        "weaknesses": consensus_weak[:5],
+        "citation_check": anchor.get("citation_check", {}),
+        "reproducibility_assessment": anchor.get("reproducibility_assessment", "medium"),
+        "claims_vs_results_alignment": anchor.get("claims_vs_results_alignment", "partially_aligned"),
+        "questions_for_authors": anchor.get("questions_for_authors", [])[:5],
+        "recommended_action": _score_to_recommendation(median_total),
+        "confidence_in_recommendation": "high" if score_range <= 6 else "medium" if score_range <= 12 else "low",
+        "detailed_review": (
+            f"PANEL CONSENSUS (3 independent reviewers, score range: {totals[0]}-{totals[2]}, median: {median_total})\n\n"
+            f"Strict Reviewer ({totals[0]}): {individual_reviews[0].get('detailed_review', '')[:500]}\n\n"
+            f"Constructive Reviewer ({totals[1]}): {individual_reviews[1].get('detailed_review', '')[:500]}\n\n"
+            f"Detail Reviewer ({totals[2]}): {individual_reviews[2].get('detailed_review', '')[:500]}"
+        ),
+    }
+
+    if save:
+        _save_report(consensus_review, ctx)
+
+    if verbose:
+        print(f"  Panel consensus: median={median_total}/40 ({consensus_review['recommended_action']})")
+        print(f"  Score range: {totals[0]}-{totals[2]}, agreement: {consensus_review['confidence_in_recommendation']}")
+
+    return {
+        "agent": "reviewer_panel",
+        "thought": f"3-reviewer panel: Strict={totals[0]}, Constructive={totals[1]}, Detail={totals[2]}. Median consensus: {median_total}.",
+        "review": consensus_review,
+        "individual_reviews": individual_reviews,
+        "scores_summary": {
+            "strict": totals[0], "constructive": totals[1], "detail": totals[2],
+            "median": median_total, "mean": round(mean_total, 1), "range": score_range,
+        },
+        "consensus_strengths": consensus_strong,
+        "consensus_weaknesses": consensus_weak,
+    }
+
+
+def _extract_consensus(reviews: list[dict]) -> tuple[list[str], list[str]]:
+    """从3位评审中提取至少2人共同认可的优缺点（模糊匹配）。"""
+    all_strong: list[str] = []
+    all_weak: list[str] = []
+    for r in reviews:
+        for s in r.get("strengths", []):
+            all_strong.append(s[:200])
+        for w in r.get("weaknesses", []):
+            all_weak.append(w[:200])
+
+    # 聚类：把高度相似的条目归为一组，出现≥2次即为共识
+    def _consensus(items: list[str]) -> list[str]:
+        if not items:
+            return []
+        # 按相似度聚类
+        clusters: list[list[str]] = []
+        for item in items:
+            matched = False
+            for cluster in clusters:
+                if any(_overlap(item, existing) > 0.35 for existing in cluster):
+                    cluster.append(item)
+                    matched = True
+                    break
+            if not matched:
+                clusters.append([item])
+        # 返回多成员的聚类代表（取最长的描述）
+        result = []
+        for cluster in clusters:
+            if len(cluster) >= 2:
+                cluster.sort(key=len, reverse=True)
+                result.append(cluster[0])
+        return result[:5]
+
+    return _consensus(all_strong), _consensus(all_weak)
+
+
+def _overlap(a: str, b: str) -> float:
+    """两个字符串的词汇重叠率（小写比较）。"""
+    wa = set(a.lower().split())
+    wb = set(b.lower().split())
+    if not wa or not wb:
+        return 0.0
+    return len(wa & wb) / min(len(wa), len(wb))
+
+
+# ---------------------------------------------------------------------------
 # LLM 调用
 # ---------------------------------------------------------------------------
 
@@ -388,7 +619,7 @@ def review_and_revise(
             print(f"\n{'='*50}\n  Round {rnd}/{max_rounds}: Reviewing...\n{'='*50}")
 
         # 1. 评审当前论文
-        review_report = review_paper(current_paper_text, ctx, save=False)
+        review_report = review_paper_panel(current_paper_text, ctx, save=False, verbose=verbose)
         review = review_report["review"]
         score = review.get("total_score", 0)
         passed = review.get("pass_threshold_30", score >= pass_threshold)
@@ -443,7 +674,7 @@ def review_and_revise(
             current_paper_text = _paper_dict_to_text(revised["paper"])
 
     # 最终评审（如果循环因 max_rounds 结束）
-    final_review = review_paper(current_paper_text, ctx, save=True)
+    final_review = review_paper_panel(current_paper_text, ctx, save=True, verbose=False)
     final_paper = current_paper_text
 
     # 如果是 dict，保存一份

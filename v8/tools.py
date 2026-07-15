@@ -1496,17 +1496,16 @@ def _revise_paper_handler(project_id: str, current_paper: str = "", review_feedb
 
 
 def _review_paper_handler(project_id: str, paper_content: str = "") -> str:
-    """Reviewer: 五维评分评审论文。"""
+    """Reviewer: 3人面板评审（ARISE方法）。"""
     import json as _json
     from pathlib import Path as _Path
     try:
-        from .reviewer import review_paper
+        from .reviewer import review_paper_panel
     except ImportError:
-        from reviewer import review_paper
-    # 如果 paper_content 是文件路径，读取内容
+        from reviewer import review_paper_panel
     if paper_content and _Path(paper_content).exists():
         paper_content = _Path(paper_content).read_text(encoding="utf-8")
-    report = review_paper(paper_content, {"project_id": project_id})
+    report = review_paper_panel(paper_content, {"project_id": project_id}, verbose=False)
     return _json.dumps(report, ensure_ascii=False, indent=2)
 
 
