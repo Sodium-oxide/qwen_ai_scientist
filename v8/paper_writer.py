@@ -371,7 +371,15 @@ def write_paper_staged(
         print("[Stage 4/5] Verifying references...")
     refs_before = len(paper.get("references", []))
 
-    # 4a. LLM 清洗引用格式
+    # 4a. ScholarCopilot 实时检索：扫描论文，为无引用声明查找文献
+    if verbose:
+        print("  Searching live citations for uncited claims...")
+    try:
+        paper = enrich_paper_citations(paper, ctx.get("papergraph_records", []), top_k=5)
+    except Exception:
+        pass  # 检索失败不阻塞
+
+    # 4b. LLM 清洗引用格式
     ref_result = _call_llm(
         STAGE4_REFERENCES_PROMPT,
         f"## PAPER\nTitle: {paper.get('title', '')}\n\nAbstract: {paper.get('abstract', '')[:500]}\n\n## CURRENT REFERENCES\n{json.dumps(paper.get('references', []), ensure_ascii=False, indent=2)}\n\n## PAPERGRAPH RECORDS (verified sources)\n{_format_references(ctx.get('papergraph_records', []))}\n\nClean and verify the reference list.",
@@ -1120,39 +1128,134 @@ def search_citations(
     papergraph_records: list[dict[str, Any]] | None = None,
     *,
     top_k: int = 10,
+    search_live: bool = True,
+    live_delay: float = 1.0,
 ) -> list[dict[str, Any]]:
     """
-    从 PaperGraph 记录中按关键词匹配引用。
+    ScholarCopilot 风格：PaperGraph 优先，不足时自动实时检索 Semantic Scholar。
 
     参数:
         keywords: 搜索关键词（空格分隔）
-        papergraph_records: PaperGraph 记录列表
+        papergraph_records: PaperGraph 记录列表（优先使用）
         top_k: 返回前 K 个
+        search_live: True=不足时自动实时检索, False=仅 PaperGraph
+        live_delay: 实时检索时的请求间隔（避免429限流）
 
     返回:
-        匹配的引用列表
+        匹配的引用列表，每项含 citation/relevance_score/source/verified
     """
     records = papergraph_records or []
-    if not records:
-        return []
+    results: list[dict[str, Any]] = []
+    seen_titles: set[str] = set()
 
+    # Step 1: PaperGraph 关键词匹配
     kw_list = [w.lower() for w in keywords.split() if len(w) > 1]
+    if records:
+        scored: list[tuple[int, dict]] = []
+        for rec in records:
+            title = str(rec.get("title", "")).lower()
+            abstract = str(rec.get("abstract", "")).lower()
+            text = title + " " + abstract
+            score = sum(1 for kw in kw_list if kw in text)
+            if score > 0:
+                scored.append((score, rec))
+        scored.sort(key=lambda x: x[0], reverse=True)
+        for s, r in scored[:top_k]:
+            t = str(r.get("title", "")).lower()
+            if t not in seen_titles:
+                results.append({
+                    "index": 0, "citation": _format_single_ref(r), "relevance_score": s,
+                    "papergraph_id": r.get("paper_id", r.get("id", "")),
+                    "source": "papergraph", "verified": True,
+                })
+                seen_titles.add(t)
 
-    scored: list[tuple[int, dict]] = []
-    for rec in records:
-        title = str(rec.get("title", "")).lower()
-        abstract = str(rec.get("abstract", "")).lower()
-        text = title + " " + abstract
-        score = sum(1 for kw in kw_list if kw in text)
-        if score > 0:
-            scored.append((score, rec))
+    # Step 2: 不足时实时检索 Semantic Scholar (ScholarCopilot 核心)
+    if search_live and len(results) < top_k:
+        try:
+            live_data = _search_semantic_scholar_api(keywords, max_results=top_k, timeout=8.0)
+            live_papers = live_data.get("data", [])
+            for paper in live_papers:
+                t = str(paper.get("title", "")).lower()
+                if t not in seen_titles and len(results) < top_k:
+                    results.append({
+                        "index": 0,
+                        "citation": _format_semantic_scholar_result(paper),
+                        "relevance_score": 0,
+                        "papergraph_id": paper.get("paperId", ""),
+                        "source": "semantic_scholar_live",
+                        "verified": True,
+                    })
+                    seen_titles.add(t)
+            if live_papers and live_delay > 0:
+                time.sleep(live_delay)
+        except Exception:
+            pass  # 实时检索失败不影响主流程
 
-    scored.sort(key=lambda x: x[0], reverse=True)
-    return [
-        {"index": i + 1, "citation": _format_single_ref(r), "relevance_score": s,
-         "papergraph_id": r.get("paper_id", r.get("id", "")), "verified": True}
-        for i, (s, r) in enumerate(scored[:top_k])
-    ]
+    # 重新编号
+    for i, r in enumerate(results):
+        r["index"] = i + 1
+    return results
+
+
+def enrich_paper_citations(
+    paper: dict[str, Any],
+    papergraph_records: list[dict[str, Any]] | None = None,
+    *,
+    top_k: int = 5,
+) -> dict[str, Any]:
+    """
+    ScholarCopilot 风格：扫描论文全文，为缺少引用的声明检索真实文献。
+
+    遍历论文的实验段和引言段，提取关键声明，对每个声明执行实时检索。
+    返回增强后的论文和新增引用列表。
+    """
+    records = papergraph_records or []
+    new_refs: list[dict] = []
+    existing_refs = paper.get("references", [])
+
+    # 收集需要引用的关键词
+    # 从 experiments section 提取关键术语
+    experiments_text = paper.get("experiments", "")
+    # 提取大写缩写词（如 GNN, CNN, TDS）和关键名词短语
+    import re as _re
+    key_terms = set(_re.findall(r"[A-Z]{2,}(?:\s+[A-Z]{2,})*", experiments_text))
+    # 也从 hypothesis/gap 提取术语
+    intro_text = paper.get("introduction", "")
+    key_terms.update(_re.findall(r"[A-Z]{2,}(?:\s+[A-Z]{2,})*", intro_text))
+
+    # 过滤掉已有引用覆盖的术语
+    existing_citations_text = " ".join(
+        str(r.get("citation", "")) for r in existing_refs
+    ).lower()
+
+    for term in sorted(key_terms)[:5]:
+        if term.lower() in existing_citations_text:
+            continue
+        try:
+            found = search_citations(term, records, top_k=2, search_live=True, live_delay=1.5)
+            for f in found:
+                if f["source"] == "semantic_scholar_live":
+                    new_refs.append(f)
+        except Exception:
+            continue
+
+    # 合并到论文引用列表
+    if new_refs:
+        all_refs = list(existing_refs) + new_refs
+        # 去重
+        seen = set()
+        deduped = []
+        for r in all_refs:
+            key = str(r.get("citation", ""))[:100].lower()
+            if key not in seen:
+                deduped.append(r)
+                seen.add(key)
+        for i, r in enumerate(deduped):
+            r["index"] = i + 1
+        paper["references"] = deduped
+
+    return paper
 
 
 # ---------------------------------------------------------------------------
