@@ -1049,16 +1049,13 @@ Return JSON: {"fixed_latex": "complete fixed LaTeX source", "errors_fixed": ["li
 def _compile_latex_with_repair(latex: str, max_attempts: int = 3, verbose: bool = False) -> dict:
     """编译 LaTeX 并在失败时自动修复（TransLaTeX / Paper Debugger 方法）。"""
     import subprocess as _sp
-    import tempfile as _tf
+    import tempfile
 
     result = {"success": False, "latex": latex, "pdf_path": "", "attempts": 0, "errors": []}
 
-    with _tf.TemporaryDirectory() as tmp:
-        tex_file = _tf.NamedTemporaryFile(suffix=".tex", dir=tmp, delete=False, encoding="utf-8")
-        tex_file.write(latex)
-        tex_file.flush()
-        tex_path = tex_file.name
-        tex_file.close()
+    with tempfile.TemporaryDirectory() as tmp:
+        tex_path = str(Path(tmp) / "paper.tex")
+        Path(tex_path).write_text(latex, encoding="utf-8")
 
         for attempt in range(1, max_attempts + 1):
             try:
@@ -1104,11 +1101,8 @@ def _compile_latex_with_repair(latex: str, max_attempts: int = 3, verbose: bool 
                     )
                     latex = fix_result.get("fixed_latex", latex)
                     # 更新 tex 文件
-                    tex_file2 = _tf.NamedTemporaryFile(suffix=".tex", dir=tmp, delete=False, encoding="utf-8")
-                    tex_file2.write(latex)
-                    tex_file2.flush()
-                    tex_path = tex_file2.name
-                    tex_file2.close()
+                    tex_path = str(Path(tmp) / f"paper_fix_{attempt}.tex")
+                    Path(tex_path).write_text(latex, encoding="utf-8")
                 except Exception:
                     break  # LLM 修复失败，不再重试
 
