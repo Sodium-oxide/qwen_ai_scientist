@@ -646,11 +646,14 @@ def review_and_revise(
     """
     ctx = project_context or {}
     history: list[dict[str, Any]] = []
+    revision_dir = _ensure_revision_dir()
 
     if isinstance(paper_text, dict):
         paper_text = _paper_dict_to_text(paper_text)
 
     current_paper_text = paper_text
+    # PaperClaw 全生命周期记忆：保存初始版本
+    _save_revision(revision_dir, 0, current_paper_text, "initial")
 
     for rnd in range(1, max_rounds + 1):
         if verbose:
@@ -704,12 +707,19 @@ def review_and_revise(
             from paper_writer import revise_paper
 
         revised = revise_paper(current_paper_text, review, ctx)
-        current_paper_text = revised["paper"]  # dict 格式
-        # 同时保存文本用于下轮评审
+        prev_text = current_paper_text
+        current_paper_text = revised["paper"]
         if isinstance(current_paper_text, dict):
             current_paper_text = _paper_dict_to_text(current_paper_text)
         elif "paper" in revised:
             current_paper_text = _paper_dict_to_text(revised["paper"])
+
+        # PaperClaw: 保存每轮修改版本 + diff
+        _save_revision(revision_dir, rnd, current_paper_text, f"round_{rnd}_revised")
+        diff_path = _save_diff(revision_dir, rnd, prev_text, current_paper_text)
+        round_record["revision_saved"] = str(revision_dir / f"v{rnd}_round_{rnd}_revised.txt")
+        if diff_path:
+            round_record["diff_saved"] = diff_path
 
     # 最终评审（如果循环因 max_rounds 结束）
     final_review = review_paper_panel(current_paper_text, ctx, save=True, verbose=False)
@@ -723,13 +733,60 @@ def review_and_revise(
             from paper_writer import _ensure_all_sections, _fill_missing_sections
         # 纯文本，不转回 dict
 
+    # 保存最终版本
+    final_ver = len(history)
+    _save_revision(revision_dir, final_ver, current_paper_text, "final")
+
     return {
         "final_paper": final_paper,
         "final_review": final_review["review"],
         "rounds": history,
         "passed": history[-1]["passed"] if history else False,
         "total_rounds": len(history),
+        "revision_dir": str(revision_dir),
     }
+
+
+# ── PaperClaw 全生命周期记忆 ──
+
+def _ensure_revision_dir() -> "Path":
+    from pathlib import Path as _P
+    try:
+        from .config import SCIENCE_DIR
+    except ImportError:
+        from config import SCIENCE_DIR
+    rev_dir = _P(SCIENCE_DIR) / "papers" / "revisions"
+    rev_dir.mkdir(parents=True, exist_ok=True)
+    return rev_dir
+
+
+def _save_revision(rev_dir: "Path", version: int, text: str, label: str) -> str:
+    """保存一个版本的论文到修订目录。"""
+    from datetime import datetime as _dt
+    ts = _dt.now().strftime("%Y%m%d_%H%M%S")
+    path = rev_dir / f"v{version}_{label}_{ts}.txt"
+    path.write_text(text, encoding="utf-8")
+    return str(path)
+
+
+def _save_diff(rev_dir: "Path", version: int, before: str, after: str) -> str:
+    """保存两个版本之间的 diff。"""
+    try:
+        import difflib
+        diff = difflib.unified_diff(
+            before.splitlines(keepends=True),
+            after.splitlines(keepends=True),
+            fromfile=f"v{version - 1}", tofile=f"v{version}",
+            lineterm="",
+        )
+        diff_text = "\n".join(diff)
+        if diff_text.strip():
+            path = rev_dir / f"v{version}_diff.txt"
+            path.write_text(diff_text, encoding="utf-8")
+            return str(path)
+    except Exception:
+        pass
+    return ""
 
 
 def _paper_dict_to_text(paper: dict) -> str:
