@@ -100,7 +100,19 @@ Return ONLY a valid JSON object, no markdown, no extra text:
 # 3 种评审人格独立评分后取中位数，模拟顶会多评审员机制
 # ---------------------------------------------------------------------------
 
-REVIEWER_STRICT_PROMPT = REVIEWER_SYSTEM_PROMPT + """
+# DeepReviewer 2.0 锚定注释要求（追加到每个 reviewer prompt 后面）
+_ANCHORING_RULES = """
+## CRITICAL: ANCHORED ANNOTATIONS (DeepReviewer 2.0 output contract)
+
+Every weakness and strength you list MUST be anchored to specific locations in the paper:
+- Format: "[Section X, paragraph Y] 'exact quoted text' → your assessment"
+- Example: "[Experiments, paragraph 2] 'Our method achieves 95.8% accuracy' → The paper does not report confidence intervals for this number, making the claim unverifiable."
+- At least 2 weaknesses and 1 strength must have anchored citations.
+- Vague statements like "the paper needs improvement" without a specific anchor are UNACCEPTABLE.
+- If you cannot find a specific anchor for a criticism, do NOT include that criticism.
+"""
+
+REVIEWER_STRICT_PROMPT = REVIEWER_SYSTEM_PROMPT + _ANCHORING_RULES + """
 
 ## YOUR PERSONA: THE STRICT REVIEWER
 
@@ -113,7 +125,7 @@ You are known as the toughest reviewer in your field. Your standards:
 - You have seen too many papers with the same "novel" idea — prove it's truly new.
 """
 
-REVIEWER_CONSTRUCTIVE_PROMPT = REVIEWER_SYSTEM_PROMPT + """
+REVIEWER_CONSTRUCTIVE_PROMPT = REVIEWER_SYSTEM_PROMPT + _ANCHORING_RULES + """
 
 ## YOUR PERSONA: THE CONSTRUCTIVE REVIEWER
 
@@ -126,7 +138,7 @@ You are the reviewer authors hope to get. Your approach:
 - If the paper has potential, give the authors a clear roadmap to acceptance.
 """
 
-REVIEWER_DETAIL_PROMPT = REVIEWER_SYSTEM_PROMPT + """
+REVIEWER_DETAIL_PROMPT = REVIEWER_SYSTEM_PROMPT + _ANCHORING_RULES + """
 
 ## YOUR PERSONA: THE DETAIL-ORIENTED REVIEWER
 
@@ -232,6 +244,11 @@ def review_paper_panel(
     # ── 提取共识（至少2人认可的优点/缺点） ──
     consensus_strong, consensus_weak = _extract_consensus(individual_reviews)
 
+    # ── DeepReviewer 2.0 锚定验证 ──
+    anchoring = _validate_anchoring(individual_reviews)
+    if verbose and not anchoring["quality_pass"]:
+        print(f"  [!] Anchoring check: {anchoring['per_reviewer']}")
+
     # ── 综合评审报告 ──
     consensus_review = {
         "scores": {
@@ -278,6 +295,30 @@ def review_paper_panel(
         },
         "consensus_strengths": consensus_strong,
         "consensus_weaknesses": consensus_weak,
+        "anchoring_quality": anchoring,
+    }
+
+
+def _validate_anchoring(reviews: list[dict]) -> dict[str, Any]:
+    """DeepReviewer 2.0 输出契约：检查每份评审是否包含锚定注释。"""
+    import re as _re
+    anchor_pattern = _re.compile(r"\[(?:Section |Introduction|Related|Method|Experiment|Conclusion)[^\]]*\]", _re.IGNORECASE)
+    results = {}
+    for i, r in enumerate(reviews):
+        pid = r.get("persona_id", f"reviewer_{i}")
+        weaknesses = r.get("weaknesses", [])
+        strengths = r.get("strengths", [])
+        all_text = " ".join(str(w) for w in weaknesses + strengths)
+        anchor_count = len(anchor_pattern.findall(all_text))
+        results[pid] = {
+            "anchored": anchor_count >= 2,
+            "anchor_count": anchor_count,
+        }
+    total_anchored = sum(1 for v in results.values() if v["anchored"])
+    return {
+        "all_anchored": total_anchored >= 2,  # 至少2位评审有锚定
+        "per_reviewer": results,
+        "quality_pass": total_anchored >= 2,
     }
 
 
@@ -291,11 +332,9 @@ def _extract_consensus(reviews: list[dict]) -> tuple[list[str], list[str]]:
         for w in r.get("weaknesses", []):
             all_weak.append(w[:200])
 
-    # 聚类：把高度相似的条目归为一组，出现≥2次即为共识
     def _consensus(items: list[str]) -> list[str]:
         if not items:
             return []
-        # 按相似度聚类
         clusters: list[list[str]] = []
         for item in items:
             matched = False
@@ -306,7 +345,6 @@ def _extract_consensus(reviews: list[dict]) -> tuple[list[str], list[str]]:
                     break
             if not matched:
                 clusters.append([item])
-        # 返回多成员的聚类代表（取最长的描述）
         result = []
         for cluster in clusters:
             if len(cluster) >= 2:
