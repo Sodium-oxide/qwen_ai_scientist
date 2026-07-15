@@ -141,17 +141,68 @@ Return JSON:
 }\
 """
 
+# ── Stage 1.5: Evidence Chain (LECTOR 方法) ──
+
+STAGE1_5_EVIDENCE_PROMPT = """\
+You are a scientific evidence analyst. Extract a structured evidence chain from the research context.
+
+## TASK
+For every claim that will appear in the paper, identify its supporting evidence source.
+This creates a "reasoning graph" that ensures every sentence is traceable to data or literature.
+
+## EVIDENCE TYPES
+- **experiment**: numbers from experimental results (accuracy, p-values, timings)
+- **literature**: claims supported by specific papers in the PaperGraph
+- **protocol**: experimental design decisions (datasets, baselines, metrics)
+- **gap**: knowledge gap identified by TanXi
+- **hypothesis**: derived from the hypothesis statement itself
+
+## OUTPUT FORMAT
+Return JSON:
+{
+  "evidence_chain": [
+    {
+      "claim": "GNN achieves 96.4% accuracy on IEEE 118-bus system",
+      "evidence_type": "experiment",
+      "evidence_source": "CodeEngineer results: primary_results.accuracy = 0.964",
+      "used_in_section": "experiments",
+      "confidence": "high"
+    },
+    {
+      "claim": "No existing ML method preserves grid topology for stability prediction",
+      "evidence_type": "gap",
+      "evidence_source": "TanXi gap analysis: gap_id=GAP-001",
+      "used_in_section": "introduction",
+      "confidence": "high"
+    },
+    {
+      "claim": "Graph Neural Networks capture relational structure in graph data",
+      "evidence_type": "literature",
+      "evidence_source": "Zhou et al. (2020). Graph Neural Networks: A Review. AI Open.",
+      "used_in_section": "related_work",
+      "confidence": "high"
+    }
+  ],
+  "missing_evidence": [
+    "No baseline comparison data for Random Forest",
+    "No ablation study to confirm topology is the key factor"
+  ]
+}\
+"""
+
 STAGE2_WRITE_PROMPT = """\
-You are an academic paper writer. Write the COMPLETE paper body based on the approved outline.
-Follow the outline exactly — every bullet point must be addressed in the corresponding section.
+You are an academic paper writer. Write the COMPLETE paper body based on the approved outline AND evidence chain.
 
 ## WRITING RULES
-- Use concrete numbers, not vague descriptions.
-- Every factual claim needs a citation from the provided references or explicit evidence from the experimental results.
+- Follow the outline exactly — every bullet point must be addressed.
+- **CRITICAL**: Every factual claim MUST cite its evidence from the provided evidence chain.
+  Use the format: [Evidence: <type>] after each claim, e.g. "Our method achieves 96.4% accuracy [Evidence: experiment]."
+- Use concrete numbers — no vague descriptions.
 - Introduction must state the knowledge gap clearly.
 - Methodology must be detailed enough for reproducibility.
-- Experiments section must include: setup, datasets, baselines, metrics, results (with numbers), statistical tests.
-- Use formal academic English. No colloquialisms.
+- Experiments section must include: setup, datasets, baselines, metrics, results, statistical tests.
+- If the evidence chain flags missing evidence, mark those claims as [NEEDS DATA].
+- Use formal academic English.
 
 ## OUTPUT FORMAT
 Return JSON with ALL 7 sections as complete text:
@@ -164,7 +215,7 @@ Return JSON with ALL 7 sections as complete text:
     "methodology": "full methodology",
     "experiments": "full experiments with results",
     "conclusion": "full conclusion",
-    "references": [{"index": 1, "citation": "Author (Year). Title. Venue."}]
+    "references": [{"index": 1, "citation": "Author (Year). Title. Venue.", "evidence_type": "literature"}]
   }
 }\
 """
@@ -176,14 +227,16 @@ Review the complete draft and fix ALL issues.
 ## CHECKLIST (address every item)
 1. **Cross-section consistency**: Do abstract claims match experiments? Does introduction's gap match conclusion's summary?
 2. **Narrative flow**: Do sections transition logically? Is the core contribution clear throughout?
-3. **Number accuracy**: Are all reported numbers consistent across sections? (e.g., abstract says 98.5%, experiments also says 98.5%)
-4. **Citation completeness**: Is every factual claim backed by a citation?
-5. **Clarity**: Are there any vague phrases ("significant improvement", "better performance") without specific numbers?
-6. **Completeness**: Does every required section have substantive content (not placeholder text)?
+3. **Number accuracy**: Are all reported numbers consistent across sections?
+4. **Evidence traceability (LECTOR)**: Does every [Evidence: X] tag in the text correspond to an actual item in the evidence chain? Remove any claims that lack evidence or mark them [NEEDS DATA].
+5. **Citation completeness**: Is every factual claim backed by a citation or evidence tag?
+6. **Clarity**: Are there any vague phrases without specific numbers?
+7. **Completeness**: Does every required section have substantive content?
 
 ## CONSTRAINTS
-- Fix errors but do NOT change the core scientific claims or add fabricated data.
+- Fix errors but do NOT change the core scientific claims.
 - If data is missing, add [NEEDS DATA: specific description] rather than inventing numbers.
+- Preserve all [Evidence: X] tags — do not remove verified evidence citations.
 
 ## OUTPUT FORMAT
 Return the COMPLETE polished paper as JSON (same schema as input).\
@@ -226,10 +279,11 @@ def write_paper_staged(
     """
     PaperOrchestrator 风格的多阶段论文生成。
 
-    4 个阶段，每个阶段有独立的 System Prompt 和任务聚焦：
-    Stage 1: OUTLINE — 生成标题+7节大纲
-    Stage 2: WRITE  — 基于大纲逐节写作
-    Stage 3: POLISH — 跨节一致性检查和润色
+    5 个阶段（LECTOR 风格证据链）：
+    Stage 1: OUTLINE  — 生成标题+7节大纲
+    Stage 1.5: EVIDENCE — 提取 claim→evidence 映射（LECTOR方法）
+    Stage 2: WRITE   — 基于大纲+证据链写作
+    Stage 3: POLISH   — 跨节一致性+证据追溯检查
     Stage 4: REFERENCES — 引用验证和格式化
 
     相比单次 LLM 调用，多阶段流水线显著提升：
@@ -259,13 +313,32 @@ def write_paper_staged(
         print(f"  Title: {title_preview}")
         print(f"  Sections planned: {outline_sections}")
 
-    # ── Stage 2: Write ──
+    # ── Stage 1.5: Evidence Chain (LECTOR) ──
     if verbose:
-        print("[Stage 2/4] Writing sections from outline...")
+        print("[Stage 1.5/5] Extracting claim->evidence mapping...")
+    evidence = _call_llm(
+        STAGE1_5_EVIDENCE_PROMPT,
+        f"## RESEARCH CONTEXT\n{context_text[:6000]}\n\n## OUTLINE\n{json.dumps(outline, ensure_ascii=False, indent=2)}\n\nExtract the structured evidence chain.",
+        max_tokens=2000,
+    )
+    evidence_chain = evidence.get("evidence_chain", [])
+    missing_evidence = evidence.get("missing_evidence", [])
+    stages_log.append({"stage": 1.5, "title": "Evidence Chain",
+                        "claims": len(evidence_chain), "missing": len(missing_evidence)})
+    if verbose:
+        print(f"  Evidence-backed claims: {len(evidence_chain)}")
+        print(f"  Missing evidence gaps: {len(missing_evidence)}")
+        for m in missing_evidence[:3]:
+            print(f"    [!] {m[:100]}")
+    evidence_json = json.dumps(evidence, ensure_ascii=False, indent=2)
+
+    # ── Stage 2: Write (with evidence chain) ──
+    if verbose:
+        print("[Stage 2/5] Writing sections with evidence citations...")
     outline_json = json.dumps(outline, ensure_ascii=False, indent=2)
     draft = _call_llm(
         STAGE2_WRITE_PROMPT,
-        f"## RESEARCH CONTEXT\n{context_text[:4000]}\n\n## APPROVED OUTLINE\n{outline_json}\n\nWrite the complete paper following this outline exactly.",
+        f"## RESEARCH CONTEXT\n{context_text[:3000]}\n\n## APPROVED OUTLINE\n{outline_json}\n\n## EVIDENCE CHAIN (cite these!)\n{evidence_json}\n\nWrite the complete paper. Every factual claim MUST cite its evidence from the chain above.",
         max_tokens=max_tokens_per_stage,
     )
     paper = draft.get("paper", draft)
@@ -278,11 +351,11 @@ def write_paper_staged(
 
     # ── Stage 3: Polish ──
     if verbose:
-        print("[Stage 3/4] Polishing cross-section consistency...")
+        print("[Stage 3/5] Polishing cross-section consistency...")
     paper_json = json.dumps({"paper": paper}, ensure_ascii=False, indent=2)
     polished = _call_llm(
         STAGE3_POLISH_PROMPT,
-        f"## DRAFT TO POLISH\n{paper_json[:8000]}\n\n## CONTEXT FOR VERIFICATION\n{context_text[:3000]}\n\nPolish the draft. Fix inconsistencies, improve flow, ensure all numbers match across sections.",
+        f"## DRAFT TO POLISH\n{paper_json[:8000]}\n\n## EVIDENCE CHAIN (verify against this)\n{evidence_json[:3000]}\n\n## CONTEXT FOR VERIFICATION\n{context_text[:2000]}\n\nPolish the draft. Fix inconsistencies, verify all [Evidence:] tags are valid, ensure numbers match across sections.",
         max_tokens=max_tokens_per_stage,
     )
     paper = polished.get("paper", polished)
@@ -295,7 +368,7 @@ def write_paper_staged(
 
     # ── Stage 4: References ──
     if verbose:
-        print("[Stage 4/4] Verifying references...")
+        print("[Stage 4/5] Verifying references...")
     refs_before = len(paper.get("references", []))
 
     # 4a. LLM 清洗引用格式
