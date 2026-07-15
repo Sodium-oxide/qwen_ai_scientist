@@ -1526,6 +1526,86 @@ def _review_and_revise_handler(project_id: str, max_rounds: int = 3) -> str:
     return _json.dumps(loop_result, ensure_ascii=False, indent=2)
 
 
+# ---- CodeEngineer + MingBian (模块7+8) ----
+
+def _write_code_handler(project_id: str, experiment_protocol: str = "", hypothesis: str = "") -> str:
+    import json as _json
+    try:
+        from .code_engineer import write_code
+    except ImportError:
+        from code_engineer import write_code
+    prot = _json.loads(experiment_protocol) if experiment_protocol.strip().startswith("{") else {}
+    hyp = _json.loads(hypothesis) if hypothesis.strip().startswith("{") else {}
+    return write_code(project_id, prot, hyp)
+
+
+def _execute_code_handler(project_id: str, code: str = "", experiment_protocol: str = "",
+                          hypothesis: str = "") -> str:
+    import json as _json
+    try:
+        from .code_engineer import execute_code
+    except ImportError:
+        from code_engineer import execute_code
+    prot = _json.loads(experiment_protocol) if experiment_protocol.strip().startswith("{") else {}
+    hyp = _json.loads(hypothesis) if hypothesis.strip().startswith("{") else {}
+    result = execute_code(project_id, code, prot, hyp)
+    return _json.dumps(result, ensure_ascii=False, indent=2)
+
+
+def _fix_bug_handler(error_log: str = "", code: str = "") -> str:
+    try:
+        from .code_engineer import fix_bug
+    except ImportError:
+        from code_engineer import fix_bug
+    return fix_bug(error_log, code)
+
+
+def _optimize_handler(code: str = "", target: str = "speed") -> str:
+    try:
+        from .code_engineer import optimize
+    except ImportError:
+        from code_engineer import optimize
+    return optimize(code, target)
+
+
+def _analyze_results_handler(project_id: str, experiment_results: str = "",
+                             success_criteria: str = "", baselines: str = "",
+                             hypothesis: str = "") -> str:
+    import json as _json
+    try:
+        from .mingbian import analyze_results
+    except ImportError:
+        from mingbian import analyze_results
+    results = _json.loads(experiment_results) if experiment_results.strip().startswith("{") else {}
+    crit = _json.loads(success_criteria) if success_criteria.strip().startswith("[") else []
+    bl = _json.loads(baselines) if baselines.strip().startswith("[") else []
+    hyp = _json.loads(hypothesis) if hypothesis.strip().startswith("{") else {}
+    report = analyze_results(project_id, results, crit, bl, hyp)
+    return _json.dumps(report, ensure_ascii=False, indent=2)
+
+
+def _diagnose_inconclusive_handler(results: str = "", design: str = "") -> str:
+    import json as _json
+    try:
+        from .mingbian import diagnose_inconclusive
+    except ImportError:
+        from mingbian import diagnose_inconclusive
+    r = _json.loads(results) if results.strip().startswith("{") else {}
+    d = _json.loads(design) if design.strip().startswith("{") else {}
+    return diagnose_inconclusive(r, d)
+
+
+def _update_method_memory_handler(outcome: str = "", patterns: str = "[]") -> str:
+    import json as _json
+    try:
+        from .mingbian import update_method_memory
+    except ImportError:
+        from mingbian import update_method_memory
+    p = _json.loads(patterns) if patterns.strip().startswith("[") else []
+    update_method_memory(outcome, p)
+    return "Method memory updated."
+
+
 BASIC_TOOLS = [
     {
         "name": "bash",
@@ -2979,6 +3059,98 @@ SCIENCE_TOOLS = [
             "required": ["project_id"],
         },
     },
+    # ---- CodeEngineer (模块7) ----
+    {
+        "name": "write_code",
+        "description": "CodeEngineer: Generate Python experiment code from protocol and hypothesis.",
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "project_id": {"type": "string"},
+                "experiment_protocol": {"type": "string"},
+                "hypothesis": {"type": "string"},
+            },
+            "required": ["project_id"],
+        },
+    },
+    {
+        "name": "execute_code",
+        "description": "CodeEngineer: Execute experiment code and return structured results (currently simulated mode).",
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "project_id": {"type": "string"},
+                "code": {"type": "string"},
+                "experiment_protocol": {"type": "string"},
+                "hypothesis": {"type": "string"},
+            },
+            "required": ["project_id"],
+        },
+    },
+    {
+        "name": "fix_bug",
+        "description": "CodeEngineer: Auto-fix code based on error log (max 5 iterations).",
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "error_log": {"type": "string"},
+                "code": {"type": "string"},
+            },
+            "required": ["error_log", "code"],
+        },
+    },
+    {
+        "name": "optimize",
+        "description": "CodeEngineer: Optimize code for speed/memory/accuracy.",
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "code": {"type": "string"},
+                "target": {"type": "string", "description": "speed | memory | accuracy"},
+            },
+            "required": ["code"],
+        },
+    },
+    # ---- MingBian (模块8) ----
+    {
+        "name": "analyze_results",
+        "description": "MingBian: Analyze experiment results — effect sizes, significance, hypothesis verdict.",
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "project_id": {"type": "string"},
+                "experiment_results": {"type": "string"},
+                "success_criteria": {"type": "string"},
+                "baselines": {"type": "string"},
+                "hypothesis": {"type": "string"},
+            },
+            "required": ["project_id"],
+        },
+    },
+    {
+        "name": "diagnose_inconclusive",
+        "description": "MingBian: Diagnose why results are inconclusive.",
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "results": {"type": "string"},
+                "experiment_design": {"type": "string"},
+            },
+            "required": [],
+        },
+    },
+    {
+        "name": "update_method_memory",
+        "description": "MingBian: Record successful/failed patterns to method memory bank.",
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "outcome": {"type": "string"},
+                "patterns": {"type": "string"},
+            },
+            "required": [],
+        },
+    },
     # ---- PaperWriter (模块9) ----
     {
         "name": "write_paper",
@@ -3143,4 +3315,13 @@ TOOL_HANDLERS: dict[str, Callable[..., str]] = {
     "revise_paper": _revise_paper_handler,
     "review_paper": _review_paper_handler,
     "review_and_revise": _review_and_revise_handler,
+    # ---- CodeEngineer (模块7) ----
+    "write_code": _write_code_handler,
+    "execute_code": _execute_code_handler,
+    "fix_bug": _fix_bug_handler,
+    "optimize": _optimize_handler,
+    # ---- MingBian (模块8) ----
+    "analyze_results": _analyze_results_handler,
+    "diagnose_inconclusive": _diagnose_inconclusive_handler,
+    "update_method_memory": _update_method_memory_handler,
 }

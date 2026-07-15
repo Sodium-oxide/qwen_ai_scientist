@@ -249,7 +249,7 @@ def write_paper_staged(
     outline = _call_llm(
         STAGE1_OUTLINE_PROMPT,
         f"{context_text}\n\nGenerate the paper outline.",
-        max_tokens=1000,
+        max_tokens=2000,
     )
     stages_log.append({"stage": 1, "title": "Outline", "outline": outline})
 
@@ -485,17 +485,23 @@ def _parse_json(text: str) -> dict[str, Any]:
 
     candidate = stripped[start:end + 1]
 
-    # 尝试直接解析
     try:
         return json.loads(candidate)
-    except json.JSONDecodeError as e:
-        print(f"[DEBUG] JSON parse error at pos {e.pos}: {e.msg}")
-        print(f"[DEBUG] Context around error: ...{candidate[max(0,e.pos-50):e.pos+50]}...")
+    except json.JSONDecodeError:
+        pass
 
-    # 修复常见 LLM 输出问题后重试
     try:
         fixed = _repair_json(candidate)
         return json.loads(fixed)
+    except json.JSONDecodeError:
+        pass
+
+    # Last resort: remove trailing content after last valid }
+    try:
+        last_valid = candidate.rfind('"}')
+        if last_valid > 0:
+            truncated = candidate[:last_valid + 2] + "\n}"
+            return json.loads(truncated)
     except json.JSONDecodeError:
         pass
 
@@ -504,24 +510,43 @@ def _parse_json(text: str) -> dict[str, Any]:
 
 def _repair_json(text: str) -> str:
     """修复 LLM 输出中常见的 JSON 格式问题。"""
-    # 1. 去掉尾部逗号（如 "key": "value",}）
+    # 1. 去掉尾部逗号
     text = re.sub(r",\s*}", "}", text)
     text = re.sub(r",\s*]", "]", text)
 
-    # 2. 修复 LaTeX 反斜杠：把 JSON 字符串内的 \ 变成 \\
-    #    LLM 经常在 JSON 里直接输出 $\theta$ 这样的 LaTeX，其中的 \t \e 等
-    #    不是合法 JSON 转义序列。在 JSON 字符串值内部，\ 必须写成 \\。
+    # 2. 修复 LaTeX 反斜杠
     text = _escape_latex_in_json(text)
 
-    # 3. 修复未闭合的字符串（LLM 可能因 max_tokens 截断 JSON）
+    # 3. 修复 LLM 截断：JSON 被 max_tokens 切断
     if not text.rstrip().endswith("}"):
-        last_complete = max(
-            text.rfind('"}'),
-            text.rfind('"]'),
-            text.rfind('}}'),
-        )
-        if last_complete > 0:
-            text = text[:last_complete + 2] + "\n}"
+        # 找最后一个完整的 JSON 结构
+        # 优先找完整的 "key": "value" 对
+        last_string_close = text.rfind('",')
+        last_array_close = text.rfind('"],')
+        last_obj_close = text.rfind('},')
+
+        candidates = [p for p in [last_string_close, last_array_close, last_obj_close, text.rfind('"}')] if p > 0]
+
+        if candidates:
+            cut = max(candidates)
+            if text[cut] == ',':
+                cut += 1  # keep the comma, we'll clean up
+            else:
+                cut += 2  # after "} or "]
+            text = text[:cut]
+
+        # Close any unclosed string
+        in_string = False
+        for i in range(len(text) - 1, -1, -1):
+            if text[i] == '"' and (i == 0 or text[i-1] != '\\\\'):
+                in_string = not in_string
+        if in_string:
+            text += '"'
+
+        # Count and close open braces/brackets
+        open_braces = text.count('{') - text.count('}')
+        open_brackets = text.count('[') - text.count(']')
+        text += ']' * open_brackets + '}' * open_braces
 
     return text
 
