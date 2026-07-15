@@ -410,25 +410,40 @@ def write_paper_staged(
         if verify_summary["fake_flagged"]:
             print(f"  Flagged as [UNVERIFIED]: {len(verify_summary['fake_flagged'])}")
 
-    # ── LaTeX + Save ──
+    # ── Stage 5: LaTeX Compile Check (TransLaTeX / Paper Debugger) ──
+    if verbose:
+        print("[Stage 5/5] Compiling LaTeX...")
     latex = format_latex(paper)
-    saved_paths: list[str] = []
-    if save:
-        saved_paths = _save_paper(paper, latex, ctx)
+    compile_result = _compile_latex_with_repair(latex, verbose=verbose)
+    stages_log.append({"stage": 5, "title": "LaTeX Compile", "compiled": compile_result["success"]})
+
+    if compile_result["success"]:
+        latex = compile_result["latex"]  # 使用修复后的 LaTeX
+        saved_paths: list[str] = []
+        if save:
+            saved_paths = _save_paper(paper, latex, ctx)
+        if compile_result.get("pdf_path"):
+            saved_paths.append(compile_result["pdf_path"])
+    else:
+        saved_paths = []
+        if save:
+            saved_paths = _save_paper(paper, latex, ctx)
 
     quality = review_draft(paper)
 
     if verbose:
         print(f"\n  FINAL: {_count_words(paper)} words, {refs_after} citations")
+        print(f"  LaTeX: {'compiled OK' if compile_result['success'] else 'compile FAILED'}")
         print(f"  Quality: {quality.get('overall', '?')}")
         for issue in quality.get("issues", []):
             print(f"    [!] {issue}")
 
     return {
-        "thought": f"Multi-stage pipeline: Outline → Write → Polish → References. {len(stages_log)} stages completed.",
+        "thought": f"Multi-stage pipeline: Outline → Evidence → Write → Polish → References → Compile. {len(stages_log)} stages completed.",
         "paper": paper,
         "latex": latex,
         "saved_paths": saved_paths,
+        "compile_result": compile_result,
         "paper_status": {
             "completed_sections": [k for k in paper if k not in ("references",) and paper.get(k, "").strip()],
             "total_words": _count_words(paper),
@@ -1013,6 +1028,93 @@ def _paper_to_text(paper: dict) -> str:
 
 def _slugify(text: str) -> str:
     return re.sub(r"[^a-zA-Z0-9_-]+", "_", text.lower()).strip("_") or "paper"
+
+
+# ── Stage 5: LaTeX 编译修复 ──
+
+LATEX_FIX_PROMPT = """\
+You are a LaTeX debugging expert. Fix the compilation errors in the provided LaTeX source.
+
+## RULES
+1. Only fix the specific errors reported — do NOT change the paper content.
+2. Common fixes: missing packages, unescaped special characters (&, %, $, _, #), mismatched braces.
+3. Return the COMPLETE fixed LaTeX source.
+4. If the error cannot be fixed without content changes, note it and return the original source.
+
+## OUTPUT FORMAT
+Return JSON: {"fixed_latex": "complete fixed LaTeX source", "errors_fixed": ["list of fixes made"]}\
+"""
+
+
+def _compile_latex_with_repair(latex: str, max_attempts: int = 3, verbose: bool = False) -> dict:
+    """编译 LaTeX 并在失败时自动修复（TransLaTeX / Paper Debugger 方法）。"""
+    import subprocess as _sp
+    import tempfile as _tf
+
+    result = {"success": False, "latex": latex, "pdf_path": "", "attempts": 0, "errors": []}
+
+    with _tf.TemporaryDirectory() as tmp:
+        tex_file = _tf.NamedTemporaryFile(suffix=".tex", dir=tmp, delete=False, encoding="utf-8")
+        tex_file.write(latex)
+        tex_file.flush()
+        tex_path = tex_file.name
+        tex_file.close()
+
+        for attempt in range(1, max_attempts + 1):
+            try:
+                proc = _sp.run(
+                    ["pdflatex", "-interaction=nonstopmode", "-halt-on-error",
+                     "-output-directory", tmp, tex_path],
+                    capture_output=True, text=True, timeout=30,
+                )
+            except FileNotFoundError:
+                result["errors"].append("pdflatex not installed — skipping compile check")
+                result["success"] = True  # 不阻塞管道
+                result["latex"] = latex
+                return result
+            except Exception as e:
+                result["errors"].append(str(e)[:200])
+                return result
+
+            if proc.returncode == 0:
+                pdf_path = tex_path.replace(".tex", ".pdf")
+                if Path(pdf_path).exists():
+                    result["success"] = True
+                    result["pdf_path"] = pdf_path
+                    result["attempts"] = attempt
+                    if verbose:
+                        print(f"  LaTeX compiled OK (attempt {attempt})")
+                    return result
+
+            # 编译失败 → 提取错误 → LLM 修复
+            stderr = proc.stderr or ""
+            stdout = proc.stdout or ""
+            error_text = (stderr + "\n" + stdout)[:3000]
+            result["errors"].append(error_text[:500])
+
+            if verbose:
+                print(f"  LaTeX error (attempt {attempt}): {error_text[:200]}")
+
+            if attempt < max_attempts:
+                try:
+                    fix_result = _call_llm(
+                        LATEX_FIX_PROMPT,
+                        f"## LATEX SOURCE\n{latex[:6000]}\n\n## COMPILATION ERRORS\n{error_text[:2000]}\n\nFix the errors.",
+                        max_tokens=2000,
+                    )
+                    latex = fix_result.get("fixed_latex", latex)
+                    # 更新 tex 文件
+                    tex_file2 = _tf.NamedTemporaryFile(suffix=".tex", dir=tmp, delete=False, encoding="utf-8")
+                    tex_file2.write(latex)
+                    tex_file2.flush()
+                    tex_path = tex_file2.name
+                    tex_file2.close()
+                except Exception:
+                    break  # LLM 修复失败，不再重试
+
+    result["latex"] = latex  # 返回最后版本的 LaTeX
+    result["attempts"] = attempt
+    return result
 
 
 # ---------------------------------------------------------------------------
